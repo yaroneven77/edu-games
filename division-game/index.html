@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>שְׁבִילִים פְּלוּס – מִשְׂחֲקֵי חֶשְׁבּוֹן</title>
+<style>
+  :root{
+    --bg1:#fff7e6; --bg2:#cdeffd; --card:#ffffff;
+    --blue:#1f7fc4; --blue-d:#155f93; --yellow:#ffce3a; --green:#3fbf6b;
+    --red:#e6604f; --purple:#a974d6; --ink:#243b53; --shadow:rgba(20,60,90,.18);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;height:100%;}
+  body{
+    font-family:"Segoe UI","Arial Hebrew",Arial,sans-serif;
+    background:linear-gradient(160deg,var(--bg1) 0%,var(--bg2) 100%);
+    color:var(--ink); min-height:100%;
+    display:flex;flex-direction:column;align-items:center;
+    -webkit-user-select:none;user-select:none;
+  }
+  header{width:100%;text-align:center;padding:14px 8px 4px;}
+  .logo{
+    display:inline-block;font-weight:900;font-size:clamp(28px,7vw,48px);
+    color:var(--yellow);
+    text-shadow:2px 2px 0 var(--red),4px 4px 0 var(--blue),0 6px 14px var(--shadow);
+    letter-spacing:1px;
+  }
+  .logo small{display:block;font-size:.45em;color:var(--blue-d);text-shadow:none;font-weight:800;margin-top:4px;}
+  main{width:100%;max-width:760px;flex:1;padding:8px 14px 30px;}
+
+  /* ---- Menu ---- */
+  .menu{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media(max-width:520px){.menu{grid-template-columns:1fr;}}
+  .tile{
+    background:var(--card);border:none;border-radius:22px;padding:20px 16px;
+    box-shadow:0 6px 0 var(--shadow);cursor:pointer;text-align:center;
+    transition:transform .08s,box-shadow .08s;
+  }
+  .tile:active{transform:translateY(4px);box-shadow:0 2px 0 var(--shadow);}
+  .tile .emoji{font-size:40px;display:block;margin-bottom:8px;}
+  .tile h3{margin:0 0 4px;font-size:clamp(18px,4.5vw,22px);}
+  .tile p{margin:0;font-size:14px;color:#5b7b99;}
+  .tile.c1{border-top:8px solid var(--blue);}
+  .tile.c2{border-top:8px solid var(--green);}
+  .tile.c3{border-top:8px solid var(--purple);}
+  .tile.c4{border-top:8px solid var(--red);}
+  .tile.c5{border-top:8px solid var(--yellow);}
+
+  /* ---- Game screen ---- */
+  .game{display:none;}
+  .game.active{display:block;animation:pop .25s ease;}
+  @keyframes pop{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+  .topbar{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px;}
+  .btn{
+    border:none;border-radius:16px;padding:10px 16px;font-size:16px;font-weight:800;
+    font-family:inherit;cursor:pointer;box-shadow:0 4px 0 var(--shadow);color:#fff;
+  }
+  .btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--shadow);}
+  .btn.back{background:#8aa4bd;}
+  .btn.blue{background:var(--blue);}
+  .btn.green{background:var(--green);}
+  .score{font-weight:900;font-size:18px;background:#fff;border-radius:16px;padding:8px 14px;box-shadow:0 4px 0 var(--shadow);}
+  .score .star{color:var(--yellow);}
+  .card{
+    background:var(--card);border-radius:24px;padding:22px 18px;
+    box-shadow:0 8px 0 var(--shadow);margin-bottom:14px;
+  }
+  .qtitle{font-size:clamp(20px,5vw,26px);font-weight:800;line-height:1.5;margin:0 0 14px;}
+  .qtitle b{color:var(--blue-d);}
+  .big-eq{font-size:clamp(30px,9vw,46px);font-weight:900;text-align:center;letter-spacing:2px;direction:ltr;}
+  .items{font-size:30px;line-height:1.6;text-align:center;margin:10px 0;direction:ltr;}
+
+  .inputs{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;align-items:flex-end;margin-top:6px;}
+  .field{display:flex;flex-direction:column;align-items:center;gap:6px;}
+  .field label{font-size:15px;font-weight:700;color:#5b7b99;}
+  input.num{
+    width:96px;font-size:30px;text-align:center;padding:8px;border-radius:14px;
+    border:3px solid #cfe0ee;font-family:inherit;font-weight:800;color:var(--ink);direction:ltr;
+  }
+  input.num:focus{outline:none;border-color:var(--blue);}
+
+  .choices{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px;}
+  .choice{
+    background:#eef6fc;border:3px solid #d6e7f3;border-radius:18px;padding:16px;
+    font-size:26px;font-weight:900;cursor:pointer;font-family:inherit;color:var(--ink);
+    transition:transform .06s;
+  }
+  .choice:active{transform:scale(.97);}
+  .choice.ok{background:#d8f5e2;border-color:var(--green);}
+  .choice.no{background:#fcdcd6;border-color:var(--red);}
+
+  .yn{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:8px;}
+  .yn .seg{display:flex;flex-direction:column;align-items:center;gap:8px;background:#f4f9fd;border-radius:18px;padding:12px 14px;}
+  .yn .seg b{font-size:17px;}
+
+  .actions{display:flex;gap:12px;justify-content:center;margin-top:4px;}
+  .feedback{min-height:34px;text-align:center;font-size:22px;font-weight:900;margin-top:10px;}
+  .feedback.good{color:var(--green);}
+  .feedback.bad{color:var(--red);}
+
+  svg.pie{display:block;margin:0 auto;}
+  .frac{display:inline-flex;flex-direction:column;align-items:center;line-height:1;direction:ltr;}
+  .frac span{padding:0 6px;}
+  .frac .top{border-bottom:3px solid currentColor;}
+
+  footer{padding:10px;font-size:12px;color:#6b87a3;text-align:center;}
+  .hidden{display:none!important;}
+
+  .btn.help{background:var(--purple);}
+  .explain{
+    background:#f3ecfb;border:3px dashed #c9a8ec;border-radius:18px;
+    padding:16px 18px;margin-top:12px;text-align:right;line-height:1.7;
+  }
+  .explain h4{margin:0 0 10px;font-size:20px;color:#7a3fb0;text-align:center;}
+  .explain ol{margin:0;padding-inline-start:22px;}
+  .explain li{margin-bottom:8px;font-size:17px;}
+  .explain .calc{direction:ltr;display:inline-block;font-weight:900;background:#fff;
+    border-radius:8px;padding:1px 8px;margin:0 2px;}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">שְׁבִילִים פְּלוּס<small>מִשְׂחֲקֵי חֶשְׁבּוֹן לְכִתָּה ג'</small></div>
+</header>
+
+<main>
+  <!-- MENU -->
+  <section id="menu">
+    <div class="menu">
+      <button class="tile c1" onclick="openGame('g1')"><span class="emoji">🥜</span><h3>חִלּוּק עִם שְׁאֵרִית</h3><p>לְחַלֵּק לִקְבוּצוֹת – כַּמָּה נִשְׁאַר?</p></button>
+      <button class="tile c2" onclick="openGame('g2')"><span class="emoji">✖️</span><h3>כֶּפֶל וְחִלּוּק עַד 10,000</h3><p>תַּרְגִּילֵי כֶּפֶל וְחִלּוּק</p></button>
+      <button class="tile c3" onclick="openGame('g3')"><span class="emoji">🎈</span><h3>בְּעָיוֹת דּוּ-שְׁלַבִּיּוֹת</h3><p>בְּעָיוֹת מִלּוּלִיּוֹת בִּשְׁנֵי שְׁלַבִּים</p></button>
+      <button class="tile c4" onclick="openGame('g4')"><span class="emoji">🍕</span><h3>שְׁבָרִים יְסוֹדִיִּים</h3><p>אֵיזֶה חֵלֶק צָבוּעַ?</p></button>
+      <button class="tile c5" onclick="openGame('g5')"><span class="emoji">🔢</span><h3>סִימָנֵי הִתְחַלְּקוּת</h3><p>הִתְחַלְּקוּת בְּ-5 וּבְ-10</p></button>
+    </div>
+  </section>
+
+  <!-- GAME TEMPLATE (shared shell created per game via JS) -->
+  <section id="g1" class="game"></section>
+  <section id="g2" class="game"></section>
+  <section id="g3" class="game"></section>
+  <section id="g4" class="game"></section>
+  <section id="g5" class="game"></section>
+</main>
+
+<footer>נִבְנָה לְפִי הַחוֹבֶרֶת "שְׁבִילִים פְּלוּס" · כִּתָּה ג'</footer>
+
+<script>
+/* ============ helpers ============ */
+const $ = (s,r=document)=>r.querySelector(s);
+function rnd(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
+function pick(a){return a[Math.floor(Math.random()*a.length)];}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=rnd(0,i);[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+const GOOD=["יוֹפִי! 🎉","מְצֻיָּן! ⭐","כָּל הַכָּבוֹד! 👏","נָכוֹן מְאוֹד! 😃","אַלּוּף/ה! 🏆"];
+const BAD =["כִּמְעַט! נַסּוּ שׁוּב 💪","לֹא נוֹרָא, אֶפְשָׁר עוֹד פַּעַם 🙂","הַתְשׁוּבָה הַנְּכוֹנָה: "];
+
+/* tiny sound via WebAudio */
+let actx;
+function beep(freq,dur,type="sine"){
+  try{actx=actx||new(window.AudioContext||window.webkitAudioContext)();
+  const o=actx.createOscillator(),g=actx.createGain();
+  o.type=type;o.frequency.value=freq;o.connect(g);g.connect(actx.destination);
+  g.gain.setValueAtTime(.15,actx.currentTime);
+  g.gain.exponentialRampToValueAtTime(.001,actx.currentTime+dur);
+  o.start();o.stop(actx.currentTime+dur);}catch(e){}
+}
+function sndGood(){beep(660,.12);setTimeout(()=>beep(990,.16),110);}
+function sndBad(){beep(200,.22,"square");}
+
+/* score state per game */
+const state={};
+function ensure(id){ if(!state[id]) state[id]={score:0,streak:0}; return state[id]; }
+
+/* build shared shell */
+function shell(id,title,bodyHTML){
+  const st=ensure(id);
+  $('#'+id).innerHTML=`
+    <div class="topbar">
+      <button class="btn back" onclick="goMenu()">⬅ תַּפְרִיט</button>
+      <div class="score">⭐ <span id="${id}-score">${st.score}</span></div>
+    </div>
+    <h2 class="qtitle" style="text-align:center">${title}</h2>
+    <div class="card" id="${id}-body">${bodyHTML}</div>
+    <div class="feedback" id="${id}-fb"></div>
+    <div class="actions">
+      <button class="btn green" id="${id}-check" onclick="checks['${id}']()">בְּדִיקָה ✓</button>
+      <button class="btn help" id="${id}-help" onclick="toggleExplain('${id}')">🔍 אֵיךְ פּוֹתְרִים?</button>
+      <button class="btn blue hidden" id="${id}-next" onclick="nexts['${id}']()">הַבָּא ➜</button>
+    </div>
+    <div class="explain hidden" id="${id}-explain"></div>`;
+}
+function toggleExplain(id){
+  const box=$('#'+id+'-explain');
+  if(box.classList.contains('hidden')){
+    box.innerHTML=explains[id]();
+    box.classList.remove('hidden');
+    $('#'+id+'-help').textContent='🙈 הַסְתֵּר הֶסְבֵּר';
+  }else{
+    box.classList.add('hidden');
+    $('#'+id+'-help').textContent='🔍 אֵיךְ פּוֹתְרִים?';
+  }
+}
+function addScore(id,n){
+  const st=ensure(id); st.score+=n; st.streak = n>0?st.streak+1:0;
+  $('#'+id+'-score').textContent=st.score;
+}
+function setFb(id,ok,msg){
+  const fb=$('#'+id+'-fb'); fb.className='feedback '+(ok?'good':'bad'); fb.textContent=msg;
+}
+function showNext(id){ $('#'+id+'-check').classList.add('hidden'); $('#'+id+'-next').classList.remove('hidden'); }
+function showCheck(id){ $('#'+id+'-check').classList.remove('hidden'); $('#'+id+'-next').classList.add('hidden'); }
+
+const checks={}, nexts={}, current={}, explains={};
+
+/* navigation */
+function goMenu(){
+  document.querySelectorAll('.game').forEach(g=>g.classList.remove('active'));
+  $('#menu').style.display='block';
+}
+function openGame(id){
+  $('#menu').style.display='none';
+  document.querySelectorAll('.game').forEach(g=>g.classList.remove('active'));
+  $('#'+id).classList.add('active');
+  nexts[id]();           // generate first question
+}
+
+/* ============ GAME 1: division with remainder ============ */
+const G1_ITEMS=[
+  {n:"אֱגוֹזִים",e:"🥜",cont:"צַלָּחוֹת",contS:"בְּכָל צַלַּחַת"},
+  {n:"עֻגִיּוֹת",e:"🍪",cont:"קֻפְסָאוֹת",contS:"בְּכָל קֻפְסָה"},
+  {n:"פְּרָחִים",e:"🌸",cont:"אֲגַרְטָלִים",contS:"בְּכָל אֲגַרְטָל"},
+  {n:"כַּדּוּרִים",e:"⚽",cont:"רְשָׁתוֹת",contS:"בְּכָל רֶשֶׁת"},
+  {n:"תַּפּוּחִים",e:"🍎",cont:"סַלִּים",contS:"בְּכָל סַל"},
+];
+checks['g1']=function(){
+  const c=current.g1;
+  const q=parseInt($('#g1-q').value,10), r=parseInt($('#g1-r').value,10);
+  if(isNaN(q)||isNaN(r)){setFb('g1',false,"מַלְּאוּ אֶת שְׁנֵי הַמִּסְפָּרִים 🙂");return;}
+  if(q===c.q && r===c.r){addScore('g1',10);sndGood();setFb('g1',true,pick(GOOD));showNext('g1');}
+  else{sndBad();setFb('g1',false,`הַתְשׁוּבָה: ${c.q} קְבוּצוֹת וְעוֹד ${c.r} בַּשְּׁאֵרִית`);}
+};
+nexts['g1']=function(){
+  const it=pick(G1_ITEMS);
+  const group=rnd(3,6);
+  const q=rnd(2,8), r=rnd(1,group-1);
+  const total=group*q+r;
+  current.g1={q,r,total,group,item:it};
+  const dots=it.e.repeat(Math.min(total,24))+(total>24?" …":"");
+  shell('g1',`חִלּוּק עִם שְׁאֵרִית 🥜`,`
+    <p class="qtitle">מְחַלְּקִים <b>${total} ${it.n}</b> לְ${it.cont},<br>
+    <b>${group} ${it.n}</b> ${it.contS}.</p>
+    <div class="items">${dots}</div>
+    <div class="big-eq">${total} : ${group} = ?</div>
+    <div class="inputs">
+      <div class="field"><label>כַּמָּה קְבוּצוֹת מְלֵאוֹת?</label><input class="num" id="g1-q" type="number" inputmode="numeric"></div>
+      <div class="field"><label>כַּמָּה נִשְׁאֲרוּ? (שְׁאֵרִית)</label><input class="num" id="g1-r" type="number" inputmode="numeric"></div>
+    </div>`);
+  showCheck('g1');
+};
+explains['g1']=function(){
+  const c=current.g1;
+  return `<h4>אֵיךְ פּוֹתְרִים? 🥜</h4><ol>
+    <li>יֵשׁ לָנוּ <b>${c.total} ${c.item.n}</b>, וְצָרִיךְ לָשִׂים <b>${c.group}</b> ${c.item.contS}.</li>
+    <li>נִשְׁאַל: כַּמָּה פְּעָמִים נִכְנָס ${c.group} בְּתוֹךְ ${c.total}? זֶהוּ תַּרְגִּיל חִלּוּק: <span class="calc">${c.total} : ${c.group}</span></li>
+    <li>סוֹפְרִים בִּקְבוּצוֹת שֶׁל ${c.group}: ${c.group}×${c.q} = <span class="calc">${c.group*c.q}</span>. זֶה עֲדַיִן לֹא עוֹבֵר אֶת ${c.total}.</li>
+    <li>אָז יֵשׁ <b>${c.q} קְבוּצוֹת מְלֵאוֹת</b>.</li>
+    <li>מַה שֶּׁנִּשְׁאַר: ${c.total} − ${c.group*c.q} = <span class="calc">${c.r}</span>. זֹאת הַ<b>שְּׁאֵרִית</b> (פָּחוֹת מִ-${c.group}, לָכֵן אִי אֶפְשָׁר עוֹד קְבוּצָה).</li>
+    <li>הַתְּשׁוּבָה: <span class="calc">${c.total} : ${c.group} = ${c.q} (${c.r})</span></li>
+  </ol>`;
+};
+checks['g2']=function(){
+  const c=current.g2;
+  const v=parseInt($('#g2-ans').value,10);
+  if(isNaN(v)){setFb('g2',false,"כִּתְבוּ אֶת הַתְּשׁוּבָה 🙂");return;}
+  if(v===c.ans){addScore('g2',10);sndGood();setFb('g2',true,pick(GOOD));showNext('g2');}
+  else{sndBad();setFb('g2',false,`הַתְשׁוּבָה הַנְּכוֹנָה: ${c.ans}`);}
+};
+nexts['g2']=function(){
+  let a,b,ans,op,sym;
+  if(Math.random()<0.5){ // multiplication, product <= 10000
+    a=rnd(20,99)* (Math.random()<.5?1:10); // up to ~990
+    b=rnd(2,9);
+    if(a*b>10000){a=rnd(11,99);b=rnd(2,9);}
+    ans=a*b; op='×'; sym='×';
+  }else{ // division, exact
+    b=rnd(2,9); ans=rnd(20,900); a=b*ans; op='÷'; sym=':';
+    if(a>10000){a=rnd(2,9); ans=rnd(20,400); b=ans; var t=a; a=t*ans;}
+  }
+  current.g2={ans,a,b,sym,op};
+  shell('g2',`כֶּפֶל וְחִלּוּק עַד 10,000 ✖️`,`
+    <p class="qtitle" style="text-align:center">פִּתְרוּ אֶת הַתַּרְגִּיל:</p>
+    <div class="big-eq">${a} ${sym} ${b} = ?</div>
+    <div class="inputs"><div class="field"><label>הַתְּשׁוּבָה</label>
+      <input class="num" id="g2-ans" type="number" inputmode="numeric" style="width:140px"></div></div>`);
+  showCheck('g2');
+};
+explains['g2']=function(){
+  const c=current.g2;
+  if(c.op==='×'){
+    const big=Math.max(c.a,c.b), sml=Math.min(c.a,c.b);
+    const tens=Math.floor(big/10)*10, ones=big%10;
+    let steps=`<li>זֶהוּ תַּרְגִּיל <b>כֶּפֶל</b>: <span class="calc">${c.a} × ${c.b}</span>.</li>`;
+    if(tens>0){
+      steps+=`<li>נְפָרֵק אֶת ${big} לְ-${tens}+${ones} וְנַכְפִּיל כָּל חֵלֶק בְּ-${sml}:</li>
+      <li>${tens} × ${sml} = <span class="calc">${tens*sml}</span></li>
+      <li>${ones} × ${sml} = <span class="calc">${ones*sml}</span></li>
+      <li>מְחַבְּרִים: ${tens*sml} + ${ones*sml} = <span class="calc">${c.ans}</span></li>`;
+    }else{
+      steps+=`<li>${c.a} × ${c.b} = <span class="calc">${c.ans}</span></li>`;
+    }
+    return `<h4>אֵיךְ פּוֹתְרִים? ✖️</h4><ol>${steps}<li>הַתְּשׁוּבָה: <span class="calc">${c.ans}</span></li></ol>`;
+  }else{
+    return `<h4>אֵיךְ פּוֹתְרִים? ➗</h4><ol>
+      <li>זֶהוּ תַּרְגִּיל <b>חִלּוּק</b>: <span class="calc">${c.a} : ${c.b}</span>.</li>
+      <li>נִשְׁאַל: בְּכַמָּה צָרִיךְ לְהַכְפִּיל אֶת ${c.b} כְּדֵי לְקַבֵּל ${c.a}?</li>
+      <li>בּוֹדְקִים: ${c.b} × ${c.ans} = <span class="calc">${c.a}</span> ✔</li>
+      <li>לָכֵן <span class="calc">${c.a} : ${c.b} = ${c.ans}</span></li>
+    </ol>`;
+  }
+};
+const NAMES=["דּוֹרִין","יוֹנָתָן","מַאיָה","עֹמֶר","נֹעָה","אִיתַי","שִׁירָה","דָּנִי"];
+const G3=[
+  ()=>{ // packs * each + extra
+    const name=pick(NAMES),packs=rnd(2,5),each=rnd(4,9),extra=rnd(3,9);
+    const ans=packs*each+extra;
+    return{ans,emoji:"🎈",text:`${name} קָנְתָה ${packs} חֲבִילוֹת שֶׁל בָּלוֹנִים. בְּכָל חֲבִילָה ${each} בָּלוֹנִים. הַחֲבֵרִים הֵבִיאוּ עוֹד ${extra} בָּלוֹנִים. כַּמָּה בָּלוֹנִים יֵשׁ בְּסַךְ הַכֹּל?`,
+      steps:[`שָׁלָב 1 – כַּמָּה בָּלוֹנִים בַּחֲבִילוֹת? מַכְפִּילִים: ${packs} × ${each} = <span class="calc">${packs*each}</span>`,
+             `שָׁלָב 2 – מוֹסִיפִים אֶת מַה שֶּׁהֵבִיאוּ הַחֲבֵרִים: ${packs*each} + ${extra} = <span class="calc">${ans}</span>`]};
+  },
+  ()=>{ // had, bought boxes*each, total
+    const name=pick(NAMES),start=rnd(5,20),boxes=rnd(2,6),each=rnd(3,8);
+    const ans=start+boxes*each;
+    return{ans,emoji:"⭐",text:`לְ${name} הָיוּ ${start} מַדְבֵּקוֹת. ${name} קָנְתָה עוֹד ${boxes} שַׂקִּיּוֹת, בְּכָל אַחַת ${each} מַדְבֵּקוֹת. כַּמָּה מַדְבֵּקוֹת יֵשׁ עַכְשָׁו?`,
+      steps:[`שָׁלָב 1 – כַּמָּה מַדְבֵּקוֹת בַּשַּׂקִּיּוֹת? ${boxes} × ${each} = <span class="calc">${boxes*each}</span>`,
+             `שָׁלָב 2 – מוֹסִיפִים לְמַה שֶּׁכְּבָר הָיָה: ${start} + ${boxes*each} = <span class="calc">${ans}</span>`]};
+  },
+  ()=>{ // bought total, gave away
+    const name=pick(NAMES),bags=rnd(3,6),each=rnd(4,9),gave=rnd(2,8);
+    const ans=bags*each-gave;
+    return{ans,emoji:"📒",text:`${name} אָסַף ${bags} קֻפְסָאוֹת שֶׁל מַחְבָּרוֹת, בְּכָל קֻפְסָה ${each} מַחְבָּרוֹת. ${name} נָתַן ${gave} מַחְבָּרוֹת לְחָבֵר. כַּמָּה מַחְבָּרוֹת נִשְׁאֲרוּ?`,
+      steps:[`שָׁלָב 1 – כַּמָּה מַחְבָּרוֹת בַּקֻּפְסָאוֹת? ${bags} × ${each} = <span class="calc">${bags*each}</span>`,
+             `שָׁלָב 2 – מוֹרִידִים אֶת מַה שֶּׁנָּתַן: ${bags*each} − ${gave} = <span class="calc">${ans}</span>`]};
+  },
+  ()=>{ // total split groups (two step: subtract then divide)
+    const name=pick(NAMES),g=rnd(3,6),per=rnd(3,7),left=rnd(1,5)*g;
+    const total=g*per+left, ans=g;
+    return{ans,emoji:"🍬",text:`לְ${name} ${total} סֻכָּרִיּוֹת. הוּא שָׂם ${per} סֻכָּרִיּוֹת בְּכָל שַׂקִּית וְנִשְׁאֲרוּ לוֹ ${left} סֻכָּרִיּוֹת בַּצַּד. כַּמָּה שַׂקִּיּוֹת מְלֵאוֹת הֵכִין?`,
+      steps:[`שָׁלָב 1 – כַּמָּה סֻכָּרִיּוֹת נִכְנְסוּ לַשַּׂקִּיּוֹת? ${total} − ${left} = <span class="calc">${total-left}</span>`,
+             `שָׁלָב 2 – מְחַלְּקִים לִקְבוּצוֹת שֶׁל ${per}: ${total-left} : ${per} = <span class="calc">${ans}</span>`]};
+  },
+];
+checks['g3']=function(){
+  const c=current.g3;
+  const v=parseInt($('#g3-ans').value,10);
+  if(isNaN(v)){setFb('g3',false,"כִּתְבוּ אֶת הַתְּשׁוּבָה 🙂");return;}
+  if(v===c.ans){addScore('g3',10);sndGood();setFb('g3',true,pick(GOOD));showNext('g3');}
+  else{sndBad();setFb('g3',false,`הַתְשׁוּבָה הַנְּכוֹנָה: ${c.ans}`);}
+};
+nexts['g3']=function(){
+  const p=pick(G3)();
+  current.g3={ans:p.ans,steps:p.steps};
+  shell('g3',`בְּעָיָה דּוּ-שְׁלַבִּית ${p.emoji}`,`
+    <p class="qtitle">${p.text}</p>
+    <div class="inputs"><div class="field"><label>הַתְּשׁוּבָה</label>
+      <input class="num" id="g3-ans" type="number" inputmode="numeric" style="width:140px"></div></div>`);
+  showCheck('g3');
+};
+explains['g3']=function(){
+  const c=current.g3;
+  return `<h4>אֵיךְ פּוֹתְרִים? 🎈</h4>
+    <p style="text-align:center;margin:0 0 10px">בִּבְעָיָה דּוּ-שְׁלַבִּית פּוֹתְרִים בִּשְׁנֵי שְׁלַבִּים:</p>
+    <ol>${c.steps.map(s=>`<li>${s}</li>`).join("")}
+    <li>הַתְּשׁוּבָה הַסּוֹפִית: <span class="calc">${c.ans}</span></li></ol>`;
+};
+const FRAC_NAMES={2:"חֲצִי",3:"שְׁלִישׁ",4:"רְבִיעַ",5:"חֲמִישִׁית",6:"שִׁשִּׁית",7:"שְׁבִיעִית",8:"שְׁמִינִית",9:"תְּשִׁיעִית",10:"עֲשִׂירִית"};
+function pieSVG(n,filled){
+  const R=80,cx=100,cy=100;let p="";
+  for(let i=0;i<n;i++){
+    const a0=(i/n)*2*Math.PI - Math.PI/2, a1=((i+1)/n)*2*Math.PI - Math.PI/2;
+    const x0=cx+R*Math.cos(a0),y0=cy+R*Math.sin(a0),x1=cx+R*Math.cos(a1),y1=cy+R*Math.sin(a1);
+    const fill=i<filled?"#ffce3a":"#ffffff";
+    p+=`<path d="M${cx},${cy} L${x0.toFixed(1)},${y0.toFixed(1)} A${R},${R} 0 0,1 ${x1.toFixed(1)},${y1.toFixed(1)} Z" fill="${fill}" stroke="#243b53" stroke-width="2"/>`;
+  }
+  return `<svg class="pie" width="200" height="200" viewBox="0 0 200 200">${p}</svg>`;
+}
+function fracHTML(num,den){return `<span class="frac"><span class="top">${num}</span><span>${den}</span></span>`;}
+checks['g4']=function(){}; // answered by clicking choice
+explains['g4']=function(){
+  const c=current.g4;
+  return `<h4>אֵיךְ פּוֹתְרִים? 🍕</h4><ol>
+    <li>סוֹפְרִים לְכַמָּה חֲלָקִים שָׁוִים חֻלַּק הָעִגּוּל. כָּאן יֵשׁ <b>${c.n}</b> חֲלָקִים.</li>
+    <li>הַמִּסְפָּר הַזֶּה הוּא הַ<b>מְּכַנֶּה</b> – הוּא נִכְתָּב לְמַטָּה בַּשֶּׁבֶר.</li>
+    <li>סוֹפְרִים כַּמָּה חֲלָקִים צְבוּעִים. כָּאן צָבוּעַ <b>חֵלֶק אֶחָד</b> – זֶהוּ הַ<b>מּוֹנֶה</b>, נִכְתָּב לְמַעְלָה.</li>
+    <li>לָכֵן הַשֶּׁבֶר הוּא <span class="calc">1/${c.n}</span>, שֶׁקּוֹרְאִים לוֹ <b>${FRAC_NAMES[c.n]||"אֶחָד חֶלְקֵי "+c.n}</b>.</li>
+  </ol>`;
+};
+nexts['g4']=function(){
+  const n=rnd(3,10);
+  current.g4={n,den:n};
+  // build distractor denominators
+  const opts=new Set([n]);
+  while(opts.size<4){opts.add(rnd(2,10));}
+  const choices=shuffle([...opts]);
+  shell('g4',`אֵיזֶה חֵלֶק צָבוּעַ? 🍕`,`
+    <p class="qtitle" style="text-align:center">הָעִגּוּל חֻלַּק לַחֲלָקִים שָׁוִים.<br>אֵיזֶה שֶׁבֶר צָבוּעַ?</p>
+    ${pieSVG(n,1)}
+    <div class="choices" id="g4-choices">
+      ${choices.map(d=>`<button class="choice" data-d="${d}" onclick="g4pick(this,${d})">${fracHTML(1,d)}<div style="font-size:14px;margin-top:6px;color:#5b7b99">${FRAC_NAMES[d]||""}</div></button>`).join("")}
+    </div>`);
+  $('#g4-check').classList.add('hidden');
+  $('#g4-next').classList.add('hidden');
+};
+function g4pick(btn,d){
+  if($('#g4-next').classList.contains('hidden')===false) return; // already answered
+  const c=current.g4;
+  document.querySelectorAll('#g4-choices .choice').forEach(b=>b.style.pointerEvents='none');
+  if(d===c.den){btn.classList.add('ok');addScore('g4',10);sndGood();setFb('g4',true,pick(GOOD));}
+  else{btn.classList.add('no');sndBad();
+    document.querySelector(`#g4-choices .choice[data-d="${c.den}"]`).classList.add('ok');
+    setFb('g4',false,`הַתְשׁוּבָה: ${FRAC_NAMES[c.den]||"1/"+c.den}`);}
+  $('#g4-next').classList.remove('hidden');
+}
+
+/* ============ GAME 5: divisibility by 5 and 10 ============ */
+checks['g5']=function(){
+  const c=current.g5;
+  const a5=document.querySelector('input[name=g5-5]:checked');
+  const a10=document.querySelector('input[name=g5-10]:checked');
+  if(!a5||!a10){setFb('g5',false,"עֲנוּ עַל שְׁתֵּי הַשְּׁאֵלוֹת 🙂");return;}
+  const u5=a5.value==="yes", u10=a10.value==="yes";
+  if(u5===c.by5 && u10===c.by10){addScore('g5',10);sndGood();setFb('g5',true,pick(GOOD));showNext('g5');}
+  else{sndBad();
+    setFb('g5',false,`${c.n} ${c.by5?"מִתְחַלֵּק":"לֹא מִתְחַלֵּק"} בְּ-5, ${c.by10?"וּמִתְחַלֵּק":"וְלֹא מִתְחַלֵּק"} בְּ-10`);}
+};
+nexts['g5']=function(){
+  // mix numbers ending in 0,5, and others
+  const tail=pick([0,5,rnd(1,9),rnd(1,9)]);
+  const n=rnd(2,99)*10 + tail;
+  const by5=(n%5===0), by10=(n%10===0);
+  current.g5={n,by5,by10};
+  shell('g5',`סִימָנֵי הִתְחַלְּקוּת 🔢`,`
+    <p class="qtitle" style="text-align:center">הַאִם הַמִּסְפָּר<br><span class="big-eq">${n}</span><br>מִתְחַלֵּק?</p>
+    <div class="yn">
+      <div class="seg"><b>מִתְחַלֵּק בְּ-5?</b>
+        <div><label><input type="radio" name="g5-5" value="yes"> כֵּן</label>
+        &nbsp; <label><input type="radio" name="g5-5" value="no"> לֹא</label></div></div>
+      <div class="seg"><b>מִתְחַלֵּק בְּ-10?</b>
+        <div><label><input type="radio" name="g5-10" value="yes"> כֵּן</label>
+        &nbsp; <label><input type="radio" name="g5-10" value="no"> לֹא</label></div></div>
+    </div>
+    <p style="text-align:center;color:#5b7b99;font-size:14px;margin:14px 0 0">רֶמֶז: מִסְפָּר שֶׁמִּסְתַּיֵּם בְּ-0 אוֹ בְּ-5 מִתְחַלֵּק בְּ-5. מִסְפָּר שֶׁמִּסְתַּיֵּם בְּ-0 מִתְחַלֵּק בְּ-10.</p>`);
+  showCheck('g5');
+};
+explains['g5']=function(){
+  const c=current.g5;
+  const last=c.n%10;
+  return `<h4>אֵיךְ פּוֹתְרִים? 🔢</h4><ol>
+    <li>מִסְתַּכְּלִים רַק עַל הַסִּפְרָה הָאַחֲרוֹנָה שֶׁל הַמִּסְפָּר ${c.n} – הִיא <b>${last}</b>.</li>
+    <li><b>הִתְחַלְּקוּת בְּ-5:</b> מִסְפָּר מִתְחַלֵּק בְּ-5 רַק אִם הַסִּפְרָה הָאַחֲרוֹנָה הִיא 0 אוֹ 5. כָּאן הִיא ${last} – לָכֵן ${c.by5?"<b>כֵּן</b> מִתְחַלֵּק":"<b>לֹא</b> מִתְחַלֵּק"} בְּ-5.</li>
+    <li><b>הִתְחַלְּקוּת בְּ-10:</b> מִסְפָּר מִתְחַלֵּק בְּ-10 רַק אִם הַסִּפְרָה הָאַחֲרוֹנָה הִיא 0. כָּאן הִיא ${last} – לָכֵן ${c.by10?"<b>כֵּן</b> מִתְחַלֵּק":"<b>לֹא</b> מִתְחַלֵּק"} בְּ-10.</li>
+    <li>שִׂימוּ לֵב: כָּל מִסְפָּר שֶׁמִּתְחַלֵּק בְּ-10 מִתְחַלֵּק תָּמִיד גַּם בְּ-5.</li>
+  </ol>`;
+};
+document.addEventListener('keydown',e=>{
+  if(e.key!=='Enter')return;
+  const g=document.querySelector('.game.active'); if(!g)return;
+  const id=g.id;
+  if(!$('#'+id+'-next').classList.contains('hidden')) nexts[id]();
+  else if(checks[id]) checks[id]();
+});
+</script>
+</body>
+</html>

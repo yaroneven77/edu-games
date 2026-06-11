@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Edu Games 🎓 מִשְׂחֲקֵי לִמּוּד</title>
+<style>
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  body{
+    margin:0;min-height:100vh;font-family:"Segoe UI","Arial Hebrew",Arial,sans-serif;
+    color:#243b53;background:linear-gradient(160deg,#fff7e6 0%,#cdeffd 100%);
+    display:flex;flex-direction:column;align-items:center;padding:24px 14px;
+  }
+  .logo{
+    text-align:center;font-weight:900;font-size:clamp(34px,9vw,60px);color:#ffce3a;
+    text-shadow:2px 2px 0 #e6604f,4px 4px 0 #1f7fc4,0 6px 14px rgba(20,60,90,.18);margin:6px 0 2px;
+  }
+  .sub{text-align:center;color:#155f93;font-weight:800;font-size:clamp(15px,4vw,20px);margin-bottom:26px;}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;width:100%;max-width:760px;}
+  @media(max-width:560px){.grid{grid-template-columns:1fr;}}
+  a.tile{
+    text-decoration:none;color:inherit;background:#fff;border-radius:24px;padding:26px 18px;
+    box-shadow:0 8px 0 rgba(20,60,90,.18);text-align:center;transition:transform .08s,box-shadow .08s;
+  }
+  a.tile:active{transform:translateY(4px);box-shadow:0 3px 0 rgba(20,60,90,.18);}
+  a.tile .emoji{font-size:54px;display:block;margin-bottom:10px;}
+  a.tile h2{margin:0 0 6px;font-size:clamp(20px,5vw,26px);}
+  a.tile p{margin:0;color:#5b7b99;font-size:15px;line-height:1.5;}
+  a.division{border-top:9px solid #1f7fc4;}
+  a.word{border-top:9px solid #3fbf6b;}
+  footer{margin-top:30px;color:#6b87a3;font-size:13px;text-align:center;}
+</style>
+</head>
+<body>
+  <div class="logo">Edu Games 🎓</div>
+  <div class="sub">מִשְׂחֲקֵי לִמּוּד לְיְלָדִים</div>
+  <div class="grid">
+    <a class="tile division" href="./division-game/">
+      <span class="emoji">➗</span>
+      <h2>שְׁבִילִים פְּלוּס</h2>
+      <p>5 מִשְׂחֲקֵי חֶשְׁבּוֹן לְכִתָּה ג': חִלּוּק עִם שְׁאֵרִית, כֶּפֶל וְחִלּוּק, בְּעָיוֹת, שְׁבָרִים וְהִתְחַלְּקוּת.</p>
+    </a>
+    <a class="tile word" href="./word-game/">
+      <span class="emoji">🔤</span>
+      <h2>Word Games</h2>
+      <p>Learn English words with pictures &amp; phonics — picture→word and word→picture, with sound.</p>
+    </a>
+  </div>
+  <footer>הוֹסִיפוּ מִשְׂחָק חָדָשׁ בְּתוֹךְ תִּיקִיָּה מִשֶּׁלּוֹ · Add each new game in its own folder</footer>
+</body>
+</html>

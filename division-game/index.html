@@ -215,7 +215,15 @@ function setFb(id,ok,msg){
 function showNext(id){ $('#'+id+'-check').classList.add('hidden'); $('#'+id+'-next').classList.remove('hidden'); }
 function showCheck(id){ $('#'+id+'-check').classList.remove('hidden'); $('#'+id+'-next').classList.add('hidden'); }
 
-const checks={}, nexts={}, current={}, explains={};
+const checks={}, nexts={}, current={}, explains={}, gens={}, lastSig={};
+function makeNext(id){
+  return function(){
+    let sig, tries=0;
+    do { gens[id](); sig=JSON.stringify(current[id]); tries++; }
+    while(sig===lastSig[id] && tries<10);
+    lastSig[id]=sig;
+  };
+}
 
 /* navigation */
 function goMenu(){
@@ -244,7 +252,7 @@ checks['g1']=function(){
   if(q===c.q && r===c.r){addScore('g1',10);sndGood();setFb('g1',true,pick(GOOD));showNext('g1');}
   else{sndBad();setFb('g1',false,`הַתְשׁוּבָה: ${c.q} קְבוּצוֹת וְעוֹד ${c.r} בַּשְּׁאֵרִית`);}
 };
-nexts['g1']=function(){
+gens['g1']=function(){
   const it=pick(G1_ITEMS);
   const group=rnd(3,6);
   const q=rnd(2,8), r=rnd(1,group-1);
@@ -280,7 +288,7 @@ checks['g2']=function(){
   if(v===c.ans){addScore('g2',10);sndGood();setFb('g2',true,pick(GOOD));showNext('g2');}
   else{sndBad();setFb('g2',false,`הַתְשׁוּבָה הַנְּכוֹנָה: ${c.ans}`);}
 };
-nexts['g2']=function(){
+gens['g2']=function(){
   let a,b,ans,op,sym;
   if(Math.random()<0.5){ // multiplication, product <= 10000
     a=rnd(20,99)* (Math.random()<.5?1:10); // up to ~990
@@ -361,7 +369,7 @@ checks['g3']=function(){
   if(v===c.ans){addScore('g3',10);sndGood();setFb('g3',true,pick(GOOD));showNext('g3');}
   else{sndBad();setFb('g3',false,`הַתְשׁוּבָה הַנְּכוֹנָה: ${c.ans}`);}
 };
-nexts['g3']=function(){
+gens['g3']=function(){
   const p=pick(G3)();
   current.g3={ans:p.ans,steps:p.steps};
   shell('g3',`בְּעָיָה דּוּ-שְׁלַבִּית ${p.emoji}`,`
@@ -399,7 +407,7 @@ explains['g4']=function(){
     <li>לָכֵן הַשֶּׁבֶר הוּא <span class="calc">1/${c.n}</span>, שֶׁקּוֹרְאִים לוֹ <b>${FRAC_NAMES[c.n]||"אֶחָד חֶלְקֵי "+c.n}</b>.</li>
   </ol>`;
 };
-nexts['g4']=function(){
+gens['g4']=function(){
   const n=rnd(3,10);
   current.g4={n,den:n};
   // build distractor denominators
@@ -437,7 +445,7 @@ checks['g5']=function(){
   else{sndBad();
     setFb('g5',false,`${c.n} ${c.by5?"מִתְחַלֵּק":"לֹא מִתְחַלֵּק"} בְּ-5, ${c.by10?"וּמִתְחַלֵּק":"וְלֹא מִתְחַלֵּק"} בְּ-10`);}
 };
-nexts['g5']=function(){
+gens['g5']=function(){
   // mix numbers ending in 0,5, and others
   const tail=pick([0,5,rnd(1,9),rnd(1,9)]);
   const n=rnd(2,99)*10 + tail;
@@ -466,6 +474,7 @@ explains['g5']=function(){
     <li>שִׂימוּ לֵב: כָּל מִסְפָּר שֶׁמִּתְחַלֵּק בְּ-10 מִתְחַלֵּק תָּמִיד גַּם בְּ-5.</li>
   </ol>`;
 };
+['g1','g2','g3','g4','g5'].forEach(id=>{ nexts[id]=makeNext(id); });
 document.addEventListener('keydown',e=>{
   if(e.key!=='Enter')return;
   const g=document.querySelector('.game.active'); if(!g)return;

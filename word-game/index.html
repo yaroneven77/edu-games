@@ -431,6 +431,14 @@
     return arr;
   }
 
+  // pick a random item from list, avoiding an immediate repeat of "prev"
+  function randomDiff(list, prev) {
+    if (list.length <= 1) return list[0];
+    let x;
+    do { x = list[Math.floor(Math.random() * list.length)]; } while (x === prev);
+    return x;
+  }
+
   let femaleVoice = null;
   let hebrewVoice = null;
   function loadVoice() {
@@ -497,7 +505,7 @@
     }
 
     function newRound() {
-      answer = keys[Math.floor(Math.random() * keys.length)];
+      answer = randomDiff(keys, answer);
       tries = 3;
 
       // show stimulus
@@ -675,7 +683,7 @@
     let score = 0, streak = 0, tries = maxTries, answer = "", answerVal = "";
 
     function newRound() {
-      answer = keys[Math.floor(Math.random() * keys.length)];
+      answer = randomDiff(keys, answer);
       tries = maxTries;
       opts.render(answer);
       answerVal = opts.answerOf(answer);

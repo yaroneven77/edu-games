@@ -10,7 +10,7 @@ The root page (`index.html`) is a hub that links to every game.
 ## 🎮 Games
 | Folder | Game | Description |
 |--------|------|-------------|
-| [`division-game/`](./division-game/) | שְׁבִילִים פְּלוּס | 5 Hebrew math mini-games for 3rd grade: division with remainder, multiply/divide up to 10,000, two-step word problems, basic fractions, divisibility by 5 & 10. Includes a step-by-step "אֵיךְ פּוֹתְרִים?" explanation button. |
+| [`division-game/`](./division-game/) | מִשְׂחֲקֵי חֶשְׁבּוֹן לְכִתָּה ג' | 9 Hebrew math mini-games for 3rd grade: division with remainder (typed & multiple-choice), multiply/divide up to 10,000, two-step word problems, fractions (identify & interactive coloring), divisibility by 5 & 10, interactive grouping division, and an interactive multiplication table. Includes a step-by-step "אֵיךְ פּוֹתְרִים?" explanation button. |
 | [`word-game/`](./word-game/) | Word Games | Learn English words via pictures and phonics (picture→word, word→picture) with sound and Hebrew translations. |
 
 ## 📁 Project structure

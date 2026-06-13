@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>הַדְגָמַת Freemium 🔓 — Edu Games</title>
+<style>
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  body{
+    margin:0;min-height:100vh;font-family:"Segoe UI","Arial Hebrew",Arial,sans-serif;
+    color:#243b53;background:linear-gradient(160deg,#fff7e6 0%,#cdeffd 100%);
+    display:flex;flex-direction:column;align-items:center;padding:24px 14px;
+  }
+  .logo{
+    text-align:center;font-weight:900;font-size:clamp(30px,8vw,52px);color:#ffce3a;
+    text-shadow:2px 2px 0 #e6604f,4px 4px 0 #1f7fc4,0 6px 14px rgba(20,60,90,.18);margin:6px 0 2px;
+  }
+  .sub{text-align:center;color:#155f93;font-weight:800;font-size:clamp(14px,4vw,19px);margin-bottom:8px;}
+  .demo-tag{
+    background:#ffe2b8;color:#8a5a00;border:2px dashed #e0a23a;border-radius:999px;
+    padding:5px 14px;font-weight:800;font-size:13px;margin-bottom:18px;
+  }
+
+  .status{
+    width:100%;max-width:780px;border-radius:18px;padding:14px 16px;margin-bottom:18px;
+    font-weight:800;text-align:center;display:flex;flex-wrap:wrap;gap:10px;
+    align-items:center;justify-content:center;
+  }
+  .status.locked{background:#fff4f1;border:2px solid #ffc9bb;color:#b13a26;}
+  .status.unlocked{background:#e9fbf0;border:2px solid #9fe6bd;color:#1e7d49;}
+  .status button{
+    border:none;border-radius:12px;padding:8px 14px;font-weight:800;font-size:14px;
+    cursor:pointer;box-shadow:0 3px 0 rgba(20,60,90,.18);
+  }
+  .btn-buy{background:#3fbf6b;color:#fff;}
+  .btn-reset{background:#e7eef5;color:#43617c;}
+
+  .section-title{
+    width:100%;max-width:780px;font-weight:900;font-size:clamp(18px,5vw,23px);
+    margin:12px 0 10px;color:#1f4a6b;display:flex;align-items:center;gap:8px;
+  }
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;width:100%;max-width:780px;}
+  @media(max-width:680px){.grid{grid-template-columns:1fr 1fr;}}
+  @media(max-width:420px){.grid{grid-template-columns:1fr;}}
+
+  .tile{
+    position:relative;background:#fff;border-radius:20px;padding:18px 12px 16px;
+    box-shadow:0 7px 0 rgba(20,60,90,.16);text-align:center;cursor:pointer;
+    transition:transform .08s,box-shadow .08s;border-top:8px solid #1f7fc4;overflow:hidden;
+  }
+  .tile.word{border-top-color:#3fbf6b;}
+  .tile:active{transform:translateY(4px);box-shadow:0 3px 0 rgba(20,60,90,.16);}
+  .tile .emoji{font-size:42px;display:block;margin-bottom:8px;}
+  .tile h3{margin:0;font-size:16px;line-height:1.35;}
+
+  /* badges */
+  .badge{
+    position:absolute;top:10px;inset-inline-start:10px;font-size:12px;font-weight:800;
+    padding:3px 9px;border-radius:999px;
+  }
+  .badge.free{background:#e9fbf0;color:#1e7d49;}
+  .badge.prem{background:#fff0d6;color:#9a6700;}
+
+  /* locked look */
+  .tile.locked{filter:grayscale(.7);opacity:.78;}
+  .tile.locked::after{
+    content:"🔒";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    font-size:40px;background:rgba(255,255,255,.35);
+  }
+  .tile.unlockedPrem{border-top-color:#f0a92e;}
+
+  /* paywall modal */
+  .overlay{
+    position:fixed;inset:0;background:rgba(20,40,60,.55);display:none;
+    align-items:center;justify-content:center;padding:18px;z-index:50;
+  }
+  .overlay.show{display:flex;}
+  .modal{
+    background:#fff;border-radius:24px;max-width:380px;width:100%;padding:26px 22px;
+    text-align:center;box-shadow:0 16px 40px rgba(20,60,90,.35);
+  }
+  .modal .big{font-size:48px;}
+  .modal h2{margin:8px 0 4px;font-size:24px;}
+  .modal .price{font-size:34px;font-weight:900;color:#1e7d49;margin:10px 0 2px;}
+  .modal .once{color:#6b87a3;font-size:14px;margin-bottom:14px;}
+  .modal ul{text-align:start;margin:0 0 18px;padding-inline-start:22px;color:#3a566f;line-height:1.7;font-size:15px;}
+  .modal button{
+    width:100%;border:none;border-radius:14px;padding:13px;font-weight:800;font-size:17px;
+    cursor:pointer;box-shadow:0 4px 0 rgba(20,60,90,.18);margin-bottom:10px;
+  }
+  .modal .pay{background:#3fbf6b;color:#fff;}
+  .modal .close{background:#eef3f8;color:#43617c;box-shadow:none;font-size:14px;padding:8px;}
+  .modal .restore{display:block;margin-top:4px;color:#1f7fc4;font-size:13px;text-decoration:underline;cursor:pointer;}
+
+  .toast{
+    position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
+    background:#243b53;color:#fff;padding:12px 20px;border-radius:14px;font-weight:800;
+    opacity:0;transition:.25s;z-index:60;pointer-events:none;
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  /* preview ("taste") modal */
+  .pv-progress{
+    display:inline-block;background:#fff0d6;color:#9a6700;border-radius:999px;
+    padding:4px 12px;font-weight:800;font-size:13px;margin-bottom:6px;
+  }
+  .pv-q{font-size:30px;font-weight:900;margin:14px 0 16px;color:#1f4a6b;}
+  .pv-opts{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:8px;}
+  .pv-opts button{
+    border:none;border-radius:14px;padding:14px 20px;font-weight:900;font-size:20px;
+    background:#eef3f8;color:#243b53;cursor:pointer;box-shadow:0 3px 0 rgba(20,60,90,.16);min-width:64px;
+  }
+  .pv-opts button.ok{background:#3fbf6b;color:#fff;}
+  .pv-opts button.no{background:#e6604f;color:#fff;}
+  .pv-fb{font-weight:800;min-height:24px;margin:6px 0;}
+  .pv-next{
+    border:none;border-radius:14px;padding:12px 22px;font-weight:800;font-size:16px;
+    background:#1f7fc4;color:#fff;cursor:pointer;box-shadow:0 4px 0 rgba(20,60,90,.18);visibility:hidden;
+  }
+  footer{margin-top:28px;color:#6b87a3;font-size:12px;text-align:center;max-width:600px;line-height:1.6;}
+</style>
+</head>
+<body>
+  <div class="logo">Edu Games 🎓</div>
+  <div class="sub">מִשְׂחֲקֵי לִמּוּד לְכִתָּה ג'</div>
+  <div class="demo-tag">🔬 הַדְגָמָה — כָּךְ יֵרָאֶה מוֹדֶל "חִנָּם + פְּרִימְיוּם"</div>
+
+  <div class="status" id="status"></div>
+
+  <div class="section-title">➗ מִשְׂחֲקֵי חֶשְׁבּוֹן</div>
+  <div class="grid" id="grid-math"></div>
+
+  <div class="section-title">🔤 Word Games</div>
+  <div class="grid" id="grid-word"></div>
+
+  <footer>
+    זוֹהִי הַדְגָמָה מְקוֹמִית בִּלְבַד. הַ"רְכִישָׁה" שׁוֹמֶרֶת דֶּגֶל בַּדַּפְדְּפָן (localStorage) — לְלֹא תַּשְׁלוּם אֲמִתִּי.<br>
+    In the real app this gate would call Apple/Google in-app purchase, then unlock the same way.
+  </footer>
+
+  <!-- paywall -->
+  <div class="overlay" id="overlay">
+    <div class="modal">
+      <div class="big">🔓</div>
+      <h2>פּוֹתְחִים אֶת כָּל הַמִּשְׂחָקִים</h2>
+      <div class="price">₪15</div>
+      <div class="once">תַּשְׁלוּם חַד-פַּעֲמִי · לָנֶצַח · לְלֹא פִּרְסוֹמוֹת</div>
+      <ul>
+        <li>✅ כָּל 17 הַמִּשְׂחָקִים נִפְתָּחִים</li>
+        <li>✅ חֶשְׁבּוֹן <b>וְ</b>אַנְגְּלִית</li>
+        <li>✅ עֲדְכּוּנִים וּמִשְׂחָקִים חֲדָשִׁים</li>
+        <li>✅ לְלֹא פִּרְסוֹמוֹת לְעוֹלָם</li>
+      </ul>
+      <button class="pay" onclick="buy()">🔓 פְּתַח הַכֹּל (הַדְגָמָה)</button>
+      <button class="close" onclick="closePaywall()">אוּלַי אַחַר כָּךְ</button>
+      <span class="restore" onclick="buy()">שִׁחְזוּר רְכִישָׁה</span>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <!-- preview ("taste") modal -->
+  <div class="overlay" id="preview-overlay">
+    <div class="modal">
+      <div class="pv-progress" id="pv-progress"></div>
+      <h2 id="preview-title" style="font-size:19px;margin:6px 0 0"></h2>
+      <div class="pv-q" id="pv-q"></div>
+      <div class="pv-opts" id="pv-opts"></div>
+      <div class="pv-fb" id="pv-fb"></div>
+      <button class="pv-next" id="pv-next" onclick="nextPreview()">הַבָּא ➜</button>
+      <button class="close" onclick="closePreview()" style="margin-top:12px">סְגֹר</button>
+    </div>
+  </div>
+
+<script>
+  const KEY = "edu_premium";
+  const isPremium = () => localStorage.getItem(KEY) === "1";
+
+  // free = true means playable without paying
+  const MATH = [
+    { emoji:"🥜", name:"חִלּוּק עִם שְׁאֵרִית", free:true },
+    { emoji:"✳️", name:"לוּחַ הַכֶּפֶל", free:true },
+    { emoji:"🎨", name:"צְבִיעַת שְׁבָרִים", free:true },
+    { emoji:"✖️", name:"כֶּפֶל וְחִלּוּק", free:false },
+    { emoji:"🎈", name:"בְּעָיוֹת דּוּ-שְׁלַבִּיּוֹת", free:false },
+    { emoji:"🍕", name:"אֵיזֶה חֵלֶק צָבוּעַ?", free:false },
+    { emoji:"🔢", name:"סִימָנֵי הִתְחַלְּקוּת", free:false },
+    { emoji:"🧮", name:"חִלּוּק — בְּחִירָה", free:false },
+    { emoji:"🍪", name:"חִלּוּק לִקְבוּצוֹת", free:false }
+  ];
+  const WORD = [
+    { emoji:"🖼️", name:"Picture → Word", free:true },
+    { emoji:"🔤", name:"First Sound", free:true },
+    { emoji:"🃏", name:"Memory Match", free:true },
+    { emoji:"🗣️", name:"Word → Picture", free:false },
+    { emoji:"✏️", name:"Missing Letter", free:false },
+    { emoji:"📖", name:"Sentences", free:false },
+    { emoji:"📚", name:"Reading", free:false },
+    { emoji:"🧠", name:"Picture Pairs", free:false }
+  ];
+
+  function tileHTML(g, cls) {
+    const prem = !g.free;
+    let badge;
+    if (g.free) badge = '<span class="badge free">חִנָּם</span>';
+    else if (isPremium()) badge = '<span class="badge prem">✓ נִפְתַּח</span>';
+    else badge = '<span class="badge prem">🎁 2 חִנָּם</span>';
+    const classes = ["tile", cls];
+    if (prem && isPremium()) classes.push("unlockedPrem");
+    return `<div class="${classes.join(' ')}" data-prem="${prem && !isPremium()}" data-name="${g.name}">
+      ${badge}
+      <span class="emoji">${g.emoji}</span>
+      <h3>${g.name}</h3>
+    </div>`;
+  }
+
+  function render() {
+    document.getElementById("grid-math").innerHTML = MATH.map(g => tileHTML(g, "math")).join("");
+    document.getElementById("grid-word").innerHTML = WORD.map(g => tileHTML(g, "word")).join("");
+    document.querySelectorAll(".tile").forEach(t => {
+      t.onclick = () => {
+        if (t.dataset.prem === "true") openPreview(t.dataset.name);
+        else toast("▶️ נִפְתָּח: " + t.dataset.name);
+      };
+    });
+    renderStatus();
+  }
+
+  function renderStatus() {
+    const s = document.getElementById("status");
+    const total = MATH.length + WORD.length;
+    const freeCount = MATH.filter(g=>g.free).length + WORD.filter(g=>g.free).length;
+    if (isPremium()) {
+      s.className = "status unlocked";
+      s.innerHTML = `🎉 פְּרִימְיוּם פָּעִיל — כָּל ${total} הַמִּשְׂחָקִים פְּתוּחִים
+        <button class="btn-reset" onclick="resetDemo()">אִפּוּס הַדְגָמָה</button>`;
+    } else {
+      s.className = "status locked";
+      s.innerHTML = `🔒 ${freeCount} מִשְׂחָקִים חִנָּם · ${total-freeCount} בִּפְרִימְיוּם — 2 תַּרְגִּילִים לְטֵעִימָה בְּכָל מִשְׂחָק
+        <button class="btn-buy" onclick="openPaywall()">🔓 פְּתַח הַכֹּל ₪15</button>`;
+    }
+  }
+
+  function openPaywall(){ document.getElementById("overlay").classList.add("show"); }
+  function closePaywall(){ document.getElementById("overlay").classList.remove("show"); }
+  function buy(){
+    // real app: await store.purchase('premium_unlock'); then on success:
+    localStorage.setItem(KEY, "1");
+    closePaywall();
+    render();
+    toast("🎉 תּוֹדָה! הַכֹּל נִפְתַּח");
+  }
+  function resetDemo(){
+    localStorage.removeItem(KEY);
+    Object.keys(localStorage).filter(k => k.startsWith("edu_prev_")).forEach(k => localStorage.removeItem(k));
+    render();
+    toast("הַהַדְגָמָה אֻפְּסָה");
+  }
+
+  let toastTimer;
+  function toast(msg){
+    const el = document.getElementById("toast");
+    el.textContent = msg;
+    el.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove("show"), 1600);
+  }
+
+  /* ---------- "taste" preview: 2 free exercises per premium game, then paywall ---------- */
+  const PREVIEW_MAX = 2;
+  const prevKey = name => "edu_prev_" + name;
+  const previewUsed = name => localStorage.getItem(prevKey(name)) === "1";
+  let pv = { name:null, step:0 };
+
+  function openPreview(name){
+    if (previewUsed(name)) {        // already tasted -> straight to paywall
+      toast("כְּבָר נִיסִּיתֶם 2 תַּרְגִּילִים 🙂");
+      openPaywall();
+      return;
+    }
+    pv = { name, step:0 };
+    document.getElementById("preview-title").textContent = name + " — טְעִימָה חִנָּם";
+    document.getElementById("preview-overlay").classList.add("show");
+    renderExercise();
+  }
+  function closePreview(){ document.getElementById("preview-overlay").classList.remove("show"); }
+
+  function mockExercise(){
+    const a = 2 + Math.floor(Math.random()*8), b = 2 + Math.floor(Math.random()*8);
+    const ans = a * b;
+    const opts = new Set([ans]);
+    while (opts.size < 3) opts.add(ans + (Math.floor(Math.random()*7) - 3) || ans + 1);
+    return { q: `${a} × ${b} = ?`, ans, opts: [...opts].sort(() => Math.random()-0.5) };
+  }
+
+  function renderExercise(){
+    pv.step++;
+    const ex = mockExercise();
+    document.getElementById("pv-progress").textContent = `תַּרְגִּיל ${pv.step} מִתּוֹךְ ${PREVIEW_MAX} (טְעִימָה)`;
+    document.getElementById("pv-q").textContent = ex.q;
+    document.getElementById("pv-fb").textContent = "";
+    const next = document.getElementById("pv-next");
+    next.style.visibility = "hidden";
+    next.textContent = (pv.step >= PREVIEW_MAX) ? "🔓 לְהַמְשִׁיךְ צָרִיךְ לִפְתֹּחַ" : "הַבָּא ➜";
+    const optsEl = document.getElementById("pv-opts");
+    optsEl.innerHTML = "";
+    ex.opts.forEach(v => {
+      const b = document.createElement("button");
+      b.textContent = v;
+      b.onclick = () => {
+        optsEl.querySelectorAll("button").forEach(x => x.disabled = true);
+        const fb = document.getElementById("pv-fb");
+        if (v === ex.ans) { b.classList.add("ok"); fb.textContent = "🎉 נָכוֹן!"; fb.style.color = "#2e9e5b"; }
+        else {
+          b.classList.add("no"); fb.textContent = "❌ הַתְּשׁוּבָה: " + ex.ans; fb.style.color = "#dc2626";
+          optsEl.querySelectorAll("button").forEach(x => { if (x.textContent == ex.ans) x.classList.add("ok"); });
+        }
+        next.style.visibility = "visible";
+      };
+      optsEl.appendChild(b);
+    });
+  }
+
+  function nextPreview(){
+    if (pv.step >= PREVIEW_MAX){
+      localStorage.setItem(prevKey(pv.name), "1");   // taste consumed
+      closePreview();
+      openPaywall();
+      return;
+    }
+    renderExercise();
+  }
+
+  render();
+</script>
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>שִׁעוּר שְׁבָרִים – כִּתָּה ג'</title>
+<script data-goatcounter="https://yaroneven.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+<style>
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  body{margin:0;min-height:100vh;font-family:"Segoe UI","Arial Hebrew",Arial,sans-serif;
+    color:#243b53;background:linear-gradient(160deg,#fff7e6 0%,#cdeffd 100%);
+    display:flex;flex-direction:column;align-items:center;-webkit-user-select:none;user-select:none;}
+  header{width:100%;text-align:center;padding:14px 8px 2px;}
+  .home{display:inline-block;background:#fff;border-radius:14px;padding:5px 12px;font-size:20px;
+    line-height:1;text-decoration:none;box-shadow:0 3px 0 rgba(20,60,90,.18);margin-bottom:8px;}
+  .logo{font-weight:900;font-size:clamp(26px,7vw,44px);color:#ffce3a;
+    text-shadow:2px 2px 0 #e6604f,4px 4px 0 #1f7fc4,0 6px 14px rgba(20,60,90,.18);}
+  main{width:100%;max-width:680px;flex:1;padding:8px 16px 30px;}
+  .card{background:#fff;border-radius:26px;padding:22px 18px;box-shadow:0 8px 0 rgba(20,60,90,.18);text-align:center;}
+  .stitle{font-size:clamp(22px,6vw,30px);font-weight:900;color:#155f93;margin:0 0 10px;}
+  svg.pie{display:block;margin:6px auto;max-width:60vw;}
+  svg.pie path{transition:fill .5s ease;}
+  svg.pie path.on{fill:#ff9d3a;}
+  .fr{display:inline-flex;flex-direction:column;align-items:center;line-height:1;direction:ltr;
+    font-weight:900;color:#1f7fc4;font-size:clamp(30px,9vw,52px);vertical-align:middle;margin:0 14px;}
+  .fr .top{border-bottom:5px solid #243b53;padding:0 12px;}
+  .fr .bot{padding:4px 12px 0;}
+  .midrow{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;}
+  .cap{font-size:clamp(17px,4.6vw,22px);line-height:1.6;margin:14px 6px 4px;min-height:64px;}
+  .dots{display:flex;gap:8px;justify-content:center;margin:14px 0 4px;}
+  .dot{width:11px;height:11px;border-radius:50%;background:#cfe0ee;}
+  .dot.on{background:#1f7fc4;}
+  .controls{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:16px;}
+  .btn{border:none;border-radius:16px;padding:12px 20px;font-size:18px;font-weight:800;font-family:inherit;
+    cursor:pointer;box-shadow:0 4px 0 rgba(20,60,90,.18);color:#fff;}
+  .btn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(20,60,90,.18);}
+  .btn.play{background:#3fbf6b;} .btn.nav{background:#1f7fc4;} .btn.nav.sec{background:#8aa4bd;}
+  .btn:disabled{opacity:.45;box-shadow:0 4px 0 rgba(20,60,90,.18);cursor:default;}
+  .gamelink{display:inline-block;margin-top:18px;background:#a974d6;color:#fff;text-decoration:none;
+    border-radius:16px;padding:12px 22px;font-size:18px;font-weight:800;box-shadow:0 4px 0 rgba(20,60,90,.18);}
+  footer{padding:10px;font-size:12px;color:#6b87a3;text-align:center;}
+</style>
+</head>
+<body>
+<header>
+  <a class="home" href="../" title="לְעֶמְוּד הַמִּשְׂחָקִים">⬆️🏠</a>
+  <div class="logo">שִׁעוּר שְׁבָרִים 🍕</div>
+</header>
+<main>
+  <div class="card">
+    <h2 class="stitle" id="stitle"></h2>
+    <div class="midrow">
+      <div class="fr" id="frac" style="visibility:hidden"><span class="top" id="fnum">1</span><span class="bot" id="fden">2</span></div>
+      <svg class="pie" id="pie" width="220" height="220" viewBox="0 0 220 220"></svg>
+    </div>
+    <div class="cap" id="cap"></div>
+    <div class="dots" id="dots"></div>
+    <div class="controls">
+      <button class="btn nav sec" id="prev" onclick="go(-1)">◀ הַקּוֹדֵם</button>
+      <button class="btn play" id="play" onclick="playStep()">🔊 הַשְׁמֵעַ</button>
+      <button class="btn nav" id="next" onclick="go(1)">הַבָּא ▶</button>
+    </div>
+    <a class="gamelink" id="gamelink" href="../division-game/" style="display:none">🎮 לְמִשְׂחַק הַשְּׁבָרִים</a>
+  </div>
+</main>
+<footer>שִׁעוּר שְׁבָרִים אִינְטֶרַאקְטִיבִי · כִּתָּה ג'</footer>
+
+<script>
+const $=s=>document.querySelector(s);
+const STEPS=[
+  {t:"מָה זֶה שֶׁבֶר?", den:1, num:0, cap:"שָׁלוֹם! הַיּוֹם נִלְמַד מָה זֶה שְׁבָרִים. שֶׁבֶר הוּא חֵלֶק מִתּוֹךְ שָׁלֵם.", say:"שלום! היום נלמד מה זה שברים. שבר הוא חלק מתוך שלם."},
+  {t:"מְחַלְּקִים לַחֲלָקִים שָׁוִים", den:2, num:1, cap:"כְּשֶׁמְּחַלְּקִים עוּגָה לִשְׁנֵי חֲלָקִים שָׁוִים, כָּל חֵלֶק נִקְרָא חֲצִי.", say:"כשמחלקים עוגה לשני חלקים שווים, כל חלק נקרא חצי."},
+  {t:"חֲצִי = 1 חֶלְקֵי 2", den:2, num:1, cap:"חֲצִי נִכְתָּב: אֶחָד חֶלְקֵי שְׁתַּיִם. חֵלֶק אֶחָד צָבוּעַ מִתּוֹךְ שְׁנַיִם.", say:"חצי נכתב: אחד חלקי שתיים. חלק אחד צבוע מתוך שניים."},
+  {t:"רֶבַע = 1 חֶלְקֵי 4", den:4, num:1, cap:"אִם נְחַלֵּק לְאַרְבָּעָה חֲלָקִים שָׁוִים, כָּל חֵלֶק נִקְרָא רֶבַע: אֶחָד חֶלְקֵי אַרְבָּעָה.", say:"אם נחלק לארבעה חלקים שווים, כל חלק נקרא רבע: אחד חלקי ארבעה."},
+  {t:"מוֹנֶה וּמְכַנֶּה", den:4, num:3, cap:"הַמִּסְפָּר לְמַטָּה הוּא הַמְּכַנֶּה — לְכַמָּה חֲלָקִים חִלַּקְנוּ. הַמִּסְפָּר לְמַעְלָה הוּא הַמּוֹנֶה — כַּמָּה חֲלָקִים צָבַעְנוּ.", say:"המספר למטה הוא המכנה, לכמה חלקים חילקנו. המספר למעלה הוא המונה, כמה חלקים צבענו."},
+  {t:"בּוֹאוּ נְתַרְגֵּל", den:4, num:2, cap:"צָבַעְנוּ שְׁנֵי חֲלָקִים מִתּוֹךְ אַרְבָּעָה. זֶה שְׁתֵּי רְבָעִים: שְׁתַּיִם חֶלְקֵי אַרְבַּע.", say:"צבענו שני חלקים מתוך ארבעה. זה שתי רבעים: שתיים חלקי ארבע."},
+  {t:"שְׁלִישׁ = 1 חֶלְקֵי 3", den:3, num:1, cap:"עַכְשָׁו נְחַלֵּק פִּיצָה לִשְׁלוֹשָׁה חֲלָקִים שָׁוִים. חֵלֶק אֶחָד נִקְרָא שְׁלִישׁ: אֶחָד חֶלְקֵי שְׁלוֹשָׁה.", say:"עכשיו נחלק פיצה לשלושה חלקים שווים. חלק אחד נקרא שליש: אחד חלקי שלושה."},
+  {t:"שְׁנֵי שְׁלִישִׁים = 2 חֶלְקֵי 3", den:3, num:2, cap:"אִם נִצְבַּע שְׁנֵי חֲלָקִים מִתּוֹךְ שְׁלוֹשָׁה, קִבַּלְנוּ שְׁנֵי שְׁלִישִׁים: שְׁתַּיִם חֶלְקֵי שָׁלוֹשׁ.", say:"אם נצבע שני חלקים מתוך שלושה, קיבלנו שני שלישים: שתיים חלקי שלוש."},
+  {t:"שְׁלוֹשָׁה רְבָעִים = 3 חֶלְקֵי 4", den:4, num:3, cap:"כָּאן צָבַעְנוּ שְׁלוֹשָׁה חֲלָקִים מִתּוֹךְ אַרְבָּעָה. זֶה שְׁלוֹשָׁה רְבָעִים: שָׁלוֹשׁ חֶלְקֵי אַרְבַּע.", say:"כאן צבענו שלושה חלקים מתוך ארבעה. זה שלושה רבעים: שלוש חלקי ארבע."},
+  {t:"שִׁשִּׁית = 1 חֶלְקֵי 6", den:6, num:1, cap:"כְּשֶׁמְּחַלְּקִים לְשִׁשָּׁה חֲלָקִים שָׁוִים, כָּל חֵלֶק נִקְרָא שִׁשִּׁית. כָּל מָה שֶׁמְּחַלְּקִים לְיוֹתֵר חֲלָקִים — כָּל חֵלֶק קָטָן יוֹתֵר.", say:"כשמחלקים לששה חלקים שווים, כל חלק נקרא שישית. כל מה שמחלקים ליותר חלקים, כל חלק קטן יותר."},
+  {t:"שָׁלֵם = 4 חֶלְקֵי 4", den:4, num:4, cap:"אִם נִצְבַּע אֶת כָּל אַרְבַּעַת הַחֲלָקִים, קִבַּלְנוּ עוּגָה שְׁלֵמָה! אַרְבַּע חֶלְקֵי אַרְבַּע זֶה שָׁלֵם אֶחָד.", say:"אם נצבע את כל ארבעת החלקים, קיבלנו עוגה שלמה! ארבע חלקי ארבע זה שלם אחד."},
+  {t:"כָּל הַכָּבוֹד! 🏆", den:1, num:0, cap:"כָּל הַכָּבוֹד! עַכְשָׁו אַתֶּם יוֹדְעִים מָה זֶה שְׁבָרִים. בּוֹאוּ לְשַׂחֵק בְּמִשְׂחַק הַשְּׁבָרִים!", say:"כל הכבוד! עכשיו אתם יודעים מה זה שברים. בואו לשחק במשחק השברים!"},
+];
+
+let idx=0;
+
+function buildPie(den,num){
+  const R=95,cx=110,cy=110,svg=$("#pie");
+  let p="";
+  if(den<2){
+    p=`<circle cx="${cx}" cy="${cy}" r="${R}" fill="#fff" stroke="#243b53" stroke-width="5"/>`;
+  }else{
+    for(let i=0;i<den;i++){
+      const a0=(i/den)*2*Math.PI-Math.PI/2, a1=((i+1)/den)*2*Math.PI-Math.PI/2;
+      const x0=cx+R*Math.cos(a0),y0=cy+R*Math.sin(a0),x1=cx+R*Math.cos(a1),y1=cy+R*Math.sin(a1);
+      const on=i<num?" on":"";
+      p+=`<path class="slice${on}" d="M${cx},${cy} L${x0.toFixed(1)},${y0.toFixed(1)} A${R},${R} 0 0,1 ${x1.toFixed(1)},${y1.toFixed(1)} Z" fill="#fff" stroke="#243b53" stroke-width="3"/>`;
+    }
+  }
+  svg.innerHTML=p;
+}
+
+function animateFill(num){
+  const slices=document.querySelectorAll("#pie .slice");
+  slices.forEach((s,i)=>{ s.classList.remove("on"); setTimeout(()=>{ if(i<num) s.classList.add("on"); }, 250*(i+1)); });
+}
+
+function render(){
+  const s=STEPS[idx];
+  $("#stitle").textContent=s.t;
+  $("#cap").textContent=s.cap;
+  buildPie(s.den,s.num);
+  const frac=$("#frac");
+  if(s.den>=2 && s.num>0){ frac.style.visibility="visible"; $("#fnum").textContent=s.num; $("#fden").textContent=s.den; }
+  else frac.style.visibility="hidden";
+  // dots
+  $("#dots").innerHTML=STEPS.map((_,i)=>`<span class="dot${i===idx?' on':''}"></span>`).join("");
+  $("#prev").disabled = idx===0;
+  $("#next").disabled = idx===STEPS.length-1;
+  $("#gamelink").style.display = idx===STEPS.length-1 ? "inline-block" : "none";
+  setTimeout(()=>animateFill(s.num), 150);
+  playStep();
+}
+
+let voice=null;
+function pickVoice(){
+  const vs=speechSynthesis.getVoices();
+  voice = vs.find(v=>/he|iw/i.test(v.lang)) || null;
+}
+if('speechSynthesis' in window){ speechSynthesis.onvoiceschanged=pickVoice; pickVoice(); }
+
+function playStep(){
+  if(!('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(STEPS[idx].say);
+  u.lang='he-IL'; if(voice) u.voice=voice; u.rate=.95;
+  speechSynthesis.speak(u);
+}
+
+function go(d){
+  const n=idx+d;
+  if(n<0||n>=STEPS.length) return;
+  idx=n; render();
+}
+
+render();
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowLeft'){} // RTL: keep buttons explicit
+});
+</script>
+</body>
+</html>

@@ -577,6 +577,7 @@ gens['g7']=function(){
   const den=rnd(3,8), num=rnd(1,den-1);
   current.g7={num,den,sel:new Array(den).fill(false)};
   shell('g7',`צְבִיעַת שְׁבָרִים 🎨`,`
+    <p style="text-align:center;margin:0 0 10px"><a href="../fractions-lesson/" style="display:inline-block;background:#a974d6;color:#fff;text-decoration:none;border-radius:14px;padding:9px 16px;font-weight:800;box-shadow:0 4px 0 rgba(20,60,90,.18)">📖 לֹא בְּטוּחִים? לִלְמֹד שְׁבָרִים קֹדֶם</a></p>
     <p class="qtitle" style="text-align:center">צִבְעוּ אֶת הֶחֲלָקִים כָּךְ שֶׁיִּתְקַבֵּל הַשֶּׁבֶר:</p>
     <div class="frac-target">${fracHTML(num,den)}</div>
     <p style="text-align:center;color:#5b7b99;margin:0 0 8px">הַקִּישׁוּ עַל מְשֻׁלָּשׁ כְּדֵי לִצְבֹּעַ אוֹתוֹ (וְשׁוּב כְּדֵי לְבַטֵּל).</p>

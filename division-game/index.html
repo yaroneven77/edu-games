@@ -213,69 +213,74 @@ function beep(freq,dur,type="sine"){
 function sndGood(){beep(660,.12);setTimeout(()=>beep(990,.16),110);}
 function sndBad(){beep(200,.22,"square");}
 
-/* score state per game */
-const state={};
-function ensure(id){ if(!state[id]) state[id]={score:0,streak:0}; return state[id]; }
-
-/* build shared shell */
-function shell(id,title,bodyHTML){
-  const st=ensure(id);
-  $('#'+id).innerHTML=`
-    <div class="topbar">
-      <button class="btn back" onclick="goMenu()">⬅ תַּפְרִיט</button>
-      <div class="score">⭐ <span id="${id}-score">${st.score}</span></div>
-    </div>
-    <h2 class="qtitle" style="text-align:center">${title}</h2>
-    <div class="card" id="${id}-body">${bodyHTML}</div>
-    <div class="feedback" id="${id}-fb"></div>
-    <div class="actions">
-      <button class="btn green" id="${id}-check" onclick="checks['${id}']()">בְּדִיקָה ✓</button>
-      <button class="btn help" id="${id}-help" onclick="toggleExplain('${id}')">🔍 אֵיךְ פּוֹתְרִים?</button>
-      <button class="btn blue hidden" id="${id}-next" onclick="nexts['${id}']()">הַבָּא ➜</button>
-    </div>
-    <div class="explain hidden" id="${id}-explain"></div>`;
-}
-function toggleExplain(id){
-  const box=$('#'+id+'-explain');
-  if(box.classList.contains('hidden')){
-    box.innerHTML=explains[id]();
-    box.classList.remove('hidden');
-    $('#'+id+'-help').textContent='🙈 הַסְתֵּר הֶסְבֵּר';
-  }else{
-    box.classList.add('hidden');
-    $('#'+id+'-help').textContent='🔍 אֵיךְ פּוֹתְרִים?';
+/* shared fraction / pie utilities */
+const FRAC_NAMES={2:"חֲצִי",3:"שְׁלִישׁ",4:"רְבִיעַ",5:"חֲמִישִׁית",6:"שִׁשִּׁית",7:"שְׁבִיעִית",8:"שְׁמִינִית",9:"תְּשִׁיעִית",10:"עֲשִׂירִית"};
+function pieSVG(n,filled){
+  const R=80,cx=100,cy=100;let p="";
+  for(let i=0;i<n;i++){
+    const a0=(i/n)*2*Math.PI - Math.PI/2, a1=((i+1)/n)*2*Math.PI - Math.PI/2;
+    const x0=cx+R*Math.cos(a0),y0=cy+R*Math.sin(a0),x1=cx+R*Math.cos(a1),y1=cy+R*Math.sin(a1);
+    const fill=i<filled?"#ffce3a":"#ffffff";
+    p+=`<path d="M${cx},${cy} L${x0.toFixed(1)},${y0.toFixed(1)} A${R},${R} 0 0,1 ${x1.toFixed(1)},${y1.toFixed(1)} Z" fill="${fill}" stroke="#243b53" stroke-width="2"/>`;
   }
+  return `<svg class="pie" width="200" height="200" viewBox="0 0 200 200">${p}</svg>`;
 }
-function addScore(id,n){
-  const st=ensure(id); st.score+=n; st.streak = n>0?st.streak+1:0;
-  $('#'+id+'-score').textContent=st.score;
+function fracHTML(num,den){return `<span class="frac"><span class="top">${num}</span><span>${den}</span></span>`;}
+function pieClickSVG(n){
+  const R=80,cx=100,cy=100;let p="";
+  for(let i=0;i<n;i++){
+    const a0=(i/n)*2*Math.PI - Math.PI/2, a1=((i+1)/n)*2*Math.PI - Math.PI/2;
+    const x0=cx+R*Math.cos(a0),y0=cy+R*Math.sin(a0),x1=cx+R*Math.cos(a1),y1=cy+R*Math.sin(a1);
+    p+=`<path id="g7-s${i}" d="M${cx},${cy} L${x0.toFixed(1)},${y0.toFixed(1)} A${R},${R} 0 0,1 ${x1.toFixed(1)},${y1.toFixed(1)} Z" fill="#ffffff" stroke="#243b53" stroke-width="2" onclick="games.g7.toggle(${i})"/>`;
+  }
+  return `<svg class="pie pieclick" width="200" height="200" viewBox="0 0 200 200">${p}</svg>`;
 }
-function setFb(id,ok,msg){
-  const fb=$('#'+id+'-fb'); fb.className='feedback '+(ok?'good':'bad'); fb.textContent=msg;
-}
-function showNext(id){ $('#'+id+'-check').classList.add('hidden'); $('#'+id+'-next').classList.remove('hidden'); }
-function showCheck(id){ $('#'+id+'-check').classList.remove('hidden'); $('#'+id+'-next').classList.add('hidden'); }
 
-const checks={}, nexts={}, current={}, explains={}, gens={}, lastSig={};
-function makeNext(id){
-  return function(){
+/* ============ Base Game class ============ */
+class Game {
+  constructor(id){ this.id=id; this.score=0; this.streak=0; this.cur=null; this.lastSig=null; }
+  shell(title,bodyHTML){
+    const id=this.id;
+    $('#'+id).innerHTML=`
+      <div class="topbar">
+        <button class="btn back" onclick="goMenu()">⬅ תַּפְרִיט</button>
+        <div class="score">⭐ <span id="${id}-score">${this.score}</span></div>
+      </div>
+      <h2 class="qtitle" style="text-align:center">${title}</h2>
+      <div class="card" id="${id}-body">${bodyHTML}</div>
+      <div class="feedback" id="${id}-fb"></div>
+      <div class="actions">
+        <button class="btn green" id="${id}-check" onclick="games['${id}'].check()">בְּדִיקָה ✓</button>
+        <button class="btn help" id="${id}-help" onclick="games['${id}'].toggleExplain()">🔍 אֵיךְ פּוֹתְרִים?</button>
+        <button class="btn blue hidden" id="${id}-next" onclick="games['${id}'].next()">הַבָּא ➜</button>
+      </div>
+      <div class="explain hidden" id="${id}-explain"></div>`;
+  }
+  toggleExplain(){
+    const box=$('#'+this.id+'-explain');
+    if(box.classList.contains('hidden')){
+      box.innerHTML=this.explain();
+      box.classList.remove('hidden');
+      $('#'+this.id+'-help').textContent='🙈 הַסְתֵּר הֶסְבֵּר';
+    }else{
+      box.classList.add('hidden');
+      $('#'+this.id+'-help').textContent='🔍 אֵיךְ פּוֹתְרִים?';
+    }
+  }
+  addScore(n){ this.score+=n; this.streak = n>0?this.streak+1:0; $('#'+this.id+'-score').textContent=this.score; }
+  setFb(ok,msg){ const fb=$('#'+this.id+'-fb'); fb.className='feedback '+(ok?'good':'bad'); fb.textContent=msg; }
+  showNext(){ $('#'+this.id+'-check').classList.add('hidden'); $('#'+this.id+'-next').classList.remove('hidden'); }
+  showCheck(){ $('#'+this.id+'-check').classList.remove('hidden'); $('#'+this.id+'-next').classList.add('hidden'); }
+  next(){
     let sig, tries=0;
-    do { gens[id](); sig=JSON.stringify(current[id]); tries++; }
-    while(sig===lastSig[id] && tries<10);
-    lastSig[id]=sig;
-  };
-}
-
-/* navigation */
-function goMenu(){
-  document.querySelectorAll('.game').forEach(g=>g.classList.remove('active'));
-  $('#menu').style.display='block';
-}
-function openGame(id){
-  $('#menu').style.display='none';
-  document.querySelectorAll('.game').forEach(g=>g.classList.remove('active'));
-  $('#'+id).classList.add('active');
-  nexts[id]();           // generate first question
+    do { this.gen(); sig=JSON.stringify(this.cur); tries++; }
+    while(sig===this.lastSig && tries<10);
+    this.lastSig=sig;
+  }
+  /* overridden per game */
+  gen(){}
+  check(){}
+  explain(){ return ''; }
 }
 
 /* ============ GAME 1: division with remainder ============ */
@@ -286,94 +291,102 @@ const G1_ITEMS=[
   {n:"כַּדּוּרִים",e:"⚽",cont:"רְשָׁתוֹת",contS:"בְּכָל רֶשֶׁת"},
   {n:"תַּפּוּחִים",e:"🍎",cont:"סַלִּים",contS:"בְּכָל סַל"},
 ];
-checks['g1']=function(){
-  const c=current.g1;
-  const q=parseInt($('#g1-q').value,10), r=parseInt($('#g1-r').value,10);
-  if(isNaN(q)||isNaN(r)){setFb('g1',false,"מַלְּאוּ אֶת שְׁנֵי הַמִּסְפָּרִים 🙂");return;}
-  if(q===c.q && r===c.r){addScore('g1',10);sndGood();setFb('g1',true,pick(GOOD));showNext('g1');}
-  else{sndBad();setFb('g1',false,`הַתְשׁוּבָה: ${c.q} קְבוּצוֹת וְעוֹד ${c.r} בַּשְּׁאֵרִית`);}
-};
-gens['g1']=function(){
-  const it=pick(G1_ITEMS);
-  const group=rnd(3,6);
-  const q=rnd(2,8), r=rnd(1,group-1);
-  const total=group*q+r;
-  current.g1={q,r,total,group,item:it};
-  const dots=it.e.repeat(Math.min(total,24))+(total>24?" …":"");
-  shell('g1',`חִלּוּק עִם שְׁאֵרִית 🥜`,`
-    <p class="qtitle">מְחַלְּקִים <b>${total} ${it.n}</b> לְ${it.cont},<br>
-    <b>${group} ${it.n}</b> ${it.contS}.</p>
-    <div class="items">${dots}</div>
-    <div class="big-eq">${total} : ${group} = ?</div>
-    <div class="inputs">
-      <div class="field"><label>כַּמָּה קְבוּצוֹת מְלֵאוֹת?</label><input class="num" id="g1-q" type="number" inputmode="numeric"></div>
-      <div class="field"><label>כַּמָּה נִשְׁאֲרוּ? (שְׁאֵרִית)</label><input class="num" id="g1-r" type="number" inputmode="numeric"></div>
-    </div>`);
-  showCheck('g1');
-};
-explains['g1']=function(){
-  const c=current.g1;
-  return `<h4>אֵיךְ פּוֹתְרִים? 🥜</h4><ol>
-    <li>יֵשׁ לָנוּ <b>${c.total} ${c.item.n}</b>, וְצָרִיךְ לָשִׂים <b>${c.group}</b> ${c.item.contS}.</li>
-    <li>נִשְׁאַל: כַּמָּה פְּעָמִים נִכְנָס ${c.group} בְּתוֹךְ ${c.total}? זֶהוּ תַּרְגִּיל חִלּוּק: <span class="calc">${c.total} : ${c.group}</span></li>
-    <li>סוֹפְרִים בִּקְבוּצוֹת שֶׁל ${c.group}: ${c.group}×${c.q} = <span class="calc">${c.group*c.q}</span>. זֶה עֲדַיִן לֹא עוֹבֵר אֶת ${c.total}.</li>
-    <li>אָז יֵשׁ <b>${c.q} קְבוּצוֹת מְלֵאוֹת</b>.</li>
-    <li>מַה שֶּׁנִּשְׁאַר: ${c.total} − ${c.group*c.q} = <span class="calc">${c.r}</span>. זֹאת הַ<b>שְּׁאֵרִית</b> (פָּחוֹת מִ-${c.group}, לָכֵן אִי אֶפְשָׁר עוֹד קְבוּצָה).</li>
-    <li>הַתְּשׁוּבָה: <span class="calc">${c.total} : ${c.group} = ${c.q} (${c.r})</span></li>
-  </ol>`;
-};
-checks['g2']=function(){
-  const c=current.g2;
-  const v=parseInt($('#g2-ans').value,10);
-  if(isNaN(v)){setFb('g2',false,"כִּתְבוּ אֶת הַתְּשׁוּבָה 🙂");return;}
-  if(v===c.ans){addScore('g2',10);sndGood();setFb('g2',true,pick(GOOD));showNext('g2');}
-  else{sndBad();setFb('g2',false,`הַתְשׁוּבָה הַנְּכוֹנָה: ${c.ans}`);}
-};
-gens['g2']=function(){
-  let a,b,ans,op,sym;
-  if(Math.random()<0.5){ // multiplication, product <= 10000
-    a=rnd(20,99)* (Math.random()<.5?1:10); // up to ~990
-    b=rnd(2,9);
-    if(a*b>10000){a=rnd(11,99);b=rnd(2,9);}
-    ans=a*b; op='×'; sym='×';
-  }else{ // division, exact
-    b=rnd(2,9); ans=rnd(20,900); a=b*ans; op='÷'; sym=':';
-    if(a>10000){a=rnd(2,9); ans=rnd(20,400); b=ans; var t=a; a=t*ans;}
+class G1 extends Game {
+  gen(){
+    const it=pick(G1_ITEMS);
+    const group=rnd(3,6);
+    const q=rnd(2,8), r=rnd(1,group-1);
+    const total=group*q+r;
+    this.cur={q,r,total,group,item:it};
+    const dots=it.e.repeat(Math.min(total,24))+(total>24?" …":"");
+    this.shell(`חִלּוּק עִם שְׁאֵרִית 🥜`,`
+      <p class="qtitle">מְחַלְּקִים <b>${total} ${it.n}</b> לְ${it.cont},<br>
+      <b>${group} ${it.n}</b> ${it.contS}.</p>
+      <div class="items">${dots}</div>
+      <div class="big-eq">${total} : ${group} = ?</div>
+      <div class="inputs">
+        <div class="field"><label>כַּמָּה קְבוּצוֹת מְלֵאוֹת?</label><input class="num" id="g1-q" type="number" inputmode="numeric"></div>
+        <div class="field"><label>כַּמָּה נִשְׁאֲרוּ? (שְׁאֵרִית)</label><input class="num" id="g1-r" type="number" inputmode="numeric"></div>
+      </div>`);
+    this.showCheck();
   }
-  current.g2={ans,a,b,sym,op};
-  shell('g2',`כֶּפֶל וְחִלּוּק עַד 10,000 ✖️`,`
-    <p class="qtitle" style="text-align:center">פִּתְרוּ אֶת הַתַּרְגִּיל:</p>
-    <div class="big-eq">${a} ${sym} ${b} = ?</div>
-    <div class="inputs"><div class="field"><label>הַתְּשׁוּבָה</label>
-      <input class="num" id="g2-ans" type="number" inputmode="numeric" style="width:140px"></div></div>`);
-  showCheck('g2');
-};
-explains['g2']=function(){
-  const c=current.g2;
-  if(c.op==='×'){
-    const big=Math.max(c.a,c.b), sml=Math.min(c.a,c.b);
-    const tens=Math.floor(big/10)*10, ones=big%10;
-    let steps=`<li>זֶהוּ תַּרְגִּיל <b>כֶּפֶל</b>: <span class="calc">${c.a} × ${c.b}</span>.</li>`;
-    if(tens>0){
-      steps+=`<li>נְפָרֵק אֶת ${big} לְ-${tens}+${ones} וְנַכְפִּיל כָּל חֵלֶק בְּ-${sml}:</li>
-      <li>${tens} × ${sml} = <span class="calc">${tens*sml}</span></li>
-      <li>${ones} × ${sml} = <span class="calc">${ones*sml}</span></li>
-      <li>מְחַבְּרִים: ${tens*sml} + ${ones*sml} = <span class="calc">${c.ans}</span></li>`;
-    }else{
-      steps+=`<li>${c.a} × ${c.b} = <span class="calc">${c.ans}</span></li>`;
-    }
-    return `<h4>אֵיךְ פּוֹתְרִים? ✖️</h4><ol>${steps}<li>הַתְּשׁוּבָה: <span class="calc">${c.ans}</span></li></ol>`;
-  }else{
-    return `<h4>אֵיךְ פּוֹתְרִים? ➗</h4><ol>
-      <li>זֶהוּ תַּרְגִּיל <b>חִלּוּק</b>: <span class="calc">${c.a} : ${c.b}</span>.</li>
-      <li>נִשְׁאַל: בְּכַמָּה צָרִיךְ לְהַכְפִּיל אֶת ${c.b} כְּדֵי לְקַבֵּל ${c.a}?</li>
-      <li>בּוֹדְקִים: ${c.b} × ${c.ans} = <span class="calc">${c.a}</span> ✔</li>
-      <li>לָכֵן <span class="calc">${c.a} : ${c.b} = ${c.ans}</span></li>
+  check(){
+    const c=this.cur;
+    const q=parseInt($('#g1-q').value,10), r=parseInt($('#g1-r').value,10);
+    if(isNaN(q)||isNaN(r)){this.setFb(false,"מַלְּאוּ אֶת שְׁנֵי הַמִּסְפָּרִים 🙂");return;}
+    if(q===c.q && r===c.r){this.addScore(10);sndGood();this.setFb(true,pick(GOOD));this.showNext();}
+    else{sndBad();this.setFb(false,`הַתְשׁוּבָה: ${c.q} קְבוּצוֹת וְעוֹד ${c.r} בַּשְּׁאֵרִית`);}
+  }
+  explain(){
+    const c=this.cur;
+    return `<h4>אֵיךְ פּוֹתְרִים? 🥜</h4><ol>
+      <li>יֵשׁ לָנוּ <b>${c.total} ${c.item.n}</b>, וְצָרִיךְ לָשִׂים <b>${c.group}</b> ${c.item.contS}.</li>
+      <li>נִשְׁאַל: כַּמָּה פְּעָמִים נִכְנָס ${c.group} בְּתוֹךְ ${c.total}? זֶהוּ תַּרְגִּיל חִלּוּק: <span class="calc">${c.total} : ${c.group}</span></li>
+      <li>סוֹפְרִים בִּקְבוּצוֹת שֶׁל ${c.group}: ${c.group}×${c.q} = <span class="calc">${c.group*c.q}</span>. זֶה עֲדַיִן לֹא עוֹבֵר אֶת ${c.total}.</li>
+      <li>אָז יֵשׁ <b>${c.q} קְבוּצוֹת מְלֵאוֹת</b>.</li>
+      <li>מַה שֶּׁנִּשְׁאַר: ${c.total} − ${c.group*c.q} = <span class="calc">${c.r}</span>. זֹאת הַ<b>שְּׁאֵרִית</b> (פָּחוֹת מִ-${c.group}, לָכֵן אִי אֶפְשָׁר עוֹד קְבוּצָה).</li>
+      <li>הַתְּשׁוּבָה: <span class="calc">${c.total} : ${c.group} = ${c.q} (${c.r})</span></li>
     </ol>`;
   }
-};
+}
+
+/* ============ GAME 2: multiplication & division up to 10,000 ============ */
+class G2 extends Game {
+  gen(){
+    let a,b,ans,op,sym;
+    if(Math.random()<0.5){ // multiplication, product <= 10000
+      a=rnd(20,99)* (Math.random()<.5?1:10); // up to ~990
+      b=rnd(2,9);
+      if(a*b>10000){a=rnd(11,99);b=rnd(2,9);}
+      ans=a*b; op='×'; sym='×';
+    }else{ // division, exact
+      b=rnd(2,9); ans=rnd(20,900); a=b*ans; op='÷'; sym=':';
+      if(a>10000){a=rnd(2,9); ans=rnd(20,400); b=ans; var t=a; a=t*ans;}
+    }
+    this.cur={ans,a,b,sym,op};
+    this.shell(`כֶּפֶל וְחִלּוּק עַד 10,000 ✖️`,`
+      <p class="qtitle" style="text-align:center">פִּתְרוּ אֶת הַתַּרְגִּיל:</p>
+      <div class="big-eq">${a} ${sym} ${b} = ?</div>
+      <div class="inputs"><div class="field"><label>הַתְּשׁוּבָה</label>
+        <input class="num" id="g2-ans" type="number" inputmode="numeric" style="width:140px"></div></div>`);
+    this.showCheck();
+  }
+  check(){
+    const c=this.cur;
+    const v=parseInt($('#g2-ans').value,10);
+    if(isNaN(v)){this.setFb(false,"כִּתְבוּ אֶת הַתְּשׁוּבָה 🙂");return;}
+    if(v===c.ans){this.addScore(10);sndGood();this.setFb(true,pick(GOOD));this.showNext();}
+    else{sndBad();this.setFb(false,`הַתְשׁוּבָה הַנְּכוֹנָה: ${c.ans}`);}
+  }
+  explain(){
+    const c=this.cur;
+    if(c.op==='×'){
+      const big=Math.max(c.a,c.b), sml=Math.min(c.a,c.b);
+      const tens=Math.floor(big/10)*10, ones=big%10;
+      let steps=`<li>זֶהוּ תַּרְגִּיל <b>כֶּפֶל</b>: <span class="calc">${c.a} × ${c.b}</span>.</li>`;
+      if(tens>0){
+        steps+=`<li>נְפָרֵק אֶת ${big} לְ-${tens}+${ones} וְנַכְפִּיל כָּל חֵלֶק בְּ-${sml}:</li>
+        <li>${tens} × ${sml} = <span class="calc">${tens*sml}</span></li>
+        <li>${ones} × ${sml} = <span class="calc">${ones*sml}</span></li>
+        <li>מְחַבְּרִים: ${tens*sml} + ${ones*sml} = <span class="calc">${c.ans}</span></li>`;
+      }else{
+        steps+=`<li>${c.a} × ${c.b} = <span class="calc">${c.ans}</span></li>`;
+      }
+      return `<h4>אֵיךְ פּוֹתְרִים? ✖️</h4><ol>${steps}<li>הַתְּשׁוּבָה: <span class="calc">${c.ans}</span></li></ol>`;
+    }else{
+      return `<h4>אֵיךְ פּוֹתְרִים? ➗</h4><ol>
+        <li>זֶהוּ תַּרְגִּיל <b>חִלּוּק</b>: <span class="calc">${c.a} : ${c.b}</span>.</li>
+        <li>נִשְׁאַל: בְּכַמָּה צָרִיךְ לְהַכְפִּיל אֶת ${c.b} כְּדֵי לְקַבֵּל ${c.a}?</li>
+        <li>בּוֹדְקִים: ${c.b} × ${c.ans} = <span class="calc">${c.a}</span> ✔</li>
+        <li>לָכֵן <span class="calc">${c.a} : ${c.b} = ${c.ans}</span></li>
+      </ol>`;
+    }
+  }
+}
+
+/* ============ GAME 3: two-step word problems ============ */
 const NAMES=["דּוֹרִין","יוֹנָתָן","מַאיָה","עֹמֶר","נֹעָה","אִיתַי","שִׁירָה","דָּנִי"];
-const G3=[
+const G3_PROBLEMS=[
   ()=>{ // packs * each + extra
     const name=pick(NAMES),packs=rnd(2,5),each=rnd(4,9),extra=rnd(3,9);
     const ans=packs*each+extra;
@@ -403,311 +416,319 @@ const G3=[
              `שָׁלָב 2 – מְחַלְּקִים לִקְבוּצוֹת שֶׁל ${per}: ${total-left} : ${per} = <span class="calc">${ans}</span>`]};
   },
 ];
-checks['g3']=function(){
-  const c=current.g3;
-  const v=parseInt($('#g3-ans').value,10);
-  if(isNaN(v)){setFb('g3',false,"כִּתְבוּ אֶת הַתְּשׁוּבָה 🙂");return;}
-  if(v===c.ans){addScore('g3',10);sndGood();setFb('g3',true,pick(GOOD));showNext('g3');}
-  else{sndBad();setFb('g3',false,`הַתְשׁוּבָה הַנְּכוֹנָה: ${c.ans}`);}
-};
-gens['g3']=function(){
-  const p=pick(G3)();
-  current.g3={ans:p.ans,steps:p.steps};
-  shell('g3',`בְּעָיָה דּוּ-שְׁלַבִּית ${p.emoji}`,`
-    <p class="qtitle">${p.text}</p>
-    <div class="inputs"><div class="field"><label>הַתְּשׁוּבָה</label>
-      <input class="num" id="g3-ans" type="number" inputmode="numeric" style="width:140px"></div></div>`);
-  showCheck('g3');
-};
-explains['g3']=function(){
-  const c=current.g3;
-  return `<h4>אֵיךְ פּוֹתְרִים? 🎈</h4>
-    <p style="text-align:center;margin:0 0 10px">בִּבְעָיָה דּוּ-שְׁלַבִּית פּוֹתְרִים בִּשְׁנֵי שְׁלַבִּים:</p>
-    <ol>${c.steps.map(s=>`<li>${s}</li>`).join("")}
-    <li>הַתְּשׁוּבָה הַסּוֹפִית: <span class="calc">${c.ans}</span></li></ol>`;
-};
-const FRAC_NAMES={2:"חֲצִי",3:"שְׁלִישׁ",4:"רְבִיעַ",5:"חֲמִישִׁית",6:"שִׁשִּׁית",7:"שְׁבִיעִית",8:"שְׁמִינִית",9:"תְּשִׁיעִית",10:"עֲשִׂירִית"};
-function pieSVG(n,filled){
-  const R=80,cx=100,cy=100;let p="";
-  for(let i=0;i<n;i++){
-    const a0=(i/n)*2*Math.PI - Math.PI/2, a1=((i+1)/n)*2*Math.PI - Math.PI/2;
-    const x0=cx+R*Math.cos(a0),y0=cy+R*Math.sin(a0),x1=cx+R*Math.cos(a1),y1=cy+R*Math.sin(a1);
-    const fill=i<filled?"#ffce3a":"#ffffff";
-    p+=`<path d="M${cx},${cy} L${x0.toFixed(1)},${y0.toFixed(1)} A${R},${R} 0 0,1 ${x1.toFixed(1)},${y1.toFixed(1)} Z" fill="${fill}" stroke="#243b53" stroke-width="2"/>`;
+class G3 extends Game {
+  gen(){
+    const p=pick(G3_PROBLEMS)();
+    this.cur={ans:p.ans,steps:p.steps};
+    this.shell(`בְּעָיָה דּוּ-שְׁלַבִּית ${p.emoji}`,`
+      <p class="qtitle">${p.text}</p>
+      <div class="inputs"><div class="field"><label>הַתְּשׁוּבָה</label>
+        <input class="num" id="g3-ans" type="number" inputmode="numeric" style="width:140px"></div></div>`);
+    this.showCheck();
   }
-  return `<svg class="pie" width="200" height="200" viewBox="0 0 200 200">${p}</svg>`;
+  check(){
+    const c=this.cur;
+    const v=parseInt($('#g3-ans').value,10);
+    if(isNaN(v)){this.setFb(false,"כִּתְבוּ אֶת הַתְּשׁוּבָה 🙂");return;}
+    if(v===c.ans){this.addScore(10);sndGood();this.setFb(true,pick(GOOD));this.showNext();}
+    else{sndBad();this.setFb(false,`הַתְשׁוּבָה הַנְּכוֹנָה: ${c.ans}`);}
+  }
+  explain(){
+    const c=this.cur;
+    return `<h4>אֵיךְ פּוֹתְרִים? 🎈</h4>
+      <p style="text-align:center;margin:0 0 10px">בִּבְעָיָה דּוּ-שְׁלַבִּית פּוֹתְרִים בִּשְׁנֵי שְׁלַבִּים:</p>
+      <ol>${c.steps.map(s=>`<li>${s}</li>`).join("")}
+      <li>הַתְּשׁוּבָה הַסּוֹפִית: <span class="calc">${c.ans}</span></li></ol>`;
+  }
 }
-function fracHTML(num,den){return `<span class="frac"><span class="top">${num}</span><span>${den}</span></span>`;}
-checks['g4']=function(){}; // answered by clicking choice
-explains['g4']=function(){
-  const c=current.g4;
-  return `<h4>אֵיךְ פּוֹתְרִים? 🍕</h4><ol>
-    <li>סוֹפְרִים לְכַמָּה חֲלָקִים שָׁוִים חֻלַּק הָעִגּוּל. כָּאן יֵשׁ <b>${c.n}</b> חֲלָקִים.</li>
-    <li>הַמִּסְפָּר הַזֶּה הוּא הַ<b>מְּכַנֶּה</b> – הוּא נִכְתָּב לְמַטָּה בַּשֶּׁבֶר.</li>
-    <li>סוֹפְרִים כַּמָּה חֲלָקִים צְבוּעִים. כָּאן צָבוּעַ <b>חֵלֶק אֶחָד</b> – זֶהוּ הַ<b>מּוֹנֶה</b>, נִכְתָּב לְמַעְלָה.</li>
-    <li>לָכֵן הַשֶּׁבֶר הוּא <span class="calc">1/${c.n}</span>, שֶׁקּוֹרְאִים לוֹ <b>${FRAC_NAMES[c.n]||"אֶחָד חֶלְקֵי "+c.n}</b>.</li>
-  </ol>`;
-};
-gens['g4']=function(){
-  const n=rnd(3,10);
-  current.g4={n,den:n};
-  // build distractor denominators
-  const opts=new Set([n]);
-  while(opts.size<4){opts.add(rnd(2,10));}
-  const choices=shuffle([...opts]);
-  shell('g4',`אֵיזֶה חֵלֶק צָבוּעַ? 🍕`,`
-    <p class="qtitle" style="text-align:center">הָעִגּוּל חֻלַּק לַחֲלָקִים שָׁוִים.<br>אֵיזֶה שֶׁבֶר צָבוּעַ?</p>
-    ${pieSVG(n,1)}
-    <div class="choices" id="g4-choices">
-      ${choices.map(d=>`<button class="choice" data-d="${d}" onclick="g4pick(this,${d})">${fracHTML(1,d)}<div style="font-size:14px;margin-top:6px;color:#5b7b99">${FRAC_NAMES[d]||""}</div></button>`).join("")}
-    </div>`);
-  $('#g4-check').classList.add('hidden');
-  $('#g4-next').classList.add('hidden');
-};
-function g4pick(btn,d){
-  if($('#g4-next').classList.contains('hidden')===false) return; // already answered
-  const c=current.g4;
-  document.querySelectorAll('#g4-choices .choice').forEach(b=>b.style.pointerEvents='none');
-  if(d===c.den){btn.classList.add('ok');addScore('g4',10);sndGood();setFb('g4',true,pick(GOOD));}
-  else{btn.classList.add('no');sndBad();
-    document.querySelector(`#g4-choices .choice[data-d="${c.den}"]`).classList.add('ok');
-    setFb('g4',false,`הַתְשׁוּבָה: ${FRAC_NAMES[c.den]||"1/"+c.den}`);}
-  $('#g4-next').classList.remove('hidden');
+
+/* ============ GAME 4: which fraction is colored? ============ */
+class G4 extends Game {
+  gen(){
+    const n=rnd(3,10);
+    this.cur={n,den:n};
+    const opts=new Set([n]);
+    while(opts.size<4){opts.add(rnd(2,10));}
+    const choices=shuffle([...opts]);
+    this.shell(`אֵיזֶה חֵלֶק צָבוּעַ? 🍕`,`
+      <p class="qtitle" style="text-align:center">הָעִגּוּל חֻלַּק לַחֲלָקִים שָׁוִים.<br>אֵיזֶה שֶׁבֶר צָבוּעַ?</p>
+      ${pieSVG(n,1)}
+      <div class="choices" id="g4-choices">
+        ${choices.map(d=>`<button class="choice" data-d="${d}" onclick="games.g4.pickAns(this,${d})">${fracHTML(1,d)}<div style="font-size:14px;margin-top:6px;color:#5b7b99">${FRAC_NAMES[d]||""}</div></button>`).join("")}
+      </div>`);
+    $('#g4-check').classList.add('hidden');
+    $('#g4-next').classList.add('hidden');
+  }
+  pickAns(btn,d){
+    if($('#g4-next').classList.contains('hidden')===false) return; // already answered
+    const c=this.cur;
+    document.querySelectorAll('#g4-choices .choice').forEach(b=>b.style.pointerEvents='none');
+    if(d===c.den){btn.classList.add('ok');this.addScore(10);sndGood();this.setFb(true,pick(GOOD));}
+    else{btn.classList.add('no');sndBad();
+      document.querySelector(`#g4-choices .choice[data-d="${c.den}"]`).classList.add('ok');
+      this.setFb(false,`הַתְשׁוּבָה: ${FRAC_NAMES[c.den]||"1/"+c.den}`);}
+    $('#g4-next').classList.remove('hidden');
+  }
+  explain(){
+    const c=this.cur;
+    return `<h4>אֵיךְ פּוֹתְרִים? 🍕</h4><ol>
+      <li>סוֹפְרִים לְכַמָּה חֲלָקִים שָׁוִים חֻלַּק הָעִגּוּל. כָּאן יֵשׁ <b>${c.n}</b> חֲלָקִים.</li>
+      <li>הַמִּסְפָּר הַזֶּה הוּא הַ<b>מְּכַנֶּה</b> – הוּא נִכְתָּב לְמַטָּה בַּשֶּׁבֶר.</li>
+      <li>סוֹפְרִים כַּמָּה חֲלָקִים צְבוּעִים. כָּאן צָבוּעַ <b>חֵלֶק אֶחָד</b> – זֶהוּ הַ<b>מּוֹנֶה</b>, נִכְתָּב לְמַעְלָה.</li>
+      <li>לָכֵן הַשֶּׁבֶר הוּא <span class="calc">1/${c.n}</span>, שֶׁקּוֹרְאִים לוֹ <b>${FRAC_NAMES[c.n]||"אֶחָד חֶלְקֵי "+c.n}</b>.</li>
+    </ol>`;
+  }
 }
 
 /* ============ GAME 5: divisibility by 5 and 10 ============ */
-checks['g5']=function(){
-  const c=current.g5;
-  const a5=document.querySelector('input[name=g5-5]:checked');
-  const a10=document.querySelector('input[name=g5-10]:checked');
-  if(!a5||!a10){setFb('g5',false,"עֲנוּ עַל שְׁתֵּי הַשְּׁאֵלוֹת 🙂");return;}
-  const u5=a5.value==="yes", u10=a10.value==="yes";
-  if(u5===c.by5 && u10===c.by10){addScore('g5',10);sndGood();setFb('g5',true,pick(GOOD));showNext('g5');}
-  else{sndBad();
-    setFb('g5',false,`${c.n} ${c.by5?"מִתְחַלֵּק":"לֹא מִתְחַלֵּק"} בְּ-5, ${c.by10?"וּמִתְחַלֵּק":"וְלֹא מִתְחַלֵּק"} בְּ-10`);}
-};
-gens['g5']=function(){
-  // mix numbers ending in 0,5, and others
-  const tail=pick([0,5,rnd(1,9),rnd(1,9)]);
-  const n=rnd(2,99)*10 + tail;
-  const by5=(n%5===0), by10=(n%10===0);
-  current.g5={n,by5,by10};
-  shell('g5',`סִימָנֵי הִתְחַלְּקוּת 🔢`,`
-    <p class="qtitle" style="text-align:center">הַאִם הַמִּסְפָּר<br><span class="big-eq">${n}</span><br>מִתְחַלֵּק?</p>
-    <div class="yn">
-      <div class="seg"><b>מִתְחַלֵּק בְּ-5?</b>
-        <div><label><input type="radio" name="g5-5" value="yes"> כֵּן</label>
-        &nbsp; <label><input type="radio" name="g5-5" value="no"> לֹא</label></div></div>
-      <div class="seg"><b>מִתְחַלֵּק בְּ-10?</b>
-        <div><label><input type="radio" name="g5-10" value="yes"> כֵּן</label>
-        &nbsp; <label><input type="radio" name="g5-10" value="no"> לֹא</label></div></div>
-    </div>
-    <p style="text-align:center;color:#5b7b99;font-size:14px;margin:14px 0 0">רֶמֶז: מִסְפָּר שֶׁמִּסְתַּיֵּם בְּ-0 אוֹ בְּ-5 מִתְחַלֵּק בְּ-5. מִסְפָּר שֶׁמִּסְתַּיֵּם בְּ-0 מִתְחַלֵּק בְּ-10.</p>`);
-  showCheck('g5');
-};
-explains['g5']=function(){
-  const c=current.g5;
-  const last=c.n%10;
-  return `<h4>אֵיךְ פּוֹתְרִים? 🔢</h4><ol>
-    <li>מִסְתַּכְּלִים רַק עַל הַסִּפְרָה הָאַחֲרוֹנָה שֶׁל הַמִּסְפָּר ${c.n} – הִיא <b>${last}</b>.</li>
-    <li><b>הִתְחַלְּקוּת בְּ-5:</b> מִסְפָּר מִתְחַלֵּק בְּ-5 רַק אִם הַסִּפְרָה הָאַחֲרוֹנָה הִיא 0 אוֹ 5. כָּאן הִיא ${last} – לָכֵן ${c.by5?"<b>כֵּן</b> מִתְחַלֵּק":"<b>לֹא</b> מִתְחַלֵּק"} בְּ-5.</li>
-    <li><b>הִתְחַלְּקוּת בְּ-10:</b> מִסְפָּר מִתְחַלֵּק בְּ-10 רַק אִם הַסִּפְרָה הָאַחֲרוֹנָה הִיא 0. כָּאן הִיא ${last} – לָכֵן ${c.by10?"<b>כֵּן</b> מִתְחַלֵּק":"<b>לֹא</b> מִתְחַלֵּק"} בְּ-10.</li>
-    <li>שִׂימוּ לֵב: כָּל מִסְפָּר שֶׁמִּתְחַלֵּק בְּ-10 מִתְחַלֵּק תָּמִיד גַּם בְּ-5.</li>
-  </ol>`;
-};
+class G5 extends Game {
+  gen(){
+    const tail=pick([0,5,rnd(1,9),rnd(1,9)]);
+    const n=rnd(2,99)*10 + tail;
+    const by5=(n%5===0), by10=(n%10===0);
+    this.cur={n,by5,by10};
+    this.shell(`סִימָנֵי הִתְחַלְּקוּת 🔢`,`
+      <p class="qtitle" style="text-align:center">הַאִם הַמִּסְפָּר<br><span class="big-eq">${n}</span><br>מִתְחַלֵּק?</p>
+      <div class="yn">
+        <div class="seg"><b>מִתְחַלֵּק בְּ-5?</b>
+          <div><label><input type="radio" name="g5-5" value="yes"> כֵּן</label>
+          &nbsp; <label><input type="radio" name="g5-5" value="no"> לֹא</label></div></div>
+        <div class="seg"><b>מִתְחַלֵּק בְּ-10?</b>
+          <div><label><input type="radio" name="g5-10" value="yes"> כֵּן</label>
+          &nbsp; <label><input type="radio" name="g5-10" value="no"> לֹא</label></div></div>
+      </div>
+      <p style="text-align:center;color:#5b7b99;font-size:14px;margin:14px 0 0">רֶמֶז: מִסְפָּר שֶׁמִּסְתַּיֵּם בְּ-0 אוֹ בְּ-5 מִתְחַלֵּק בְּ-5. מִסְפָּר שֶׁמִּסְתַּיֵּם בְּ-0 מִתְחַלֵּק בְּ-10.</p>`);
+    this.showCheck();
+  }
+  check(){
+    const c=this.cur;
+    const a5=document.querySelector('input[name=g5-5]:checked');
+    const a10=document.querySelector('input[name=g5-10]:checked');
+    if(!a5||!a10){this.setFb(false,"עֲנוּ עַל שְׁתֵּי הַשְּׁאֵלוֹת 🙂");return;}
+    const u5=a5.value==="yes", u10=a10.value==="yes";
+    if(u5===c.by5 && u10===c.by10){this.addScore(10);sndGood();this.setFb(true,pick(GOOD));this.showNext();}
+    else{sndBad();
+      this.setFb(false,`${c.n} ${c.by5?"מִתְחַלֵּק":"לֹא מִתְחַלֵּק"} בְּ-5, ${c.by10?"וּמִתְחַלֵּק":"וְלֹא מִתְחַלֵּק"} בְּ-10`);}
+  }
+  explain(){
+    const c=this.cur;
+    const last=c.n%10;
+    return `<h4>אֵיךְ פּוֹתְרִים? 🔢</h4><ol>
+      <li>מִסְתַּכְּלִים רַק עַל הַסִּפְרָה הָאַחֲרוֹנָה שֶׁל הַמִּסְפָּר ${c.n} – הִיא <b>${last}</b>.</li>
+      <li><b>הִתְחַלְּקוּת בְּ-5:</b> מִסְפָּר מִתְחַלֵּק בְּ-5 רַק אִם הַסִּפְרָה הָאַחֲרוֹנָה הִיא 0 אוֹ 5. כָּאן הִיא ${last} – לָכֵן ${c.by5?"<b>כֵּן</b> מִתְחַלֵּק":"<b>לֹא</b> מִתְחַלֵּק"} בְּ-5.</li>
+      <li><b>הִתְחַלְּקוּת בְּ-10:</b> מִסְפָּר מִתְחַלֵּק בְּ-10 רַק אִם הַסִּפְרָה הָאַחֲרוֹנָה הִיא 0. כָּאן הִיא ${last} – לָכֵן ${c.by10?"<b>כֵּן</b> מִתְחַלֵּק":"<b>לֹא</b> מִתְחַלֵּק"} בְּ-10.</li>
+      <li>שִׂימוּ לֵב: כָּל מִסְפָּר שֶׁמִּתְחַלֵּק בְּ-10 מִתְחַלֵּק תָּמִיד גַּם בְּ-5.</li>
+    </ol>`;
+  }
+}
 
 /* ============ GAME 6: division with remainder – 4 options, elimination ============ */
-checks['g6']=function(){};
-gens['g6']=function(){
-  const divisor=rnd(3,6), q=rnd(2,9), r=rnd(1,divisor-1), total=divisor*q+r;
-  const opts=[{q,r}];
-  const add=o=>{ if(o.q>=0&&o.r>=0 && !opts.some(x=>x.q===o.q&&x.r===o.r)) opts.push(o); };
-  const cands=shuffle([{q,r:r+divisor},{q:q+1,r},{q:q-1,r},{q,r:Math.max(0,r-1)},{q:q+1,r:Math.max(0,r-1)},{q:q-1,r:r+1}]);
-  for(const c of cands){ if(opts.length>=4) break; add(c); }
-  const options=shuffle(opts).slice(0,4);
-  const correctIdx=options.findIndex(o=>o.q===q&&o.r===r);
-  current.g6={total,divisor,q,r,options,correctIdx};
-  shell('g6',`חִלּוּק עִם שְׁאֵרִית – בְּחִירָה 🧮`,`
-    <p class="qtitle" style="text-align:center">אֵיזוֹ תְּשׁוּבָה נְכוֹנָה?</p>
-    <div class="big-eq">${total} : ${divisor} = ?</div>
-    <div class="choices" id="g6-choices">
-      ${options.map((o,i)=>`<button class="choice" data-i="${i}" onclick="g6pick(this,${i})">${o.q} <span style="font-size:15px;color:#5b7b99">(שְׁאֵרִית ${o.r})</span></button>`).join("")}
-    </div>`);
-  $('#g6-check').classList.add('hidden'); $('#g6-next').classList.add('hidden');
-};
-function g6pick(btn,i){
-  if(!$('#g6-next').classList.contains('hidden')) return;
-  const c=current.g6;
-  document.querySelectorAll('#g6-choices .choice').forEach(b=>b.style.pointerEvents='none');
-  if(i===c.correctIdx){btn.classList.add('ok');addScore('g6',10);sndGood();setFb('g6',true,pick(GOOD));}
-  else{btn.classList.add('no');sndBad();
-    document.querySelector(`#g6-choices .choice[data-i="${c.correctIdx}"]`).classList.add('ok');
-    const o=c.options[c.correctIdx];
-    setFb('g6',false,`הַתְּשׁוּבָה: ${o.q} וְשָׁאֵרִית ${o.r}`);}
-  $('#g6-next').classList.remove('hidden');
+class G6 extends Game {
+  gen(){
+    const divisor=rnd(3,6), q=rnd(2,9), r=rnd(1,divisor-1), total=divisor*q+r;
+    const opts=[{q,r}];
+    const add=o=>{ if(o.q>=0&&o.r>=0 && !opts.some(x=>x.q===o.q&&x.r===o.r)) opts.push(o); };
+    const cands=shuffle([{q,r:r+divisor},{q:q+1,r},{q:q-1,r},{q,r:Math.max(0,r-1)},{q:q+1,r:Math.max(0,r-1)},{q:q-1,r:r+1}]);
+    for(const c of cands){ if(opts.length>=4) break; add(c); }
+    const options=shuffle(opts).slice(0,4);
+    const correctIdx=options.findIndex(o=>o.q===q&&o.r===r);
+    this.cur={total,divisor,q,r,options,correctIdx};
+    this.shell(`חִלּוּק עִם שְׁאֵרִית – בְּחִירָה 🧮`,`
+      <p class="qtitle" style="text-align:center">אֵיזוֹ תְּשׁוּבָה נְכוֹנָה?</p>
+      <div class="big-eq">${total} : ${divisor} = ?</div>
+      <div class="choices" id="g6-choices">
+        ${options.map((o,i)=>`<button class="choice" data-i="${i}" onclick="games.g6.pickAns(this,${i})">${o.q} <span style="font-size:15px;color:#5b7b99">(שְׁאֵרִית ${o.r})</span></button>`).join("")}
+      </div>`);
+    $('#g6-check').classList.add('hidden'); $('#g6-next').classList.add('hidden');
+  }
+  pickAns(btn,i){
+    if(!$('#g6-next').classList.contains('hidden')) return;
+    const c=this.cur;
+    document.querySelectorAll('#g6-choices .choice').forEach(b=>b.style.pointerEvents='none');
+    if(i===c.correctIdx){btn.classList.add('ok');this.addScore(10);sndGood();this.setFb(true,pick(GOOD));}
+    else{btn.classList.add('no');sndBad();
+      document.querySelector(`#g6-choices .choice[data-i="${c.correctIdx}"]`).classList.add('ok');
+      const o=c.options[c.correctIdx];
+      this.setFb(false,`הַתְּשׁוּבָה: ${o.q} וְשָׁאֵרִית ${o.r}`);}
+    $('#g6-next').classList.remove('hidden');
+  }
+  explain(){
+    const c=this.cur;
+    let items='';
+    c.options.forEach((o,i)=>{
+      if(i===c.correctIdx){
+        items+=`<li>✅ <b>${o.q} (שְׁאֵרִית ${o.r})</b> – נָכוֹן! כִּי <span class="calc">${o.q}×${c.divisor}+${o.r}=${c.total}</span>, וְהַשְּׁאֵרִית ${o.r} קְטַנָּה מִ-${c.divisor}.</li>`;
+      }else if(o.r>=c.divisor){
+        items+=`<li>❌ ${o.q} (שְׁאֵרִית ${o.r}) – פָּסוּל: הַשְּׁאֵרִית חַיֶּבֶת לִהְיוֹת קְטַנָּה מִ-${c.divisor}, וְ-${o.r} גְּדוֹלָה מִדַּי.</li>`;
+      }else{
+        items+=`<li>❌ ${o.q} (שְׁאֵרִית ${o.r}) – פָּסוּל: <span class="calc">${o.q}×${c.divisor}+${o.r}=${o.q*c.divisor+o.r}</span> וְלֹא ${c.total}.</li>`;
+      }
+    });
+    return `<h4>נִפְסֹל אֶת הַשְּׁגוּיוֹת 🧮</h4>
+      <p style="text-align:center;margin:0 0 8px">בּוֹדְקִים כָּל תְּשׁוּבָה: הַמַּכְפֵּלָה צְרִיכָה לָתֵת ${c.total}, וְהַשְּׁאֵרִית קְטַנָּה מִ-${c.divisor}.</p>
+      <ol>${items}</ol>`;
+  }
 }
-explains['g6']=function(){
-  const c=current.g6;
-  let items='';
-  c.options.forEach((o,i)=>{
-    if(i===c.correctIdx){
-      items+=`<li>✅ <b>${o.q} (שְׁאֵרִית ${o.r})</b> – נָכוֹן! כִּי <span class="calc">${o.q}×${c.divisor}+${o.r}=${c.total}</span>, וְהַשְּׁאֵרִית ${o.r} קְטַנָּה מִ-${c.divisor}.</li>`;
-    }else if(o.r>=c.divisor){
-      items+=`<li>❌ ${o.q} (שְׁאֵרִית ${o.r}) – פָּסוּל: הַשְּׁאֵרִית חַיֶּבֶת לִהְיוֹת קְטַנָּה מִ-${c.divisor}, וְ-${o.r} גְּדוֹלָה מִדַּי.</li>`;
-    }else{
-      items+=`<li>❌ ${o.q} (שְׁאֵרִית ${o.r}) – פָּסוּל: <span class="calc">${o.q}×${c.divisor}+${o.r}=${o.q*c.divisor+o.r}</span> וְלֹא ${c.total}.</li>`;
-    }
-  });
-  return `<h4>נִפְסֹל אֶת הַשְּׁגוּיוֹת 🧮</h4>
-    <p style="text-align:center;margin:0 0 8px">בּוֹדְקִים כָּל תְּשׁוּבָה: הַמַּכְפֵּלָה צְרִיכָה לָתֵת ${c.total}, וְהַשְּׁאֵרִית קְטַנָּה מִ-${c.divisor}.</p>
-    <ol>${items}</ol>`;
-};
 
 /* ============ GAME 7: color the fraction ============ */
-function pieClickSVG(n){
-  const R=80,cx=100,cy=100;let p="";
-  for(let i=0;i<n;i++){
-    const a0=(i/n)*2*Math.PI - Math.PI/2, a1=((i+1)/n)*2*Math.PI - Math.PI/2;
-    const x0=cx+R*Math.cos(a0),y0=cy+R*Math.sin(a0),x1=cx+R*Math.cos(a1),y1=cy+R*Math.sin(a1);
-    p+=`<path id="g7-s${i}" d="M${cx},${cy} L${x0.toFixed(1)},${y0.toFixed(1)} A${R},${R} 0 0,1 ${x1.toFixed(1)},${y1.toFixed(1)} Z" fill="#ffffff" stroke="#243b53" stroke-width="2" onclick="g7toggle(${i})"/>`;
+class G7 extends Game {
+  gen(){
+    const den=rnd(3,8), num=rnd(1,den-1);
+    this.cur={num,den,sel:new Array(den).fill(false)};
+    this.shell(`צְבִיעַת שְׁבָרִים 🎨`,`
+      <p style="text-align:center;margin:0 0 10px"><a href="../fractions-lesson/" style="display:inline-block;background:#a974d6;color:#fff;text-decoration:none;border-radius:14px;padding:9px 16px;font-weight:800;box-shadow:0 4px 0 rgba(20,60,90,.18)">📖 לֹא בְּטוּחִים? לִלְמֹד שְׁבָרִים קֹדֶם</a></p>
+      <p class="qtitle" style="text-align:center">צִבְעוּ אֶת הֶחֲלָקִים כָּךְ שֶׁיִּתְקַבֵּל הַשֶּׁבֶר:</p>
+      <div class="frac-target">${fracHTML(num,den)}</div>
+      <p style="text-align:center;color:#5b7b99;margin:0 0 8px">הַקִּישׁוּ עַל מְשֻׁלָּשׁ כְּדֵי לִצְבֹּעַ אוֹתוֹ (וְשׁוּב כְּדֵי לְבַטֵּל).</p>
+      ${pieClickSVG(den)}`);
+    this.showCheck();
   }
-  return `<svg class="pie pieclick" width="200" height="200" viewBox="0 0 200 200">${p}</svg>`;
+  toggle(i){
+    if(!$('#g7-next').classList.contains('hidden')) return;
+    const c=this.cur; c.sel[i]=!c.sel[i];
+    $('#g7-s'+i).classList.toggle('on',c.sel[i]);
+  }
+  check(){
+    const c=this.cur;
+    const cnt=c.sel.filter(Boolean).length;
+    if(cnt===c.num){this.addScore(10);sndGood();this.setFb(true,pick(GOOD));this.showNext();}
+    else{sndBad();this.setFb(false,`צָבַעְתֶּם ${cnt} חֲלָקִים, צְרִיכִים ${c.num}`);}
+  }
+  explain(){
+    const c=this.cur;
+    return `<h4>אֵיךְ צוֹבְעִים? 🎨</h4><ol>
+      <li>בַּשֶּׁבֶר ${fracHTML(c.num,c.den)} הַמִּסְפָּר לְמַטָּה (הַמְּכַנֶּה) הוּא <b>${c.den}</b> – לְכַמָּה חֲלָקִים שָׁוִים חֻלַּק הָעִגּוּל.</li>
+      <li>הַמִּסְפָּר לְמַעְלָה (הַמּוֹנֶה) הוּא <b>${c.num}</b> – כַּמָּה חֲלָקִים צוֹבְעִים.</li>
+      <li>לָכֵן צוֹבְעִים <b>${c.num}</b> מְשֻׁלָּשִׁים מִתּוֹךְ ${c.den}.</li>
+    </ol>`;
+  }
 }
-gens['g7']=function(){
-  const den=rnd(3,8), num=rnd(1,den-1);
-  current.g7={num,den,sel:new Array(den).fill(false)};
-  shell('g7',`צְבִיעַת שְׁבָרִים 🎨`,`
-    <p style="text-align:center;margin:0 0 10px"><a href="../fractions-lesson/" style="display:inline-block;background:#a974d6;color:#fff;text-decoration:none;border-radius:14px;padding:9px 16px;font-weight:800;box-shadow:0 4px 0 rgba(20,60,90,.18)">📖 לֹא בְּטוּחִים? לִלְמֹד שְׁבָרִים קֹדֶם</a></p>
-    <p class="qtitle" style="text-align:center">צִבְעוּ אֶת הֶחֲלָקִים כָּךְ שֶׁיִּתְקַבֵּל הַשֶּׁבֶר:</p>
-    <div class="frac-target">${fracHTML(num,den)}</div>
-    <p style="text-align:center;color:#5b7b99;margin:0 0 8px">הַקִּישׁוּ עַל מְשֻׁלָּשׁ כְּדֵי לִצְבֹּעַ אוֹתוֹ (וְשׁוּב כְּדֵי לְבַטֵּל).</p>
-    ${pieClickSVG(den)}`);
-  showCheck('g7');
-};
-function g7toggle(i){
-  if(!$('#g7-next').classList.contains('hidden')) return;
-  const c=current.g7; c.sel[i]=!c.sel[i];
-  $('#g7-s'+i).classList.toggle('on',c.sel[i]);
-}
-checks['g7']=function(){
-  const c=current.g7;
-  const cnt=c.sel.filter(Boolean).length;
-  if(cnt===c.num){addScore('g7',10);sndGood();setFb('g7',true,pick(GOOD));showNext('g7');}
-  else{sndBad();setFb('g7',false,`צָבַעְתֶּם ${cnt} חֲלָקִים, צְרִיכִים ${c.num}`);}
-};
-explains['g7']=function(){
-  const c=current.g7;
-  return `<h4>אֵיךְ צוֹבְעִים? 🎨</h4><ol>
-    <li>בַּשֶּׁבֶר ${fracHTML(c.num,c.den)} הַמִּסְפָּר לְמַטָּה (הַמְּכַנֶּה) הוּא <b>${c.den}</b> – לְכַמָּה חֲלָקִים שָׁוִים חֻלַּק הָעִגּוּל.</li>
-    <li>הַמִּסְפָּר לְמַעְלָה (הַמּוֹנֶה) הוּא <b>${c.num}</b> – כַּמָּה חֲלָקִים צוֹבְעִים.</li>
-    <li>לָכֵן צוֹבְעִים <b>${c.num}</b> מְשֻׁלָּשִׁים מִתּוֹךְ ${c.den}.</li>
-  </ol>`;
-};
 
 /* ============ GAME 8: division without remainder – share into groups ============ */
 const G8_ITEMS=[{n:"עֻגִיּוֹת",e:"🍪"},{n:"כַּדּוּרִים",e:"⚽"},{n:"סֻכָּרִיּוֹת",e:"🍬"},{n:"תַּפּוּחִים",e:"🍎"}];
-gens['g8']=function(){
-  const groups=rnd(2,5), per=rnd(2,6), total=groups*per, item=pick(G8_ITEMS);
-  current.g8={total,groups,per,item,dist:new Array(groups).fill(0),placed:0};
-  shell('g8',`חִלּוּק לִקְבוּצוֹת 🍪`,`
-    <p class="qtitle" style="text-align:center">חַלְּקוּ <b>${total} ${item.n}</b> שָׁוֶה בְּשָׁוֶה בֵּין <b>${groups} צַלָּחוֹת</b>.<br>
-    <span style="font-size:16px;color:#5b7b99">הַקִּישׁוּ עַל צַלַּחַת כְּדֵי לְהוֹסִיף ${item.e}</span></p>
-    <div id="g8-area"></div>
-    <div class="grp-tools"><button class="btn mini" onclick="g8reset()">↺ הַתְחֵל מֵחָדָשׁ</button></div>`);
-  g8render(); showCheck('g8');
-};
-function g8render(){
-  const c=current.g8, left=c.total-c.placed;
-  const pile = left>0 ? c.item.e.repeat(left) : "✓ הָעֲרֵמָה רֵיקָה";
-  const plates = c.dist.map((cnt,i)=>`
-    <div class="plate ${cnt===c.per?'full':''}" onclick="g8add(${i})">
-      <span class="cnt">צַלַּחַת ${i+1}: ${cnt}</span>
-      <div class="stuff">${c.item.e.repeat(cnt)}</div>
-    </div>`).join("");
-  $('#g8-area').innerHTML=`<div class="pile">בָּעֲרֵמָה: ${pile}</div><div class="plates">${plates}</div>`;
+class G8 extends Game {
+  gen(){
+    const groups=rnd(2,5), per=rnd(2,6), total=groups*per, item=pick(G8_ITEMS);
+    this.cur={total,groups,per,item,dist:new Array(groups).fill(0),placed:0};
+    this.shell(`חִלּוּק לִקְבוּצוֹת 🍪`,`
+      <p class="qtitle" style="text-align:center">חַלְּקוּ <b>${total} ${item.n}</b> שָׁוֶה בְּשָׁוֶה בֵּין <b>${groups} צַלָּחוֹת</b>.<br>
+      <span style="font-size:16px;color:#5b7b99">הַקִּישׁוּ עַל צַלַּחַת כְּדֵי לְהוֹסִיף ${item.e}</span></p>
+      <div id="g8-area"></div>
+      <div class="grp-tools"><button class="btn mini" onclick="games.g8.reset()">↺ הַתְחֵל מֵחָדָשׁ</button></div>`);
+    this.render(); this.showCheck();
+  }
+  render(){
+    const c=this.cur, left=c.total-c.placed;
+    const pile = left>0 ? c.item.e.repeat(left) : "✓ הָעֲרֵמָה רֵיקָה";
+    const plates = c.dist.map((cnt,i)=>`
+      <div class="plate ${cnt===c.per?'full':''}" onclick="games.g8.add(${i})">
+        <span class="cnt">צַלַּחַת ${i+1}: ${cnt}</span>
+        <div class="stuff">${c.item.e.repeat(cnt)}</div>
+      </div>`).join("");
+    $('#g8-area').innerHTML=`<div class="pile">בָּעֲרֵמָה: ${pile}</div><div class="plates">${plates}</div>`;
+  }
+  add(i){
+    if(!$('#g8-next').classList.contains('hidden')) return;
+    const c=this.cur;
+    if(c.placed>=c.total) return;
+    c.dist[i]++; c.placed++; beep(520,.05); this.render();
+  }
+  reset(){
+    const c=this.cur; c.dist=new Array(c.groups).fill(0); c.placed=0; $('#g8-fb').textContent=''; this.render();
+  }
+  check(){
+    const c=this.cur;
+    if(c.placed<c.total){this.setFb(false,`עוֹד נִשְׁאֲרוּ ${c.total-c.placed} בָּעֲרֵמָה`);return;}
+    if(c.dist.every(x=>x===c.per)){this.addScore(10);sndGood();this.setFb(true,pick(GOOD));this.showNext();}
+    else{sndBad();this.setFb(false,`הַחֲלוּקָה לֹא שָׁוָה – בְּכָל צַלַּחַת צָרִיךְ ${c.per}`);}
+  }
+  explain(){
+    const c=this.cur;
+    return `<h4>אֵיךְ מְחַלְּקִים? 🍪</h4><ol>
+      <li>יֵשׁ <b>${c.total} ${c.item.n}</b> וְצָרִיךְ לְחַלֵּק לְ-<b>${c.groups}</b> צַלָּחוֹת שָׁווֹת.</li>
+      <li>זֶהוּ תַּרְגִּיל חִלּוּק: <span class="calc">${c.total} : ${c.groups}</span></li>
+      <li>שָׂמִים ${c.item.e} אֶחָד בְּכָל צַלַּחַת בְּתוֹרוֹ, עַד שֶׁהָעֲרֵמָה נִגְמֶרֶת.</li>
+      <li>בְּכָל צַלַּחַת יִהְיוּ <b>${c.per}</b>, כִּי <span class="calc">${c.groups}×${c.per}=${c.total}</span>.</li>
+    </ol>`;
+  }
 }
-function g8add(i){
-  if(!$('#g8-next').classList.contains('hidden')) return;
-  const c=current.g8;
-  if(c.placed>=c.total) return;
-  c.dist[i]++; c.placed++; beep(520,.05); g8render();
-}
-function g8reset(){
-  const c=current.g8; c.dist=new Array(c.groups).fill(0); c.placed=0; setFb('g8',true,''); $('#g8-fb').textContent=''; g8render();
-}
-checks['g8']=function(){
-  const c=current.g8;
-  if(c.placed<c.total){setFb('g8',false,`עוֹד נִשְׁאֲרוּ ${c.total-c.placed} בָּעֲרֵמָה`);return;}
-  if(c.dist.every(x=>x===c.per)){addScore('g8',10);sndGood();setFb('g8',true,pick(GOOD));showNext('g8');}
-  else{sndBad();setFb('g8',false,`הַחֲלוּקָה לֹא שָׁוָה – בְּכָל צַלַּחַת צָרִיךְ ${c.per}`);}
-};
-explains['g8']=function(){
-  const c=current.g8;
-  return `<h4>אֵיךְ מְחַלְּקִים? 🍪</h4><ol>
-    <li>יֵשׁ <b>${c.total} ${c.item.n}</b> וְצָרִיךְ לְחַלֵּק לְ-<b>${c.groups}</b> צַלָּחוֹת שָׁווֹת.</li>
-    <li>זֶהוּ תַּרְגִּיל חִלּוּק: <span class="calc">${c.total} : ${c.groups}</span></li>
-    <li>שָׂמִים ${c.item.e} אֶחָד בְּכָל צַלַּחַת בְּתוֹרוֹ, עַד שֶׁהָעֲרֵמָה נִגְמֶרֶת.</li>
-    <li>בְּכָל צַלַּחַת יִהְיוּ <b>${c.per}</b>, כִּי <span class="calc">${c.groups}×${c.per}=${c.total}</span>.</li>
-  </ol>`;
-};
 
 /* ============ GAME 9: interactive multiplication table ============ */
-checks['g9']=function(){};
-gens['g9']=function(){
-  const N=10, r=rnd(1,N), col=rnd(1,N), prod=r*col;
-  current.g9={N,r,c:col,prod};
-  let grid=`<div class="mcell corner">×</div>`;
-  for(let c=1;c<=N;c++) grid+=`<div class="mcell head">${c}</div>`;
-  for(let row=1;row<=N;row++){
-    grid+=`<div class="mcell head">${row}</div>`;
-    for(let c=1;c<=N;c++){
-      if(row===r && c===col) grid+=`<div class="mcell blank" id="g9-blank">?</div>`;
-      else grid+=`<div class="mcell">${row*c}</div>`;
+class G9 extends Game {
+  gen(){
+    const N=10, r=rnd(1,N), col=rnd(1,N), prod=r*col;
+    this.cur={N,r,c:col,prod};
+    let grid=`<div class="mcell corner">×</div>`;
+    for(let c=1;c<=N;c++) grid+=`<div class="mcell head">${c}</div>`;
+    for(let row=1;row<=N;row++){
+      grid+=`<div class="mcell head">${row}</div>`;
+      for(let c=1;c<=N;c++){
+        if(row===r && c===col) grid+=`<div class="mcell blank" id="g9-blank">?</div>`;
+        else grid+=`<div class="mcell">${row*c}</div>`;
+      }
     }
+    const opts=new Set([prod]);
+    const cand=[prod+r,prod-r,prod+col,prod-col,(r+1)*col,r*(col+1),prod+1,prod-1];
+    for(const v of shuffle(cand)){ if(opts.size>=4) break; if(v>0) opts.add(v); }
+    const options=shuffle([...opts]).slice(0,4);
+    this.cur.options=options;
+    this.shell(`לוּחַ הַכֶּפֶל ✳️`,`
+      <p class="qtitle" style="text-align:center">אֵיזֶה מִסְפָּר חָסֵר בַּמִּשְׁבֶּצֶת הַצְּהֻבָּה?<br>
+      <span style="font-size:18px;color:#5b7b99">(${r} × ${col})</span></p>
+      <div class="mtable" style="grid-template-columns:repeat(${N+1},minmax(28px,1fr))">${grid}</div>
+      <div class="mopts" id="g9-opts">
+        ${options.map(v=>`<button class="choice" data-v="${v}" onclick="games.g9.pickAns(this,${v})">${v}</button>`).join("")}
+      </div>`);
+    $('#g9-check').classList.add('hidden'); $('#g9-next').classList.add('hidden');
   }
-  const opts=new Set([prod]);
-  const cand=[prod+r,prod-r,prod+col,prod-col,(r+1)*col,r*(col+1),prod+1,prod-1];
-  for(const v of shuffle(cand)){ if(opts.size>=4) break; if(v>0) opts.add(v); }
-  const options=shuffle([...opts]).slice(0,4);
-  current.g9.options=options;
-  shell('g9',`לוּחַ הַכֶּפֶל ✳️`,`
-    <p class="qtitle" style="text-align:center">אֵיזֶה מִסְפָּר חָסֵר בַּמִּשְׁבֶּצֶת הַצְּהֻבָּה?<br>
-    <span style="font-size:18px;color:#5b7b99">(${r} × ${col})</span></p>
-    <div class="mtable" style="grid-template-columns:repeat(${N+1},minmax(28px,1fr))">${grid}</div>
-    <div class="mopts" id="g9-opts">
-      ${options.map(v=>`<button class="choice" data-v="${v}" onclick="g9pick(this,${v})">${v}</button>`).join("")}
-    </div>`);
-  $('#g9-check').classList.add('hidden'); $('#g9-next').classList.add('hidden');
-};
-function g9pick(btn,v){
-  if(!$('#g9-next').classList.contains('hidden')) return;
-  const c=current.g9;
-  document.querySelectorAll('#g9-opts .choice').forEach(b=>b.style.pointerEvents='none');
-  const blank=$('#g9-blank');
-  if(v===c.prod){btn.classList.add('ok');blank.textContent=c.prod;blank.style.background='#d8f5e2';
-    addScore('g9',10);sndGood();setFb('g9',true,pick(GOOD));}
-  else{btn.classList.add('no');sndBad();blank.textContent=c.prod;
-    document.querySelector(`#g9-opts .choice[data-v="${c.prod}"]`).classList.add('ok');
-    setFb('g9',false,`${c.r} × ${c.c} = ${c.prod}`);}
-  $('#g9-next').classList.remove('hidden');
+  pickAns(btn,v){
+    if(!$('#g9-next').classList.contains('hidden')) return;
+    const c=this.cur;
+    document.querySelectorAll('#g9-opts .choice').forEach(b=>b.style.pointerEvents='none');
+    const blank=$('#g9-blank');
+    if(v===c.prod){btn.classList.add('ok');blank.textContent=c.prod;blank.style.background='#d8f5e2';
+      this.addScore(10);sndGood();this.setFb(true,pick(GOOD));}
+    else{btn.classList.add('no');sndBad();blank.textContent=c.prod;
+      document.querySelector(`#g9-opts .choice[data-v="${c.prod}"]`).classList.add('ok');
+      this.setFb(false,`${c.r} × ${c.c} = ${c.prod}`);}
+    $('#g9-next').classList.remove('hidden');
+  }
+  explain(){
+    const c=this.cur;
+    const seq=[]; for(let i=1;i<=c.c;i++) seq.push(c.r*i);
+    return `<h4>אֵיךְ מַשְׁלִימִים? ✳️</h4><ol>
+      <li>הַמִּשְׁבֶּצֶת נִמְצֵאת בְּשׁוּרָה ${c.r} וּבְעַמּוּדָה ${c.c}, אָז צָרִיךְ <span class="calc">${c.r} × ${c.c}</span>.</li>
+      <li>אֶפְשָׁר לִסְפֹּר בִּקְפִיצוֹת שֶׁל ${c.r}: ${seq.join(", ")}.</li>
+      <li>הַתְּשׁוּבָה: <span class="calc">${c.r} × ${c.c} = ${c.prod}</span></li>
+    </ol>`;
+  }
 }
-explains['g9']=function(){
-  const c=current.g9;
-  const seq=[]; for(let i=1;i<=c.c;i++) seq.push(c.r*i);
-  return `<h4>אֵיךְ מַשְׁלִימִים? ✳️</h4><ol>
-    <li>הַמִּשְׁבֶּצֶת נִמְצֵאת בְּשׁוּרָה ${c.r} וּבְעַמּוּדָה ${c.c}, אָז צָרִיךְ <span class="calc">${c.r} × ${c.c}</span>.</li>
-    <li>אֶפְשָׁר לִסְפֹּר בִּקְפִיצוֹת שֶׁל ${c.r}: ${seq.join(", ")}.</li>
-    <li>הַתְּשׁוּבָה: <span class="calc">${c.r} × ${c.c} = ${c.prod}</span></li>
-  </ol>`;
+
+/* ============ registry, navigation & init ============ */
+const games={
+  g1:new G1('g1'), g2:new G2('g2'), g3:new G3('g3'), g4:new G4('g4'), g5:new G5('g5'),
+  g6:new G6('g6'), g7:new G7('g7'), g8:new G8('g8'), g9:new G9('g9')
 };
 
-['g1','g2','g3','g4','g5','g6','g7','g8','g9'].forEach(id=>{ nexts[id]=makeNext(id); });
+function goMenu(){
+  document.querySelectorAll('.game').forEach(g=>g.classList.remove('active'));
+  $('#menu').style.display='block';
+}
+function openGame(id){
+  $('#menu').style.display='none';
+  document.querySelectorAll('.game').forEach(g=>g.classList.remove('active'));
+  $('#'+id).classList.add('active');
+  games[id].next();           // generate first question
+}
+
+Object.values(games).forEach(g=>{ /* games ready */ });
 document.addEventListener('keydown',e=>{
   if(e.key!=='Enter')return;
   const g=document.querySelector('.game.active'); if(!g)return;
   const id=g.id;
-  if(!$('#'+id+'-next').classList.contains('hidden')) nexts[id]();
-  else if(checks[id]) checks[id]();
+  if(!games[id])return;
+  if(!$('#'+id+'-next').classList.contains('hidden')) games[id].next();
+  else games[id].check();
 });
 </script>
 </body>

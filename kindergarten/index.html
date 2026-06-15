@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kindergarten 🧸 גַּן</title>
+<script data-goatcounter="https://yaroneven.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Comic Sans MS', 'Segoe UI', system-ui, sans-serif;
+    background: linear-gradient(135deg, #ffd194 0%, #f9a1bc 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+  .wrap { width: 100%; max-width: 480px; }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+  .tab {
+    flex: 1 1 30%;
+    font-family: inherit;
+    font-size: 13.5px;
+    font-weight: bold;
+    padding: 10px 6px;
+    border: none;
+    border-radius: 14px 14px 0 0;
+    background: rgba(255,255,255,0.5);
+    color: #8a4d2d;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .tab.active { background: #fff; color: #d2693e; }
+  .tab:active { transform: scale(0.97); }
+
+  .card {
+    background: #fff;
+    border-radius: 28px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+    padding: 24px 24px 30px;
+    text-align: center;
+  }
+  .game { display: none; }
+  .game.active { display: block; }
+
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #555;
+  }
+  .score { color: #2e9e5b; }
+  .streak { color: #e8870c; }
+  .he-instr { font-size: 20px; color: #c0399b; font-weight: 700; margin: -6px 0 14px; text-align: center; }
+
+  .pop { animation: pop 0.4s ease; }
+  @keyframes pop {
+    0% { transform: scale(0.4); opacity: 0; }
+    70% { transform: scale(1.12); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  .feedback { min-height: 34px; font-size: 24px; font-weight: bold; margin-top: 14px; }
+  .next {
+    margin-top: 12px;
+    font-family: inherit;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 12px 32px;
+    border: none;
+    border-radius: 16px;
+    background: #d2693e;
+    color: #fff;
+    cursor: pointer;
+    visibility: hidden;
+  }
+  .next:hover { background: #b9572f; }
+
+  .memboard {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin: 6px 0 4px;
+  }
+  .memcard {
+    aspect-ratio: 1 / 1;
+    font-family: inherit;
+    font-size: 30px;
+    font-weight: bold;
+    border: none;
+    border-radius: 14px;
+    background: #ffd9a8;
+    color: #b9572f;
+    cursor: pointer;
+    transition: transform 0.1s, background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: lowercase;
+  }
+  .memcard.flipped { background: #fff7d6; }
+  .memcard.matched { background: #34d399; color: #fff; cursor: default; }
+  .memcard:active:not(.matched) { transform: scale(0.94); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="tabs">
+      <a href="../" title="Back to all games" style="display:inline-flex;align-items:center;background:#fff;border-radius:14px;padding:6px 11px;font-size:18px;line-height:1;text-decoration:none;box-shadow:0 3px 0 rgba(20,60,90,.18);">⬆️🏠</a>
+      <button class="tab active" data-tab="g1">🧠 Picture Pairs</button>
+    </div>
+
+    <div class="card">
+      <!-- GAME 1: picture-pair memory (12 cards / 6 pairs, say word twice) -->
+      <div class="game active" id="g1">
+        <div class="topbar">
+          <span class="score">✅ <span id="g1-score">0</span>/6</span>
+          <span class="streak">🔁 <span id="g1-moves">0</span></span>
+        </div>
+        <div class="he-instr" dir="rtl">מָצְאוּ אֶת הַזּוּגוֹת! לְחַצוּ עַל קְלָף וְאִמְרוּ אֶת הַמִּלָּה בְּאַנְגְּלִית פַּעֲמַיִם.</div>
+        <div class="memboard" id="g1-board"></div>
+        <div class="feedback" id="g1-feedback"></div>
+        <button class="next" id="g1-next">Play again 🔄</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+  /* ---------- shared helpers ---------- */
+  function shuffle(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  let femaleVoice = null, hebrewVoice = null;
+  function loadVoice() {
+    const voices = window.speechSynthesis.getVoices();
+    const prefer = ["Google US English","Microsoft Aria","Microsoft Zira","Microsoft Jenny",
+      "Samantha","Karen","Moira","Tessa","Female"];
+    const en = voices.filter(v => /en/i.test(v.lang));
+    femaleVoice = null;
+    for (const name of prefer) {
+      const m = en.find(v => v.name.includes(name));
+      if (m) { femaleVoice = m; break; }
+    }
+    if (!femaleVoice) femaleVoice = en[0] || voices[0] || null;
+    hebrewVoice = voices.find(v => /he|iw/i.test(v.lang)) || null;
+  }
+  if ("speechSynthesis" in window) {
+    loadVoice();
+    window.speechSynthesis.onvoiceschanged = loadVoice;
+  }
+
+  // say an English word once, slowly and clearly; returns the utterance
+  function sayWord(word) {
+    if (!word || !("speechSynthesis" in window)) return null;
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(word);
+    u.lang = "en-US";
+    u.rate = 0.6;
+    u.pitch = 1.2;
+    if (femaleVoice) u.voice = femaleVoice;
+    window.speechSynthesis.speak(u);
+    return u;
+  }
+
+  // speak a praise/encourage line one second AFTER the given word finishes;
+  // onDone fires when the spoken Hebrew has finished
+  function speakAfterWord(wordUtter, line, onDone) {
+    let done = false;
+    const go = () => { if (done) return; done = true; setTimeout(() => speakPraise(line, onDone), 1000); };
+    if (wordUtter) { wordUtter.onend = go; setTimeout(go, 3000); }
+    else { go(); }
+  }
+
+  // always-positive praise: an English cheer, then the same in Hebrew
+  const PRAISE = [
+    { en: "Well done!",  he: "כָּל הַכָּבוֹד!" },
+    { en: "Amazing!",    he: "מְדַהִים!" },
+    { en: "Great job!",  he: "עֲבוֹדָה נֶהְדֶּרֶת!" },
+    { en: "Fantastic!",  he: "פַנְטַסְטִי!" },
+    { en: "Super!",      he: "סוּפֶּר!" },
+    { en: "Wonderful!",  he: "נֶהְדָּר!" }
+  ];
+  function speakPraise(p, onDone) {
+    if (!("speechSynthesis" in window)) { if (onDone) onDone(); return; }
+    window.speechSynthesis.cancel();
+    const strip = s => s.replace(/[\u0591-\u05C7]/g, "")
+      .replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2190}-\u{21FF}\u{2B00}-\u{2BFF}\uFE0F\u200D]/gu, "")
+      .trim();
+    const en = new SpeechSynthesisUtterance(strip(p.en));
+    en.lang = "en-US"; en.rate = 0.8; en.pitch = 1.3;
+    if (femaleVoice) en.voice = femaleVoice;
+    window.speechSynthesis.speak(en);
+    const he = new SpeechSynthesisUtterance(strip(p.he));
+    he.lang = "he-IL"; he.rate = 0.85; he.pitch = 1.2;
+    if (hebrewVoice) he.voice = hebrewVoice;
+    if (onDone) {
+      let fired = false;
+      const fin = () => { if (fired) return; fired = true; onDone(); };
+      he.onend = fin;
+      setTimeout(fin, 4000);
+    }
+    window.speechSynthesis.speak(he);
+  }
+  function randPraise() { return PRAISE[Math.floor(Math.random() * PRAISE.length)]; }
+
+  // gentle, always-positive "try again" lines (shown in Hebrew, spoken EN then HE)
+  const ENCOURAGE = [
+    { en: "Almost! Try again!",  he: "כִּמְעַט! נַסּוּ שׁוּב 😊" },
+    { en: "Very nice! One more try!", he: "יָפֶה מְאֹד! עוֹד נִסָּיוֹן 💪" },
+    { en: "You are almost there!", he: "אַתֶּם כִּמְעַט שָׁם! 🌈" },
+    { en: "Great! Try one more time!", he: "מְצֻיָּן! תְּנַסּוּ עוֹד פַּעַם 😊" },
+    { en: "Well done for trying!", he: "כָּל הַכָּבוֹד עַל הַנִּסָּיוֹן! 🌟" }
+  ];
+  function randEncourage() { return ENCOURAGE[Math.floor(Math.random() * ENCOURAGE.length)]; }
+
+  // Pool of real, concrete objects. 6 random pairs are chosen each time.
+  const MEM_POOL = {
+    // from Game 1
+    "dog":"🐕","sun":"☀️","goat":"🐐","bear":"🐻","milkshake":"🥤","moon":"🌙",
+    "horse":"🐴","hippo":"🦛","bird":"🐦","duck":"🦆","deer":"🦌","dolphin":"🐬",
+    "sandals":"👡","giraffe":"🦒","sheep":"🐑","spider":"🕷️","elevator":"🛗","lion":"🦁",
+    "cow":"🐮","mouse":"🐭","monkey":"🐵","snail":"🐌","elephant":"🐘","cactus":"🌵",
+    // from Game 2
+    "dad":"👨","bag":"🎒","cat":"🐱","egg":"🥚","hat":"🎩","can":"🥫","pan":"🍳",
+    "pen":"🖊️","cab":"🚕","hen":"🐔","ant":"🐜","tag":"🏷️","bat":"🦇","net":"🥅",
+    "bed":"🛏️","tap":"🚰","pet":"🐶"
+  };
+
+  /* picture-pair memory class: 12 cards = 6 identical-picture pairs.
+     Reveal a card -> say its English word once, slowly. Find the pairs.
+     The same 6 cards stay for 10 rounds (reshuffled) so kids absorb the words. */
+  class PicMemoryGame {
+    constructor(id) {
+      this.id = id;
+      this.board = document.getElementById(id + "-board");
+      this.fb = document.getElementById(id + "-feedback");
+      this.again = document.getElementById(id + "-next");
+      this.scoreEl = document.getElementById(id + "-score");
+      this.movesEl = document.getElementById(id + "-moves");
+      this.keys = []; this.first = null; this.lock = false; this.matched = 0; this.moves = 0;
+      this.round = 0;
+      this.again.onclick = () => this.newRound();
+      this.newRound();
+    }
+
+    // pick a fresh set only once every 10 rounds; otherwise keep the same cards
+    newRound() {
+      if (this.round % 10 === 0 || this.keys.length === 0) {
+        this.keys = shuffle(Object.keys(MEM_POOL)).slice(0, 6);
+      }
+      this.round++;
+      this.build();
+    }
+
+    build() {
+      this.matched = 0; this.moves = 0; this.first = null; this.lock = false;
+      this.scoreEl.textContent = 0;
+      this.movesEl.textContent = 0;
+      this.fb.textContent = "מָצְאוּ אֶת כָּל 6 הַזּוּגוֹת! 🧠";
+      this.fb.style.color = "#e8870c";
+      this.again.style.visibility = "hidden";
+
+      const cards = [];
+      this.keys.forEach(k => {
+        cards.push({ k, face: MEM_POOL[k] });
+        cards.push({ k, face: MEM_POOL[k] });
+      });
+      shuffle(cards);
+
+      this.board.innerHTML = "";
+      cards.forEach(c => {
+        const b = document.createElement("button");
+        b.className = "memcard pic";
+        b.dataset.k = c.k;
+        b.dataset.face = c.face;
+        b.textContent = "❓";
+        b.onclick = () => this.flip(b);
+        this.board.appendChild(b);
+      });
+    }
+
+    flip(b) {
+      if (this.lock || b.classList.contains("flipped") || b.classList.contains("matched")) return;
+      b.classList.add("flipped");
+      b.textContent = b.dataset.face;
+      const u = sayWord(b.dataset.k);
+
+      if (!this.first) { this.first = b; return; }
+
+      this.moves++;
+      this.movesEl.textContent = this.moves;
+
+      if (this.first.dataset.k === b.dataset.k && this.first !== b) {
+        this.first.classList.add("matched");
+        b.classList.add("matched");
+        this.matched++;
+        this.scoreEl.textContent = this.matched;
+        this.first = null;
+        if (this.matched === this.keys.length) {
+          this.fb.textContent = "🎉 כָּל הַכָּבוֹד! הִצְלַחְתֶּם! 🎉";
+          this.fb.style.color = "#2e9e5b";
+          this.again.style.visibility = "visible";
+          speakAfterWord(u, { en: "Amazing! You did it!", he: "מְדַהִים! הִצְלַחְתֶּם!" });
+        } else {
+          const p = randPraise();
+          this.fb.textContent = p.he + " 🌟";
+          this.fb.style.color = "#2e9e5b";
+          speakAfterWord(u, p);
+        }
+      } else {
+        this.lock = true;
+        const a = this.first;
+        this.first = null;
+        const e = randEncourage();
+        this.fb.textContent = e.he;
+        this.fb.style.color = "#e8870c";
+        speakAfterWord(u, e, () => {
+          [a, b].forEach(x => { x.classList.remove("flipped"); x.textContent = "❓"; });
+          this.lock = false;
+        });
+      }
+    }
+  }
+
+  /* ---------- tab switching ---------- */
+  document.querySelectorAll(".tab").forEach(tab => {
+    tab.onclick = () => {
+      document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+      document.querySelectorAll(".game").forEach(g => g.classList.remove("active"));
+      tab.classList.add("active");
+      document.getElementById(tab.dataset.tab).classList.add("active");
+      if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+    };
+  });
+
+  /* ---------- start ---------- */
+  const games = { g1: new PicMemoryGame("g1") };
+</script>
+</body>
+</html>

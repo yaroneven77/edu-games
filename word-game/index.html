@@ -150,6 +150,40 @@
   @keyframes shake-good { 0%,100%{transform:scale(1);} 50%{transform:scale(1.08);} }
   @keyframes shake-bad { 0%,100%{transform:translateX(0);} 25%{transform:translateX(-6px);} 75%{transform:translateX(6px);} }
 
+  /* ---- build-a-sentence game ---- */
+  .sentence.build {
+    font-size: 27px;
+    font-weight: bold;
+    color: #4338ca;
+    line-height: 1.6;
+    margin: 10px 0 6px;
+  }
+  .slot {
+    display: inline-block;
+    min-width: 72px;
+    border-bottom: 3px dashed #c0399b;
+    color: #c0399b;
+    padding: 0 6px;
+  }
+  .slot.filled { border-bottom-color: #16a34a; color: #16a34a; }
+  .banklabel {
+    font-size: 15px; font-weight: bold; color: #6b7280;
+    text-align: right; direction: rtl; margin: 8px 2px 0;
+  }
+  .wordbank { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 4px; }
+  .wordbank.two { grid-template-columns: 1fr 1fr; }
+  .wordbank button {
+    font-family: inherit; font-size: 21px; font-weight: bold;
+    padding: 13px 8px; border: none; border-radius: 16px;
+    background: #f0f1ff; color: #4338ca; cursor: pointer;
+    text-transform: capitalize; transition: transform 0.1s, background 0.2s;
+  }
+  .wordbank button:hover:not(:disabled) { background: #e0e2ff; transform: translateY(-2px); }
+  .wordbank button:active:not(:disabled) { transform: scale(0.96); }
+  .wordbank button.correct { background: #34d399 !important; color: #fff; animation: shake-good 0.4s; }
+  .wordbank button.wrong { background: #f87171 !important; color: #fff; animation: shake-bad 0.4s; }
+  .wordbank button:disabled { cursor: default; opacity: 0.6; }
+
   .feedback { min-height: 34px; font-size: 24px; font-weight: bold; margin-top: 14px; }
   .next {
     margin-top: 12px;
@@ -260,6 +294,7 @@
       <button class="tab" data-tab="g4">🧩 Missing Letter</button>
       <button class="tab" data-tab="g5">📝 Sentences</button>
       <button class="tab" data-tab="g6">🃏 Memory</button>
+      <button class="tab" data-tab="g8">✍️ Build a Sentence</button>
       <button class="tab" data-tab="g7">📚 Reading</button>
     </div>
 
@@ -383,6 +418,28 @@
           <button class="rnav" id="g7-fwd">הַבָּא ➡️</button>
         </div>
       </div>
+
+      <!-- GAME 8: build a sentence -- look at the picture, fill the two words -->
+      <div class="game" id="g8">
+        <div class="topbar">
+          <span class="score">⭐ <span id="g8-score">0</span></span>
+          <span class="streak">🔥 <span id="g8-streak">0</span></span>
+        </div>
+        <div class="he-instr" dir="rtl">הַשְׁלִימוּ אֶת הַמִּשְׁפָּט לְפִי הַתְּמוּנָה!</div>
+        <div class="picture" id="g8-pic">…</div>
+        <div class="sentence build" id="g8-sentence"></div>
+        <div class="picrow">
+          <button class="speak" id="g8-speak" title="Say the sentence">🔊</button>
+          <button class="speak heb-btn" id="g8-hebtn" title="Hebrew translation">עב</button>
+        </div>
+        <div class="hebrew" id="g8-he"></div>
+        <div class="banklabel">מִי?</div>
+        <div class="wordbank" id="g8-subj"></div>
+        <div class="banklabel">מָה?</div>
+        <div class="wordbank" id="g8-obj"></div>
+        <div class="feedback" id="g8-feedback"></div>
+        <button class="next" id="g8-next">Next ➡️</button>
+      </div>
     </div>
   </div>
 
@@ -468,7 +525,7 @@
     window.speechSynthesis.onvoiceschanged = loadVoice;
   }
   function say(word) {
-    if (!word || !("speechSynthesis" in window)) return;
+    if (!word || !("speechSynthesis" in window)) return null;
     window.speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(word);
     u.lang = "en-US";
@@ -476,6 +533,7 @@
     u.pitch = 1.25;
     if (femaleVoice) u.voice = femaleVoice;
     window.speechSynthesis.speak(u);
+    return u;
   }
   function sayHebrew(word) {
     const heb = HE[word];
@@ -912,7 +970,8 @@
     g4: "Missing-Letter",
     g5: "Sentences",
     g6: "Memory",
-    g7: "Reading"
+    g7: "Reading",
+    g8: "Build-Sentence"
   };
   function trackGame(tabId) {
     const name = GAME_NAMES[tabId] || tabId;
@@ -1025,10 +1084,230 @@
   class G6 extends MemoryGame { constructor() { super("g6"); } }
   class G7 extends ReadingGame { constructor() { super("g7"); } }
 
+  // Game 8: Build a Sentence — look at the picture, fill the two missing words,
+  // then the whole sentence (with the verb/joining words) is read aloud.
+  const SCENES = [
+    { emoji: "👧🍦", pre: "The", mid: "eats",   post: ".",
+      subj: { word: "girl",   distractors: ["boy"] },
+      obj:  { word: "ice cream", distractors: ["watermelon"] },
+      he: "הַיַּלְדָּה אוֹכֶלֶת גְּלִידָה." },
+    { emoji: "👦🍉", pre: "The", mid: "eats",   post: ".",
+      subj: { word: "boy",    distractors: ["girl"] },
+      obj:  { word: "watermelon", distractors: ["ice cream"] },
+      he: "הַיֶּלֶד אוֹכֵל אֲבַטִּיחַ." },
+    { emoji: "🐶🦴", pre: "The", mid: "eats",   post: ".",
+      subj: { word: "dog",    distractors: ["cat"] },
+      obj:  { word: "bone",   distractors: ["fish"] },
+      he: "הַכֶּלֶב אוֹכֵל עֶצֶם." },
+    { emoji: "🐱🥛", pre: "The", mid: "drinks", post: ".",
+      subj: { word: "cat",    distractors: ["dog"] },
+      obj:  { word: "milk",   distractors: ["juice"] },
+      he: "הֶחָתוּל שׁוֹתֶה חָלָב." },
+    { emoji: "🐵🍌", pre: "The", mid: "eats",   post: ".",
+      subj: { word: "monkey", distractors: ["bear"] },
+      obj:  { word: "banana", distractors: ["apple"] },
+      he: "הַקּוֹף אוֹכֵל בָּנָנָה." },
+    { emoji: "👶🍼", pre: "The", mid: "drinks", post: ".",
+      subj: { word: "baby",   distractors: ["dad"] },
+      obj:  { word: "milk",   distractors: ["water"] },
+      he: "הַתִּינוֹק שׁוֹתֶה חָלָב." },
+    { emoji: "🐰🥕", pre: "The", mid: "eats",   post: ".",
+      subj: { word: "rabbit", distractors: ["mouse"] },
+      obj:  { word: "carrot", distractors: ["cake"] },
+      he: "הָאַרְנָב אוֹכֵל גֶּזֶר." },
+    { emoji: "🐻🍯", pre: "The", mid: "eats",   post: ".",
+      subj: { word: "bear",   distractors: ["lion"] },
+      obj:  { word: "honey",  distractors: ["bread"] },
+      he: "הַדֹּב אוֹכֵל דְּבַשׁ." },
+
+    // --- age 9: professions & actions (3 options per blank) ---
+    { emoji: "👩‍🏫📖", pre: "The", mid: "reads",   post: ".",
+      subj: { word: "teacher", distractors: ["student", "doctor"] },
+      obj:  { word: "book",    distractors: ["letter", "map"] },
+      he: "הַמּוֹרָה קוֹרֵאת סֵפֶר." },
+    { emoji: "👨‍🌾🥕", pre: "The", mid: "grows",   post: ".",
+      subj: { word: "farmer",  distractors: ["baker", "sailor"] },
+      obj:  { word: "vegetables", distractors: ["flowers", "shoes"] },
+      he: "הַחַקְלַאי מְגַדֵּל יְרָקוֹת." },
+    { emoji: "👨‍⚕️🩺", pre: "The", mid: "helps",   post: ".",
+      subj: { word: "doctor",  distractors: ["teacher", "pilot"] },
+      obj:  { word: "people",  distractors: ["animals", "cars"] },
+      he: "הָרוֹפֵא עוֹזֵר לַאֲנָשִׁים." },
+    { emoji: "👨‍✈️✈️", pre: "The", mid: "flies",   post: ".",
+      subj: { word: "pilot",   distractors: ["sailor", "driver"] },
+      obj:  { word: "airplane", distractors: ["ship", "train"] },
+      he: "הַטַּיָּס מֵטִיס מָטוֹס." },
+    { emoji: "👨‍🍳🍲", pre: "The", mid: "cooks",   post: ".",
+      subj: { word: "chef",    distractors: ["waiter", "farmer"] },
+      obj:  { word: "soup",    distractors: ["cake", "salad"] },
+      he: "הַטַּבָּח מְבַשֵּׁל מָרָק." },
+    { emoji: "👨‍🚒🔥", pre: "The", mid: "fights",  post: ".",
+      subj: { word: "firefighter", distractors: ["police officer", "doctor"] },
+      obj:  { word: "fire",    distractors: ["flood", "storm"] },
+      he: "הַכַּבַּאי נִלְחָם בָּאֵשׁ." },
+    { emoji: "👨‍🚀🪐", pre: "The", mid: "explores", post: ".",
+      subj: { word: "astronaut", distractors: ["diver", "climber"] },
+      obj:  { word: "space",   distractors: ["ocean", "cave"] },
+      he: "הָאַסְטְרוֹנָאוּט חוֹקֵר אֶת הֶחָלָל." },
+    { emoji: "👨‍🎨🖼️", pre: "The", mid: "paints",  post: ".",
+      subj: { word: "painter", distractors: ["writer", "singer"] },
+      obj:  { word: "picture", distractors: ["song", "story"] },
+      he: "הַצַּיָּר מְצַיֵּר תְּמוּנָה." },
+    { emoji: "🧑‍🔬🔭", pre: "The", mid: "studies", post: ".",
+      subj: { word: "scientist", distractors: ["farmer", "baker"] },
+      obj:  { word: "stars",   distractors: ["plants", "rocks"] },
+      he: "הַמַּדְעָן חוֹקֵר אֶת הַכּוֹכָבִים." },
+    { emoji: "🎸🎶", pre: "The", mid: "plays",   post: ".",
+      subj: { word: "musician", distractors: ["painter", "dancer"] },
+      obj:  { word: "guitar",  distractors: ["drum", "violin"] },
+      he: "הַמּוּזִיקַאי מְנַגֵּן בְּגִיטָרָה." },
+    { emoji: "🎣🐟", pre: "The", mid: "catches", post: ".",
+      subj: { word: "fisherman", distractors: ["hunter", "farmer"] },
+      obj:  { word: "fish",    distractors: ["bird", "frog"] },
+      he: "הַדַּיָּג תּוֹפֵס דָּג." },
+    { emoji: "🧑‍🔧🚗", pre: "The", mid: "fixes",   post: ".",
+      subj: { word: "mechanic", distractors: ["driver", "painter"] },
+      obj:  { word: "car",     distractors: ["bike", "boat"] },
+      he: "הַמּוֹסַכְנִיק מְתַקֵּן אֶת הַמְּכוֹנִית." },
+    { emoji: "🏴‍☠️⛵", pre: "The", mid: "sails",   post: ".",
+      subj: { word: "pirate",  distractors: ["pilot", "farmer"] },
+      obj:  { word: "ship",    distractors: ["plane", "truck"] },
+      he: "שׁוֹדֵד הַיָּם מַפְלִיג בַּסְּפִינָה." },
+    { emoji: "📷🌅", pre: "The", mid: "takes",   post: ".",
+      subj: { word: "photographer", distractors: ["reporter", "painter"] },
+      obj:  { word: "photos",  distractors: ["notes", "maps"] },
+      he: "הַצַּלָּם מְצַלֵּם תְּמוּנוֹת." },
+
+    // --- everyday sentences (actions, places, colors) ---
+    { emoji: "👦🏀", pre: "The", mid: "plays",   post: ".",
+      subj: { word: "boy",   distractors: ["girl", "baby"] },
+      obj:  { word: "basketball", distractors: ["soccer", "tennis"] },
+      he: "הַיֶּלֶד מְשַׂחֵק כַּדּוּרְסַל." },
+    { emoji: "👶🛏️", pre: "The", mid: "sleeps in", post: ".",
+      subj: { word: "baby",  distractors: ["boy", "dog"] },
+      obj:  { word: "bed",   distractors: ["chair", "car"] },
+      he: "הַתִּינוֹק יָשֵׁן בַּמִּטָּה." },
+    { emoji: "🚪🟢", pre: "The", mid: "is",      post: ".",
+      subj: { word: "door",  distractors: ["window", "wall"] },
+      obj:  { word: "green", distractors: ["red", "blue"] },
+      he: "הַדֶּלֶת יְרֻקָּה." },
+    { emoji: "🚌🟡", pre: "The", mid: "is",      post: ".",
+      subj: { word: "bus",   distractors: ["car", "truck"] },
+      obj:  { word: "yellow", distractors: ["red", "blue"] },
+      he: "הָאוֹטוֹבּוּס צָהֹב." },
+    { emoji: "🍝🍅", pre: "The", mid: "has",     post: ".",
+      subj: { word: "spaghetti", distractors: ["pizza", "salad"] },
+      obj:  { word: "red sauce", distractors: ["cheese", "butter"] },
+      he: "לַסְּפָּגֶטִי יֵשׁ רֹטֶב אָדֹם." }
+  ];
+
+  class SentenceBuildGame {
+    constructor(id, scenes) {
+      this.id = id; this.scenes = scenes; this.last = null;
+      this.picEl = document.getElementById(id + "-pic");
+      this.sentEl = document.getElementById(id + "-sentence");
+      this.subjEl = document.getElementById(id + "-subj");
+      this.objEl = document.getElementById(id + "-obj");
+      this.fbEl = document.getElementById(id + "-feedback");
+      this.nextBtn = document.getElementById(id + "-next");
+      this.scoreEl = document.getElementById(id + "-score");
+      this.streakEl = document.getElementById(id + "-streak");
+      this.speakBtn = document.getElementById(id + "-speak");
+      this.hebBtn = document.getElementById(id + "-hebtn");
+      this.heEl = document.getElementById(id + "-he");
+      this.score = 0; this.streak = 0;
+      this.nextBtn.onclick = () => this.newRound();
+      this.speakBtn.onclick = () => say(this.sentenceText());
+      this.hebBtn.onclick = () => { this.heEl.textContent = this.scene.he; speakHebrewText(this.scene.he); };
+      this.newRound();
+    }
+
+    sentenceText() {
+      const s = this.scene;
+      return s.pre + " " + s.subj.word + " " + s.mid + " " + s.obj.word + s.post;
+    }
+
+    newRound() {
+      this.roundId = (this.roundId || 0) + 1;
+      if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+      const s = this.scene = randomDiff(this.scenes, this.last);
+      this.last = s;
+      this.subjDone = false; this.objDone = false; this.mistake = false;
+      this.picEl.textContent = s.emoji; popEl(this.picEl);
+      this.sentEl.innerHTML =
+        s.pre + ' <span class="slot" id="' + this.id + '-slot1">____</span> ' +
+        s.mid + ' <span class="slot" id="' + this.id + '-slot2">____</span>' + s.post;
+      this.slot1 = document.getElementById(this.id + "-slot1");
+      this.slot2 = document.getElementById(this.id + "-slot2");
+      this.buildBank(this.subjEl, s.subj, 1);
+      this.buildBank(this.objEl, s.obj, 2);
+      this.fbEl.textContent = "הַשְׁלִימוּ אֶת שְׁתֵּי הַמִּלִּים 👇";
+      this.fbEl.style.color = "#e8870c";
+      this.heEl.textContent = "";
+      this.nextBtn.style.visibility = "hidden";
+    }
+
+    buildBank(container, part, which) {
+      const choices = shuffle([part.word, ...part.distractors]);
+      container.className = "wordbank" + (choices.length === 2 ? " two" : "");
+      container.innerHTML = "";
+      choices.forEach(w => {
+        const b = document.createElement("button");
+        b.textContent = w;
+        b.onclick = () => this.pick(b, w, part.word, which);
+        container.appendChild(b);
+      });
+    }
+
+    pick(btn, word, correct, which) {
+      if (btn.disabled) return;
+      if ((which === 1 && this.subjDone) || (which === 2 && this.objDone)) return;
+      if (word === correct) {
+        btn.classList.add("correct");
+        const slot = which === 1 ? this.slot1 : this.slot2;
+        slot.textContent = word;
+        slot.classList.add("filled");
+        const bank = which === 1 ? this.subjEl : this.objEl;
+        bank.querySelectorAll("button").forEach(b => b.disabled = true);
+        if (which === 1) this.subjDone = true; else this.objDone = true;
+        const u = say(word);
+        if (this.subjDone && this.objDone) this.complete(u);
+      } else {
+        btn.classList.add("wrong");
+        btn.disabled = true;
+        this.mistake = true;
+        this.fbEl.textContent = "כִּמְעַט! נַסּוּ שׁוּב 😊";
+        this.fbEl.style.color = "#e8870c";
+      }
+    }
+
+    complete(wordUtter) {
+      this.score++;
+      this.scoreEl.textContent = this.score;
+      this.streak = this.mistake ? 0 : this.streak + 1;
+      this.streakEl.textContent = this.streak;
+      this.fbEl.textContent = "🎉 Well done! Great sentence!";
+      this.fbEl.style.color = "#2e9e5b";
+      this.nextBtn.style.visibility = "visible";
+      // read the full sentence, but only after the second word has finished —
+      // and only if the player hasn't moved on to a new round meanwhile
+      const rid = this.roundId;
+      let done = false;
+      const go = () => {
+        if (done || rid !== this.roundId) return;
+        done = true;
+        setTimeout(() => { if (rid === this.roundId) say(this.sentenceText()); }, 500);
+      };
+      if (wordUtter) { wordUtter.onend = go; setTimeout(go, 2500); }
+      else { setTimeout(go, 700); }
+    }
+  }
+  class G8 extends SentenceBuildGame { constructor() { super("g8", SCENES); } }
+
   /* ---------- start all games ---------- */
   const games = {
     g1: new G1(), g2: new G2(), g3: new G3(), g4: new G4(),
-    g5: new G5(), g6: new G6(), g7: new G7()
+    g5: new G5(), g6: new G6(), g7: new G7(), g8: new G8()
   };
 </script>
 </body>

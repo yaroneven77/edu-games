@@ -90,12 +90,14 @@
 
   .memboard {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 8px;
     margin: 6px 0 4px;
   }
   .memcard {
     aspect-ratio: 1 / 1;
+    min-width: 0;
+    overflow: hidden;
     font-family: inherit;
     font-size: 30px;
     font-weight: bold;

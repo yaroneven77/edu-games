@@ -186,12 +186,15 @@
   .blankword .blank { color: #dc2626; }
   .memboard {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 8px;
     margin: 6px 0 4px;
   }
   .memcard {
     aspect-ratio: 1 / 1;
+    min-width: 0;
+    overflow: hidden;
+    padding: 2px;
     font-family: inherit;
     font-size: 30px;
     font-weight: bold;
@@ -204,9 +207,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    text-align: center;
+    line-height: 1.05;
+    overflow-wrap: anywhere;
+    word-break: break-word;
     text-transform: lowercase;
   }
-  .memcard.word { font-size: 22px; }
+  .memcard.word { font-size: 20px; }
   .memcard.flipped { background: #fff7d6; }
   .memcard.matched { background: #34d399; color: #fff; cursor: default; }
   .memcard:active:not(.matched) { transform: scale(0.94); }

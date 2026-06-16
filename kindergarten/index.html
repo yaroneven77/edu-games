@@ -328,13 +328,18 @@
         this.lock = true;
         const a = this.first;
         this.first = null;
-        const e = randEncourage();
-        this.fb.textContent = e.he;
+        this.fb.textContent = "מָצְאוּ אֶת כָּל 6 הַזּוּגוֹת! 🧠";
         this.fb.style.color = "#e8870c";
-        speakAfterWord(u, e, () => {
-          [a, b].forEach(x => { x.classList.remove("flipped"); x.textContent = "❓"; });
-          this.lock = false;
-        });
+        let flipped = false;
+        const flipBack = () => {
+          if (flipped) return; flipped = true;
+          setTimeout(() => {
+            [a, b].forEach(x => { x.classList.remove("flipped"); x.textContent = "❓"; });
+            this.lock = false;
+          }, 700);
+        };
+        if (u) { u.onend = flipBack; setTimeout(flipBack, 3000); }
+        else { flipBack(); }
       }
     }
   }

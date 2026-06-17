@@ -438,6 +438,31 @@
     let round = 0, cpuScore = 0, meScore = 0;
     let state = "idle"; // idle|meReady|war|warMe|busy|between|done
     let cpuVal = 0, meVal = 0, warRound = 0, cpuThird = 0, meThird = 0;
+    let gameWinner = "me"; // predetermined winner of the current game: "me" | "cpu"
+
+    // Fairness quota: the computer may win at most once in any 5 consecutive games (<=30%).
+    // Enforced by spacing computer wins at least 5 games apart.
+    const QUOTA_KEY = "warQuota_v1", MIN_GAP = 5, CPU_CHANCE = 0.25;
+    function readQuota() {
+      try {
+        const q = JSON.parse(localStorage.getItem(QUOTA_KEY));
+        if (q && typeof q.n === "number" && typeof q.last === "number") return q;
+      } catch (e) {}
+      return { n: 0, last: -100 }; // n=games played, last=index of last computer win
+    }
+    function saveQuota(q) { try { localStorage.setItem(QUOTA_KEY, JSON.stringify(q)); } catch (e) {} }
+    function pickGameWinner() {
+      const q = readQuota();
+      const idx = q.n + 1; // index of the game about to be played
+      const cpuAllowed = (idx - q.last) >= MIN_GAP;
+      return (cpuAllowed && Math.random() < CPU_CHANCE) ? "cpu" : "me";
+    }
+    function commitGameResult(winner) {
+      const q = readQuota();
+      q.n += 1;
+      if (winner === "cpu") q.last = q.n;
+      saveQuota(q);
+    }
 
     function sayEn(text) {
       if (!("speechSynthesis" in window)) return;
@@ -471,6 +496,7 @@
     function startGame() {
       round = 0; cpuScore = 0; meScore = 0;
       warRound = 2 + Math.floor(Math.random() * (TOTAL_ROUNDS - 1));
+      gameWinner = pickGameWinner();
       updateScore(); resetCard(cpuCard); resetCard(meCard); clearWar();
       newRound();
     }
@@ -513,6 +539,9 @@
       setTimeout(() => { addMini(cpuWar, false); addMini(meWar, false); }, 150);
       setTimeout(() => { addMini(cpuWar, false); addMini(meWar, false); }, 450);
       cpuThird = draw(); meThird = draw(); while (meThird === cpuThird) meThird = draw();
+      // the war round is decisive (worth 8) -> make the predetermined game winner win it
+      if (gameWinner === "me" && meThird < cpuThird) { const t = meThird; meThird = cpuThird; cpuThird = t; }
+      else if (gameWinner === "cpu" && cpuThird < meThird) { const t = cpuThird; cpuThird = meThird; meThird = t; }
       setTimeout(() => { msg.textContent = "הקלף השלישי של המחשב..."; addMini(cpuWar, true, cpuThird); sayEn(word(cpuThird)); }, 950);
       setTimeout(() => { state = "warMe"; msg.textContent = "👆 לחצו לפתוח את הקלף השלישי של דין"; hint.textContent = "👆 לחצו על הקלף שלך"; }, 1750);
     }
@@ -530,6 +559,8 @@
     function endRoundOrNext() {
       if (round >= TOTAL_ROUNDS) {
         state = "done";
+        const winner = meScore > cpuScore ? "me" : (cpuScore > meScore ? "cpu" : gameWinner);
+        commitGameResult(winner);
         setTimeout(() => {
           if (meScore > cpuScore) msg.textContent = "🏆 דין ניצח את המשחק! אלוף! (" + meScore + ":" + cpuScore + ")";
           else if (cpuScore > meScore) msg.textContent = "🤖 המחשב ניצח הפעם (" + cpuScore + ":" + meScore + ") — ננסה שוב?";

@@ -29,7 +29,7 @@
     display: flex; gap: 14px; justify-content: center; align-items: center;
     margin: 4px 0 8px; font-size: 0.95rem; font-weight: 700;
   }
-  .scoreboard .s { background: rgba(255,255,255,0.15); border-radius: 12px; padding: 5px 14px; }
+  .scoreboard .s { background: rgba(255,255,255,0.15); border-radius: 12px; padding: 5px 14px; text-align: center; }
   .scoreboard .s b { display: block; font-size: 1.3rem; }
   .table { width: 100%; max-width: 460px; }
   .arena {
@@ -37,7 +37,6 @@
     width: 100%;
   }
   .arena .side { flex: 1 1 0; max-width: 180px; margin: 4px 0; }
-  .side { margin: 6px 0; }
   .label {
     font-size: clamp(0.8rem, 3.6vw, 0.95rem); font-weight: 700; margin-bottom: 5px;
     display: flex; align-items: center; justify-content: center; gap: 5px;
@@ -76,8 +75,25 @@
   .front .word { font-size: clamp(0.95rem, 4.5vw, 1.3rem); font-weight: 700; color: #2563eb; margin-top: 6px; text-transform: capitalize; }
   .front.joker { background: linear-gradient(135deg, #fde68a, #f59e0b); color: #7c2d12; }
   .front.joker .num { font-size: clamp(2rem, 10vw, 3.2rem); }
-  .card.win .inner { box-shadow: 0 0 0 0; }
   .card.win .front { border-color: #22c55e; box-shadow: 0 0 22px #22c55e; }
+  .warpile {
+    display: flex; gap: 4px; justify-content: center; align-items: center;
+    flex-wrap: wrap; min-height: 60px; margin-top: 6px;
+  }
+  .minicard {
+    width: 40px; height: 54px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 1.4rem;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+    animation: drop 0.25s ease;
+  }
+  .minicard.down {
+    background: repeating-linear-gradient(45deg, #1d4ed8, #1d4ed8 6px, #1e40af 6px, #1e40af 12px);
+    border: 2px solid #fff; color: #fff; font-size: 1.1rem;
+  }
+  .minicard.up { background: #fff; color: #1e3a8a; border: 2px solid #fcd34d; }
+  .minicard.up.joker { background: linear-gradient(135deg, #fde68a, #f59e0b); color: #7c2d12; font-size: 1rem; }
+  @keyframes drop { from { transform: translateY(-12px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
   .tap-hint { text-align: center; font-size: 0.8rem; opacity: 0.85; margin-top: 4px; height: 16px; }
   .msg {
     text-align: center; font-size: clamp(1.05rem, 4.5vw, 1.4rem); font-weight: 800; min-height: 34px;
@@ -121,6 +137,7 @@
             <div class="face front"><div class="num"></div><div class="word"></div></div>
           </div>
         </div>
+        <div class="warpile" id="cpuWar"></div>
       </div>
 
       <div class="side">
@@ -131,6 +148,7 @@
             <div class="face front"><div class="num"></div><div class="word"></div></div>
           </div>
         </div>
+        <div class="warpile" id="meWar"></div>
         <div class="tap-hint" id="tapHint"></div>
       </div>
     </div>
@@ -153,14 +171,13 @@
 
   const el = (id) => document.getElementById(id);
   const cpuCard = el("cpuCard"), meCard = el("meCard");
+  const cpuWar = el("cpuWar"), meWar = el("meWar");
   const msg = el("msg"), mainBtn = el("mainBtn"), tapHint = el("tapHint");
 
   let round = 0;
   let cpuScore = 0, meScore = 0;
-  let state = "idle"; // idle | cpuReady | meReady | done
-  let plan = [];       // the (rigged) round plan so Din always wins
-  let curRound = null;
-  let warRoundIndex = 1;
+  let state = "idle"; // idle | meReady | war | busy | between | done
+  let cpuVal = 0, meVal = 0;
 
   // ---- speech ----
   let voices = [];
@@ -185,27 +202,8 @@
     speechSynthesis.speak(u);
   }
 
-  // Build a plan where Din always wins, with exactly one "war" round.
-  function buildPlan() {
-    const rounds = [];
-    warRoundIndex = 1 + Math.floor(Math.random() * TOTAL_ROUNDS);
-    for (let i = 1; i <= TOTAL_ROUNDS; i++) {
-      if (i === warRoundIndex) {
-        // tie first, then Din wins the war
-        const tieVal = 2 + Math.floor(Math.random() * 8); // 2..9
-        const cpuW = 1 + Math.floor(Math.random() * 9);   // 1..9
-        let meW = cpuW + 1 + Math.floor(Math.random() * (10 - cpuW));
-        if (meW > 10) meW = 11; // joker tops it
-        rounds.push({ war: true, tie: tieVal, cpu: cpuW, me: meW });
-      } else {
-        const cpu = 1 + Math.floor(Math.random() * 9); // 1..9
-        let me = cpu + 1 + Math.floor(Math.random() * (10 - cpu));
-        if (me > 10) me = 11; // joker
-        rounds.push({ war: false, cpu, me });
-      }
-    }
-    return rounds;
-  }
+  const word = (v) => NUM_WORDS[v];
+  function draw() { return 1 + Math.floor(Math.random() * 11); } // 1..10 + joker(11)
 
   function setFace(cardEl, val) {
     const front = cardEl.querySelector(".front");
@@ -216,90 +214,131 @@
   function flip(cardEl, on) { cardEl.classList.toggle("flipped", on); }
   function reset(cardEl) { cardEl.classList.remove("flipped", "win"); }
 
-  function newRound() {
-    if (round >= TOTAL_ROUNDS) { startGame(); return; }
-    round++;
-    curRound = plan[round - 1];
-    state = "cpuTurn";
-    reset(cpuCard); reset(meCard);
-    msg.textContent = "🤖 המחשב פותח קלף...";
-    tapHint.textContent = "";
-    mainBtn.disabled = true;
-    mainBtn.textContent = "סבב " + round + " מתוך " + TOTAL_ROUNDS;
-    setTimeout(cpuReveal, 800);
+  function addMini(container, faceUp, val) {
+    const d = document.createElement("div");
+    if (faceUp) {
+      d.className = "minicard up" + (val === 11 ? " joker" : "");
+      d.textContent = (val === 11 ? "🃏" : val);
+    } else {
+      d.className = "minicard down";
+      d.textContent = "🂠";
+    }
+    container.appendChild(d);
+  }
+  function clearWar() { cpuWar.innerHTML = ""; meWar.innerHTML = ""; }
+
+  function updateScore() {
+    el("cpuScore").textContent = cpuScore;
+    el("meScore").textContent = meScore;
   }
 
   function startGame() {
     round = 0; cpuScore = 0; meScore = 0;
-    el("cpuScore").textContent = "0";
-    el("meScore").textContent = "0";
-    plan = buildPlan();
-    reset(cpuCard); reset(meCard);
+    updateScore();
+    reset(cpuCard); reset(meCard); clearWar();
     newRound();
   }
 
-  function cpuReveal() {
-    if (state !== "cpuTurn") return;
-    setFace(cpuCard, curRound.war ? curRound.tie : curRound.cpu);
-    flip(cpuCard, true);
-    sayEn(NUM_WORDS[curRound.war ? curRound.tie : curRound.cpu]);
-    state = "meReady";
-    msg.textContent = "⭐ עכשיו דין — לחצו על הקלף שלך";
-    tapHint.textContent = "👆 לחצו על הקלף שלך";
+  function newRound() {
+    if (round >= TOTAL_ROUNDS) { startGame(); return; }
+    round++;
+    state = "busy";
+    reset(cpuCard); reset(meCard); clearWar();
+    tapHint.textContent = "";
+    mainBtn.disabled = true;
+    mainBtn.textContent = "סבב " + round + " מתוך " + TOTAL_ROUNDS;
+    msg.textContent = "🤖 המחשב פותח קלף...";
+    cpuVal = draw();
+    setTimeout(() => {
+      setFace(cpuCard, cpuVal);
+      flip(cpuCard, true);
+      sayEn(word(cpuVal));
+      state = "meReady";
+      msg.textContent = "⭐ עכשיו דין — לחצו על הקלף שלך";
+      tapHint.textContent = "👆 לחצו על הקלף שלך";
+    }, 800);
   }
 
   function meReveal() {
     if (state !== "meReady") return;
+    state = "busy";
     tapHint.textContent = "";
-    const meFirst = curRound.war ? curRound.tie : curRound.me;
-    setFace(meCard, meFirst);
+    meVal = draw();
+    setFace(meCard, meVal);
     flip(meCard, true);
-    sayEn(NUM_WORDS[meFirst]);
-
-    if (curRound.war) {
-      // tie -> WAR!
-      state = "war";
-      msg.innerHTML = '<span class="war-flag">⚔️ מלחמה!</span>';
-      mainBtn.disabled = false;
-      mainBtn.textContent = "⚔️ קדימה למלחמה!";
-    } else {
-      decide(curRound.me, curRound.cpu);
-    }
+    sayEn(word(meVal));
+    setTimeout(() => compare(), 800);
   }
 
-  function warFlip() {
+  function compare() {
+    if (cpuVal === meVal) { startWar(); return; }
+    if (meVal > cpuVal) {
+      meScore++; updateScore(); meCard.classList.add("win");
+      msg.textContent = "🎉 דין ניצח בסבב! (" + label(meVal) + " > " + label(cpuVal) + ")";
+    } else {
+      cpuScore++; updateScore(); cpuCard.classList.add("win");
+      msg.textContent = "🤖 המחשב ניצח בסבב (" + label(cpuVal) + " > " + label(meVal) + ")";
+    }
+    endRoundOrNext();
+  }
+
+  function label(v) { return v === 11 ? "Joker" : NUM_WORDS[v]; }
+
+  function startWar() {
+    state = "war";
+    msg.innerHTML = '<span class="war-flag">⚔️ מלחמה! אותו מספר</span>';
+    mainBtn.disabled = false;
+    mainBtn.textContent = "⚔️ קדימה למלחמה!";
+  }
+
+  function doWar() {
     if (state !== "war") return;
     state = "busy";
+    mainBtn.disabled = true;
+    clearWar();
+    msg.textContent = "מניחים שני קלפים סגורים...";
+
+    // lay two face-down cards for each side
+    setTimeout(() => { addMini(cpuWar, false); addMini(meWar, false); }, 150);
+    setTimeout(() => { addMini(cpuWar, false); addMini(meWar, false); }, 450);
+
+    // decisive face-up cards (must differ so the war is resolved)
+    let cw = draw(), mw = draw();
+    while (mw === cw) { mw = draw(); }
+
     setTimeout(() => {
-      setFace(cpuCard, curRound.cpu);
-      flip(cpuCard, false);
-      setTimeout(() => { flip(cpuCard, true); sayEn(NUM_WORDS[curRound.cpu]); }, 250);
-    }, 200);
+      msg.textContent = "ועכשיו קלף פתוח...";
+      addMini(cpuWar, true, cw);
+      sayEn(word(cw));
+    }, 900);
     setTimeout(() => {
-      setFace(meCard, curRound.me);
-      flip(meCard, false);
-      setTimeout(() => {
-        flip(meCard, true);
-        sayEn(NUM_WORDS[curRound.me]);
-        decide(curRound.me, curRound.cpu);
-      }, 250);
-    }, 1100);
+      addMini(meWar, true, mw);
+      sayEn(word(mw));
+    }, 1700);
+    setTimeout(() => decideWar(cw, mw), 2600);
   }
 
-  function decide(meVal, cpuVal) {
-    // Din always wins by design
-    meScore++;
-    el("meScore").textContent = meScore;
-    meCard.classList.add("win");
-    msg.textContent = "🎉 דין ניצח! כל הכבוד! (" + (meVal === 11 ? "Joker" : NUM_WORDS[meVal]) + " > " + NUM_WORDS[cpuVal] + ")";
+  function decideWar(cw, mw) {
+    if (mw > cw) {
+      meScore++; updateScore(); meCard.classList.add("win");
+      msg.textContent = "🎉 דין ניצח את המלחמה! (" + label(mw) + " > " + label(cw) + ")";
+    } else {
+      cpuScore++; updateScore(); cpuCard.classList.add("win");
+      msg.textContent = "🤖 המחשב ניצח את המלחמה (" + label(cw) + " > " + label(mw) + ")";
+    }
+    endRoundOrNext();
+  }
 
+  function endRoundOrNext() {
     if (round >= TOTAL_ROUNDS) {
       state = "done";
       setTimeout(() => {
-        msg.textContent = "🏆 דין ניצח את כל המשחק! אלוף!";
+        if (meScore > cpuScore) msg.textContent = "🏆 דין ניצח את המשחק! אלוף! (" + meScore + ":" + cpuScore + ")";
+        else if (cpuScore > meScore) msg.textContent = "🤖 המחשב ניצח הפעם (" + cpuScore + ":" + meScore + ") — ננסה שוב?";
+        else msg.textContent = "🤝 תיקו! משחק צמוד (" + meScore + ":" + cpuScore + ")";
         mainBtn.disabled = false;
         mainBtn.textContent = "🔁 משחק חדש";
-      }, 1400);
+      }, 1300);
     } else {
       state = "between";
       mainBtn.disabled = false;
@@ -308,12 +347,12 @@
   }
 
   // ---- interactions ----
-  // computer's card opens by itself (auto-flip in newRound)
+  // the computer's card opens by itself (auto-flip in newRound)
   meCard.addEventListener("click", () => { if (state === "meReady") meReveal(); });
   mainBtn.addEventListener("click", () => {
     if (state === "idle" || state === "done") startGame();
     else if (state === "between") newRound();
-    else if (state === "war") warFlip();
+    else if (state === "war") doWar();
   });
 </script>
 </body>

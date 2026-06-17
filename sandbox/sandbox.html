@@ -220,12 +220,13 @@
     if (round >= TOTAL_ROUNDS) { startGame(); return; }
     round++;
     curRound = plan[round - 1];
-    state = "cpuReady";
+    state = "cpuTurn";
     reset(cpuCard); reset(meCard);
-    msg.textContent = "🤖 תורו של המחשב — לחצו על הקלף שלו";
+    msg.textContent = "🤖 המחשב פותח קלף...";
     tapHint.textContent = "";
     mainBtn.disabled = true;
     mainBtn.textContent = "סבב " + round + " מתוך " + TOTAL_ROUNDS;
+    setTimeout(cpuReveal, 800);
   }
 
   function startGame() {
@@ -238,7 +239,7 @@
   }
 
   function cpuReveal() {
-    if (state !== "cpuReady") return;
+    if (state !== "cpuTurn") return;
     setFace(cpuCard, curRound.war ? curRound.tie : curRound.cpu);
     flip(cpuCard, true);
     sayEn(NUM_WORDS[curRound.war ? curRound.tie : curRound.cpu]);
@@ -307,7 +308,7 @@
   }
 
   // ---- interactions ----
-  cpuCard.addEventListener("click", () => { if (state === "cpuReady") cpuReveal(); });
+  // computer's card opens by itself (auto-flip in newRound)
   meCard.addEventListener("click", () => { if (state === "meReady") meReveal(); });
   mainBtn.addEventListener("click", () => {
     if (state === "idle" || state === "done") startGame();

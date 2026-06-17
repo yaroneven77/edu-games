@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<script data-goatcounter="https://yaroneven.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<title>מלחמת מספרים באנגלית · Number War</title>
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: linear-gradient(160deg, #1e3a8a, #2563eb 60%, #38bdf8);
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    overflow-x: hidden;
+  }
+  h1 { font-size: clamp(1.1rem, 5vw, 1.5rem); margin: 2px 0; text-align: center; }
+  .sub { font-size: clamp(0.75rem, 3.2vw, 0.9rem); opacity: 0.85; margin-bottom: 6px; text-align: center; }
+  .badge {
+    background: #f59e0b; color: #fff; border-radius: 999px;
+    padding: 3px 12px; font-size: 0.72rem; margin-bottom: 4px;
+  }
+  .scoreboard {
+    display: flex; gap: 14px; justify-content: center; align-items: center;
+    margin: 4px 0 8px; font-size: 0.95rem; font-weight: 700;
+  }
+  .scoreboard .s { background: rgba(255,255,255,0.15); border-radius: 12px; padding: 5px 14px; text-align: center; }
+  .scoreboard .s b { display: block; font-size: 1.3rem; }
+  .table { width: 100%; max-width: 460px; }
+  .arena {
+    display: flex; gap: 10px; justify-content: center; align-items: flex-start;
+    width: 100%;
+  }
+  .arena .side { flex: 1 1 0; max-width: 180px; margin: 4px 0; }
+  .label {
+    font-size: clamp(0.8rem, 3.6vw, 0.95rem); font-weight: 700; margin-bottom: 5px;
+    display: flex; align-items: center; justify-content: center; gap: 5px;
+  }
+  .card {
+    width: clamp(108px, 40vw, 150px); aspect-ratio: 3 / 4; height: auto; margin: 0 auto;
+    border-radius: 18px; position: relative;
+    cursor: pointer; user-select: none;
+    transition: transform 0.15s;
+    perspective: 800px;
+  }
+  .card .inner {
+    position: absolute; inset: 0;
+    transition: transform 0.5s;
+    transform-style: preserve-3d;
+  }
+  .card.flipped .inner { transform: rotateY(180deg); }
+  .face {
+    position: absolute; inset: 0;
+    border-radius: 18px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    backface-visibility: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  }
+  .back {
+    background: repeating-linear-gradient(45deg, #1d4ed8, #1d4ed8 12px, #1e40af 12px, #1e40af 24px);
+    border: 4px solid #fff;
+    font-size: clamp(2rem, 11vw, 3rem);
+  }
+  .front {
+    background: #fff; color: #1e3a8a;
+    transform: rotateY(180deg);
+    border: 4px solid #fcd34d;
+  }
+  .front .num { font-size: clamp(2.8rem, 15vw, 5rem); font-weight: 800; line-height: 1; }
+  .front .word { font-size: clamp(0.95rem, 4.5vw, 1.3rem); font-weight: 700; color: #2563eb; margin-top: 6px; text-transform: capitalize; }
+  .front.joker { background: linear-gradient(135deg, #fde68a, #f59e0b); color: #7c2d12; }
+  .front.joker .num { font-size: clamp(2rem, 10vw, 3.2rem); }
+  .card.win .front { border-color: #22c55e; box-shadow: 0 0 22px #22c55e; }
+  .warpile {
+    display: flex; gap: 4px; justify-content: center; align-items: center;
+    flex-wrap: wrap; min-height: 60px; margin-top: 6px;
+  }
+  .minicard {
+    width: 40px; height: 54px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 1.4rem;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+    animation: drop 0.25s ease;
+  }
+  .minicard.down {
+    background: repeating-linear-gradient(45deg, #1d4ed8, #1d4ed8 6px, #1e40af 6px, #1e40af 12px);
+    border: 2px solid #fff; color: #fff; font-size: 1.1rem;
+  }
+  .minicard.up { background: #fff; color: #1e3a8a; border: 2px solid #fcd34d; }
+  .minicard.up.joker { background: linear-gradient(135deg, #fde68a, #f59e0b); color: #7c2d12; font-size: 1rem; }
+  @keyframes drop { from { transform: translateY(-12px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  .tap-hint { text-align: center; font-size: 0.8rem; opacity: 0.85; margin-top: 4px; height: 16px; }
+  .msg {
+    text-align: center; font-size: clamp(1.05rem, 4.5vw, 1.4rem); font-weight: 800; min-height: 34px;
+    margin: 8px 0; text-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  }
+  .btn {
+    display: block; margin: 6px auto; padding: 12px 26px;
+    font-size: 1.05rem; font-weight: 800; border: none; border-radius: 999px;
+    background: #fcd34d; color: #7c2d12; cursor: pointer;
+    box-shadow: 0 6px 0 #d97706; transition: transform 0.1s, box-shadow 0.1s;
+  }
+  .btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #d97706; }
+  .btn:disabled { opacity: 0.5; cursor: default; box-shadow: 0 6px 0 #9ca3af; background: #e5e7eb; color: #6b7280; }
+  .war-flag {
+    display: inline-block; background: #dc2626; color: #fff;
+    padding: 4px 14px; border-radius: 999px; font-weight: 800;
+    animation: pulse 0.6s infinite alternate;
+  }
+  @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.12); } }
+  .foot { margin-top: 14px; font-size: 0.75rem; opacity: 0.7; text-align: center; }
+  .foot a { color: #fde68a; }
+</style>
+</head>
+<body>
+  <h1>⚔️ מלחמת מספרים באנגלית</h1>
+  <div class="sub">Number War · לדין, גיל 4-6 — לומדים מספרים באנגלית!</div>
+
+  <div class="scoreboard">
+    <div class="s">🤖 מחשב<b id="cpuScore">0</b></div>
+    <div class="s">⭐ דין<b id="meScore">0</b></div>
+  </div>
+
+  <div class="table">
+    <div class="arena">
+      <div class="side">
+        <div class="label">🤖 המחשב</div>
+        <div class="card" id="cpuCard">
+          <div class="inner">
+            <div class="face back">🂠</div>
+            <div class="face front"><div class="num"></div><div class="word"></div></div>
+          </div>
+        </div>
+        <div class="warpile" id="cpuWar"></div>
+      </div>
+
+      <div class="side">
+        <div class="label">⭐ דין</div>
+        <div class="card" id="meCard">
+          <div class="inner">
+            <div class="face back">🂠</div>
+            <div class="face front"><div class="num"></div><div class="word"></div></div>
+          </div>
+        </div>
+        <div class="warpile" id="meWar"></div>
+        <div class="tap-hint" id="tapHint"></div>
+      </div>
+    </div>
+
+    <div class="msg" id="msg">לחצו "סבב חדש" כדי להתחיל!</div>
+  </div>
+
+  <button class="btn" id="mainBtn">▶️ סבב חדש</button>
+
+  <div class="foot"><a href="index.html">⬆️🏠 חזרה למשחקי הגן</a></div>
+
+<script>
+  const NUM_WORDS = {
+    1:"one",2:"two",3:"three",4:"four",5:"five",
+    6:"six",7:"seven",8:"eight",9:"nine",10:"ten",11:"joker"
+  };
+  const TOTAL_ROUNDS = 6;
+  const WAR_PILE = 8; // cards in the war pile: 2 tied + 2+2 closed + 2 thirds
+
+  const el = (id) => document.getElementById(id);
+  const cpuCard = el("cpuCard"), meCard = el("meCard");
+  const cpuWar = el("cpuWar"), meWar = el("meWar");
+  const msg = el("msg"), mainBtn = el("mainBtn"), tapHint = el("tapHint");
+
+  let round = 0;
+  let cpuScore = 0, meScore = 0;
+  let state = "idle"; // idle | meReady | war | warMe | busy | between | done
+  let cpuVal = 0, meVal = 0;
+  let warRound = 0;            // which round (2..6) is the single war
+  let cpuThird = 0, meThird = 0;
+
+  // ---- speech ----
+  let voices = [];
+  function loadVoices() { voices = window.speechSynthesis ? speechSynthesis.getVoices() : []; }
+  if (window.speechSynthesis) {
+    loadVoices();
+    speechSynthesis.onvoiceschanged = loadVoices;
+  }
+  function pickEnVoice() {
+    return voices.find(v => /en[-_]US/i.test(v.lang)) ||
+           voices.find(v => /^en/i.test(v.lang)) || null;
+  }
+  function sayEn(text) {
+    if (!window.speechSynthesis) return;
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = "en-US";
+    const v = pickEnVoice();
+    if (v) u.voice = v;
+    u.rate = 0.75;
+    u.pitch = 1.1;
+    speechSynthesis.speak(u);
+  }
+
+  const word = (v) => NUM_WORDS[v];
+  function draw() { return 1 + Math.floor(Math.random() * 11); } // 1..10 + joker(11)
+
+  function setFace(cardEl, val) {
+    const front = cardEl.querySelector(".front");
+    front.querySelector(".num").textContent = (val === 11 ? "🃏" : val);
+    front.querySelector(".word").textContent = (val === 11 ? "Joker" : NUM_WORDS[val]);
+    front.classList.toggle("joker", val === 11);
+  }
+  function flip(cardEl, on) { cardEl.classList.toggle("flipped", on); }
+  function reset(cardEl) { cardEl.classList.remove("flipped", "win"); }
+
+  function addMini(container, faceUp, val) {
+    const d = document.createElement("div");
+    if (faceUp) {
+      d.className = "minicard up" + (val === 11 ? " joker" : "");
+      d.textContent = (val === 11 ? "🃏" : val);
+    } else {
+      d.className = "minicard down";
+      d.textContent = "🂠";
+    }
+    container.appendChild(d);
+  }
+  function clearWar() { cpuWar.innerHTML = ""; meWar.innerHTML = ""; }
+
+  function updateScore() {
+    el("cpuScore").textContent = cpuScore;
+    el("meScore").textContent = meScore;
+  }
+
+  function startGame() {
+    round = 0; cpuScore = 0; meScore = 0;
+    warRound = 2 + Math.floor(Math.random() * (TOTAL_ROUNDS - 1)); // 2..6, never the first round
+    updateScore();
+    reset(cpuCard); reset(meCard); clearWar();
+    newRound();
+  }
+
+  function newRound() {
+    if (round >= TOTAL_ROUNDS) { startGame(); return; }
+    round++;
+    state = "busy";
+    reset(cpuCard); reset(meCard); clearWar();
+    tapHint.textContent = "";
+    mainBtn.disabled = true;
+    mainBtn.textContent = "סבב " + round + " מתוך " + TOTAL_ROUNDS;
+    msg.textContent = "🤖 המחשב פותח קלף...";
+    if (round === warRound) {
+      cpuVal = draw();
+      meVal = cpuVal; // identical cards -> war this round
+    } else {
+      cpuVal = draw();
+      meVal = draw();
+      while (meVal === cpuVal) { meVal = draw(); } // no accidental war in normal rounds
+    }
+    setTimeout(() => {
+      setFace(cpuCard, cpuVal);
+      flip(cpuCard, true);
+      sayEn(word(cpuVal));
+      state = "meReady";
+      msg.textContent = "⭐ עכשיו דין — לחצו על הקלף שלך";
+      tapHint.textContent = "👆 לחצו על הקלף שלך";
+    }, 800);
+  }
+
+  function meReveal() {
+    if (state !== "meReady") return;
+    state = "busy";
+    tapHint.textContent = "";
+    setFace(meCard, meVal);
+    flip(meCard, true);
+    sayEn(word(meVal));
+    setTimeout(() => {
+      if (cpuVal === meVal) startWar();
+      else decideRound();
+    }, 800);
+  }
+
+  function decideRound() {
+    if (meVal > cpuVal) {
+      meScore++; updateScore(); meCard.classList.add("win");
+      msg.textContent = "🎉 דין ניצח בסבב! (" + label(meVal) + " > " + label(cpuVal) + ")";
+    } else {
+      cpuScore++; updateScore(); cpuCard.classList.add("win");
+      msg.textContent = "🤖 המחשב ניצח בסבב (" + label(cpuVal) + " > " + label(meVal) + ")";
+    }
+    endRoundOrNext();
+  }
+
+  function label(v) { return v === 11 ? "Joker" : NUM_WORDS[v]; }
+
+  function startWar() {
+    state = "war";
+    msg.innerHTML = '<span class="war-flag">⚔️ מלחמה! אותו מספר</span>';
+    mainBtn.disabled = false;
+    mainBtn.textContent = "⚔️ קדימה למלחמה!";
+  }
+
+  function doWar() {
+    if (state !== "war") return;
+    state = "busy";
+    mainBtn.disabled = true;
+    clearWar();
+    msg.textContent = "מניחים שני קלפים סגורים...";
+
+    // each side lays two face-down cards
+    setTimeout(() => { addMini(cpuWar, false); addMini(meWar, false); }, 150);
+    setTimeout(() => { addMini(cpuWar, false); addMini(meWar, false); }, 450);
+
+    // third cards (must differ so the war is decisive)
+    cpuThird = draw();
+    meThird = draw();
+    while (meThird === cpuThird) { meThird = draw(); }
+
+    // computer's third card opens by itself
+    setTimeout(() => {
+      msg.textContent = "הקלף השלישי של המחשב...";
+      addMini(cpuWar, true, cpuThird);
+      sayEn(word(cpuThird));
+    }, 950);
+
+    // now Din taps to open his third card
+    setTimeout(() => {
+      state = "warMe";
+      msg.textContent = "👆 לחצו לפתוח את הקלף השלישי של דין";
+      tapHint.textContent = "👆 לחצו על הקלף שלך";
+    }, 1750);
+  }
+
+  function warMeReveal() {
+    if (state !== "warMe") return;
+    state = "busy";
+    tapHint.textContent = "";
+    addMini(meWar, true, meThird);
+    sayEn(word(meThird));
+    setTimeout(() => decideWar(), 900);
+  }
+
+  function decideWar() {
+    if (meThird > cpuThird) {
+      meScore += WAR_PILE; updateScore(); meCard.classList.add("win");
+      msg.textContent = "🎉 דין ניצח את המלחמה ולקח את כל " + WAR_PILE + " הקלפים! (" + label(meThird) + " > " + label(cpuThird) + ")";
+    } else {
+      cpuScore += WAR_PILE; updateScore(); cpuCard.classList.add("win");
+      msg.textContent = "🤖 המחשב ניצח את המלחמה ולקח את כל " + WAR_PILE + " הקלפים (" + label(cpuThird) + " > " + label(meThird) + ")";
+    }
+    endRoundOrNext();
+  }
+
+  function endRoundOrNext() {
+    if (round >= TOTAL_ROUNDS) {
+      state = "done";
+      setTimeout(() => {
+        if (meScore > cpuScore) msg.textContent = "🏆 דין ניצח את המשחק! אלוף! (" + meScore + ":" + cpuScore + ")";
+        else if (cpuScore > meScore) msg.textContent = "🤖 המחשב ניצח הפעם (" + cpuScore + ":" + meScore + ") — ננסה שוב?";
+        else msg.textContent = "🤝 תיקו! משחק צמוד (" + meScore + ":" + cpuScore + ")";
+        mainBtn.disabled = false;
+        mainBtn.textContent = "🔁 משחק חדש";
+      }, 1300);
+    } else {
+      state = "between";
+      mainBtn.disabled = false;
+      mainBtn.textContent = "➡️ סבב הבא";
+    }
+  }
+
+  // ---- interactions ----
+  // the computer's card opens by itself (auto-flip in newRound)
+  meCard.addEventListener("click", () => {
+    if (state === "meReady") meReveal();
+    else if (state === "warMe") warMeReveal();
+  });
+  mainBtn.addEventListener("click", () => {
+    if (state === "idle" || state === "done") startGame();
+    else if (state === "between") newRound();
+    else if (state === "war") doWar();
+  });
+</script>
+</body>
+</html>

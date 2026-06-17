@@ -13,7 +13,7 @@
     background: linear-gradient(135deg, #ffd194 0%, #f9a1bc 100%);
     min-height: 100vh;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     padding: 16px;
   }
@@ -115,6 +115,46 @@
   .memcard.flipped { background: #fff7d6; }
   .memcard.matched { background: #34d399; color: #fff; cursor: default; }
   .memcard:active:not(.matched) { transform: scale(0.94); }
+
+  /* ---- Number War (game 2), namespaced w- to match kindergarten card UI ---- */
+  .w-arena { display: flex; gap: 10px; justify-content: center; align-items: flex-start; margin: 6px 0; }
+  .w-side { flex: 1 1 0; max-width: 170px; }
+  .w-label { font-size: 16px; font-weight: 700; color: #555; margin-bottom: 6px; }
+  .w-card {
+    width: clamp(92px, 34vw, 130px); aspect-ratio: 3 / 4; height: auto; margin: 0 auto;
+    position: relative; cursor: pointer; user-select: none; perspective: 800px;
+  }
+  .w-inner { position: absolute; inset: 0; transition: transform 0.5s; transform-style: preserve-3d; }
+  .w-card.flipped .w-inner { transform: rotateY(180deg); }
+  .w-face {
+    position: absolute; inset: 0; border-radius: 14px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    backface-visibility: hidden; box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+  }
+  .w-back {
+    background: repeating-linear-gradient(45deg, #1d4ed8, #1d4ed8 12px, #1e40af 12px, #1e40af 24px);
+    border: 4px solid #fff; font-size: clamp(1.8rem, 10vw, 2.6rem); color: #fff;
+  }
+  .w-front { background: #fff; color: #1e3a8a; transform: rotateY(180deg); border: 4px solid #fcd34d; }
+  .w-front .w-num { font-size: clamp(2.4rem, 13vw, 4rem); font-weight: 800; line-height: 1; }
+  .w-front .w-word { font-size: clamp(0.9rem, 4vw, 1.2rem); font-weight: 700; color: #2563eb; margin-top: 4px; text-transform: capitalize; }
+  .w-front.joker { background: linear-gradient(135deg, #fde68a, #f59e0b); color: #7c2d12; }
+  .w-front.joker .w-num { font-size: clamp(1.8rem, 9vw, 2.8rem); }
+  .w-card.win .w-front { border-color: #22c55e; box-shadow: 0 0 20px #22c55e; }
+  .w-pile { display: flex; gap: 4px; justify-content: center; align-items: center; flex-wrap: wrap; min-height: 56px; margin-top: 6px; }
+  .w-mini {
+    width: 36px; height: 48px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 1.3rem; box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+    animation: drop 0.25s ease;
+  }
+  .w-mini.down { background: repeating-linear-gradient(45deg, #1d4ed8, #1d4ed8 6px, #1e40af 6px, #1e40af 12px); border: 2px solid #fff; color: #fff; font-size: 1rem; }
+  .w-mini.up { background: #fff; color: #1e3a8a; border: 2px solid #fcd34d; }
+  .w-mini.up.joker { background: linear-gradient(135deg, #fde68a, #f59e0b); color: #7c2d12; font-size: 0.95rem; }
+  @keyframes drop { from { transform: translateY(-12px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  .w-hint { text-align: center; font-size: 13px; color: #c0399b; font-weight: 700; min-height: 18px; margin-top: 4px; }
+  .w-flag { display: inline-block; background: #dc2626; color: #fff; padding: 4px 14px; border-radius: 999px; font-weight: 800; animation: pulse 0.6s infinite alternate; }
+  @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.12); } }
 </style>
 </head>
 <body>
@@ -138,16 +178,44 @@
         <button class="next" id="g1-next">Play again 🔄</button>
       </div>
 
-      <!-- GAME 2: Number War (embedded, isolated) -->
+      <!-- GAME 2: Number War (native, same card UI as Picture Pairs) -->
       <div class="game" id="g2">
-        <iframe src="war.html" title="מלחמת מספרים" loading="lazy"
-                style="width:100%;height:640px;border:0;border-radius:20px;display:block;"></iframe>
+        <div class="topbar">
+          <span class="score">🤖 <span id="g2-cpu">0</span></span>
+          <span class="streak">⭐ <span id="g2-me">0</span></span>
+        </div>
+        <div class="he-instr" dir="rtl">מִלְחֶמֶת מִסְפָּרִים! לְחַצוּ עַל הַקְּלָף שֶׁלָּכֶם וְאִמְרוּ אֶת הַמִּסְפָּר בְּאַנְגְּלִית. הַגָּבוֹהַּ מְנַצֵּחַ.</div>
+        <div class="w-arena">
+          <div class="w-side">
+            <div class="w-label">🤖 המחשב</div>
+            <div class="w-card" id="g2-cpuCard">
+              <div class="w-inner">
+                <div class="w-face w-back">🂠</div>
+                <div class="w-face w-front"><div class="w-num"></div><div class="w-word"></div></div>
+              </div>
+            </div>
+            <div class="w-pile" id="g2-cpuWar"></div>
+          </div>
+          <div class="w-side">
+            <div class="w-label">⭐ דין</div>
+            <div class="w-card" id="g2-meCard">
+              <div class="w-inner">
+                <div class="w-face w-back">🂠</div>
+                <div class="w-face w-front"><div class="w-num"></div><div class="w-word"></div></div>
+              </div>
+            </div>
+            <div class="w-pile" id="g2-meWar"></div>
+            <div class="w-hint" id="g2-hint"></div>
+          </div>
+        </div>
+        <div class="feedback" id="g2-msg">לחצו "התחל משחק" כדי להתחיל!</div>
+        <button class="next" id="g2-btn" style="visibility:visible;">▶️ התחל משחק</button>
       </div>
     </div>
-  </div>
 
-  <div class="ver" style="text-align:center;margin-top:10px;font-size:11px;color:rgba(255,255,255,0.7);font-family:monospace;">
-    גרסה · ver <span id="buildVer">edeb26d</span>
+    <div class="ver" style="text-align:center;margin-top:10px;font-size:11px;color:rgba(255,255,255,0.7);font-family:monospace;">
+      ver <span id="buildVer">dev</span>
+    </div>
   </div>
 
 <script>
@@ -357,6 +425,131 @@
     }
   }
 
+  /* ---------- Game 2: Number War ---------- */
+  function initWar() {
+    const NUM_WORDS = {1:"one",2:"two",3:"three",4:"four",5:"five",
+      6:"six",7:"seven",8:"eight",9:"nine",10:"ten",11:"joker"};
+    const TOTAL_ROUNDS = 6, WAR_PILE = 8;
+    const el = (id) => document.getElementById(id);
+    const cpuCard = el("g2-cpuCard"), meCard = el("g2-meCard");
+    const cpuWar = el("g2-cpuWar"), meWar = el("g2-meWar");
+    const msg = el("g2-msg"), mainBtn = el("g2-btn"), hint = el("g2-hint");
+
+    let round = 0, cpuScore = 0, meScore = 0;
+    let state = "idle"; // idle|meReady|war|warMe|busy|between|done
+    let cpuVal = 0, meVal = 0, warRound = 0, cpuThird = 0, meThird = 0;
+
+    function sayEn(text) {
+      if (!("speechSynthesis" in window)) return;
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = "en-US"; u.rate = 0.75; u.pitch = 1.1;
+      if (femaleVoice) u.voice = femaleVoice;
+      window.speechSynthesis.speak(u);
+    }
+    const word = (v) => NUM_WORDS[v];
+    const label = (v) => v === 11 ? "Joker" : NUM_WORDS[v];
+    const draw = () => 1 + Math.floor(Math.random() * 11);
+
+    function setFace(cardEl, val) {
+      const front = cardEl.querySelector(".w-front");
+      front.querySelector(".w-num").textContent = (val === 11 ? "🃏" : val);
+      front.querySelector(".w-word").textContent = (val === 11 ? "Joker" : NUM_WORDS[val]);
+      front.classList.toggle("joker", val === 11);
+    }
+    const flip = (c, on) => c.classList.toggle("flipped", on);
+    const resetCard = (c) => c.classList.remove("flipped", "win");
+    function addMini(container, faceUp, val) {
+      const d = document.createElement("div");
+      if (faceUp) { d.className = "w-mini up" + (val === 11 ? " joker" : ""); d.textContent = (val === 11 ? "🃏" : val); }
+      else { d.className = "w-mini down"; d.textContent = "🂠"; }
+      container.appendChild(d);
+    }
+    const clearWar = () => { cpuWar.innerHTML = ""; meWar.innerHTML = ""; };
+    function updateScore() { el("g2-cpu").textContent = cpuScore; el("g2-me").textContent = meScore; }
+
+    function startGame() {
+      round = 0; cpuScore = 0; meScore = 0;
+      warRound = 2 + Math.floor(Math.random() * (TOTAL_ROUNDS - 1));
+      updateScore(); resetCard(cpuCard); resetCard(meCard); clearWar();
+      newRound();
+    }
+    function newRound() {
+      if (round >= TOTAL_ROUNDS) { startGame(); return; }
+      round++; state = "busy";
+      resetCard(cpuCard); resetCard(meCard); clearWar();
+      hint.textContent = ""; mainBtn.disabled = true;
+      mainBtn.textContent = "סבב " + round + " מתוך " + TOTAL_ROUNDS;
+      msg.textContent = "🤖 המחשב פותח קלף...";
+      if (round === warRound) { cpuVal = draw(); meVal = cpuVal; }
+      else { cpuVal = draw(); meVal = draw(); while (meVal === cpuVal) meVal = draw(); }
+      setTimeout(() => {
+        setFace(cpuCard, cpuVal); flip(cpuCard, true); sayEn(word(cpuVal));
+        state = "meReady";
+        msg.textContent = "⭐ עכשיו דין — לחצו על הקלף שלך";
+        hint.textContent = "👆 לחצו על הקלף שלך";
+      }, 800);
+    }
+    function meReveal() {
+      if (state !== "meReady") return;
+      state = "busy"; hint.textContent = "";
+      setFace(meCard, meVal); flip(meCard, true); sayEn(word(meVal));
+      setTimeout(() => { if (cpuVal === meVal) startWar(); else decideRound(); }, 800);
+    }
+    function decideRound() {
+      if (meVal > cpuVal) { meScore++; updateScore(); meCard.classList.add("win"); msg.textContent = "🎉 דין ניצח בסבב! (" + label(meVal) + " > " + label(cpuVal) + ")"; }
+      else { cpuScore++; updateScore(); cpuCard.classList.add("win"); msg.textContent = "🤖 המחשב ניצח בסבב (" + label(cpuVal) + " > " + label(meVal) + ")"; }
+      endRoundOrNext();
+    }
+    function startWar() {
+      state = "war";
+      msg.innerHTML = '<span class="w-flag">⚔️ מלחמה! אותו מספר</span>';
+      mainBtn.disabled = false; mainBtn.textContent = "⚔️ קדימה למלחמה!";
+    }
+    function doWar() {
+      if (state !== "war") return;
+      state = "busy"; mainBtn.disabled = true; clearWar();
+      msg.textContent = "מניחים שני קלפים סגורים...";
+      setTimeout(() => { addMini(cpuWar, false); addMini(meWar, false); }, 150);
+      setTimeout(() => { addMini(cpuWar, false); addMini(meWar, false); }, 450);
+      cpuThird = draw(); meThird = draw(); while (meThird === cpuThird) meThird = draw();
+      setTimeout(() => { msg.textContent = "הקלף השלישי של המחשב..."; addMini(cpuWar, true, cpuThird); sayEn(word(cpuThird)); }, 950);
+      setTimeout(() => { state = "warMe"; msg.textContent = "👆 לחצו לפתוח את הקלף השלישי של דין"; hint.textContent = "👆 לחצו על הקלף שלך"; }, 1750);
+    }
+    function warMeReveal() {
+      if (state !== "warMe") return;
+      state = "busy"; hint.textContent = "";
+      addMini(meWar, true, meThird); sayEn(word(meThird));
+      setTimeout(decideWar, 900);
+    }
+    function decideWar() {
+      if (meThird > cpuThird) { meScore += WAR_PILE; updateScore(); meCard.classList.add("win"); msg.textContent = "🎉 דין ניצח את המלחמה ולקח את כל " + WAR_PILE + " הקלפים! (" + label(meThird) + " > " + label(cpuThird) + ")"; }
+      else { cpuScore += WAR_PILE; updateScore(); cpuCard.classList.add("win"); msg.textContent = "🤖 המחשב ניצח את המלחמה ולקח את כל " + WAR_PILE + " הקלפים (" + label(cpuThird) + " > " + label(meThird) + ")"; }
+      endRoundOrNext();
+    }
+    function endRoundOrNext() {
+      if (round >= TOTAL_ROUNDS) {
+        state = "done";
+        setTimeout(() => {
+          if (meScore > cpuScore) msg.textContent = "🏆 דין ניצח את המשחק! אלוף! (" + meScore + ":" + cpuScore + ")";
+          else if (cpuScore > meScore) msg.textContent = "🤖 המחשב ניצח הפעם (" + cpuScore + ":" + meScore + ") — ננסה שוב?";
+          else msg.textContent = "🤝 תיקו! משחק צמוד (" + meScore + ":" + cpuScore + ")";
+          mainBtn.disabled = false; mainBtn.textContent = "🔁 משחק חדש";
+        }, 1300);
+      } else { state = "between"; mainBtn.disabled = false; mainBtn.textContent = "➡️ סבב הבא"; }
+    }
+
+    meCard.addEventListener("click", () => {
+      if (state === "meReady") meReveal();
+      else if (state === "warMe") warMeReveal();
+    });
+    mainBtn.addEventListener("click", () => {
+      if (state === "idle" || state === "done") startGame();
+      else if (state === "between") newRound();
+      else if (state === "war") doWar();
+    });
+  }
+
   /* ---------- tab switching ---------- */
   document.querySelectorAll(".tab").forEach(tab => {
     tab.onclick = () => {
@@ -370,6 +563,7 @@
 
   /* ---------- start ---------- */
   const games = { g1: new PicMemoryGame("g1") };
+  initWar();
 </script>
 </body>
 </html>

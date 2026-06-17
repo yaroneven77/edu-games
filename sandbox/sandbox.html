@@ -176,8 +176,10 @@
 
   let round = 0;
   let cpuScore = 0, meScore = 0;
-  let state = "idle"; // idle | meReady | war | busy | between | done
+  let state = "idle"; // idle | meReady | war | warMe | busy | between | done
   let cpuVal = 0, meVal = 0;
+  let warRound = 0;            // which round (2..6) is the single war
+  let cpuThird = 0, meThird = 0;
 
   // ---- speech ----
   let voices = [];
@@ -234,6 +236,7 @@
 
   function startGame() {
     round = 0; cpuScore = 0; meScore = 0;
+    warRound = 2 + Math.floor(Math.random() * (TOTAL_ROUNDS - 1)); // 2..6, never the first round
     updateScore();
     reset(cpuCard); reset(meCard); clearWar();
     newRound();
@@ -248,7 +251,14 @@
     mainBtn.disabled = true;
     mainBtn.textContent = "סבב " + round + " מתוך " + TOTAL_ROUNDS;
     msg.textContent = "🤖 המחשב פותח קלף...";
-    cpuVal = draw();
+    if (round === warRound) {
+      cpuVal = draw();
+      meVal = cpuVal; // identical cards -> war this round
+    } else {
+      cpuVal = draw();
+      meVal = draw();
+      while (meVal === cpuVal) { meVal = draw(); } // no accidental war in normal rounds
+    }
     setTimeout(() => {
       setFace(cpuCard, cpuVal);
       flip(cpuCard, true);
@@ -263,15 +273,16 @@
     if (state !== "meReady") return;
     state = "busy";
     tapHint.textContent = "";
-    meVal = draw();
     setFace(meCard, meVal);
     flip(meCard, true);
     sayEn(word(meVal));
-    setTimeout(() => compare(), 800);
+    setTimeout(() => {
+      if (cpuVal === meVal) startWar();
+      else decideRound();
+    }, 800);
   }
 
-  function compare() {
-    if (cpuVal === meVal) { startWar(); return; }
+  function decideRound() {
     if (meVal > cpuVal) {
       meScore++; updateScore(); meCard.classList.add("win");
       msg.textContent = "🎉 דין ניצח בסבב! (" + label(meVal) + " > " + label(cpuVal) + ")";
@@ -298,33 +309,46 @@
     clearWar();
     msg.textContent = "מניחים שני קלפים סגורים...";
 
-    // lay two face-down cards for each side
+    // each side lays two face-down cards
     setTimeout(() => { addMini(cpuWar, false); addMini(meWar, false); }, 150);
     setTimeout(() => { addMini(cpuWar, false); addMini(meWar, false); }, 450);
 
-    // decisive face-up cards (must differ so the war is resolved)
-    let cw = draw(), mw = draw();
-    while (mw === cw) { mw = draw(); }
+    // third cards (must differ so the war is decisive)
+    cpuThird = draw();
+    meThird = draw();
+    while (meThird === cpuThird) { meThird = draw(); }
 
+    // computer's third card opens by itself
     setTimeout(() => {
-      msg.textContent = "ועכשיו קלף פתוח...";
-      addMini(cpuWar, true, cw);
-      sayEn(word(cw));
-    }, 900);
+      msg.textContent = "הקלף השלישי של המחשב...";
+      addMini(cpuWar, true, cpuThird);
+      sayEn(word(cpuThird));
+    }, 950);
+
+    // now Din taps to open his third card
     setTimeout(() => {
-      addMini(meWar, true, mw);
-      sayEn(word(mw));
-    }, 1700);
-    setTimeout(() => decideWar(cw, mw), 2600);
+      state = "warMe";
+      msg.textContent = "👆 לחצו לפתוח את הקלף השלישי של דין";
+      tapHint.textContent = "👆 לחצו על הקלף שלך";
+    }, 1750);
   }
 
-  function decideWar(cw, mw) {
-    if (mw > cw) {
+  function warMeReveal() {
+    if (state !== "warMe") return;
+    state = "busy";
+    tapHint.textContent = "";
+    addMini(meWar, true, meThird);
+    sayEn(word(meThird));
+    setTimeout(() => decideWar(), 900);
+  }
+
+  function decideWar() {
+    if (meThird > cpuThird) {
       meScore++; updateScore(); meCard.classList.add("win");
-      msg.textContent = "🎉 דין ניצח את המלחמה! (" + label(mw) + " > " + label(cw) + ")";
+      msg.textContent = "🎉 דין ניצח את המלחמה ולקח את כל הקלפים! (" + label(meThird) + " > " + label(cpuThird) + ")";
     } else {
       cpuScore++; updateScore(); cpuCard.classList.add("win");
-      msg.textContent = "🤖 המחשב ניצח את המלחמה (" + label(cw) + " > " + label(mw) + ")";
+      msg.textContent = "🤖 המחשב ניצח את המלחמה ולקח את כל הקלפים (" + label(cpuThird) + " > " + label(meThird) + ")";
     }
     endRoundOrNext();
   }
@@ -348,7 +372,10 @@
 
   // ---- interactions ----
   // the computer's card opens by itself (auto-flip in newRound)
-  meCard.addEventListener("click", () => { if (state === "meReady") meReveal(); });
+  meCard.addEventListener("click", () => {
+    if (state === "meReady") meReveal();
+    else if (state === "warMe") warMeReveal();
+  });
   mainBtn.addEventListener("click", () => {
     if (state === "idle" || state === "done") startGame();
     else if (state === "between") newRound();

@@ -3,132 +3,306 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>Sandbox · אזור בדיקות</title>
+<title>מלחמת מספרים באנגלית · Number War</title>
 <style>
-  * { box-sizing: border-box; }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   body {
     margin: 0;
     font-family: "Segoe UI", Arial, sans-serif;
-    background: linear-gradient(135deg, #fef3c7, #fde68a);
-    color: #1f2937;
+    background: linear-gradient(160deg, #1e3a8a, #2563eb 60%, #38bdf8);
+    color: #fff;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 24px;
+    padding: 16px;
+    overflow-x: hidden;
   }
-  .card {
-    background: #fff;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
-    padding: 28px 22px;
-    max-width: 600px;
-    width: 100%;
-  }
-  h1 { margin: 0 0 6px; font-size: 1.5rem; }
-  p { color: #4b5563; line-height: 1.6; margin: 8px 0; }
+  h1 { font-size: 1.5rem; margin: 6px 0 2px; text-align: center; }
+  .sub { font-size: 0.9rem; opacity: 0.85; margin-bottom: 10px; text-align: center; }
   .badge {
-    display: inline-block;
-    background: #f59e0b;
-    color: #fff;
-    border-radius: 999px;
-    padding: 4px 14px;
-    font-size: 0.85rem;
-    margin-bottom: 10px;
+    background: #f59e0b; color: #fff; border-radius: 999px;
+    padding: 3px 12px; font-size: 0.75rem; margin-bottom: 6px;
   }
-  .status {
-    text-align: right;
-    background: #f9fafb;
-    border: 1px solid #e5e7eb;
-    border-radius: 14px;
-    padding: 14px 16px;
-    margin-top: 18px;
+  .scoreboard {
+    display: flex; gap: 16px; justify-content: center; align-items: center;
+    margin: 6px 0 12px; font-size: 1rem; font-weight: 700;
   }
-  .status h2 {
-    font-size: 1rem;
-    margin: 0 0 10px;
-    color: #b45309;
-    display: flex;
-    align-items: center;
-    gap: 6px;
+  .scoreboard .s { background: rgba(255,255,255,0.15); border-radius: 12px; padding: 6px 14px; }
+  .scoreboard .s b { display: block; font-size: 1.4rem; }
+  .table { width: 100%; max-width: 460px; }
+  .side { margin: 10px 0; }
+  .label { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+  .card {
+    width: 150px; height: 200px; margin: 0 auto;
+    border-radius: 18px; position: relative;
+    cursor: pointer; user-select: none;
+    transition: transform 0.15s;
+    perspective: 800px;
   }
-  .row { display: flex; gap: 8px; padding: 4px 0; font-size: 0.9rem; flex-wrap: wrap; }
-  .row .k { color: #6b7280; min-width: 70px; }
-  .row .v { color: #111827; font-weight: 600; word-break: break-word; }
-  code {
-    background: #fef3c7;
-    padding: 1px 6px;
-    border-radius: 6px;
-    font-family: "Consolas", monospace;
+  .card .inner {
+    position: absolute; inset: 0;
+    transition: transform 0.5s;
+    transform-style: preserve-3d;
   }
-  a { color: #b45309; }
-  .links { margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
-  .links a {
-    text-decoration: none;
-    background: #fcd34d;
-    color: #7c2d12;
-    border-radius: 999px;
-    padding: 7px 16px;
-    font-size: 0.85rem;
-    font-weight: 600;
+  .card.flipped .inner { transform: rotateY(180deg); }
+  .face {
+    position: absolute; inset: 0;
+    border-radius: 18px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    backface-visibility: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
   }
-  .muted { font-size: 0.78rem; color: #9ca3af; margin-top: 14px; }
-  .err { color: #b91c1c; }
+  .back {
+    background: repeating-linear-gradient(45deg, #1d4ed8, #1d4ed8 12px, #1e40af 12px, #1e40af 24px);
+    border: 4px solid #fff;
+    font-size: 3rem;
+  }
+  .front {
+    background: #fff; color: #1e3a8a;
+    transform: rotateY(180deg);
+    border: 4px solid #fcd34d;
+  }
+  .front .num { font-size: 5rem; font-weight: 800; line-height: 1; }
+  .front .word { font-size: 1.3rem; font-weight: 700; color: #2563eb; margin-top: 6px; text-transform: capitalize; }
+  .front.joker { background: linear-gradient(135deg, #fde68a, #f59e0b); color: #7c2d12; }
+  .front.joker .num { font-size: 3.2rem; }
+  .card.win .inner { box-shadow: 0 0 0 0; }
+  .card.win .front { border-color: #22c55e; box-shadow: 0 0 22px #22c55e; }
+  .tap-hint { text-align: center; font-size: 0.85rem; opacity: 0.85; margin-top: 4px; height: 18px; }
+  .msg {
+    text-align: center; font-size: 1.4rem; font-weight: 800; min-height: 38px;
+    margin: 8px 0; text-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  }
+  .btn {
+    display: block; margin: 8px auto; padding: 14px 28px;
+    font-size: 1.1rem; font-weight: 800; border: none; border-radius: 999px;
+    background: #fcd34d; color: #7c2d12; cursor: pointer;
+    box-shadow: 0 6px 0 #d97706; transition: transform 0.1s, box-shadow 0.1s;
+  }
+  .btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #d97706; }
+  .btn:disabled { opacity: 0.5; cursor: default; box-shadow: 0 6px 0 #9ca3af; background: #e5e7eb; color: #6b7280; }
+  .war-flag {
+    display: inline-block; background: #dc2626; color: #fff;
+    padding: 4px 14px; border-radius: 999px; font-weight: 800;
+    animation: pulse 0.6s infinite alternate;
+  }
+  @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.12); } }
+  .foot { margin-top: 14px; font-size: 0.75rem; opacity: 0.7; text-align: center; }
+  .foot a { color: #fde68a; }
 </style>
 </head>
 <body>
-  <div class="card">
-    <div class="badge">🧪 Sandbox</div>
-    <h1>אזור בדיקות · Edu Games</h1>
-    <p>דף תצוגה מקדימה לעדכונים שנשלחים בוואטסאפ. כאן נבנה כל משחק/שינוי חדש לפני אישור והעלאה למשחק האמיתי.</p>
+  <div class="badge">🧪 Sandbox · תצוגה מקדימה</div>
+  <h1>⚔️ מלחמת מספרים באנגלית</h1>
+  <div class="sub">Number War · לדין, גיל 4-6 — לומדים מספרים באנגלית!</div>
 
-    <div class="status">
-      <h2>🌿 סטטוס ענף main</h2>
-      <div id="status">טוען…</div>
+  <div class="scoreboard">
+    <div class="s">🤖 מחשב<b id="cpuScore">0</b></div>
+    <div class="s">⭐ דין<b id="meScore">0</b></div>
+  </div>
+
+  <div class="table">
+    <div class="side">
+      <div class="label">🤖 הקלף של המחשב</div>
+      <div class="card" id="cpuCard">
+        <div class="inner">
+          <div class="face back">🂠</div>
+          <div class="face front"><div class="num"></div><div class="word"></div></div>
+        </div>
+      </div>
     </div>
 
-    <div class="links">
-      <a href="../index.html">🏠 דף הבית</a>
-      <a href="../word-game/index.html">📚 משחקי מילים</a>
-      <a href="../kindergarten/index.html">🧸 גן</a>
-    </div>
+    <div class="msg" id="msg">לחצו "סבב חדש" כדי להתחיל!</div>
 
-    <div class="muted">העמוד מתעדכן אוטומטית בכל בקשה חדשה בוואטסאפ.</div>
+    <div class="side">
+      <div class="label">⭐ הקלף של דין</div>
+      <div class="card" id="meCard">
+        <div class="inner">
+          <div class="face back">🂠</div>
+          <div class="face front"><div class="num"></div><div class="word"></div></div>
+        </div>
+      </div>
+      <div class="tap-hint" id="tapHint"></div>
+    </div>
+  </div>
+
+  <button class="btn" id="mainBtn">▶️ סבב חדש</button>
+
+  <div class="foot">
+    דף בדיקות · <a href="sandbox.html">רענון</a>
   </div>
 
 <script>
-  const REPO = "yaroneven77/edu-games";
-  function fmtDate(iso) {
-    try {
-      return new Date(iso).toLocaleString("he-IL", { timeZone: "Asia/Jerusalem" });
-    } catch (_) { return iso; }
+  const NUM_WORDS = {
+    1:"one",2:"two",3:"three",4:"four",5:"five",
+    6:"six",7:"seven",8:"eight",9:"nine",10:"ten",11:"joker"
+  };
+  const TOTAL_ROUNDS = 6;
+
+  const el = (id) => document.getElementById(id);
+  const cpuCard = el("cpuCard"), meCard = el("meCard");
+  const msg = el("msg"), mainBtn = el("mainBtn"), tapHint = el("tapHint");
+
+  let round = 0;
+  let cpuScore = 0, meScore = 0;
+  let state = "idle"; // idle | cpuReady | meReady | done
+  let plan = [];       // the (rigged) round plan so Din always wins
+  let curRound = null;
+  let warRoundIndex = 1;
+
+  // ---- speech ----
+  let voices = [];
+  function loadVoices() { voices = window.speechSynthesis ? speechSynthesis.getVoices() : []; }
+  if (window.speechSynthesis) {
+    loadVoices();
+    speechSynthesis.onvoiceschanged = loadVoices;
   }
-  async function loadStatus() {
-    const el = document.getElementById("status");
-    try {
-      const res = await fetch(`https://api.github.com/repos/${REPO}/commits/main`, {
-        headers: { "Accept": "application/vnd.github+json" }
-      });
-      if (!res.ok) throw new Error("HTTP " + res.status);
-      const c = await res.json();
-      const sha = c.sha.substring(0, 7);
-      const msg = (c.commit.message || "").split("\n")[0];
-      const author = c.commit.author && c.commit.author.name ? c.commit.author.name : "—";
-      const date = fmtDate(c.commit.author && c.commit.author.date);
-      el.innerHTML = `
-        <div class="row"><span class="k">קומיט:</span><span class="v"><code>${sha}</code></span></div>
-        <div class="row"><span class="k">תיאור:</span><span class="v">${msg}</span></div>
-        <div class="row"><span class="k">מאת:</span><span class="v">${author}</span></div>
-        <div class="row"><span class="k">תאריך:</span><span class="v">${date}</span></div>
-        <div class="row"><span class="k"></span><span class="v"><a href="${c.html_url}" target="_blank">צפייה ב-GitHub →</a></span></div>
-      `;
-    } catch (e) {
-      el.innerHTML = `<span class="err">לא הצלחתי לטעון את סטטוס הענף (${e.message}).</span>`;
+  function pickEnVoice() {
+    return voices.find(v => /en[-_]US/i.test(v.lang)) ||
+           voices.find(v => /^en/i.test(v.lang)) || null;
+  }
+  function sayEn(text) {
+    if (!window.speechSynthesis) return;
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = "en-US";
+    const v = pickEnVoice();
+    if (v) u.voice = v;
+    u.rate = 0.75;
+    u.pitch = 1.1;
+    speechSynthesis.speak(u);
+  }
+
+  // Build a plan where Din always wins, with exactly one "war" round.
+  function buildPlan() {
+    const rounds = [];
+    warRoundIndex = 1 + Math.floor(Math.random() * TOTAL_ROUNDS);
+    for (let i = 1; i <= TOTAL_ROUNDS; i++) {
+      if (i === warRoundIndex) {
+        // tie first, then Din wins the war
+        const tieVal = 2 + Math.floor(Math.random() * 8); // 2..9
+        const cpuW = 1 + Math.floor(Math.random() * 9);   // 1..9
+        let meW = cpuW + 1 + Math.floor(Math.random() * (10 - cpuW));
+        if (meW > 10) meW = 11; // joker tops it
+        rounds.push({ war: true, tie: tieVal, cpu: cpuW, me: meW });
+      } else {
+        const cpu = 1 + Math.floor(Math.random() * 9); // 1..9
+        let me = cpu + 1 + Math.floor(Math.random() * (10 - cpu));
+        if (me > 10) me = 11; // joker
+        rounds.push({ war: false, cpu, me });
+      }
+    }
+    return rounds;
+  }
+
+  function setFace(cardEl, val) {
+    const front = cardEl.querySelector(".front");
+    front.querySelector(".num").textContent = (val === 11 ? "🃏" : val);
+    front.querySelector(".word").textContent = (val === 11 ? "Joker" : NUM_WORDS[val]);
+    front.classList.toggle("joker", val === 11);
+  }
+  function flip(cardEl, on) { cardEl.classList.toggle("flipped", on); }
+  function reset(cardEl) { cardEl.classList.remove("flipped", "win"); }
+
+  function newRound() {
+    if (round >= TOTAL_ROUNDS) { startGame(); return; }
+    round++;
+    curRound = plan[round - 1];
+    state = "cpuReady";
+    reset(cpuCard); reset(meCard);
+    msg.textContent = "🤖 תורו של המחשב — לחצו על הקלף שלו";
+    tapHint.textContent = "";
+    mainBtn.disabled = true;
+    mainBtn.textContent = "סבב " + round + " מתוך " + TOTAL_ROUNDS;
+  }
+
+  function startGame() {
+    round = 0; cpuScore = 0; meScore = 0;
+    el("cpuScore").textContent = "0";
+    el("meScore").textContent = "0";
+    plan = buildPlan();
+    reset(cpuCard); reset(meCard);
+    newRound();
+  }
+
+  function cpuReveal() {
+    if (state !== "cpuReady") return;
+    setFace(cpuCard, curRound.war ? curRound.tie : curRound.cpu);
+    flip(cpuCard, true);
+    sayEn(NUM_WORDS[curRound.war ? curRound.tie : curRound.cpu]);
+    state = "meReady";
+    msg.textContent = "⭐ עכשיו דין — לחצו על הקלף שלך";
+    tapHint.textContent = "👆 לחצו על הקלף שלך";
+  }
+
+  function meReveal() {
+    if (state !== "meReady") return;
+    tapHint.textContent = "";
+    const meFirst = curRound.war ? curRound.tie : curRound.me;
+    setFace(meCard, meFirst);
+    flip(meCard, true);
+    sayEn(NUM_WORDS[meFirst]);
+
+    if (curRound.war) {
+      // tie -> WAR!
+      state = "war";
+      msg.innerHTML = '<span class="war-flag">⚔️ מלחמה!</span>';
+      mainBtn.disabled = false;
+      mainBtn.textContent = "⚔️ קדימה למלחמה!";
+    } else {
+      decide(curRound.me, curRound.cpu);
     }
   }
-  loadStatus();
+
+  function warFlip() {
+    if (state !== "war") return;
+    state = "busy";
+    setTimeout(() => {
+      setFace(cpuCard, curRound.cpu);
+      flip(cpuCard, false);
+      setTimeout(() => { flip(cpuCard, true); sayEn(NUM_WORDS[curRound.cpu]); }, 250);
+    }, 200);
+    setTimeout(() => {
+      setFace(meCard, curRound.me);
+      flip(meCard, false);
+      setTimeout(() => {
+        flip(meCard, true);
+        sayEn(NUM_WORDS[curRound.me]);
+        decide(curRound.me, curRound.cpu);
+      }, 250);
+    }, 1100);
+  }
+
+  function decide(meVal, cpuVal) {
+    // Din always wins by design
+    meScore++;
+    el("meScore").textContent = meScore;
+    meCard.classList.add("win");
+    msg.textContent = "🎉 דין ניצח! כל הכבוד! (" + (meVal === 11 ? "Joker" : NUM_WORDS[meVal]) + " > " + NUM_WORDS[cpuVal] + ")";
+
+    if (round >= TOTAL_ROUNDS) {
+      state = "done";
+      setTimeout(() => {
+        msg.textContent = "🏆 דין ניצח את כל המשחק! אלוף!";
+        mainBtn.disabled = false;
+        mainBtn.textContent = "🔁 משחק חדש";
+      }, 1400);
+    } else {
+      state = "between";
+      mainBtn.disabled = false;
+      mainBtn.textContent = "➡️ סבב הבא";
+    }
+  }
+
+  // ---- interactions ----
+  cpuCard.addEventListener("click", () => { if (state === "cpuReady") cpuReveal(); });
+  meCard.addEventListener("click", () => { if (state === "meReady") meReveal(); });
+  mainBtn.addEventListener("click", () => {
+    if (state === "idle" || state === "done") startGame();
+    else if (state === "between") newRound();
+    else if (state === "war") warFlip();
+  });
 </script>
 </body>
 </html>

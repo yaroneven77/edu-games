@@ -168,6 +168,7 @@
     6:"six",7:"seven",8:"eight",9:"nine",10:"ten",11:"joker"
   };
   const TOTAL_ROUNDS = 6;
+  const WAR_PILE = 8; // cards in the war pile: 2 tied + 2+2 closed + 2 thirds
 
   const el = (id) => document.getElementById(id);
   const cpuCard = el("cpuCard"), meCard = el("meCard");
@@ -344,11 +345,11 @@
 
   function decideWar() {
     if (meThird > cpuThird) {
-      meScore++; updateScore(); meCard.classList.add("win");
-      msg.textContent = "🎉 דין ניצח את המלחמה ולקח את כל הקלפים! (" + label(meThird) + " > " + label(cpuThird) + ")";
+      meScore += WAR_PILE; updateScore(); meCard.classList.add("win");
+      msg.textContent = "🎉 דין ניצח את המלחמה ולקח את כל " + WAR_PILE + " הקלפים! (" + label(meThird) + " > " + label(cpuThird) + ")";
     } else {
-      cpuScore++; updateScore(); cpuCard.classList.add("win");
-      msg.textContent = "🤖 המחשב ניצח את המלחמה ולקח את כל הקלפים (" + label(cpuThird) + " > " + label(meThird) + ")";
+      cpuScore += WAR_PILE; updateScore(); cpuCard.classList.add("win");
+      msg.textContent = "🤖 המחשב ניצח את המלחמה ולקח את כל " + WAR_PILE + " הקלפים (" + label(cpuThird) + " > " + label(meThird) + ")";
     }
     endRoundOrNext();
   }

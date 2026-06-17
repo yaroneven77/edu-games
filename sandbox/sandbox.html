@@ -23,12 +23,12 @@
     background: #fff;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.12);
-    padding: 32px 24px;
-    max-width: 560px;
+    padding: 28px 22px;
+    max-width: 600px;
     width: 100%;
   }
-  h1 { margin: 0 0 8px; font-size: 1.6rem; }
-  p { color: #4b5563; line-height: 1.6; }
+  h1 { margin: 0 0 6px; font-size: 1.5rem; }
+  p { color: #4b5563; line-height: 1.6; margin: 8px 0; }
   .badge {
     display: inline-block;
     background: #f59e0b;
@@ -36,18 +36,99 @@
     border-radius: 999px;
     padding: 4px 14px;
     font-size: 0.85rem;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
   }
-  .meta { margin-top: 18px; font-size: 0.8rem; color: #9ca3af; }
+  .status {
+    text-align: right;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-top: 18px;
+  }
+  .status h2 {
+    font-size: 1rem;
+    margin: 0 0 10px;
+    color: #b45309;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .row { display: flex; gap: 8px; padding: 4px 0; font-size: 0.9rem; flex-wrap: wrap; }
+  .row .k { color: #6b7280; min-width: 70px; }
+  .row .v { color: #111827; font-weight: 600; word-break: break-word; }
+  code {
+    background: #fef3c7;
+    padding: 1px 6px;
+    border-radius: 6px;
+    font-family: "Consolas", monospace;
+  }
+  a { color: #b45309; }
+  .links { margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+  .links a {
+    text-decoration: none;
+    background: #fcd34d;
+    color: #7c2d12;
+    border-radius: 999px;
+    padding: 7px 16px;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+  .muted { font-size: 0.78rem; color: #9ca3af; margin-top: 14px; }
+  .err { color: #b91c1c; }
 </style>
 </head>
 <body>
   <div class="card">
     <div class="badge">🧪 Sandbox</div>
     <h1>אזור בדיקות · Edu Games</h1>
-    <p>זהו דף הבדיקות לעדכונים שנשלחים בוואטסאפ. כל משחק או שינוי חדש נבנה כאן לתצוגה מקדימה לפני אישור והעלאה למשחק האמיתי.</p>
-    <p>This is the preview sandbox for WhatsApp-requested changes. New games and edits are built here for review before approval.</p>
-    <div class="meta" id="meta">Waiting for the first request…</div>
+    <p>דף תצוגה מקדימה לעדכונים שנשלחים בוואטסאפ. כאן נבנה כל משחק/שינוי חדש לפני אישור והעלאה למשחק האמיתי.</p>
+
+    <div class="status">
+      <h2>🌿 סטטוס ענף main</h2>
+      <div id="status">טוען…</div>
+    </div>
+
+    <div class="links">
+      <a href="../index.html">🏠 דף הבית</a>
+      <a href="../word-game/index.html">📚 משחקי מילים</a>
+      <a href="../kindergarten/index.html">🧸 גן</a>
+    </div>
+
+    <div class="muted">העמוד מתעדכן אוטומטית בכל בקשה חדשה בוואטסאפ.</div>
   </div>
+
+<script>
+  const REPO = "yaroneven77/edu-games";
+  function fmtDate(iso) {
+    try {
+      return new Date(iso).toLocaleString("he-IL", { timeZone: "Asia/Jerusalem" });
+    } catch (_) { return iso; }
+  }
+  async function loadStatus() {
+    const el = document.getElementById("status");
+    try {
+      const res = await fetch(`https://api.github.com/repos/${REPO}/commits/main`, {
+        headers: { "Accept": "application/vnd.github+json" }
+      });
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      const c = await res.json();
+      const sha = c.sha.substring(0, 7);
+      const msg = (c.commit.message || "").split("\n")[0];
+      const author = c.commit.author && c.commit.author.name ? c.commit.author.name : "—";
+      const date = fmtDate(c.commit.author && c.commit.author.date);
+      el.innerHTML = `
+        <div class="row"><span class="k">קומיט:</span><span class="v"><code>${sha}</code></span></div>
+        <div class="row"><span class="k">תיאור:</span><span class="v">${msg}</span></div>
+        <div class="row"><span class="k">מאת:</span><span class="v">${author}</span></div>
+        <div class="row"><span class="k">תאריך:</span><span class="v">${date}</span></div>
+        <div class="row"><span class="k"></span><span class="v"><a href="${c.html_url}" target="_blank">צפייה ב-GitHub →</a></span></div>
+      `;
+    } catch (e) {
+      el.innerHTML = `<span class="err">לא הצלחתי לטעון את סטטוס הענף (${e.message}).</span>`;
+    }
+  }
+  loadStatus();
+</script>
 </body>
 </html>

@@ -28,12 +28,10 @@
   .title { font-size: 22px; font-weight: 700; color: #d2693e; margin-bottom: 2px; }
   .he-instr { font-size: 16px; color: #c0399b; font-weight: 700; margin: 4px 0 12px; }
 
-  /* puppy */
   .puppy-stage { display: flex; justify-content: center; margin-bottom: 6px; }
-  .puppy-svg { width: clamp(150px, 52vw, 200px); height: auto; }
+  .puppy-svg { width: clamp(160px, 56vw, 210px); height: auto; }
   .removable { cursor: pointer; }
 
-  /* rows */
   .row-block { margin-top: 14px; }
   .row-head {
     display: flex; align-items: center; justify-content: space-between;
@@ -70,39 +68,71 @@
     <div class="he-instr">לחצו על וֶסט או כובע — והכלבלב יתלבש ויגיד את הצבע באנגלית!</div>
 
     <div class="puppy-stage">
-      <svg class="puppy-svg" viewBox="0 0 200 250" xmlns="http://www.w3.org/2000/svg" aria-label="puppy">
-        <!-- body -->
-        <ellipse cx="100" cy="200" rx="52" ry="44" fill="#fff" stroke="#3a3a3a" stroke-width="4"/>
-        <!-- vest (on body) -->
+      <svg class="puppy-svg" viewBox="0 0 200 250" xmlns="http://www.w3.org/2000/svg" aria-label="rescue puppy">
+        <defs>
+          <!-- paw print emblem -->
+          <g id="paw">
+            <ellipse cx="0" cy="2.4" rx="3.4" ry="2.8" fill="#2b2b2b"/>
+            <circle cx="-3.4" cy="-1.6" r="1.5" fill="#2b2b2b"/>
+            <circle cx="-1.1" cy="-3.4" r="1.5" fill="#2b2b2b"/>
+            <circle cx="1.1"  cy="-3.4" r="1.5" fill="#2b2b2b"/>
+            <circle cx="3.4"  cy="-1.6" r="1.5" fill="#2b2b2b"/>
+          </g>
+        </defs>
+
+        <!-- ===== sitting body (line art, black & white) ===== -->
+        <path d="M64 168 q-14 30 -10 60 h92 q4 -30 -10 -60 Z" fill="#fff" stroke="#2b2b2b" stroke-width="4" stroke-linejoin="round"/>
+        <!-- front legs / paws -->
+        <rect x="70" y="206" width="22" height="30" rx="11" fill="#fff" stroke="#2b2b2b" stroke-width="4"/>
+        <rect x="108" y="206" width="22" height="30" rx="11" fill="#fff" stroke="#2b2b2b" stroke-width="4"/>
+        <line x1="81" y1="226" x2="81" y2="234" stroke="#2b2b2b" stroke-width="2.4"/>
+        <line x1="119" y1="226" x2="119" y2="234" stroke="#2b2b2b" stroke-width="2.4"/>
+
+        <!-- ===== vest (Paw Patrol style) ===== -->
         <g id="vestOnPuppy" class="removable" style="display:none">
-          <path id="vestShape" d="M70 172 L100 184 L130 172 L138 210 a40 40 0 0 1 -76 0 Z"
-                fill="#ccc" stroke="#2c2c2c" stroke-width="3"/>
-          <line x1="100" y1="184" x2="100" y2="240" stroke="#2c2c2c" stroke-width="2"/>
-          <circle cx="100" cy="206" r="3.4" fill="#fff" stroke="#2c2c2c" stroke-width="1.5"/>
-          <circle cx="100" cy="220" r="3.4" fill="#fff" stroke="#2c2c2c" stroke-width="1.5"/>
+          <!-- shoulder straps (inherit group color) -->
+          <path d="M78 150 q22 -10 44 0 l-3 14 q-19 -8 -38 0 Z" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round"/>
+          <!-- main vest panel (inherit group color) -->
+          <path d="M72 162 q28 -12 56 0 q10 26 6 50 h-68 q-4 -24 6 -50 Z" stroke="#1f2937" stroke-width="3" stroke-linejoin="round"/>
+          <!-- reflective stripe -->
+          <path d="M70 196 h60" fill="none" stroke="#f8fafc" stroke-width="3" opacity="0.85"/>
+          <!-- badge: white circle + paw -->
+          <circle cx="100" cy="180" r="13" fill="#fff" stroke="#1f2937" stroke-width="2.5"/>
+          <use href="#paw" x="100" y="181" />
         </g>
-        <!-- paws -->
-        <ellipse cx="74" cy="240" rx="13" ry="9" fill="#fff" stroke="#3a3a3a" stroke-width="4"/>
-        <ellipse cx="126" cy="240" rx="13" ry="9" fill="#fff" stroke="#3a3a3a" stroke-width="4"/>
-        <!-- ears -->
-        <path d="M48 96 q-22 6 -16 40 q4 20 28 14 Z" fill="#fff" stroke="#3a3a3a" stroke-width="4"/>
-        <path d="M152 96 q22 6 16 40 q-4 20 -28 14 Z" fill="#fff" stroke="#3a3a3a" stroke-width="4"/>
-        <!-- head -->
-        <circle cx="100" cy="108" r="50" fill="#fff" stroke="#3a3a3a" stroke-width="4"/>
+
+        <!-- ===== ears (upright, Chase-style) ===== -->
+        <path d="M62 78 L46 20 Q72 34 84 64 Z" fill="#fff" stroke="#2b2b2b" stroke-width="4" stroke-linejoin="round"/>
+        <path d="M138 78 L154 20 Q128 34 116 64 Z" fill="#fff" stroke="#2b2b2b" stroke-width="4" stroke-linejoin="round"/>
+        <path d="M64 70 L54 36 Q70 46 78 64 Z" fill="#2b2b2b" opacity="0.18"/>
+        <path d="M136 70 L146 36 Q130 46 122 64 Z" fill="#2b2b2b" opacity="0.18"/>
+
+        <!-- ===== head ===== -->
+        <circle cx="100" cy="100" r="48" fill="#fff" stroke="#2b2b2b" stroke-width="4"/>
+        <!-- eyebrows (shepherd markings) -->
+        <path d="M74 86 q9 -7 18 -1" fill="none" stroke="#2b2b2b" stroke-width="3.2" stroke-linecap="round"/>
+        <path d="M126 86 q-9 -7 -18 -1" fill="none" stroke="#2b2b2b" stroke-width="3.2" stroke-linecap="round"/>
         <!-- eyes -->
-        <circle cx="82" cy="100" r="6.5" fill="#3a3a3a"/>
-        <circle cx="118" cy="100" r="6.5" fill="#3a3a3a"/>
-        <circle cx="84" cy="98" r="2" fill="#fff"/>
-        <circle cx="120" cy="98" r="2" fill="#fff"/>
-        <!-- snout -->
-        <ellipse cx="100" cy="126" rx="20" ry="15" fill="#f4f4f4" stroke="#3a3a3a" stroke-width="3"/>
-        <ellipse cx="100" cy="120" rx="7" ry="5" fill="#3a3a3a"/>
-        <path d="M100 125 v8 M100 133 q-8 6 -14 1 M100 133 q8 6 14 1" fill="none" stroke="#3a3a3a" stroke-width="2.5" stroke-linecap="round"/>
-        <!-- hat (on head) -->
+        <circle cx="84" cy="98" r="7" fill="#2b2b2b"/>
+        <circle cx="116" cy="98" r="7" fill="#2b2b2b"/>
+        <circle cx="86.5" cy="95.5" r="2.2" fill="#fff"/>
+        <circle cx="118.5" cy="95.5" r="2.2" fill="#fff"/>
+        <!-- muzzle -->
+        <ellipse cx="100" cy="122" rx="22" ry="17" fill="#f6f6f6" stroke="#2b2b2b" stroke-width="3"/>
+        <ellipse cx="100" cy="116" rx="8" ry="6" fill="#2b2b2b"/>
+        <path d="M100 122 v9 M100 131 q-9 6 -16 1 M100 131 q9 6 16 1"
+              fill="none" stroke="#2b2b2b" stroke-width="2.6" stroke-linecap="round"/>
+
+        <!-- ===== rescue cap (Chase-style) ===== -->
         <g id="hatOnPuppy" class="removable" style="display:none">
-          <path id="hatShape" d="M64 70 q36 -34 72 0 Z" fill="#ccc" stroke="#2c2c2c" stroke-width="3"/>
-          <path d="M58 70 h84 v8 h-84 Z" fill="#2c2c2c" opacity="0.85"/>
-          <circle cx="100" cy="46" r="6" fill="#fff" stroke="#2c2c2c" stroke-width="2"/>
+          <!-- peak / brim (inherit group color) -->
+          <path d="M58 70 q42 16 84 0 q2 9 -6 13 q-36 12 -72 0 q-8 -4 -6 -13 Z"
+                stroke="#1f2937" stroke-width="2.6" stroke-linejoin="round"/>
+          <!-- crown (inherit group color) -->
+          <path d="M64 70 q36 -40 72 0 Z" stroke="#1f2937" stroke-width="3" stroke-linejoin="round"/>
+          <!-- badge: white circle + paw -->
+          <circle cx="100" cy="55" r="10" fill="#fff" stroke="#1f2937" stroke-width="2.4"/>
+          <use href="#paw" x="100" y="56" />
         </g>
       </svg>
     </div>
@@ -110,7 +140,7 @@
     <div class="row-block">
       <div class="row-head">
         <span class="row-label">🦺 וסטים · Vests</span>
-        <button class="shuffle-btn" id="shuffleVest">🔀 ערבוב</button>
+        <button class="shuffle-btn" id="shuffleVest">🔀 ערבוב צבעים</button>
       </div>
       <div class="swatches" id="vestSwatches"></div>
     </div>
@@ -118,7 +148,7 @@
     <div class="row-block">
       <div class="row-head">
         <span class="row-label">🧢 כובעים · Hats</span>
-        <button class="shuffle-btn" id="shuffleHat">🔀 ערבוב</button>
+        <button class="shuffle-btn" id="shuffleHat">🔀 ערבוב צבעים</button>
       </div>
       <div class="swatches" id="hatSwatches"></div>
     </div>
@@ -130,29 +160,37 @@
 
 <script>
 "use strict";
-const COLORS = [
+
+// larger named palette — shuffling swaps the COLORS themselves (not positions)
+const PALETTE = [
   { name: "Red",    hex: "#e23b3b" },
   { name: "Blue",   hex: "#3b6fe2" },
   { name: "Green",  hex: "#2faa55" },
-  { name: "Yellow", hex: "#f2c200" }
+  { name: "Yellow", hex: "#f2c200" },
+  { name: "Purple", hex: "#8e44ad" },
+  { name: "Pink",   hex: "#ff6fa5" },
+  { name: "Orange", hex: "#ef7d1a" },
+  { name: "Brown",  hex: "#8b5a2b" },
+  { name: "Black",  hex: "#2c2c2c" },
+  { name: "White",  hex: "#ffffff" },
+  { name: "Gray",   hex: "#9aa3ad" },
+  { name: "Gold",   hex: "#d4af37" }
 ];
+const ROW_SIZE = 4;
 
-// color order for each row (indexes into COLORS). Start mismatched.
-let vestOrder = [0, 1, 2, 3];
-let hatOrder  = [2, 3, 0, 1];
+// each row holds 4 color objects; start mismatched
+let vestColors = PALETTE.slice(0, 4);
+let hatColors  = PALETTE.slice(4, 8);
 
 // track consecutive shuffles on the same palette
-let streakRow = null;   // 'vest' | 'hat'
+let streakRow = null;     // 'vest' | 'hat'
 let streakCount = 0;
 
 const vestSwatches = document.getElementById("vestSwatches");
 const hatSwatches  = document.getElementById("hatSwatches");
-const hint = document.getElementById("hint");
 
 const vestOnPuppy = document.getElementById("vestOnPuppy");
 const hatOnPuppy  = document.getElementById("hatOnPuppy");
-const vestShape   = document.getElementById("vestShape");
-const hatShape    = document.getElementById("hatShape");
 
 function speak(text) {
   try {
@@ -167,82 +205,89 @@ function speak(text) {
 }
 
 function vestIcon(hex) {
-  return '<svg viewBox="0 0 60 60"><path d="M14 8 L30 16 L46 8 L52 40 a22 22 0 0 1 -44 0 Z" '
-    + 'fill="' + hex + '" stroke="#2c2c2c" stroke-width="3"/>'
-    + '<line x1="30" y1="16" x2="30" y2="52" stroke="#2c2c2c" stroke-width="2"/></svg>';
+  const stroke = "#1f2937";
+  return '<svg viewBox="0 0 60 60">'
+    + '<path d="M16 14 q14 -7 28 0 l-2 9 q-12 -5 -24 0 Z" fill="' + hex + '" stroke="' + stroke + '" stroke-width="2"/>'
+    + '<path d="M12 22 q18 -8 36 0 q6 17 4 30 h-44 q-2 -13 4 -30 Z" fill="' + hex + '" stroke="' + stroke + '" stroke-width="2.4"/>'
+    + '<circle cx="30" cy="34" r="8" fill="#fff" stroke="' + stroke + '" stroke-width="2"/>'
+    + '<ellipse cx="30" cy="36" rx="2.2" ry="1.8" fill="#2b2b2b"/>'
+    + '<circle cx="27.7" cy="33.4" r="1" fill="#2b2b2b"/><circle cx="29.2" cy="32.2" r="1" fill="#2b2b2b"/>'
+    + '<circle cx="30.8" cy="32.2" r="1" fill="#2b2b2b"/><circle cx="32.3" cy="33.4" r="1" fill="#2b2b2b"/>'
+    + '</svg>';
 }
 function hatIcon(hex) {
-  return '<svg viewBox="0 0 60 60"><path d="M14 34 q16 -28 32 0 Z" fill="' + hex
-    + '" stroke="#2c2c2c" stroke-width="3"/>'
-    + '<path d="M8 34 h44 v7 h-44 Z" fill="#2c2c2c" opacity="0.85"/>'
-    + '<circle cx="30" cy="14" r="5" fill="#fff" stroke="#2c2c2c" stroke-width="2"/></svg>';
+  const stroke = "#1f2937";
+  return '<svg viewBox="0 0 60 60">'
+    + '<path d="M10 36 q20 9 40 0 q1 6 -4 9 q-16 7 -32 0 q-5 -3 -4 -9 Z" fill="' + hex + '" stroke="' + stroke + '" stroke-width="2"/>'
+    + '<path d="M15 36 q15 -22 30 0 Z" fill="' + hex + '" stroke="' + stroke + '" stroke-width="2.4"/>'
+    + '<circle cx="30" cy="24" r="7" fill="#fff" stroke="' + stroke + '" stroke-width="2"/>'
+    + '<ellipse cx="30" cy="26" rx="2" ry="1.6" fill="#2b2b2b"/>'
+    + '<circle cx="28" cy="23.6" r="0.9" fill="#2b2b2b"/><circle cx="29.3" cy="22.6" r="0.9" fill="#2b2b2b"/>'
+    + '<circle cx="30.7" cy="22.6" r="0.9" fill="#2b2b2b"/><circle cx="32" cy="23.6" r="0.9" fill="#2b2b2b"/>'
+    + '</svg>';
 }
 
 function wearVest(color) {
-  vestShape.setAttribute("fill", color.hex);
+  vestOnPuppy.setAttribute("fill", color.hex);
   vestOnPuppy.style.display = "";
   speak(color.name);
 }
 function wearHat(color) {
-  hatShape.setAttribute("fill", color.hex);
+  hatOnPuppy.setAttribute("fill", color.hex);
   hatOnPuppy.style.display = "";
   speak(color.name);
 }
 
-vestOnPuppy.addEventListener("click", function () {
-  vestOnPuppy.style.display = "none";
-});
-hatOnPuppy.addEventListener("click", function () {
-  hatOnPuppy.style.display = "none";
-});
+vestOnPuppy.addEventListener("click", function () { vestOnPuppy.style.display = "none"; });
+hatOnPuppy.addEventListener("click", function () { hatOnPuppy.style.display = "none"; });
 
-function renderRow(container, order, iconFn, wearFn) {
+function renderRow(container, colors, iconFn, wearFn) {
   container.innerHTML = "";
-  order.forEach(function (idx) {
-    const color = COLORS[idx];
+  colors.forEach(function (color) {
     const btn = document.createElement("button");
     btn.className = "swatch";
     btn.setAttribute("aria-label", color.name);
+    btn.title = color.name;
     btn.innerHTML = iconFn(color.hex);
     btn.addEventListener("click", function () { wearFn(color); });
     container.appendChild(btn);
   });
 }
+function renderVests() { renderRow(vestSwatches, vestColors, vestIcon, wearVest); }
+function renderHats()  { renderRow(hatSwatches,  hatColors,  hatIcon,  wearHat); }
 
-function renderVests() { renderRow(vestSwatches, vestOrder, vestIcon, wearVest); }
-function renderHats()  { renderRow(hatSwatches,  hatOrder,  hatIcon,  wearHat); }
-
-function sameOrder(a, b) {
-  for (let i = 0; i < a.length; i++) { if (a[i] !== b[i]) return false; }
+function sameColors(a, b) {
+  for (let i = 0; i < a.length; i++) { if (a[i].name !== b[i].name) return false; }
   return true;
 }
-function shuffled(arr) {
-  const a = arr.slice();
-  for (let i = a.length - 1; i > 0; i--) {
+function pickNewColors() {
+  const pool = PALETTE.slice();
+  for (let i = pool.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    const t = a[i]; a[i] = a[j]; a[j] = t;
+    const t = pool[i]; pool[i] = pool[j]; pool[j] = t;
   }
-  return a;
+  return pool.slice(0, ROW_SIZE);
 }
 
 function doShuffle(row) {
   const isVest = row === "vest";
-  const myOrder = isVest ? vestOrder : hatOrder;
-  const otherOrder = isVest ? hatOrder : vestOrder;
+  const myColors    = isVest ? vestColors : hatColors;
+  const otherColors = isVest ? hatColors : vestColors;
 
   if (streakRow === row) { streakCount++; } else { streakRow = row; streakCount = 1; }
 
   let next;
-  if (streakCount >= 3 && !sameOrder(myOrder, otherOrder)) {
-    // third shuffle in a row that still does not match -> force identical to the other row
-    next = otherOrder.slice();
+  if (streakCount >= 3 && !sameColors(myColors, otherColors)) {
+    // third shuffle in a row that still does not match -> make it identical to the other row
+    next = otherColors.map(function (c) { return c; });
     streakCount = 0;
   } else {
-    do { next = shuffled(myOrder); } while (sameOrder(next, myOrder));
+    // swap to brand-new colors from the palette
+    do { next = pickNewColors(); } while (sameColors(next, myColors));
   }
 
-  if (isVest) { vestOrder = next; renderVests(); }
-  else        { hatOrder = next;  renderHats(); }
+  if (isVest) { vestColors = next; renderVests(); }
+  else        { hatColors  = next; renderHats(); }
 }
 
 document.getElementById("shuffleVest").addEventListener("click", function () { doShuffle("vest"); });

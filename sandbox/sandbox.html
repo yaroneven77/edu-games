@@ -96,7 +96,7 @@
   @keyframes hintPulse { 0%,100%{ box-shadow:0 3px 6px rgba(0,0,0,.25);} 50%{ box-shadow:0 0 16px 6px rgba(125,249,192,.9); transform: scale(1.08);} }
 
   /* SCENE (illustrated room with hidden objects) */
-  .room.stage { display: block; position: relative; padding: 0; overflow: hidden; background: #000; }
+  .room.stage { display: block; position: relative; padding: 0; overflow: hidden; background: #000; flex: 0 0 auto; width: 100%; height: auto; min-height: 0; aspect-ratio: 16 / 10; margin: 0 auto; }
   .stage > .bg { position: absolute; inset: 0; }
   .stage > .bg svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
   .obj-scene {
@@ -185,43 +185,70 @@
       {
         name: "מטבח", env: "Kitchen", bg: "#e8d9c0", scene: true,
         sceneSVG:
-          '<svg viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">' +
-          '<rect x="0" y="0" width="100" height="64" fill="#ecdcc2"/>' +
-          '<rect x="0" y="64" width="100" height="36" fill="#a06f43"/>' +
-          '<rect x="0" y="64" width="100" height="2.5" fill="#7d5430"/>' +
-          '<rect x="6" y="8" width="26" height="22" fill="#bfe3ff" stroke="#fff" stroke-width="2"/>' +
-          '<circle cx="13" cy="15" r="3.2" fill="#ffe07a"/>' +
-          '<path d="M22 24 q3 -4 6 0 q3 -3 5 0 v2 h-13 z" fill="#ffffff" opacity="0.85"/>' +
-          '<line x1="19" y1="8" x2="19" y2="30" stroke="#fff" stroke-width="2"/>' +
-          '<line x1="6" y1="19" x2="32" y2="19" stroke="#fff" stroke-width="2"/>' +
-          '<rect x="40" y="6" width="56" height="20" fill="#cf9555" stroke="#a86d34" stroke-width="1.5"/>' +
-          '<line x1="68" y1="6" x2="68" y2="26" stroke="#a86d34" stroke-width="1.5"/>' +
-          '<rect x="62" y="14" width="3" height="5" rx="1" fill="#6e4521"/>' +
-          '<rect x="71" y="14" width="3" height="5" rx="1" fill="#6e4521"/>' +
-          '<rect x="79" y="31" width="19" height="2.6" rx="1" fill="#8a5a2b"/>' +
-          '<rect x="0" y="51" width="100" height="5.5" fill="#ded7cb"/>' +
-          '<rect x="0" y="56.5" width="100" height="9.5" fill="#cf9555"/>' +
-          '<line x1="20" y1="56.5" x2="20" y2="66" stroke="#a86d34" stroke-width="1"/>' +
-          '<line x1="40" y1="56.5" x2="40" y2="66" stroke="#a86d34" stroke-width="1"/>' +
-          '<line x1="62" y1="56.5" x2="62" y2="66" stroke="#a86d34" stroke-width="1"/>' +
-          '<line x1="80" y1="56.5" x2="80" y2="66" stroke="#a86d34" stroke-width="1"/>' +
-          '<rect x="7" y="52" width="14" height="3.6" rx="1" fill="#aeb6bf"/>' +
-          '<rect x="46" y="51.5" width="16" height="5" fill="#7d7d85"/>' +
-          '<circle cx="50" cy="54" r="1.4" fill="#3a3a40"/>' +
-          '<circle cx="58" cy="54" r="1.4" fill="#3a3a40"/>' +
-          '<rect x="54" y="74" width="42" height="5" rx="2" fill="#c0813f"/>' +
-          '<rect x="58" y="79" width="4" height="17" fill="#9c6330"/>' +
-          '<rect x="88" y="79" width="4" height="17" fill="#9c6330"/>' +
+          '<svg viewBox="0 0 160 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">' +
+          '<defs>' +
+          '<linearGradient id="wallG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3e9d6"/><stop offset="1" stop-color="#e6d4b8"/></linearGradient>' +
+          '<linearGradient id="floorG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b5824e"/><stop offset="1" stop-color="#86592e"/></linearGradient>' +
+          '<linearGradient id="skyG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bfe8ff"/><stop offset="1" stop-color="#eafaff"/></linearGradient>' +
+          '<linearGradient id="woodG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d99e5e"/><stop offset="1" stop-color="#b9772f"/></linearGradient>' +
+          '<linearGradient id="marbleG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6f3ec"/><stop offset="1" stop-color="#dcd6cb"/></linearGradient>' +
+          '<linearGradient id="shelfG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a9743d"/><stop offset="1" stop-color="#8a5c30"/></linearGradient>' +
+          '</defs>' +
+          '<rect x="0" y="0" width="160" height="62" fill="url(#wallG)"/>' +
+          '<rect x="0" y="38" width="160" height="11" fill="#efe6d3"/>' +
+          '<g stroke="#e3d6bd" stroke-width="0.5"><line x1="0" y1="43.5" x2="160" y2="43.5"/><line x1="12" y1="38" x2="12" y2="49"/><line x1="28" y1="38" x2="28" y2="49"/><line x1="44" y1="38" x2="44" y2="49"/><line x1="60" y1="38" x2="60" y2="49"/><line x1="76" y1="38" x2="76" y2="49"/><line x1="92" y1="38" x2="92" y2="49"/><line x1="108" y1="38" x2="108" y2="49"/><line x1="124" y1="38" x2="124" y2="49"/><line x1="140" y1="38" x2="140" y2="49"/></g>' +
+          '<rect x="0" y="62" width="160" height="38" fill="url(#floorG)"/>' +
+          '<rect x="0" y="62" width="160" height="1.6" fill="#6f4a26"/>' +
+          '<g stroke="rgba(0,0,0,0.12)" stroke-width="0.6"><line x1="20" y1="100" x2="62" y2="63"/><line x1="60" y1="100" x2="74" y2="63"/><line x1="100" y1="100" x2="86" y2="63"/><line x1="140" y1="100" x2="98" y2="63"/></g>' +
+          '<rect x="8" y="8" width="42" height="30" rx="2" fill="#ffffff" stroke="#d8c9ad" stroke-width="1.5"/>' +
+          '<rect x="10.5" y="10.5" width="37" height="25" fill="url(#skyG)"/>' +
+          '<circle cx="18" cy="18" r="4" fill="#ffe27a"/>' +
+          '<ellipse cx="34" cy="17" rx="6" ry="2.4" fill="#ffffff" opacity="0.9"/><ellipse cx="29" cy="19" rx="4" ry="1.8" fill="#ffffff" opacity="0.85"/>' +
+          '<path d="M10.5 30 Q20 25 29 30 T47.5 30 V35.5 H10.5 Z" fill="#9fd3a0"/>' +
+          '<line x1="29" y1="10.5" x2="29" y2="35.5" stroke="#ffffff" stroke-width="1.6"/>' +
+          '<line x1="10.5" y1="23" x2="47.5" y2="23" stroke="#ffffff" stroke-width="1.6"/>' +
+          '<rect x="6" y="37.5" width="46" height="2.6" rx="1" fill="#e2d2b6"/>' +
+          '<rect x="56" y="6" width="100" height="24" rx="1.5" fill="url(#woodG)" stroke="#9a6526" stroke-width="1"/>' +
+          '<g stroke="#9a6526" stroke-width="0.8"><line x1="81" y1="6" x2="81" y2="30"/><line x1="106" y1="6" x2="106" y2="30"/><line x1="131" y1="6" x2="131" y2="30"/></g>' +
+          '<g fill="#6e4521"><rect x="76" y="16" width="2.4" height="6" rx="1"/><rect x="84" y="16" width="2.4" height="6" rx="1"/><rect x="101" y="16" width="2.4" height="6" rx="1"/><rect x="109" y="16" width="2.4" height="6" rx="1"/><rect x="126" y="16" width="2.4" height="6" rx="1"/><rect x="134" y="16" width="2.4" height="6" rx="1"/></g>' +
+          '<rect x="56" y="30" width="100" height="1.6" fill="rgba(0,0,0,0.16)"/>' +
+          '<path d="M99 6 H119 L115 16 H103 Z" fill="#cdd2d8" stroke="#9aa0a8" stroke-width="0.8"/>' +
+          '<rect x="103" y="16" width="12" height="2.4" rx="0.6" fill="#bcc2ca"/>' +
+          '<rect x="0" y="48" width="160" height="7" fill="url(#marbleG)"/>' +
+          '<rect x="0" y="55" width="160" height="1.6" fill="rgba(0,0,0,0.18)"/>' +
+          '<rect x="0" y="56.5" width="160" height="5.5" fill="url(#woodG)"/>' +
+          '<g stroke="#9a6526" stroke-width="0.8"><line x1="26" y1="56.5" x2="26" y2="62"/><line x1="52" y1="56.5" x2="52" y2="62"/><line x1="78" y1="56.5" x2="78" y2="62"/><line x1="104" y1="56.5" x2="104" y2="62"/><line x1="130" y1="56.5" x2="130" y2="62"/></g>' +
+          '<rect x="12" y="49" width="20" height="4.6" rx="1.2" fill="#c3cad2"/>' +
+          '<rect x="14" y="49.6" width="16" height="3.2" rx="1" fill="#a7afb8"/>' +
+          '<path d="M30 49 q3 -3 0 -6" stroke="#9aa0a8" stroke-width="1.3" fill="none"/>' +
+          '<rect x="96" y="49" width="24" height="6" rx="0.6" fill="#73757c"/>' +
+          '<circle cx="102" cy="52" r="1.8" fill="#3a3a40"/><circle cx="114" cy="52" r="1.8" fill="#3a3a40"/>' +
+          '<rect x="56" y="50" width="40" height="5" rx="2" fill="#c98f55"/>' +
+          '<rect x="56" y="50" width="40" height="1.6" rx="1" fill="#dca969"/>' +
+          '<rect x="99" y="44.5" width="9" height="8.5" rx="1.5" fill="#e7e1d6" stroke="#b3ab9b" stroke-width="0.7"/>' +
+          '<rect x="118" y="33" width="38" height="2.6" rx="1" fill="url(#shelfG)"/>' +
+          '<rect x="118" y="47" width="38" height="2.6" rx="1" fill="url(#shelfG)"/>' +
+          '<rect x="120" y="35.6" width="2" height="3" fill="#7c5128"/><rect x="154" y="35.6" width="2" height="3" fill="#7c5128"/>' +
+          '<rect x="120" y="49.6" width="2" height="3" fill="#7c5128"/><rect x="154" y="49.6" width="2" height="3" fill="#7c5128"/>' +
+          '<rect x="66" y="72" width="90" height="6.5" rx="3" fill="url(#woodG)" stroke="#9a6526" stroke-width="1"/>' +
+          '<rect x="66" y="72" width="90" height="1.8" rx="1" fill="#e6b97a"/>' +
+          '<rect x="74" y="78.5" width="5" height="21" fill="#a86a2c"/>' +
+          '<rect x="143" y="78.5" width="5" height="21" fill="#a86a2c"/>' +
+          '<ellipse cx="126" cy="77" rx="10" ry="3.2" fill="#ffffff" stroke="#d4ccbe" stroke-width="0.8"/>' +
+          '<ellipse cx="126" cy="77" rx="6" ry="1.9" fill="#f1ece2"/>' +
+          '<path d="M80 67 H104 L101 76 Q92 79 83 76 Z" fill="#c98f55" stroke="#8a5a2b" stroke-width="0.8"/>' +
+          '<g stroke="#8a5a2b" stroke-width="0.5"><line x1="86" y1="67.5" x2="87.5" y2="76"/><line x1="92" y1="68" x2="92" y2="77"/><line x1="98" y1="67.5" x2="96.5" y2="76"/></g>' +
+          '<ellipse cx="92" cy="67" rx="12.5" ry="2.6" fill="#dca969" stroke="#8a5a2b" stroke-width="0.8"/>' +
           '</svg>',
         objects: [
-          { key: "apple", emoji: "🍎", en: "apple", x: 12, y: 47, size: 3.0 },
-          { key: "banana", emoji: "🍌", en: "banana", x: 30, y: 47, size: 3.0 },
-          { key: "knife", emoji: "🔪", en: "knife", x: 40, y: 48, size: 2.3 },
-          { key: "spoon", emoji: "🥄", en: "spoon", x: 69, y: 48, size: 2.3 },
-          { key: "cup", emoji: "🥤", en: "cup", x: 90, y: 47, size: 2.6 },
-          { key: "milk", emoji: "🥛", en: "milk", x: 86, y: 26, size: 2.8 },
-          { key: "bread", emoji: "🍞", en: "bread", x: 65, y: 70, size: 2.8 },
-          { key: "plate", emoji: "🍽️", en: "plate", x: 82, y: 70, size: 3.4 }
+          { key: "apple", emoji: "🍎", en: "apple", x: 57.5, y: 70, size: 2.3 },
+          { key: "banana", emoji: "🍌", en: "banana", x: 60.5, y: 68, size: 2.3 },
+          { key: "knife", emoji: "🔪", en: "knife", x: 51, y: 48, size: 1.9 },
+          { key: "bread", emoji: "🍞", en: "bread", x: 44, y: 48, size: 2.2 },
+          { key: "spoon", emoji: "🥄", en: "spoon", x: 64.5, y: 42.5, size: 1.9 },
+          { key: "milk", emoji: "🥛", en: "milk", x: 81, y: 30, size: 2.3 },
+          { key: "cup", emoji: "🥤", en: "cup", x: 87.5, y: 44, size: 2.1 },
+          { key: "plate", emoji: "🍽️", en: "plate", x: 78.75, y: 74.5, size: 2.6 }
         ],
         actions: [
           { sentence: "Find the apple.", target: "apple" },

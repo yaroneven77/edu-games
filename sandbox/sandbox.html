@@ -1,318 +1,583 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>צבעים עם הכלבלב 🐶 · Colors with the Puppy</title>
-<script data-goatcounter="https://yaroneven.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>הסוכן החשאי · Secret Agent</title>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; padding: 0; height: 100%; }
   body {
-    font-family: 'Comic Sans MS', 'Segoe UI', system-ui, sans-serif;
-    background: linear-gradient(135deg, #ffd194 0%, #f9a1bc 100%);
-    min-height: 100vh;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: radial-gradient(circle at 50% 0%, #1f2a44 0%, #0d1322 70%);
+    color: #f4f7ff;
+    min-height: 100%;
     display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding: 16px;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
   }
-  .wrap { width: 100%; max-width: 480px; }
-  .card {
-    background: #fff;
-    border-radius: 28px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-    padding: 20px 20px 26px;
-    text-align: center;
-  }
-  .title { font-size: 22px; font-weight: 700; color: #d2693e; margin-bottom: 2px; }
-  .he-instr { font-size: 16px; color: #c0399b; font-weight: 700; margin: 4px 0 12px; }
+  #app { width: 100%; max-width: 760px; padding: 12px; flex: 1; display: flex; flex-direction: column; }
 
-  .puppy-stage { display: flex; justify-content: center; margin-bottom: 6px; }
-  .puppy-svg { width: clamp(160px, 56vw, 210px); height: auto; }
-  .removable { cursor: pointer; }
+  .screen { display: none; flex: 1; flex-direction: column; }
+  .screen.active { display: flex; }
 
-  .row-block { margin-top: 14px; }
-  .row-head {
-    display: flex; align-items: center; justify-content: space-between;
-    margin: 0 4px 8px;
-  }
-  .row-label { font-size: 16px; font-weight: 700; color: #8a4d2d; }
-  .shuffle-btn {
-    font-family: inherit; font-size: 14px; font-weight: 700;
-    padding: 7px 12px; border: none; border-radius: 14px;
-    background: #ffd9a8; color: #b9572f; cursor: pointer;
-    transition: transform 0.1s, background 0.2s;
-  }
-  .shuffle-btn:hover { background: #ffcb8a; }
-  .shuffle-btn:active { transform: scale(0.94); }
+  h1 { font-size: 1.9rem; margin: 8px 0; text-align: center; }
+  .subtitle { text-align: center; opacity: .8; margin-bottom: 18px; }
 
-  .swatches { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-  .swatch {
-    border: none; background: transparent; padding: 0; cursor: pointer;
-    transition: transform 0.1s;
+  .btn {
+    border: none; border-radius: 14px; padding: 14px 22px; font-size: 1.1rem;
+    font-weight: 700; cursor: pointer; font-family: inherit;
+    background: linear-gradient(180deg, #4f8cff, #2f6be0); color: #fff;
+    box-shadow: 0 4px 0 #234e9e; transition: transform .08s, box-shadow .08s;
+    margin: 6px;
+  }
+  .btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #234e9e; }
+  .btn.secondary { background: linear-gradient(180deg, #6b7690, #455066); box-shadow: 0 4px 0 #333b4d; }
+  .btn.gold { background: linear-gradient(180deg, #ffcf4f, #f0a91e); color: #3a2a00; box-shadow: 0 4px 0 #b87d12; }
+
+  /* START SCREEN */
+  .agent-badge { font-size: 5rem; text-align: center; margin: 6px 0; filter: drop-shadow(0 0 14px rgba(79,140,255,.6)); }
+  .world-list { display: flex; flex-direction: column; gap: 12px; margin-top: 10px; }
+  .world-card {
+    display: flex; align-items: center; gap: 14px; padding: 14px 16px;
+    background: rgba(255,255,255,.06); border: 2px solid rgba(255,255,255,.12);
+    border-radius: 16px; cursor: pointer; transition: background .15s, border-color .15s;
+  }
+  .world-card.unlocked:hover { background: rgba(79,140,255,.18); border-color: #4f8cff; }
+  .world-card.locked { opacity: .5; cursor: not-allowed; }
+  .world-card .wc-emoji { font-size: 2.4rem; }
+  .world-card .wc-info { flex: 1; text-align: right; }
+  .world-card .wc-name { font-weight: 700; font-size: 1.15rem; }
+  .world-card .wc-desc { font-size: .85rem; opacity: .75; }
+  .world-card .wc-lock { font-size: 1.4rem; }
+
+  /* PLAY SCREEN */
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+  .topbar .home { background: rgba(255,255,255,.1); border: none; color: #fff; font-size: 1.3rem; border-radius: 10px; padding: 6px 10px; cursor: pointer; }
+  .progress-info { font-size: .85rem; opacity: .85; text-align: center; }
+  .progress-bar { height: 8px; background: rgba(255,255,255,.12); border-radius: 6px; overflow: hidden; margin-bottom: 10px; }
+  .progress-bar > div { height: 100%; background: linear-gradient(90deg, #4f8cff, #7df9c0); width: 0%; transition: width .3s; }
+
+  .sentence-box {
+    display: flex; align-items: center; gap: 12px; justify-content: center;
+    background: rgba(255,255,255,.08); border-radius: 16px; padding: 16px;
+    margin-bottom: 14px; min-height: 64px;
+  }
+  .sentence-text { font-size: 1.5rem; font-weight: 700; direction: ltr; letter-spacing: .3px; }
+  .speak-btn {
+    border: none; border-radius: 50%; width: 56px; height: 56px; min-width: 56px;
+    font-size: 1.6rem; cursor: pointer; background: linear-gradient(180deg, #ffcf4f, #f0a91e);
+    color: #3a2a00; box-shadow: 0 3px 0 #b87d12;
+  }
+  .speak-btn:active { transform: translateY(2px); }
+  .speak-btn.flash { animation: flashPulse .6s ease-in-out infinite; }
+  @keyframes flashPulse { 0%,100% { transform: scale(1); box-shadow: 0 3px 0 #b87d12; } 50% { transform: scale(1.18); box-shadow: 0 0 18px 6px rgba(255,207,79,.8); } }
+
+  .room {
+    flex: 1; border-radius: 18px; padding: 14px;
+    display: flex; flex-wrap: wrap; gap: 10px; align-content: flex-start;
+    justify-content: center; min-height: 300px;
+    border: 3px solid rgba(255,255,255,.1);
+  }
+  .obj {
+    border: none; border-radius: 16px; cursor: pointer;
+    width: 84px; height: 84px; font-size: 2.7rem;
     display: flex; align-items: center; justify-content: center;
+    background: rgba(255,255,255,.92); box-shadow: 0 3px 6px rgba(0,0,0,.25);
+    transition: transform .1s;
   }
-  .swatch:active { transform: scale(0.92); }
-  .swatch svg { width: 100%; height: auto; display: block; }
+  .obj:active { transform: scale(.92); }
+  .obj.correct { animation: pop .5s ease; background: #8ff0b6; box-shadow: 0 0 18px 6px rgba(80,230,150,.8); }
+  .obj.wrong { animation: shake .4s ease; background: #ffc9c9; }
+  .obj.hintpulse { animation: hintPulse 1s ease-in-out infinite; }
+  @keyframes pop { 0% { transform: scale(1);} 40% { transform: scale(1.35);} 100% { transform: scale(1.15);} }
+  @keyframes shake { 0%,100%{transform:translateX(0);} 25%{transform:translateX(-7px);} 75%{transform:translateX(7px);} }
+  @keyframes hintPulse { 0%,100%{ box-shadow:0 3px 6px rgba(0,0,0,.25);} 50%{ box-shadow:0 0 16px 6px rgba(125,249,192,.9); transform: scale(1.08);} }
 
-  .hint { margin-top: 16px; font-size: 14px; color: #999; min-height: 18px; }
-  .footer { margin-top: 14px; font-size: 11px; color: #c9a; }
-  a.home { color: #d2693e; text-decoration: none; font-weight: 700; }
+  /* OVERLAY (mission/world/game complete) */
+  .overlay {
+    position: fixed; inset: 0; background: rgba(8,12,24,.92);
+    display: none; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 24px; z-index: 50;
+  }
+  .overlay.active { display: flex; }
+  .overlay .big-emoji { font-size: 5rem; animation: bounce 1s ease infinite; }
+  @keyframes bounce { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-16px);} }
+  .overlay h2 { font-size: 1.8rem; margin: 10px 0 4px; }
+  .overlay .en-line { direction: ltr; opacity: .85; font-size: 1.1rem; margin-bottom: 18px; }
+
+  .footer { text-align: center; font-size: .7rem; opacity: .5; padding: 8px; direction: ltr; }
+
+  /* confetti */
+  .confetti { position: fixed; top: -10px; width: 10px; height: 14px; z-index: 60; pointer-events: none; }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="card">
-    <div class="title">🐶 צבעים עם הכלבלב</div>
-    <div class="he-instr">לחצו על וֶסט או כובע — והכלבלב יתלבש ויגיד את הצבע באנגלית!</div>
+<div id="app">
 
-    <div class="puppy-stage">
-      <svg class="puppy-svg" viewBox="0 0 200 250" xmlns="http://www.w3.org/2000/svg" aria-label="rescue puppy">
-        <defs>
-          <!-- paw print emblem -->
-          <g id="paw">
-            <ellipse cx="0" cy="2.4" rx="3.4" ry="2.8" fill="#2b2b2b"/>
-            <circle cx="-3.4" cy="-1.6" r="1.5" fill="#2b2b2b"/>
-            <circle cx="-1.1" cy="-3.4" r="1.5" fill="#2b2b2b"/>
-            <circle cx="1.1"  cy="-3.4" r="1.5" fill="#2b2b2b"/>
-            <circle cx="3.4"  cy="-1.6" r="1.5" fill="#2b2b2b"/>
-          </g>
-        </defs>
+  <!-- START -->
+  <section id="screen-start" class="screen active">
+    <div class="agent-badge">🕵️</div>
+    <h1>הסוכן החשאי</h1>
+    <div class="subtitle">Secret Agent · משימות באנגלית 🇬🇧</div>
+    <div style="text-align:center; opacity:.8; margin-bottom:6px;">בחרו עולם כדי להתחיל את המשימה הסודית:</div>
+    <div id="worldList" class="world-list"></div>
+  </section>
 
-        <!-- ===== sitting body (Chase: tan with brown saddle) ===== -->
-        <!-- tail -->
-        <path d="M150 198 q28 -4 32 -28 q-3 -3 -9 -2 q-5 17 -27 24 Z" fill="#9c6b3c" stroke="#5e3c1e" stroke-width="3" stroke-linejoin="round"/>
-        <!-- neck (connects head to body) -->
-        <path d="M83 136 q17 9 34 0 l3 38 q-20 7 -40 0 Z" fill="#e6b87f" stroke="#5e3c1e" stroke-width="4" stroke-linejoin="round"/>
-        <path d="M64 168 q-14 30 -10 60 h92 q4 -30 -10 -60 Z" fill="#e6b87f" stroke="#5e3c1e" stroke-width="4" stroke-linejoin="round"/>
-        <!-- brown chest/saddle marking -->
-        <path d="M78 176 q22 -9 44 0 q4 18 1 32 h-46 q-3 -14 1 -32 Z" fill="#9c6b3c" opacity="0.55"/>
-        <!-- front legs / paws (cream) -->
-        <rect x="70" y="206" width="22" height="30" rx="11" fill="#f0d6b0" stroke="#5e3c1e" stroke-width="4"/>
-        <rect x="108" y="206" width="22" height="30" rx="11" fill="#f0d6b0" stroke="#5e3c1e" stroke-width="4"/>
-        <line x1="81" y1="226" x2="81" y2="234" stroke="#5e3c1e" stroke-width="2.4"/>
-        <line x1="119" y1="226" x2="119" y2="234" stroke="#5e3c1e" stroke-width="2.4"/>
-
-        <!-- ===== vest (Paw Patrol style) ===== -->
-        <g id="vestOnPuppy" class="removable" style="display:none">
-          <!-- shoulder straps (inherit group color) -->
-          <path d="M78 150 q22 -10 44 0 l-3 14 q-19 -8 -38 0 Z" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round"/>
-          <!-- main vest panel (inherit group color) -->
-          <path d="M72 162 q28 -12 56 0 q10 26 6 50 h-68 q-4 -24 6 -50 Z" stroke="#1f2937" stroke-width="3" stroke-linejoin="round"/>
-          <!-- reflective stripe -->
-          <path d="M70 196 h60" fill="none" stroke="#f8fafc" stroke-width="3" opacity="0.85"/>
-          <!-- badge: white circle + paw -->
-          <circle cx="100" cy="180" r="13" fill="#fff" stroke="#1f2937" stroke-width="2.5"/>
-          <use href="#paw" x="100" y="181" />
-        </g>
-
-        <!-- ===== ears (upright, brown, larger) ===== -->
-        <path d="M58 84 L37 6 Q74 22 90 60 Z" fill="#8a5a30" stroke="#5e3c1e" stroke-width="4" stroke-linejoin="round"/>
-        <path d="M142 84 L163 6 Q126 22 110 60 Z" fill="#8a5a30" stroke="#5e3c1e" stroke-width="4" stroke-linejoin="round"/>
-        <path d="M60 74 L50 28 Q66 42 80 60 Z" fill="#5e3c1e" opacity="0.4"/>
-        <path d="M140 74 L150 28 Q134 42 120 60 Z" fill="#5e3c1e" opacity="0.4"/>
-
-        <!-- ===== head (tan) ===== -->
-        <circle cx="100" cy="100" r="48" fill="#e6b87f" stroke="#5e3c1e" stroke-width="4"/>
-        <!-- darker tan forehead/mask marking between ears -->
-        <path d="M100 52 q31 2 37 31 q-17 -8 -37 -8 q-20 0 -37 8 q6 -29 37 -31 Z" fill="#9c6b3c" opacity="0.6"/>
-        <!-- brown eye patches (shepherd markings) -->
-        <ellipse cx="83" cy="97" rx="13" ry="12" fill="#9c6b3c" opacity="0.55"/>
-        <ellipse cx="117" cy="97" rx="13" ry="12" fill="#9c6b3c" opacity="0.55"/>
-        <!-- eyes (large, puppy) -->
-        <circle cx="83" cy="97" r="9.5" fill="#2b2b2b"/>
-        <circle cx="117" cy="97" r="9.5" fill="#2b2b2b"/>
-        <circle cx="86" cy="93.5" r="3.2" fill="#fff"/>
-        <circle cx="120" cy="93.5" r="3.2" fill="#fff"/>
-        <circle cx="80.5" cy="100.5" r="1.5" fill="#fff" opacity="0.85"/>
-        <circle cx="114.5" cy="100.5" r="1.5" fill="#fff" opacity="0.85"/>
-        <!-- snout bridge -->
-        <path d="M92 104 q8 -6 16 0 l3 20 q-11 5 -22 0 Z" fill="#e6b87f"/>
-        <!-- muzzle (cream), protruding -->
-        <ellipse cx="100" cy="131" rx="26" ry="20" fill="#f0d6b0" stroke="#5e3c1e" stroke-width="3"/>
-        <!-- nose -->
-        <ellipse cx="100" cy="121" rx="9" ry="7" fill="#2b2b2b"/>
-        <path d="M100 128 v8 M100 136 q-10 6 -17 1 M100 136 q10 6 17 1"
-              fill="none" stroke="#5e3c1e" stroke-width="2.6" stroke-linecap="round"/>
-        <!-- freckles -->
-        <circle cx="80" cy="129" r="1.4" fill="#5e3c1e"/>
-        <circle cx="86" cy="133" r="1.4" fill="#5e3c1e"/>
-        <circle cx="120" cy="129" r="1.4" fill="#5e3c1e"/>
-        <circle cx="114" cy="133" r="1.4" fill="#5e3c1e"/>
-
-        <!-- ===== rescue cap (Chase-style) ===== -->
-        <g id="hatOnPuppy" class="removable" style="display:none">
-          <!-- peak / brim (inherit group color) -->
-          <path d="M58 70 q42 16 84 0 q2 9 -6 13 q-36 12 -72 0 q-8 -4 -6 -13 Z"
-                stroke="#1f2937" stroke-width="2.6" stroke-linejoin="round"/>
-          <!-- crown (inherit group color) -->
-          <path d="M64 70 q36 -40 72 0 Z" stroke="#1f2937" stroke-width="3" stroke-linejoin="round"/>
-          <!-- badge: white circle + paw -->
-          <circle cx="100" cy="55" r="10" fill="#fff" stroke="#1f2937" stroke-width="2.4"/>
-          <use href="#paw" x="100" y="56" />
-        </g>
-      </svg>
+  <!-- PLAY -->
+  <section id="screen-play" class="screen">
+    <div class="topbar">
+      <button class="home" id="homeBtn" title="חזרה">🏠</button>
+      <div class="progress-info" id="progressInfo"></div>
+      <div style="width:40px"></div>
     </div>
-
-    <div class="row-block">
-      <div class="row-head">
-        <span class="row-label">🦺 וסטים · Vests</span>
-        <button class="shuffle-btn" id="shuffleVest">🔀 ערבוב צבעים</button>
-      </div>
-      <div class="swatches" id="vestSwatches"></div>
+    <div class="progress-bar"><div id="progressFill"></div></div>
+    <div class="sentence-box">
+      <button class="speak-btn" id="speakBtn" title="הקראה">🔊</button>
+      <div class="sentence-text" id="sentenceText">Find the apple.</div>
     </div>
+    <div class="room" id="room"></div>
+  </section>
 
-    <div class="row-block">
-      <div class="row-head">
-        <span class="row-label">🧢 כובעים · Hats</span>
-        <button class="shuffle-btn" id="shuffleHat">🔀 ערבוב צבעים</button>
-      </div>
-      <div class="swatches" id="hatSwatches"></div>
-    </div>
+  <div class="footer">גרסת תצוגה מקדימה · Secret Agent (World 1) · sandbox</div>
+</div>
 
-    <div class="hint" id="hint">טיפ: לחיצה על הכובע או הוסט שעל הכלבלב — מסירה אותו 😊</div>
-    <div class="footer">תצוגה מקדימה · sandbox · <a class="home" href="../index.html" target="_top">דף הבית</a></div>
-  </div>
+<!-- OVERLAY -->
+<div class="overlay" id="overlay">
+  <div class="big-emoji" id="ovEmoji">🎉</div>
+  <h2 id="ovTitle">כל הכבוד!</h2>
+  <div class="en-line" id="ovEn">Mission complete!</div>
+  <div id="ovButtons"></div>
 </div>
 
 <script>
-"use strict";
+(function () {
+  "use strict";
 
-// larger named palette — shuffling swaps the COLORS themselves (not positions)
-const PALETTE = [
-  { name: "Red",    hex: "#e23b3b" },
-  { name: "Blue",   hex: "#3b6fe2" },
-  { name: "Green",  hex: "#2faa55" },
-  { name: "Yellow", hex: "#f2c200" },
-  { name: "Purple", hex: "#8e44ad" },
-  { name: "Pink",   hex: "#ff6fa5" },
-  { name: "Orange", hex: "#ef7d1a" },
-  { name: "Brown",  hex: "#8b5a2b" },
-  { name: "Black",  hex: "#2c2c2c" },
-  { name: "White",  hex: "#ffffff" },
-  { name: "Gray",   hex: "#9aa3ad" },
-  { name: "Gold",   hex: "#d4af37" }
-];
-const ROW_SIZE = 4;
+  // ---------- DATA: World 1 — Home & Yard ----------
+  // Each mission: { id, name(he), env(he), bg, objects:[{key,emoji,en}], actions:[{sentence,target}] }
+  const WORLD1 = {
+    id: 1,
+    name: "עולם הבית והחצר",
+    enName: "Home & Yard",
+    emoji: "🏡",
+    desc: "6 משימות סודיות · אנגלית בסיסית",
+    missions: [
+      {
+        name: "מטבח", env: "Kitchen", bg: "linear-gradient(160deg,#3a4a6b,#27324d)",
+        objects: [
+          { key: "apple", emoji: "🍎", en: "apple" },
+          { key: "banana", emoji: "🍌", en: "banana" },
+          { key: "bread", emoji: "🍞", en: "bread" },
+          { key: "milk", emoji: "🥛", en: "milk" },
+          { key: "spoon", emoji: "🥄", en: "spoon" },
+          { key: "plate", emoji: "🍽️", en: "plate" },
+          { key: "knife", emoji: "🔪", en: "knife" },
+          { key: "cup", emoji: "🥤", en: "cup" }
+        ],
+        actions: [
+          { sentence: "Find the apple.", target: "apple" },
+          { sentence: "Find the banana.", target: "banana" },
+          { sentence: "Find the bread.", target: "bread" },
+          { sentence: "Find the spoon.", target: "spoon" },
+          { sentence: "Find the milk.", target: "milk" },
+          { sentence: "Find the plate.", target: "plate" }
+        ]
+      },
+      {
+        name: "סלון", env: "Living room", bg: "linear-gradient(160deg,#4b3a6b,#2e2747)",
+        objects: [
+          { key: "tv", emoji: "📺", en: "television" },
+          { key: "book", emoji: "📖", en: "book" },
+          { key: "lamp", emoji: "💡", en: "lamp" },
+          { key: "clock", emoji: "🕰️", en: "clock" },
+          { key: "sofa", emoji: "🛋️", en: "sofa" },
+          { key: "plant", emoji: "🪴", en: "plant" },
+          { key: "phone", emoji: "📱", en: "phone" },
+          { key: "picture", emoji: "🖼️", en: "picture" }
+        ],
+        actions: [
+          { sentence: "Find the television.", target: "tv" },
+          { sentence: "Find the book.", target: "book" },
+          { sentence: "Find the lamp.", target: "lamp" },
+          { sentence: "Find the clock.", target: "clock" },
+          { sentence: "Find the sofa.", target: "sofa" },
+          { sentence: "Find the plant.", target: "plant" }
+        ]
+      },
+      {
+        name: "חדר שינה", env: "Bedroom", bg: "linear-gradient(160deg,#3a5b6b,#26404a)",
+        objects: [
+          { key: "bed", emoji: "🛏️", en: "bed" },
+          { key: "teddy", emoji: "🧸", en: "teddy bear" },
+          { key: "shoes", emoji: "👟", en: "shoes" },
+          { key: "shirt", emoji: "👕", en: "shirt" },
+          { key: "window", emoji: "🪟", en: "window" },
+          { key: "door", emoji: "🚪", en: "door" },
+          { key: "lamp", emoji: "💡", en: "lamp" },
+          { key: "book", emoji: "📖", en: "book" }
+        ],
+        actions: [
+          { sentence: "Find the bed.", target: "bed" },
+          { sentence: "Find the teddy bear.", target: "teddy" },
+          { sentence: "Find the shoes.", target: "shoes" },
+          { sentence: "Find the shirt.", target: "shirt" },
+          { sentence: "Find the window.", target: "window" },
+          { sentence: "Find the door.", target: "door" }
+        ]
+      },
+      {
+        name: "חדר אמבטיה", env: "Bathroom", bg: "linear-gradient(160deg,#356b63,#234a45)",
+        objects: [
+          { key: "toilet", emoji: "🚽", en: "toilet" },
+          { key: "soap", emoji: "🧼", en: "soap" },
+          { key: "toothbrush", emoji: "🪥", en: "toothbrush" },
+          { key: "mirror", emoji: "🪞", en: "mirror" },
+          { key: "bathtub", emoji: "🛁", en: "bathtub" },
+          { key: "duck", emoji: "🦆", en: "duck" },
+          { key: "comb", emoji: "🪮", en: "comb" },
+          { key: "shower", emoji: "🚿", en: "shower" }
+        ],
+        actions: [
+          { sentence: "Find the toilet.", target: "toilet" },
+          { sentence: "Find the soap.", target: "soap" },
+          { sentence: "Find the toothbrush.", target: "toothbrush" },
+          { sentence: "Find the mirror.", target: "mirror" },
+          { sentence: "Find the bathtub.", target: "bathtub" },
+          { sentence: "Find the duck.", target: "duck" }
+        ]
+      },
+      {
+        name: "גינה", env: "Garden", bg: "linear-gradient(160deg,#3f6b35,#2a4a24)",
+        objects: [
+          { key: "tree", emoji: "🌳", en: "tree" },
+          { key: "flower", emoji: "🌸", en: "flower" },
+          { key: "butterfly", emoji: "🦋", en: "butterfly" },
+          { key: "bird", emoji: "🐦", en: "bird" },
+          { key: "ball", emoji: "⚽", en: "ball" },
+          { key: "cat", emoji: "🐱", en: "cat" },
+          { key: "sun", emoji: "☀️", en: "sun" },
+          { key: "chair", emoji: "🪑", en: "chair" }
+        ],
+        actions: [
+          { sentence: "Find the tree.", target: "tree" },
+          { sentence: "Find the flower.", target: "flower" },
+          { sentence: "Find the butterfly.", target: "butterfly" },
+          { sentence: "Find the bird.", target: "bird" },
+          { sentence: "Find the ball.", target: "ball" },
+          { sentence: "Find the cat.", target: "cat" }
+        ]
+      },
+      {
+        name: "מוסך", env: "Garage", bg: "linear-gradient(160deg,#5b4a35,#3f3324)",
+        objects: [
+          { key: "car", emoji: "🚗", en: "car" },
+          { key: "bicycle", emoji: "🚲", en: "bicycle" },
+          { key: "hammer", emoji: "🔨", en: "hammer" },
+          { key: "wrench", emoji: "🔧", en: "wrench" },
+          { key: "ladder", emoji: "🪜", en: "ladder" },
+          { key: "broom", emoji: "🧹", en: "broom" },
+          { key: "box", emoji: "📦", en: "box" },
+          { key: "bucket", emoji: "🪣", en: "bucket" }
+        ],
+        actions: [
+          { sentence: "Find the car.", target: "car" },
+          { sentence: "Find the bicycle.", target: "bicycle" },
+          { sentence: "Find the hammer.", target: "hammer" },
+          { sentence: "Find the wrench.", target: "wrench" },
+          { sentence: "Find the ladder.", target: "ladder" },
+          { sentence: "Find the broom.", target: "broom" }
+        ]
+      }
+    ]
+  };
 
-// each row holds 4 color objects; start mismatched
-let vestColors = PALETTE.slice(0, 4);
-let hatColors  = PALETTE.slice(4, 8);
+  const WORLDS = [WORLD1];
+  const LOCKED_WORLDS = [
+    { emoji: "🏫", name: "עולם בית הספר", enName: "School", desc: "בקרוב…" },
+    { emoji: "🏙️", name: "עולם העיר", enName: "City", desc: "בקרוב…" },
+    { emoji: "🚀", name: "עולם הסוכן המיוחד", enName: "Special Agent", desc: "בקרוב…" }
+  ];
 
-// track consecutive shuffles on the same palette
-let streakRow = null;     // 'vest' | 'hat'
-let streakCount = 0;
+  // ---------- STATE ----------
+  let state = { world: 0, mission: 0, action: 0, solved: false, shuffled: [] };
+  let hintTimer1 = null, hintTimer2 = null;
 
-const vestSwatches = document.getElementById("vestSwatches");
-const hatSwatches  = document.getElementById("hatSwatches");
+  // ---------- SPEECH ----------
+  let voicesReady = false;
+  function pickVoice() {
+    const vs = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+    return vs.find(v => /en[-_]US/i.test(v.lang)) ||
+           vs.find(v => /^en/i.test(v.lang)) || null;
+  }
+  function speak(text, rate) {
+    if (!window.speechSynthesis) return;
+    try {
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = "en-US";
+      u.rate = rate || 0.75;
+      const v = pickVoice();
+      if (v) u.voice = v;
+      window.speechSynthesis.speak(u);
+    } catch (e) { /* ignore */ }
+  }
+  if (window.speechSynthesis) {
+    window.speechSynthesis.onvoiceschanged = function () { voicesReady = true; };
+  }
 
-const vestOnPuppy = document.getElementById("vestOnPuppy");
-const hatOnPuppy  = document.getElementById("hatOnPuppy");
+  // ---------- SOUND (WebAudio) ----------
+  let audioCtx = null;
+  function ac() {
+    if (!audioCtx) {
+      try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+      catch (e) { audioCtx = null; }
+    }
+    return audioCtx;
+  }
+  function tone(freqs, dur, type) {
+    const c = ac(); if (!c) return;
+    const now = c.currentTime;
+    freqs.forEach((f, i) => {
+      const o = c.createOscillator(), g = c.createGain();
+      o.type = type || "sine"; o.frequency.value = f;
+      const t = now + i * 0.12;
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.25, t + 0.03);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      o.connect(g); g.connect(c.destination);
+      o.start(t); o.stop(t + dur + 0.02);
+    });
+  }
+  function successSound() { tone([523, 659, 784], 0.25, "triangle"); }
+  function errorSound() { tone([240, 180], 0.22, "sine"); }
 
-function speak(text) {
-  try {
-    if (!("speechSynthesis" in window)) return;
-    window.speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = "en-US";
-    u.rate = 0.85;
-    u.pitch = 1.15;
-    window.speechSynthesis.speak(u);
-  } catch (e) { /* speech not available */ }
-}
+  // ---------- HELPERS ----------
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+  function $(id) { return document.getElementById(id); }
 
-function vestIcon(hex) {
-  const stroke = "#1f2937";
-  return '<svg viewBox="0 0 60 60">'
-    + '<path d="M16 14 q14 -7 28 0 l-2 9 q-12 -5 -24 0 Z" fill="' + hex + '" stroke="' + stroke + '" stroke-width="2"/>'
-    + '<path d="M12 22 q18 -8 36 0 q6 17 4 30 h-44 q-2 -13 4 -30 Z" fill="' + hex + '" stroke="' + stroke + '" stroke-width="2.4"/>'
-    + '<circle cx="30" cy="34" r="8" fill="#fff" stroke="' + stroke + '" stroke-width="2"/>'
-    + '<ellipse cx="30" cy="36" rx="2.2" ry="1.8" fill="#2b2b2b"/>'
-    + '<circle cx="27.7" cy="33.4" r="1" fill="#2b2b2b"/><circle cx="29.2" cy="32.2" r="1" fill="#2b2b2b"/>'
-    + '<circle cx="30.8" cy="32.2" r="1" fill="#2b2b2b"/><circle cx="32.3" cy="33.4" r="1" fill="#2b2b2b"/>'
-    + '</svg>';
-}
-function hatIcon(hex) {
-  const stroke = "#1f2937";
-  return '<svg viewBox="0 0 60 60">'
-    + '<path d="M10 36 q20 9 40 0 q1 6 -4 9 q-16 7 -32 0 q-5 -3 -4 -9 Z" fill="' + hex + '" stroke="' + stroke + '" stroke-width="2"/>'
-    + '<path d="M15 36 q15 -22 30 0 Z" fill="' + hex + '" stroke="' + stroke + '" stroke-width="2.4"/>'
-    + '<circle cx="30" cy="24" r="7" fill="#fff" stroke="' + stroke + '" stroke-width="2"/>'
-    + '<ellipse cx="30" cy="26" rx="2" ry="1.6" fill="#2b2b2b"/>'
-    + '<circle cx="28" cy="23.6" r="0.9" fill="#2b2b2b"/><circle cx="29.3" cy="22.6" r="0.9" fill="#2b2b2b"/>'
-    + '<circle cx="30.7" cy="22.6" r="0.9" fill="#2b2b2b"/><circle cx="32" cy="23.6" r="0.9" fill="#2b2b2b"/>'
-    + '</svg>';
-}
+  // ---------- SCREENS ----------
+  function showScreen(id) {
+    document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+    $(id).classList.add("active");
+  }
 
-function wearVest(color) {
-  vestOnPuppy.setAttribute("fill", color.hex);
-  vestOnPuppy.style.display = "";
-  speak(color.name);
-}
-function wearHat(color) {
-  hatOnPuppy.setAttribute("fill", color.hex);
-  hatOnPuppy.style.display = "";
-  speak(color.name);
-}
+  function buildStart() {
+    const list = $("worldList");
+    list.innerHTML = "";
+    WORLDS.forEach((w, idx) => {
+      const card = document.createElement("div");
+      card.className = "world-card unlocked";
+      card.innerHTML = '<div class="wc-emoji">' + w.emoji + '</div>' +
+        '<div class="wc-info"><div class="wc-name">' + w.name + '</div>' +
+        '<div class="wc-desc">' + w.enName + ' · ' + w.desc + '</div></div>' +
+        '<div class="wc-lock">▶️</div>';
+      card.addEventListener("click", function () { startWorld(idx); });
+      list.appendChild(card);
+    });
+    LOCKED_WORLDS.forEach(function (w) {
+      const card = document.createElement("div");
+      card.className = "world-card locked";
+      card.innerHTML = '<div class="wc-emoji">' + w.emoji + '</div>' +
+        '<div class="wc-info"><div class="wc-name">' + w.name + '</div>' +
+        '<div class="wc-desc">' + w.enName + ' · ' + w.desc + '</div></div>' +
+        '<div class="wc-lock">🔒</div>';
+      list.appendChild(card);
+    });
+  }
 
-vestOnPuppy.addEventListener("click", function () { vestOnPuppy.style.display = "none"; });
-hatOnPuppy.addEventListener("click", function () { hatOnPuppy.style.display = "none"; });
+  function startWorld(idx) {
+    if (ac() && audioCtx.state === "suspended") audioCtx.resume();
+    state.world = idx; state.mission = 0; state.action = 0;
+    showScreen("screen-play");
+    renderAction();
+  }
 
-function renderRow(container, colors, iconFn, wearFn) {
-  container.innerHTML = "";
-  colors.forEach(function (color) {
-    const btn = document.createElement("button");
-    btn.className = "swatch";
-    btn.setAttribute("aria-label", color.name);
-    btn.title = color.name;
-    btn.innerHTML = iconFn(color.hex);
-    btn.addEventListener("click", function () { wearFn(color); });
-    container.appendChild(btn);
+  function curMission() { return WORLDS[state.world].missions[state.mission]; }
+  function curAction() { return curMission().actions[state.action]; }
+
+  function renderAction() {
+    clearHints();
+    state.solved = false;
+    const mission = curMission();
+    const action = curAction();
+    $("screen-play").style.background = mission.bg;
+
+    // progress
+    const totalActions = mission.actions.length;
+    $("progressInfo").textContent =
+      mission.name + " · משימה " + (state.mission + 1) + "/" + WORLDS[state.world].missions.length +
+      " · פעולה " + (state.action + 1) + "/" + totalActions;
+    $("progressFill").style.width = (((state.action) / totalActions) * 100) + "%";
+
+    $("sentenceText").textContent = action.sentence;
+
+    // objects
+    const room = $("room");
+    room.style.background = mission.bg;
+    room.innerHTML = "";
+    state.shuffled = shuffle(mission.objects);
+    state.shuffled.forEach(function (obj) {
+      const b = document.createElement("button");
+      b.className = "obj";
+      b.textContent = obj.emoji;
+      b.setAttribute("data-key", obj.key);
+      b.setAttribute("aria-label", obj.en);
+      b.addEventListener("click", function () { onObjectClick(obj, b); });
+      room.appendChild(b);
+    });
+
+    // auto-read the sentence once, then arm hints
+    setTimeout(function () { speak(action.sentence, 0.7); }, 350);
+    armHints();
+  }
+
+  function onObjectClick(obj, el) {
+    if (state.solved) return;
+    const action = curAction();
+    if (obj.key === action.target) {
+      state.solved = true;
+      clearHints();
+      el.classList.add("correct");
+      successSound();
+      launchConfetti();
+      speak("Great! You found the " + obj.en + "!", 0.8);
+      $("progressFill").style.width =
+        (((state.action + 1) / curMission().actions.length) * 100) + "%";
+      setTimeout(nextAction, 1500);
+    } else {
+      el.classList.remove("wrong");
+      void el.offsetWidth;
+      el.classList.add("wrong");
+      errorSound();
+      speak(obj.en, 0.85);
+    }
+  }
+
+  function nextAction() {
+    const mission = curMission();
+    if (state.action + 1 < mission.actions.length) {
+      state.action++;
+      renderAction();
+    } else {
+      missionComplete();
+    }
+  }
+
+  // ---------- HINTS ----------
+  function armHints() {
+    hintTimer1 = setTimeout(function () {
+      $("speakBtn").classList.add("flash");
+      speak(curAction().sentence, 0.65);
+      hintTimer2 = setTimeout(function () {
+        const room = $("room");
+        const t = room.querySelector('[data-key="' + curAction().target + '"]');
+        if (t) t.classList.add("hintpulse");
+      }, 5000);
+    }, 7000);
+  }
+  function clearHints() {
+    if (hintTimer1) clearTimeout(hintTimer1);
+    if (hintTimer2) clearTimeout(hintTimer2);
+    hintTimer1 = hintTimer2 = null;
+    $("speakBtn").classList.remove("flash");
+    document.querySelectorAll(".obj.hintpulse").forEach(function (e) { e.classList.remove("hintpulse"); });
+  }
+
+  // ---------- OVERLAYS ----------
+  function showOverlay(emoji, titleHe, enLine, buttons) {
+    $("ovEmoji").textContent = emoji;
+    $("ovTitle").textContent = titleHe;
+    $("ovEn").textContent = enLine;
+    const bc = $("ovButtons");
+    bc.innerHTML = "";
+    buttons.forEach(function (b) {
+      const el = document.createElement("button");
+      el.className = "btn " + (b.cls || "");
+      el.textContent = b.label;
+      el.addEventListener("click", function () { hideOverlay(); b.fn(); });
+      bc.appendChild(el);
+    });
+    $("overlay").classList.add("active");
+    speak(enLine, 0.8);
+  }
+  function hideOverlay() { $("overlay").classList.remove("active"); }
+
+  function missionComplete() {
+    clearHints();
+    const isLastMission = state.mission + 1 >= WORLDS[state.world].missions.length;
+    if (isLastMission) {
+      worldComplete();
+    } else {
+      showOverlay("🎉", "כל הכבוד! השלמת את המשימה הסודית!", "Great job! Mission complete!",
+        [{ label: "למשימה הסודית הבאה", cls: "", fn: function () {
+          state.mission++; state.action = 0; renderAction();
+        } }]);
+    }
+  }
+
+  function worldComplete() {
+    const isLastWorld = state.world + 1 >= WORLDS.length;
+    if (isLastWorld) {
+      // Only built worlds finished -> celebrate + note more coming
+      showOverlay("🏆", "כל הכבוד! סיימת את עולם הבית והחצר!", "Outstanding! World complete!",
+        [
+          { label: "שחק שוב", cls: "gold", fn: function () { startWorld(state.world); } },
+          { label: "בחזרה לתפריט", cls: "secondary", fn: goHome }
+        ]);
+    } else {
+      showOverlay("🌟", "כל הכבוד! השלמת את כל המשימות הסודיות בעולם!", "Excellent! You completed all the missions!",
+        [{ label: "לעולם הבא", cls: "gold", fn: function () {
+          state.world++; state.mission = 0; state.action = 0; renderAction();
+        } }]);
+    }
+  }
+
+  function goHome() {
+    clearHints();
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    showScreen("screen-start");
+  }
+
+  // ---------- CONFETTI ----------
+  function launchConfetti() {
+    const colors = ["#ffcf4f", "#4f8cff", "#7df9c0", "#ff7eb6", "#b58cff"];
+    for (let i = 0; i < 18; i++) {
+      const c = document.createElement("div");
+      c.className = "confetti";
+      c.style.left = (Math.random() * 100) + "vw";
+      c.style.background = colors[i % colors.length];
+      c.style.transform = "rotate(" + (Math.random() * 360) + "deg)";
+      document.body.appendChild(c);
+      const dur = 900 + Math.random() * 700;
+      c.animate([
+        { top: "-10px", opacity: 1 },
+        { top: (60 + Math.random() * 30) + "vh", opacity: 0 }
+      ], { duration: dur, easing: "ease-in" });
+      setTimeout(function () { c.remove(); }, dur + 50);
+    }
+  }
+
+  // ---------- EVENTS ----------
+  $("speakBtn").addEventListener("click", function () {
+    if (ac() && audioCtx.state === "suspended") audioCtx.resume();
+    speak(curAction().sentence, 0.65);
   });
-}
-function renderVests() { renderRow(vestSwatches, vestColors, vestIcon, wearVest); }
-function renderHats()  { renderRow(hatSwatches,  hatColors,  hatIcon,  wearHat); }
+  $("homeBtn").addEventListener("click", goHome);
 
-function sameColors(a, b) {
-  for (let i = 0; i < a.length; i++) { if (a[i].name !== b[i].name) return false; }
-  return true;
-}
-function pickNewColors() {
-  const pool = PALETTE.slice();
-  for (let i = pool.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    const t = pool[i]; pool[i] = pool[j]; pool[j] = t;
-  }
-  return pool.slice(0, ROW_SIZE);
-}
-
-function doShuffle(row) {
-  const isVest = row === "vest";
-  const myColors    = isVest ? vestColors : hatColors;
-  const otherColors = isVest ? hatColors : vestColors;
-
-  if (streakRow === row) { streakCount++; } else { streakRow = row; streakCount = 1; }
-
-  let next;
-  if (streakCount >= 3 && !sameColors(myColors, otherColors)) {
-    // third shuffle in a row that still does not match -> make it identical to the other row
-    next = otherColors.map(function (c) { return c; });
-    streakCount = 0;
-  } else {
-    // swap to brand-new colors from the palette
-    do { next = pickNewColors(); } while (sameColors(next, myColors));
-  }
-
-  if (isVest) { vestColors = next; renderVests(); }
-  else        { hatColors  = next; renderHats(); }
-}
-
-document.getElementById("shuffleVest").addEventListener("click", function () { doShuffle("vest"); });
-document.getElementById("shuffleHat").addEventListener("click", function () { doShuffle("hat"); });
-
-renderVests();
-renderHats();
+  // ---------- INIT ----------
+  buildStart();
+  // warm up voices
+  if (window.speechSynthesis) { try { window.speechSynthesis.getVoices(); } catch (e) {} }
+})();
 </script>
 </body>
 </html>

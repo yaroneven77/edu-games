@@ -60,15 +60,23 @@
   .progress-bar > div { height: 100%; background: linear-gradient(90deg, #4f8cff, #7df9c0); width: 0%; transition: width .3s; }
 
   .sentence-box {
-    display: flex; align-items: center; gap: 12px; justify-content: center;
+    display: flex; align-items: center; gap: 12px; justify-content: center; flex-wrap: wrap;
     background: rgba(255,255,255,.08); border-radius: 16px; padding: 16px;
     margin-bottom: 14px; min-height: 64px;
   }
   .sentence-text { font-size: 1.5rem; font-weight: 700; direction: ltr; letter-spacing: .3px; }
+  .translation-text {
+    flex-basis: 100%; text-align: center; direction: rtl;
+    font-size: 1.2rem; font-weight: 700; color: #ffe9b0; margin-top: 2px;
+  }
   .speak-btn {
     border: none; border-radius: 50%; width: 56px; height: 56px; min-width: 56px;
     font-size: 1.6rem; cursor: pointer; background: linear-gradient(180deg, #ffcf4f, #f0a91e);
     color: #3a2a00; box-shadow: 0 3px 0 #b87d12;
+  }
+  .xlate-btn {
+    background: linear-gradient(180deg, #8fd0ff, #3a9be8); color: #04243f;
+    box-shadow: 0 3px 0 #2176b8; font-size: 1.25rem; font-weight: 800;
   }
   .speak-btn:active { transform: translateY(2px); }
   .speak-btn.flash { animation: flashPulse .6s ease-in-out infinite; }
@@ -156,6 +164,8 @@
     <div class="sentence-box">
       <button class="speak-btn" id="speakBtn" title="הקראה">🔊</button>
       <div class="sentence-text" id="sentenceText">Find the apple.</div>
+      <button class="speak-btn xlate-btn" id="xlateBtn" title="תרגום לעברית">עב</button>
+      <div class="translation-text" id="translationText" hidden></div>
     </div>
     <div class="room" id="room"></div>
   </section>
@@ -261,12 +271,12 @@
           { key: "plate", emoji: "🍽️", en: "plate", x: 78.75, y: 73.5, size: 2.6 }
         ],
         actions: [
-          { sentence: "Find the apple.", target: "apple" },
-          { sentence: "Find the banana.", target: "banana" },
-          { sentence: "Find the bread.", target: "bread" },
-          { sentence: "Find the spoon.", target: "spoon" },
-          { sentence: "Find the milk.", target: "milk" },
-          { sentence: "Find the plate.", target: "plate" }
+          { sentence: "Find the apple.", he: "מצא את התפוח.", target: "apple" },
+          { sentence: "Find the banana.", he: "מצא את הבננה.", target: "banana" },
+          { sentence: "Find the bread.", he: "מצא את הלחם.", target: "bread" },
+          { sentence: "Find the spoon.", he: "מצא את הכף.", target: "spoon" },
+          { sentence: "Find the milk.", he: "מצא את החלב.", target: "milk" },
+          { sentence: "Find the plate.", he: "מצא את הצלחת.", target: "plate" }
         ]
       },
       {
@@ -310,12 +320,12 @@
           { key: "picture", emoji: "🖼️", en: "picture", x: 20, y: 17, size: 2.6 }
         ],
         actions: [
-          { sentence: "Find the television.", target: "tv" },
-          { sentence: "Where is the clock?", target: "clock" },
-          { sentence: "Point to the lamp.", target: "lamp" },
-          { sentence: "Touch the soft sofa.", target: "sofa" },
-          { sentence: "Look for the green plant next to the sofa.", target: "plant" },
-          { sentence: "Which one can you read? Find the book.", target: "book" }
+          { sentence: "Find the television.", he: "מצא את הטלוויזיה.", target: "tv" },
+          { sentence: "Where is the clock?", he: "איפה השעון?", target: "clock" },
+          { sentence: "Point to the lamp.", he: "הצבע על המנורה.", target: "lamp" },
+          { sentence: "Touch the soft sofa.", he: "גע בספה הרכה.", target: "sofa" },
+          { sentence: "Look for the green plant next to the sofa.", he: "חפש את העציץ הירוק ליד הספה.", target: "plant" },
+          { sentence: "Which one can you read? Find the book.", he: "מה אפשר לקרוא? מצא את הספר.", target: "book" }
         ]
       },
       {
@@ -353,12 +363,12 @@
           { key: "book", emoji: "📖", en: "book", x: 64, y: 31, size: 1.7 }
         ],
         actions: [
-          { sentence: "Where can you sleep at night? Find the bed.", target: "bed" },
-          { sentence: "Point to the soft teddy bear.", target: "teddy" },
-          { sentence: "Which one do you wear on your feet? Find the shoes.", target: "shoes" },
-          { sentence: "Look for the shirt you can wear.", target: "shirt" },
-          { sentence: "Open it to go outside. Where is the door?", target: "door" },
-          { sentence: "Find the window you look through.", target: "window" }
+          { sentence: "Where can you sleep at night? Find the bed.", he: "איפה ישנים בלילה? מצא את המיטה.", target: "bed" },
+          { sentence: "Point to the soft teddy bear.", he: "הצבע על דובי הצעצוע הרך.", target: "teddy" },
+          { sentence: "Which one do you wear on your feet? Find the shoes.", he: "מה נועלים על הרגליים? מצא את הנעליים.", target: "shoes" },
+          { sentence: "Look for the shirt you can wear.", he: "חפש את החולצה שאפשר ללבוש.", target: "shirt" },
+          { sentence: "Open it to go outside. Where is the door?", he: "פותחים אותה כדי לצאת. איפה הדלת?", target: "door" },
+          { sentence: "Find the window you look through.", he: "מצא את החלון שמסתכלים דרכו.", target: "window" }
         ]
       },
       {
@@ -392,12 +402,12 @@
           { key: "comb", emoji: "🪮", en: "comb", x: 80, y: 51.5, size: 1.8 }
         ],
         actions: [
-          { sentence: "Which one do you use to brush your teeth? Find the toothbrush.", target: "toothbrush" },
-          { sentence: "Look at yourself. Where is the mirror?", target: "mirror" },
-          { sentence: "Find the soap you wash your hands with.", target: "soap" },
-          { sentence: "Point to the little duck in the bathtub.", target: "duck" },
-          { sentence: "Where do you take a warm bath? Find the bathtub.", target: "bathtub" },
-          { sentence: "Which one rains water from above? Find the shower.", target: "shower" }
+          { sentence: "Which one do you use to brush your teeth? Find the toothbrush.", he: "במה מצחצחים שיניים? מצא את מברשת השיניים.", target: "toothbrush" },
+          { sentence: "Look at yourself. Where is the mirror?", he: "תסתכל על עצמך. איפה המראה?", target: "mirror" },
+          { sentence: "Find the soap you wash your hands with.", he: "מצא את הסבון שמתרחצים איתו.", target: "soap" },
+          { sentence: "Point to the little duck in the bathtub.", he: "הצבע על הברווז הקטן באמבטיה.", target: "duck" },
+          { sentence: "Where do you take a warm bath? Find the bathtub.", he: "איפה מתרחצים באמבט חם? מצא את האמבטיה.", target: "bathtub" },
+          { sentence: "Which one rains water from above? Find the shower.", he: "ממה יורדים מים מלמעלה? מצא את המקלחת.", target: "shower" }
         ]
       },
       {
@@ -436,12 +446,12 @@
           { key: "chair", emoji: "🪑", en: "chair", x: 12, y: 70, size: 3.0 }
         ],
         actions: [
-          { sentence: "It is bright and yellow in the sky. Where is the sun?", target: "sun" },
-          { sentence: "Find the tall tree with green leaves.", target: "tree" },
-          { sentence: "Which animal can fly and sing? Find the bird.", target: "bird" },
-          { sentence: "Look for the colorful butterfly near the flowers.", target: "butterfly" },
-          { sentence: "Point to the round ball you can kick.", target: "ball" },
-          { sentence: "Which animal says meow? Find the cat.", target: "cat" }
+          { sentence: "It is bright and yellow in the sky. Where is the sun?", he: "הוא בהיר וצהוב בשמיים. איפה השמש?", target: "sun" },
+          { sentence: "Find the tall tree with green leaves.", he: "מצא את העץ הגבוה עם העלים הירוקים.", target: "tree" },
+          { sentence: "Which animal can fly and sing? Find the bird.", he: "איזו חיה עפה ושרה? מצא את הציפור.", target: "bird" },
+          { sentence: "Look for the colorful butterfly near the flowers.", he: "חפש את הפרפר הצבעוני ליד הפרחים.", target: "butterfly" },
+          { sentence: "Point to the round ball you can kick.", he: "הצבע על הכדור העגול שאפשר לבעוט.", target: "ball" },
+          { sentence: "Which animal says meow? Find the cat.", he: "איזו חיה אומרת מיאו? מצא את החתול.", target: "cat" }
         ]
       },
       {
@@ -478,12 +488,12 @@
           { key: "bucket", emoji: "🪣", en: "bucket", x: 44, y: 82, size: 2.2 }
         ],
         actions: [
-          { sentence: "Which one has four wheels and a motor? Find the car.", target: "car" },
-          { sentence: "You ride it with two wheels and pedals. Where is the bicycle?", target: "bicycle" },
-          { sentence: "Find the heavy hammer you use to hit a nail.", target: "hammer" },
-          { sentence: "Look for the wrench that turns a bolt.", target: "wrench" },
-          { sentence: "Climb it to reach up high. Which one is the ladder?", target: "ladder" },
-          { sentence: "Which one do you use to sweep the floor? Find the broom.", target: "broom" }
+          { sentence: "Which one has four wheels and a motor? Find the car.", he: "למה יש ארבעה גלגלים ומנוע? מצא את המכונית.", target: "car" },
+          { sentence: "You ride it with two wheels and pedals. Where is the bicycle?", he: "רוכבים עליו עם שני גלגלים ודוושות. איפה האופניים?", target: "bicycle" },
+          { sentence: "Find the heavy hammer you use to hit a nail.", he: "מצא את הפטיש הכבד שמכים איתו מסמר.", target: "hammer" },
+          { sentence: "Look for the wrench that turns a bolt.", he: "חפש את המפתח שמסובב בורג.", target: "wrench" },
+          { sentence: "Climb it to reach up high. Which one is the ladder?", he: "מטפסים עליו כדי להגיע גבוה. מה הסולם?", target: "ladder" },
+          { sentence: "Which one do you use to sweep the floor? Find the broom.", he: "במה מטאטאים את הרצפה? מצא את המטאטא.", target: "broom" }
         ]
       }
     ]
@@ -506,6 +516,23 @@
     const vs = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
     return vs.find(v => /en[-_]US/i.test(v.lang)) ||
            vs.find(v => /^en/i.test(v.lang)) || null;
+  }
+  function pickVoiceHe() {
+    const vs = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+    return vs.find(v => /he[-_]IL/i.test(v.lang)) ||
+           vs.find(v => /^(he|iw)/i.test(v.lang)) || null;
+  }
+  function speakHe(text) {
+    if (!window.speechSynthesis || !text) return;
+    try {
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = "he-IL";
+      u.rate = 0.85;
+      const v = pickVoiceHe();
+      if (v) u.voice = v;
+      window.speechSynthesis.speak(u);
+    } catch (e) { /* ignore */ }
   }
   function speak(text, rate) {
     if (!window.speechSynthesis) return;
@@ -615,6 +642,8 @@
     $("progressFill").style.width = (((state.action) / totalActions) * 100) + "%";
 
     $("sentenceText").textContent = action.sentence;
+    var trEl = $("translationText");
+    if (trEl) { trEl.hidden = true; trEl.textContent = ""; }
 
     // objects
     const room = $("room");
@@ -794,6 +823,13 @@
   $("speakBtn").addEventListener("click", function () {
     if (ac() && audioCtx.state === "suspended") audioCtx.resume();
     speak(curAction().sentence, 0.65);
+  });
+  $("xlateBtn").addEventListener("click", function () {
+    const a = curAction();
+    const t = $("translationText");
+    t.textContent = a.he || "";
+    t.hidden = !a.he;
+    speakHe(a.he);
   });
   $("homeBtn").addEventListener("click", goHome);
 

@@ -60,15 +60,11 @@
   .progress-bar > div { height: 100%; background: linear-gradient(90deg, #4f8cff, #7df9c0); width: 0%; transition: width .3s; }
 
   .sentence-box {
-    display: flex; align-items: center; gap: 12px; justify-content: center; flex-wrap: wrap;
+    display: flex; align-items: center; gap: 12px; justify-content: center; flex-wrap: nowrap;
     background: rgba(255,255,255,.08); border-radius: 16px; padding: 16px;
     margin-bottom: 14px; min-height: 64px;
   }
-  .sentence-text { font-size: 1.5rem; font-weight: 700; direction: ltr; letter-spacing: .3px; }
-  .translation-text {
-    flex-basis: 100%; text-align: center; direction: rtl;
-    font-size: 1.2rem; font-weight: 700; color: #ffe9b0; margin-top: 2px;
-  }
+  .sentence-text { flex: 1; min-width: 0; text-align: center; font-size: 1.5rem; font-weight: 700; direction: ltr; letter-spacing: .3px; }
   .speak-btn {
     border: none; border-radius: 50%; width: 56px; height: 56px; min-width: 56px;
     font-size: 1.6rem; cursor: pointer; background: linear-gradient(180deg, #ffcf4f, #f0a91e);
@@ -164,8 +160,7 @@
     <div class="sentence-box">
       <button class="speak-btn" id="speakBtn" title="הקראה">🔊</button>
       <div class="sentence-text" id="sentenceText">Find the apple.</div>
-      <button class="speak-btn xlate-btn" id="xlateBtn" title="תרגום לעברית">עב</button>
-      <div class="translation-text" id="translationText" hidden></div>
+      <button class="speak-btn xlate-btn" id="xlateBtn" title="הקראה בעברית">עב</button>
     </div>
     <div class="room" id="room"></div>
   </section>
@@ -642,8 +637,6 @@
     $("progressFill").style.width = (((state.action) / totalActions) * 100) + "%";
 
     $("sentenceText").textContent = action.sentence;
-    var trEl = $("translationText");
-    if (trEl) { trEl.hidden = true; trEl.textContent = ""; }
 
     // objects
     const room = $("room");
@@ -825,11 +818,7 @@
     speak(curAction().sentence, 0.65);
   });
   $("xlateBtn").addEventListener("click", function () {
-    const a = curAction();
-    const t = $("translationText");
-    t.textContent = a.he || "";
-    t.hidden = !a.he;
-    speakHe(a.he);
+    speakHe(curAction().he);
   });
   $("homeBtn").addEventListener("click", goHome);
 

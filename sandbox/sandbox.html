@@ -494,7 +494,7 @@
     ]
   };
 
-  // ---------- SCENE BUILDER (worlds 2-4) ----------
+  // ---------- SCENE BUILDER (worlds 2-4): grounded rooms ----------
   let _sid = 0;
   function _grad(id, a, b) {
     return '<linearGradient id="' + id + '" x1="0" y1="0" x2="0" y2="1">' +
@@ -503,60 +503,79 @@
   function _r(x, y, w, h, f, ex) {
     return '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" ' + (ex || '') + ' fill="' + f + '"/>';
   }
-  function scene(o) {
-    const u = 'S' + (_sid++);
-    const wh = o.wallH || 60;
-    let s = '<svg viewBox="0 0 160 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><defs>';
-    s += _grad(u + 'w', o.wt, o.wb) + _grad(u + 'f', o.ft, o.fb) + '</defs>';
-    s += _r(0, 0, 160, wh, 'url(#' + u + 'w)');
-    s += _r(0, wh, 160, 100 - wh, 'url(#' + u + 'f)');
-    s += _r(0, wh, 160, 1.4, 'rgba(0,0,0,0.18)');
-    s += '<g stroke="rgba(0,0,0,0.07)" stroke-width="0.6">' +
-      '<line x1="22" y1="100" x2="64" y2="' + (wh + 1) + '"/>' +
-      '<line x1="70" y1="100" x2="78" y2="' + (wh + 1) + '"/>' +
-      '<line x1="138" y1="100" x2="96" y2="' + (wh + 1) + '"/></g>';
-    s += (o.items || '');
-    s += '</svg>';
-    return s;
+  function _shadow(cx, cy, rx, ry, op) {
+    return '<ellipse cx="' + cx + '" cy="' + cy + '" rx="' + rx + '" ry="' + ry + '" fill="rgba(0,0,0,' + (op || 0.16) + ')"/>';
   }
-  // furniture fragments
+
+  // object slots (percent). Interior: shelf row (on wall shelf) + counter row (on back counter).
+  const INTERIOR_SLOTS = [
+    [12, 44], [28, 44], [44, 44], [60, 44], [76, 44], [92, 44], // counter (top ~47)
+    [24, 26], [50, 26], [76, 26]                                 // wall shelf (top ~29)
+  ];
+  // Outdoor: a back row (mid-ground) + a front row, both on the ground.
+  const OUTDOOR_SLOTS = [
+    [22, 62], [44, 62], [66, 62], [86, 62],
+    [12, 80], [30, 80], [48, 80], [66, 80], [84, 80]
+  ];
+
+  // INTERIOR room: full-width back counter + wall shelf, with contact shadows under every slot.
+  function roomKit(pal, feature, cc) {
+    const u = 'S' + (_sid++);
+    const slab = (cc && cc[0]) || '#e7cda4';
+    const body = (cc && cc[1]) || '#b9894f';
+    let s = '<svg viewBox="0 0 160 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><defs>';
+    s += _grad(u + 'w', pal[0], pal[1]) + _grad(u + 'f', pal[2], pal[3]) + '</defs>';
+    s += _r(0, 0, 160, 44, 'url(#' + u + 'w)');
+    s += _r(0, 44, 160, 56, 'url(#' + u + 'f)');
+    s += _r(0, 44, 160, 1.2, 'rgba(0,0,0,0.14)');
+    s += '<g stroke="rgba(0,0,0,0.06)" stroke-width="0.6"><line x1="18" y1="100" x2="64" y2="45"/><line x1="142" y1="100" x2="96" y2="45"/></g>';
+    s += (feature || '');
+    // wall shelf (full width) board top at y=29
+    s += _r(6, 29, 148, 2.4, '#9a6a36', 'rx="0.8"') + _r(6, 29, 148, 0.8, 'rgba(255,255,255,0.28)');
+    s += _r(9, 31.4, 2, 2.6, '#7c5128') + _r(149, 31.4, 2, 2.6, '#7c5128');
+    // shelf-row contact shadows (x 24,50,76 -> svg 38.4,80,121.6)
+    s += _shadow(38.4, 29, 6, 1.1) + _shadow(80, 29, 6, 1.1) + _shadow(121.6, 29, 6, 1.1);
+    // back counter: top slab at y=47, cabinet body 50-62
+    s += _r(0, 50, 160, 12, body);
+    s += _r(0, 47, 160, 3, slab);
+    s += _r(0, 49.6, 160, 0.8, 'rgba(0,0,0,0.12)');
+    s += '<g stroke="rgba(0,0,0,0.13)" stroke-width="0.7"><line x1="26" y1="50" x2="26" y2="62"/><line x1="53" y1="50" x2="53" y2="62"/><line x1="80" y1="50" x2="80" y2="62"/><line x1="107" y1="50" x2="107" y2="62"/><line x1="134" y1="50" x2="134" y2="62"/></g>';
+    s += '<g fill="#5c3c18"><rect x="22" y="54" width="6" height="1.4" rx="0.6"/><rect x="49" y="54" width="6" height="1.4" rx="0.6"/><rect x="76" y="54" width="6" height="1.4" rx="0.6"/><rect x="103" y="54" width="6" height="1.4" rx="0.6"/><rect x="130" y="54" width="6" height="1.4" rx="0.6"/></g>';
+    // counter-row contact shadows (x 12,28,44,60,76,92 -> svg *1.6) at y=47.2
+    [12, 28, 44, 60, 76, 92].forEach(function (x) { s += _shadow(x * 1.6, 47.2, 5, 1.1); });
+    // soft floor rug
+    s += '<ellipse cx="80" cy="86" rx="50" ry="9" fill="rgba(0,0,0,0.05)"/>';
+    s += '</svg>';
+    return { svg: s, slots: INTERIOR_SLOTS };
+  }
+
+  // OUTDOOR scene: sky + ground, with contact shadows under every slot.
+  function outdoorKit(pal, items, shOp) {
+    const u = 'S' + (_sid++);
+    let s = '<svg viewBox="0 0 160 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><defs>';
+    s += _grad(u + 's', pal[0], pal[1]) + _grad(u + 'g', pal[2], pal[3]) + '</defs>';
+    s += _r(0, 0, 160, 58, 'url(#' + u + 's)');
+    s += _r(0, 58, 160, 42, 'url(#' + u + 'g)');
+    s += _r(0, 58, 160, 1, 'rgba(0,0,0,0.08)');
+    s += (items || '');
+    OUTDOOR_SLOTS.forEach(function (p) { s += _shadow(p[0] * 1.6, p[1] + 3.2, p[1] > 70 ? 5.5 : 4.5, 1.3, shOp || 0.14); });
+    s += '</svg>';
+    return { svg: s, slots: OUTDOOR_SLOTS };
+  }
+
+  // wall / décor feature helpers (positioned on the back wall, y 5-26)
   function fWin(x, y, w, h) {
     return _r(x, y, w, h, '#cfeaff', 'stroke="#ffffff" stroke-width="1.5"') +
       _r(x + w / 2 - 0.6, y, 1.2, h, '#ffffff') + _r(x, y + h / 2 - 0.6, w, 1.2, '#ffffff');
   }
-  function fDoor(x, y, w, h, c) {
-    return _r(x, y, w, h, c || '#8a5a2b', 'rx="1"') +
-      '<circle cx="' + (x + w - 2) + '" cy="' + (y + h / 2) + '" r="0.9" fill="#ffe08a"/>';
-  }
-  function fShelf(x, y, w) {
-    return _r(x, y, w, 2.2, '#a9743d', 'rx="1"') + _r(x, y, w, 0.8, 'rgba(255,255,255,0.3)');
-  }
-  function fTable(x, y, w, c) {
-    return _r(x + 1, y + 4, 3, 16, '#7c5128') + _r(x + w - 4, y + 4, 3, 16, '#7c5128') +
-      _r(x - 1, y, w + 2, 4.5, c || '#b9772f', 'rx="1.5"') + _r(x - 1, y, w + 2, 1.4, 'rgba(255,255,255,0.25)');
-  }
-  function fCounter(x, y, w, h, c) {
-    return _r(x, y, w, h, c || '#cdd2d8') + _r(x, y, w, 1.4, 'rgba(255,255,255,0.35)');
+  function fFrame(x, y, w, h, c) {
+    return _r(x - 1.5, y - 1.5, w + 3, h + 3, '#caa36b', 'rx="1"') + _r(x, y, w, h, c);
   }
   function fBoard(x, y, w, h, c) {
-    return _r(x - 1.5, y - 1.5, w + 3, h + 3, '#caa36b', 'rx="1"') + _r(x, y, w, h, c || '#2f6f4f');
-  }
-  function fRug(cx, cy, w, c) {
-    return '<ellipse cx="' + cx + '" cy="' + cy + '" rx="' + w + '" ry="' + (w * 0.28) + '" fill="' + (c || 'rgba(180,80,120,0.22)') + '"/>';
-  }
-  function fPlant(x, y) {
-    return _r(x, y, 5, 5, '#c8743a', 'rx="1"') + '<circle cx="' + (x + 2.5) + '" cy="' + (y - 2) + '" r="4" fill="#4e9a4e"/>';
-  }
-
-  // object scatter positions (percent) + mission factory
-  const P = [[16, 71], [31, 80], [46, 66], [59, 80], [73, 67], [87, 80], [25, 47], [69, 47], [50, 33]];
-  function M(name, env, bg, pal, items, objs, acts) {
-    return {
-      name: name, env: env, bg: bg, scene: true,
-      sceneSVG: scene({ wt: pal[0], wb: pal[1], ft: pal[2], fb: pal[3], items: items }),
-      objects: objs.map(function (o, i) { return { key: o[0], emoji: o[1], en: o[2], x: P[i][0], y: P[i][1], size: o[3] || 2.1 }; }),
-      actions: acts.map(function (a) { return { sentence: a[0], he: a[1], target: a[2] }; })
-    };
+    return _r(x - 2, y - 2, w + 4, h + 4, '#caa36b', 'rx="1.5"') + _r(x, y, w, h, c || '#2f6f4f') +
+      '<g stroke="rgba(255,255,255,0.5)" stroke-width="0.6"><line x1="' + (x + 4) + '" y1="' + (y + 5) + '" x2="' + (x + w - 8) + '" y2="' + (y + 5) + '"/>' +
+      '<line x1="' + (x + 4) + '" y1="' + (y + 9) + '" x2="' + (x + w - 5) + '" y2="' + (y + 9) + '"/>' +
+      '<line x1="' + (x + 4) + '" y1="' + (y + 13) + '" x2="' + (x + w - 14) + '" y2="' + (y + 13) + '"/></g>';
   }
 
   // ---------- WORLD 2 — School ----------
@@ -564,8 +583,8 @@
     id: 2, name: "עולם בית הספר", enName: "School", emoji: "🏫",
     desc: "6 משימות סודיות · אנגלית בבית הספר",
     missions: [
-      M("כיתה", "Classroom", "#dfe7f0", ["#eef3fa", "#d7e1ee", "#c7b79a", "#a98e63"],
-        fBoard(8, 8, 54, 26) + fShelf(112, 18, 40) + fWin(120, 40, 28, 16) + fTable(60, 70, 40),
+      M("כיתה", "Classroom", "#dfe7f0",
+        roomKit(["#eef3fa", "#d7e1ee", "#caa36b", "#a07c46"], fBoard(50, 7, 60, 19) + fWin(8, 8, 30, 16) + fWin(122, 8, 30, 16)),
         [["book", "📖", "book"], ["pencil", "✏️", "pencil"], ["ruler", "📏", "ruler"], ["clock", "🕐", "clock"], ["bag", "🎒", "bag"], ["globe", "🌐", "globe"], ["scissors", "✂️", "scissors"], ["eraser", "🧽", "eraser"], ["crayon", "🖍️", "crayon"]],
         [["Open it and read. Which is the book?", "פותחים אותו וקוראים. מה הספר?", "book"],
          ["Find the yellow pencil.", "מצא את העיפרון הצהוב.", "pencil"],
@@ -573,8 +592,8 @@
          ["It shows the time. Find the clock.", "הוא מראה את השעה. מצא את השעון.", "clock"],
          ["You carry your books in it. Find the bag.", "נושאים בו את הספרים. מצא את התיק.", "bag"],
          ["It shows all the countries. Find the globe.", "הוא מראה את כל המדינות. מצא את הגלובוס.", "globe"]]),
-      M("ספרייה", "Library", "#efe6d6", ["#f3ead8", "#e2d3b6", "#cdb389", "#a98a5d"],
-        fShelf(8, 16, 60) + fShelf(8, 30, 60) + fShelf(96, 16, 56) + fShelf(96, 30, 56) + fTable(58, 72, 44),
+      M("ספרייה", "Library", "#efe6d6",
+        roomKit(["#f3ead8", "#e2d3b6", "#cdb389", "#a17f52"], fFrame(12, 7, 40, 18, "#8a5a2b") + '<g>' + _r(14, 9, 4, 14, "#d36") + _r(19, 9, 4, 14, "#39c") + _r(24, 9, 4, 14, "#3a3") + _r(29, 9, 4, 14, "#e90") + _r(34, 9, 4, 14, "#96c") + _r(39, 9, 4, 14, "#d36") + _r(44, 9, 4, 14, "#39c") + '</g>' + fWin(108, 8, 44, 16), ["#efe0c6", "#caa066"]),
         [["book", "📖", "book"], ["lamp", "💡", "lamp"], ["newspaper", "📰", "newspaper"], ["globe", "🌐", "globe"], ["chair", "🪑", "chair"], ["magnifier", "🔍", "magnifying glass"], ["pencil", "✏️", "pencil"], ["clock", "🕐", "clock"], ["ladder", "🪜", "ladder"]],
         [["Find the big book.", "מצא את הספר הגדול.", "book"],
          ["It gives light so you can read. Find the lamp.", "הוא נותן אור כדי לקרוא. מצא את המנורה.", "lamp"],
@@ -582,8 +601,8 @@
          ["Where can you find every country? The globe.", "איפה אפשר למצוא כל מדינה? הגלובוס.", "globe"],
          ["You sit on it to read. Find the chair.", "יושבים עליו כדי לקרוא. מצא את הכיסא.", "chair"],
          ["It makes small words look big. Find the magnifying glass.", "היא מגדילה מילים קטנות. מצא את הזכוכית המגדלת.", "magnifier"]]),
-      M("חדר אומנות", "Art room", "#f3e1ec", ["#f7e6f0", "#ecc9de", "#d8b48f", "#b58a5e"],
-        fShelf(10, 16, 44) + fShelf(108, 20, 44) + fTable(56, 70, 46, "#caa36b") + fPlant(140, 70),
+      M("חדר אומנות", "Art room", "#f3e1ec",
+        roomKit(["#f7e6f0", "#ecc9de", "#d8b48f", "#b08456"], fFrame(16, 7, 24, 18, "#ffd24f") + fFrame(68, 6, 24, 20, "#7ec8ff") + fFrame(120, 7, 24, 18, "#9be07e")),
         [["brush", "🖌️", "paintbrush"], ["palette", "🎨", "palette"], ["scissors", "✂️", "scissors"], ["crayon", "🖍️", "crayon"], ["picture", "🖼️", "picture"], ["paper", "📄", "paper"], ["pencil", "✏️", "pencil"], ["sponge", "🧽", "sponge"], ["glue", "📎", "clip"]],
         [["You paint with it. Find the paintbrush.", "מציירים איתו. מצא את המכחול.", "brush"],
          ["It holds many colors. Find the palette.", "היא מחזיקה הרבה צבעים. מצא את הפלטה.", "palette"],
@@ -591,8 +610,8 @@
          ["Find the red crayon.", "מצא את הצבע האדום.", "crayon"],
          ["Find the picture on the wall.", "מצא את התמונה על הקיר.", "picture"],
          ["You draw on it. Find the paper.", "מציירים עליו. מצא את הנייר.", "paper"]]),
-      M("מעבדת מדע", "Science lab", "#d7eef0", ["#e6f6f8", "#c8e6ea", "#b9c4cc", "#8f9aa3"],
-        fCounter(0, 50, 160, 6, "#bcd0d4") + fShelf(100, 18, 52) + fWin(14, 12, 30, 18),
+      M("מעבדת מדע", "Science lab", "#d7eef0",
+        roomKit(["#e6f6f8", "#c8e6ea", "#b9c4cc", "#8e99a2"], fWin(10, 8, 34, 18) + fFrame(64, 6, 30, 20, "#1d3a4a") + '<g stroke="#4fd0a0" stroke-width="0.6"><line x1="68" y1="12" x2="90" y2="12"/><line x1="68" y1="16" x2="86" y2="16"/><line x1="68" y1="20" x2="92" y2="20"/></g>' + fWin(116, 8, 34, 18), ["#cfd8de", "#9aa6b0"]),
         [["microscope", "🔬", "microscope"], ["testtube", "🧪", "test tube"], ["magnet", "🧲", "magnet"], ["telescope", "🔭", "telescope"], ["battery", "🔋", "battery"], ["plant", "🪴", "plant"], ["magnifier", "🔍", "magnifying glass"], ["bulb", "💡", "light bulb"], ["dna", "🧬", "DNA"]],
         [["It makes tiny things look big. Find the microscope.", "הוא מגדיל דברים זעירים. מצא את המיקרוסקופ.", "microscope"],
          ["The scientist mixes liquid in it. Find the test tube.", "המדען מערבב בה נוזל. מצא את המבחנה.", "testtube"],
@@ -600,8 +619,8 @@
          ["You look at the stars with it. Find the telescope.", "מסתכלים איתו על הכוכבים. מצא את הטלסקופ.", "telescope"],
          ["It gives power. Find the battery.", "היא נותנת חשמל. מצא את הסוללה.", "battery"],
          ["It is green and it grows. Find the plant.", "הוא ירוק וגדל. מצא את הצמח.", "plant"]]),
-      M("אולם ספורט", "Gym", "#f0e7d2", ["#f6eed9", "#e6d6b2", "#caa066", "#9c7236"],
-        _r(0, 56, 160, 1.6, "#b98a4a") + fDoor(8, 22, 16, 34, "#9aa6b0") + _r(120, 18, 30, 22, "#e8e2d0", 'stroke="#caa36b" stroke-width="1.5" rx="1"'),
+      M("אולם ספורט", "Gym", "#f0e7d2",
+        roomKit(["#f6eed9", "#e6d6b2", "#caa066", "#9c7236"], _r(56, 6, 48, 16, "#1d2a3a", 'rx="1.5"') + '<g fill="#ffcf4f"><circle cx="68" cy="14" r="2"/><circle cx="74" cy="14" r="2"/><circle cx="86" cy="14" r="2"/><circle cx="92" cy="14" r="2"/></g>' + '<rect x="78" y="11" width="4" height="6" fill="#ff7e6b"/>' + fFrame(14, 8, 22, 14, "#e8e2d0") + fFrame(124, 8, 22, 14, "#e8e2d0")),
         [["ball", "⚽", "ball"], ["basketball", "🏀", "basketball"], ["medal", "🏅", "medal"], ["rope", "🪢", "rope"], ["sneakers", "👟", "sneakers"], ["trophy", "🏆", "trophy"], ["cone", "🚧", "cone"], ["goal", "🥅", "goal"], ["bottle", "🍶", "bottle"]],
         [["You kick it with your foot. Find the ball.", "בועטים בו עם הרגל. מצא את הכדור.", "ball"],
          ["You throw it into the hoop. Find the basketball.", "זורקים אותו לסל. מצא את כדורסל.", "basketball"],
@@ -609,8 +628,8 @@
          ["You jump over it. Find the rope.", "קופצים מעליו. מצא את החבל.", "rope"],
          ["You wear them to run fast. Find the sneakers.", "נועלים אותן כדי לרוץ מהר. מצא את הנעליים.", "sneakers"],
          ["The best team wins it. Find the trophy.", "הקבוצה הכי טובה זוכה בו. מצא את הגביע.", "trophy"]]),
-      M("קפיטריה", "Cafeteria", "#f2ead8", ["#f7f0df", "#e7dcc2", "#cdb389", "#a98a5d"],
-        fCounter(0, 50, 160, 6, "#d9c79e") + fTable(20, 72, 40) + fTable(96, 72, 44),
+      M("קפיטריה", "Cafeteria", "#f2ead8",
+        roomKit(["#f7f0df", "#e7dcc2", "#cdb389", "#a17f52"], fBoard(54, 7, 52, 19, "#3a2a1a") + fWin(8, 8, 34, 16) + fWin(118, 8, 34, 16), ["#f0d9b6", "#cda36a"]),
         [["sandwich", "🥪", "sandwich"], ["milk", "🥛", "milk"], ["apple", "🍎", "apple"], ["juice", "🧃", "juice"], ["cookie", "🍪", "cookie"], ["fork", "🍴", "fork"], ["plate", "🍽️", "plate"], ["banana", "🍌", "banana"], ["tray", "🍱", "tray"]],
         [["You eat it for lunch. Find the sandwich.", "אוכלים אותו בארוחת צהריים. מצא את הכריך.", "sandwich"],
          ["It is white and you drink it. Find the milk.", "הוא לבן ושותים אותו. מצא את החלב.", "milk"],
@@ -626,8 +645,8 @@
     id: 3, name: "עולם העיר", enName: "City", emoji: "🏙️",
     desc: "6 משימות סודיות · משפטים ארוכים יותר",
     missions: [
-      M("סופרמרקט", "Supermarket", "#e3edf2", ["#eef5f8", "#d6e4ea", "#c6b89c", "#a08a64"],
-        fShelf(6, 16, 60) + fShelf(6, 30, 60) + fShelf(96, 16, 58) + fShelf(96, 30, 58) + _r(0, 56, 160, 1.6, "#9a8a6a"),
+      M("סופרמרקט", "Supermarket", "#e3edf2",
+        roomKit(["#eef5f8", "#d6e4ea", "#c6b89c", "#9c875f"], _r(54, 6, 52, 14, "#e23b3b", 'rx="2"') + '<g fill="#ffffff"><rect x="60" y="10" width="6" height="6"/><rect x="70" y="10" width="6" height="6"/><rect x="80" y="10" width="6" height="6"/><rect x="90" y="10" width="6" height="6"/></g>' + fFrame(12, 8, 26, 14, "#bfe3ff") + fFrame(122, 8, 26, 14, "#bfe3ff"), ["#dfeef5", "#9fb6c4"]),
         [["cart", "🛒", "cart"], ["bread", "🍞", "bread"], ["cheese", "🧀", "cheese"], ["eggs", "🥚", "eggs"], ["carrot", "🥕", "carrot"], ["basket", "🧺", "basket"], ["apple", "🍎", "apple"], ["milk", "🥛", "milk"], ["banana", "🍌", "banana"]],
         [["You put your food inside it while you shop. Find the cart.", "שמים בה את האוכל בזמן הקנייה. מצא את העגלה.", "cart"],
          ["It is on the shelf and you make toast with it. Find the bread.", "הוא על המדף ועושים ממנו טוסט. מצא את הלחם.", "bread"],
@@ -635,10 +654,13 @@
          ["The hen gives them and you cook them. Find the eggs.", "התרנגולת נותנת אותן ומבשלים אותן. מצא את הביצים.", "eggs"],
          ["The rabbit eats this orange vegetable. Find the carrot.", "הארנב אוכל את הירק הכתום הזה. מצא את הגזר.", "carrot"],
          ["You can carry it on your arm. Find the basket.", "אפשר לסחוב אותו על הזרוע. מצא את הסל.", "basket"]]),
-      M("פארק", "Park", "#d6efd9", ["#bfe8ff", "#dff3ff", "#8fc97a", "#5fa84e"],
-        '<circle cx="26" cy="34" r="16" fill="#5fa84e"/>' + _r(24, 44, 4, 16, "#7c5128") +
-        '<circle cx="132" cy="30" r="14" fill="#67b056"/>' + _r(130, 40, 4, 18, "#7c5128") +
-        '<circle cx="80" cy="16" r="9" fill="#ffe27a"/>',
+      M("פארק", "Park", "#cdebd0",
+        outdoorKit(["#9fd8ff", "#e6f6ff", "#8fce74", "#5fa84e"],
+          '<circle cx="22" cy="16" r="9" fill="#ffe27a"/>' +
+          '<g><circle cx="30" cy="40" r="14" fill="#5fa84e"/><rect x="28" y="50" width="4" height="12" fill="#7c5128"/></g>' +
+          '<g><circle cx="130" cy="38" r="12" fill="#67b056"/><rect x="128" y="47" width="4" height="14" fill="#7c5128"/></g>' +
+          '<ellipse cx="80" cy="84" rx="70" ry="10" fill="#7bbf5f"/>' +
+          '<path d="M0 70 Q80 64 160 72 L160 78 Q80 70 0 76 Z" fill="#cdb98a"/>'),
         [["kite", "🪁", "kite"], ["dog", "🐕", "dog"], ["bench", "🪑", "bench"], ["flower", "🌷", "flower"], ["bicycle", "🚲", "bicycle"], ["bird", "🐦", "bird"], ["ball", "⚽", "ball"], ["tree", "🌳", "tree"], ["butterfly", "🦋", "butterfly"]],
         [["It flies high in the sky on a long string. Find the kite.", "הוא עף גבוה בשמיים על חוט ארוך. מצא את העפיפון.", "kite"],
          ["It runs on the grass and says woof. Find the dog.", "הוא רץ על הדשא ואומר האו. מצא את הכלב.", "dog"],
@@ -646,8 +668,8 @@
          ["It is pink and grows in the ground. Find the flower.", "הוא ורוד וגדל באדמה. מצא את הפרח.", "flower"],
          ["It has two wheels and you ride it. Find the bicycle.", "יש לו שני גלגלים ורוכבים עליו. מצא את האופניים.", "bicycle"],
          ["It is small and it sings in the tree. Find the bird.", "היא קטנה ושרה על העץ. מצא את הציפור.", "bird"]]),
-      M("מסעדה", "Restaurant", "#f0e0e0", ["#f6e9e9", "#e8cccc", "#c79a7a", "#a06f4f"],
-        fWin(110, 12, 38, 20) + fTable(20, 70, 42) + fTable(96, 70, 44) + fRug(80, 96, 30),
+      M("מסעדה", "Restaurant", "#f0e0e0",
+        roomKit(["#f6e9e9", "#e8cccc", "#c79a7a", "#9c6f4f"], fWin(12, 8, 40, 18) + fFrame(70, 6, 20, 20, "#caa36b") + fWin(108, 8, 40, 18), ["#efd9c6", "#c79a6a"]),
         [["pizza", "🍕", "pizza"], ["salad", "🥗", "salad"], ["candle", "🕯️", "candle"], ["glass", "🥛", "glass"], ["knife", "🔪", "knife"], ["spaghetti", "🍝", "spaghetti"], ["plate", "🍽️", "plate"], ["fork", "🍴", "fork"], ["cake", "🍰", "cake"]],
         [["It is round and hot and has cheese on top. Find the pizza.", "היא עגולה וחמה ויש עליה גבינה. מצא את הפיצה.", "pizza"],
          ["It is green and very healthy to eat. Find the salad.", "הוא ירוק ובריא מאוד לאכול. מצא את הסלט.", "salad"],
@@ -655,8 +677,8 @@
          ["You drink your water from it. Find the glass.", "שותים ממנה את המים. מצא את הכוס.", "glass"],
          ["You cut your food with it, but be careful. Find the knife.", "חותכים איתו את האוכל, אבל בזהירות. מצא את הסכין.", "knife"],
          ["It is long and you eat it with a fork. Find the spaghetti.", "היא ארוכה ואוכלים אותה עם מזלג. מצא את הספגטי.", "spaghetti"]]),
-      M("גלידרייה", "Ice cream shop", "#fbe6f2", ["#ffeef8", "#ffd6ec", "#f3b9d6", "#d98fb6"],
-        fCounter(0, 50, 160, 6, "#ffd0e6") + _r(10, 18, 40, 16, "#ffffff", 'stroke="#f3b9d6" stroke-width="1.5" rx="1"') + fShelf(104, 22, 48),
+      M("גלידרייה", "Ice cream shop", "#fbe6f2",
+        roomKit(["#ffeef8", "#ffd6ec", "#f3b9d6", "#d98fb6"], _r(54, 6, 52, 16, "#ffffff", 'stroke="#f3a9cf" stroke-width="1.5" rx="2"') + '<g fill="#f3a9cf"><circle cx="64" cy="14" r="3"/><circle cx="80" cy="14" r="3"/><circle cx="96" cy="14" r="3"/></g>' + fFrame(14, 8, 22, 14, "#ffd6ec") + fFrame(124, 8, 22, 14, "#ffd6ec"), ["#ffe0ee", "#f3a9cf"]),
         [["icecream", "🍦", "ice cream"], ["cherry", "🍒", "cherry"], ["chocolate", "🍫", "chocolate"], ["strawberry", "🍓", "strawberry"], ["spoon", "🥄", "spoon"], ["cup", "🥤", "cup"], ["sundae", "🍨", "sundae"], ["shavedice", "🍧", "shaved ice"], ["banana", "🍌", "banana"]],
         [["It is cold and sweet and sits in a cone. Find the ice cream.", "היא קרה ומתוקה ויושבת בגביע. מצא את הגלידה.", "icecream"],
          ["It is small and red and sits on the top. Find the cherry.", "הוא קטן ואדום ויושב למעלה. מצא את הדובדבן.", "cherry"],
@@ -664,8 +686,13 @@
          ["It is red with tiny seeds on it. Find the strawberry.", "הוא אדום עם זרעים קטנטנים. מצא את התות.", "strawberry"],
          ["You eat your ice cream with it. Find the spoon.", "אוכלים איתו את הגלידה. מצא את הכפית.", "spoon"],
          ["Your cold drink is inside it. Find the cup.", "המשקה הקר נמצא בתוכה. מצא את הכוס.", "cup"]]),
-      M("תחנת אוטובוס", "Bus stop", "#dfe6ec", ["#cfe6f5", "#e8f4fb", "#b8bcc2", "#8f949b"],
-        _r(0, 56, 160, 1.6, "#7d828a") + _r(6, 30, 18, 26, "#cdd2d8", 'stroke="#9aa0a8" stroke-width="1.5" rx="1"') + _r(120, 24, 30, 18, "#3a5a8a", 'rx="2"'),
+      M("תחנת אוטובוס", "Bus stop", "#dfe6ec",
+        outdoorKit(["#cfe6f5", "#eaf4fb", "#b8bcc2", "#92969c"],
+          _r(0, 34, 160, 24, "#c6cdd6") + '<g fill="#aab2bb"><rect x="6" y="34" width="22" height="24"/><rect x="40" y="34" width="22" height="24"/><rect x="120" y="34" width="22" height="24"/></g>' +
+          '<g fill="#7d97c4"><rect x="9" y="38" width="6" height="6"/><rect x="18" y="38" width="6" height="6"/><rect x="43" y="38" width="6" height="6"/><rect x="52" y="38" width="6" height="6"/><rect x="123" y="38" width="6" height="6"/><rect x="132" y="38" width="6" height="6"/></g>' +
+          _r(96, 30, 26, 28, "#cfe0ea", 'stroke="#8f99a3" stroke-width="1.5" rx="1"') +
+          '<rect x="118" y="22" width="2.4" height="30" fill="#7d828a"/><rect x="112" y="22" width="14" height="6" rx="1" fill="#2f6fae"/>' +
+          '<g stroke="#ffffff" stroke-width="1.2" stroke-dasharray="6 5"><line x1="0" y1="90" x2="160" y2="90"/></g>', 0.18),
         [["bus", "🚌", "bus"], ["ticket", "🎫", "ticket"], ["umbrella", "☂️", "umbrella"], ["map", "🗺️", "map"], ["clock", "🕐", "clock"], ["backpack", "🎒", "backpack"], ["bench", "🪑", "bench"], ["sign", "🚏", "sign"], ["trash", "🗑️", "trash can"]],
         [["It is big and takes many people into the city. Find the bus.", "הוא גדול ולוקח הרבה אנשים לעיר. מצא את האוטובוס.", "bus"],
          ["You need it to get on the bus. Find the ticket.", "צריך אותו כדי לעלות לאוטובוס. מצא את הכרטיס.", "ticket"],
@@ -673,9 +700,13 @@
          ["It shows you the way to go. Find the map.", "היא מראה לך לאן ללכת. מצא את המפה.", "map"],
          ["Look at it to know when the bus comes. Find the clock.", "מסתכלים עליו כדי לדעת מתי האוטובוס מגיע. מצא את השעון.", "clock"],
          ["You wear it on your back for school. Find the backpack.", "עונדים אותו על הגב לבית הספר. מצא את התיק.", "backpack"]]),
-      M("גן חיות", "Zoo", "#dce9d0", ["#cfe8ff", "#e6f4ff", "#9cc06e", "#6f9a44"],
-        '<circle cx="22" cy="30" r="13" fill="#67b056"/>' + _r(20, 40, 4, 16, "#7c5128") +
-        '<circle cx="138" cy="32" r="12" fill="#5fa84e"/>' + _r(136, 42, 4, 14, "#7c5128") + _r(0, 56, 160, 1.6, "#7a6a3a"),
+      M("גן חיות", "Zoo", "#d2ead0",
+        outdoorKit(["#a6dcff", "#e6f6ff", "#9cc06e", "#6f9a44"],
+          '<circle cx="138" cy="16" r="8" fill="#ffe27a"/>' +
+          '<g><circle cx="24" cy="34" r="13" fill="#67b056"/><rect x="22" y="44" width="4" height="14" fill="#7c5128"/></g>' +
+          '<g><circle cx="120" cy="36" r="11" fill="#5fa84e"/><rect x="118" y="45" width="4" height="13" fill="#7c5128"/></g>' +
+          '<ellipse cx="80" cy="86" rx="72" ry="10" fill="#8cb866"/>' +
+          '<g stroke="#9a7b4a" stroke-width="1.4"><line x1="0" y1="60" x2="160" y2="60"/><line x1="20" y1="56" x2="20" y2="64"/><line x1="50" y1="56" x2="50" y2="64"/><line x1="110" y1="56" x2="110" y2="64"/><line x1="140" y1="56" x2="140" y2="64"/></g>'),
         [["lion", "🦁", "lion"], ["elephant", "🐘", "elephant"], ["giraffe", "🦒", "giraffe"], ["monkey", "🐒", "monkey"], ["zebra", "🦓", "zebra"], ["snake", "🐍", "snake"], ["parrot", "🦜", "parrot"], ["bear", "🐻", "bear"], ["penguin", "🐧", "penguin"]],
         [["It is the king of the animals and roars very loud. Find the lion.", "הוא מלך החיות ושואג חזק מאוד. מצא את האריה.", "lion"],
          ["It is big and gray with a long nose. Find the elephant.", "הוא גדול ואפור עם אף ארוך. מצא את הפיל.", "elephant"],
@@ -691,8 +722,8 @@
     id: 4, name: "עולם הסוכן המיוחד", enName: "Special Agent", emoji: "🕵️",
     desc: "6 משימות סודיות · רמת מומחה",
     missions: [
-      M("שדה תעופה", "Airport", "#dde4ee", ["#e8eef7", "#d2dcec", "#b6bcc6", "#8f95a0"],
-        fWin(8, 12, 60, 24) + fWin(96, 12, 56, 24) + _r(0, 56, 160, 1.6, "#7d828a"),
+      M("שדה תעופה", "Airport", "#dde4ee",
+        roomKit(["#e8eef7", "#d2dcec", "#b6bcc6", "#8c939d"], _r(6, 6, 64, 20, "#bfe3ff", 'stroke="#ffffff" stroke-width="1.5"') + _r(90, 6, 64, 20, "#bfe3ff", 'stroke="#ffffff" stroke-width="1.5"') + '<g stroke="#ffffff" stroke-width="1.2"><line x1="38" y1="6" x2="38" y2="26"/><line x1="122" y1="6" x2="122" y2="26"/></g>' + _r(72, 8, 16, 10, "#2f6fae", 'rx="1"'), ["#cfd8e2", "#9aa3ad"]),
         [["airplane", "✈️", "airplane"], ["suitcase", "🧳", "suitcase"], ["passport", "📕", "passport"], ["ticket", "🎫", "ticket"], ["sunglasses", "🕶️", "sunglasses"], ["clock", "🕐", "clock"], ["headphones", "🎧", "headphones"], ["coffee", "☕", "coffee"], ["sign", "🚸", "sign"]],
         [["Agent, find the big machine that flies high above the clouds. The airplane.", "סוכן, מצא את המכונה הגדולה שעפה גבוה מעל העננים. המטוס.", "airplane"],
          ["Find the bag where a traveler keeps all their clothes. The suitcase.", "מצא את התיק שבו הנוסע שומר את כל הבגדים. המזוודה.", "suitcase"],
@@ -700,8 +731,8 @@
          ["Without this small paper you cannot get on the plane. Find the ticket.", "בלי הפתק הקטן הזה אי אפשר לעלות למטוס. מצא את הכרטיס.", "ticket"],
          ["A secret agent wears these to hide their eyes. Find the sunglasses.", "סוכן חשאי עונד אותם כדי להסתיר את העיניים. מצא את המשקפיים.", "sunglasses"],
          ["Check this to make sure you are not late for the flight. Find the clock.", "בודקים אותו כדי לא לאחר לטיסה. מצא את השעון.", "clock"]]),
-      M("מוזיאון", "Museum", "#e8e0ee", ["#efe8f4", "#ddd0e6", "#c2b2a0", "#9a8a76"],
-        fShelf(10, 20, 44) + fShelf(108, 22, 44) + fRug(80, 96, 34) + _r(70, 14, 20, 24, "#caa36b", 'stroke="#8a6a3a" stroke-width="1.5" rx="1"'),
+      M("מוזיאון", "Museum", "#e8e0ee",
+        roomKit(["#efe8f4", "#ddd0e6", "#c2b2a0", "#988672"], fFrame(60, 5, 40, 21, "#1d1410") + fFrame(16, 8, 26, 16, "#caa36b") + fFrame(118, 8, 26, 16, "#caa36b"), ["#e6dccb", "#b6a484"]),
         [["gem", "💎", "gem"], ["crown", "👑", "crown"], ["painting", "🖼️", "painting"], ["vase", "🏺", "vase"], ["dinosaur", "🦖", "dinosaur"], ["mask", "🎭", "mask"], ["statue", "🗿", "statue"], ["map", "🗺️", "map"], ["key", "🗝️", "key"]],
         [["Agent, the thief wants the shiny stone that costs a lot of money. Find the gem.", "סוכן, הגנב רוצה את האבן הנוצצת ששווה הרבה כסף. מצא את היהלום.", "gem"],
          ["Find the golden hat that only a king or a queen can wear. The crown.", "מצא את הכובע הזהב שרק מלך או מלכה יכולים לחבוש. הכתר.", "crown"],
@@ -709,8 +740,8 @@
          ["This very old clay pot can break easily, so be careful. Find the vase.", "כד החרס העתיק הזה נשבר בקלות, אז זהירות. מצא את האגרטל.", "vase"],
          ["Find the giant bones of an animal that lived long, long ago. The dinosaur.", "מצא את העצמות הענקיות של חיה שחיה לפני המון זמן. הדינוזאור.", "dinosaur"],
          ["Spies and actors both hide their face behind it. Find the mask.", "מרגלים ושחקנים מסתירים מאחוריה את הפנים. מצא את המסכה.", "mask"]]),
-      M("תחנת רכבת", "Train station", "#dde6ea", ["#cfe6f0", "#e6f3f8", "#b4bcc2", "#8d959c"],
-        _r(0, 50, 160, 6, "#9aa0a8") + _r(0, 56, 160, 1.6, "#6f747c") + fWin(110, 14, 40, 20),
+      M("תחנת רכבת", "Train station", "#dde6ea",
+        roomKit(["#cfe6f0", "#e6f3f8", "#b4bcc2", "#8d959c"], fWin(8, 8, 44, 18) + _r(70, 6, 20, 20, "#1d2a3a", 'rx="10"') + '<circle cx="80" cy="16" r="7" fill="#e8eef2"/><line x1="80" y1="16" x2="80" y2="11" stroke="#1d2a3a" stroke-width="1"/><line x1="80" y1="16" x2="84" y2="18" stroke="#1d2a3a" stroke-width="1"/>' + fWin(108, 8, 44, 18), ["#cdd6dc", "#9aa6ae"]),
         [["train", "🚆", "train"], ["ticket", "🎫", "ticket"], ["clock", "🕐", "clock"], ["newspaper", "📰", "newspaper"], ["map", "🗺️", "map"], ["coffee", "☕", "coffee"], ["suitcase", "🧳", "suitcase"], ["bench", "🪑", "bench"], ["sign", "🚸", "sign"]],
         [["Find the long machine on the tracks that carries people far away. The train.", "מצא את המכונה הארוכה על המסילה שלוקחת אנשים רחוק. הרכבת.", "train"],
          ["You must buy this small paper before you can travel. Find the ticket.", "צריך לקנות את הפתק הקטן הזה לפני הנסיעה. מצא את הכרטיס.", "ticket"],
@@ -718,8 +749,12 @@
          ["Read this to look busy while you secretly watch the room. Find the newspaper.", "קוראים בו כדי להיראות עסוק בזמן שמשגיחים בסתר. מצא את העיתון.", "newspaper"],
          ["Use this to find the secret meeting place in the city. Find the map.", "משתמשים בה כדי למצוא את מקום המפגש הסודי בעיר. מצא את המפה.", "map"],
          ["The tired agent drinks this hot dark drink to stay awake. Find the coffee.", "הסוכן העייף שותה את המשקה החם והכהה כדי להישאר ער. מצא את הקפה.", "coffee"]]),
-      M("נמל", "Harbor", "#d2e6ee", ["#bfe4ff", "#e2f3ff", "#6fa6c0", "#477e98"],
-        '<rect x="0" y="44" width="160" height="16" fill="#5b9bbd"/>' + '<g stroke="#9fd0e6" stroke-width="0.6"><line x1="0" y1="50" x2="160" y2="50"/><line x1="0" y1="55" x2="160" y2="55"/></g>' + _r(126, 8, 12, 36, "#e8e2d0", 'stroke="#caa36b" stroke-width="1.5"'),
+      M("נמל", "Harbor", "#cfe6ee",
+        outdoorKit(["#bfe4ff", "#e6f3ff", "#5b9bbd", "#3a7390"],
+          '<g stroke="#9fd0e6" stroke-width="0.7"><line x1="0" y1="66" x2="160" y2="66"/><line x1="0" y1="74" x2="160" y2="74"/><line x1="0" y1="82" x2="160" y2="82"/></g>' +
+          '<g><rect x="126" y="6" width="12" height="38" fill="#e8e2d0" stroke="#caa36b" stroke-width="1.2"/><rect x="124" y="4" width="16" height="6" fill="#e23b3b" rx="1"/><rect x="127" y="12" width="10" height="6" fill="#ff7e6b"/></g>' +
+          '<rect x="0" y="76" width="160" height="6" fill="#9a6a36"/><g stroke="#7c5128" stroke-width="0.8"><line x1="26" y1="76" x2="26" y2="82"/><line x1="60" y1="76" x2="60" y2="82"/><line x1="100" y1="76" x2="100" y2="82"/><line x1="134" y1="76" x2="134" y2="82"/></g>' +
+          '<ellipse cx="40" cy="20" rx="9" ry="3" fill="#ffffff" opacity="0.85"/><ellipse cx="90" cy="14" rx="7" ry="2.4" fill="#ffffff" opacity="0.8"/>', 0.1),
         [["ship", "🚢", "ship"], ["anchor", "⚓", "anchor"], ["lighthouse", "🗼", "lighthouse"], ["crab", "🦀", "crab"], ["box", "📦", "box"], ["lifebuoy", "🛟", "life ring"], ["fish", "🐟", "fish"], ["rope", "🪢", "rope"], ["seagull", "🐦", "seagull"]],
         [["Find the giant boat that sails across the deep blue sea. The ship.", "מצא את הסירה הענקית שמפליגה על הים הכחול והעמוק. הספינה.", "ship"],
          ["This heavy metal hook keeps the ship from floating away. Find the anchor.", "וו המתכת הכבד הזה מונע מהספינה לשוט לה. מצא את העוגן.", "anchor"],
@@ -727,8 +762,8 @@
          ["This small animal walks sideways and has two strong claws. Find the crab.", "החיה הקטנה הזו הולכת הצידה ויש לה שתי צבתות חזקות. מצא את הסרטן.", "crab"],
          ["The secret papers are hidden deep inside this cardboard. Find the box.", "המסמכים הסודיים חבויים עמוק בתוך הקרטון. מצא את הקופסה.", "box"],
          ["Throw this round ring to a person who fell in the water. Find the life ring.", "זורקים את הטבעת העגולה לאדם שנפל למים. מצא את גלגל ההצלה.", "lifebuoy"]]),
-      M("מלון", "Hotel", "#efe5dd", ["#f5ece2", "#e6d6c4", "#c79a7a", "#a06f4f"],
-        _r(6, 60, 46, 18, "#cdd6e6", 'rx="1"') + _r(6, 56, 46, 6, "#e6e0d6", 'rx="1"') + fShelf(108, 22, 46) + fWin(112, 32, 36, 18),
+      M("מלון", "Hotel", "#efe5dd",
+        roomKit(["#f5ece2", "#e6d6c4", "#c79a7a", "#9c6f4f"], fWin(10, 8, 40, 18) + fFrame(68, 6, 24, 20, "#3a5a8a") + fFrame(120, 8, 30, 16, "#caa36b"), ["#efd9c6", "#c79a6a"]),
         [["bed", "🛏️", "bed"], ["key", "🔑", "key"], ["phone", "☎️", "phone"], ["bell", "🔔", "bell"], ["suitcase", "🧳", "suitcase"], ["lamp", "💡", "lamp"], ["towel", "🧻", "towel"], ["clock", "🕐", "clock"], ["slippers", "🥿", "slippers"]],
         [["Agent, find the metal thing that opens the door to room seven. The key.", "סוכן, מצא את חפץ המתכת שפותח את הדלת לחדר שבע. המפתח.", "key"],
          ["After a long mission you lie down and sleep here. Find the bed.", "אחרי משימה ארוכה שוכבים וישנים כאן. מצא את המיטה.", "bed"],
@@ -736,8 +771,8 @@
          ["Ring this on the desk when you need the hotel man. Find the bell.", "מצלצלים בו על הדלפק כשצריך את איש המלון. מצא את הפעמון.", "bell"],
          ["All your secret spy gadgets are packed inside this. Find the suitcase.", "כל גאדג'טי הריגול הסודיים ארוזים בתוכה. מצא את המזוודה.", "suitcase"],
          ["Turn this on to read the secret letter late at night. Find the lamp.", "מדליקים אותה כדי לקרוא את המכתב הסודי מאוחר בלילה. מצא את המנורה.", "lamp"]]),
-      M("מעבדה סודית", "Secret lab", "#d6e2e8", ["#dfeef4", "#c6dee8", "#9aa6b0", "#727e88"],
-        fCounter(0, 50, 160, 6, "#aebac4") + _r(8, 16, 40, 22, "#1d2a3a", 'stroke="#4a6a8a" stroke-width="1.5" rx="1"') + '<g stroke="#3fd0a0" stroke-width="0.6"><line x1="12" y1="24" x2="44" y2="24"/><line x1="12" y1="30" x2="38" y2="30"/></g>',
+      M("מעבדה סודית", "Secret lab", "#d2dee6",
+        roomKit(["#cfdde8", "#b6c6d2", "#8a96a2", "#646e7a"], _r(8, 6, 40, 20, "#0e1a28", 'rx="1.5"') + '<g stroke="#3fd0a0" stroke-width="0.7"><line x1="12" y1="12" x2="44" y2="12"/><line x1="12" y1="17" x2="38" y2="17"/><line x1="12" y1="22" x2="42" y2="22"/></g>' + _r(60, 6, 40, 20, "#0e1a28", 'rx="1.5"') + '<g stroke="#4f9bff" stroke-width="0.7"><line x1="64" y1="12" x2="94" y2="12"/><line x1="64" y1="18" x2="88" y2="18"/></g>' + _r(112, 6, 40, 20, "#0e1a28", 'rx="1.5"') + '<g stroke="#ff7e6b" stroke-width="0.7"><line x1="116" y1="13" x2="146" y2="13"/><line x1="116" y1="19" x2="140" y2="19"/></g>', ["#9aa6b0", "#5a6672"]),
         [["computer", "💻", "computer"], ["robot", "🤖", "robot"], ["camera", "📷", "camera"], ["satellite", "📡", "satellite dish"], ["flashlight", "🔦", "flashlight"], ["microscope", "🔬", "microscope"], ["battery", "🔋", "battery"], ["magnet", "🧲", "magnet"], ["key", "🗝️", "key"]],
         [["Agent, find the screen where all the secret plans are saved. The computer.", "סוכן, מצא את המסך שבו שמורות כל התוכניות הסודיות. המחשב.", "computer"],
          ["This metal helper can walk and talk all by itself. Find the robot.", "העוזר ממתכת הזה יכול ללכת ולדבר בעצמו. מצא את הרובוט.", "robot"],
@@ -747,6 +782,15 @@
          ["Look through this to study the tiny secret code. Find the microscope.", "מסתכלים דרכו כדי לחקור את הקוד הסודי הזעיר. מצא את המיקרוסקופ.", "microscope"]])
     ]
   };
+
+  function M(name, env, bg, kit, objs, acts) {
+    return {
+      name: name, env: env, bg: bg, scene: true,
+      sceneSVG: kit.svg,
+      objects: objs.map(function (o, i) { return { key: o[0], emoji: o[1], en: o[2], x: kit.slots[i][0], y: kit.slots[i][1], size: o[3] || 2.0 }; }),
+      actions: acts.map(function (a) { return { sentence: a[0], he: a[1], target: a[2] }; })
+    };
+  }
 
   const WORLDS = [WORLD1, WORLD2, WORLD3, WORLD4];
   const LOCKED_WORLDS = [];

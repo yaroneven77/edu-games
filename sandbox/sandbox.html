@@ -99,6 +99,8 @@
   .room.stage { display: block; position: relative; padding: 0; overflow: hidden; background: #000; flex: 0 0 auto; width: 100%; height: auto; min-height: 0; aspect-ratio: 16 / 10; margin: 0 auto; }
   .stage > .bg { position: absolute; inset: 0; }
   .stage > .bg svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .stage > .fg { position: absolute; inset: 0; pointer-events: none; }
+  .stage > .fg svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
   .obj-scene {
     position: absolute; transform: translate(-50%, -50%);
     background: transparent; border: none; padding: 2px; cursor: pointer;
@@ -234,21 +236,29 @@
           '<rect x="66" y="72" width="90" height="1.8" rx="1" fill="#e6b97a"/>' +
           '<rect x="74" y="78.5" width="5" height="21" fill="#a86a2c"/>' +
           '<rect x="143" y="78.5" width="5" height="21" fill="#a86a2c"/>' +
-          '<ellipse cx="126" cy="77" rx="10" ry="3.2" fill="#ffffff" stroke="#d4ccbe" stroke-width="0.8"/>' +
-          '<ellipse cx="126" cy="77" rx="6" ry="1.9" fill="#f1ece2"/>' +
-          '<path d="M80 67 H104 L101 76 Q92 79 83 76 Z" fill="#c98f55" stroke="#8a5a2b" stroke-width="0.8"/>' +
-          '<g stroke="#8a5a2b" stroke-width="0.5"><line x1="86" y1="67.5" x2="87.5" y2="76"/><line x1="92" y1="68" x2="92" y2="77"/><line x1="98" y1="67.5" x2="96.5" y2="76"/></g>' +
-          '<ellipse cx="92" cy="67" rx="12.5" ry="2.6" fill="#dca969" stroke="#8a5a2b" stroke-width="0.8"/>' +
+          '<ellipse cx="92" cy="77" rx="14" ry="2.3" fill="rgba(0,0,0,0.18)"/>' +
+          '<ellipse cx="126" cy="78.5" rx="11" ry="2.1" fill="rgba(0,0,0,0.16)"/>' +
+          '<path d="M78 65 Q92 78 106 65 Z" fill="#cf9a5e" stroke="#8a5a2b" stroke-width="0.8"/>' +
+          '<g stroke="#8a5a2b" stroke-width="0.5" opacity="0.7"><line x1="84" y1="66" x2="85.5" y2="75"/><line x1="92" y1="66" x2="92" y2="76"/><line x1="100" y1="66" x2="98.5" y2="75"/><line x1="80" y1="69" x2="104" y2="69"/></g>' +
+          '<ellipse cx="92" cy="65" rx="15" ry="3.2" fill="#ead0ad" stroke="#8a5a2b" stroke-width="0.8"/>' +
+          '</svg>',
+        sceneFG:
+          '<svg viewBox="0 0 160 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">' +
+          '<path d="M77 65 Q92 73 107 65 Q92 69.5 77 65 Z" fill="#d8a868" stroke="#8a5a2b" stroke-width="0.8"/>' +
+          '<g stroke="#8a5a2b" stroke-width="0.4" opacity="0.6"><line x1="85" y1="65.5" x2="85.6" y2="68.8"/><line x1="92" y1="65.8" x2="92" y2="69.2"/><line x1="99" y1="65.5" x2="98.4" y2="68.8"/></g>' +
+          '<rect x="118" y="34.4" width="38" height="1.5" rx="0.7" fill="#7c5128"/>' +
+          '<rect x="118" y="48.4" width="38" height="1.5" rx="0.7" fill="#7c5128"/>' +
+          '<rect x="56" y="54" width="40" height="1.4" rx="0.7" fill="#a86a2c"/>' +
           '</svg>',
         objects: [
-          { key: "apple", emoji: "🍎", en: "apple", x: 57.5, y: 70, size: 2.3 },
-          { key: "banana", emoji: "🍌", en: "banana", x: 60.5, y: 68, size: 2.3 },
-          { key: "knife", emoji: "🔪", en: "knife", x: 51, y: 48, size: 1.9 },
-          { key: "bread", emoji: "🍞", en: "bread", x: 44, y: 48, size: 2.2 },
-          { key: "spoon", emoji: "🥄", en: "spoon", x: 64.5, y: 42.5, size: 1.9 },
-          { key: "milk", emoji: "🥛", en: "milk", x: 81, y: 30, size: 2.3 },
+          { key: "apple", emoji: "🍎", en: "apple", x: 55, y: 62.5, size: 2.0 },
+          { key: "banana", emoji: "🍌", en: "banana", x: 60, y: 62, size: 2.0 },
+          { key: "knife", emoji: "🔪", en: "knife", x: 53, y: 47.5, size: 1.9 },
+          { key: "bread", emoji: "🍞", en: "bread", x: 43.5, y: 47.5, size: 2.2 },
+          { key: "spoon", emoji: "🥄", en: "spoon", x: 64.5, y: 42, size: 1.9 },
+          { key: "milk", emoji: "🥛", en: "milk", x: 81, y: 30.5, size: 2.2 },
           { key: "cup", emoji: "🥤", en: "cup", x: 87.5, y: 44, size: 2.1 },
-          { key: "plate", emoji: "🍽️", en: "plate", x: 78.75, y: 74.5, size: 2.6 }
+          { key: "plate", emoji: "🍽️", en: "plate", x: 78.75, y: 73.5, size: 2.6 }
         ],
         actions: [
           { sentence: "Find the apple.", target: "apple" },
@@ -516,6 +526,12 @@
         b.addEventListener("click", function () { onObjectClick(obj, b); });
         room.appendChild(b);
       });
+      if (mission.sceneFG) {
+        const fg = document.createElement("div");
+        fg.className = "fg";
+        fg.innerHTML = mission.sceneFG;
+        room.appendChild(fg);
+      }
     } else {
       room.className = "room";
       room.style.background = mission.bg;

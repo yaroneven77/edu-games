@@ -95,6 +95,24 @@
   @keyframes shake { 0%,100%{transform:translateX(0);} 25%{transform:translateX(-7px);} 75%{transform:translateX(7px);} }
   @keyframes hintPulse { 0%,100%{ box-shadow:0 3px 6px rgba(0,0,0,.25);} 50%{ box-shadow:0 0 16px 6px rgba(125,249,192,.9); transform: scale(1.08);} }
 
+  /* SCENE (illustrated room with hidden objects) */
+  .room.stage { display: block; position: relative; padding: 0; overflow: hidden; background: #000; }
+  .stage > .bg { position: absolute; inset: 0; }
+  .stage > .bg svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .obj-scene {
+    position: absolute; transform: translate(-50%, -50%);
+    background: transparent; border: none; padding: 2px; cursor: pointer;
+    line-height: 1; filter: drop-shadow(0 1px 1px rgba(0,0,0,.55));
+    transition: transform .1s;
+  }
+  .obj-scene:active { transform: translate(-50%, -50%) scale(.9); }
+  .obj-scene.correct { animation: popScene .55s ease; filter: drop-shadow(0 0 8px #38e08a) drop-shadow(0 0 14px #38e08a); z-index: 5; }
+  .obj-scene.wrong { animation: shakeScene .4s ease; }
+  .obj-scene.hintpulse { animation: hintRing 1s ease-in-out infinite; border-radius: 50%; z-index: 5; }
+  @keyframes popScene { 0%{transform:translate(-50%,-50%) scale(1);} 45%{transform:translate(-50%,-50%) scale(1.5);} 100%{transform:translate(-50%,-50%) scale(1.2);} }
+  @keyframes shakeScene { 0%,100%{transform:translate(-50%,-50%) rotate(0);} 25%{transform:translate(-50%,-50%) rotate(-13deg);} 75%{transform:translate(-50%,-50%) rotate(13deg);} }
+  @keyframes hintRing { 0%,100%{ box-shadow:0 0 0 0 rgba(125,249,192,0);} 50%{ box-shadow:0 0 0 6px rgba(125,249,192,.85); transform: translate(-50%,-50%) scale(1.12);} }
+
   /* OVERLAY (mission/world/game complete) */
   .overlay {
     position: fixed; inset: 0; background: rgba(8,12,24,.92);
@@ -165,16 +183,45 @@
     desc: "6 משימות סודיות · אנגלית בסיסית",
     missions: [
       {
-        name: "מטבח", env: "Kitchen", bg: "linear-gradient(160deg,#3a4a6b,#27324d)",
+        name: "מטבח", env: "Kitchen", bg: "#e8d9c0", scene: true,
+        sceneSVG:
+          '<svg viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">' +
+          '<rect x="0" y="0" width="100" height="64" fill="#ecdcc2"/>' +
+          '<rect x="0" y="64" width="100" height="36" fill="#a06f43"/>' +
+          '<rect x="0" y="64" width="100" height="2.5" fill="#7d5430"/>' +
+          '<rect x="6" y="8" width="26" height="22" fill="#bfe3ff" stroke="#fff" stroke-width="2"/>' +
+          '<circle cx="13" cy="15" r="3.2" fill="#ffe07a"/>' +
+          '<path d="M22 24 q3 -4 6 0 q3 -3 5 0 v2 h-13 z" fill="#ffffff" opacity="0.85"/>' +
+          '<line x1="19" y1="8" x2="19" y2="30" stroke="#fff" stroke-width="2"/>' +
+          '<line x1="6" y1="19" x2="32" y2="19" stroke="#fff" stroke-width="2"/>' +
+          '<rect x="40" y="6" width="56" height="20" fill="#cf9555" stroke="#a86d34" stroke-width="1.5"/>' +
+          '<line x1="68" y1="6" x2="68" y2="26" stroke="#a86d34" stroke-width="1.5"/>' +
+          '<rect x="62" y="14" width="3" height="5" rx="1" fill="#6e4521"/>' +
+          '<rect x="71" y="14" width="3" height="5" rx="1" fill="#6e4521"/>' +
+          '<rect x="79" y="31" width="19" height="2.6" rx="1" fill="#8a5a2b"/>' +
+          '<rect x="0" y="51" width="100" height="5.5" fill="#ded7cb"/>' +
+          '<rect x="0" y="56.5" width="100" height="9.5" fill="#cf9555"/>' +
+          '<line x1="20" y1="56.5" x2="20" y2="66" stroke="#a86d34" stroke-width="1"/>' +
+          '<line x1="40" y1="56.5" x2="40" y2="66" stroke="#a86d34" stroke-width="1"/>' +
+          '<line x1="62" y1="56.5" x2="62" y2="66" stroke="#a86d34" stroke-width="1"/>' +
+          '<line x1="80" y1="56.5" x2="80" y2="66" stroke="#a86d34" stroke-width="1"/>' +
+          '<rect x="7" y="52" width="14" height="3.6" rx="1" fill="#aeb6bf"/>' +
+          '<rect x="46" y="51.5" width="16" height="5" fill="#7d7d85"/>' +
+          '<circle cx="50" cy="54" r="1.4" fill="#3a3a40"/>' +
+          '<circle cx="58" cy="54" r="1.4" fill="#3a3a40"/>' +
+          '<rect x="54" y="74" width="42" height="5" rx="2" fill="#c0813f"/>' +
+          '<rect x="58" y="79" width="4" height="17" fill="#9c6330"/>' +
+          '<rect x="88" y="79" width="4" height="17" fill="#9c6330"/>' +
+          '</svg>',
         objects: [
-          { key: "apple", emoji: "🍎", en: "apple" },
-          { key: "banana", emoji: "🍌", en: "banana" },
-          { key: "bread", emoji: "🍞", en: "bread" },
-          { key: "milk", emoji: "🥛", en: "milk" },
-          { key: "spoon", emoji: "🥄", en: "spoon" },
-          { key: "plate", emoji: "🍽️", en: "plate" },
-          { key: "knife", emoji: "🔪", en: "knife" },
-          { key: "cup", emoji: "🥤", en: "cup" }
+          { key: "apple", emoji: "🍎", en: "apple", x: 12, y: 47, size: 3.0 },
+          { key: "banana", emoji: "🍌", en: "banana", x: 30, y: 47, size: 3.0 },
+          { key: "knife", emoji: "🔪", en: "knife", x: 40, y: 48, size: 2.3 },
+          { key: "spoon", emoji: "🥄", en: "spoon", x: 69, y: 48, size: 2.3 },
+          { key: "cup", emoji: "🥤", en: "cup", x: 90, y: 47, size: 2.6 },
+          { key: "milk", emoji: "🥛", en: "milk", x: 86, y: 26, size: 2.8 },
+          { key: "bread", emoji: "🍞", en: "bread", x: 65, y: 70, size: 2.8 },
+          { key: "plate", emoji: "🍽️", en: "plate", x: 82, y: 70, size: 3.4 }
         ],
         actions: [
           { sentence: "Find the apple.", target: "apple" },
@@ -422,18 +469,40 @@
 
     // objects
     const room = $("room");
-    room.style.background = mission.bg;
     room.innerHTML = "";
-    state.shuffled = shuffle(mission.objects);
-    state.shuffled.forEach(function (obj) {
-      const b = document.createElement("button");
-      b.className = "obj";
-      b.textContent = obj.emoji;
-      b.setAttribute("data-key", obj.key);
-      b.setAttribute("aria-label", obj.en);
-      b.addEventListener("click", function () { onObjectClick(obj, b); });
-      room.appendChild(b);
-    });
+    if (mission.scene) {
+      room.className = "room stage";
+      room.style.background = mission.bg;
+      const bg = document.createElement("div");
+      bg.className = "bg";
+      bg.innerHTML = mission.sceneSVG;
+      room.appendChild(bg);
+      mission.objects.forEach(function (obj) {
+        const b = document.createElement("button");
+        b.className = "obj-scene";
+        b.textContent = obj.emoji;
+        b.style.left = obj.x + "%";
+        b.style.top = obj.y + "%";
+        b.style.fontSize = (obj.size || 2.6) + "rem";
+        b.setAttribute("data-key", obj.key);
+        b.setAttribute("aria-label", obj.en);
+        b.addEventListener("click", function () { onObjectClick(obj, b); });
+        room.appendChild(b);
+      });
+    } else {
+      room.className = "room";
+      room.style.background = mission.bg;
+      state.shuffled = shuffle(mission.objects);
+      state.shuffled.forEach(function (obj) {
+        const b = document.createElement("button");
+        b.className = "obj";
+        b.textContent = obj.emoji;
+        b.setAttribute("data-key", obj.key);
+        b.setAttribute("aria-label", obj.en);
+        b.addEventListener("click", function () { onObjectClick(obj, b); });
+        room.appendChild(b);
+      });
+    }
 
     // auto-read the sentence once, then arm hints
     setTimeout(function () { speak(action.sentence, 0.7); }, 350);

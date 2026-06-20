@@ -265,143 +265,95 @@
         ]
       },
       {
-        name: "סלון", env: "Living room", bg: "#e7dcc7", scene: true,
-        sceneSVG:
-          '<svg viewBox="0 0 160 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">' +
-          '<rect x="0" y="0" width="160" height="63" fill="#e7dcc7"/>' +
-          '<rect x="0" y="44" width="160" height="19" fill="#ddd0b7"/>' +
-          '<rect x="0" y="43" width="160" height="1.4" fill="#cbbf9f"/>' +
-          '<rect x="0" y="63" width="160" height="37" fill="#b67e45"/>' +
-          '<rect x="0" y="63" width="160" height="1.5" fill="#8c5d30"/>' +
-          '<g stroke="rgba(0,0,0,0.10)" stroke-width="0.6"><line x1="30" y1="100" x2="60" y2="64"/><line x1="80" y1="100" x2="82" y2="64"/><line x1="130" y1="100" x2="104" y2="64"/></g>' +
-          '<ellipse cx="84" cy="90" rx="64" ry="8" fill="#3f7d77"/>' +
-          '<ellipse cx="84" cy="90" rx="56" ry="6.4" fill="#4c918a"/>' +
-          '<rect x="112" y="8" width="34" height="26" rx="1.5" fill="#bfe6ff" stroke="#ffffff" stroke-width="2"/>' +
-          '<rect x="107" y="6" width="6" height="32" rx="1" fill="#c98a8a"/>' +
-          '<rect x="145" y="6" width="6" height="32" rx="1" fill="#c98a8a"/>' +
-          '<line x1="129" y1="8" x2="129" y2="34" stroke="#ffffff" stroke-width="1.4"/>' +
-          '<rect x="6" y="55" width="48" height="9" rx="1" fill="#7a5230"/>' +
-          '<rect x="6" y="55" width="48" height="1.6" fill="#946537"/>' +
-          '<rect x="12" y="58" width="2.6" height="5" rx="1" fill="#5d3d22"/><rect x="45" y="58" width="2.6" height="5" rx="1" fill="#5d3d22"/>' +
-          '<rect x="78" y="56" width="22" height="2.4" rx="1" fill="#7a5230"/>' +
-          '<rect x="80" y="58" width="2.4" height="6" fill="#5d3d22"/><rect x="95" y="58" width="2.4" height="6" fill="#5d3d22"/>' +
-          '<rect x="86" y="42" width="24" height="2.2" rx="1" fill="#8a5c30"/>' +
-          '<ellipse cx="70" cy="86" rx="16" ry="2.7" fill="rgba(0,0,0,0.16)"/>' +
-          '<ellipse cx="120" cy="80" rx="8" ry="1.9" fill="rgba(0,0,0,0.15)"/>' +
-          '</svg>',
-        sceneFG:
-          '<svg viewBox="0 0 160 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">' +
-          '<rect x="78" y="58" width="22" height="1.4" rx="0.7" fill="#5d3d22"/>' +
-          '<rect x="86" y="43.4" width="24" height="1.3" rx="0.6" fill="#6e4824"/>' +
-          '</svg>',
+        name: "סלון", env: "Living room", bg: "#bcd9f2", imgRoom: true,
+        bgImage: "img/living.jpg",
         objects: [
-          { key: "tv", emoji: "📺", en: "television", x: 17, y: 46, size: 5.5 },
-          { key: "book", emoji: "📖", en: "book", x: 55, y: 50, size: 2.6 },
-          { key: "lamp", emoji: "💡", en: "lamp", x: 61, y: 36, size: 3.0 },
-          { key: "clock", emoji: "🕰️", en: "clock", x: 40, y: 14, size: 3.2 },
-          { key: "sofa", emoji: "🛋️", en: "sofa", x: 48, y: 75, size: 9.0 },
-          { key: "plant", emoji: "🪴", en: "plant", x: 78, y: 70, size: 4.2 },
-          { key: "phone", emoji: "📱", en: "phone", x: 60, y: 50, size: 2.3 },
-          { key: "picture", emoji: "🖼️", en: "picture", x: 20, y: 16, size: 3.8 }
+          { key: "blue_notebook",  en: "blue notebook", x: 18, y: 52, w: 8,  h: 6  },
+          { key: "redball_console",en: "red ball",      x: 23, y: 50, w: 5,  h: 6  },
+          { key: "red_cushion",    en: "red cushion",   x: 36, y: 48, w: 12, h: 12 },
+          { key: "green_cushion",  en: "green cushion", x: 63, y: 47, w: 12, h: 12 },
+          { key: "book",           en: "book",          x: 44, y: 63, w: 12, h: 9  },
+          { key: "remote",         en: "remote",        x: 52, y: 62, w: 8,  h: 5  },
+          { key: "green_cup",      en: "green cup",     x: 58, y: 60, w: 6,  h: 9  },
+          { key: "painting",       en: "picture",       x: 37, y: 23, w: 22, h: 20 },
+          { key: "clock",          en: "clock",         x: 58, y: 22, w: 9,  h: 13 },
+          { key: "pink_mug",       en: "pink mug",      x: 72, y: 24, w: 6,  h: 9  },
+          { key: "cat_picture",    en: "cat picture",   x: 82, y: 25, w: 8,  h: 10 },
+          { key: "candle",         en: "candle",        x: 90, y: 24, w: 5,  h: 11 },
+          { key: "lampshade",      en: "lamp",          x: 80, y: 42, w: 9,  h: 10 },
+          { key: "plant",          en: "plant",         x: 93, y: 52, w: 8,  h: 15 },
+          { key: "yellow_cushion", en: "yellow cushion",x: 18, y: 76, w: 14, h: 9  },
+          { key: "ball",           en: "ball",          x: 74, y: 76, w: 9,  h: 13 }
         ],
         actions: [
-          { sentence: "Find the television.", he: "מצא את הטלוויזיה.", target: "tv" },
-          { sentence: "Where is the clock?", he: "איפה השעון?", target: "clock" },
-          { sentence: "Point to the lamp.", he: "הצבע על המנורה.", target: "lamp" },
-          { sentence: "Touch the soft sofa.", he: "גע בספה הרכה.", target: "sofa" },
-          { sentence: "Look for the green plant next to the sofa.", he: "חפש את העציץ הירוק ליד הספה.", target: "plant" },
-          { sentence: "Which one can you read? Find the book.", he: "מה אפשר לקרוא? מצא את הספר.", target: "book" }
+          { sentence: "Find the black remote.", he: "מצא את השלט השחור.", target: "remote" },
+          { sentence: "Choose the green cushion.", he: "בחר את הכרית הירוקה.", target: "green_cushion" },
+          { sentence: "Find the blue notebook.", he: "מצא את המחברת הכחולה.", target: "blue_notebook" },
+          { sentence: "Choose the round object.", he: "בחר את החפץ העגול.", target: ["clock", "ball", "lampshade"] },
+          { sentence: "Find the picture of the cat.", he: "מצא את התמונה של החתול.", target: "cat_picture" },
+          { sentence: "Choose something you can read.", he: "בחר משהו שאפשר לקרוא בו.", target: "book" }
         ]
       },
       {
-        name: "חדר שינה", env: "Bedroom", bg: "#d6e3e0", scene: true,
-        sceneSVG:
-          '<svg viewBox="0 0 160 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">' +
-          '<rect x="0" y="0" width="160" height="63" fill="#d9e4e1"/>' +
-          '<rect x="0" y="44" width="160" height="19" fill="#cddcd8"/>' +
-          '<rect x="0" y="43" width="160" height="1.4" fill="#bccfca"/>' +
-          '<rect x="0" y="63" width="160" height="37" fill="#b9854c"/>' +
-          '<rect x="0" y="63" width="160" height="1.5" fill="#8c5d30"/>' +
-          '<g stroke="rgba(0,0,0,0.10)" stroke-width="0.6"><line x1="24" y1="100" x2="54" y2="64"/><line x1="74" y1="100" x2="80" y2="64"/><line x1="124" y1="100" x2="100" y2="64"/></g>' +
-          '<ellipse cx="50" cy="90" rx="48" ry="6.5" fill="#7c5aa6"/>' +
-          '<ellipse cx="50" cy="90" rx="40" ry="5.2" fill="#9069c2"/>' +
-          '<rect x="108" y="52" width="22" height="12" rx="1" fill="#7a5230"/>' +
-          '<rect x="108" y="52" width="22" height="1.6" fill="#946537"/>' +
-          '<rect x="111" y="58" width="2.4" height="6" fill="#5d3d22"/><rect x="124" y="58" width="2.4" height="6" fill="#5d3d22"/>' +
-          '<rect x="92" y="34" width="26" height="2.2" rx="1" fill="#8a5c30"/>' +
-          '<rect x="50" y="30" width="26" height="1.8" rx="0.9" fill="#7a5230"/>' +
-          '<rect x="50" y="30" width="26" height="0.7" rx="0.3" fill="#946537"/>' +
-          '<path d="M63 31 L59.5 36 L66.5 36 Z" fill="none" stroke="#b9bfc6" stroke-width="0.9"/>' +
-          '<path d="M63 31 q0.4 -1.8 1.8 -1.6" fill="none" stroke="#b9bfc6" stroke-width="0.9"/>' +
-          '<ellipse cx="135" cy="62.4" rx="13" ry="2.6" fill="rgba(0,0,0,0.16)"/>' +
-          '<ellipse cx="33" cy="86" rx="20" ry="2.8" fill="rgba(0,0,0,0.16)"/>' +
-          '<ellipse cx="64" cy="90" rx="8" ry="1.8" fill="rgba(0,0,0,0.15)"/>' +
-          '</svg>',
-        sceneFG:
-          '<svg viewBox="0 0 160 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">' +
-          '<rect x="108" y="53.6" width="22" height="1.3" rx="0.6" fill="#5d3d22"/>' +
-          '<rect x="92" y="35.4" width="26" height="1.3" rx="0.6" fill="#6e4824"/>' +
-          '</svg>',
+        name: "חדר שינה", env: "Bedroom", bg: "#bcd9f2", imgRoom: true,
+        bgImage: "img/bedroom.jpg",
         objects: [
-          { key: "bed", emoji: "🛏️", en: "bed", x: 24, y: 70, size: 8.4 },
-          { key: "teddy", emoji: "🧸", en: "teddy bear", x: 31, y: 61, size: 3.0 },
-          { key: "shoes", emoji: "👟", en: "shoes", x: 47, y: 86, size: 3.0 },
-          { key: "shirt", emoji: "👕", en: "shirt", x: 39, y: 37, size: 3.6 },
-          { key: "window", emoji: "🪟", en: "window", x: 52, y: 15, size: 4.8 },
-          { key: "door", emoji: "🚪", en: "door", x: 84, y: 51, size: 8.0 },
-          { key: "lamp", emoji: "💡", en: "lamp", x: 73, y: 44, size: 3.0 },
-          { key: "book", emoji: "📖", en: "book", x: 64, y: 30, size: 2.6 }
+          { key: "suitcase",        en: "suitcase",       x: 10, y: 56, w: 12, h: 14 },
+          { key: "lamp",            en: "lamp",           x: 24, y: 40, w: 9,  h: 14 },
+          { key: "alarm_clock",     en: "alarm clock",    x: 28, y: 47, w: 6,  h: 8  },
+          { key: "glass",           en: "glass of water", x: 31, y: 46, w: 4,  h: 8  },
+          { key: "blue_ball",       en: "blue ball",      x: 26, y: 59, w: 5,  h: 7  },
+          { key: "pink_pillow",     en: "pink pillow",    x: 40, y: 45, w: 12, h: 10 },
+          { key: "green_pillow",    en: "green pillow",   x: 56, y: 43, w: 12, h: 11 },
+          { key: "red_notebook",    en: "red notebook",   x: 53, y: 47, w: 9,  h: 8  },
+          { key: "moon_picture",    en: "picture",        x: 43, y: 20, w: 21, h: 22 },
+          { key: "green_mug",       en: "green mug",      x: 67, y: 22, w: 6,  h: 9  },
+          { key: "blue_book_shelf", en: "blue notebook",  x: 75, y: 20, w: 6,  h: 10 },
+          { key: "brown_book",      en: "brown book",     x: 67, y: 49, w: 9,  h: 6  },
+          { key: "family_picture",  en: "family picture", x: 70, y: 45, w: 7,  h: 9  },
+          { key: "phone",           en: "phone",          x: 74, y: 48, w: 5,  h: 9  },
+          { key: "plant",           en: "plant",          x: 92, y: 50, w: 8,  h: 15 },
+          { key: "yellow_cushion",  en: "yellow cushion", x: 19, y: 75, w: 14, h: 9  },
+          { key: "red_sock",        en: "red sock",       x: 80, y: 73, w: 6,  h: 9  }
         ],
         actions: [
-          { sentence: "Where can you sleep at night? Find the bed.", he: "איפה ישנים בלילה? מצא את המיטה.", target: "bed" },
-          { sentence: "Point to the soft teddy bear.", he: "הצבע על דובי הצעצוע הרך.", target: "teddy" },
-          { sentence: "Which one do you wear on your feet? Find the shoes.", he: "מה נועלים על הרגליים? מצא את הנעליים.", target: "shoes" },
-          { sentence: "Look for the shirt you can wear.", he: "חפש את החולצה שאפשר ללבוש.", target: "shirt" },
-          { sentence: "Open it to go outside. Where is the door?", he: "פותחים אותה כדי לצאת. איפה הדלת?", target: "door" },
-          { sentence: "Find the window you look through.", he: "מצא את החלון שמסתכלים דרכו.", target: "window" }
+          { sentence: "Find the red notebook.", he: "מצא את המחברת האדומה.", target: "red_notebook" },
+          { sentence: "Choose the thing under the nightstand.", he: "בחר את החפץ שמתחת לשידה.", target: "blue_ball" },
+          { sentence: "Find the brown book.", he: "מצא את הספר החום.", target: "brown_book" },
+          { sentence: "Choose the blue notebook.", he: "בחר את המחברת הכחולה.", target: "blue_book_shelf" },
+          { sentence: "Find something you can drink from.", he: "מצא משהו שאפשר לשתות ממנו.", target: ["glass", "green_mug"] },
+          { sentence: "Choose the thing that has no pair.", he: "בחר את החפץ שאינו זוגי.", target: "red_sock" }
         ]
       },
       {
-        name: "חדר אמבטיה", env: "Bathroom", bg: "#cfe9f0", scene: true,
-        sceneSVG:
-          '<svg viewBox="0 0 160 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">' +
-          '<rect x="0" y="0" width="160" height="60" fill="#cfe9f0"/>' +
-          '<g stroke="#bbdde6" stroke-width="0.6"><line x1="0" y1="20" x2="160" y2="20"/><line x1="0" y1="40" x2="160" y2="40"/><line x1="40" y1="0" x2="40" y2="60"/><line x1="80" y1="0" x2="80" y2="60"/><line x1="120" y1="0" x2="120" y2="60"/></g>' +
-          '<rect x="0" y="60" width="160" height="40" fill="#aac6cf"/>' +
-          '<g stroke="#9bb8c1" stroke-width="0.7"><line x1="0" y1="60" x2="160" y2="60"/><line x1="20" y1="60" x2="20" y2="100"/><line x1="60" y1="60" x2="60" y2="100"/><line x1="100" y1="60" x2="100" y2="100"/><line x1="140" y1="60" x2="140" y2="100"/><line x1="0" y1="80" x2="160" y2="80"/></g>' +
-          '<rect x="94" y="54" width="44" height="8" rx="1" fill="#ece6da"/>' +
-          '<rect x="94" y="62" width="44" height="6" fill="#d9d2c4"/>' +
-          '<ellipse cx="116" cy="57.5" rx="10" ry="2.4" fill="#c3cad2"/>' +
-          '<ellipse cx="116" cy="57.5" rx="7.5" ry="1.6" fill="#aab2bb"/>' +
-          '<rect x="106" y="50" width="8" height="2.4" rx="1" fill="#dfeff3" opacity="0.8"/>' +
-          '<rect x="127" y="18" width="31" height="42" fill="rgba(176,214,228,0.16)" stroke="#bcd6df" stroke-width="0.9"/>' +
-          '<rect x="127" y="56" width="31" height="4.5" rx="1" fill="#e3ebee"/>' +
-          '<rect x="150" y="8" width="1.8" height="18.5" fill="#aeb6bd"/>' +
-          '<rect x="143.5" y="25.5" width="8.5" height="1.8" rx="0.9" fill="#aeb6bd"/>' +
-          '<ellipse cx="35" cy="85" rx="18" ry="2.6" fill="rgba(0,0,0,0.14)"/>' +
-          '<ellipse cx="70" cy="87" rx="11" ry="2.2" fill="rgba(0,0,0,0.14)"/>' +
-          '</svg>',
-        sceneFG:
-          '<svg viewBox="0 0 160 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">' +
-          '<rect x="94" y="55.6" width="44" height="1.3" rx="0.6" fill="#c9c2b2"/>' +
-          '</svg>',
+        name: "חדר אמבטיה", env: "Bathroom", bg: "#bcd9f2", imgRoom: true,
+        bgImage: "img/bathroom.jpg",
         objects: [
-          { key: "bathtub", emoji: "🛁", en: "bathtub", x: 24, y: 73, size: 8.0 },
-          { key: "duck", emoji: "🦆", en: "duck", x: 24, y: 63, size: 2.6 },
-          { key: "toilet", emoji: "🚽", en: "toilet", x: 45, y: 70, size: 5.5 },
-          { key: "mirror", emoji: "🪞", en: "mirror", x: 72, y: 22, size: 4.5 },
-          { key: "shower", emoji: "🚿", en: "shower", x: 90, y: 27, size: 3.8 },
-          { key: "soap", emoji: "🧼", en: "soap", x: 60, y: 50, size: 2.4 },
-          { key: "toothbrush", emoji: "🪥", en: "toothbrush", x: 68, y: 50, size: 2.6 },
-          { key: "comb", emoji: "🪮", en: "comb", x: 77, y: 50, size: 2.5 }
+          { key: "flower",          en: "flower",          x: 21, y: 26, w: 6,  h: 9  },
+          { key: "red_toothbrush",  en: "red toothbrush",  x: 18, y: 39, w: 5,  h: 9  },
+          { key: "soap_bottle",     en: "soap",            x: 22, y: 40, w: 5,  h: 11 },
+          { key: "glass_sink",      en: "cup",             x: 25, y: 47, w: 4,  h: 7  },
+          { key: "blue_ball",       en: "blue ball",       x: 22, y: 68, w: 4,  h: 6  },
+          { key: "suitcase",        en: "suitcase",        x: 9,  y: 73, w: 11, h: 13 },
+          { key: "blue_towel",      en: "blue towel",      x: 33, y: 70, w: 10, h: 7  },
+          { key: "duck",            en: "duck",            x: 56, y: 54, w: 6,  h: 8  },
+          { key: "pink_towel",      en: "pink towel",      x: 70, y: 56, w: 8,  h: 6  },
+          { key: "purple_soap",     en: "purple soap",     x: 76, y: 57, w: 5,  h: 6  },
+          { key: "green_toothbrush",en: "green toothbrush",x: 82, y: 50, w: 5,  h: 9  },
+          { key: "green_towel",     en: "green towel",     x: 73, y: 29, w: 9,  h: 16 },
+          { key: "orange_towel",    en: "orange towel",    x: 83, y: 29, w: 9,  h: 16 },
+          { key: "fish_picture",    en: "fish picture",    x: 92, y: 33, w: 7,  h: 10 },
+          { key: "plant",           en: "plant",           x: 94, y: 62, w: 8,  h: 14 },
+          { key: "laundry_pink_sock",en: "sock",           x: 87, y: 70, w: 5,  h: 6  },
+          { key: "flipflop",        en: "flip-flop",       x: 57, y: 82, w: 8,  h: 7  }
         ],
         actions: [
-          { sentence: "Which one do you use to brush your teeth? Find the toothbrush.", he: "במה מצחצחים שיניים? מצא את מברשת השיניים.", target: "toothbrush" },
-          { sentence: "Look at yourself. Where is the mirror?", he: "תסתכל על עצמך. איפה המראה?", target: "mirror" },
-          { sentence: "Find the soap you wash your hands with.", he: "מצא את הסבון שמתרחצים איתו.", target: "soap" },
-          { sentence: "Point to the little duck in the bathtub.", he: "הצבע על הברווז הקטן באמבטיה.", target: "duck" },
-          { sentence: "Where do you take a warm bath? Find the bathtub.", he: "איפה מתרחצים באמבט חם? מצא את האמבטיה.", target: "bathtub" },
-          { sentence: "Which one rains water from above? Find the shower.", he: "ממה יורדים מים מלמעלה? מצא את המקלחת.", target: "shower" }
+          { sentence: "Find the green toothbrush.", he: "מצא את מברשת השיניים הירוקה.", target: "green_toothbrush" },
+          { sentence: "Choose the orange towel.", he: "בחר את המגבת הכתומה.", target: "orange_towel" },
+          { sentence: "Find the round purple object.", he: "מצא את החפץ העגול הסגול.", target: "purple_soap" },
+          { sentence: "Choose the thing that is inside something.", he: "בחר את החפץ שנמצא בתוך משהו.", target: "laundry_pink_sock" },
+          { sentence: "Find something you can put on your head.", he: "מצא משהו שאפשר לשים על הראש.", target: ["green_towel", "orange_towel"] },
+          { sentence: "Choose the thing that has no pair.", he: "בחר את החפץ שאינו בזוג.", target: "flipflop" }
         ]
       },
       {

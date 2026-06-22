@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>הסוכן החשאי · Secret Agent</title>
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; padding: 0; height: 100%; }
+  body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: radial-gradient(circle at 50% 0%, #1f2a44 0%, #0d1322 70%);
+    color: #f4f7ff;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+  }
+  #app { width: 100%; max-width: 760px; padding: 12px; flex: 1; display: flex; flex-direction: column; }
+
+  .screen { display: none; flex: 1; flex-direction: column; }
+  .screen.active { display: flex; }
+
+  h1 { font-size: 1.9rem; margin: 8px 0; text-align: center; }
+  .subtitle { text-align: center; opacity: .8; margin-bottom: 18px; }
+
+  .btn {
+    border: none; border-radius: 14px; padding: 14px 22px; font-size: 1.1rem;
+    font-weight: 700; cursor: pointer; font-family: inherit;
+    background: linear-gradient(180deg, #4f8cff, #2f6be0); color: #fff;
+    box-shadow: 0 4px 0 #234e9e; transition: transform .08s, box-shadow .08s;
+    margin: 6px;
+  }
+  .btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #234e9e; }
+  .btn.secondary { background: linear-gradient(180deg, #6b7690, #455066); box-shadow: 0 4px 0 #333b4d; }
+  .btn.gold { background: linear-gradient(180deg, #ffcf4f, #f0a91e); color: #3a2a00; box-shadow: 0 4px 0 #b87d12; }
+
+  /* START SCREEN */
+  .agent-badge { font-size: 5rem; text-align: center; margin: 6px 0; filter: drop-shadow(0 0 14px rgba(79,140,255,.6)); }
+  .world-list { display: flex; flex-direction: column; gap: 12px; margin-top: 10px; }
+  .world-card {
+    display: flex; align-items: center; gap: 14px; padding: 14px 16px;
+    background: rgba(255,255,255,.06); border: 2px solid rgba(255,255,255,.12);
+    border-radius: 16px; cursor: pointer; transition: background .15s, border-color .15s;
+  }
+  .world-card.unlocked:hover { background: rgba(79,140,255,.18); border-color: #4f8cff; }
+  .world-card.locked { opacity: .5; cursor: not-allowed; }
+  .world-card .wc-emoji { font-size: 2.4rem; }
+  .world-card .wc-info { flex: 1; text-align: right; }
+  .world-card .wc-name { font-weight: 700; font-size: 1.15rem; }
+  .world-card .wc-desc { font-size: .85rem; opacity: .75; }
+  .world-card .wc-lock { font-size: 1.4rem; }
+
+  /* PLAY SCREEN */
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+  .topbar .home { background: rgba(0,0,0,.12); border: none; color: #111; font-size: 1.3rem; border-radius: 10px; padding: 6px 10px; cursor: pointer; }
+  .mission-nav { display: flex; gap: 6px; }
+  .nav-arrow { background: rgba(0,0,0,.12); border: none; color: #111; font-size: 1rem; border-radius: 10px; padding: 6px 10px; cursor: pointer; line-height: 1; }
+  .nav-arrow:hover { background: rgba(0,0,0,.22); }
+  .nav-arrow:disabled { opacity: .3; cursor: default; }
+  .progress-info { font-size: .85rem; opacity: .95; text-align: center; color: #111; font-weight: 600; }
+  .progress-bar { height: 8px; background: rgba(255,255,255,.12); border-radius: 6px; overflow: hidden; margin-bottom: 10px; }
+  .progress-bar > div { height: 100%; background: linear-gradient(90deg, #4f8cff, #7df9c0); width: 0%; transition: width .3s; }
+
+  .sentence-box {
+    display: flex; align-items: center; gap: 12px; justify-content: center; flex-wrap: nowrap;
+    background: rgba(255,255,255,.95); border-radius: 16px; padding: 16px;
+    margin-bottom: 14px; min-height: 64px;
+  }
+  .sentence-text { flex: 1; min-width: 0; text-align: center; font-size: 1.5rem; font-weight: 700; direction: ltr; letter-spacing: .3px; color: #111; }
+  .speak-btn {
+    border: none; border-radius: 50%; width: 56px; height: 56px; min-width: 56px;
+    font-size: 1.6rem; cursor: pointer; background: linear-gradient(180deg, #ffcf4f, #f0a91e);
+    color: #3a2a00; box-shadow: 0 3px 0 #b87d12;
+  }
+  .xlate-btn {
+    background: linear-gradient(180deg, #8fd0ff, #3a9be8); color: #04243f;
+    box-shadow: 0 3px 0 #2176b8; font-size: 1.25rem; font-weight: 800;
+  }
+  .speak-btn:active { transform: translateY(2px); }
+  .speak-btn.flash { animation: flashPulse .6s ease-in-out infinite; }
+  @keyframes flashPulse { 0%,100% { transform: scale(1); box-shadow: 0 3px 0 #b87d12; } 50% { transform: scale(1.18); box-shadow: 0 0 18px 6px rgba(255,207,79,.8); } }
+
+  .room {
+    flex: 1; border-radius: 18px; padding: 14px;
+    display: flex; flex-wrap: wrap; gap: 10px; align-content: flex-start;
+    justify-content: center; min-height: 300px;
+    border: 3px solid rgba(255,255,255,.1);
+  }
+  .obj {
+    border: none; border-radius: 16px; cursor: pointer;
+    width: 84px; height: 84px; font-size: 2.7rem;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(255,255,255,.92); box-shadow: 0 3px 6px rgba(0,0,0,.25);
+    transition: transform .1s;
+  }
+  .obj:active { transform: scale(.92); }
+  .obj.correct { animation: pop .5s ease; background: #8ff0b6; box-shadow: 0 0 18px 6px rgba(80,230,150,.8); }
+  .obj.wrong { animation: shake .4s ease; background: #ffc9c9; }
+  .obj.hintpulse { animation: hintPulse 1s ease-in-out infinite; }
+  @keyframes pop { 0% { transform: scale(1);} 40% { transform: scale(1.35);} 100% { transform: scale(1.15);} }
+  @keyframes shake { 0%,100%{transform:translateX(0);} 25%{transform:translateX(-7px);} 75%{transform:translateX(7px);} }
+  @keyframes hintPulse { 0%,100%{ box-shadow:0 3px 6px rgba(0,0,0,.25);} 50%{ box-shadow:0 0 16px 6px rgba(125,249,192,.9); transform: scale(1.08);} }
+
+  /* SCENE (illustrated room with hidden objects) */
+  .room.stage { display: block; position: relative; padding: 0; overflow: hidden; background: #000; flex: 0 0 auto; width: 100%; height: auto; min-height: 0; aspect-ratio: 16 / 10; margin: 0 auto; }
+  .stage > .bg { position: absolute; inset: 0; }
+  .stage > .bg svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .stage > .fg { position: absolute; inset: 0; pointer-events: none; }
+  .stage > .fg svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .obj-scene {
+    position: absolute; transform: translate(-50%, -50%);
+    background: transparent; border: none; padding: 2px; cursor: pointer;
+    line-height: 1; filter: drop-shadow(0 1px 1px rgba(0,0,0,.55));
+    transition: transform .1s;
+  }
+  .obj-scene:active { transform: translate(-50%, -50%) scale(.9); }
+  .obj-scene.correct { animation: popScene .55s ease; filter: drop-shadow(0 0 8px #38e08a) drop-shadow(0 0 14px #38e08a); z-index: 5; }
+  .obj-scene.wrong { animation: shakeScene .4s ease; }
+  .obj-scene.hintpulse { animation: hintRing 1s ease-in-out infinite; border-radius: 50%; z-index: 5; }
+  @keyframes popScene { 0%{transform:translate(-50%,-50%) scale(1);} 45%{transform:translate(-50%,-50%) scale(1.5);} 100%{transform:translate(-50%,-50%) scale(1.2);} }
+  @keyframes shakeScene { 0%,100%{transform:translate(-50%,-50%) rotate(0);} 25%{transform:translate(-50%,-50%) rotate(-13deg);} 75%{transform:translate(-50%,-50%) rotate(13deg);} }
+  @keyframes hintRing { 0%,100%{ box-shadow:0 0 0 0 rgba(125,249,192,0);} 50%{ box-shadow:0 0 0 6px rgba(125,249,192,.85); transform: translate(-50%,-50%) scale(1.12);} }
+  .obj-scene.fly { animation: flyMove 5s ease-in-out infinite; }
+  @keyframes flyMove {
+    0%   { transform: translate(-50%,-50%); }
+    25%  { transform: translate(-150%,-90%); }
+    50%  { transform: translate(40%,-70%); }
+    75%  { transform: translate(-100%,-115%); }
+    100% { transform: translate(-50%,-50%); }
+  }
+
+  /* IMAGE ROOM (real drawing background + transparent hotspots) */
+  .stage.imgroom { aspect-ratio: 3 / 2; }
+  .stage > .bgimg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: fill; display: block; }
+  .hotspot {
+    position: absolute; transform: translate(-50%, -50%);
+    background: transparent; border: 2px solid transparent; border-radius: 14px;
+    padding: 0; cursor: pointer; transition: transform .1s;
+  }
+  .hotspot:active { transform: translate(-50%, -50%) scale(.94); }
+  .hotspot.correct { animation: hsPop .5s ease; border-color: #38e08a; background: rgba(56,224,138,.18); box-shadow: 0 0 0 4px rgba(56,224,138,.55), 0 0 18px 6px rgba(56,224,138,.5); z-index: 5; }
+  .hotspot.wrong { animation: shakeScene .4s ease; border-color: #ff6b6b; background: rgba(255,107,107,.2); }
+  .hotspot.hintpulse { animation: hintRing 1s ease-in-out infinite; z-index: 5; }
+  @keyframes hsPop { 0%{transform:translate(-50%,-50%) scale(1);} 45%{transform:translate(-50%,-50%) scale(1.12);} 100%{transform:translate(-50%,-50%) scale(1.05);} }
+
+  /* sentence is read aloud, but the scene stays fully clickable at all times */
+  .listen-badge {
+    position: fixed; top: 14px; left: 50%; transform: translateX(-50%);
+    background: #1d6fd6; color: #fff; padding: 8px 20px; border-radius: 22px;
+    font-size: 1rem; font-weight: 700; box-shadow: 0 4px 14px rgba(0,0,0,.45);
+    z-index: 70; display: none; direction: rtl;
+  }
+  .listen-badge.active { display: block; animation: listenPulse 1s ease-in-out infinite; }
+  @keyframes listenPulse { 0%,100%{ transform:translateX(-50%) scale(1);} 50%{ transform:translateX(-50%) scale(1.06);} }
+
+  /* OVERLAY (mission/world/game complete) */
+  .overlay {
+    position: fixed; inset: 0; background: rgba(8,12,24,.92);
+    display: none; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 24px; z-index: 50;
+  }
+  .overlay.active { display: flex; }
+  .overlay .big-emoji { font-size: 5rem; animation: bounce 1s ease infinite; }
+  @keyframes bounce { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-16px);} }
+  .overlay h2 { font-size: 1.8rem; margin: 10px 0 4px; }
+  .overlay .en-line { direction: ltr; opacity: .85; font-size: 1.1rem; margin-bottom: 18px; }
+
+  .footer { text-align: center; font-size: .7rem; opacity: .5; padding: 8px; direction: ltr; }
+
+  /* confetti */
+  .confetti { position: fixed; top: -10px; width: 10px; height: 14px; z-index: 60; pointer-events: none; }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- START -->
+  <section id="screen-start" class="screen active">
+    <div class="agent-badge">🕵️</div>
+    <h1>הסוכן החשאי</h1>
+    <div class="subtitle">Secret Agent · משימות באנגלית 🇬🇧</div>
+    <div style="text-align:center; opacity:.8; margin-bottom:6px;">בחרו עולם כדי להתחיל את המשימה הסודית:</div>
+    <div id="worldList" class="world-list"></div>
+  </section>
+
+  <!-- PLAY -->
+  <section id="screen-play" class="screen">
+    <div class="topbar">
+      <button class="home" id="homeBtn" title="חזרה">🏠</button>
+      <div class="progress-info" id="progressInfo"></div>
+      <div class="mission-nav">
+        <button class="nav-arrow" id="prevMissionBtn" title="משימה קודמת (בדיקות)">◀</button>
+        <button class="nav-arrow" id="nextMissionBtn" title="משימה הבאה (בדיקות)">▶</button>
+      </div>
+    </div>
+    <div class="progress-bar"><div id="progressFill"></div></div>
+    <div class="sentence-box">
+      <button class="speak-btn" id="speakBtn" title="הקראה">🔊</button>
+      <div class="sentence-text" id="sentenceText">Find the apple.</div>
+      <button class="speak-btn xlate-btn" id="xlateBtn" title="הקראה בעברית">עב</button>
+    </div>
+    <div class="room" id="room"></div>
+  </section>
+
+  <div class="listen-badge" id="listenBadge">🔊 מקשיבים…</div>
+
+  <div class="footer">הסוכן החשאי · Secret Agent · 4 עולמות · ver <span id="buildVer">659d823</span> · <span id="buildTime">2026-06-22 17:10</span></div>
+</div>
+
+<!-- OVERLAY -->
+<div class="overlay" id="overlay">
+  <div class="big-emoji" id="ovEmoji">🎉</div>
+  <h2 id="ovTitle">כל הכבוד!</h2>
+  <div class="en-line" id="ovEn">Mission complete!</div>
+  <div id="ovButtons"></div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  // ---------- DATA: World 1 — Home & Yard ----------
+  // Each mission: { id, name(he), env(he), bg, objects:[{key,emoji,en}], actions:[{sentence,target}] }
+  const WORLD1 = {
+    id: 1,
+    name: "עולם הבית והחצר",
+    enName: "Home & Yard",
+    emoji: "🏡",
+    desc: "6 משימות סודיות · אנגלית בסיסית",
+    missions: [
+      {
+        name: "מטבח", env: "Kitchen", bg: "#bfe0f5", imgRoom: true,
+        bgImage: "img/kitchen.jpg",
+        objects: [
+          { key: "pinkmug",       en: "pink mug",       x: 5.5,  y: 48,   w: 9,  h: 11 },
+          { key: "sink",          en: "sink",           x: 15,   y: 51,   w: 12, h: 12 },
+          { key: "soap",          en: "soap",           x: 24,   y: 45,   w: 6,  h: 14 },
+          { key: "apple",         en: "apple",          x: 29,   y: 42,   w: 6,  h: 8  },
+          { key: "orange",        en: "orange",         x: 32.5, y: 42.5, w: 5,  h: 8  },
+          { key: "banana",        en: "banana",         x: 36,   y: 43,   w: 7,  h: 7  },
+          { key: "greennotebook", en: "green notebook", x: 20,   y: 66,   w: 13, h: 8  },
+          { key: "sandwich",      en: "sandwich",       x: 21,   y: 83,   w: 11, h: 9  },
+          { key: "plate",         en: "plate",          x: 46,   y: 59,   w: 13, h: 8  },
+          { key: "bluecup_table", en: "blue cup",       x: 56,   y: 56,   w: 9,  h: 12 },
+          { key: "fork",          en: "fork",           x: 64,   y: 58,   w: 5,  h: 10 },
+          { key: "ball",          en: "ball",           x: 74,   y: 82,   w: 10, h: 14 },
+          { key: "redcup_shelf",  en: "red cup",        x: 57,   y: 33,   w: 6,  h: 7  },
+          { key: "bluecup_shelf", en: "blue cup",       x: 61,   y: 34,   w: 5,  h: 9  },
+          { key: "greencup_shelf",en: "green cup",      x: 65.5, y: 34,   w: 5,  h: 9  },
+          { key: "pinkcup_shelf", en: "pink cup",       x: 70,   y: 34,   w: 5,  h: 9  },
+          { key: "rednotebook",   en: "red notebook",   x: 80,   y: 19,   w: 5,  h: 10 },
+          { key: "bluenotebook",  en: "blue notebook",  x: 84.5, y: 19,   w: 5,  h: 10 }
+        ],
+        actions: [
+          { sentence: "Find the blue cup.", he: "מצא את הכוס הכחולה.", target: "bluecup_table" },
+          { sentence: "Find the green notebook.", he: "מצא את המחברת הירוקה.", target: "greennotebook" },
+          { sentence: "Find the yellow ball.", he: "מצא את הכדור הצהוב.", target: "ball" },
+          { sentence: "Find the red cup on the shelf.", he: "בחר את הכוס האדומה מהמדף.", target: "redcup_shelf" },
+          { sentence: "Find the sandwich.", he: "מצא את הכריך.", target: "sandwich" },
+          { sentence: "Touch something round.", he: "בחר משהו עגול.", target: ["apple", "orange", "plate", "ball"] }
+        ]
+      },
+      {
+        name: "סלון", env: "Living room", bg: "#bcd9f2", imgRoom: true,
+        bgImage: "img/living.jpg",
+        objects: [
+          { key: "blue_notebook",  en: "blue notebook", x: 18, y: 52, w: 8,  h: 6  },
+          { key: "redball_console",en: "red ball",      x: 23, y: 50, w: 5,  h: 6  },
+          { key: "red_cushion",    en: "red cushion",   x: 36, y: 48, w: 12, h: 12 },
+          { key: "green_cushion",  en: "green cushion", x: 63, y: 47, w: 12, h: 12 },
+          { key: "book",           en: "book",          x: 44, y: 63, w: 12, h: 9  },
+          { key: "remote",         en: "remote",        x: 52, y: 62, w: 8,  h: 5  },
+          { key: "green_cup",      en: "green cup",     x: 58, y: 60, w: 6,  h: 9  },
+          { key: "painting",       en: "picture",       x: 37, y: 23, w: 22, h: 20 },
+          { key: "clock",          en: "clock",         x: 58, y: 22, w: 9,  h: 13 },
+          { key: "pink_mug",       en: "pink mug",      x: 72, y: 24, w: 6,  h: 9  },
+          { key: "cat_picture",    en: "cat picture",   x: 82, y: 25, w: 8,  h: 10 },
+          { key: "candle",         en: "candle",        x: 90, y: 24, w: 5,  h: 11 },
+          { key: "lampshade",      en: "lamp",          x: 80, y: 42, w: 9,  h: 10 },
+          { key: "plant",          en: "plant",         x: 93, y: 52, w: 8,  h: 15 },
+          { key: "yellow_cushion", en: "yellow cushion",x: 18, y: 76, w: 14, h: 9  },
+          { key: "ball",           en: "ball",          x: 74, y: 76, w: 9,  h: 13 }
+        ],
+        actions: [
+          { sentence: "Find the black remote.", he: "מצא את השלט השחור.", target: "remote" },
+          { sentence: "Choose the green cushion.", he: "בחר את הכרית הירוקה.", target: "green_cushion" },
+          { sentence: "Find the blue notebook.", he: "מצא את המחברת הכחולה.", target: "blue_notebook" },
+          { sentence: "Choose the round object.", he: "בחר את החפץ העגול.", target: ["clock", "ball", "lampshade"] },
+          { sentence: "Find the picture of the cat.", he: "מצא את התמונה של החתול.", target: "cat_picture" },
+          { sentence: "Choose something you can read.", he: "בחר משהו שאפשר לקרוא בו.", target: "book" }
+        ]
+      },
+      {
+        name: "חדר שינה", env: "Bedroom", bg: "#bcd9f2", imgRoom: true,
+        bgImage: "img/bedroom.jpg",
+        objects: [
+          { key: "suitcase",        en: "suitcase",       x: 10, y: 56, w: 12, h: 14 },
+          { key: "lamp",            en: "lamp",           x: 24, y: 40, w: 9,  h: 14 },
+          { key: "alarm_clock",     en: "alarm clock",    x: 28, y: 47, w: 6,  h: 8  },
+          { key: "glass",           en: "glass of water", x: 31, y: 46, w: 4,  h: 8  },
+          { key: "blue_ball",       en: "blue ball",      x: 26, y: 59, w: 5,  h: 7  },
+          { key: "pink_pillow",     en: "pink pillow",    x: 40, y: 45, w: 12, h: 10 },
+          { key: "green_pillow",    en: "green pillow",   x: 56, y: 43, w: 12, h: 11 },
+          { key: "red_notebook",    en: "red notebook",   x: 53, y: 47, w: 9,  h: 8  },
+          { key: "moon_picture",    en: "picture",        x: 43, y: 20, w: 21, h: 22 },
+          { key: "green_mug",       en: "green mug",      x: 67, y: 22, w: 6,  h: 9  },
+          { key: "blue_book_shelf", en: "blue notebook",  x: 75, y: 20, w: 6,  h: 10 },
+          { key: "brown_book",      en: "brown book",     x: 67, y: 49, w: 9,  h: 6  },
+          { key: "family_picture",  en: "family picture", x: 70, y: 45, w: 7,  h: 9  },
+          { key: "phone",           en: "phone",          x: 74, y: 48, w: 5,  h: 9  },
+          { key: "plant",           en: "plant",          x: 92, y: 50, w: 8,  h: 15 },
+          { key: "yellow_cushion",  en: "yellow cushion", x: 19, y: 75, w: 14, h: 9  },
+          { key: "red_sock",        en: "red sock",       x: 80, y: 73, w: 6,  h: 9  }
+        ],
+        actions: [
+          { sentence: "Find the red notebook.", he: "מצא את המחברת האדומה.", target: "red_notebook" },
+          { sentence: "Choose the thing under the nightstand.", he: "בחר את החפץ שמתחת לשידה.", target: "blue_ball" },
+          { sentence: "Find the brown book.", he: "מצא את הספר החום.", target: "brown_book" },
+          { sentence: "Choose the blue notebook.", he: "בחר את המחברת הכחולה.", target: "blue_book_shelf" },
+          { sentence: "Find something you can drink from.", he: "מצא משהו שאפשר לשתות ממנו.", target: ["glass", "green_mug"] },
+          { sentence: "Choose the thing that has no pair.", he: "בחר את החפץ שאינו זוגי.", target: "red_sock" }
+        ]
+      },
+      {
+        name: "חדר אמבטיה", env: "Bathroom", bg: "#bcd9f2", imgRoom: true,
+        bgImage: "img/bathroom.jpg",
+        objects: [
+          { key: "flower",          en: "flower",          x: 21, y: 26, w: 6,  h: 9  },
+          { key: "red_toothbrush",  en: "red toothbrush",  x: 16, y: 40, w: 6,  h: 10 },
+          { key: "soap_bottle",     en: "soap",            x: 22, y: 40, w: 5,  h: 11 },
+          { key: "glass_sink",      en: "cup",             x: 25, y: 47, w: 4,  h: 7  },
+          { key: "blue_ball",       en: "blue ball",       x: 22, y: 68, w: 4,  h: 6  },
+          { key: "suitcase",        en: "suitcase",        x: 9,  y: 73, w: 11, h: 13 },
+          { key: "blue_towel",      en: "blue towel",      x: 33, y: 70, w: 10, h: 7  },
+          { key: "duck",            en: "duck",            x: 56, y: 54, w: 6,  h: 8  },
+          { key: "pink_towel",      en: "pink towel",      x: 68, y: 56, w: 9,  h: 8  },
+          { key: "purple_soap",     en: "purple soap",     x: 74, y: 57, w: 6,  h: 6  },
+          { key: "green_toothbrush",en: "green toothbrush",x: 79, y: 54, w: 7,  h: 13 },
+          { key: "green_towel",     en: "green towel",     x: 73, y: 29, w: 9,  h: 16 },
+          { key: "orange_towel",    en: "orange towel",    x: 83, y: 29, w: 9,  h: 16 },
+          { key: "fish_picture",    en: "fish picture",    x: 92, y: 33, w: 7,  h: 10 },
+          { key: "plant",           en: "plant",           x: 94, y: 62, w: 8,  h: 14 },
+          { key: "laundry_pink_sock",en: "sock",           x: 83, y: 69, w: 7,  h: 8  },
+          { key: "flipflop",        en: "flip-flop",       x: 57, y: 82, w: 8,  h: 7  }
+        ],
+        actions: [
+          { sentence: "Find the green toothbrush.", he: "מצא את מברשת השיניים הירוקה.", target: "green_toothbrush" },
+          { sentence: "Choose the orange towel.", he: "בחר את המגבת הכתומה.", target: "orange_towel" },
+          { sentence: "Find the round purple object.", he: "מצא את החפץ העגול הסגול.", target: "purple_soap" },
+          { sentence: "Choose the thing that is inside something.", he: "בחר את החפץ שנמצא בתוך משהו.", target: ["laundry_pink_sock", "red_toothbrush", "green_toothbrush", "blue_ball", "duck", "pink_towel", "purple_soap"] },
+          { sentence: "Find the rubber duck.", he: "מצא את ברווז הגומי.", target: "duck" },
+          { sentence: "Choose the thing that has no pair.", he: "בחר את החפץ שאינו בזוג.", target: "flipflop" }
+        ]
+      },
+      {
+        name: "גינה", env: "Garden", bg: "#aee0ff", imgRoom: true,
+        bgImage: "img/garden.jpg",
+        objects: [
+          { key: "bird",       en: "bird",        x: 70,   y: 16,   w: 11, h: 13 },
+          { key: "shelfplant", en: "flower pot",  x: 25,   y: 25,   w: 7,  h: 9  },
+          { key: "bluebook",   en: "book",        x: 31,   y: 25,   w: 7,  h: 9  },
+          { key: "flowers",    en: "flowers",     x: 12,   y: 43,   w: 16, h: 19 },
+          { key: "potplant",   en: "plant",       x: 42,   y: 48,   w: 9,  h: 16 },
+          { key: "scoop",      en: "scoop",       x: 31,   y: 50,   w: 9,  h: 16 },
+          { key: "tireswing",  en: "tire",        x: 61,   y: 42,   w: 11, h: 18 },
+          { key: "swing",      en: "swing",       x: 88,   y: 54,   w: 10, h: 15 },
+          { key: "ball",       en: "ball",        x: 48,   y: 68,   w: 10, h: 14 },
+          { key: "greenbook",  en: "notebook",    x: 35,   y: 74,   w: 14, h: 10 },
+          { key: "redcap",     en: "hat",         x: 58,   y: 78,   w: 13, h: 10 },
+          { key: "toolbox",    en: "toolbox",     x: 77,   y: 73,   w: 15, h: 15 }
+        ],
+        actions: [
+          { sentence: "Find the green notebook.", he: "מצא את המחברת הירוקה.", target: "greenbook" },
+          { sentence: "Choose the thing that is inside something.", he: "בחר את החפץ שנמצא בתוך משהו.", target: ["scoop", "toolbox"] },
+          { sentence: "Find the red hat.", he: "מצא את הכובע האדום.", target: "redcap" },
+          { sentence: "Choose something you can read.", he: "בחר את החפץ שאפשר לקרוא בו.", target: "bluebook" },
+          { sentence: "Find the yellow ball.", he: "מצא את הכדור הצהוב.", target: "ball" },
+          { sentence: "Choose the thing that is highest.", he: "בחר את החפץ שנמצא הכי גבוה.", target: "bird" }
+        ]
+      },
+      {
+        name: "מוסך", env: "Garage", bg: "#c9ccd1", imgRoom: true,
+        bgImage: "img/garage.jpg",
+        objects: [
+          { key: "bike",        en: "bike",         x: 16,   y: 18,   w: 19, h: 24 },
+          { key: "towel",       en: "towel",        x: 18,   y: 13,   w: 9,  h: 9  },
+          { key: "plant",       en: "plant",        x: 90,   y: 20,   w: 9,  h: 13 },
+          { key: "greenbox",    en: "box",          x: 8,    y: 35,   w: 7,  h: 8  },
+          { key: "bluebook",    en: "book",         x: 15,   y: 35,   w: 8,  h: 6  },
+          { key: "brush",       en: "paintbrush",   x: 22,   y: 35,   w: 9,  h: 8  },
+          { key: "screwdriver", en: "screwdriver",  x: 31,   y: 46,   w: 9,  h: 8  },
+          { key: "notebook",    en: "notebook",     x: 40,   y: 47,   w: 12, h: 9  },
+          { key: "hammer",      en: "hammer",       x: 52,   y: 47,   w: 8,  h: 9  },
+          { key: "mug",         en: "mug",          x: 62,   y: 46,   w: 7,  h: 11 },
+          { key: "wrench",      en: "wrench",       x: 64,   y: 51,   w: 9,  h: 7  },
+          { key: "wheel",       en: "wheel",        x: 13,   y: 55,   w: 12, h: 17 },
+          { key: "toolbox",     en: "toolbox",      x: 85,   y: 57,   w: 16, h: 17 },
+          { key: "ball",        en: "ball",         x: 38,   y: 63,   w: 10, h: 12 },
+          { key: "glove",       en: "glove",        x: 74,   y: 78,   w: 10, h: 12 }
+        ],
+        actions: [
+          { sentence: "Find the thing that is inside something.", he: "מצא את החפץ שנמצא בתוך משהו.", target: ["ball", "toolbox"] },
+          { sentence: "Choose something you can draw with.", he: "בחר את החפץ שאפשר לצייר איתו.", target: "brush" },
+          { sentence: "Find the thing that is on something that moves.", he: "מצא את החפץ שנמצא על משהו שזז.", target: "towel" },
+          { sentence: "Choose something you can read.", he: "בחר את החפץ שאפשר לקרוא בו.", target: "notebook" },
+          { sentence: "Find the thing that is not in a pair.", he: "מצא את החפץ שאינו בזוג.", target: "glove" },
+          { sentence: "Choose the thing that is highest in the room.", he: "בחר את החפץ שנמצא הכי גבוה בחדר.", target: "bike" }
+        ]
+      }
+    ]
+  };
+
+  // ---------- SCENE BUILDER (worlds 2-4): grounded rooms ----------
+  let _sid = 0;
+  function _grad(id, a, b) {
+    return '<linearGradient id="' + id + '" x1="0" y1="0" x2="0" y2="1">' +
+      '<stop offset="0" stop-color="' + a + '"/><stop offset="1" stop-color="' + b + '"/></linearGradient>';
+  }
+  function _r(x, y, w, h, f, ex) {
+    return '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" ' + (ex || '') + ' fill="' + f + '"/>';
+  }
+  function _shadow(cx, cy, rx, ry, op) {
+    return '<ellipse cx="' + cx + '" cy="' + cy + '" rx="' + rx + '" ry="' + ry + '" fill="rgba(0,0,0,' + (op || 0.16) + ')"/>';
+  }
+
+  // object slots (percent). Interior: shelf row (on wall shelf) + counter row (on back counter).
+  const INTERIOR_SLOTS = [
+    [12, 44], [28, 44], [44, 44], [60, 44], [76, 44], [92, 44], // counter (top ~47)
+    [24, 26], [50, 26], [76, 26]                                 // wall shelf (top ~29)
+  ];
+  // Outdoor: a back row (mid-ground) + a front row, both on the ground.
+  const OUTDOOR_SLOTS = [
+    [22, 62], [44, 62], [66, 62], [86, 62],
+    [12, 80], [30, 80], [48, 80], [66, 80], [84, 80]
+  ];
+
+  // INTERIOR room: full-width back counter + wall shelf, with contact shadows under every slot.
+  function roomKit(pal, feature, cc) {
+    const u = 'S' + (_sid++);
+    const slab = (cc && cc[0]) || '#e7cda4';
+    const body = (cc && cc[1]) || '#b9894f';
+    let s = '<svg viewBox="0 0 160 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><defs>';
+    s += _grad(u + 'w', pal[0], pal[1]) + _grad(u + 'f', pal[2], pal[3]) + '</defs>';
+    s += _r(0, 0, 160, 44, 'url(#' + u + 'w)');
+    s += _r(0, 44, 160, 56, 'url(#' + u + 'f)');
+    s += _r(0, 44, 160, 1.2, 'rgba(0,0,0,0.14)');
+    s += '<g stroke="rgba(0,0,0,0.06)" stroke-width="0.6"><line x1="18" y1="100" x2="64" y2="45"/><line x1="142" y1="100" x2="96" y2="45"/></g>';
+    s += (feature || '');
+    // wall shelf (full width) board top at y=29
+    s += _r(6, 29, 148, 2.4, '#9a6a36', 'rx="0.8"') + _r(6, 29, 148, 0.8, 'rgba(255,255,255,0.28)');
+    s += _r(9, 31.4, 2, 2.6, '#7c5128') + _r(149, 31.4, 2, 2.6, '#7c5128');
+    // shelf-row contact shadows (x 24,50,76 -> svg 38.4,80,121.6)
+    s += _shadow(38.4, 29, 6, 1.1) + _shadow(80, 29, 6, 1.1) + _shadow(121.6, 29, 6, 1.1);
+    // back counter: top slab at y=47, cabinet body 50-62
+    s += _r(0, 50, 160, 12, body);
+    s += _r(0, 47, 160, 3, slab);
+    s += _r(0, 49.6, 160, 0.8, 'rgba(0,0,0,0.12)');
+    s += '<g stroke="rgba(0,0,0,0.13)" stroke-width="0.7"><line x1="26" y1="50" x2="26" y2="62"/><line x1="53" y1="50" x2="53" y2="62"/><line x1="80" y1="50" x2="80" y2="62"/><line x1="107" y1="50" x2="107" y2="62"/><line x1="134" y1="50" x2="134" y2="62"/></g>';
+    s += '<g fill="#5c3c18"><rect x="22" y="54" width="6" height="1.4" rx="0.6"/><rect x="49" y="54" width="6" height="1.4" rx="0.6"/><rect x="76" y="54" width="6" height="1.4" rx="0.6"/><rect x="103" y="54" width="6" height="1.4" rx="0.6"/><rect x="130" y="54" width="6" height="1.4" rx="0.6"/></g>';
+    // counter-row contact shadows (x 12,28,44,60,76,92 -> svg *1.6) at y=47.2
+    [12, 28, 44, 60, 76, 92].forEach(function (x) { s += _shadow(x * 1.6, 47.2, 5, 1.1); });
+    // soft floor rug
+    s += '<ellipse cx="80" cy="86" rx="50" ry="9" fill="rgba(0,0,0,0.05)"/>';
+    s += '</svg>';
+    return { svg: s, slots: INTERIOR_SLOTS };
+  }
+
+  // OUTDOOR scene: sky + ground, with contact shadows under every slot.
+  function outdoorKit(pal, items, shOp) {
+    const u = 'S' + (_sid++);
+    let s = '<svg viewBox="0 0 160 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><defs>';
+    s += _grad(u + 's', pal[0], pal[1]) + _grad(u + 'g', pal[2], pal[3]) + '</defs>';
+    s += _r(0, 0, 160, 58, 'url(#' + u + 's)');
+    s += _r(0, 58, 160, 42, 'url(#' + u + 'g)');
+    s += _r(0, 58, 160, 1, 'rgba(0,0,0,0.08)');
+    s += (items || '');
+    OUTDOOR_SLOTS.forEach(function (p) { s += _shadow(p[0] * 1.6, p[1] + 3.2, p[1] > 70 ? 5.5 : 4.5, 1.3, shOp || 0.14); });
+    s += '</svg>';
+    return { svg: s, slots: OUTDOOR_SLOTS };
+  }
+
+  // wall / décor feature helpers (positioned on the back wall, y 5-26)
+  function fWin(x, y, w, h) {
+    return _r(x, y, w, h, '#cfeaff', 'stroke="#ffffff" stroke-width="1.5"') +
+      _r(x + w / 2 - 0.6, y, 1.2, h, '#ffffff') + _r(x, y + h / 2 - 0.6, w, 1.2, '#ffffff');
+  }
+  function fFrame(x, y, w, h, c) {
+    return _r(x - 1.5, y - 1.5, w + 3, h + 3, '#caa36b', 'rx="1"') + _r(x, y, w, h, c);
+  }
+  function fBoard(x, y, w, h, c) {
+    return _r(x - 2, y - 2, w + 4, h + 4, '#caa36b', 'rx="1.5"') + _r(x, y, w, h, c || '#2f6f4f') +
+      '<g stroke="rgba(255,255,255,0.5)" stroke-width="0.6"><line x1="' + (x + 4) + '" y1="' + (y + 5) + '" x2="' + (x + w - 8) + '" y2="' + (y + 5) + '"/>' +
+      '<line x1="' + (x + 4) + '" y1="' + (y + 9) + '" x2="' + (x + w - 5) + '" y2="' + (y + 9) + '"/>' +
+      '<line x1="' + (x + 4) + '" y1="' + (y + 13) + '" x2="' + (x + w - 14) + '" y2="' + (y + 13) + '"/></g>';
+  }
+
+  // ---------- WORLD 2 — School ----------
+  const WORLD2 = {
+    id: 2, name: "עולם בית הספר", enName: "School", emoji: "🏫",
+    desc: "6 משימות סודיות · אנגלית בבית הספר",
+    missions: [
+      M("כיתה", "Classroom", "#dfe7f0",
+        roomKit(["#eef3fa", "#d7e1ee", "#caa36b", "#a07c46"], fBoard(50, 7, 60, 19) + fWin(8, 8, 30, 16) + fWin(122, 8, 30, 16)),
+        [["book", "📖", "book"], ["pencil", "✏️", "pencil"], ["ruler", "📏", "ruler"], ["clock", "🕐", "clock"], ["bag", "🎒", "bag"], ["globe", "🌐", "globe"], ["scissors", "✂️", "scissors"], ["eraser", "🧽", "eraser"], ["crayon", "🖍️", "crayon"]],
+        [["Open it and read. Which is the book?", "פותחים אותו וקוראים. מה הספר?", "book"],
+         ["Find the yellow pencil.", "מצא את העיפרון הצהוב.", "pencil"],
+         ["Use it to draw a straight line. Find the ruler.", "משתמשים בו כדי לצייר קו ישר. מצא את הסרגל.", "ruler"],
+         ["It shows the time. Find the clock.", "הוא מראה את השעה. מצא את השעון.", "clock"],
+         ["You carry your books in it. Find the bag.", "נושאים בו את הספרים. מצא את התיק.", "bag"],
+         ["It shows all the countries. Find the globe.", "הוא מראה את כל המדינות. מצא את הגלובוס.", "globe"]]),
+      M("ספרייה", "Library", "#efe6d6",
+        roomKit(["#f3ead8", "#e2d3b6", "#cdb389", "#a17f52"], fFrame(12, 7, 40, 18, "#8a5a2b") + '<g>' + _r(14, 9, 4, 14, "#d36") + _r(19, 9, 4, 14, "#39c") + _r(24, 9, 4, 14, "#3a3") + _r(29, 9, 4, 14, "#e90") + _r(34, 9, 4, 14, "#96c") + _r(39, 9, 4, 14, "#d36") + _r(44, 9, 4, 14, "#39c") + '</g>' + fWin(108, 8, 44, 16), ["#efe0c6", "#caa066"]),
+        [["book", "📖", "book"], ["lamp", "💡", "lamp"], ["newspaper", "📰", "newspaper"], ["globe", "🌐", "globe"], ["chair", "🪑", "chair"], ["magnifier", "🔍", "magnifying glass"], ["pencil", "✏️", "pencil"], ["clock", "🕐", "clock"], ["ladder", "🪜", "ladder"]],
+        [["Find the big book.", "מצא את הספר הגדול.", "book"],
+         ["It gives light so you can read. Find the lamp.", "הוא נותן אור כדי לקרוא. מצא את המנורה.", "lamp"],
+         ["You read the news in it. Find the newspaper.", "קוראים בו את החדשות. מצא את העיתון.", "newspaper"],
+         ["Where can you find every country? The globe.", "איפה אפשר למצוא כל מדינה? הגלובוס.", "globe"],
+         ["You sit on it to read. Find the chair.", "יושבים עליו כדי לקרוא. מצא את הכיסא.", "chair"],
+         ["It makes small words look big. Find the magnifying glass.", "היא מגדילה מילים קטנות. מצא את הזכוכית המגדלת.", "magnifier"]]),
+      M("חדר אומנות", "Art room", "#f3e1ec",
+        roomKit(["#f7e6f0", "#ecc9de", "#d8b48f", "#b08456"], fFrame(16, 7, 24, 18, "#ffd24f") + fFrame(68, 6, 24, 20, "#7ec8ff") + fFrame(120, 7, 24, 18, "#9be07e")),
+        [["brush", "🖌️", "paintbrush"], ["palette", "🎨", "palette"], ["scissors", "✂️", "scissors"], ["crayon", "🖍️", "crayon"], ["picture", "🖼️", "picture"], ["paper", "📄", "paper"], ["pencil", "✏️", "pencil"], ["sponge", "🧽", "sponge"], ["glue", "📎", "clip"]],
+        [["You paint with it. Find the paintbrush.", "מציירים איתו. מצא את המכחול.", "brush"],
+         ["It holds many colors. Find the palette.", "היא מחזיקה הרבה צבעים. מצא את הפלטה.", "palette"],
+         ["Use them to cut the paper. Find the scissors.", "משתמשים בהם לחתוך נייר. מצא את המספריים.", "scissors"],
+         ["Find the red crayon.", "מצא את הצבע האדום.", "crayon"],
+         ["Find the picture on the wall.", "מצא את התמונה על הקיר.", "picture"],
+         ["You draw on it. Find the paper.", "מציירים עליו. מצא את הנייר.", "paper"]]),
+      M("מעבדת מדע", "Science lab", "#d7eef0",
+        roomKit(["#e6f6f8", "#c8e6ea", "#b9c4cc", "#8e99a2"], fWin(10, 8, 34, 18) + fFrame(64, 6, 30, 20, "#1d3a4a") + '<g stroke="#4fd0a0" stroke-width="0.6"><line x1="68" y1="12" x2="90" y2="12"/><line x1="68" y1="16" x2="86" y2="16"/><line x1="68" y1="20" x2="92" y2="20"/></g>' + fWin(116, 8, 34, 18), ["#cfd8de", "#9aa6b0"]),
+        [["microscope", "🔬", "microscope"], ["testtube", "🧪", "test tube"], ["magnet", "🧲", "magnet"], ["telescope", "🔭", "telescope"], ["battery", "🔋", "battery"], ["plant", "🪴", "plant"], ["magnifier", "🔍", "magnifying glass"], ["bulb", "💡", "light bulb"], ["dna", "🧬", "DNA"]],
+        [["It makes tiny things look big. Find the microscope.", "הוא מגדיל דברים זעירים. מצא את המיקרוסקופ.", "microscope"],
+         ["The scientist mixes liquid in it. Find the test tube.", "המדען מערבב בה נוזל. מצא את המבחנה.", "testtube"],
+         ["It pulls metal to it. Find the magnet.", "הוא מושך אליו מתכת. מצא את המגנט.", "magnet"],
+         ["You look at the stars with it. Find the telescope.", "מסתכלים איתו על הכוכבים. מצא את הטלסקופ.", "telescope"],
+         ["It gives power. Find the battery.", "היא נותנת חשמל. מצא את הסוללה.", "battery"],
+         ["It is green and it grows. Find the plant.", "הוא ירוק וגדל. מצא את הצמח.", "plant"]]),
+      M("אולם ספורט", "Gym", "#f0e7d2",
+        roomKit(["#f6eed9", "#e6d6b2", "#caa066", "#9c7236"], _r(56, 6, 48, 16, "#1d2a3a", 'rx="1.5"') + '<g fill="#ffcf4f"><circle cx="68" cy="14" r="2"/><circle cx="74" cy="14" r="2"/><circle cx="86" cy="14" r="2"/><circle cx="92" cy="14" r="2"/></g>' + '<rect x="78" y="11" width="4" height="6" fill="#ff7e6b"/>' + fFrame(14, 8, 22, 14, "#e8e2d0") + fFrame(124, 8, 22, 14, "#e8e2d0")),
+        [["ball", "⚽", "ball"], ["basketball", "🏀", "basketball"], ["medal", "🏅", "medal"], ["rope", "🪢", "rope"], ["sneakers", "👟", "sneakers"], ["trophy", "🏆", "trophy"], ["cone", "🚧", "cone"], ["goal", "🥅", "goal"], ["bottle", "🍶", "bottle"]],
+        [["You kick it with your foot. Find the ball.", "בועטים בו עם הרגל. מצא את הכדור.", "ball"],
+         ["You throw it into the hoop. Find the basketball.", "זורקים אותו לסל. מצא את כדורסל.", "basketball"],
+         ["The winner wears it. Find the medal.", "המנצח עונד אותה. מצא את המדליה.", "medal"],
+         ["You jump over it. Find the rope.", "קופצים מעליו. מצא את החבל.", "rope"],
+         ["You wear them to run fast. Find the sneakers.", "נועלים אותן כדי לרוץ מהר. מצא את הנעליים.", "sneakers"],
+         ["The best team wins it. Find the trophy.", "הקבוצה הכי טובה זוכה בו. מצא את הגביע.", "trophy"]]),
+      M("קפיטריה", "Cafeteria", "#f2ead8",
+        roomKit(["#f7f0df", "#e7dcc2", "#cdb389", "#a17f52"], fBoard(54, 7, 52, 19, "#3a2a1a") + fWin(8, 8, 34, 16) + fWin(118, 8, 34, 16), ["#f0d9b6", "#cda36a"]),
+        [["sandwich", "🥪", "sandwich"], ["milk", "🥛", "milk"], ["apple", "🍎", "apple"], ["juice", "🧃", "juice"], ["cookie", "🍪", "cookie"], ["fork", "🍴", "fork"], ["plate", "🍽️", "plate"], ["banana", "🍌", "banana"], ["tray", "🍱", "tray"]],
+        [["You eat it for lunch. Find the sandwich.", "אוכלים אותו בארוחת צהריים. מצא את הכריך.", "sandwich"],
+         ["It is white and you drink it. Find the milk.", "הוא לבן ושותים אותו. מצא את החלב.", "milk"],
+         ["Find the red apple.", "מצא את התפוח האדום.", "apple"],
+         ["You drink it from a box. Find the juice.", "שותים אותו מקופסה. מצא את המיץ.", "juice"],
+         ["It is sweet and round. Find the cookie.", "היא מתוקה ועגולה. מצא את העוגייה.", "cookie"],
+         ["You eat with it. Find the fork.", "אוכלים איתו. מצא את המזלג.", "fork"]])
+    ]
+  };
+
+  // ---------- WORLD 3 — City ----------
+  const WORLD3 = {
+    id: 3, name: "עולם העיר", enName: "City", emoji: "🏙️",
+    desc: "6 משימות סודיות · משפטים ארוכים יותר",
+    missions: [
+      M("סופרמרקט", "Supermarket", "#e3edf2",
+        roomKit(["#eef5f8", "#d6e4ea", "#c6b89c", "#9c875f"], _r(54, 6, 52, 14, "#e23b3b", 'rx="2"') + '<g fill="#ffffff"><rect x="60" y="10" width="6" height="6"/><rect x="70" y="10" width="6" height="6"/><rect x="80" y="10" width="6" height="6"/><rect x="90" y="10" width="6" height="6"/></g>' + fFrame(12, 8, 26, 14, "#bfe3ff") + fFrame(122, 8, 26, 14, "#bfe3ff"), ["#dfeef5", "#9fb6c4"]),
+        [["cart", "🛒", "cart"], ["bread", "🍞", "bread"], ["cheese", "🧀", "cheese"], ["eggs", "🥚", "eggs"], ["carrot", "🥕", "carrot"], ["basket", "🧺", "basket"], ["apple", "🍎", "apple"], ["milk", "🥛", "milk"], ["banana", "🍌", "banana"]],
+        [["You put your food inside it while you shop. Find the cart.", "שמים בה את האוכל בזמן הקנייה. מצא את העגלה.", "cart"],
+         ["It is on the shelf and you make toast with it. Find the bread.", "הוא על המדף ועושים ממנו טוסט. מצא את הלחם.", "bread"],
+         ["The mouse loves this yellow food. Find the cheese.", "העכבר אוהב את המאכל הצהוב הזה. מצא את הגבינה.", "cheese"],
+         ["The hen gives them and you cook them. Find the eggs.", "התרנגולת נותנת אותן ומבשלים אותן. מצא את הביצים.", "eggs"],
+         ["The rabbit eats this orange vegetable. Find the carrot.", "הארנב אוכל את הירק הכתום הזה. מצא את הגזר.", "carrot"],
+         ["You can carry it on your arm. Find the basket.", "אפשר לסחוב אותו על הזרוע. מצא את הסל.", "basket"]]),
+      M("פארק", "Park", "#cdebd0",
+        outdoorKit(["#9fd8ff", "#e6f6ff", "#8fce74", "#5fa84e"],
+          '<circle cx="22" cy="16" r="9" fill="#ffe27a"/>' +
+          '<g><circle cx="30" cy="40" r="14" fill="#5fa84e"/><rect x="28" y="50" width="4" height="12" fill="#7c5128"/></g>' +
+          '<g><circle cx="130" cy="38" r="12" fill="#67b056"/><rect x="128" y="47" width="4" height="14" fill="#7c5128"/></g>' +
+          '<ellipse cx="80" cy="84" rx="70" ry="10" fill="#7bbf5f"/>' +
+          '<path d="M0 70 Q80 64 160 72 L160 78 Q80 70 0 76 Z" fill="#cdb98a"/>'),
+        [["kite", "🪁", "kite", 2.8], ["dog", "🐕", "dog", 3.4], ["bench", "🪑", "bench", 3.4], ["flower", "🌷", "flower", 2.6], ["bicycle", "🚲", "bicycle", 3.6], ["bird", "🐦", "bird", 2.4], ["ball", "⚽", "ball", 2.8], ["tree", "🌳", "tree", 4.4], ["butterfly", "🦋", "butterfly", 2.2]],
+        [["It flies high in the sky on a long string. Find the kite.", "הוא עף גבוה בשמיים על חוט ארוך. מצא את העפיפון.", "kite"],
+         ["It runs on the grass and says woof. Find the dog.", "הוא רץ על הדשא ואומר האו. מצא את הכלב.", "dog"],
+         ["You sit on it under the tree. Find the bench.", "יושבים עליו מתחת לעץ. מצא את הספסל.", "bench"],
+         ["It is pink and grows in the ground. Find the flower.", "הוא ורוד וגדל באדמה. מצא את הפרח.", "flower"],
+         ["It has two wheels and you ride it. Find the bicycle.", "יש לו שני גלגלים ורוכבים עליו. מצא את האופניים.", "bicycle"],
+         ["It is small and it sings in the tree. Find the bird.", "היא קטנה ושרה על העץ. מצא את הציפור.", "bird"]]),
+      M("מסעדה", "Restaurant", "#f0e0e0",
+        roomKit(["#f6e9e9", "#e8cccc", "#c79a7a", "#9c6f4f"], fWin(12, 8, 40, 18) + fFrame(70, 6, 20, 20, "#caa36b") + fWin(108, 8, 40, 18), ["#efd9c6", "#c79a6a"]),
+        [["pizza", "🍕", "pizza"], ["salad", "🥗", "salad"], ["candle", "🕯️", "candle"], ["glass", "🥛", "glass"], ["knife", "🔪", "knife"], ["spaghetti", "🍝", "spaghetti"], ["plate", "🍽️", "plate"], ["fork", "🍴", "fork"], ["cake", "🍰", "cake"]],
+        [["It is round and hot and has cheese on top. Find the pizza.", "היא עגולה וחמה ויש עליה גבינה. מצא את הפיצה.", "pizza"],
+         ["It is green and very healthy to eat. Find the salad.", "הוא ירוק ובריא מאוד לאכול. מצא את הסלט.", "salad"],
+         ["It gives a small warm light on the table. Find the candle.", "הוא נותן אור קטן וחמים על השולחן. מצא את הנר.", "candle"],
+         ["You drink your water from it. Find the glass.", "שותים ממנה את המים. מצא את הכוס.", "glass"],
+         ["You cut your food with it, but be careful. Find the knife.", "חותכים איתו את האוכל, אבל בזהירות. מצא את הסכין.", "knife"],
+         ["It is long and you eat it with a fork. Find the spaghetti.", "היא ארוכה ואוכלים אותה עם מזלג. מצא את הספגטי.", "spaghetti"]]),
+      M("גלידרייה", "Ice cream shop", "#fbe6f2",
+        roomKit(["#ffeef8", "#ffd6ec", "#f3b9d6", "#d98fb6"], _r(54, 6, 52, 16, "#ffffff", 'stroke="#f3a9cf" stroke-width="1.5" rx="2"') + '<g fill="#f3a9cf"><circle cx="64" cy="14" r="3"/><circle cx="80" cy="14" r="3"/><circle cx="96" cy="14" r="3"/></g>' + fFrame(14, 8, 22, 14, "#ffd6ec") + fFrame(124, 8, 22, 14, "#ffd6ec"), ["#ffe0ee", "#f3a9cf"]),
+        [["icecream", "🍦", "ice cream"], ["cherry", "🍒", "cherry"], ["chocolate", "🍫", "chocolate"], ["strawberry", "🍓", "strawberry"], ["spoon", "🥄", "spoon"], ["cup", "🥤", "cup"], ["sundae", "🍨", "sundae"], ["shavedice", "🍧", "shaved ice"], ["banana", "🍌", "banana"]],
+        [["It is cold and sweet and sits in a cone. Find the ice cream.", "היא קרה ומתוקה ויושבת בגביע. מצא את הגלידה.", "icecream"],
+         ["It is small and red and sits on the top. Find the cherry.", "הוא קטן ואדום ויושב למעלה. מצא את הדובדבן.", "cherry"],
+         ["It is brown and very very sweet. Find the chocolate.", "הוא חום ומתוק מאוד מאוד. מצא את השוקולד.", "chocolate"],
+         ["It is red with tiny seeds on it. Find the strawberry.", "הוא אדום עם זרעים קטנטנים. מצא את התות.", "strawberry"],
+         ["You eat your ice cream with it. Find the spoon.", "אוכלים איתו את הגלידה. מצא את הכפית.", "spoon"],
+         ["Your cold drink is inside it. Find the cup.", "המשקה הקר נמצא בתוכה. מצא את הכוס.", "cup"]]),
+      M("תחנת אוטובוס", "Bus stop", "#dfe6ec",
+        outdoorKit(["#cfe6f5", "#eaf4fb", "#b8bcc2", "#92969c"],
+          _r(0, 34, 160, 24, "#c6cdd6") + '<g fill="#aab2bb"><rect x="6" y="34" width="22" height="24"/><rect x="40" y="34" width="22" height="24"/><rect x="120" y="34" width="22" height="24"/></g>' +
+          '<g fill="#7d97c4"><rect x="9" y="38" width="6" height="6"/><rect x="18" y="38" width="6" height="6"/><rect x="43" y="38" width="6" height="6"/><rect x="52" y="38" width="6" height="6"/><rect x="123" y="38" width="6" height="6"/><rect x="132" y="38" width="6" height="6"/></g>' +
+          _r(96, 30, 26, 28, "#cfe0ea", 'stroke="#8f99a3" stroke-width="1.5" rx="1"') +
+          '<rect x="118" y="22" width="2.4" height="30" fill="#7d828a"/><rect x="112" y="22" width="14" height="6" rx="1" fill="#2f6fae"/>' +
+          '<g stroke="#ffffff" stroke-width="1.2" stroke-dasharray="6 5"><line x1="0" y1="90" x2="160" y2="90"/></g>', 0.18),
+        [["bus", "🚌", "bus", 4.0], ["ticket", "🎫", "ticket", 2.2], ["umbrella", "☂️", "umbrella", 3.0], ["map", "🗺️", "map", 2.6], ["clock", "🕐", "clock", 2.6], ["backpack", "🎒", "backpack", 2.8], ["bench", "🪑", "bench", 3.2], ["sign", "🚏", "sign", 2.8], ["trash", "🗑️", "trash can", 2.8]],
+        [["It is big and takes many people into the city. Find the bus.", "הוא גדול ולוקח הרבה אנשים לעיר. מצא את האוטובוס.", "bus"],
+         ["You need it to get on the bus. Find the ticket.", "צריך אותו כדי לעלות לאוטובוס. מצא את הכרטיס.", "ticket"],
+         ["You open it up when it starts to rain. Find the umbrella.", "פותחים אותה כשמתחיל לרדת גשם. מצא את המטרייה.", "umbrella"],
+         ["It shows you the way to go. Find the map.", "היא מראה לך לאן ללכת. מצא את המפה.", "map"],
+         ["Look at it to know when the bus comes. Find the clock.", "מסתכלים עליו כדי לדעת מתי האוטובוס מגיע. מצא את השעון.", "clock"],
+         ["You wear it on your back for school. Find the backpack.", "עונדים אותו על הגב לבית הספר. מצא את התיק.", "backpack"]]),
+      M("גן חיות", "Zoo", "#d2ead0",
+        outdoorKit(["#a6dcff", "#e6f6ff", "#9cc06e", "#6f9a44"],
+          '<circle cx="138" cy="16" r="8" fill="#ffe27a"/>' +
+          '<g><circle cx="24" cy="34" r="13" fill="#67b056"/><rect x="22" y="44" width="4" height="14" fill="#7c5128"/></g>' +
+          '<g><circle cx="120" cy="36" r="11" fill="#5fa84e"/><rect x="118" y="45" width="4" height="13" fill="#7c5128"/></g>' +
+          '<ellipse cx="80" cy="86" rx="72" ry="10" fill="#8cb866"/>' +
+          '<g stroke="#9a7b4a" stroke-width="1.4"><line x1="0" y1="60" x2="160" y2="60"/><line x1="20" y1="56" x2="20" y2="64"/><line x1="50" y1="56" x2="50" y2="64"/><line x1="110" y1="56" x2="110" y2="64"/><line x1="140" y1="56" x2="140" y2="64"/></g>'),
+        [["lion", "🦁", "lion", 3.4], ["elephant", "🐘", "elephant", 3.8], ["giraffe", "🦒", "giraffe", 4.0], ["monkey", "🐒", "monkey", 3.0], ["zebra", "🦓", "zebra", 3.4], ["snake", "🐍", "snake", 2.8], ["parrot", "🦜", "parrot", 2.8], ["bear", "🐻", "bear", 3.2], ["penguin", "🐧", "penguin", 2.8]],
+        [["It is the king of the animals and roars very loud. Find the lion.", "הוא מלך החיות ושואג חזק מאוד. מצא את האריה.", "lion"],
+         ["It is big and gray with a long nose. Find the elephant.", "הוא גדול ואפור עם אף ארוך. מצא את הפיל.", "elephant"],
+         ["It is very tall with a very long neck. Find the giraffe.", "הוא גבוה מאוד עם צוואר ארוך מאוד. מצא את הג'ירפה.", "giraffe"],
+         ["It climbs up the trees and loves bananas. Find the monkey.", "הוא מטפס על העצים ואוהב בננות. מצא את הקוף.", "monkey"],
+         ["It is a horse with black and white stripes. Find the zebra.", "הוא סוס עם פסים שחורים ולבנים. מצא את הזברה.", "zebra"],
+         ["It is long and it crawls on the ground. Find the snake.", "הוא ארוך וזוחל על הקרקע. מצא את הנחש.", "snake"]])
+    ]
+  };
+
+  // ---------- WORLD 4 — Special Agent ----------
+  const WORLD4 = {
+    id: 4, name: "עולם הסוכן המיוחד", enName: "Special Agent", emoji: "🕵️",
+    desc: "6 משימות סודיות · רמת מומחה",
+    missions: [
+      M("שדה תעופה", "Airport", "#dde4ee",
+        roomKit(["#e8eef7", "#d2dcec", "#b6bcc6", "#8c939d"], _r(6, 6, 64, 20, "#bfe3ff", 'stroke="#ffffff" stroke-width="1.5"') + _r(90, 6, 64, 20, "#bfe3ff", 'stroke="#ffffff" stroke-width="1.5"') + '<g stroke="#ffffff" stroke-width="1.2"><line x1="38" y1="6" x2="38" y2="26"/><line x1="122" y1="6" x2="122" y2="26"/></g>' + _r(72, 8, 16, 10, "#2f6fae", 'rx="1"'), ["#cfd8e2", "#9aa3ad"]),
+        [["airplane", "✈️", "airplane"], ["suitcase", "🧳", "suitcase"], ["passport", "📕", "passport"], ["ticket", "🎫", "ticket"], ["sunglasses", "🕶️", "sunglasses"], ["clock", "🕐", "clock"], ["headphones", "🎧", "headphones"], ["coffee", "☕", "coffee"], ["sign", "🚸", "sign"]],
+        [["Agent, find the big machine that flies high above the clouds. The airplane.", "סוכן, מצא את המכונה הגדולה שעפה גבוה מעל העננים. המטוס.", "airplane"],
+         ["Find the bag where a traveler keeps all their clothes. The suitcase.", "מצא את התיק שבו הנוסע שומר את כל הבגדים. המזוודה.", "suitcase"],
+         ["Show this little book to prove who you are at the gate. Find the passport.", "מראים את הספרון הזה כדי להוכיח מי אתה בשער. מצא את הדרכון.", "passport"],
+         ["Without this small paper you cannot get on the plane. Find the ticket.", "בלי הפתק הקטן הזה אי אפשר לעלות למטוס. מצא את הכרטיס.", "ticket"],
+         ["A secret agent wears these to hide their eyes. Find the sunglasses.", "סוכן חשאי עונד אותם כדי להסתיר את העיניים. מצא את המשקפיים.", "sunglasses"],
+         ["Check this to make sure you are not late for the flight. Find the clock.", "בודקים אותו כדי לא לאחר לטיסה. מצא את השעון.", "clock"]]),
+      M("מוזיאון", "Museum", "#e8e0ee",
+        roomKit(["#efe8f4", "#ddd0e6", "#c2b2a0", "#988672"], fFrame(60, 5, 40, 21, "#1d1410") + fFrame(16, 8, 26, 16, "#caa36b") + fFrame(118, 8, 26, 16, "#caa36b"), ["#e6dccb", "#b6a484"]),
+        [["gem", "💎", "gem"], ["crown", "👑", "crown"], ["painting", "🖼️", "painting"], ["vase", "🏺", "vase"], ["dinosaur", "🦖", "dinosaur"], ["mask", "🎭", "mask"], ["statue", "🗿", "statue"], ["map", "🗺️", "map"], ["key", "🗝️", "key"]],
+        [["Agent, the thief wants the shiny stone that costs a lot of money. Find the gem.", "סוכן, הגנב רוצה את האבן הנוצצת ששווה הרבה כסף. מצא את היהלום.", "gem"],
+         ["Find the golden hat that only a king or a queen can wear. The crown.", "מצא את הכובע הזהב שרק מלך או מלכה יכולים לחבוש. הכתר.", "crown"],
+         ["Look for the old picture hanging high on the museum wall. Find the painting.", "חפש את התמונה הישנה שתלויה גבוה על קיר המוזיאון. מצא את הציור.", "painting"],
+         ["This very old clay pot can break easily, so be careful. Find the vase.", "כד החרס העתיק הזה נשבר בקלות, אז זהירות. מצא את האגרטל.", "vase"],
+         ["Find the giant bones of an animal that lived long, long ago. The dinosaur.", "מצא את העצמות הענקיות של חיה שחיה לפני המון זמן. הדינוזאור.", "dinosaur"],
+         ["Spies and actors both hide their face behind it. Find the mask.", "מרגלים ושחקנים מסתירים מאחוריה את הפנים. מצא את המסכה.", "mask"]]),
+      M("תחנת רכבת", "Train station", "#dde6ea",
+        roomKit(["#cfe6f0", "#e6f3f8", "#b4bcc2", "#8d959c"], fWin(8, 8, 44, 18) + _r(70, 6, 20, 20, "#1d2a3a", 'rx="10"') + '<circle cx="80" cy="16" r="7" fill="#e8eef2"/><line x1="80" y1="16" x2="80" y2="11" stroke="#1d2a3a" stroke-width="1"/><line x1="80" y1="16" x2="84" y2="18" stroke="#1d2a3a" stroke-width="1"/>' + fWin(108, 8, 44, 18), ["#cdd6dc", "#9aa6ae"]),
+        [["train", "🚆", "train"], ["ticket", "🎫", "ticket"], ["clock", "🕐", "clock"], ["newspaper", "📰", "newspaper"], ["map", "🗺️", "map"], ["coffee", "☕", "coffee"], ["suitcase", "🧳", "suitcase"], ["bench", "🪑", "bench"], ["sign", "🚸", "sign"]],
+        [["Find the long machine on the tracks that carries people far away. The train.", "מצא את המכונה הארוכה על המסילה שלוקחת אנשים רחוק. הרכבת.", "train"],
+         ["You must buy this small paper before you can travel. Find the ticket.", "צריך לקנות את הפתק הקטן הזה לפני הנסיעה. מצא את הכרטיס.", "ticket"],
+         ["A good agent looks here so the train is never missed. Find the clock.", "סוכן טוב מסתכל כאן כדי לא לפספס את הרכבת. מצא את השעון.", "clock"],
+         ["Read this to look busy while you secretly watch the room. Find the newspaper.", "קוראים בו כדי להיראות עסוק בזמן שמשגיחים בסתר. מצא את העיתון.", "newspaper"],
+         ["Use this to find the secret meeting place in the city. Find the map.", "משתמשים בה כדי למצוא את מקום המפגש הסודי בעיר. מצא את המפה.", "map"],
+         ["The tired agent drinks this hot dark drink to stay awake. Find the coffee.", "הסוכן העייף שותה את המשקה החם והכהה כדי להישאר ער. מצא את הקפה.", "coffee"]]),
+      M("נמל", "Harbor", "#cfe6ee",
+        outdoorKit(["#bfe4ff", "#e6f3ff", "#5b9bbd", "#3a7390"],
+          '<g stroke="#9fd0e6" stroke-width="0.7"><line x1="0" y1="66" x2="160" y2="66"/><line x1="0" y1="74" x2="160" y2="74"/><line x1="0" y1="82" x2="160" y2="82"/></g>' +
+          '<g><rect x="126" y="6" width="12" height="38" fill="#e8e2d0" stroke="#caa36b" stroke-width="1.2"/><rect x="124" y="4" width="16" height="6" fill="#e23b3b" rx="1"/><rect x="127" y="12" width="10" height="6" fill="#ff7e6b"/></g>' +
+          '<rect x="0" y="76" width="160" height="6" fill="#9a6a36"/><g stroke="#7c5128" stroke-width="0.8"><line x1="26" y1="76" x2="26" y2="82"/><line x1="60" y1="76" x2="60" y2="82"/><line x1="100" y1="76" x2="100" y2="82"/><line x1="134" y1="76" x2="134" y2="82"/></g>' +
+          '<ellipse cx="40" cy="20" rx="9" ry="3" fill="#ffffff" opacity="0.85"/><ellipse cx="90" cy="14" rx="7" ry="2.4" fill="#ffffff" opacity="0.8"/>', 0.1),
+        [["ship", "🚢", "ship", 4.0], ["anchor", "⚓", "anchor", 2.8], ["lighthouse", "🗼", "lighthouse", 4.0], ["crab", "🦀", "crab", 2.6], ["box", "📦", "box", 2.8], ["lifebuoy", "🛟", "life ring", 2.8], ["fish", "🐟", "fish", 2.6], ["rope", "🪢", "rope", 2.4], ["seagull", "🐦", "seagull", 2.4]],
+        [["Find the giant boat that sails across the deep blue sea. The ship.", "מצא את הסירה הענקית שמפליגה על הים הכחול והעמוק. הספינה.", "ship"],
+         ["This heavy metal hook keeps the ship from floating away. Find the anchor.", "וו המתכת הכבד הזה מונע מהספינה לשוט לה. מצא את העוגן.", "anchor"],
+         ["Its bright light helps the ships find the way at night. Find the lighthouse.", "האור הבהיר שלו עוזר לספינות למצוא את הדרך בלילה. מצא את המגדלור.", "lighthouse"],
+         ["This small animal walks sideways and has two strong claws. Find the crab.", "החיה הקטנה הזו הולכת הצידה ויש לה שתי צבתות חזקות. מצא את הסרטן.", "crab"],
+         ["The secret papers are hidden deep inside this cardboard. Find the box.", "המסמכים הסודיים חבויים עמוק בתוך הקרטון. מצא את הקופסה.", "box"],
+         ["Throw this round ring to a person who fell in the water. Find the life ring.", "זורקים את הטבעת העגולה לאדם שנפל למים. מצא את גלגל ההצלה.", "lifebuoy"]]),
+      M("מלון", "Hotel", "#efe5dd",
+        roomKit(["#f5ece2", "#e6d6c4", "#c79a7a", "#9c6f4f"], fWin(10, 8, 40, 18) + fFrame(68, 6, 24, 20, "#3a5a8a") + fFrame(120, 8, 30, 16, "#caa36b"), ["#efd9c6", "#c79a6a"]),
+        [["bed", "🛏️", "bed"], ["key", "🔑", "key"], ["phone", "☎️", "phone"], ["bell", "🔔", "bell"], ["suitcase", "🧳", "suitcase"], ["lamp", "💡", "lamp"], ["towel", "🧻", "towel"], ["clock", "🕐", "clock"], ["slippers", "🥿", "slippers"]],
+        [["Agent, find the metal thing that opens the door to room seven. The key.", "סוכן, מצא את חפץ המתכת שפותח את הדלת לחדר שבע. המפתח.", "key"],
+         ["After a long mission you lie down and sleep here. Find the bed.", "אחרי משימה ארוכה שוכבים וישנים כאן. מצא את המיטה.", "bed"],
+         ["Use this to quietly call headquarters for help. Find the phone.", "משתמשים בו כדי להתקשר בשקט למפקדה לעזרה. מצא את הטלפון.", "phone"],
+         ["Ring this on the desk when you need the hotel man. Find the bell.", "מצלצלים בו על הדלפק כשצריך את איש המלון. מצא את הפעמון.", "bell"],
+         ["All your secret spy gadgets are packed inside this. Find the suitcase.", "כל גאדג'טי הריגול הסודיים ארוזים בתוכה. מצא את המזוודה.", "suitcase"],
+         ["Turn this on to read the secret letter late at night. Find the lamp.", "מדליקים אותה כדי לקרוא את המכתב הסודי מאוחר בלילה. מצא את המנורה.", "lamp"]]),
+      M("מעבדה סודית", "Secret lab", "#d2dee6",
+        roomKit(["#cfdde8", "#b6c6d2", "#8a96a2", "#646e7a"], _r(8, 6, 40, 20, "#0e1a28", 'rx="1.5"') + '<g stroke="#3fd0a0" stroke-width="0.7"><line x1="12" y1="12" x2="44" y2="12"/><line x1="12" y1="17" x2="38" y2="17"/><line x1="12" y1="22" x2="42" y2="22"/></g>' + _r(60, 6, 40, 20, "#0e1a28", 'rx="1.5"') + '<g stroke="#4f9bff" stroke-width="0.7"><line x1="64" y1="12" x2="94" y2="12"/><line x1="64" y1="18" x2="88" y2="18"/></g>' + _r(112, 6, 40, 20, "#0e1a28", 'rx="1.5"') + '<g stroke="#ff7e6b" stroke-width="0.7"><line x1="116" y1="13" x2="146" y2="13"/><line x1="116" y1="19" x2="140" y2="19"/></g>', ["#9aa6b0", "#5a6672"]),
+        [["computer", "💻", "computer"], ["robot", "🤖", "robot"], ["camera", "📷", "camera"], ["satellite", "📡", "satellite dish"], ["flashlight", "🔦", "flashlight"], ["microscope", "🔬", "microscope"], ["battery", "🔋", "battery"], ["magnet", "🧲", "magnet"], ["key", "🗝️", "key"]],
+        [["Agent, find the screen where all the secret plans are saved. The computer.", "סוכן, מצא את המסך שבו שמורות כל התוכניות הסודיות. המחשב.", "computer"],
+         ["This metal helper can walk and talk all by itself. Find the robot.", "העוזר ממתכת הזה יכול ללכת ולדבר בעצמו. מצא את הרובוט.", "robot"],
+         ["Use this to take a secret photo of the enemy. Find the camera.", "משתמשים בה כדי לצלם תמונה סודית של האויב. מצא את המצלמה.", "camera"],
+         ["This big dish sends secret signals all the way up to space. Find the satellite dish.", "הצלחת הגדולה הזו שולחת אותות סודיים עד החלל. מצא את הצלחת.", "satellite"],
+         ["Turn this on to see your way inside the dark tunnel. Find the flashlight.", "מדליקים אותו כדי לראות את הדרך במנהרה החשוכה. מצא את הפנס.", "flashlight"],
+         ["Look through this to study the tiny secret code. Find the microscope.", "מסתכלים דרכו כדי לחקור את הקוד הסודי הזעיר. מצא את המיקרוסקופ.", "microscope"]])
+    ]
+  };
+
+  function M(name, env, bg, kit, objs, acts) {
+    return {
+      name: name, env: env, bg: bg, scene: true,
+      sceneSVG: kit.svg,
+      objects: objs.map(function (o, i) { return { key: o[0], emoji: o[1], en: o[2], x: kit.slots[i][0], y: kit.slots[i][1], size: o[3] || 2.0 }; }),
+      actions: acts.map(function (a) { return { sentence: a[0], he: a[1], target: a[2] }; })
+    };
+  }
+
+  const WORLDS = [WORLD1, WORLD2, WORLD3, WORLD4];
+  const LOCKED_WORLDS = [];
+
+  // ---------- STATE ----------
+  let state = { world: 0, mission: 0, action: 0, solved: false, shuffled: [] };
+  let hintTimer1 = null, hintTimer2 = null;
+
+  // ---------- SPEECH ----------
+  let voicesReady = false;
+  function pickVoice() {
+    const vs = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+    return vs.find(v => /en[-_]US/i.test(v.lang)) ||
+           vs.find(v => /^en/i.test(v.lang)) || null;
+  }
+  function pickVoiceHe() {
+    const vs = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+    return vs.find(v => /he[-_]IL/i.test(v.lang)) ||
+           vs.find(v => /^(he|iw)/i.test(v.lang)) || null;
+  }
+  function speakHe(text) {
+    if (!window.speechSynthesis || !text) return;
+    try {
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = "he-IL";
+      u.rate = 0.85;
+      const v = pickVoiceHe();
+      if (v) u.voice = v;
+      window.speechSynthesis.speak(u);
+    } catch (e) { /* ignore */ }
+  }
+  function speak(text, rate) {
+    if (!window.speechSynthesis) return;
+    try {
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = "en-US";
+      u.rate = rate || 0.75;
+      const v = pickVoice();
+      if (v) u.voice = v;
+      window.speechSynthesis.speak(u);
+    } catch (e) { /* ignore */ }
+  }
+  // narration lock: while the English sentence is read aloud, the scene is
+  // visibly locked ("🔊 מקשיבים…") and clicks wait; unlocked the moment it ends.
+  let narrateTimer = null;
+  function setNarrating(on) {
+    const room = $("room");
+    const badge = $("listenBadge");
+    if (on) { if (room) room.classList.add("listening"); if (badge) badge.classList.add("active"); }
+    else { if (room) room.classList.remove("listening"); if (badge) badge.classList.remove("active"); }
+  }
+  function narrate(text, rate) {
+    if (!window.speechSynthesis) { setNarrating(false); return; }
+    try {
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = "en-US";
+      u.rate = rate || 0.75;
+      const v = pickVoice();
+      if (v) u.voice = v;
+      setNarrating(true);
+      let done = false;
+      const finish = function () { if (done) return; done = true; setNarrating(false); };
+      u.onend = finish;
+      u.onerror = finish;
+      if (narrateTimer) clearTimeout(narrateTimer);
+      narrateTimer = setTimeout(finish, Math.max(1800, text.length * 95) + 1200);
+      window.speechSynthesis.speak(u);
+    } catch (e) { setNarrating(false); }
+  }
+  if (window.speechSynthesis) {
+    window.speechSynthesis.onvoiceschanged = function () { voicesReady = true; };
+  }
+
+  // ---------- SOUND (WebAudio) ----------
+  let audioCtx = null;
+  function ac() {
+    if (!audioCtx) {
+      try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+      catch (e) { audioCtx = null; }
+    }
+    return audioCtx;
+  }
+  function tone(freqs, dur, type) {
+    const c = ac(); if (!c) return;
+    const now = c.currentTime;
+    freqs.forEach((f, i) => {
+      const o = c.createOscillator(), g = c.createGain();
+      o.type = type || "sine"; o.frequency.value = f;
+      const t = now + i * 0.12;
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.25, t + 0.03);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      o.connect(g); g.connect(c.destination);
+      o.start(t); o.stop(t + dur + 0.02);
+    });
+  }
+  function successSound() { tone([523, 659, 784], 0.25, "triangle"); }
+  function errorSound() { tone([240, 180], 0.22, "sine"); }
+
+  // ---------- HELPERS ----------
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+  function $(id) { return document.getElementById(id); }
+
+  // ---------- SCREENS ----------
+  function showScreen(id) {
+    document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+    $(id).classList.add("active");
+  }
+
+  function buildStart() {
+    const list = $("worldList");
+    list.innerHTML = "";
+    WORLDS.forEach((w, idx) => {
+      const card = document.createElement("div");
+      card.className = "world-card unlocked";
+      card.innerHTML = '<div class="wc-emoji">' + w.emoji + '</div>' +
+        '<div class="wc-info"><div class="wc-name">' + w.name + '</div>' +
+        '<div class="wc-desc">' + w.enName + ' · ' + w.desc + '</div></div>' +
+        '<div class="wc-lock">▶️</div>';
+      card.addEventListener("click", function () { startWorld(idx); });
+      list.appendChild(card);
+    });
+    LOCKED_WORLDS.forEach(function (w) {
+      const card = document.createElement("div");
+      card.className = "world-card locked";
+      card.innerHTML = '<div class="wc-emoji">' + w.emoji + '</div>' +
+        '<div class="wc-info"><div class="wc-name">' + w.name + '</div>' +
+        '<div class="wc-desc">' + w.enName + ' · ' + w.desc + '</div></div>' +
+        '<div class="wc-lock">🔒</div>';
+      list.appendChild(card);
+    });
+  }
+
+  function startWorld(idx) {
+    if (ac() && audioCtx.state === "suspended") audioCtx.resume();
+    state.world = idx; state.mission = 0; state.action = 0;
+    showScreen("screen-play");
+    renderAction();
+  }
+
+  function curMission() { return WORLDS[state.world].missions[state.mission]; }
+  function curAction() { return curMission().actions[state.action]; }
+
+  function renderAction() {
+    clearHints();
+    setNarrating(false);
+    state.solved = false;
+    const mission = curMission();
+    const action = curAction();
+    $("screen-play").style.background = mission.bg;
+    updateNavArrows();
+
+    // progress
+    const totalActions = mission.actions.length;
+    $("progressInfo").textContent =
+      mission.name + " · משימה " + (state.mission + 1) + "/" + WORLDS[state.world].missions.length +
+      " · פעולה " + (state.action + 1) + "/" + totalActions;
+    $("progressFill").style.width = (((state.action) / totalActions) * 100) + "%";
+
+    $("sentenceText").textContent = action.sentence;
+
+    // objects
+    const room = $("room");
+    room.innerHTML = "";
+    if (mission.imgRoom) {
+      room.className = "room stage imgroom";
+      room.style.background = mission.bg;
+      const img = document.createElement("img");
+      img.className = "bgimg";
+      img.src = mission.bgImage;
+      img.alt = "";
+      room.appendChild(img);
+      mission.objects.forEach(function (obj) {
+        const b = document.createElement("button");
+        b.className = "hotspot";
+        b.style.left = obj.x + "%";
+        b.style.top = obj.y + "%";
+        b.style.width = obj.w + "%";
+        b.style.height = obj.h + "%";
+        b.setAttribute("data-key", obj.key);
+        b.setAttribute("aria-label", obj.en);
+        b.addEventListener("click", function () { onObjectClick(obj, b); });
+        room.appendChild(b);
+      });
+    } else if (mission.scene) {
+      room.className = "room stage";
+      room.style.background = mission.bg;
+      const bg = document.createElement("div");
+      bg.className = "bg";
+      bg.innerHTML = mission.sceneSVG;
+      room.appendChild(bg);
+      mission.objects.forEach(function (obj) {
+        const b = document.createElement("button");
+        b.className = "obj-scene";
+        b.textContent = obj.emoji;
+        b.style.left = obj.x + "%";
+        b.style.top = obj.y + "%";
+        b.style.fontSize = (obj.size || 2.6) + "rem";
+        if (obj.fly) b.classList.add("fly");
+        b.setAttribute("data-key", obj.key);
+        b.setAttribute("aria-label", obj.en);
+        b.addEventListener("click", function () { onObjectClick(obj, b); });
+        room.appendChild(b);
+      });
+      if (mission.sceneFG) {
+        const fg = document.createElement("div");
+        fg.className = "fg";
+        fg.innerHTML = mission.sceneFG;
+        room.appendChild(fg);
+      }
+    } else {
+      room.className = "room";
+      room.style.background = mission.bg;
+      state.shuffled = shuffle(mission.objects);
+      state.shuffled.forEach(function (obj) {
+        const b = document.createElement("button");
+        b.className = "obj";
+        b.textContent = obj.emoji;
+        b.setAttribute("data-key", obj.key);
+        b.setAttribute("aria-label", obj.en);
+        b.addEventListener("click", function () { onObjectClick(obj, b); });
+        room.appendChild(b);
+      });
+    }
+
+    // auto-read the sentence once (scene locked while reading), then arm hints
+    setTimeout(function () { narrate(action.sentence, 0.7); }, 350);
+    armHints();
+  }
+
+  function onObjectClick(obj, el) {
+    if (state.solved) return;
+    const action = curAction();
+    const tgt = action.target;
+    const hit = Array.isArray(tgt) ? tgt.indexOf(obj.key) !== -1 : obj.key === tgt;
+    if (hit) {
+      state.solved = true;
+      clearHints();
+      el.classList.add("correct");
+      successSound();
+      launchConfetti();
+      speak("Yes! You found the " + obj.en + "!", 0.8);
+      $("progressFill").style.width =
+        (((state.action + 1) / curMission().actions.length) * 100) + "%";
+      setTimeout(nextAction, 2600);
+    } else {
+      el.classList.remove("wrong");
+      void el.offsetWidth;
+      el.classList.add("wrong");
+      errorSound();
+      speak(obj.en, 0.85);
+    }
+  }
+
+  function nextAction() {
+    const mission = curMission();
+    if (state.action + 1 < mission.actions.length) {
+      state.action++;
+      renderAction();
+    } else {
+      missionComplete();
+    }
+  }
+
+  // ---------- HINTS ----------
+  function armHints() {
+    hintTimer1 = setTimeout(function () {
+      $("speakBtn").classList.add("flash");
+      narrate(curAction().sentence, 0.65);
+      hintTimer2 = setTimeout(function () {
+        const room = $("room");
+        const tgt = curAction().target;
+        const key = Array.isArray(tgt) ? tgt[0] : tgt;
+        const t = room.querySelector('[data-key="' + key + '"]');
+        if (t) t.classList.add("hintpulse");
+      }, 5000);
+    }, 7000);
+  }
+  function clearHints() {
+    if (hintTimer1) clearTimeout(hintTimer1);
+    if (hintTimer2) clearTimeout(hintTimer2);
+    hintTimer1 = hintTimer2 = null;
+    $("speakBtn").classList.remove("flash");
+    document.querySelectorAll(".hintpulse").forEach(function (e) { e.classList.remove("hintpulse"); });
+  }
+
+  // ---------- OVERLAYS ----------
+  function showOverlay(emoji, titleHe, enLine, buttons) {
+    $("ovEmoji").textContent = emoji;
+    $("ovTitle").textContent = titleHe;
+    $("ovEn").textContent = enLine;
+    const bc = $("ovButtons");
+    bc.innerHTML = "";
+    buttons.forEach(function (b) {
+      const el = document.createElement("button");
+      el.className = "btn " + (b.cls || "");
+      el.textContent = b.label;
+      el.addEventListener("click", function () { hideOverlay(); b.fn(); });
+      bc.appendChild(el);
+    });
+    $("overlay").classList.add("active");
+    speak(enLine, 0.8);
+  }
+  function hideOverlay() { $("overlay").classList.remove("active"); }
+
+  function missionComplete() {
+    clearHints();
+    const isLastMission = state.mission + 1 >= WORLDS[state.world].missions.length;
+    if (isLastMission) {
+      worldComplete();
+    } else {
+      showOverlay("🎉", "כל הכבוד! השלמת את המשימה הסודית!", "Great job! Mission complete!",
+        [{ label: "למשימה הסודית הבאה", cls: "", fn: function () {
+          state.mission++; state.action = 0; renderAction();
+        } }]);
+    }
+  }
+
+  function worldComplete() {
+    const isLastWorld = state.world + 1 >= WORLDS.length;
+    if (isLastWorld) {
+      showOverlay("🏆", "כל הכבוד! סיימת את כל המשחק!", "Outstanding! You completed the entire game!",
+        [
+          { label: "שחק שוב", cls: "gold", fn: function () { startWorld(state.world); } },
+          { label: "בחזרה לתפריט", cls: "secondary", fn: goHome }
+        ]);
+    } else {
+      showOverlay("🌟", "כל הכבוד! השלמת את כל המשימות הסודיות בעולם!", "Excellent! You completed all the missions!",
+        [{ label: "לעולם הבא", cls: "gold", fn: function () {
+          state.world++; state.mission = 0; state.action = 0; renderAction();
+        } }]);
+    }
+  }
+
+  function goHome() {
+    clearHints();
+    setNarrating(false);
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    showScreen("screen-start");
+  }
+
+  // ---------- CONFETTI ----------
+  function launchConfetti() {
+    const colors = ["#ffcf4f", "#4f8cff", "#7df9c0", "#ff7eb6", "#b58cff"];
+    for (let i = 0; i < 18; i++) {
+      const c = document.createElement("div");
+      c.className = "confetti";
+      c.style.left = (Math.random() * 100) + "vw";
+      c.style.background = colors[i % colors.length];
+      c.style.transform = "rotate(" + (Math.random() * 360) + "deg)";
+      document.body.appendChild(c);
+      const dur = 900 + Math.random() * 700;
+      c.animate([
+        { top: "-10px", opacity: 1 },
+        { top: (60 + Math.random() * 30) + "vh", opacity: 0 }
+      ], { duration: dur, easing: "ease-in" });
+      setTimeout(function () { c.remove(); }, dur + 50);
+    }
+  }
+
+  // ---------- EVENTS ----------
+  $("speakBtn").addEventListener("click", function () {
+    if (ac() && audioCtx.state === "suspended") audioCtx.resume();
+    narrate(curAction().sentence, 0.65);
+  });
+  $("xlateBtn").addEventListener("click", function () {
+    speakHe(curAction().he);
+  });
+  $("homeBtn").addEventListener("click", goHome);
+
+  function jumpMission(delta) {
+    const missions = WORLDS[state.world].missions;
+    const target = state.mission + delta;
+    if (target < 0 || target >= missions.length) return;
+    state.mission = target;
+    state.action = 0;
+    renderAction();
+  }
+  function updateNavArrows() {
+    const missions = WORLDS[state.world].missions;
+    $("prevMissionBtn").disabled = state.mission <= 0;
+    $("nextMissionBtn").disabled = state.mission >= missions.length - 1;
+  }
+  $("prevMissionBtn").addEventListener("click", function () { jumpMission(-1); });
+  $("nextMissionBtn").addEventListener("click", function () { jumpMission(1); });
+
+  // ---------- INIT ----------
+  buildStart();
+  // warm up voices
+  if (window.speechSynthesis) { try { window.speechSynthesis.getVoices(); } catch (e) {} }
+})();
+</script>
+</body>
+</html>

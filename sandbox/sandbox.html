@@ -55,6 +55,9 @@
   /* PLAY SCREEN */
   .topbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
   .topbar .home { background: rgba(0,0,0,.12); border: none; color: #111; font-size: 1.3rem; border-radius: 10px; padding: 6px 10px; cursor: pointer; }
+  .mission-nav { display: flex; gap: 6px; }
+  .nav-arrow { background: rgba(0,0,0,.12); border: none; color: #111; font-size: 1rem; border-radius: 10px; padding: 6px 10px; cursor: pointer; line-height: 1; }
+  .nav-arrow:hover { background: rgba(0,0,0,.22); }
   .nav-arrow:disabled { opacity: .3; cursor: default; }
   .progress-info { font-size: .85rem; opacity: .95; text-align: center; color: #111; font-weight: 600; }
   .progress-bar { height: 8px; background: rgba(255,255,255,.12); border-radius: 6px; overflow: hidden; margin-bottom: 10px; }
@@ -190,6 +193,10 @@
     <div class="topbar">
       <button class="home" id="homeBtn" title="חזרה">🏠</button>
       <div class="progress-info" id="progressInfo"></div>
+      <div class="mission-nav">
+        <button class="nav-arrow" id="prevMissionBtn" title="משימה קודמת (בדיקות)">◀</button>
+        <button class="nav-arrow" id="nextMissionBtn" title="משימה הבאה (בדיקות)">▶</button>
+      </div>
     </div>
     <div class="progress-bar"><div id="progressFill"></div></div>
     <div class="sentence-box">
@@ -202,7 +209,7 @@
 
   <div class="listen-badge" id="listenBadge">🔊 מקשיבים…</div>
 
-  <div class="footer">גרסת תצוגה מקדימה · Secret Agent · English 12+ · עולם 1 בלבד · sandbox · build <span id="buildVer">1953f47</span> · <span id="buildTime">2026-06-24 10:22</span></div>
+  <div class="footer">גרסת תצוגה מקדימה · Secret Agent · 4 עולמות + חצים (לבדיקות) · sandbox · build <span id="buildVer">pending</span> · <span id="buildTime">2026-06-24 12:56</span></div>
 </div>
 
 <!-- OVERLAY -->
@@ -706,8 +713,8 @@
     };
   }
 
-  // Worlds 2-4 hidden for now (kept defined for later re-enabling).
-  const WORLDS = [WORLD1];
+  // sandbox keeps all 4 worlds + nav arrows for testing (production hides worlds 2-4 and arrows).
+  const WORLDS = [WORLD1, WORLD2, WORLD3, WORLD4];
   const LOCKED_WORLDS = [];
 
   // ---------- STATE ----------
@@ -866,6 +873,7 @@
     const mission = curMission();
     const action = curAction();
     $("screen-play").style.background = mission.bg;
+    updateNavArrows();
 
     // progress
     const totalActions = mission.actions.length;
@@ -1084,6 +1092,22 @@
     speakHe(curAction().he);
   });
   $("homeBtn").addEventListener("click", goHome);
+
+  function jumpMission(delta) {
+    const missions = WORLDS[state.world].missions;
+    const target = state.mission + delta;
+    if (target < 0 || target >= missions.length) return;
+    state.mission = target;
+    state.action = 0;
+    renderAction();
+  }
+  function updateNavArrows() {
+    const missions = WORLDS[state.world].missions;
+    $("prevMissionBtn").disabled = state.mission <= 0;
+    $("nextMissionBtn").disabled = state.mission >= missions.length - 1;
+  }
+  $("prevMissionBtn").addEventListener("click", function () { jumpMission(-1); });
+  $("nextMissionBtn").addEventListener("click", function () { jumpMission(1); });
 
   // ---------- INIT ----------
   buildStart();

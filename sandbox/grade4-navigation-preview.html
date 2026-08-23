@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>תְּצוּגָה מֻקְדֶּמֶת · חֶשְׁבּוֹן לְכִתָּה ד'</title>
+<script data-goatcounter="https://yaroneven.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+<style>
+  :root{
+    --bg1:#fff7e6;--bg2:#cdeffd;--card:#fff;--blue:#1f7fc4;--blue-d:#155f93;
+    --yellow:#ffce3a;--red:#e6604f;--purple:#a974d6;--ink:#243b53;--shadow:rgba(20,60,90,.18);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;height:100%;}
+  body{
+    font-family:"Segoe UI","Arial Hebrew",Arial,sans-serif;
+    color:var(--ink);background:linear-gradient(160deg,var(--bg1),var(--bg2));
+    min-height:100%;display:flex;flex-direction:column;align-items:center;
+  }
+  header{width:100%;text-align:center;padding:14px 8px 4px;}
+  .home{
+    display:inline-block;background:#fff;border-radius:14px;padding:5px 12px;font-size:20px;
+    line-height:1;text-decoration:none;box-shadow:0 3px 0 var(--shadow);margin-bottom:8px;
+  }
+  .logo{
+    display:inline-block;font-weight:900;font-size:clamp(28px,7vw,48px);color:var(--yellow);
+    text-shadow:2px 2px 0 var(--red),4px 4px 0 var(--blue),0 6px 14px var(--shadow);letter-spacing:1px;
+  }
+  .logo small{display:block;font-size:.45em;color:var(--blue-d);text-shadow:none;font-weight:800;margin-top:4px;}
+  main{width:100%;max-width:920px;flex:1;padding:8px 14px 30px;}
+  .preview-note{
+    background:#fff4d6;color:#805900;border:2px dashed #e0a23a;border-radius:14px;
+    padding:9px 14px;text-align:center;font-weight:800;margin-bottom:14px;
+  }
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  @media(max-width:760px){.grid{grid-template-columns:1fr;max-width:520px;margin:auto;}}
+  a.tile{
+    text-decoration:none;color:inherit;background:var(--card);border-radius:24px;padding:26px 18px;
+    box-shadow:0 8px 0 var(--shadow);text-align:center;transition:transform .08s,box-shadow .08s;
+  }
+  a.tile:active{transform:translateY(4px);box-shadow:0 3px 0 var(--shadow);}
+  a.tile .emoji{font-size:54px;display:block;margin-bottom:10px;}
+  a.tile h2{margin:0 0 6px;font-size:clamp(20px,5vw,25px);}
+  a.tile p{margin:0;color:#5b7b99;font-size:15px;line-height:1.5;}
+  a.numbers{border-top:9px solid var(--blue);}
+  a.operations{border-top:9px solid var(--red);}
+  a.fractions{border-top:9px solid var(--purple);}
+  footer{padding:10px;color:#6b87a3;font-size:12px;text-align:center;}
+</style>
+</head>
+<body>
+<header>
+  <a class="home" href="./sandbox.html" title="לְמֶרְכַּז הַבְּדִיקוֹת">⬆️🏠</a>
+  <div class="logo">חֶשְׁבּוֹן לְכִתָּה ד' 🚀<small>מְתַרְגְּלִים, מְבִינִים וּמִתְקַדְּמִים</small></div>
+</header>
+<main>
+  <div class="preview-note">תְּצוּגָה מֻקְדֶּמֶת: הַכַּפְתּוֹר נִמְצָא בְּאוֹתוֹ header וּבְאוֹתוֹ מִקּוּם כְּמוֹ בְּמִשְׂחַק כִּתָּה ג'.</div>
+  <div class="grid">
+    <a class="tile numbers" href="../grade-4/numbers/">
+      <span class="emoji">🔢</span>
+      <h2>מִסְפָּרִים עַד מִילְיוֹן</h2>
+      <p>עֵרֶךְ הַסִּפְרָה, הַשְׁוָאַת מִסְפָּרִים וְעִגּוּל לַאֲלָפִים.</p>
+    </a>
+    <a class="tile operations" href="../grade-4/operations/">
+      <span class="emoji">🧠</span>
+      <h2>סֵדֶר פְּעֻלּוֹת</h2>
+      <p>סוֹגְרַיִם, כֶּפֶל, חִבּוּר וְחִסּוּר בַּסֵּדֶר הַנָּכוֹן.</p>
+    </a>
+    <a class="tile fractions" href="../grade-4/fractions/">
+      <span class="emoji">🍕</span>
+      <h2>הַשְׁוָאַת שְׁבָרִים</h2>
+      <p>מַשְׁוִים שְׁבָרִים בְּעֶזְרַת צִיּוּר וְכֶפֶל בַּהֲצְלָבָה.</p>
+    </a>
+  </div>
+</main>
+<footer>Sandbox · תְּצוּגַת מִקּוּם כַּפְתּוֹר הַבַּיִת</footer>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>תְּצוּגַת הָעַמּוּד הָרָאשִׁי · Edu Games</title>
+<script data-goatcounter="https://yaroneven.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+<style>
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  body{
+    margin:0;min-height:100vh;font-family:"Segoe UI","Arial Hebrew",Arial,sans-serif;
+    color:#243b53;background:linear-gradient(160deg,#fff7e6 0%,#cdeffd 100%);
+    display:flex;flex-direction:column;align-items:center;padding:24px 14px;
+  }
+  .back{align-self:flex-start;text-decoration:none;color:#155f93;font-weight:800;font-size:15px;
+    background:#fff;border-radius:14px;padding:8px 14px;box-shadow:0 4px 0 rgba(20,60,90,.15);}
+  .logo{
+    text-align:center;font-weight:900;font-size:clamp(34px,9vw,60px);color:#ffce3a;
+    text-shadow:2px 2px 0 #e6604f,4px 4px 0 #1f7fc4,0 6px 14px rgba(20,60,90,.18);margin:6px 0 2px;
+  }
+  .sub{text-align:center;color:#155f93;font-weight:800;font-size:clamp(15px,4vw,20px);margin-bottom:10px;}
+  .notice{
+    max-width:760px;text-align:center;background:#fff4d6;color:#805900;border:2px dashed #e0a23a;
+    border-radius:16px;padding:9px 14px;font-weight:800;margin-bottom:20px;
+  }
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;width:100%;max-width:760px;}
+  @media(max-width:560px){.grid{grid-template-columns:1fr;}}
+  a.tile{
+    text-decoration:none;color:inherit;background:#fff;border-radius:24px;padding:26px 18px;
+    box-shadow:0 8px 0 rgba(20,60,90,.18);text-align:center;transition:transform .08s,box-shadow .08s;
+    min-height:158px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  }
+  a.tile:active{transform:translateY(4px);box-shadow:0 3px 0 rgba(20,60,90,.18);}
+  a.tile .emoji{font-size:54px;display:block;margin-bottom:10px;}
+  a.tile h2{margin:0 0 6px;font-size:clamp(20px,5vw,26px);}
+  a.tile p{margin:0;color:#5b7b99;font-size:15px;line-height:1.5;}
+  a.math{border-top:9px solid #1f7fc4;}
+  a.english{border-top:9px solid #3fbf6b;}
+  a.kindergarten{border-top:9px solid #f0883e;}
+  a.agent{border-top:9px solid #8a63d2;}
+  footer{margin-top:30px;color:#6b87a3;font-size:13px;text-align:center;}
+</style>
+</head>
+<body>
+  <a class="back" href="../sandbox.html">⬅️ חֲזָרָה לְמֶרְכַּז הַבְּדִיקוֹת</a>
+  <div class="logo">Edu Games 🎓</div>
+  <div class="sub">מִשְׂחֲקֵי לִמּוּד לְיְלָדִים</div>
+  <div class="notice">תְּצוּגָה מֻקְדֶּמֶת בִּלְבַד · הַתִּיקִיּוֹת עֲדַיִן לֹא שֻׁנּוּ</div>
+  <div class="grid">
+    <a class="tile math" href="./math/">
+      <span class="emoji">➗</span>
+      <h2>מִשְׂחֲקֵי חֶשְׁבּוֹן</h2>
+    </a>
+    <a class="tile english" href="../../word-game/">
+      <span class="emoji">🔤</span>
+      <h2>מִשְׂחֲקֵי אַנְגְּלִית</h2>
+    </a>
+    <a class="tile kindergarten" href="../../kindergarten/">
+      <span class="emoji">🧸</span>
+      <h2>מִשְׂחֲקֵי גַּן</h2>
+      <p>מִשְׂחֲקֵי גַּן לַקְּטַנְטַנִּים — מִשְׂחַק זִכָּרוֹן "Picture Pairs": מוֹצְאִים זוּגוֹת וְאוֹמְרִים אֶת הַמִּלָּה בְּאַנְגְּלִית.</p>
+    </a>
+    <a class="tile agent" href="../../english-12plus/">
+      <span class="emoji">🕶️</span>
+      <h2>English 12+</h2>
+      <p>מִשְׂחֲקֵי אַנְגְּלִית לְגִיל 12 וָמַעְלָה — מַתְחִילִים עִם "הַסּוֹכֵן הַחֲשָׁאִי", מִשְׂחַק הַרְפַּתְקָה לְלִמּוּד אַנְגְּלִית.</p>
+    </a>
+  </div>
+  <footer>Sandbox · תְּצוּגַת הַמִּבְנֶה הֶחָדָשׁ</footer>
+</body>
+</html>

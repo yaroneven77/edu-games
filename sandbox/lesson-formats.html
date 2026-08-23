@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>דֻּגְמָאוֹת לְשִׁעוּרֵי וִידֵאוֹ · Edu Games</title>
+<script data-goatcounter="https://yaroneven.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+<style>
+  :root{
+    --blue:#1f7fc4;--blue-d:#155f93;--green:#3fbf6b;--red:#e6604f;
+    --purple:#a974d6;--yellow:#ffce3a;--ink:#243b53;--shadow:rgba(20,60,90,.18);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  body{
+    margin:0;min-height:100vh;font-family:"Segoe UI","Arial Hebrew",Arial,sans-serif;
+    color:var(--ink);background:linear-gradient(160deg,#fff7e6,#cdeffd);
+    display:flex;flex-direction:column;align-items:center;padding:18px 14px 32px;
+  }
+  .back{align-self:flex-start;text-decoration:none;color:var(--blue-d);font-weight:800;
+    background:#fff;border-radius:14px;padding:8px 14px;box-shadow:0 4px 0 var(--shadow);}
+  .logo{
+    text-align:center;font-weight:900;font-size:clamp(28px,7vw,48px);color:var(--yellow);
+    text-shadow:2px 2px 0 var(--red),4px 4px 0 var(--blue),0 6px 14px var(--shadow);margin:12px 0 3px;
+  }
+  .sub{text-align:center;color:var(--blue-d);font-weight:800;font-size:clamp(14px,4vw,19px);margin-bottom:18px;}
+  .tabs{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;width:100%;max-width:900px;margin-bottom:16px;}
+  .tab{
+    border:none;border-radius:999px;padding:11px 16px;font:800 15px inherit;color:#43617c;
+    background:#e7eef5;cursor:pointer;box-shadow:0 3px 0 var(--shadow);
+  }
+  .tab.active{background:var(--blue);color:#fff;}
+  .panel{display:none;width:100%;max-width:820px;}
+  .panel.active{display:block;animation:pop .25s ease;}
+  @keyframes pop{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
+  .card{background:#fff;border-radius:24px;padding:22px 18px;box-shadow:0 8px 0 var(--shadow);}
+  .format-label{display:inline-block;border-radius:999px;padding:5px 13px;font-weight:900;font-size:13px;margin-bottom:8px;}
+  .interactive-label{background:#e9fbf0;color:#1e7d49;}
+  .video-label{background:#fff0d6;color:#9a6700;}
+  .script-label{background:#f3ecfb;color:#7a3fb0;}
+  h2{font-size:clamp(22px,6vw,30px);margin:5px 0 8px;text-align:center;color:var(--blue-d);}
+  .description{text-align:center;color:#5b7b99;line-height:1.55;margin:0 auto 18px;max-width:650px;}
+  button.control{
+    border:none;border-radius:16px;padding:11px 18px;font:800 16px inherit;color:#fff;
+    cursor:pointer;box-shadow:0 4px 0 var(--shadow);
+  }
+  button.control:active{transform:translateY(3px);box-shadow:0 1px 0 var(--shadow);}
+  .green{background:var(--green)} .blue{background:var(--blue)} .red{background:var(--red)} .gray{background:#8aa4bd}
+  .controls{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:16px;}
+
+  /* Interactive lesson */
+  .lesson-stage{background:#f4f9fd;border:3px solid #d6e7f3;border-radius:20px;padding:20px 14px;text-align:center;min-height:330px;}
+  .step-count{font-weight:900;color:var(--purple);font-size:14px;}
+  .lesson-title{font-size:clamp(21px,6vw,29px);font-weight:900;margin:10px 0;color:var(--blue-d);}
+  .lesson-text{font-size:clamp(17px,4.5vw,21px);line-height:1.65;min-height:64px;}
+  .big-number{direction:ltr;font-size:clamp(38px,12vw,64px);font-weight:900;letter-spacing:3px;margin:14px 0;}
+  .big-number span{display:inline-block;border-radius:10px;padding:0 3px;transition:.35s;}
+  .big-number span.hot{background:var(--yellow);color:var(--red);transform:scale(1.16);}
+  .place-table{display:grid;grid-template-columns:repeat(6,1fr);direction:ltr;max-width:650px;margin:14px auto 0;border:2px solid #bed5e5;border-radius:12px;overflow:hidden;}
+  .place-table div{padding:8px 2px;border-left:1px solid #bed5e5;font-size:clamp(11px,2.7vw,14px);}
+  .place-table .head{background:#eaf4fb;color:#43617c;font-weight:800;}
+  .place-table .digit{font-size:22px;font-weight:900;background:#fff;}
+  .place-table .hot{background:#fff1b8;color:#b13a26;}
+  .mini-question{margin-top:14px;font-weight:900;font-size:18px;}
+  .mini-options{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px;}
+  .mini-options button{border:3px solid #d6e7f3;background:#fff;border-radius:14px;padding:10px 14px;font:900 17px inherit;cursor:pointer;direction:ltr;}
+  .mini-options button.ok{background:#d8f5e2;border-color:var(--green);}
+  .mini-options button.no{background:#fcdcd6;border-color:var(--red);}
+  .mini-feedback{min-height:28px;font-weight:900;margin-top:8px;}
+
+  /* Video-style lesson */
+  .video-shell{background:#102b45;border-radius:22px;overflow:hidden;box-shadow:0 8px 24px rgba(20,60,90,.3);direction:rtl;}
+  .video-screen{
+    position:relative;aspect-ratio:16/9;min-height:290px;background:linear-gradient(145deg,#173c5e,#1f7fc4);
+    color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;
+  }
+  .video-screen.flash{animation:sceneIn .45s ease;}
+  @keyframes sceneIn{from{opacity:.35;transform:scale(.98)}to{opacity:1;transform:scale(1)}}
+  .video-icon{font-size:clamp(42px,10vw,74px);}
+  .video-title{font-size:clamp(23px,6vw,38px);font-weight:900;margin:8px 0;}
+  .video-visual{direction:ltr;font-size:clamp(34px,10vw,62px);font-weight:900;color:var(--yellow);margin:8px 0;}
+  .subtitles{background:rgba(0,0,0,.42);border-radius:12px;padding:8px 14px;font-size:clamp(15px,3.5vw,19px);line-height:1.5;max-width:690px;}
+  .video-controls{background:#fff;padding:12px;display:flex;align-items:center;gap:10px;direction:ltr;}
+  .video-controls button{border:none;border-radius:50%;width:44px;height:44px;background:var(--red);color:#fff;font-size:19px;cursor:pointer;}
+  .progress{height:10px;background:#d9e5ee;border-radius:999px;overflow:hidden;flex:1;}
+  .progress span{display:block;height:100%;width:0;background:var(--green);transition:width .35s;}
+  .video-time{font-size:13px;font-weight:800;color:#5b7b99;min-width:52px;}
+  .video-note{text-align:center;color:#6b87a3;font-size:13px;line-height:1.5;margin-top:12px;}
+
+  /* Storyboard */
+  .storyboard{display:grid;gap:14px;}
+  .scene{display:grid;grid-template-columns:88px 1fr;background:#f8f5fc;border:2px solid #ded2ee;border-radius:18px;overflow:hidden;}
+  .scene-no{background:var(--purple);color:#fff;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:900;padding:12px;}
+  .scene-body{padding:14px 16px;}
+  .scene-body h3{margin:0 0 8px;color:#65329a;}
+  .scene-body p{margin:5px 0;line-height:1.55;}
+  .tag{font-weight:900;color:var(--blue-d);}
+  @media(max-width:520px){.scene{grid-template-columns:1fr}.scene-no{padding:7px}.video-screen{min-height:330px}.place-table div{font-size:9px}}
+  footer{margin-top:24px;color:#6b87a3;font-size:12px;text-align:center;}
+</style>
+</head>
+<body>
+  <a class="back" href="./sandbox.html">⬅️ חֲזָרָה לְמֶרְכַּז הַבְּדִיקוֹת</a>
+  <div class="logo">דֻּגְמָאוֹת לְשִׁעוּרֵי וִידֵאוֹ 🎬</div>
+  <div class="sub">אוֹתוֹ נוֹשֵׂא בִּשְׁלוֹשָׁה פוֹרְמָטִים — עֵרֶךְ הַסִּפְרָה בַּמִּסְפָּר 472,615</div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showPanel('interactive',this)">1 · שִׁעוּר אִינְטֶרְאַקְטִיבִי</button>
+    <button class="tab" onclick="showPanel('video',this)">2 · וִידֵאוֹ אוֹטוֹמָטִי</button>
+    <button class="tab" onclick="showPanel('script',this)">3 · תַּסְרִיט וְסְטוֹרִיבּוֹרְד</button>
+  </div>
+
+  <section class="panel active" id="interactive">
+    <div class="card">
+      <span class="format-label interactive-label">דֻּגְמָה 1 · הַיֶּלֶד מִשְׁתַּתֵּף</span>
+      <h2>שִׁעוּר אִינְטֶרְאַקְטִיבִי</h2>
+      <p class="description">לוֹחֲצִים "הַבָּא", מַקְשִׁיבִים לַהֶסְבֵּר וּמְסַיְּמִים בִּשְׁאֵלַת תִּרְגּוּל.</p>
+      <div class="lesson-stage">
+        <div class="step-count" id="step-count"></div>
+        <div class="lesson-title" id="lesson-title"></div>
+        <div class="lesson-text" id="lesson-text"></div>
+        <div class="big-number" id="lesson-number"></div>
+        <div class="place-table" id="place-table"></div>
+        <div id="mini-practice"></div>
+      </div>
+      <div class="controls">
+        <button class="control gray" id="prev-step" onclick="moveLesson(-1)">◀ הַקּוֹדֵם</button>
+        <button class="control green" onclick="speakLesson()">🔊 הַשְׁמֵעַ</button>
+        <button class="control blue" id="next-step" onclick="moveLesson(1)">הַבָּא ▶</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" id="video">
+    <div class="card">
+      <span class="format-label video-label">דֻּגְמָה 2 · צוֹפִים מֵהַתְחָלָה וְעַד הַסּוֹף</span>
+      <h2>מַצֶּגֶת וִידֵאוֹ אוֹטוֹמָטִית</h2>
+      <p class="description">הַסְּצֵנוֹת, הַכְּתוּבִיּוֹת וְהַקּוֹל מִתְקַדְּמִים לְבַד כְּמוֹ בְּוִידֵאוֹ.</p>
+      <div class="video-shell">
+        <div class="video-screen" id="video-screen">
+          <div class="video-icon" id="video-icon">🎬</div>
+          <div class="video-title" id="video-title">מוּכָנִים לְהַתְחִיל?</div>
+          <div class="video-visual" id="video-visual">472,615</div>
+          <div class="subtitles" id="video-subtitles">לִחְצוּ עַל כַּפְתּוֹר הַנִּגּוּן</div>
+        </div>
+        <div class="video-controls">
+          <button id="video-play" onclick="toggleVideo()" aria-label="ניגון">▶</button>
+          <div class="progress"><span id="video-progress"></span></div>
+          <div class="video-time" id="video-time">0 / 5</div>
+          <button onclick="restartVideo()" aria-label="התחלה מחדש">↺</button>
+        </div>
+      </div>
+      <div class="video-note">זוֹהִי הַדְגָּמַת דַּפְדְּפָן חַיָּה שֶׁל חֲוָיַת MP4. הַקּוֹל הָעִבְרִי מִשְׁתַּמֵּשׁ בְּקוֹל הַמֻּתְקָן בַּמַּכְשִׁיר.</div>
+    </div>
+  </section>
+
+  <section class="panel" id="script">
+    <div class="card">
+      <span class="format-label script-label">דֻּגְמָה 3 · תָּכְנִית הֲפָקָה לְוִידֵאוֹ</span>
+      <h2>תַּסְרִיט וְסְטוֹרִיבּוֹרְד</h2>
+      <p class="description">מַרְאֶה בְּדִיּוּק מָה רוֹאִים, מָה שׁוֹמְעִים וְאֵיזוֹ דֻּגְמָה פּוֹתְרִים בְּכָל סְצֵנָה.</p>
+      <div class="storyboard">
+        <article class="scene">
+          <div class="scene-no">סְצֵנָה 1<br>0:00–0:08</div>
+          <div class="scene-body">
+            <h3>פְּתִיחָה</h3>
+            <p><span class="tag">תְּמוּנָה:</span> הַכּוֹתֶרֶת "עֵרֶךְ הַסִּפְרָה" וְהַמִּסְפָּר 472,615 נִכְנָסִים בַּהַנְפָּשָׁה.</p>
+            <p><span class="tag">קְרִיינות:</span> "לְכָל סִפְרָה בַּמִּסְפָּר יֵשׁ עֵרֶךְ לְפִי הַמָּקוֹם שֶׁלָּהּ."</p>
+          </div>
+        </article>
+        <article class="scene">
+          <div class="scene-no">סְצֵנָה 2<br>0:08–0:20</div>
+          <div class="scene-body">
+            <h3>טַבְלַת הַמְּקוֹמוֹת</h3>
+            <p><span class="tag">תְּמוּנָה:</span> הַסְּפָרוֹת נִכְנָסוֹת לָעַמּוּדוֹת: אֲחָדוֹת, עֲשָׂרוֹת, מֵאוֹת, אֲלָפִים, עֲשֶׂרֶת אֲלָפִים וּמֵאוֹת אֲלָפִים.</p>
+            <p><span class="tag">קְרִיינות:</span> "קוֹרְאִים אֶת הַמְּקוֹמוֹת מִיָּמִין לִשְׂמֹאל."</p>
+          </div>
+        </article>
+        <article class="scene">
+          <div class="scene-no">סְצֵנָה 3<br>0:20–0:35</div>
+          <div class="scene-body">
+            <h3>דֻּגְמָה פְּתוּרָה</h3>
+            <p><span class="tag">תְּמוּנָה:</span> הַסִּפְרָה 7 נִצְבַּעַת בְּצָהֹב וְהַתַּרְגִּיל 7 × 10,000 מוֹפִיעַ.</p>
+            <p><span class="tag">קְרִיינות:</span> "שֶׁבַע נִמְצֵאת בִּמְקוֹם עֲשֶׂרֶת הָאֲלָפִים, לָכֵן עֶרְכָּהּ שִׁבְעִים אֶלֶף."</p>
+          </div>
+        </article>
+        <article class="scene">
+          <div class="scene-no">סְצֵנָה 4<br>0:35–0:48</div>
+          <div class="scene-body">
+            <h3>דֻּגְמָה נוֹסֶפֶת</h3>
+            <p><span class="tag">תְּמוּנָה:</span> בַּמִּסְפָּר 325,481 הַסִּפְרָה 5 מֻדְגֶּשֶׁת.</p>
+            <p><span class="tag">שְׁאֵלָה:</span> "מָה הָעֵרֶךְ שֶׁל 5?" הַתְּשׁוּבָה 5,000 נֶחְשֶׂפֶת אַחֲרֵי הַפְסָקָה.</p>
+          </div>
+        </article>
+        <article class="scene">
+          <div class="scene-no">סְצֵנָה 5<br>0:48–0:58</div>
+          <div class="scene-body">
+            <h3>סִכּוּם</h3>
+            <p><span class="tag">תְּמוּנָה:</span> כוֹכָב וְהַכּוֹתֶרֶת "עַכְשָׁו תּוֹרְכֶם!"</p>
+            <p><span class="tag">קְרִיינות:</span> "מְצֻיָּן! עַכְשָׁו אֶפְשָׁר לַעֲבֹר לַמִּשְׂחָק וּלְתַרְגֵּל."</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <footer>דֻּגְמַת בְּדִיקָה · עֵרֶךְ הַסִּפְרָה · כִּתָּה ד'</footer>
+
+<script>
+const $=id=>document.getElementById(id);
+let hebrewVoice=null;
+
+function loadVoices(){
+  if(!("speechSynthesis" in window))return;
+  const voices=speechSynthesis.getVoices();
+  hebrewVoice=voices.find(v=>/^(he|iw)/i.test(v.lang))||null;
+}
+if("speechSynthesis" in window){
+  loadVoices();
+  speechSynthesis.onvoiceschanged=loadVoices;
+}
+function speak(text,onDone){
+  if(!("speechSynthesis" in window)){if(onDone)onDone();return;}
+  speechSynthesis.cancel();
+  const utterance=new SpeechSynthesisUtterance(text);
+  utterance.lang="he-IL";
+  if(hebrewVoice)utterance.voice=hebrewVoice;
+  utterance.rate=.9;
+  if(onDone)utterance.onend=onDone;
+  speechSynthesis.speak(utterance);
+}
+
+function showPanel(id,button){
+  document.querySelectorAll(".panel").forEach(panel=>panel.classList.toggle("active",panel.id===id));
+  document.querySelectorAll(".tab").forEach(tab=>tab.classList.toggle("active",tab===button));
+  stopVideo();
+}
+
+const PLACE_HEADS=["מֵאוֹת אֲלָפִים","עֲשֶׂרֶת אֲלָפִים","אֲלָפִים","מֵאוֹת","עֲשָׂרוֹת","אֲחָדוֹת"];
+const DIGITS=["4","7","2","6","1","5"];
+const LESSON_STEPS=[
+  {
+    title:"לְכָל סִפְרָה יֵשׁ מָקוֹם",
+    text:"הָעֵרֶךְ שֶׁל סִפְרָה מִשְׁתַּנֶּה לְפִי הַמָּקוֹם שֶׁלָּהּ בַּמִּסְפָּר.",
+    say:"לכל ספרה יש מקום. הערך של ספרה משתנה לפי המקום שלה במספר.",
+    hot:-1,practice:false
+  },
+  {
+    title:"מְאַתְּרִים אֶת הַסִּפְרָה 7",
+    text:"בַּמִּסְפָּר 472,615 הַסִּפְרָה 7 נִמְצֵאת בִּמְקוֹם עֲשֶׂרֶת הָאֲלָפִים.",
+    say:"במספר ארבע מאות שבעים ושניים אלף, שש מאות וחמש עשרה, הספרה שבע נמצאת במקום עשרת האלפים.",
+    hot:1,practice:false
+  },
+  {
+    title:"מְחַשְּׁבִים אֶת הָעֵרֶךְ",
+    text:"7 עֲשָׂרוֹת אֲלָפִים הֵן 7 כָּפוּל 10,000. לָכֵן הָעֵרֶךְ הוּא 70,000.",
+    say:"שבע עשרות אלפים הן שבע כפול עשרת אלפים. לכן הערך הוא שבעים אלף.",
+    hot:1,practice:false
+  },
+  {
+    title:"עַכְשָׁו תּוֹרְכֶם!",
+    text:"בַּמִּסְפָּר 325,481, מָה הָעֵרֶךְ שֶׁל הַסִּפְרָה 5?",
+    say:"עכשיו תורכם. במספר שלוש מאות עשרים וחמישה אלף, ארבע מאות שמונים ואחת, מה הערך של הספרה חמש?",
+    hot:-1,practice:true
+  }
+];
+let lessonIndex=0;
+
+function numberHTML(hot){
+  return DIGITS.map((digit,index)=>`<span class="${index===hot?"hot":""}">${digit}</span>`).join("");
+}
+function tableHTML(hot){
+  return PLACE_HEADS.map((head,index)=>`<div class="head ${index===hot?"hot":""}">${head}</div>`).join("")+
+    DIGITS.map((digit,index)=>`<div class="digit ${index===hot?"hot":""}">${digit}</div>`).join("");
+}
+function renderLesson(){
+  const step=LESSON_STEPS[lessonIndex];
+  $("step-count").textContent=`שָׁלָב ${lessonIndex+1} מִתּוֹךְ ${LESSON_STEPS.length}`;
+  $("lesson-title").textContent=step.title;
+  $("lesson-text").textContent=step.text;
+  $("lesson-number").innerHTML=step.practice?"325,481":numberHTML(step.hot);
+  $("place-table").innerHTML=step.practice?"":tableHTML(step.hot);
+  $("place-table").style.display=step.practice?"none":"grid";
+  $("mini-practice").innerHTML=step.practice?`<div class="mini-question">בַּחֲרוּ תְּשׁוּבָה:</div>
+    <div class="mini-options">
+      <button onclick="checkMini(this,500)">500</button>
+      <button onclick="checkMini(this,5000)">5,000</button>
+      <button onclick="checkMini(this,50000)">50,000</button>
+    </div><div class="mini-feedback" id="mini-feedback"></div>`:"";
+  $("prev-step").disabled=lessonIndex===0;
+  $("next-step").disabled=lessonIndex===LESSON_STEPS.length-1;
+  speakLesson();
+}
+function moveLesson(direction){
+  const next=lessonIndex+direction;
+  if(next<0||next>=LESSON_STEPS.length)return;
+  lessonIndex=next;renderLesson();
+}
+function speakLesson(){speak(LESSON_STEPS[lessonIndex].say);}
+function checkMini(button,value){
+  document.querySelectorAll(".mini-options button").forEach(option=>{option.disabled=true;if(option.textContent==="5,000")option.classList.add("ok");});
+  const feedback=$("mini-feedback");
+  if(value===5000){feedback.textContent="🎉 נָכוֹן! הַסִּפְרָה 5 שָׁוָה לְ־5,000.";feedback.style.color=varColor("--green");}
+  else{button.classList.add("no");feedback.textContent="כִּמְעַט! 5 נִמְצֵאת בִּמְקוֹם הָאֲלָפִים.";feedback.style.color=varColor("--red");}
+}
+function varColor(name){return getComputedStyle(document.documentElement).getPropertyValue(name);}
+
+const VIDEO_SCENES=[
+  {icon:"🔢",title:"עֵרֶךְ הַסִּפְרָה",visual:"472,615",text:"לְכָל סִפְרָה יֵשׁ עֵרֶךְ לְפִי הַמָּקוֹם שֶׁלָּהּ.",say:"לכל ספרה יש ערך לפי המקום שלה."},
+  {icon:"📊",title:"טַבְלַת הַמְּקוֹמוֹת",visual:"4 | 7 | 2 | 6 | 1 | 5",text:"קוֹרְאִים אֶת הַמְּקוֹמוֹת מִיָּמִין לִשְׂמֹאל.",say:"קוראים את המקומות מימין לשמאל: אחדות, עשרות, מאות, אלפים, עשרות אלפים ומאות אלפים."},
+  {icon:"🔍",title:"מְאַתְּרִים אֶת 7",visual:"7 → 10,000",text:"הַסִּפְרָה 7 נִמְצֵאת בִּמְקוֹם עֲשֶׂרֶת הָאֲלָפִים.",say:"הספרה שבע נמצאת במקום עשרת האלפים."},
+  {icon:"✖️",title:"מְחַשְּׁבִים",visual:"7 × 10,000 = 70,000",text:"לָכֵן הָעֵרֶךְ שֶׁל 7 הוּא 70,000.",say:"שבע כפול עשרת אלפים שווה שבעים אלף."},
+  {icon:"⭐",title:"דֻּגְמָה נוֹסֶפֶת",visual:"325,481 → 5,000",text:"בַּמִּסְפָּר 325,481 הַסִּפְרָה 5 שָׁוָה לְ־5,000.",say:"במספר שלוש מאות עשרים וחמישה אלף, ארבע מאות שמונים ואחת, הספרה חמש שווה לחמשת אלפים. עכשיו אפשר לעבור למשחק!"}
+];
+let videoIndex=-1,videoPlaying=false,videoTimer=null,videoToken=0;
+
+function toggleVideo(){videoPlaying?stopVideo():playVideo();}
+function playVideo(){
+  videoPlaying=true;$("video-play").textContent="❚❚";
+  if(videoIndex<0||videoIndex>=VIDEO_SCENES.length-1)videoIndex=0;
+  showVideoScene();
+}
+function showVideoScene(){
+  if(!videoPlaying)return;
+  const token=++videoToken,scene=VIDEO_SCENES[videoIndex],screen=$("video-screen");
+  screen.classList.remove("flash");void screen.offsetWidth;screen.classList.add("flash");
+  $("video-icon").textContent=scene.icon;$("video-title").textContent=scene.title;
+  $("video-visual").textContent=scene.visual;$("video-subtitles").textContent=scene.text;
+  $("video-progress").style.width=`${((videoIndex+1)/VIDEO_SCENES.length)*100}%`;
+  $("video-time").textContent=`${videoIndex+1} / ${VIDEO_SCENES.length}`;
+  clearTimeout(videoTimer);
+  const advance=()=>{if(token!==videoToken||!videoPlaying)return;if(videoIndex<VIDEO_SCENES.length-1){videoIndex++;showVideoScene();}else{finishVideo();}};
+  videoTimer=setTimeout(advance,8000);
+  speak(scene.say,()=>{clearTimeout(videoTimer);videoTimer=setTimeout(advance,700);});
+}
+function stopVideo(){
+  videoPlaying=false;videoToken++;clearTimeout(videoTimer);
+  if("speechSynthesis" in window)speechSynthesis.cancel();
+  $("video-play").textContent="▶";
+}
+function finishVideo(){stopVideo();$("video-play").textContent="↺";}
+function restartVideo(){
+  stopVideo();videoIndex=0;$("video-progress").style.width="0";$("video-time").textContent=`0 / ${VIDEO_SCENES.length}`;
+  playVideo();
+}
+
+renderLesson();
+</script>
+</body>
+</html>

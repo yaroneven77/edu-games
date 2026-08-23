@@ -3,7 +3,7 @@
 A simple, colorful word-learning game for kids. One self-contained HTML file, no build, no dependencies — works offline. Hosted free on GitHub Pages.
 
 ## ▶️ Play
-**https://yaroneven77.github.io/word-game/**
+**https://yaroneven77.github.io/edu-games/english/grade-3/**
 
 Send that **link** (not the file) to play on a phone. Opening the raw `.html` in WhatsApp's preview won't run the game — it must open in a browser (Safari/Chrome).
 
@@ -32,10 +32,10 @@ Send that **link** (not the file) to play on a phone. Opening the raw `.html` in
 > Note: a personal access token (PAT) with `repo` scope for the GitHub account is used to push. Don't commit the token.
 
 ## ▶️ Continue next week
-Just clone and keep working:
+Clone the Edu Games repository and keep working:
 ```bash
-git clone https://github.com/yaroneven77/word-game.git
-cd word-game
+git clone https://github.com/yaroneven77/edu-games.git
+cd edu-games/english/grade-3
 ```
 Open `index.html` in a browser to test locally; edit; commit; push.
 

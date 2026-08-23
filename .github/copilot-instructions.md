@@ -13,10 +13,14 @@ Edu Games is a collection of educational English and math games created for chil
 - Preserve offline capability except for optional services already used by the project, such as analytics.
 - Add a new game in its own folder with an `index.html` file.
 - Link new games from the appropriate section hub and, when relevant, from the root `index.html`.
+- Organize math games by grade: the root links to `math/`, which links to `grade-3/`, `grade-4/`, and future grade folders.
+- Organize English games under `english/`, with each grade in a nested folder such as `english/grade-3/`.
+- Preserve legacy public URLs with lightweight redirects when moving published games.
 - Treat `sandbox/sandbox.html` as the preview hub for all new or substantially changed content.
 - Add staged content to the sandbox preview hub so the user can test it at the published sandbox URL before production promotion.
 - Preserve existing previews as separate files or folders linked from the sandbox hub instead of overwriting unrelated staged content.
 - Keep experimental content out of the production hubs and navigation until the user approves it.
+- Before any production push, publish the proposed behavior in the sandbox and wait for explicit user approval.
 
 ## Existing patterns
 

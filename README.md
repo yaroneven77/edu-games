@@ -10,23 +10,33 @@ The root page (`index.html`) is a hub that links to every game.
 ## 🎮 Games
 | Folder | Game | Description |
 |--------|------|-------------|
-| [`division-game/`](./division-game/) | מִשְׂחֲקֵי חֶשְׁבּוֹן לְכִתָּה ג' | 9 Hebrew math mini-games for 3rd grade: division with remainder (typed & multiple-choice), multiply/divide up to 10,000, two-step word problems, fractions (identify & interactive coloring), divisibility by 5 & 10, interactive grouping division, and an interactive multiplication table. Includes a step-by-step "אֵיךְ פּוֹתְרִים?" explanation button. |
+| [`math/`](./math/) | מִשְׂחֲקֵי חֶשְׁבּוֹן | Math grade selector. |
+| [`grade-3/`](./grade-3/) | חֶשְׁבּוֹן לְכִתָּה ג' | 9 Hebrew math mini-games for 3rd grade: division with remainder, multiplication and division, word problems, fractions, divisibility, grouping division, and the multiplication table. |
 | [`grade-4/`](./grade-4/) | חֶשְׁבּוֹן לְכִתָּה ד' | Three Grade 4 math games covering numbers to one million, order of operations, and fraction comparison. Each game includes an interactive Hebrew lesson with narration, examples, and practice. |
-| [`word-game/`](./word-game/) | Word Games | Learn English words via pictures and phonics (picture→word, word→picture) with sound and Hebrew translations. |
+| [`english/`](./english/) | מִשְׂחֲקֵי אַנְגְּלִית | English grade selector. |
+| [`english/grade-3/`](./english/grade-3/) | English Grade 3 | Learn English words via pictures and phonics with sound and Hebrew translations. |
 
 ## 📁 Project structure
 ```
 edu-games/
-├── index.html          # landing hub linking to all games
-├── division-game/
-│   └── index.html      # the entire division game (HTML+CSS+JS)
+├── index.html             # landing hub linking to subject sections
+├── math/
+│   └── index.html         # math grade selector
+├── grade-3/
+│   └── index.html         # Grade 3 math games
 ├── grade-4/
-│   ├── index.html      # Grade 4 math hub
+│   ├── index.html         # Grade 4 math hub
 │   ├── numbers/index.html
 │   ├── operations/index.html
 │   └── fractions/index.html
+├── english/
+│   ├── index.html         # English grade selector
+│   └── grade-3/
+│       └── index.html     # Grade 3 English games
+├── division-game/
+│   └── index.html         # legacy redirect to grade-3/
 └── word-game/
-    └── index.html      # the entire word game (HTML+CSS+JS)
+    └── index.html         # legacy redirect to english/grade-3/
 ```
 
 ## ➕ Add a new game

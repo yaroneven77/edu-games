@@ -19,8 +19,9 @@
     text-shadow:2px 2px 0 var(--red),4px 4px 0 var(--blue),0 6px 14px var(--shadow);}
   .logo small{display:block;font-size:.43em;color:#155f93;text-shadow:none;margin-top:4px;}
   main{width:100%;max-width:700px;padding:8px 14px 30px;flex:1;}
-  .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:8px;}
+  .topbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-bottom:12px;gap:8px;}
   .pill{background:#fff;border-radius:16px;padding:8px 14px;font-weight:900;box-shadow:0 4px 0 var(--shadow);}
+  .learn{border:none;border-radius:16px;padding:9px 14px;background:var(--purple);color:#fff;font:800 15px inherit;cursor:pointer;box-shadow:0 4px 0 var(--shadow);}
   .card{background:#fff;border-radius:24px;padding:22px 18px;box-shadow:0 8px 0 var(--shadow);text-align:center;}
   .kind{display:inline-block;background:#eaf4fb;color:#155f93;border-radius:999px;padding:5px 13px;font-weight:800;font-size:14px;}
   h2{font-size:clamp(20px,5vw,27px);line-height:1.55;margin:14px 0;}
@@ -41,6 +42,25 @@
   .explain{margin-top:14px;background:#f3ecfb;border:3px dashed #c9a8ec;border-radius:18px;padding:14px 16px;
     line-height:1.7;text-align:right;font-size:17px;}
   .hidden{display:none!important;}
+  .lesson-overlay{position:fixed;inset:0;background:rgba(20,40,60,.6);display:none;align-items:center;justify-content:center;padding:16px;z-index:50;}
+  .lesson-overlay.show{display:flex;}
+  .lesson-modal{background:#fff;border-radius:24px;width:100%;max-width:680px;max-height:94vh;overflow:auto;padding:22px 18px;text-align:center;box-shadow:0 18px 45px rgba(20,60,90,.35);}
+  .lesson-close{float:left;border:none;background:#e7eef5;color:#43617c;border-radius:12px;padding:7px 11px;font:800 14px inherit;cursor:pointer;}
+  .lesson-progress{color:var(--purple);font-weight:900;font-size:14px;clear:both;padding-top:4px;}
+  .lesson-title{font-size:clamp(22px,6vw,30px);font-weight:900;color:#155f93;margin:8px 0;}
+  .lesson-text{font-size:clamp(17px,4.5vw,21px);line-height:1.65;min-height:60px;}
+  .lesson-visual{direction:ltr;font-size:clamp(34px,11vw,58px);font-weight:900;color:#155f93;margin:15px 0;}
+  .lesson-table{display:grid;grid-template-columns:repeat(6,1fr);direction:ltr;border:2px solid #bed5e5;border-radius:12px;overflow:hidden;margin:12px auto;}
+  .lesson-table div{padding:7px 2px;border-left:1px solid #bed5e5;font-size:clamp(9px,2.5vw,13px);}
+  .lesson-table .head{background:#eaf4fb;color:#43617c;font-weight:800}.lesson-table .digit{font-size:21px;font-weight:900}
+  .lesson-table .hot{background:#fff1b8;color:#b13a26;}
+  .lesson-options{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px;}
+  .lesson-options button{border:3px solid #d6e7f3;background:#fff;border-radius:14px;padding:10px 14px;font:900 17px inherit;cursor:pointer;direction:ltr;}
+  .lesson-options button.ok{background:#d8f5e2;border-color:var(--green)}.lesson-options button.no{background:#fcdcd6;border-color:var(--red)}
+  .lesson-feedback{min-height:28px;font-weight:900;margin-top:8px;}
+  .lesson-nav{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:14px;}
+  .lesson-nav button{border:none;border-radius:14px;padding:10px 15px;font:800 15px inherit;color:#fff;cursor:pointer;box-shadow:0 3px 0 var(--shadow);}
+  .gray{background:#8aa4bd}.green{background:var(--green)}.blue{background:var(--blue)}
   footer{padding:10px;color:#6b87a3;font-size:12px;}
   @media(max-width:430px){.choices{grid-template-columns:1fr}.symbols{grid-template-columns:repeat(3,1fr)}}
 </style>
@@ -53,6 +73,7 @@
 <main>
   <div class="topbar">
     <div class="pill">שְׁאֵלָה <span id="round">1</span></div>
+    <button class="learn" onclick="openLesson()">📚 שִׁעוּר קָצָר</button>
     <div class="pill">⭐ <span id="score">0</span></div>
   </div>
   <div class="card">
@@ -68,6 +89,22 @@
     <div class="explain hidden" id="explain"></div>
   </div>
 </main>
+<div class="lesson-overlay" id="lesson-overlay">
+  <div class="lesson-modal">
+    <button class="lesson-close" onclick="closeLesson()">✕ סְגֹר</button>
+    <div class="lesson-progress" id="lesson-progress"></div>
+    <div class="lesson-title" id="lesson-title"></div>
+    <div class="lesson-text" id="lesson-text"></div>
+    <div class="lesson-visual" id="lesson-visual"></div>
+    <div class="lesson-table" id="lesson-table"></div>
+    <div id="lesson-practice"></div>
+    <div class="lesson-nav">
+      <button class="gray" id="lesson-prev" onclick="moveLesson(-1)">◀ הַקּוֹדֵם</button>
+      <button class="green" onclick="speakLesson()">🔊 הַשְׁמֵעַ</button>
+      <button class="blue" id="lesson-next" onclick="moveLesson(1)">הַבָּא ▶</button>
+    </div>
+  </div>
+</div>
 <footer>מִסְפָּרִים טִבְעִיִּים · כִּתָּה ד'</footer>
 <script>
 const $=id=>document.getElementById(id);
@@ -77,6 +114,51 @@ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=rnd(0,i);[
 const fmt=n=>n.toLocaleString("en-US");
 const GOOD=["מְצֻיָּן! ⭐","נָכוֹן מְאוֹד! 🎉","כָּל הַכָּבוֹד! 👏","חֲשִׁיבָה נֶהְדֶּרֶת! 🏆"];
 let score=0,round=0,current=null,locked=false,lastSig="";
+let lessonIndex=0,hebrewVoice=null;
+
+const LESSON_STEPS=[
+  {title:"לְכָל סִפְרָה יֵשׁ מָקוֹם",text:"הָעֵרֶךְ שֶׁל סִפְרָה מִשְׁתַּנֶּה לְפִי הַמָּקוֹם שֶׁלָּהּ בַּמִּסְפָּר.",visual:"472,615",hot:-1,practice:false,say:"לכל ספרה יש מקום. הערך של ספרה משתנה לפי המקום שלה במספר."},
+  {title:"מְאַתְּרִים אֶת הַסִּפְרָה 7",text:"הַסִּפְרָה 7 נִמְצֵאת בִּמְקוֹם עֲשֶׂרֶת הָאֲלָפִים.",visual:"472,615",hot:1,practice:false,say:"במספר ארבע מאות שבעים ושניים אלף, שש מאות וחמש עשרה, הספרה שבע נמצאת במקום עשרת האלפים."},
+  {title:"מְחַשְּׁבִים אֶת הָעֵרֶךְ",text:"7 עֲשָׂרוֹת אֲלָפִים הֵן 7 × 10,000. לָכֵן הָעֵרֶךְ הוּא 70,000.",visual:"7 × 10,000 = 70,000",hot:1,practice:false,say:"שבע עשרות אלפים הן שבע כפול עשרת אלפים. לכן הערך הוא שבעים אלף."},
+  {title:"עַכְשָׁו תּוֹרְכֶם!",text:"בַּמִּסְפָּר 325,481, מָה הָעֵרֶךְ שֶׁל הַסִּפְרָה 5?",visual:"325,481",hot:-1,practice:true,say:"עכשיו תורכם. במספר שלוש מאות עשרים וחמישה אלף, ארבע מאות שמונים ואחת, מה הערך של הספרה חמש?"}
+];
+const PLACE_HEADS=["מֵאוֹת אֲלָפִים","עֲשֶׂרֶת אֲלָפִים","אֲלָפִים","מֵאוֹת","עֲשָׂרוֹת","אֲחָדוֹת"];
+const PLACE_DIGITS=["4","7","2","6","1","5"];
+
+function loadVoices(){
+  if(!("speechSynthesis" in window))return;
+  hebrewVoice=speechSynthesis.getVoices().find(v=>/^(he|iw)/i.test(v.lang))||null;
+}
+if("speechSynthesis" in window){loadVoices();speechSynthesis.onvoiceschanged=loadVoices;}
+function speakHebrew(text){
+  if(!("speechSynthesis" in window))return;
+  speechSynthesis.cancel();
+  const utterance=new SpeechSynthesisUtterance(text);utterance.lang="he-IL";utterance.rate=.9;
+  if(hebrewVoice)utterance.voice=hebrewVoice;speechSynthesis.speak(utterance);
+}
+function openLesson(){lessonIndex=0;$("lesson-overlay").classList.add("show");renderLesson();}
+function closeLesson(){$("lesson-overlay").classList.remove("show");if("speechSynthesis" in window)speechSynthesis.cancel();}
+function moveLesson(direction){const next=lessonIndex+direction;if(next<0||next>=LESSON_STEPS.length)return;lessonIndex=next;renderLesson();}
+function speakLesson(){speakHebrew(LESSON_STEPS[lessonIndex].say);}
+function renderLesson(){
+  const step=LESSON_STEPS[lessonIndex];
+  $("lesson-progress").textContent=`שָׁלָב ${lessonIndex+1} מִתּוֹךְ ${LESSON_STEPS.length}`;
+  $("lesson-title").textContent=step.title;$("lesson-text").textContent=step.text;$("lesson-visual").textContent=step.visual;
+  $("lesson-table").style.display=step.practice||lessonIndex===2?"none":"grid";
+  $("lesson-table").innerHTML=PLACE_HEADS.map((head,index)=>`<div class="head ${index===step.hot?"hot":""}">${head}</div>`).join("")+
+    PLACE_DIGITS.map((digit,index)=>`<div class="digit ${index===step.hot?"hot":""}">${digit}</div>`).join("");
+  $("lesson-practice").innerHTML=step.practice?`<div class="lesson-options">
+    <button onclick="checkLessonAnswer(this,500)">500</button><button onclick="checkLessonAnswer(this,5000)">5,000</button><button onclick="checkLessonAnswer(this,50000)">50,000</button>
+    </div><div class="lesson-feedback" id="lesson-feedback"></div>`:"";
+  $("lesson-prev").disabled=lessonIndex===0;$("lesson-next").disabled=lessonIndex===LESSON_STEPS.length-1;
+  speakLesson();
+}
+function checkLessonAnswer(button,value){
+  document.querySelectorAll(".lesson-options button").forEach(option=>{option.disabled=true;if(option.textContent==="5,000")option.classList.add("ok");});
+  const feedback=$("lesson-feedback");
+  if(value===5000){feedback.textContent="🎉 נָכוֹן! 5 אֲלָפִים הֵם 5,000.";feedback.style.color="var(--green)";}
+  else{button.classList.add("no");feedback.textContent="כִּמְעַט! הַסִּפְרָה 5 נִמְצֵאת בִּמְקוֹם הָאֲלָפִים.";feedback.style.color="var(--red)";}
+}
 
 function makeChoices(answer,candidates){
   const values=[answer,...candidates.filter(v=>v!==answer)];
@@ -135,6 +217,7 @@ function toggleExplain(){
   $("help").textContent=$("explain").classList.contains("hidden")?"🔍 אֵיךְ פּוֹתְרִים?":"🙈 הַסְתֵּר הֶסְבֵּר";
 }
 newQuestion();
+if(new URLSearchParams(location.search).get("lesson")==="1")setTimeout(openLesson,0);
 </script>
 </body>
 </html>

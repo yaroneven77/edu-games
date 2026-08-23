@@ -13,9 +13,10 @@ Edu Games is a collection of educational English and math games created for chil
 - Preserve offline capability except for optional services already used by the project, such as analytics.
 - Add a new game in its own folder with an `index.html` file.
 - Link new games from the appropriate section hub and, when relevant, from the root `index.html`.
-- Treat `sandbox/sandbox.html` as the staging and experimentation page for Secret Agent changes.
-- Develop and test substantial Secret Agent content in the sandbox before promoting approved changes to `secret-agent/index.html`.
-- Keep experimental sandbox content out of the main game and navigation until it is ready.
+- Treat `sandbox/sandbox.html` as the preview hub for all new or substantially changed content.
+- Add staged content to the sandbox preview hub so the user can test it at the published sandbox URL before production promotion.
+- Preserve existing previews as separate files or folders linked from the sandbox hub instead of overwriting unrelated staged content.
+- Keep experimental content out of the production hubs and navigation until the user approves it.
 
 ## Existing patterns
 
@@ -55,5 +56,5 @@ Edu Games is a collection of educational English and math games created for chil
 - Verify responsive behavior at phone-sized and desktop-sized widths.
 - Check Hebrew directionality, English directionality, touch controls, navigation links, and speech controls.
 - Confirm that existing games and hub links continue to work.
-- For Secret Agent work, validate the change in `sandbox/sandbox.html` before copying or adapting it into the production game.
+- Validate all new content through `sandbox/sandbox.html` before adding it to the production hubs or navigation.
 - Do not add build or test tooling solely to validate a small HTML-only change.

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>הַשְׁוָאַת שְׁבָרִים · כִּתָּה ד'</title>
+<script data-goatcounter="https://yaroneven.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+<style>
+  :root{--blue:#1f7fc4;--green:#3fbf6b;--red:#e6604f;--purple:#a974d6;--ink:#243b53;--shadow:rgba(20,60,90,.18);}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  body{margin:0;min-height:100vh;font-family:"Segoe UI","Arial Hebrew",Arial,sans-serif;color:var(--ink);
+    background:linear-gradient(160deg,#fff7e6,#cdeffd);display:flex;flex-direction:column;align-items:center;
+    -webkit-user-select:none;user-select:none;}
+  header{text-align:center;padding:14px 8px 4px;}
+  .home{display:inline-block;background:#fff;border-radius:14px;padding:5px 12px;font-size:20px;text-decoration:none;
+    box-shadow:0 3px 0 var(--shadow);margin-bottom:8px;}
+  .logo{font-weight:900;font-size:clamp(27px,7vw,46px);color:#ffce3a;
+    text-shadow:2px 2px 0 var(--red),4px 4px 0 var(--blue),0 6px 14px var(--shadow);}
+  .logo small{display:block;font-size:.43em;color:#155f93;text-shadow:none;margin-top:4px;}
+  main{width:100%;max-width:700px;padding:8px 14px 30px;flex:1;}
+  .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:8px;}
+  .pill{background:#fff;border-radius:16px;padding:8px 14px;font-weight:900;box-shadow:0 4px 0 var(--shadow);}
+  .card{background:#fff;border-radius:24px;padding:22px 18px;box-shadow:0 8px 0 var(--shadow);text-align:center;}
+  h2{font-size:clamp(20px,5vw,27px);margin:0 0 12px;}
+  .fractions{display:flex;align-items:center;justify-content:center;gap:18px;direction:ltr;margin:12px 0;}
+  .fraction{display:inline-flex;flex-direction:column;align-items:center;font-size:clamp(36px,11vw,58px);font-weight:900;line-height:1;}
+  .fraction .top{border-bottom:5px solid var(--ink);padding:0 12px 5px}.fraction .bottom{padding-top:5px}
+  .mystery{font-size:45px;color:var(--purple);font-weight:900;}
+  .bars{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:10px auto 20px;max-width:480px;direction:ltr;}
+  .bar{height:34px;border:3px solid var(--ink);border-radius:10px;overflow:hidden;background:#fff;display:flex;}
+  .part{height:100%;border-right:1px solid rgba(36,59,83,.35)} .part.on{background:#ffce3a}
+  .choices{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+  .choice{border:3px solid #ded2ee;background:#f5effb;border-radius:18px;padding:12px 8px;font:900 34px inherit;color:var(--ink);cursor:pointer;}
+  .choice:active{transform:scale(.97)} .choice.ok{background:#d8f5e2;border-color:var(--green)} .choice.no{background:#fcdcd6;border-color:var(--red)}
+  .feedback{min-height:38px;font-size:22px;font-weight:900;margin:16px 0 8px;}
+  .feedback.good{color:var(--green)} .feedback.bad{color:var(--red)}
+  .actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+  button.action{border:none;border-radius:16px;padding:11px 18px;font:800 16px inherit;color:#fff;cursor:pointer;box-shadow:0 4px 0 var(--shadow);}
+  .help{background:var(--purple)} .next{background:var(--blue)}
+  .explain{margin-top:14px;background:#f3ecfb;border:3px dashed #c9a8ec;border-radius:18px;padding:14px 16px;line-height:1.75;text-align:right;font-size:17px;}
+  .calc{direction:ltr;display:inline-block;background:#fff;border-radius:8px;padding:1px 8px;font-weight:900;margin:2px;}
+  .hidden{display:none!important;} footer{padding:10px;color:#6b87a3;font-size:12px;}
+</style>
+</head>
+<body>
+<header>
+  <a class="home" href="../">⬆️🏠</a>
+  <div class="logo">הַשְׁוָאַת שְׁבָרִים<small>חֶשְׁבּוֹן לְכִתָּה ד'</small></div>
+</header>
+<main>
+  <div class="topbar"><div class="pill">שְׁאֵלָה <span id="round">1</span></div><div class="pill">⭐ <span id="score">0</span></div></div>
+  <div class="card">
+    <h2>אֵיזֶה סִימָן מַתְאִים בֵּין הַשְּׁבָרִים?</h2>
+    <div class="fractions">
+      <div class="fraction"><span class="top" id="n1"></span><span class="bottom" id="d1"></span></div>
+      <div class="mystery">?</div>
+      <div class="fraction"><span class="top" id="n2"></span><span class="bottom" id="d2"></span></div>
+    </div>
+    <div class="bars"><div class="bar" id="bar1"></div><div class="bar" id="bar2"></div></div>
+    <div class="choices" id="choices"></div>
+    <div class="feedback" id="feedback"></div>
+    <div class="actions">
+      <button class="action help hidden" id="help" onclick="toggleExplain()">🔍 אֵיךְ פּוֹתְרִים?</button>
+      <button class="action next hidden" id="next" onclick="newQuestion()">הַבָּא ➜</button>
+    </div>
+    <div class="explain hidden" id="explain"></div>
+  </div>
+</main>
+<footer>שְׁבָרִים פְּשׁוּטִים · כִּתָּה ד'</footer>
+<script>
+const $=id=>document.getElementById(id);
+const rnd=(min,max)=>Math.floor(Math.random()*(max-min+1))+min;
+const pick=a=>a[rnd(0,a.length-1)];
+const GOOD=["מְצֻיָּן! ⭐","נָכוֹן מְאוֹד! 🎉","כָּל הַכָּבוֹד! 👏","אַלּוּפֵי הַשְּׁבָרִים! 🏆"];
+let score=0,round=0,current=null,locked=false,lastSig="";
+
+function gcd(a,b){while(b){[a,b]=[b,a%b]}return a;}
+function makeFraction(){
+  const d=rnd(2,12),n=rnd(1,d-1);return {n,d};
+}
+function buildQuestion(){
+  let a=makeFraction(),b;
+  if(Math.random()<.25){
+    const reducedN=a.n/gcd(a.n,a.d),reducedD=a.d/gcd(a.n,a.d);
+    const factors=[];for(let k=1;k<=Math.floor(12/reducedD);k++)if(reducedD*k>=2)factors.push(k);
+    const k=pick(factors);b={n:reducedN*k,d:reducedD*k};
+  }else b=makeFraction();
+  const left=a.n*b.d,right=b.n*a.d,answer=left===right?"=":left>right?">":"<";
+  return {a,b,left,right,answer};
+}
+function renderBar(id,f){
+  $(id).innerHTML="";
+  for(let i=0;i<f.d;i++){const part=document.createElement("span");part.className="part"+(i<f.n?" on":"");part.style.width=(100/f.d)+"%";$(id).appendChild(part);}
+}
+function newQuestion(){
+  let q,sig,tries=0;do{q=buildQuestion();sig=`${q.a.n}/${q.a.d}:${q.b.n}/${q.b.d}`;tries++;}while(sig===lastSig&&tries<10);
+  current=q;lastSig=sig;locked=false;round++;$("round").textContent=round;
+  $("n1").textContent=q.a.n;$("d1").textContent=q.a.d;$("n2").textContent=q.b.n;$("d2").textContent=q.b.d;
+  renderBar("bar1",q.a);renderBar("bar2",q.b);
+  $("feedback").textContent="";$("feedback").className="feedback";$("next").classList.add("hidden");$("help").classList.add("hidden");
+  $("explain").classList.add("hidden");$("help").textContent="🔍 אֵיךְ פּוֹתְרִים?";
+  $("explain").innerHTML=`כּוֹפְלִים בַּהֲצְלָבָה:<br><span class="calc">${q.a.n} × ${q.b.d} = ${q.left}</span>
+    וְ־<span class="calc">${q.b.n} × ${q.a.d} = ${q.right}</span><br>
+    מַשְׁוִים בֵּין הַתּוֹצָאוֹת: <span class="calc">${q.left} ${q.answer} ${q.right}</span>, לָכֵן
+    <span class="calc">${q.a.n}/${q.a.d} ${q.answer} ${q.b.n}/${q.b.d}</span>.`;
+  $("choices").innerHTML="";
+  ["<","=",">"].forEach(v=>{const b=document.createElement("button");b.className="choice";b.textContent=v;b.onclick=()=>answer(b,v);$("choices").appendChild(b);});
+}
+function answer(button,value){
+  if(locked)return;locked=true;const ok=value===current.answer;
+  document.querySelectorAll(".choice").forEach(b=>{b.disabled=true;if(b.textContent===current.answer)b.classList.add("ok");});
+  if(ok){score+=10;$("score").textContent=score;$("feedback").textContent=pick(GOOD);$("feedback").className="feedback good";}
+  else{button.classList.add("no");$("feedback").textContent=`כִּמְעַט! הַסִּימָן הַנָּכוֹן הוּא ${current.answer}`;$("feedback").className="feedback bad";}
+  $("next").classList.remove("hidden");$("help").classList.remove("hidden");
+}
+function toggleExplain(){
+  $("explain").classList.toggle("hidden");$("help").textContent=$("explain").classList.contains("hidden")?"🔍 אֵיךְ פּוֹתְרִים?":"🙈 הַסְתֵּר הֶסְבֵּר";
+}
+newQuestion();
+</script>
+</body>
+</html>

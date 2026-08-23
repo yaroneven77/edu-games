@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>סֵדֶר פְּעֻלּוֹת · כִּתָּה ד'</title>
+<script data-goatcounter="https://yaroneven.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+<style>
+  :root{--blue:#1f7fc4;--green:#3fbf6b;--red:#e6604f;--purple:#a974d6;--ink:#243b53;--shadow:rgba(20,60,90,.18);}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  body{margin:0;min-height:100vh;font-family:"Segoe UI","Arial Hebrew",Arial,sans-serif;color:var(--ink);
+    background:linear-gradient(160deg,#fff7e6,#cdeffd);display:flex;flex-direction:column;align-items:center;
+    -webkit-user-select:none;user-select:none;}
+  header{text-align:center;padding:14px 8px 4px;}
+  .home{display:inline-block;background:#fff;border-radius:14px;padding:5px 12px;font-size:20px;text-decoration:none;
+    box-shadow:0 3px 0 var(--shadow);margin-bottom:8px;}
+  .logo{font-weight:900;font-size:clamp(27px,7vw,46px);color:#ffce3a;
+    text-shadow:2px 2px 0 var(--red),4px 4px 0 var(--blue),0 6px 14px var(--shadow);}
+  .logo small{display:block;font-size:.43em;color:#155f93;text-shadow:none;margin-top:4px;}
+  main{width:100%;max-width:700px;padding:8px 14px 30px;flex:1;}
+  .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:8px;}
+  .pill{background:#fff;border-radius:16px;padding:8px 14px;font-weight:900;box-shadow:0 4px 0 var(--shadow);}
+  .card{background:#fff;border-radius:24px;padding:22px 18px;box-shadow:0 8px 0 var(--shadow);text-align:center;}
+  h2{font-size:clamp(20px,5vw,27px);margin:0 0 10px;}
+  .rule{color:#5b7b99;font-weight:700;margin-bottom:16px;}
+  .expression{direction:ltr;font-size:clamp(35px,11vw,58px);font-weight:900;color:#155f93;margin:14px 0 22px;}
+  .choices{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .choice{border:3px solid #f0d9d5;background:#fff1ee;border-radius:18px;padding:15px 8px;font:900 25px inherit;
+    color:var(--ink);cursor:pointer;direction:ltr;}
+  .choice:active{transform:scale(.97)} .choice.ok{background:#d8f5e2;border-color:var(--green)} .choice.no{background:#fcdcd6;border-color:var(--red)}
+  .feedback{min-height:38px;font-size:22px;font-weight:900;margin:16px 0 8px;}
+  .feedback.good{color:var(--green)} .feedback.bad{color:var(--red)}
+  .actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+  button.action{border:none;border-radius:16px;padding:11px 18px;font:800 16px inherit;color:#fff;cursor:pointer;box-shadow:0 4px 0 var(--shadow);}
+  .help{background:var(--purple)} .next{background:var(--blue)}
+  .explain{margin-top:14px;background:#f3ecfb;border:3px dashed #c9a8ec;border-radius:18px;padding:14px 16px;line-height:1.75;text-align:right;font-size:17px;}
+  .step{direction:ltr;display:inline-block;background:#fff;border-radius:8px;padding:1px 8px;font-weight:900;margin:2px;}
+  .hidden{display:none!important;} footer{padding:10px;color:#6b87a3;font-size:12px;}
+</style>
+</head>
+<body>
+<header>
+  <a class="home" href="../">⬆️🏠</a>
+  <div class="logo">סֵדֶר פְּעֻלּוֹת<small>חֶשְׁבּוֹן לְכִתָּה ד'</small></div>
+</header>
+<main>
+  <div class="topbar"><div class="pill">שְׁאֵלָה <span id="round">1</span></div><div class="pill">⭐ <span id="score">0</span></div></div>
+  <div class="card">
+    <h2>מָה תּוֹצָאַת הַתַּרְגִּיל?</h2>
+    <div class="rule">זוֹכְרִים: סוֹגְרַיִם ← כֶּפֶל וְחִלּוּק ← חִבּוּר וְחִסּוּר</div>
+    <div class="expression" id="expression"></div>
+    <div class="choices" id="choices"></div>
+    <div class="feedback" id="feedback"></div>
+    <div class="actions">
+      <button class="action help hidden" id="help" onclick="toggleExplain()">🔍 אֵיךְ פּוֹתְרִים?</button>
+      <button class="action next hidden" id="next" onclick="newQuestion()">הַבָּא ➜</button>
+    </div>
+    <div class="explain hidden" id="explain"></div>
+  </div>
+</main>
+<footer>סֵדֶר פְּעֻלּוֹת חֶשְׁבּוֹן · כִּתָּה ד'</footer>
+<script>
+const $=id=>document.getElementById(id);
+const rnd=(min,max)=>Math.floor(Math.random()*(max-min+1))+min;
+const pick=a=>a[rnd(0,a.length-1)];
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=rnd(0,i);[a[i],a[j]]=[a[j],a[i]];}return a;}
+const GOOD=["מְצֻיָּן! ⭐","בְּדִיּוּק! 🎯","כָּל הַכָּבוֹד! 👏","אַלּוּפֵי סֵדֶר הַפְּעֻלּוֹת! 🏆"];
+let score=0,round=0,current=null,locked=false,lastExpr="";
+
+function buildQuestion(){
+  const type=rnd(0,4);let a,b,c,d,expr,answer,steps;
+  if(type===0){
+    a=rnd(10,70);b=rnd(2,9);c=rnd(2,9);answer=a+b*c;expr=`${a} + ${b} × ${c}`;
+    steps=`קוֹדֶם כֶּפֶל: <span class="step">${b} × ${c} = ${b*c}</span><br>אַחַר כָּךְ חִבּוּר: <span class="step">${a} + ${b*c} = ${answer}</span>`;
+  }else if(type===1){
+    a=rnd(2,12);b=rnd(2,12);c=rnd(2,7);answer=(a+b)*c;expr=`(${a} + ${b}) × ${c}`;
+    steps=`קוֹדֶם סוֹגְרַיִם: <span class="step">${a} + ${b} = ${a+b}</span><br>אַחַר כָּךְ כֶּפֶל: <span class="step">${a+b} × ${c} = ${answer}</span>`;
+  }else if(type===2){
+    a=rnd(5,14);b=rnd(3,9);c=rnd(5,a*b-1);answer=a*b-c;expr=`${a} × ${b} − ${c}`;
+    steps=`קוֹדֶם כֶּפֶל: <span class="step">${a} × ${b} = ${a*b}</span><br>אַחַר כָּךְ חִסּוּר: <span class="step">${a*b} − ${c} = ${answer}</span>`;
+  }else if(type===3){
+    a=rnd(8,18);b=rnd(2,a-1);c=rnd(2,8);answer=(a-b)*c;expr=`(${a} − ${b}) × ${c}`;
+    steps=`קוֹדֶם סוֹגְרַיִם: <span class="step">${a} − ${b} = ${a-b}</span><br>אַחַר כָּךְ כֶּפֶל: <span class="step">${a-b} × ${c} = ${answer}</span>`;
+  }else{
+    a=rnd(10,40);b=rnd(2,8);c=rnd(2,8);d=rnd(1,Math.min(15,a+b*c-1));answer=a+b*c-d;expr=`${a} + ${b} × ${c} − ${d}`;
+    steps=`קוֹדֶם כֶּפֶל: <span class="step">${b} × ${c} = ${b*c}</span><br>אַחַר כָּךְ מִשְּׂמֹאל לְיָמִין: <span class="step">${a} + ${b*c} = ${a+b*c}</span>, וְאָז <span class="step">${a+b*c} − ${d} = ${answer}</span>`;
+  }
+  const wrong=[answer+rnd(1,9),Math.max(0,answer-rnd(1,9)),(a+b)*(c||1),a+(b||0)+(c||0)].filter(n=>n!==answer);
+  const choices=shuffle([...new Set([answer,...wrong])]).slice(0,4);
+  let offset=1;
+  while(choices.length<4){
+    const n=answer+(offset%2?offset:-offset);
+    if(n>=0&&!choices.includes(n))choices.push(n);
+    offset++;
+  }
+  return {expr,answer,steps,choices:shuffle(choices)};
+}
+function newQuestion(){
+  let q,tries=0;do{q=buildQuestion();tries++;}while(q.expr===lastExpr&&tries<10);
+  current=q;lastExpr=q.expr;locked=false;round++;$("round").textContent=round;$("expression").textContent=q.expr;
+  $("feedback").textContent="";$("feedback").className="feedback";$("next").classList.add("hidden");$("help").classList.add("hidden");
+  $("explain").classList.add("hidden");$("explain").innerHTML=q.steps;$("help").textContent="🔍 אֵיךְ פּוֹתְרִים?";
+  $("choices").innerHTML="";
+  q.choices.forEach(v=>{const b=document.createElement("button");b.className="choice";b.textContent=v;b.onclick=()=>answer(b,v);$("choices").appendChild(b);});
+}
+function answer(button,value){
+  if(locked)return;locked=true;const ok=value===current.answer;
+  document.querySelectorAll(".choice").forEach(b=>{b.disabled=true;if(Number(b.textContent)===current.answer)b.classList.add("ok");});
+  if(ok){score+=10;$("score").textContent=score;$("feedback").textContent=pick(GOOD);$("feedback").className="feedback good";}
+  else{button.classList.add("no");$("feedback").textContent=`כִּמְעַט! הַתְּשׁוּבָה הִיא ${current.answer}`;$("feedback").className="feedback bad";}
+  $("next").classList.remove("hidden");$("help").classList.remove("hidden");
+}
+function toggleExplain(){
+  $("explain").classList.toggle("hidden");$("help").textContent=$("explain").classList.contains("hidden")?"🔍 אֵיךְ פּוֹתְרִים?":"🙈 הַסְתֵּר הֶסְבֵּר";
+}
+newQuestion();
+</script>
+</body>
+</html>

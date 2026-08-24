@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>מְדִידוֹת · כִּתָּה ד' · Sandbox</title>
+<style>
+  :root{--blue:#1f7fc4;--green:#3fbf6b;--red:#e6604f;--purple:#a974d6;--yellow:#ffce3a;--accent:#3fbf6b;--ink:#243b53;--shadow:rgba(20,60,90,.18)}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{margin:0;min-height:100vh;font-family:"Segoe UI","Arial Hebrew",Arial,sans-serif;color:var(--ink);
+    background:linear-gradient(160deg,#fff7e6,#cdeffd);display:flex;flex-direction:column;align-items:center;-webkit-user-select:none;user-select:none}
+  header{text-align:center;padding:12px 8px 4px}
+  .home{display:inline-block;background:#fff;border-radius:14px;padding:6px 13px;font-size:19px;text-decoration:none;
+    box-shadow:0 3px 0 var(--shadow);margin-bottom:7px;color:#155f93;font-weight:900}
+  .sandbox-badge{display:inline-block;background:#fff0d6;color:#8a5a00;border:2px dashed #e0a23a;border-radius:999px;
+    padding:4px 12px;font-size:12px;font-weight:900;margin-bottom:5px}
+  .logo{font-weight:900;font-size:clamp(27px,7vw,45px);color:var(--yellow);
+    text-shadow:2px 2px 0 var(--red),4px 4px 0 var(--blue),0 6px 14px var(--shadow)}
+  .logo small{display:block;font-size:.42em;color:#155f93;text-shadow:none;margin-top:4px}
+  main{width:100%;max-width:760px;padding:8px 14px 30px;flex:1}
+  .topbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-bottom:12px;gap:8px}
+  .pill{background:#fff;border-radius:16px;padding:8px 14px;font-weight:900;box-shadow:0 4px 0 var(--shadow)}
+  button{font-family:inherit}
+  .learn{border:none;border-radius:16px;padding:10px 14px;background:var(--purple);color:#fff;font-size:15px;font-weight:900;
+    cursor:pointer;box-shadow:0 4px 0 var(--shadow)}
+  .card{background:#fff;border-radius:24px;padding:21px 17px;box-shadow:0 8px 0 var(--shadow);text-align:center}
+  .kind{display:inline-block;background:#eaf4fb;color:#155f93;border-radius:999px;padding:5px 13px;font-weight:900;font-size:14px}
+  h2{font-size:clamp(20px,5vw,27px);line-height:1.55;margin:13px 0}
+  .visual{direction:ltr;min-height:72px;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:12px;
+    color:#155f93;font-size:clamp(27px,8vw,45px);font-weight:900;margin:12px 0 18px;background:#f4f9fd;border-radius:18px;padding:14px 10px;overflow:auto}
+  .visual.rtl{direction:rtl;font-size:18px;line-height:1.7;text-align:right;display:block}
+  .visual-note{font-size:16px;direction:rtl;color:#43617c;width:100%}
+  .choices{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .choice{border:3px solid color-mix(in srgb,var(--accent) 35%,#d6e7f3);background:color-mix(in srgb,var(--accent) 10%,#fff);
+    border-radius:18px;padding:14px 8px;min-height:58px;font-size:clamp(18px,5vw,24px);font-weight:900;color:var(--ink);cursor:pointer;direction:rtl}
+  .choice:active{transform:scale(.97)}.choice.ok{background:#d8f5e2;border-color:var(--green)}.choice.no{background:#fcdcd6;border-color:var(--red)}
+  .feedback{min-height:38px;font-size:21px;font-weight:900;margin:15px 0 7px}.feedback.good{color:var(--green)}.feedback.bad{color:var(--red)}
+  .actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  .action{border:none;border-radius:16px;padding:11px 18px;font-size:16px;font-weight:900;color:#fff;cursor:pointer;box-shadow:0 4px 0 var(--shadow)}
+  .help{background:var(--purple)}.next{background:var(--blue)}
+  .explain{margin-top:14px;background:#f3ecfb;border:3px dashed #c9a8ec;border-radius:18px;padding:14px 16px;line-height:1.75;text-align:right;font-size:17px}
+  .calc{direction:ltr;display:inline-block;background:#fff;border-radius:8px;padding:1px 8px;font-weight:900;margin:2px}
+  .hidden{display:none!important}
+  .column-math{display:inline-grid;grid-template-columns:auto auto;direction:ltr;text-align:right;font-family:Consolas,monospace;min-width:180px}
+  .column-math .operator{padding-right:10px}.column-math .line{grid-column:1/3;border-top:4px solid #243b53;margin-top:5px}
+  .fraction{display:inline-flex;flex-direction:column;align-items:center;line-height:1;vertical-align:middle;min-width:42px}
+  .fraction .top{border-bottom:4px solid currentColor;padding:0 8px 4px}.fraction .bottom{padding-top:4px}
+  .shape-svg{width:min(100%,330px);height:190px}.angle-svg{width:260px;height:150px}
+  .data-table{border-collapse:collapse;font-size:16px;direction:rtl;color:var(--ink);background:#fff}
+  .data-table th,.data-table td{border:2px solid #b9d7e8;padding:7px 10px}.data-table th{background:#dff2fb}
+  .bar-chart{height:190px;display:flex;align-items:flex-end;justify-content:center;gap:10px;width:100%;direction:rtl}
+  .bar-item{height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;min-width:48px;font-size:13px;color:var(--ink)}
+  .bar-value{font-weight:900}.bar{width:38px;border-radius:9px 9px 0 0;background:linear-gradient(#ffce3a,#f0883e);border:2px solid #d87825}
+  .bar-label{font-weight:800;margin-top:4px}
+  .bag{display:flex;flex-wrap:wrap;gap:8px;max-width:300px;justify-content:center;border:5px solid #8a63d2;border-top:none;border-radius:10px 10px 40px 40px;padding:18px}
+  .ball{width:31px;height:31px;border-radius:50%;border:2px solid rgba(36,59,83,.35)}
+  .spinner{width:170px;height:170px;border-radius:50%;border:6px solid #243b53;position:relative}
+  .spinner:after{content:"";position:absolute;left:50%;top:50%;width:18px;height:18px;background:#fff;border:4px solid #243b53;border-radius:50%;transform:translate(-50%,-50%)}
+  .cube-stack{display:flex;flex-direction:column;align-items:center;gap:5px;font-size:15px;color:var(--ink)}
+  .cube-grid{display:grid;gap:3px;transform:skewY(-5deg)}
+  .unit-cube{width:24px;height:24px;background:linear-gradient(135deg,#ffe58a,#ffb347);border:2px solid #cb7b23;border-radius:4px}
+  .lesson-overlay{position:fixed;inset:0;background:rgba(20,40,60,.62);display:none;align-items:center;justify-content:center;padding:15px;z-index:50}
+  .lesson-overlay.show{display:flex}
+  .lesson-modal{background:#fff;border-radius:24px;width:100%;max-width:680px;max-height:94vh;overflow:auto;padding:21px 18px;text-align:center;box-shadow:0 18px 45px rgba(20,60,90,.35)}
+  .lesson-close{float:left;border:none;background:#e7eef5;color:#43617c;border-radius:12px;padding:7px 11px;font-size:14px;font-weight:900;cursor:pointer}
+  .lesson-progress{color:var(--purple);font-weight:900;font-size:14px;clear:both;padding-top:4px}
+  .lesson-title{font-size:clamp(22px,6vw,30px);font-weight:900;color:#155f93;margin:8px 0}
+  .lesson-text{font-size:clamp(17px,4.5vw,21px);line-height:1.65;min-height:56px}
+  .lesson-rule{background:#fff4d6;border:2px dashed #e0a23a;border-radius:14px;padding:10px;font-weight:900;line-height:1.65;margin:10px 0}
+  .lesson-visual{direction:ltr;font-size:clamp(25px,8vw,44px);font-weight:900;color:#155f93;margin:13px 0;background:#f4f9fd;border-radius:18px;padding:14px 8px;min-height:58px}
+  .lesson-options{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+  .lesson-options button{border:3px solid #d6e7f3;background:#fff;border-radius:14px;padding:10px 15px;font-size:18px;font-weight:900;cursor:pointer}
+  .lesson-options button.ok{background:#d8f5e2;border-color:var(--green)}.lesson-options button.no{background:#fcdcd6;border-color:var(--red)}
+  .lesson-feedback{min-height:28px;font-weight:900;margin-top:8px}
+  .lesson-nav{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+  .lesson-nav button{border:none;border-radius:14px;padding:10px 15px;font-size:15px;font-weight:900;color:#fff;cursor:pointer;box-shadow:0 3px 0 var(--shadow)}
+  .gray{background:#8aa4bd}.green{background:var(--green)}.blue{background:var(--blue)}
+  footer{padding:10px;color:#6b87a3;font-size:12px;text-align:center}
+  @media(max-width:460px){.choices{grid-template-columns:1fr}.visual{font-size:28px}.topbar{justify-content:center}.pill{padding:7px 11px}}
+</style>
+</head>
+<body>
+<header>
+  <a class="home" href="../" title="לְמֶרְכַּז הַהַרְחָבָה">⬆️🏠 לַמֶּרְכָּז</a><br>
+  <span class="sandbox-badge">🧪 תְּצוּגַת אַרְגַּז חוֹל בִּלְבַד</span>
+  <div class="logo">📏 מְדִידוֹת<small>חֶשְׁבּוֹן לְכִתָּה ד'</small></div>
+</header>
+<main>
+  <div class="topbar">
+    <div class="pill">שְׁאֵלָה <span id="round">1</span></div>
+    <button class="learn" id="lesson-button" onclick="openLesson()">📚 שִׁעוּר קָצָר</button>
+    <div class="pill">⭐ <span id="score">0</span></div>
+  </div>
+  <div class="card">
+    <span class="kind" id="kind"></span>
+    <h2 id="question"></h2>
+    <div class="visual" id="visual"></div>
+    <div class="choices" id="choices"></div>
+    <div class="feedback" id="feedback"></div>
+    <div class="actions">
+      <button class="action help hidden" id="help" onclick="toggleExplain()">🔍 אֵיךְ פּוֹתְרִים?</button>
+      <button class="action next hidden" id="next" onclick="newQuestion()">הַבָּא ➜</button>
+    </div>
+    <div class="explain hidden" id="explain"></div>
+  </div>
+</main>
+<div class="lesson-overlay" id="lesson-overlay" role="dialog" aria-modal="true" aria-label="שיעור קצר">
+  <div class="lesson-modal">
+    <button class="lesson-close" onclick="closeLesson()">✕ סְגֹר</button>
+    <div class="lesson-progress" id="lesson-progress"></div>
+    <div class="lesson-title" id="lesson-title"></div>
+    <div class="lesson-text" id="lesson-text"></div>
+    <div class="lesson-rule" id="lesson-rule"></div>
+    <div class="lesson-visual" id="lesson-visual"></div>
+    <div id="lesson-practice"></div>
+    <div class="lesson-nav">
+      <button class="gray" id="lesson-prev" onclick="moveLesson(-1)">◀ הַקּוֹדֵם</button>
+      <button class="green" id="lesson-audio" onclick="speakLesson()">🔊 הַשְׁמֵעַ</button>
+      <button class="blue" id="lesson-next" onclick="moveLesson(1)">הַבָּא ▶</button>
+    </div>
+  </div>
+</div>
+<footer>Sandbox · תֹּכֶן מְקוֹרִי לִבְדִיקָה · כִּתָּה ד'</footer>
+<script>
+const $=id=>document.getElementById(id);
+const rnd=(min,max)=>Math.floor(Math.random()*(max-min+1))+min;
+const pick=a=>a[rnd(0,a.length-1)];
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=rnd(0,i);[a[i],a[j]]=[a[j],a[i]]}return a}
+const fmt=n=>Number(n).toLocaleString("en-US");
+const GOOD=["מְצֻיָּן! ⭐","נָכוֹן מְאוֹד! 🎉","כָּל הַכָּבוֹד! 👏","חֲשִׁיבָה נֶהְדֶּרֶת! 🏆"];
+function numericChoices(answer,candidates=[],suffix=""){
+  const values=[];
+  [answer,...candidates].forEach(v=>{if(Number.isFinite(v)&&v>=0&&!values.includes(v))values.push(v)});
+  let step=Math.max(1,Math.pow(10,Math.max(0,String(Math.floor(Math.abs(answer))).length-2))),offset=1;
+  while(values.length<4){const v=answer+(offset%2?offset:-offset)*step;if(v>=0&&!values.includes(v))values.push(v);offset++}
+  return shuffle(values.slice(0,4)).map(v=>fmt(v)+suffix);
+}
+function textChoices(answer,candidates){
+  const values=[];[answer,...candidates].forEach(v=>{v=String(v);if(!values.includes(v))values.push(v)});
+  return shuffle(values.slice(0,4));
+}
+function frac(n,d){return `<span class="fraction"><span class="top">${n}</span><span class="bottom">${d}</span></span>`}
+function columnVisual(a,operator,b){return `<div class="column-math"><span></span><span>${fmt(a)}</span><span class="operator">${operator}</span><span>${fmt(b)}</span><span class="line"></span></div>`}
+let score=0,round=0,current=null,locked=false,lastSignature="",lessonIndex=0,hebrewVoice=null;
+const LESSON_STEPS=[{"title": "יְחִידוֹת מֶטְרִיּוֹת", "text": "בְּכָל הֲמָרָה שׁוֹאֲלִים: כַּמָּה יְחִידוֹת קְטַנּוֹת יֵשׁ בַּגְּדוֹלָה?", "rule": "1 מֶטֶר = 100 סַנְטִימֶטְרִים; 1 קִילוֹגְרָם = 1,000 גְּרָם.", "visual": "<span class='calc'>3 m = 300 cm</span>", "say": "מטר אחד שווה מאה סנטימטרים. קילוגרם אחד שווה אלף גרם.", "practice": false, "options": [], "correct": 0, "good": "", "retry": ""}, {"title": "זְמַן שֶׁחָלַף", "text": "מִתְקַדְּמִים מִשְּׁעַת הַהַתְחָלָה אֶל שְׁעַת הַסִּיּוּם בְּקְפִיצוֹת נוֹחוֹת.", "rule": "אֶפְשָׁר לְהַגִּיעַ קֹדֶם לַשָּׁעָה הַשְּׁלֵמָה.", "visual": "<span class='calc'>14:35 → 15:00 → 15:20 = 45 min</span>", "say": "מארבע עשרה שלושים וחמש עד חמש עשרה יש עשרים וחמש דקות, ועוד עשרים דקות, ביחד ארבעים וחמש.", "practice": false, "options": [], "correct": 0, "good": "", "retry": ""}, {"title": "הֶקֵּף, שֶׁטַח וְנֶפַח", "text": "הֶקֵּף הוּא מִסָּבִיב, שֶׁטַח הוּא כַּמָּה רִבּוּעִים מְכַסִּים, וְנֶפַח הוּא כַּמָּה קֻבִּיּוֹת מְמַלְּאוֹת.", "rule": "מַלְבֵּן: שֶׁטַח = אֹרֶךְ × רֹחַב.", "visual": "<span class='calc'>6 × 4 = 24</span>", "say": "שטח מלבן הוא אורך כפול רוחב. נפח תיבה הוא אורך כפול רוחב כפול גובה.", "practice": false, "options": [], "correct": 0, "good": "", "retry": ""}, {"title": "עַכְשָׁו תּוֹרְכֶם!", "text": "מַלְבֵּן בְּאֹרֶךְ 7 ס״מ וּבְרֹחַב 3 ס״מ. מָה שִׁטְחוֹ?", "rule": "שֶׁטַח = אֹרֶךְ × רֹחַב.", "visual": "<span class='calc'>7 × 3 = ?</span>", "say": "מה שטח מלבן באורך שבעה סנטימטרים וברוחב שלושה?", "practice": true, "options": ["21 סְמ״ר", "20 סְמ״ר", "10 סְמ״ר"], "correct": 0, "good": "7 × 3 = 21 סְמ״ר.", "retry": "כִּפְלוּ אֹרֶךְ בְּרֹחַב."}];
+function loadVoices(){
+  if(!("speechSynthesis" in window))return;
+  hebrewVoice=speechSynthesis.getVoices().find(v=>/^(he|iw)/i.test(v.lang))||null;
+}
+if("speechSynthesis" in window){loadVoices();speechSynthesis.onvoiceschanged=loadVoices}
+else{setTimeout(()=>{$("lesson-audio").disabled=true;$("lesson-audio").title="הַשְׁמָעָה אֵינָהּ זְמִינָה בַּדַּפְדְּפָן הַזֶּה"},0)}
+function speakHebrew(text){
+  if(!("speechSynthesis" in window))return;
+  speechSynthesis.cancel();const utterance=new SpeechSynthesisUtterance(text);utterance.lang="he-IL";utterance.rate=.9;
+  if(hebrewVoice)utterance.voice=hebrewVoice;speechSynthesis.speak(utterance);
+}
+function openLesson(){lessonIndex=0;$("lesson-overlay").classList.add("show");renderLesson()}
+function closeLesson(){$("lesson-overlay").classList.remove("show");if("speechSynthesis" in window)speechSynthesis.cancel()}
+function moveLesson(direction){const next=lessonIndex+direction;if(next<0||next>=LESSON_STEPS.length)return;lessonIndex=next;renderLesson()}
+function speakLesson(){speakHebrew(LESSON_STEPS[lessonIndex].say)}
+function renderLesson(){
+  const step=LESSON_STEPS[lessonIndex];
+  $("lesson-progress").textContent=`שָׁלָב ${lessonIndex+1} מִתּוֹךְ ${LESSON_STEPS.length}`;
+  $("lesson-title").textContent=step.title;$("lesson-text").textContent=step.text;$("lesson-rule").textContent=step.rule;
+  $("lesson-visual").innerHTML=step.visual||"";$("lesson-visual").style.display=step.visual?"block":"none";
+  const practice=$("lesson-practice");practice.innerHTML="";
+  if(step.practice){
+    const options=document.createElement("div");options.className="lesson-options";
+    step.options.forEach((value,index)=>{const button=document.createElement("button");button.textContent=value;button.onclick=()=>checkLessonAnswer(button,index);options.appendChild(button)});
+    const feedback=document.createElement("div");feedback.className="lesson-feedback";feedback.id="lesson-feedback";
+    practice.append(options,feedback);
+  }
+  $("lesson-prev").disabled=lessonIndex===0;$("lesson-next").disabled=lessonIndex===LESSON_STEPS.length-1;
+}
+function checkLessonAnswer(button,index){
+  const step=LESSON_STEPS[lessonIndex],buttons=document.querySelectorAll(".lesson-options button");
+  buttons.forEach((option,i)=>{option.disabled=true;if(i===step.correct)option.classList.add("ok")});
+  const feedback=$("lesson-feedback");
+  if(index===step.correct){feedback.textContent="🎉 "+step.good;feedback.style.color="var(--green)"}
+  else{button.classList.add("no");feedback.textContent="כִּמְעַט! "+step.retry;feedback.style.color="var(--red)"}
+}
+
+function conversionQuestion(){
+  const conversions=[
+    {big:"מֶטֶר",small:"סַנְטִימֶטֶר",factor:100},{big:"קִילוֹמֶטֶר",small:"מֶטֶר",factor:1000},
+    {big:"קִילוֹגְרָם",small:"גְּרָם",factor:1000},{big:"לִיטֶר",small:"מִילִילִיטֶר",factor:1000},
+    {big:"סַנְטִימֶטֶר",small:"מִילִימֶטֶר",factor:10}],c=pick(conversions),reverse=Math.random()<.35,amount=rnd(2,12);
+  const fromValue=reverse?amount*c.factor:amount,toValue=reverse?amount:amount*c.factor,fromUnit=reverse?c.small:c.big,toUnit=reverse?c.big:c.small,answer=`${fmt(toValue)} ${toUnit}`;
+  return {kind:"הֲמָרַת יְחִידוֹת",question:`הַשְׁלִימוּ: ${fmt(fromValue)} ${fromUnit} = ?`,visual:`<span class="calc">${fmt(fromValue)} ${fromUnit} = ? ${toUnit}</span>`,answer,
+    choices:numericChoices(toValue,[reverse?toValue+1:amount,Math.max(0,toValue*10),Math.max(0,toValue-1)],` ${toUnit}`),
+    explain:`1 ${c.big} = ${fmt(c.factor)} ${c.small}. ${reverse?"לָכֵן מְחַלְּקִים":"לָכֵן מַכְפִּילִים"} בְּ־${fmt(c.factor)}: <span class="calc">${fmt(fromValue)} → ${answer}</span>.`};
+}
+function timeText(minutes){const h=Math.floor(minutes/60),m=minutes%60;return `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}`}
+function elapsedQuestion(){
+  const duration=pick([20,25,30,35,40,45,50,55,60,70,75,80,90,105,120]);let start=rnd(7*60,19*60-duration);start-=start%5;const end=start+duration,answer=`${duration} דַּקּוֹת`;
+  return {kind:"זְמַן שֶׁחָלַף",question:`פְּעִילוּת הִתְחִילָה בְּ־${timeText(start)} וְהִסְתַּיְּמָה בְּ־${timeText(end)}. כַּמָּה זְמַן הִיא נִמְשְׁכָה?`,visual:`🕒 ${timeText(start)} &nbsp; ➜ &nbsp; ${timeText(end)}`,answer,
+    choices:textChoices(answer,[`${duration+10} דַּקּוֹת`,`${Math.max(5,duration-10)} דַּקּוֹת`,`${Math.abs((end%60)-(start%60))} דַּקּוֹת`]),
+    explain:`מִתְקַדְּמִים מֵ־${timeText(start)} עַד ${timeText(end)}. הַהֶפְרֵשׁ הוּא <span class="calc">${duration}</span> דַּקּוֹת.`};
+}
+function perimeterQuestion(){
+  const length=rnd(5,18),width=rnd(2,length-1),answerValue=2*(length+width),answer=`${answerValue} ס״מ`;
+  return {kind:"הֶקֵּף",question:`מָה הֶקֵּף מַלְבֵּן שֶׁאָרְכּוֹ ${length} ס״מ וְרָחְבּוֹ ${width} ס״מ?`,visual:`▭<div class="visual-note">${length} ס״מ × ${width} ס״מ</div>`,answer,
+    choices:numericChoices(answerValue,[length+width,length*width,2*length+width]," ס״מ"),
+    explain:`מְחַבְּרִים אֶת כָּל הַצְּלָעוֹת: <span class="calc">${length}+${width}+${length}+${width} = ${answerValue}</span> ס״מ.`};
+}
+function areaQuestion(){
+  const length=rnd(4,16),width=rnd(2,12),answerValue=length*width,answer=`${answerValue} סְמ״ר`;
+  return {kind:"שֶׁטַח מַלְבֵּן",question:`מָה שֶׁטַח מַלְבֵּן שֶׁאָרְכּוֹ ${length} ס״מ וְרָחְבּוֹ ${width} ס״מ?`,visual:`▦<div class="visual-note">${length} שׁוּרוֹת/עַמּוּדוֹת × ${width}</div>`,answer,
+    choices:numericChoices(answerValue,[2*(length+width),length+width,answerValue+length]," סְמ״ר"),
+    explain:`שֶׁטַח מַלְבֵּן = אֹרֶךְ × רֹחַב: <span class="calc">${length} × ${width} = ${answerValue}</span> סְמ״ר.`};
+}
+function cubeLayer(length,width,height){
+  const cubes=Array(length*width).fill('<span class="unit-cube"></span>').join("");
+  return `<div class="cube-stack"><div class="cube-grid" style="grid-template-columns:repeat(${length},24px)">${cubes}</div><b>${height} שְׁכָבוֹת זֵהוֹת</b><span>בְּכָל שִׁכְבָה ${length} × ${width} קֻבִּיּוֹת יְחִידָה</span></div>`;
+}
+function volumeQuestion(){
+  const length=rnd(2,5),width=rnd(2,4),height=rnd(2,4),answerValue=length*width*height,answer=`${answerValue} קֻבִּיּוֹת`;
+  return {kind:"נֶפַח תֵּבָה",question:"כַּמָּה קֻבִּיּוֹת יְחִידָה מְמַלְּאוֹת אֶת הַתֵּבָה?",visual:cubeLayer(length,width,height),answer,
+    choices:numericChoices(answerValue,[length*width,length+width+height,2*(length+width+height)]," קֻבִּיּוֹת"),
+    explain:`בְּכָל שִׁכְבָה יֵשׁ <span class="calc">${length} × ${width} = ${length*width}</span> קֻבִּיּוֹת. יֵשׁ ${height} שְׁכָבוֹת: <span class="calc">${length*width} × ${height} = ${answerValue}</span>.`};
+}
+const BUILDERS=[conversionQuestion,elapsedQuestion,perimeterQuestion,areaQuestion,volumeQuestion];
+
+function newQuestion(){
+  let question,signature,tries=0;
+  do{question=pick(BUILDERS)();signature=question.kind+"|"+question.question+"|"+question.answer;tries++}while(signature===lastSignature&&tries<12);
+  current=question;lastSignature=signature;locked=false;round++;$("round").textContent=round;
+  $("kind").textContent=question.kind;$("question").textContent=question.question;
+  $("visual").className="visual "+(question.visualClass||"");$("visual").innerHTML=question.visual||"";
+  $("choices").innerHTML="";
+  question.choices.forEach(value=>{const button=document.createElement("button");button.className="choice";button.textContent=value;button.onclick=()=>answerQuestion(button,value);$("choices").appendChild(button)});
+  $("feedback").textContent="";$("feedback").className="feedback";$("help").classList.add("hidden");$("next").classList.add("hidden");
+  $("explain").classList.add("hidden");$("explain").innerHTML=question.explain;$("help").textContent="🔍 אֵיךְ פּוֹתְרִים?";
+}
+function answerQuestion(button,value){
+  if(locked)return;locked=true;const ok=value===current.answer;
+  document.querySelectorAll(".choice").forEach(option=>{option.disabled=true;if(option.textContent===current.answer)option.classList.add("ok")});
+  if(ok){score+=10;$("score").textContent=score;$("feedback").textContent=pick(GOOD);$("feedback").className="feedback good"}
+  else{button.classList.add("no");$("feedback").textContent=`כִּמְעַט! הַתְּשׁוּבָה הִיא ${current.answer}`;$("feedback").className="feedback bad"}
+  $("help").classList.remove("hidden");$("next").classList.remove("hidden");
+}
+function toggleExplain(){
+  $("explain").classList.toggle("hidden");$("help").textContent=$("explain").classList.contains("hidden")?"🔍 אֵיךְ פּוֹתְרִים?":"🙈 הַסְתֵּר הֶסְבֵּר";
+}
+newQuestion();
+if(new URLSearchParams(location.search).get("lesson")==="1")setTimeout(openLesson,0);
+</script>
+</body>
+</html>

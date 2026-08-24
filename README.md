@@ -12,7 +12,7 @@ The root page (`index.html`) is a hub that links to every game.
 |--------|------|-------------|
 | [`math/`](./math/) | מִשְׂחֲקֵי חֶשְׁבּוֹן | Math grade selector. |
 | [`grade-3/`](./grade-3/) | חֶשְׁבּוֹן לְכִתָּה ג' | 9 Hebrew math mini-games for 3rd grade: division with remainder, multiplication and division, word problems, fractions, divisibility, grouping division, and the multiplication table. |
-| [`grade-4/`](./grade-4/) | חֶשְׁבּוֹן לְכִתָּה ד' | Three Grade 4 math games covering numbers to one million, order of operations, and fraction comparison. Each game includes an interactive Hebrew lesson with narration, examples, and practice. |
+| [`grade-4/`](./grade-4/) | חֶשְׁבּוֹן לְכִתָּה ד' | 11 Grade 4 math games covering numbers, written arithmetic, order of operations, number properties, fractions, word problems, geometry, measurement, data, and probability. Each game includes an interactive Hebrew lesson with narration, examples, and practice. |
 | [`english/`](./english/) | מִשְׂחֲקֵי אַנְגְּלִית | English grade selector. |
 | [`english/grade-3/`](./english/grade-3/) | English Grade 3 | Learn English words via pictures and phonics with sound and Hebrew translations. |
 
@@ -28,7 +28,15 @@ edu-games/
 │   ├── index.html         # Grade 4 math hub
 │   ├── numbers/index.html
 │   ├── operations/index.html
-│   └── fractions/index.html
+│   ├── fractions/index.html
+│   ├── written-arithmetic/index.html
+│   ├── number-properties/index.html
+│   ├── fraction-operations/index.html
+│   ├── word-problems/index.html
+│   ├── geometry/index.html
+│   ├── measurement/index.html
+│   ├── data/index.html
+│   └── probability/index.html
 ├── english/
 │   ├── index.html         # English grade selector
 │   └── grade-3/

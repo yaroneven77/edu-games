@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>הַנְדָּסָה · כִּתָּה ד'</title>
+<style>
+  :root{--blue:#1f7fc4;--green:#3fbf6b;--red:#e6604f;--purple:#a974d6;--yellow:#ffce3a;--accent:#2bb3a3;--ink:#243b53;--shadow:rgba(20,60,90,.18)}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{margin:0;min-height:100vh;font-family:"Segoe UI","Arial Hebrew",Arial,sans-serif;color:var(--ink);
+    background:linear-gradient(160deg,#fff7e6,#cdeffd);display:flex;flex-direction:column;align-items:center;-webkit-user-select:none;user-select:none}
+  header{text-align:center;padding:12px 8px 4px}
+  .home{display:inline-block;background:#fff;border-radius:14px;padding:6px 13px;font-size:19px;text-decoration:none;
+    box-shadow:0 3px 0 var(--shadow);margin-bottom:7px;color:#155f93;font-weight:900}
+  .logo{font-weight:900;font-size:clamp(27px,7vw,45px);color:var(--yellow);
+    text-shadow:2px 2px 0 var(--red),4px 4px 0 var(--blue),0 6px 14px var(--shadow)}
+  .logo small{display:block;font-size:.42em;color:#155f93;text-shadow:none;margin-top:4px}
+  main{width:100%;max-width:760px;padding:8px 14px 30px;flex:1}
+  .topbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-bottom:12px;gap:8px}
+  .pill{background:#fff;border-radius:16px;padding:8px 14px;font-weight:900;box-shadow:0 4px 0 var(--shadow)}
+  button{font-family:inherit}
+  .learn{border:none;border-radius:16px;padding:10px 14px;background:var(--purple);color:#fff;font-size:15px;font-weight:900;
+    cursor:pointer;box-shadow:0 4px 0 var(--shadow)}
+  .card{background:#fff;border-radius:24px;padding:21px 17px;box-shadow:0 8px 0 var(--shadow);text-align:center}
+  .kind{display:inline-block;background:#eaf4fb;color:#155f93;border-radius:999px;padding:5px 13px;font-weight:900;font-size:14px}
+  h2{font-size:clamp(20px,5vw,27px);line-height:1.55;margin:13px 0}
+  .visual{direction:ltr;min-height:72px;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:12px;
+    color:#155f93;font-size:clamp(27px,8vw,45px);font-weight:900;margin:12px 0 18px;background:#f4f9fd;border-radius:18px;padding:14px 10px;overflow:auto}
+  .visual.rtl{direction:rtl;font-size:18px;line-height:1.7;text-align:right;display:block}
+  .visual-note{font-size:16px;direction:rtl;color:#43617c;width:100%}
+  .choices{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .choice{border:3px solid color-mix(in srgb,var(--accent) 35%,#d6e7f3);background:color-mix(in srgb,var(--accent) 10%,#fff);
+    border-radius:18px;padding:14px 8px;min-height:58px;font-size:clamp(18px,5vw,24px);font-weight:900;color:var(--ink);cursor:pointer;direction:rtl}
+  .choice:active{transform:scale(.97)}.choice.ok{background:#d8f5e2;border-color:var(--green)}.choice.no{background:#fcdcd6;border-color:var(--red)}
+  .feedback{min-height:38px;font-size:21px;font-weight:900;margin:15px 0 7px}.feedback.good{color:var(--green)}.feedback.bad{color:var(--red)}
+  .actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  .action{border:none;border-radius:16px;padding:11px 18px;font-size:16px;font-weight:900;color:#fff;cursor:pointer;box-shadow:0 4px 0 var(--shadow)}
+  .help{background:var(--purple)}.next{background:var(--blue)}
+  .explain{margin-top:14px;background:#f3ecfb;border:3px dashed #c9a8ec;border-radius:18px;padding:14px 16px;line-height:1.75;text-align:right;font-size:17px}
+  .calc{direction:ltr;display:inline-block;background:#fff;border-radius:8px;padding:1px 8px;font-weight:900;margin:2px}
+  .hidden{display:none!important}
+  .column-math{display:inline-grid;grid-template-columns:auto auto;direction:ltr;text-align:right;font-family:Consolas,monospace;min-width:180px}
+  .column-math .operator{padding-right:10px}.column-math .line{grid-column:1/3;border-top:4px solid #243b53;margin-top:5px}
+  .fraction{display:inline-flex;flex-direction:column;align-items:center;line-height:1;vertical-align:middle;min-width:42px}
+  .fraction .top{border-bottom:4px solid currentColor;padding:0 8px 4px}.fraction .bottom{padding-top:4px}
+  .shape-svg{width:min(100%,330px);height:190px}.angle-svg{width:260px;height:150px}
+  .data-table{border-collapse:collapse;font-size:16px;direction:rtl;color:var(--ink);background:#fff}
+  .data-table th,.data-table td{border:2px solid #b9d7e8;padding:7px 10px}.data-table th{background:#dff2fb}
+  .bar-chart{height:190px;display:flex;align-items:flex-end;justify-content:center;gap:10px;width:100%;direction:rtl}
+  .bar-item{height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;min-width:48px;font-size:13px;color:var(--ink)}
+  .bar-value{font-weight:900}.bar{width:38px;border-radius:9px 9px 0 0;background:linear-gradient(#ffce3a,#f0883e);border:2px solid #d87825}
+  .bar-label{font-weight:800;margin-top:4px}
+  .bag{display:flex;flex-wrap:wrap;gap:8px;max-width:300px;justify-content:center;border:5px solid #8a63d2;border-top:none;border-radius:10px 10px 40px 40px;padding:18px}
+  .ball{width:31px;height:31px;border-radius:50%;border:2px solid rgba(36,59,83,.35)}
+  .spinner{width:170px;height:170px;border-radius:50%;border:6px solid #243b53;position:relative}
+  .spinner:after{content:"";position:absolute;left:50%;top:50%;width:18px;height:18px;background:#fff;border:4px solid #243b53;border-radius:50%;transform:translate(-50%,-50%)}
+  .cube-stack{display:flex;flex-direction:column;align-items:center;gap:5px;font-size:15px;color:var(--ink)}
+  .cube-grid{display:grid;gap:3px;transform:skewY(-5deg)}
+  .unit-cube{width:24px;height:24px;background:linear-gradient(135deg,#ffe58a,#ffb347);border:2px solid #cb7b23;border-radius:4px}
+  .lesson-overlay{position:fixed;inset:0;background:rgba(20,40,60,.62);display:none;align-items:center;justify-content:center;padding:15px;z-index:50}
+  .lesson-overlay.show{display:flex}
+  .lesson-modal{background:#fff;border-radius:24px;width:100%;max-width:680px;max-height:94vh;overflow:auto;padding:21px 18px;text-align:center;box-shadow:0 18px 45px rgba(20,60,90,.35)}
+  .lesson-close{float:left;border:none;background:#e7eef5;color:#43617c;border-radius:12px;padding:7px 11px;font-size:14px;font-weight:900;cursor:pointer}
+  .lesson-progress{color:var(--purple);font-weight:900;font-size:14px;clear:both;padding-top:4px}
+  .lesson-title{font-size:clamp(22px,6vw,30px);font-weight:900;color:#155f93;margin:8px 0}
+  .lesson-text{font-size:clamp(17px,4.5vw,21px);line-height:1.65;min-height:56px}
+  .lesson-rule{background:#fff4d6;border:2px dashed #e0a23a;border-radius:14px;padding:10px;font-weight:900;line-height:1.65;margin:10px 0}
+  .lesson-visual{direction:ltr;font-size:clamp(25px,8vw,44px);font-weight:900;color:#155f93;margin:13px 0;background:#f4f9fd;border-radius:18px;padding:14px 8px;min-height:58px}
+  .lesson-options{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+  .lesson-options button{border:3px solid #d6e7f3;background:#fff;border-radius:14px;padding:10px 15px;font-size:18px;font-weight:900;cursor:pointer}
+  .lesson-options button.ok{background:#d8f5e2;border-color:var(--green)}.lesson-options button.no{background:#fcdcd6;border-color:var(--red)}
+  .lesson-feedback{min-height:28px;font-weight:900;margin-top:8px}
+  .lesson-nav{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+  .lesson-nav button{border:none;border-radius:14px;padding:10px 15px;font-size:15px;font-weight:900;color:#fff;cursor:pointer;box-shadow:0 3px 0 var(--shadow)}
+  .gray{background:#8aa4bd}.green{background:var(--green)}.blue{background:var(--blue)}
+  footer{padding:10px;color:#6b87a3;font-size:12px;text-align:center}
+  @media(max-width:460px){.choices{grid-template-columns:1fr}.visual{font-size:28px}.topbar{justify-content:center}.pill{padding:7px 11px}}
+</style>
+</head>
+<body>
+<header>
+  <a class="home" href="../" title="לְתַפְרִיט כִּתָּה ד'">⬆️🏠</a>
+  <div class="logo">📐 הַנְדָּסָה<small>חֶשְׁבּוֹן לְכִתָּה ד'</small></div>
+</header>
+<main>
+  <div class="topbar">
+    <div class="pill">שְׁאֵלָה <span id="round">1</span></div>
+    <button class="learn" id="lesson-button" onclick="openLesson()">📚 שִׁעוּר קָצָר</button>
+    <div class="pill">⭐ <span id="score">0</span></div>
+  </div>
+  <div class="card">
+    <span class="kind" id="kind"></span>
+    <h2 id="question"></h2>
+    <div class="visual" id="visual"></div>
+    <div class="choices" id="choices"></div>
+    <div class="feedback" id="feedback"></div>
+    <div class="actions">
+      <button class="action help hidden" id="help" onclick="toggleExplain()">🔍 אֵיךְ פּוֹתְרִים?</button>
+      <button class="action next hidden" id="next" onclick="newQuestion()">הַבָּא ➜</button>
+    </div>
+    <div class="explain hidden" id="explain"></div>
+  </div>
+</main>
+<div class="lesson-overlay" id="lesson-overlay" role="dialog" aria-modal="true" aria-label="שיעור קצר">
+  <div class="lesson-modal">
+    <button class="lesson-close" onclick="closeLesson()">✕ סְגֹר</button>
+    <div class="lesson-progress" id="lesson-progress"></div>
+    <div class="lesson-title" id="lesson-title"></div>
+    <div class="lesson-text" id="lesson-text"></div>
+    <div class="lesson-rule" id="lesson-rule"></div>
+    <div class="lesson-visual" id="lesson-visual"></div>
+    <div id="lesson-practice"></div>
+    <div class="lesson-nav">
+      <button class="gray" id="lesson-prev" onclick="moveLesson(-1)">◀ הַקּוֹדֵם</button>
+      <button class="green" id="lesson-audio" onclick="speakLesson()">🔊 הַשְׁמֵעַ</button>
+      <button class="blue" id="lesson-next" onclick="moveLesson(1)">הַבָּא ▶</button>
+    </div>
+  </div>
+</div>
+<footer>תֹּכֶן מְקוֹרִי · חֶשְׁבּוֹן לְכִתָּה ד'</footer>
+<script>
+const $=id=>document.getElementById(id);
+const rnd=(min,max)=>Math.floor(Math.random()*(max-min+1))+min;
+const pick=a=>a[rnd(0,a.length-1)];
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=rnd(0,i);[a[i],a[j]]=[a[j],a[i]]}return a}
+const fmt=n=>Number(n).toLocaleString("en-US");
+const GOOD=["מְצֻיָּן! ⭐","נָכוֹן מְאוֹד! 🎉","כָּל הַכָּבוֹד! 👏","חֲשִׁיבָה נֶהְדֶּרֶת! 🏆"];
+function numericChoices(answer,candidates=[],suffix=""){
+  const values=[];
+  [answer,...candidates].forEach(v=>{if(Number.isFinite(v)&&v>=0&&!values.includes(v))values.push(v)});
+  let step=Math.max(1,Math.pow(10,Math.max(0,String(Math.floor(Math.abs(answer))).length-2))),offset=1;
+  while(values.length<4){const v=answer+(offset%2?offset:-offset)*step;if(v>=0&&!values.includes(v))values.push(v);offset++}
+  return shuffle(values.slice(0,4)).map(v=>fmt(v)+suffix);
+}
+function textChoices(answer,candidates){
+  const values=[];[answer,...candidates].forEach(v=>{v=String(v);if(!values.includes(v))values.push(v)});
+  return shuffle(values.slice(0,4));
+}
+function frac(n,d){return `<span class="fraction"><span class="top">${n}</span><span class="bottom">${d}</span></span>`}
+function columnVisual(a,operator,b){return `<div class="column-math"><span></span><span>${fmt(a)}</span><span class="operator">${operator}</span><span>${fmt(b)}</span><span class="line"></span></div>`}
+let score=0,round=0,current=null,locked=false,lastSignature="",lessonIndex=0,hebrewVoice=null;
+const LESSON_STEPS=[{"title": "מְמַיְּנִים לְפִי תְּכוּנוֹת", "text": "צוּרָה נִקְבַּעַת לְפִי הַצְּלָעוֹת וְהַזָּוִיּוֹת שֶׁלָּהּ.", "rule": "בּוֹדְקִים שִׁוְיוֹן, מַקְבִּילוּת וְזָוִיּוֹת יְשָׁרוֹת.", "visual": "△  ▭  ◇", "say": "ממיינים צורות לפי הצלעות והזוויות שלהן.", "practice": false, "options": [], "correct": 0, "good": "", "retry": ""}, {"title": "זָוִיּוֹת", "text": "זָוִית חַדָּה קְטַנָּה מֵ־90 מַעֲלוֹת, יְשָׁרָה שָׁוָה לְ־90, וּקְהָה גְּדוֹלָה מֵ־90.", "rule": "מַשְׁוִים לְפִנַּת רִבּוּעַ.", "visual": "<span class='calc'>45° &lt; 90°</span>", "say": "זווית חדה קטנה מתשעים מעלות. זווית ישרה שווה לתשעים.", "practice": false, "options": [], "correct": 0, "good": "", "retry": ""}, {"title": "אֲלַכְסוֹן וְסִימֶטְרִיָּה", "text": "אֲלַכְסוֹן מְחַבֵּר שְׁנֵי קָדְקֳדִים שֶׁאֵינָם סְמוּכִים. קַו סִימֶטְרִיָּה מְחַלֵּק לִשְׁנֵי חֲצָאִים תּוֹאֲמִים.", "rule": "לְכָל מְרֻבָּע יֵשׁ שְׁנֵי אֲלַכְסוֹנִים.", "visual": "╲  ╱", "say": "אלכסון מחבר קודקודים שאינם סמוכים. למרובע שני אלכסונים.", "practice": false, "options": [], "correct": 0, "good": "", "retry": ""}, {"title": "עַכְשָׁו תּוֹרְכֶם!", "text": "אֵיזוֹ זָוִית גָּדְלָה מֵ־90 מַעֲלוֹת וּקְטַנָּה מֵ־180?", "rule": "חִשְׁבוּ עַל זָוִית פְּתוּחָה יוֹתֵר מִפִּנַּת רִבּוּעַ.", "visual": "<span class='calc'>120°</span>", "say": "איזה סוג זווית היא זווית בת מאה ועשרים מעלות?", "practice": true, "options": ["קֵהָה", "חַדָּה", "יְשָׁרָה"], "correct": 0, "good": "120° הִיא זָוִית קֵהָה.", "retry": "120 גָּדוֹל מֵ־90."}];
+function loadVoices(){
+  if(!("speechSynthesis" in window))return;
+  hebrewVoice=speechSynthesis.getVoices().find(v=>/^(he|iw)/i.test(v.lang))||null;
+}
+if("speechSynthesis" in window){loadVoices();speechSynthesis.onvoiceschanged=loadVoices}
+else{setTimeout(()=>{$("lesson-audio").disabled=true;$("lesson-audio").title="הַשְׁמָעָה אֵינָהּ זְמִינָה בַּדַּפְדְּפָן הַזֶּה"},0)}
+function speakHebrew(text){
+  if(!("speechSynthesis" in window))return;
+  speechSynthesis.cancel();const utterance=new SpeechSynthesisUtterance(text);utterance.lang="he-IL";utterance.rate=.9;
+  if(hebrewVoice)utterance.voice=hebrewVoice;speechSynthesis.speak(utterance);
+}
+function openLesson(){lessonIndex=0;$("lesson-overlay").classList.add("show");renderLesson()}
+function closeLesson(){$("lesson-overlay").classList.remove("show");if("speechSynthesis" in window)speechSynthesis.cancel()}
+function moveLesson(direction){const next=lessonIndex+direction;if(next<0||next>=LESSON_STEPS.length)return;lessonIndex=next;renderLesson()}
+function speakLesson(){speakHebrew(LESSON_STEPS[lessonIndex].say)}
+function renderLesson(){
+  const step=LESSON_STEPS[lessonIndex];
+  $("lesson-progress").textContent=`שָׁלָב ${lessonIndex+1} מִתּוֹךְ ${LESSON_STEPS.length}`;
+  $("lesson-title").textContent=step.title;$("lesson-text").textContent=step.text;$("lesson-rule").textContent=step.rule;
+  $("lesson-visual").innerHTML=step.visual||"";$("lesson-visual").style.display=step.visual?"block":"none";
+  const practice=$("lesson-practice");practice.innerHTML="";
+  if(step.practice){
+    const options=document.createElement("div");options.className="lesson-options";
+    step.options.forEach((value,index)=>{const button=document.createElement("button");button.textContent=value;button.onclick=()=>checkLessonAnswer(button,index);options.appendChild(button)});
+    const feedback=document.createElement("div");feedback.className="lesson-feedback";feedback.id="lesson-feedback";
+    practice.append(options,feedback);
+  }
+  $("lesson-prev").disabled=lessonIndex===0;$("lesson-next").disabled=lessonIndex===LESSON_STEPS.length-1;
+}
+function checkLessonAnswer(button,index){
+  const step=LESSON_STEPS[lessonIndex],buttons=document.querySelectorAll(".lesson-options button");
+  buttons.forEach((option,i)=>{option.disabled=true;if(i===step.correct)option.classList.add("ok")});
+  const feedback=$("lesson-feedback");
+  if(index===step.correct){feedback.textContent="🎉 "+step.good;feedback.style.color="var(--green)"}
+  else{button.classList.add("no");feedback.textContent="כִּמְעַט! "+step.retry;feedback.style.color="var(--red)"}
+}
+
+function svgShape(points,extra=""){return `<svg class="shape-svg" viewBox="0 0 300 190" aria-hidden="true"><polygon points="${points}" fill="#fff1b8" stroke="#243b53" stroke-width="6" stroke-linejoin="round"/>${extra}</svg>`}
+function triangleQuestion(){
+  const shapes=[
+    {name:"שְׁוֵה־צְלָעוֹת",points:"150,20 55,165 245,165",sides:"5, 5, 5"},
+    {name:"שְׁוֵה־שׁוֹקַיִם",points:"150,24 75,165 225,165",sides:"6, 6, 9"},
+    {name:"שׁוֹנֵה־צְלָעוֹת",points:"55,160 115,35 255,160",sides:"5, 7, 9"}],s=pick(shapes);
+  return {kind:"מִיּוּן מְשֻׁלָּשִׁים",question:"אֵיזֶה סוּג מְשֻׁלָּשׁ זֶה לְפִי אָרְכֵי הַצְּלָעוֹת?",visual:svgShape(s.points)+`<div class="visual-note">אָרְכֵי הַצְּלָעוֹת: ${s.sides}</div>`,answer:s.name,
+    choices:["שְׁוֵה־צְלָעוֹת","שְׁוֵה־שׁוֹקַיִם","שׁוֹנֵה־צְלָעוֹת"],
+    explain:`מַשְׁוִים אֶת שְׁלֹשֶׁת הָאֳרָכִים. ${s.name==="שְׁוֵה־צְלָעוֹת"?"כָּל הַצְּלָעוֹת שָׁווֹת.":s.name==="שְׁוֵה־שׁוֹקַיִם"?"שְׁתֵּי צְלָעוֹת שָׁווֹת.":"כָּל הַצְּלָעוֹת בְּאֹרֶךְ שׁוֹנֶה."} לָכֵן הַמְּשֻׁלָּשׁ ${s.name}.`};
+}
+function quadrilateralQuestion(){
+  const shapes=[
+    {name:"רִבּוּעַ",points:"70,25 230,25 230,165 70,165"},
+    {name:"מַלְבֵּן",points:"35,50 265,50 265,150 35,150"},
+    {name:"מַקְבִּילִית",points:"85,40 260,40 215,155 40,155"},
+    {name:"מְעוּיָּן",points:"150,20 250,95 150,170 50,95"},
+    {name:"טְרַפֵּז",points:"95,40 215,40 265,155 40,155"}],s=pick(shapes);
+  return {kind:"מִיּוּן מְרֻבָּעִים",question:"מָה הַשֵּׁם הַמְּדֻיָּק בְּיוֹתֵר לַמְּרֻבָּע?",visual:svgShape(s.points),answer:s.name,
+    choices:textChoices(s.name,shuffle(["רִבּוּעַ","מַלְבֵּן","מַקְבִּילִית","מְעוּיָּן","טְרַפֵּז"]).filter(v=>v!==s.name)),
+    explain:`בּוֹדְקִים צְלָעוֹת מַקְבִּילוֹת וְשָׁווֹת וְזָוִיּוֹת יְשָׁרוֹת. הַתְּכוּנוֹת מַתְאִימוֹת לְ${s.name}.`};
+}
+function angleQuestion(){
+  const type=pick(["חַדָּה","יְשָׁרָה","קֵהָה"]),degree=type==="חַדָּה"?rnd(25,80):type==="יְשָׁרָה"?90:rnd(105,155),rad=degree*Math.PI/180,x=100+75*Math.cos(rad),y=115-75*Math.sin(rad);
+  const visual=`<svg class="angle-svg" viewBox="0 0 260 150"><line x1="100" y1="115" x2="235" y2="115" stroke="#243b53" stroke-width="7"/><line x1="100" y1="115" x2="${x}" y2="${y}" stroke="#243b53" stroke-width="7"/><circle cx="100" cy="115" r="6" fill="#e6604f"/><text x="130" y="96" font-size="25" fill="#155f93">${degree}°</text></svg>`;
+  return {kind:"זָוִיּוֹת",question:"אֵיזֶה סוּג זָוִית מֻצָּג?",visual,answer:type,choices:["חַדָּה","יְשָׁרָה","קֵהָה"],
+    explain:`הַזָּוִית הִיא ${degree}°. ${degree<90?"הִיא קְטַנָּה מֵ־90°, לָכֵן חַדָּה.":degree===90?"הִיא שָׁוָה לְ־90°, לָכֵן יְשָׁרָה.":"הִיא גְּדוֹלָה מֵ־90° וּקְטַנָּה מֵ־180°, לָכֵן קֵהָה."}`};
+}
+function sideRelationQuestion(){
+  const parallel=Math.random()<.5,answer=parallel?"מַקְבִּילוֹת":"מְאֻנָּכוֹת",pairs=parallel?"AB וְ־CD":"AB וְ־BC";
+  const labels=`<text x="75" y="38" font-size="18">A</text><text x="230" y="38" font-size="18">B</text><text x="230" y="174" font-size="18">C</text><text x="75" y="174" font-size="18">D</text>`;
+  return {kind:"יְשָׁרִים מַקְבִּילִים וּמְאֻנָּכִים",question:`מָה הַקֶּשֶׁר בֵּין הַצְּלָעוֹת ${pairs}?`,visual:svgShape("80,45 225,45 225,155 80,155",labels),answer,
+    choices:["מַקְבִּילוֹת","מְאֻנָּכוֹת","אֵינָן נִפְגָּשׁוֹת וְאֵינָן מַקְבִּילוֹת"],
+    explain:parallel?"הַצְּלָעוֹת מוּל זוֹ אֶת זוֹ, הַמֶּרְחָק בֵּינֵיהֶן קָבוּעַ וְהֵן לֹא יִפָּגְשׁוּ — הֵן מַקְבִּילוֹת.":"הַצְּלָעוֹת נִפְגָּשׁוֹת בְּזָוִית שֶׁל 90° — הֵן מְאֻנָּכוֹת."};
+}
+function diagonalQuestion(){
+  const points=pick(["70,30 240,45 220,165 45,145","95,35 220,35 265,160 40,160","65,35 245,35 245,155 65,155"]);
+  return {kind:"אֲלַכְסוֹנִים",question:"כַּמָּה אֲלַכְסוֹנִים יֵשׁ לַמְּרֻבָּע?",visual:svgShape(points),answer:"2",choices:["1","2","3","4"],
+    explain:"אֲלַכְסוֹן מְחַבֵּר קָדְקֳדִים שֶׁאֵינָם סְמוּכִים. בִּמְרֻבָּע אֶפְשָׁר לְחַבֵּר שְׁנֵי זוּגוֹת כָּאֵלֶּה, לָכֵן יֵשׁ 2 אֲלַכְסוֹנִים."};
+}
+function symmetryQuestion(){
+  const shapes=[
+    {name:"רִבּוּעַ",count:4,points:"70,25 230,25 230,165 70,165"},
+    {name:"מַלְבֵּן",count:2,points:"35,50 265,50 265,150 35,150"},
+    {name:"מְשֻׁלָּשׁ שְׁוֵה־צְלָעוֹת",count:3,points:"150,20 55,165 245,165"},
+    {name:"מְשֻׁלָּשׁ שְׁוֵה־שׁוֹקַיִם",count:1,points:"150,25 75,165 225,165"}],s=pick(shapes),answer=String(s.count);
+  return {kind:"קַוֵּי סִימֶטְרִיָּה",question:`כַּמָּה קַוֵּי סִימֶטְרִיָּה יֵשׁ לְ${s.name}?`,visual:svgShape(s.points),answer,choices:["1","2","3","4"],
+    explain:`קַו סִימֶטְרִיָּה מְקַפֵּל אֶת הַצּוּרָה לִשְׁנֵי חֲצָאִים תּוֹאֲמִים. לְ${s.name} יֵשׁ ${s.count} קַוֵּי סִימֶטְרִיָּה.`};
+}
+const BUILDERS=[triangleQuestion,quadrilateralQuestion,angleQuestion,sideRelationQuestion,diagonalQuestion,symmetryQuestion];
+
+function newQuestion(){
+  let question,signature,tries=0;
+  do{question=pick(BUILDERS)();signature=question.kind+"|"+question.question+"|"+question.answer;tries++}while(signature===lastSignature&&tries<12);
+  current=question;lastSignature=signature;locked=false;round++;$("round").textContent=round;
+  $("kind").textContent=question.kind;$("question").textContent=question.question;
+  $("visual").className="visual "+(question.visualClass||"");$("visual").innerHTML=question.visual||"";
+  $("choices").innerHTML="";
+  question.choices.forEach(value=>{const button=document.createElement("button");button.className="choice";button.textContent=value;button.onclick=()=>answerQuestion(button,value);$("choices").appendChild(button)});
+  $("feedback").textContent="";$("feedback").className="feedback";$("help").classList.add("hidden");$("next").classList.add("hidden");
+  $("explain").classList.add("hidden");$("explain").innerHTML=question.explain;$("help").textContent="🔍 אֵיךְ פּוֹתְרִים?";
+}
+function answerQuestion(button,value){
+  if(locked)return;locked=true;const ok=value===current.answer;
+  document.querySelectorAll(".choice").forEach(option=>{option.disabled=true;if(option.textContent===current.answer)option.classList.add("ok")});
+  if(ok){score+=10;$("score").textContent=score;$("feedback").textContent=pick(GOOD);$("feedback").className="feedback good"}
+  else{button.classList.add("no");$("feedback").textContent=`כִּמְעַט! הַתְּשׁוּבָה הִיא ${current.answer}`;$("feedback").className="feedback bad"}
+  $("help").classList.remove("hidden");$("next").classList.remove("hidden");
+}
+function toggleExplain(){
+  $("explain").classList.toggle("hidden");$("help").textContent=$("explain").classList.contains("hidden")?"🔍 אֵיךְ פּוֹתְרִים?":"🙈 הַסְתֵּר הֶסְבֵּר";
+}
+newQuestion();
+if(new URLSearchParams(location.search).get("lesson")==="1")setTimeout(openLesson,0);
+</script>
+</body>
+</html>

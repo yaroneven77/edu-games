@@ -1,6 +1,6 @@
 # 🎓 Edu Games
 
-A collection of small, self-contained educational games for kids. Each game is a single offline-capable HTML file living in its own folder. No build step, no dependencies — hosted free on GitHub Pages.
+A collection of small, self-contained educational games for kids. Each game is a single offline-capable HTML file living in its own folder. No build step, no dependencies — hosted free on GitHub Pages. Exercises are generated dynamically, while interactive lesson examples remain fixed for clear teaching.
 
 ## ▶️ Play
 **https://yaroneven77.github.io/edu-games/**
@@ -48,16 +48,25 @@ edu-games/
 ```
 
 ## ➕ Add a new game
-1. Create a new folder, e.g. `my-game/`.
+1. Create a new folder under the appropriate subject and grade.
 2. Put a self-contained `index.html` inside it.
-3. Add a card linking to `./my-game/` in the root `index.html` hub.
+3. Add a card to the appropriate grade hub.
+4. Add or update the subject/grade selector only when introducing a new grade.
+5. Preserve an old public URL with a redirect if published content moves.
+
+## 🧪 Sandbox review workflow
+1. Stage every new or substantially changed experience under [`sandbox/`](./sandbox/).
+2. Link it from `sandbox/sandbox.html` and publish the preview.
+3. Wait for explicit approval.
+4. Promote the approved files to production, remove sandbox-only labels, validate, then commit and push.
 
 ## 🛠️ Edit & republish
-1. Edit the relevant `index.html`.
-2. Commit and push to `main`:
+1. Edit and validate the relevant files.
+2. For user-visible changes, complete the sandbox review workflow first.
+3. Commit and push to `main`:
    ```bash
    git add .
    git commit -m "your message"
    git push origin main
    ```
-3. GitHub Pages rebuilds automatically (~1 minute). Hard-refresh the live URL on mobile to clear cache.
+4. GitHub Pages rebuilds automatically. Hard-refresh the live URL on mobile to clear cache.

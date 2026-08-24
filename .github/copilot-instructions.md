@@ -15,6 +15,7 @@ Edu Games is a collection of educational English and math games created for chil
 - Link new games from the appropriate section hub and, when relevant, from the root `index.html`.
 - Organize math games by grade: the root links to `math/`, which links to `grade-3/`, `grade-4/`, and future grade folders.
 - Organize English games under `english/`, with each grade in a nested folder such as `english/grade-3/`.
+- Grade 4 currently contains 11 games covering numbers to one million, order of operations, fraction comparison, written arithmetic, number properties, fraction operations, word problems, geometry, measurement, data, and probability.
 - Preserve legacy public URLs with lightweight redirects when moving published games.
 - Treat `sandbox/sandbox.html` as the preview hub for all new or substantially changed content.
 - Add staged content to the sandbox preview hub so the user can test it at the published sandbox URL before production promotion.
@@ -39,6 +40,8 @@ Edu Games is a collection of educational English and math games created for chil
 - Use age-appropriate vocabulary, instructions, examples, and difficulty.
 - Keep questions and answers unambiguous and factually correct.
 - Prefer varied exercises while preventing impossible, duplicate, or misleading answer choices.
+- Keep guided lesson examples fixed and intentional so explanations remain clear and repeatable.
+- Generate game exercises, values, and answer choices dynamically where appropriate; occasional repeats are acceptable, but immediate duplicate rounds should be avoided.
 - Preserve the educational objective of an existing game when extending it.
 - When adding randomized content, ensure generated values always satisfy the exercise's rules.
 - Do not add advertising, external tracking, purchases, or data collection unless explicitly requested.
@@ -60,5 +63,6 @@ Edu Games is a collection of educational English and math games created for chil
 - Verify responsive behavior at phone-sized and desktop-sized widths.
 - Check Hebrew directionality, English directionality, touch controls, navigation links, and speech controls.
 - Confirm that existing games and hub links continue to work.
+- For randomized games, exercise every generator category and verify that generated answers and distractors are valid.
 - Validate all new content through `sandbox/sandbox.html` before adding it to the production hubs or navigation.
 - Do not add build or test tooling solely to validate a small HTML-only change.

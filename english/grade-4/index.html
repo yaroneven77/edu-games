@@ -1,0 +1,1547 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>English Academy · Grade 4</title>
+<style>
+  :root{
+    --blue:#2477c8;--blue-dark:#15558f;--green:#32aa66;--red:#df5b51;--purple:#8a63d2;
+    --yellow:#ffd34d;--orange:#f39a3f;--ink:#243b53;--muted:#5f7890;--paper:#fff;
+    --shadow:rgba(27,67,99,.18);--pale:#eef7fd;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{scroll-behavior:smooth;max-width:100%;overflow-x:hidden}
+  body{
+    margin:0;min-height:100vh;font-family:"Segoe UI","Arial Hebrew",Arial,sans-serif;color:var(--ink);
+    background:linear-gradient(155deg,#fff8e7 0%,#d7f2ff 52%,#ece5ff 100%);max-width:100%;overflow-x:hidden;
+  }
+  button,a{font:inherit}
+  button{touch-action:manipulation}
+  .page{width:min(1120px,100%);max-width:100%;margin:auto;padding:14px 14px 42px;overflow:hidden}
+  header{text-align:center;padding:4px 0 18px}
+  .toplinks{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;min-width:0}
+  .home,.hub-back{
+    display:inline-flex;align-items:center;gap:6px;border:0;text-decoration:none;color:var(--blue-dark);
+    background:#fff;border-radius:15px;padding:9px 13px;font-weight:900;box-shadow:0 4px 0 var(--shadow);cursor:pointer;
+  }
+  .pending{
+    display:inline-block;background:#fff0cf;color:#865800;border:2px dashed #dda033;border-radius:999px;
+    padding:5px 12px;font-size:12px;font-weight:900;
+  }
+  .logo{
+    width:100%;max-width:100%;margin:13px 0 2px;font-size:clamp(31px,7vw,55px);font-weight:1000;color:var(--yellow);
+    text-shadow:2px 2px 0 var(--red),4px 4px 0 var(--blue),0 7px 17px var(--shadow);
+    line-height:1.08;overflow-wrap:anywhere;
+  }
+  .subtitle{font-size:clamp(16px,3.5vw,21px);font-weight:800;color:var(--blue-dark);line-height:1.6}
+  .english{direction:ltr;font-family:"Segoe UI",Arial,sans-serif;max-width:100%}
+  .section-title{display:flex;align-items:center;gap:9px;min-width:0;margin:24px 3px 12px;color:var(--blue-dark)}
+  .section-title h2{margin:0;font-size:clamp(23px,5vw,31px)}
+  .section-title span{font-size:28px}
+  .section-en{direction:ltr;text-align:right;font-weight:800;color:var(--muted);margin-top:2px}
+  .topic-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;min-width:0;width:100%}
+  .topic-card{
+    min-height:164px;border:0;border-top:8px solid var(--card-color,var(--blue));border-radius:22px;background:#fff;
+    padding:18px 12px 15px;color:var(--ink);box-shadow:0 7px 0 var(--shadow);cursor:pointer;text-align:center;
+    transition:transform .12s,box-shadow .12s;min-width:0;width:100%;max-width:100%;overflow:hidden;
+  }
+  .topic-card:active{transform:translateY(4px);box-shadow:0 3px 0 var(--shadow)}
+  .topic-card:focus-visible,.choice:focus-visible,.primary:focus-visible,.secondary:focus-visible{outline:4px solid #ffbf2f;outline-offset:3px}
+  .topic-card .icon{display:block;font-size:38px;line-height:1;margin-bottom:9px}
+  .topic-card strong{display:block;font-size:18px;color:var(--blue-dark);line-height:1.25;overflow-wrap:anywhere}
+  .topic-card small{display:block;color:var(--muted);font-weight:800;margin-top:7px;line-height:1.35}
+  .topic-card.challenge:after{
+    content:"אתגר הדרגתי";display:inline-block;margin-top:9px;background:#fff0cf;color:#8a5700;
+    border-radius:999px;padding:3px 9px;font-size:11px;font-weight:900;
+  }
+  .count-note{background:#fff;border-radius:18px;padding:11px 15px;box-shadow:0 4px 0 var(--shadow);font-weight:800;text-align:center}
+  .source-note{
+    margin:12px auto 0;max-width:920px;background:#f5efff;border:2px solid #d7c3f3;border-radius:16px;
+    padding:10px 14px;text-align:center;line-height:1.55;font-size:14px;color:#59447d;
+  }
+  .source-note a{color:#5b39a8;font-weight:900}
+  .audit-note{margin-top:7px}.audit-note summary{cursor:pointer;font-weight:900}
+  .audit-note div{margin-top:6px}
+  .hidden{display:none!important}
+  .topic-shell{max-width:850px;margin:auto}
+  .topic-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:8px 0 14px}
+  .topic-heading{flex:1;text-align:center}
+  .topic-heading .big-icon{font-size:43px}
+  .topic-heading h1{margin:3px 0;color:var(--blue-dark);font-size:clamp(27px,6vw,41px)}
+  .topic-heading p{margin:0;font-weight:800;color:var(--muted)}
+  .lesson-card,.practice-card{
+    background:#fff;border-radius:26px;padding:clamp(18px,4vw,28px);box-shadow:0 9px 0 var(--shadow);margin-bottom:22px;
+  }
+  .lesson-card h2,.practice-card h2{margin:0 0 12px;color:var(--blue-dark);font-size:clamp(23px,5vw,30px)}
+  .lesson-text{font-size:18px;line-height:1.75;direction:rtl;text-align:right}
+  .rule{
+    background:#fff5d8;border:3px dashed #dfa43b;border-radius:17px;padding:13px 15px;margin:15px 0;
+    font-size:18px;font-weight:900;line-height:1.7;direction:rtl;text-align:right;
+  }
+  .rule:before{content:"📌 כלל: "}
+  .examples{display:grid;gap:10px;margin:14px 0 18px}
+  .example{
+    display:flex;direction:ltr;align-items:center;justify-content:space-between;gap:10px;background:var(--pale);
+    border-radius:15px;padding:11px 13px;text-align:left;font-size:18px;font-weight:800;
+  }
+  .audio{
+    flex:0 0 auto;border:0;width:43px;height:43px;border-radius:50%;background:var(--yellow);cursor:pointer;
+    box-shadow:0 3px 0 rgba(140,96,0,.22);font-size:20px;
+  }
+  .audio:disabled{filter:grayscale(1);opacity:.45;cursor:not-allowed}
+  .lesson-action{text-align:center}
+  .wordbank-details{background:#f2f8ff;border:2px solid #c9dfef;border-radius:17px;padding:10px 12px;margin:15px 0}
+  .wordbank-details summary{cursor:pointer;font-weight:900;color:var(--blue-dark)}
+  .full-vocab-bank{display:flex;direction:ltr;flex-wrap:wrap;justify-content:center;gap:7px;margin-top:11px}
+  .vocab-chip{border:2px solid #c9dfef;background:#fff;border-radius:999px;padding:6px 10px;cursor:pointer;font-weight:800}
+  .vocab-chip .word-en,.vocab-chip .word-he{display:block}
+  .vocab-chip .word-en{direction:ltr}.vocab-chip .word-he{direction:rtl;color:var(--muted);font-size:12px}
+  .pattern-box{background:#eefaf4;border:2px solid #bde7cf;border-radius:17px;padding:12px 14px;margin:15px 0 19px;line-height:1.55}
+  .pattern-list{display:flex;direction:ltr;flex-wrap:wrap;gap:7px;justify-content:center;margin-top:9px}
+  .pattern-chip{direction:ltr;background:#fff;border:2px solid #c8e8d5;border-radius:999px;padding:5px 10px;font-size:13px;font-weight:800}
+  .primary,.secondary,.next,.check-order,.reset-order{
+    border:0;border-radius:16px;padding:12px 20px;font-weight:900;cursor:pointer;box-shadow:0 4px 0 var(--shadow);
+  }
+  .primary{background:var(--green);color:#fff;font-size:18px}
+  .secondary{background:#e8f1f8;color:var(--blue-dark)}
+  .practice-top{display:flex;justify-content:space-between;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:13px}
+  .pill{background:#edf5fb;border-radius:999px;padding:7px 12px;font-weight:900;color:var(--blue-dark)}
+  .progress{height:13px;background:#e5edf4;border-radius:999px;overflow:hidden;margin-bottom:17px}
+  .progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),#62cf8d);transition:width .25s}
+  .question-box{background:#f8fbfe;border:3px solid #d5e8f5;border-radius:20px;padding:16px;text-align:center}
+  .instruction{font-weight:900;color:var(--purple);font-size:17px;margin-bottom:9px}
+  .passage{
+    direction:ltr;text-align:left;background:#fff;border:2px solid #cfe4f2;border-radius:16px;padding:15px;
+    font-size:17px;line-height:1.65;margin:10px 0 14px;white-space:pre-line;
+  }
+  .prompt-row{display:flex;direction:ltr;align-items:center;justify-content:center;gap:10px}
+  .prompt{font-size:clamp(21px,5vw,29px);line-height:1.45;font-weight:900;margin:7px 0}
+  .choices{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:16px}
+  .choice{
+    border:3px solid #cfe2ef;background:#fff;border-radius:17px;padding:13px 10px;min-height:58px;
+    color:var(--ink);font-size:clamp(17px,4vw,21px);font-weight:900;cursor:pointer;direction:ltr;
+  }
+  .choice:active:not(:disabled){transform:scale(.98)}
+  .choice.correct{background:#d9f6e3;border-color:var(--green);color:#17683a}
+  .choice.wrong{background:#ffe0dc;border-color:var(--red);color:#9f3028}
+  .choice:disabled{cursor:default}
+  .feedback{min-height:31px;margin-top:13px;font-size:19px;font-weight:900;line-height:1.5}
+  .feedback.good{color:#1b854c}.feedback.try{color:#bc493f}
+  .explanation{margin-top:10px;padding:13px;border-radius:15px;background:#f1ebfb;display:grid;gap:10px}
+  .explanation-block{padding:10px 12px;border-radius:12px;background:#fff;line-height:1.6}
+  .explanation-label{display:block;margin-bottom:3px;color:#67518a;font-size:14px;font-weight:900}
+  .explanation-text{margin:0;font-weight:700}
+  .answer-chip-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .answer-chip-label{color:#67518a;font-size:14px;font-weight:900}
+  .answer-chip{padding:5px 10px;border:2px solid #c9b8e8;border-radius:999px;background:#fff;color:#453565;font-weight:900}
+  .next{display:block;margin:14px auto 0;background:var(--blue);color:#fff}
+  .order-answer{
+    min-height:67px;direction:ltr;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;
+    border:3px dashed #b8cfe0;border-radius:16px;background:#fff;padding:10px;margin-top:13px;
+  }
+  .placed{background:#def0fb;border-radius:10px;padding:7px 9px;font-weight:900;direction:ltr}
+  .order-bank{display:flex;direction:ltr;flex-wrap:wrap;justify-content:center;gap:9px;margin:13px 0}
+  .order-bank button{
+    border:2px solid #c8ddec;background:#eef7fd;border-radius:13px;padding:9px 11px;font-weight:900;cursor:pointer;
+  }
+  .order-bank button:disabled{opacity:.3}
+  .order-actions{display:flex;justify-content:center;gap:9px;flex-wrap:wrap}
+  .check-order{background:var(--green);color:#fff}.reset-order{background:#e8eef4;color:var(--ink)}
+  .summary{text-align:center;padding:18px}
+  .summary .trophy{font-size:65px}.summary h3{font-size:28px;color:var(--blue-dark);margin:6px}
+  #selftest-result{
+    white-space:pre-wrap;direction:ltr;text-align:left;max-width:1050px;margin:20px auto;background:#fff;border:4px solid var(--purple);
+    border-radius:16px;padding:14px;font:700 14px Consolas,monospace;
+  }
+  .toast{
+    position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:20;background:#243b53;color:#fff;
+    border-radius:14px;padding:10px 15px;font-weight:800;box-shadow:0 5px 18px rgba(0,0,0,.25);
+  }
+  footer{text-align:center;color:#67829a;font-size:13px;padding:25px 8px 5px}
+  @media(max-width:850px){.topic-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+  @media(max-width:620px){
+    .topic-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+    .topic-card{min-height:145px;padding:15px 8px}.topic-card strong{font-size:16px}
+    .choices{grid-template-columns:1fr}.topic-head{align-items:flex-start}.hub-back{padding:8px 10px}
+    .logo{font-size:clamp(25px,7vw,32px)}.logo .english{display:block;white-space:normal}
+    .toplinks{font-size:12px}.home,.pending{min-width:0;padding:8px 9px}
+    .section-title h2{font-size:clamp(21px,6vw,27px);overflow-wrap:anywhere}
+  }
+  @media(max-width:370px){.topic-grid{grid-template-columns:1fr}.topic-card{min-height:126px}}
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <div class="toplinks">
+      <a class="home" href="../">⬆️🏠 בחירת כיתה</a>
+    </div>
+    <div class="logo"><span class="english">English Academy</span> 🎓</div>
+    <div class="subtitle">אקדמיית האנגלית של כיתה ד' · לומדים, מקשיבים ומתרגלים</div>
+  </header>
+
+  <main id="hub-view">
+    <div class="count-note">בחרו נושא. בכל נושא מחכים שיעור קצר, דוגמאות קבועות ותרגול מתחלף. מספר נושאים לבחירה: <span id="topic-count"></span></div>
+    <section>
+      <div class="section-title"><span>🧠</span><div><h2>אוצר מילים</h2><div class="section-en">Vocabulary</div></div></div>
+      <div class="topic-grid" id="vocab-grid"></div>
+    </section>
+    <section>
+      <div class="section-title"><span>🧩</span><div><h2>דקדוק</h2><div class="section-en">Grammar</div></div></div>
+      <div class="topic-grid" id="grammar-grid"></div>
+    </section>
+    <section>
+      <div class="section-title"><span>🚀</span><div><h2>מיומנויות</h2><div class="section-en">Skills</div></div></div>
+      <div class="topic-grid" id="skills-grid"></div>
+    </section>
+  </main>
+
+  <main id="topic-view" class="topic-shell hidden">
+    <div class="topic-head">
+      <button class="hub-back" id="back-to-hub">↩ כל הנושאים</button>
+      <div class="topic-heading">
+        <div class="big-icon" id="topic-icon"></div>
+        <h1 id="topic-title"></h1>
+        <p class="english" id="topic-title-en"></p>
+      </div>
+    </div>
+    <article class="lesson-card">
+      <h2>📚 שיעור קצר</h2>
+      <div class="lesson-text" id="lesson-text"></div>
+      <div class="rule" id="lesson-rule"></div>
+      <h3>דוגמאות נכונות וקבועות:</h3>
+      <div class="examples" id="lesson-examples"></div>
+      <details class="wordbank-details hidden" id="vocab-bank-section">
+        <summary>🔤 מחסן המילים המלא · לחצו על מילה כדי לשמוע</summary>
+        <div class="full-vocab-bank" id="full-vocab-bank"></div>
+      </details>
+      <div class="pattern-box">
+        <strong>🧪 דפוסי התרגול שנלקחו מחומרי המקור ועובדו למשחק:</strong>
+        <div class="pattern-list" id="pattern-list"></div>
+      </div>
+      <div class="lesson-action">
+        <button class="primary" id="start-practice">🎮 מתחילים לתרגל</button>
+      </div>
+    </article>
+    <section class="practice-card hidden" id="practice-card">
+      <div class="practice-top">
+        <span class="pill">שאלה <span id="round">1</span> מתוך 10</span>
+        <h2>תרגול</h2>
+        <span class="pill">⭐ <span id="score">0</span></span>
+      </div>
+      <div class="progress"><span id="progress-bar"></span></div>
+      <div id="question-area"></div>
+    </section>
+  </main>
+
+  <div id="selftest-result" class="hidden" aria-live="polite"></div>
+  <footer><div>תוכן לימודי מקורי לכיתה ד׳</div><div class="english">English Grade 4</div></footer>
+</div>
+<div class="toast hidden" id="toast"></div>
+
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const hasHebrew=value=>/[\u0590-\u05ff]/.test(String(value));
+const hasLatin=value=>/[A-Za-z]/.test(String(value));
+const hasMixedScripts=value=>hasHebrew(value)&&hasLatin(value);
+function setPureText(element,text,forcedDirection="auto"){
+  const value=String(text);
+  element.textContent=value;
+  element.dir=forcedDirection==="auto"?(hasHebrew(value)?"rtl":"ltr"):forcedDirection;
+}
+function shuffle(values){
+  const a=values.slice();
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}
+  return a;
+}
+const unique=values=>[...new Set(values.map(String))];
+function authoredText(value,field){
+  const text=String(value);
+  if(hasMixedScripts(text))throw new Error(`Mixed-script authored ${field}`);
+  return text;
+}
+function authoredEnglish(value,field){
+  const text=String(value);
+  if(!text.trim()||hasHebrew(text)||!hasLatin(text))throw new Error(`Invalid English ${field}`);
+  return text;
+}
+function authoredHebrew(value,field){
+  const text=String(value);
+  if(!text.trim()||hasLatin(text)||!hasHebrew(text))throw new Error(`Invalid Hebrew ${field}`);
+  return text;
+}
+function makeMc(instruction,prompt,answer,distractors,explanation,explanationHe,speak="",extra={}){
+  const choices=shuffle(unique([answer,...distractors]).slice(0,4));
+  return {type:"mc",instruction:authoredText(instruction,"instruction"),prompt:authoredText(prompt,"prompt"),
+    answer:authoredText(answer,"answer"),choices:choices.map(value=>authoredText(value,"choice")),
+    explanation:authoredEnglish(explanation,"explanation"),explanationHe:authoredHebrew(explanationHe,"explanationHe"),
+    speak:String(speak||""),signature:String(extra.signature||prompt+"|"+answer),passage:extra.passage||""};
+}
+function makeOrder(instruction,prompt,ordered,explanation,explanationHe,speak=""){
+  return {type:"order",instruction:authoredText(instruction,"instruction"),prompt:authoredText(prompt,"prompt"),
+    answer:ordered.map(value=>authoredText(value,"answer")),choices:shuffle(ordered).map(value=>authoredText(value,"choice")),
+    explanation:authoredEnglish(explanation,"explanation"),explanationHe:authoredHebrew(explanationHe,"explanationHe"),speak,
+    signature:prompt+"|"+ordered.join("~"),passage:""};
+}
+function bankDistractors(bank,item,key){
+  return shuffle(bank.filter(x=>x!==item).map(x=>x[key])).filter((v,i,a)=>a.indexOf(v)===i).slice(0,3);
+}
+function vocabQuestion(bank,label,forcedMode="",forcedItem=null){
+  const item=forcedItem||pick(bank),mode=forcedMode||(Math.random()<.5?"toEnglish":"toHebrew");
+  if(mode==="toEnglish"){
+    return makeMc("בחרו את המילה באנגלית.",`${item.emoji||"🔎"} ${item.he}`,item.en,bankDistractors(bank,item,"en"),
+      `${item.en} is the correct English word for the Hebrew prompt.`,
+      "המילה שבתשובה מתאימה בדיוק למשמעות שהוצגה בשאלה. האפשרויות האחרות מציינות פריטים או רעיונות שונים.",
+      item.en,{signature:label+"|en|"+item.en});
+  }
+  return makeMc("בחרו את הפירוש בעברית.",item.en,item.he,bankDistractors(bank,item,"he"),
+    "The selected Hebrew meaning matches the English word in the prompt.",
+    "הפירוש שנבחר תואם למילה שהוצגה. האפשרויות האחרות הן פירושים של מילים אחרות מאותו אוצר מילים.",
+    item.en,{signature:label+"|he|"+item.en});
+}
+function missingLetterQuestion(bank,label,forcedItem=null,forcedIndex=null){
+  const item=forcedItem||pick(bank),word=item.en,positions=[...word].map((_,i)=>i).filter(i=>/[a-z]/i.test(word[i]));
+  const index=forcedIndex===null?pick(positions):forcedIndex,answer=word[index].toLowerCase(),shown=word.slice(0,index)+"_"+word.slice(index+1);
+  const letters="abcdefghijklmnopqrstuvwxyz".split("").filter(letter=>letter!==answer);
+  return makeMc("איזו אות חסרה במילה?",shown,answer,shuffle(letters).slice(0,3),
+    `The missing letter is ${answer}, which completes the word ${word}.`,
+    "האות שנבחרה משלימה את רצף האותיות ויוצרת את האיות התקין של המילה. האותיות האחרות יוצרות איות שגוי.",
+    word,{signature:label+"|missing|"+word+"|"+index});
+}
+function sequenceQuestion(bank,label,forcedDirection=""){
+  const direction=forcedDirection||(Math.random()<.5?"next":"previous");
+  const index=direction==="next"?Math.floor(Math.random()*(bank.length-1))+0:Math.floor(Math.random()*(bank.length-1))+1;
+  const answer=bank[index+(direction==="next"?1:-1)].en,item=bank[index];
+  return makeMc(direction==="next"?"מה בא אחר כך בסדר?":"מה בא קודם בסדר?",
+    `${direction==="next"?"After":"Before"} ${item.en} comes…`,answer,bank.filter(x=>x.en!==answer&&x!==item).map(x=>x.en),
+    `${answer} comes ${direction==="next"?"after":"before"} ${item.en}.`,
+    direction==="next"?"התשובה היא הפריט הבא בסדר הקבוע. האפשרויות האחרות נמצאות במקום אחר ברצף.":"התשובה היא הפריט הקודם בסדר הקבוע. האפשרויות האחרות נמצאות במקום אחר ברצף.",
+    `${item.en}, ${answer}`,
+    {signature:label+"|"+direction+"|"+item.en});
+}
+function bankQuestion(items){
+  const q=pick(items);
+  return makeMc(q.instruction||"בחרו את התשובה הנכונה.",q.prompt,q.answer,q.wrong,q.explanation,q.explanationHe,q.speak||q.prompt,
+    {signature:q.signature||q.prompt});
+}
+
+const BODY=[
+  ["head","ראש","🙂"],["hair","שיער","💇"],["face","פנים","😊"],["nose","אף","👃"],["ear","אוזן","👂"],
+  ["eye","עין","👁️"],["mouth","פה","👄"],["teeth","שיניים","😁"],["neck","צוואר","🧣"],
+  ["shoulder","כתף","🤷"],["chest","חזה","👕"],["stomach","בטן","🫃"],["arm","זרוע","💪"],
+  ["hand","כף יד","✋"],["leg","רגל","🦵"],["knee","ברך","🦿"],["foot","כף רגל","🦶"]
+].map(([en,he,emoji])=>({en,he,emoji}));
+const FAMILY=[
+  ["mother","אמא","👩"],["father","אבא","👨"],["parents","הורים","👨‍👩‍👧"],["sister","אחות","👧"],
+  ["brother","אח","👦"],["son","בן","🧒"],["daughter","בת","👧"],["grandmother","סבתא","👵"],
+  ["grandfather","סבא","👴"],["aunt","דודה","👩"],["uncle","דוד","👨"]
+].map(([en,he,emoji])=>({en,he,emoji}));
+const NUMBER_WORDS=["one","two","three","four","five","six","seven","eight","nine","ten","eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen","twenty"];
+const NUMBER_HE=["אחת","שתיים","שלוש","ארבע","חמש","שש","שבע","שמונה","תשע","עשר","אחת עשרה","שתים עשרה","שלוש עשרה","ארבע עשרה","חמש עשרה","שש עשרה","שבע עשרה","שמונה עשרה","תשע עשרה","עשרים"];
+const NUMBERS=NUMBER_WORDS.map((en,i)=>({en,he:NUMBER_HE[i],emoji:String(i+1),value:i+1}));
+const DAYS=[
+  ["Sunday","יום ראשון"],["Monday","יום שני"],["Tuesday","יום שלישי"],["Wednesday","יום רביעי"],
+  ["Thursday","יום חמישי"],["Friday","יום שישי"],["Saturday","שבת"]
+].map(([en,he])=>({en,he,emoji:"📅"}));
+const MONTHS=[
+  ["January","ינואר"],["February","פברואר"],["March","מרץ"],["April","אפריל"],["May","מאי"],["June","יוני"],
+  ["July","יולי"],["August","אוגוסט"],["September","ספטמבר"],["October","אוקטובר"],["November","נובמבר"],["December","דצמבר"]
+].map(([en,he])=>({en,he,emoji:"🗓️"}));
+const SEASONS=[
+  ["spring","אביב","🌷"],["summer","קיץ","☀️"],["autumn","סתיו","🍂"],["winter","חורף","🌧️"]
+].map(([en,he,emoji])=>({en,he,emoji}));
+const GENERAL=[
+  ["pencil","עיפרון","✏️","school"],["notebook","מחברת","📓","school"],["teacher","מורה","🧑‍🏫","school"],
+  ["classroom","כיתה","🏫","school"],["library","ספרייה","📚","school"],["homework","שיעורי בית","📝","school"],
+  ["bedroom","חדר שינה","🛏️","home"],["kitchen","מטבח","🍳","home"],["window","חלון","🪟","home"],
+  ["garden","גינה","🌳","home"],["table","שולחן","🪑","home"],["lamp","מנורה","💡","home"],
+  ["bread","לחם","🍞","food"],["cheese","גבינה","🧀","food"],["apple","תפוח","🍎","food"],
+  ["rice","אורז","🍚","food"],["carrot","גזר","🥕","food"],["sandwich","כריך","🥪","food"],
+  ["rabbit","ארנב","🐇","animals"],["turtle","צב","🐢","animals"],["horse","סוס","🐎"],
+  ["dolphin","דולפין","🐬","animals"],["parrot","תוכי","🦜","animals"],["kitten","חתלתול","🐈","animals"],
+  ["read","לקרוא","📖","activities"],["draw","לצייר","🎨","activities"],["swim","לשחות","🏊","activities"],
+  ["dance","לרקוד","💃","activities"],["build","לבנות","🧱","activities"],["cook","לבשל","🥣","activities"]
+].map(([en,he,emoji,group])=>({en,he,emoji,group:group||"animals"}));
+const VOCAB_BANKS={
+  body:BODY,family:FAMILY,numbers:NUMBERS,days:DAYS,months:MONTHS,seasons:SEASONS,"general-vocab":GENERAL
+};
+const REQUIRED_VOCAB={
+  body:["head","hair","face","nose","ear","eye","mouth","teeth","neck","shoulder","chest","stomach","arm","hand","leg","knee","foot"],
+  family:["mother","father","parents","sister","brother","son","daughter","grandmother","grandfather","aunt","uncle"],
+  numbers:["one","two","three","four","five","six","seven","eight","nine","ten"],
+  days:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+  months:["January","February","March","April","May","June","July","August","September","October","November","December"],
+  seasons:["spring","summer","autumn","winter"]
+};
+
+const PRESENT_SIMPLE=[
+  {prompt:"Maya ___ a book every evening.",answer:"reads",wrong:["read","is reading","reading"],explanation:"Maya uses the third-person singular form, so the verb takes s: Maya reads every evening."},
+  {prompt:"We ___ football on Fridays.",answer:"play",wrong:["plays","are playing","played"],explanation:"The subject we takes the base verb: We play football on Fridays."},
+  {prompt:"Dad ___ dinner on Sundays.",answer:"cooks",wrong:["cook","is cooking","cooking"],explanation:"Dad is a third-person singular subject, so cook becomes cooks."},
+  {prompt:"I ___ English at school every day.",answer:"study",wrong:["studies","am studying","studied"],explanation:"The subject I takes the base verb in the Present Simple: I study."},
+  {prompt:"Tom ___ TV after homework.",answer:"watches",wrong:["watch","is watching","watched"],explanation:"A verb ending in ch takes es with a third-person singular subject: watch becomes watches."},
+  {prompt:"My friends ___ to school by bus every day.",answer:"go",wrong:["goes","are going","went"],explanation:"My friends is a plural subject, so it takes the base verb go."},
+  {prompt:"Ben ___ like cold milk.",answer:"does not",wrong:["do not","is not","not"],explanation:"A negative sentence with he uses does not before the base verb."},
+  {prompt:"Lina ___ milk in the morning.",answer:"does not drink",wrong:["do not drink","does not drinks","is not drink"],explanation:"A negative sentence with she uses does not followed by the base verb drink."},
+  {instruction:"Choose the correct yes/no question.",prompt:"Question about Lina's habit of going to school:",answer:"Does Lina walk to school?",wrong:["Do Lina walks to school?","Does Lina walks to school?","Is Lina walk to school?"],explanation:"A question with she uses does followed by the base verb walk.",speak:"Does Lina walk to school?"},
+  {instruction:"Choose the correct information question.",prompt:"Ask what time Tom usually gets up:",answer:"When does Tom get up?",wrong:["When do Tom gets up?","When is Tom get up?","When does Tom gets up?"],explanation:"Wh-word + does + subject + base verb.",speak:"When does Tom get up?"},
+  {instruction:"בחרו שאלת נושא נכונה.",prompt:"שואלים מי אוכל ארוחת בוקר בכל יום:",answer:"Who eats breakfast every day?",wrong:["Who does eat breakfast every day?","Who eat breakfast every day?","Who is eat breakfast every day?"],explanation:"A subject question with who uses the third-person singular verb eats.",speak:"Who eats breakfast every day?"},
+  {instruction:"בחרו את האיות הנכון.",prompt:"study with she →",answer:"studies",wrong:["studys","studyes","study"],explanation:"A consonant before final y changes the ending to ies: study becomes studies."},
+  {instruction:"בחרו את האיות הנכון.",prompt:"mix with he →",answer:"mixes",wrong:["mixs","mixies","mix"],explanation:"A verb ending in x takes es: mix becomes mixes."},
+  {instruction:"בחרו את האיות הנכון.",prompt:"play with she →",answer:"plays",wrong:["plaies","playes","play"],explanation:"A vowel before final y means that the verb only takes s: play becomes plays."},
+  {instruction:"בחרו ביטוי זמן שמתאים להרגל.",prompt:"I feed my dog ___.",answer:"every day",wrong:["right now","at the moment","yesterday"],explanation:"Every day indicates a habit in the Present Simple."},
+  {instruction:"בחרו את המשפט המתוקן.",prompt:"My baby cry when he is hungry.",answer:"My baby cries when he is hungry.",wrong:["My baby crys when he is hungry.","My baby crying when he is hungry.","My baby does cries when he is hungry."],explanation:"My baby is a third-person singular subject, so cry changes to cries.",speak:"My baby cries when he is hungry."}
+];
+const PRESENT_CONTINUOUS=[
+  {prompt:"Look! The children ___ in the yard.",answer:"are playing",wrong:["play","is playing","played"],explanation:"The action is happening now, so the plural subject children takes are playing."},
+  {prompt:"I ___ a story right now.",answer:"am writing",wrong:["write","is writing","wrote"],explanation:"The subject I takes am followed by the ing form writing."},
+  {prompt:"Noa ___ a photo now.",answer:"is taking",wrong:["takes","take","took"],explanation:"The final e is dropped before ing, so take becomes taking."},
+  {prompt:"Look! The cat ___ on the sofa.",answer:"is lying",wrong:["lies","lay","was lying"],explanation:"The verb lie changes to lying when it describes reclining."},
+  {prompt:"Listen! The birds ___.",answer:"are singing",wrong:["sing","is singing","sang"],explanation:"Birds is plural, so the correct form is are singing."},
+  {prompt:"Why ___ you smiling?",answer:"are",wrong:["is","am","do"],explanation:"The subject you takes are in the question Why are you smiling?"},
+  {prompt:"I ___ this subject today.",answer:"am not studying",wrong:["do not studying","am not study","not am studying"],explanation:"A Present Continuous negative uses the subject, a form of be, not, and the ing form."},
+  {instruction:"בחרו שאלת כן/לא נכונה.",prompt:"שואלים אם הם מקשיבים עכשיו:",answer:"Are they listening now?",wrong:["Do they listening now?","Are they listen now?","Is they listening now?"],explanation:"Be + subject + verb-ing: Are they listening now?",speak:"Are they listening now?"},
+  {instruction:"Choose the correct information question.",prompt:"Ask what Adi is writing:",answer:"What is Adi writing?",wrong:["What does Adi writing?","What Adi is write?","What is Adi write?"],explanation:"What + is + subject + verb-ing.",speak:"What is Adi writing?"},
+  {instruction:"בחרו שאלת נושא נכונה.",prompt:"שואלים מי מקשיב למורה עכשיו:",answer:"Who is listening now?",wrong:["Who are listening now?","Who does listening now?","Who is listen now?"],explanation:"Who + is + verb-ing.",speak:"Who is listening now?"},
+  {instruction:"בחרו את האיות הנכון.",prompt:"cut + ing →",answer:"cutting",wrong:["cuting","cuttingg","cuttinge"],explanation:"A short consonant-vowel-consonant verb doubles its final consonant before ing."},
+  {instruction:"בחרו את האיות הנכון.",prompt:"fix + ing →",answer:"fixing",wrong:["fixxing","fixeing","fixes"],explanation:"A final x is not doubled, so fix becomes fixing."},
+  {instruction:"בחרו את האיות הנכון.",prompt:"tie + ing →",answer:"tying",wrong:["tieing","tiing","tyying"],explanation:"A verb ending in ie changes ie to y before ing: tie becomes tying."},
+  {instruction:"איזה משפט כתוב בהווה ממושך?",prompt:"Choose the Present Continuous sentence.",answer:"We are planning our trip.",wrong:["We plan a trip every year.","We planned a trip yesterday.","We can plan a trip."],explanation:"The phrase are planning follows the pattern be plus an ing verb."},
+  {prompt:"We ___ Grandma tonight.",answer:"are visiting",wrong:["visit","visited","visits"],explanation:"The Present Continuous can describe a near-future arrangement that is already planned."}
+];
+const PRESENT_CONTINUOUS_ORDERS=[
+  ["What","is","Adi","writing","now?"],
+  ["Are","you","brushing","your","hair","now?"],
+  ["Why","are","you","laughing?"],
+  ["Who","is","playing","this","melody?"]
+];
+const PAST_SIMPLE=[
+  {prompt:"Yesterday we ___ basketball.",answer:"played",wrong:["play","plays","are playing"],explanation:"Play is a regular verb, so its Past Simple form is played."},
+  {prompt:"Dana ___ to the museum last week.",answer:"went",wrong:["go","goed","goes"],explanation:"The irregular Past Simple form of go is went."},
+  {prompt:"The children ___ at school yesterday.",answer:"were",wrong:["was","are","is"],explanation:"The plural subject children takes were in the Past Simple."},
+  {prompt:"Tom ___ a new book yesterday.",answer:"had",wrong:["has","have","haved"],explanation:"The Past Simple form of have and has is had."},
+  {prompt:"She ___ a photo at the park yesterday.",answer:"took",wrong:["take","takes","taking"],explanation:"The irregular Past Simple form of take is took."},
+  {prompt:"They ___ a dolphin in the sea last weekend.",answer:"saw",wrong:["see","seen","sees"],explanation:"The irregular Past Simple form of see is saw."},
+  {prompt:"Grandpa ___ us last Saturday.",answer:"visited",wrong:["visits","visit","is visiting"],explanation:"Visit is a regular verb, so its Past Simple form is visited."},
+  {prompt:"I ___ an apple after lunch yesterday.",answer:"ate",wrong:["eat","eated","eats"],explanation:"The irregular Past Simple form of eat is ate."},
+  {prompt:"We ___ any juice last night.",answer:"did not drink",wrong:["did not drank","do not drink","were not drink"],explanation:"A Past Simple negative uses did not followed by the base verb drink."},
+  {instruction:"בחרו שאלת כן/לא נכונה.",prompt:"שואלים על ביקור אצל סבא וסבתא בשבוע שעבר:",answer:"Did you visit your grandparents last week?",wrong:["Did you visited your grandparents last week?","Do you visit your grandparents last week?","Were you visit your grandparents last week?"],explanation:"Did + subject + base verb.",speak:"Did you visit your grandparents last week?"},
+  {instruction:"Choose the correct information question.",prompt:"Ask why Maya called yesterday:",answer:"Why did Maya call yesterday?",wrong:["Why did Maya called yesterday?","Why Maya did call yesterday?","Why does Maya call yesterday?"],explanation:"Wh-word + did + subject + base verb.",speak:"Why did Maya call yesterday?"},
+  {instruction:"בחרו שאלת נושא נכונה.",prompt:"שואלים מי ביקש עוגייה:",answer:"Who asked for a cookie?",wrong:["Who did ask for a cookie?","Who ask for a cookie?","Who was ask for a cookie?"],explanation:"A Past Simple subject question uses the past verb directly after who."},
+  {instruction:"בחרו את האיות הנכון.",prompt:"love in the past →",answer:"loved",wrong:["loveed","lovied","lovved"],explanation:"A verb that already ends in e takes only d: love becomes loved."},
+  {instruction:"בחרו את האיות הנכון.",prompt:"study in the past →",answer:"studied",wrong:["studyed","studyd","studieded"],explanation:"A consonant before final y changes the ending to ied: study becomes studied."},
+  {instruction:"בחרו את האיות הנכון.",prompt:"stop in the past →",answer:"stopped",wrong:["stoped","stopt","stoppeed"],explanation:"A short consonant-vowel-consonant verb doubles the final consonant before ed."},
+  {instruction:"בחרו את המשפט השלילי הנכון.",prompt:"The train arrived at four.",answer:"The train did not arrive at four.",wrong:["The train did not arrived at four.","The train not arrive at four.","The train was not arrive at four."],explanation:"After did not, the verb returns to its base form arrive."}
+];
+const PAST_ORDERS=[
+  ["Did","Ben","go","by","plane?"],
+  ["Why","did","you","call","me?"],
+  ["What","did","she","eat","yesterday?"],
+  ["Who","made","this","drawing?"]
+];
+const BE_QUESTIONS=[
+  {prompt:"I ___ ready for school.",answer:"am",wrong:["is","are","be"],explanation:"The subject I always takes am in the present tense."},
+  {prompt:"My sister ___ nine years old.",answer:"is",wrong:["am","are","be"],explanation:"My sister is a third-person singular subject, so it takes is."},
+  {prompt:"The pencils ___ on the desk.",answer:"are",wrong:["is","am","be"],explanation:"The plural subject pencils takes are."},
+  {prompt:"You ___ my best friend.",answer:"are",wrong:["is","am","be"],explanation:"The subject you takes are."},
+  {prompt:"It ___ a sunny day.",answer:"is",wrong:["are","am","be"],explanation:"The subject it takes is."},
+  {prompt:"We ___ in Grade 4.",answer:"are",wrong:["is","am","be"],explanation:"The subject we takes are."},
+  {instruction:"השלימו את הסיפור הקצר.",prompt:"Dana is ten. She ___ a pupil.",answer:"is",wrong:["am","are","be"],explanation:"The pronoun she takes is."},
+  {instruction:"השלימו את הסיפור הקצר.",prompt:"Tom and Ben are brothers. They ___ at home.",answer:"are",wrong:["is","am","be"],explanation:"The pronoun they takes are."},
+  {instruction:"בחרו את התרגום הנכון.",prompt:'"אני מורה."',answer:"I am a teacher.",wrong:["I a teacher.","I is a teacher.","I are teacher."],explanation:"An English identity sentence needs the verb am after I.",speak:"I am a teacher."}
+];
+const PRONOUNS=[
+  {prompt:"___ is my sister, Dana.",answer:"She",wrong:["He","It","They"],explanation:"Dana is one girl, so the correct subject pronoun is she."},
+  {prompt:"Roni and I are friends. ___ play together.",answer:"We",wrong:["They","He","She"],explanation:"Roni and I = We."},
+  {prompt:"The book is new. ___ is blue.",answer:"It",wrong:["He","She","We"],explanation:"Use it to replace one object such as the book."},
+  {prompt:"Dan and Tom are brothers. ___ share a room.",answer:"They",wrong:["We","He","It"],explanation:"Dan and Tom = They."},
+  {prompt:"Mom calls Dana. Mom calls ___.",answer:"her",wrong:["him","them","us"],explanation:"Use the object pronoun her to replace Dana after the verb calls."},
+  {prompt:"The teacher helps Ben. The teacher helps ___.",answer:"him",wrong:["her","it","we"],explanation:"Use the object pronoun him to replace Ben after the verb helps."},
+  {prompt:"Please listen to Maya and me. Listen to ___.",answer:"us",wrong:["we","them","him"],explanation:"Maya and me becomes the object pronoun us after the preposition to."},
+  {instruction:"השלימו את הסיפור בכינוי מתאים.",prompt:"Maya has a rabbit. ___ feeds it every day.",answer:"She",wrong:["He","They","We"],explanation:"Maya is one girl, so the correct pronoun is she."},
+  {instruction:"השלימו את הסיפור בכינוי מתאים.",prompt:"The rabbit is small. ___ likes carrots.",answer:"It",wrong:["He","We","You"],explanation:"Use it for one animal when its sex is not specified."},
+  {instruction:"התאימו את הכינוי לפירוש.",prompt:"אנחנו →",answer:"we",wrong:["they","you","it"],explanation:"The English pronoun we matches the Hebrew prompt."}
+];
+const HAVE_HAS=[
+  {prompt:"I ___ a red backpack.",answer:"have",wrong:["has","am","is"],explanation:"The subject I takes have."},
+  {prompt:"Maya ___ two brothers.",answer:"has",wrong:["have","is","are"],explanation:"Maya is a third-person singular subject, so it takes has."},
+  {prompt:"The dog ___ a long tail.",answer:"has",wrong:["have","is","are"],explanation:"The dog is a singular subject, so it takes has."},
+  {prompt:"We ___ English on Monday.",answer:"have",wrong:["has","are","is"],explanation:"The subject we takes have."},
+  {prompt:"My parents ___ a small car.",answer:"have",wrong:["has","is","are"],explanation:"My parents is a plural subject, so it takes have."},
+  {prompt:"Does Tom ___ a pencil?",answer:"have",wrong:["has","having","had"],explanation:"After does, use the base form have."}
+];
+const POSSESSIVES=[
+  {prompt:"I have a book. It is ___ book.",answer:"my",wrong:["your","his","their"],explanation:"The subject pronoun I matches the possessive determiner my."},
+  {prompt:"You have a hat. It is ___ hat.",answer:"your",wrong:["my","her","our"],explanation:"The subject pronoun you matches the possessive determiner your."},
+  {prompt:"Amir has a bike. It is ___ bike.",answer:"his",wrong:["her","my","their"],explanation:"Amir can be replaced by he, so the possessive determiner is his."},
+  {prompt:"Dana has a kite. It is ___ kite.",answer:"her",wrong:["his","our","your"],explanation:"Dana can be replaced by she, so the possessive determiner is her."},
+  {prompt:"We have a classroom. It is ___ classroom.",answer:"our",wrong:["their","my","his"],explanation:"The subject pronoun we matches the possessive determiner our."},
+  {prompt:"The girls have bags. These are ___ bags.",answer:"their",wrong:["our","her","your"],explanation:"The girls can be replaced by they, so the possessive determiner is their."},
+  {instruction:"בחרו את הצירוף הנכון.",prompt:"הזנב של הכלב",answer:"the dog's tail",wrong:["the dogs tail","the dog tail's","the dog's tails"],explanation:"Add an apostrophe and s to a singular owner: the dog's tail.",speak:"the dog's tail"}
+];
+const ARTICLES=[
+  {prompt:"I see ___ apple on the table.",answer:"an",wrong:["a","some","the"],explanation:"Apple begins with a vowel sound, so the correct phrase is an apple."},
+  {prompt:"Dad has ___ new camera.",answer:"a",wrong:["an","some","the"],explanation:"Camera begins with a consonant sound, so the correct phrase is a camera."},
+  {prompt:"We need ___ pencils for the group.",answer:"some",wrong:["a","an","the"],explanation:"Pencils is plural and the exact number is not given, so some is appropriate."},
+  {prompt:"Please close ___ door next to you.",answer:"the",wrong:["a","an","some"],explanation:"The door is specific because it is the one next to the listener."},
+  {prompt:"There is ___ milk in the glass.",answer:"some",wrong:["a","an","the"],explanation:"Milk is uncountable, so some milk expresses an unspecified amount."},
+  {prompt:"She is reading ___ interesting book.",answer:"an",wrong:["a","some","the"],explanation:"Interesting begins with a vowel sound, so the phrase needs an."},
+  {instruction:"התאימו את הצירוף לתמונה.",prompt:"🍎",answer:"an apple",wrong:["a apple","some apple","an apples"],explanation:"Apple begins with a vowel sound, so the picture matches an apple.",speak:"an apple"},
+  {instruction:"התאימו את הצירוף לתמונה.",prompt:"🐈",answer:"a cat",wrong:["an cat","some cat","a cats"],explanation:"Cat begins with a consonant sound, so the picture matches a cat.",speak:"a cat"},
+  {instruction:"התאימו את הצירוף לתמונה.",prompt:"🍌 🍌 🍌",answer:"some bananas",wrong:["a bananas","an bananas","some banana is"],explanation:"The picture shows an unspecified plural quantity, so some bananas is correct.",speak:"some bananas"}
+];
+const THERE=[
+  {prompt:"___ two caps on the shelf.",answer:"There are",wrong:["There is","They are","It is"],explanation:"Two caps is plural, so the complete sentence is There are two caps on the shelf."},
+  {prompt:"___ a pencil in my bag.",answer:"There is",wrong:["There are","It are","They is"],explanation:"A pencil is singular, so the sentence begins with There is."},
+  {prompt:"___ some milk in the fridge.",answer:"There is",wrong:["There are","They are","It are"],explanation:"Milk is uncountable, so the sentence begins with There is."},
+  {prompt:"___ three birds in the tree.",answer:"There are",wrong:["There is","It is","They is"],explanation:"Three birds is plural, so the sentence begins with There are."},
+  {prompt:"___ an orange on the plate.",answer:"There is",wrong:["There are","They are","It are"],explanation:"An orange is singular, so the sentence begins with There is."},
+  {prompt:"___ many books in our library.",answer:"There are",wrong:["There is","It is","They is"],explanation:"Many books is plural, so the sentence begins with There are."},
+  {instruction:"הסתכלו בסצנת החדר ובחרו תיאור נכון.",prompt:"Room: 🛏️  📚 📚  💡",answer:"There are two books in the room.",wrong:["There is two books in the room.","There are a lamp in the room.","There is two beds in the room."],explanation:"The scene contains two books, so the plural structure There are is required."},
+  {instruction:"הסתכלו בסצנת החדר ובחרו תיאור נכון.",prompt:"Room: 🛏️  📚 📚  💡",answer:"There is a lamp in the room.",wrong:["There are a lamp in the room.","There is two lamps in the room.","There are lamp in the room."],explanation:"The scene contains one lamp, so the singular structure There is is required."},
+  {instruction:"בחרו משפט שאפשר להוסיף לתיאור חדר.",prompt:"Room: 🪟  🪑 🪑  🧸",answer:"There are two chairs near the window.",wrong:["There is two chairs near the window.","There are a teddy bear near the window.","There is chairs near the window."],explanation:"The phrase two chairs requires the plural structure There are."}
+];
+const NOUNS=[
+  {instruction:"איזו מילה היא שם עצם פרטי?",prompt:"Choose the proper noun.",answer:"Jerusalem",wrong:["city","water","pencil"],explanation:"Jerusalem names one specific city, so it is a proper noun and begins with a capital letter."},
+  {instruction:"איזו מילה היא שם עצם כללי?",prompt:"Choose the common noun.",answer:"teacher",wrong:["Monday","Maya","Israel"],explanation:"Teacher is a general name for a person in a profession, so it is a common noun."},
+  {instruction:"איזה שם עצם אינו ספיר?",prompt:"Choose the uncountable noun.",answer:"water",wrong:["bottle","apple","chair"],explanation:"Water is measured rather than counted as separate units, so it is uncountable."},
+  {instruction:"איזה שם עצם ספיר?",prompt:"Choose the countable noun.",answer:"pencil",wrong:["rice","milk","music"],explanation:"Pencil is countable because we can say one pencil and two pencils."},
+  {instruction:"איזו מילה היא שם עצם פרטי?",prompt:"Choose the proper noun.",answer:"Tuesday",wrong:["day","school","month"],explanation:"Tuesday names one specific day, so it is a proper noun and begins with a capital letter."},
+  {instruction:"איזה שם עצם אינו ספיר?",prompt:"Choose the uncountable noun.",answer:"bread",wrong:["sandwich","carrot","egg"],explanation:"Bread is usually uncountable, so we say some bread or a slice of bread."},
+  {instruction:"איזו מילה היא שם עצם מופשט?",prompt:"Choose the abstract noun.",answer:"friendship",wrong:["table","student","perfume"],explanation:"Friendship names an idea or relationship that cannot be touched, so it is abstract."},
+  {instruction:"איזו מילה נראית כשם עצם לפי הסיומת?",prompt:"Choose the noun.",answer:"happiness",wrong:["happy","careful","quickly"],explanation:"The ending ness commonly forms nouns, as in happiness."},
+  {prompt:"The water ___ too cold for swimming.",answer:"is",wrong:["are","am","be"],explanation:"Water is an uncountable singular noun, so it takes is."},
+  {prompt:"How ___ books are on the shelf?",answer:"many",wrong:["much","an","a"],explanation:"Books is a plural countable noun, so the question uses many."},
+  {prompt:"How ___ milk is in the glass?",answer:"much",wrong:["many","a","an"],explanation:"Milk is uncountable, so the question uses much."},
+  {instruction:"בחרו את שמות העצם במשפט.",prompt:"The teacher tells a story.",answer:"teacher, story",wrong:["tells, story","the, a","teacher, tells"],explanation:"Teacher and story are nouns, while tells is a verb."},
+  {instruction:"בחרו את התיקון המדויק.",prompt:"The moon is full tonight.",answer:"moon is a noun; full is an adjective",wrong:["full is the noun","tonight is the only noun","moon and full are verbs"],explanation:"Moon is the noun, while full is an adjective that describes the moon."},
+  {prompt:"My glasses ___ broken.",answer:"are",wrong:["is","am","be"],explanation:"Glasses has a plural form, so it takes are."}
+];
+const PLURALS=[
+  ["book","books",["bookes","book","books'"],"Most nouns add s, so book becomes books.","רוב שמות העצם מוסיפים סיומת רבים קצרה. האפשרויות האחרות מוסיפות סיומת מיותרת, משאירות יחיד או מציינות שייכות."],
+  ["monkey","monkeys",["monkies","monkeyes","monkey"],"A vowel before final y means that monkey only adds s.","כאשר לפני האות האחרונה יש תנועה, משאירים את הסיום ומוסיפים רק את סיומת הרבים הקצרה."],
+  ["elephant","elephants",["elephantes","elephant","elephants'"],"Most nouns add s, so elephant becomes elephants.","זהו שם עצם רגיל ולכן מוסיפים לו את סיומת הרבים הקצרה. החלופות משאירות יחיד או מוסיפות סימנים שאינם נדרשים."],
+  ["table","tables",["tablees","tabls","table"],"Most nouns add s, so table becomes tables.","זהו שם עצם רגיל ולכן מוסיפים לו את סיומת הרבים הקצרה בלי להשמיט או להכפיל אותיות."],
+  ["box","boxes",["boxs","boxies","box"],"A noun ending in x takes es, so box becomes boxes.","שם העצם מסתיים בצליל שמחייב סיומת רבים מורחבת. סיומת קצרה בלבד אינה מספיקה."],
+  ["baby","babies",["babys","babyes","baby"],"A consonant before final y changes the ending to ies, so baby becomes babies.","כאשר לפני האות האחרונה יש עיצור, מחליפים את הסיום בסיומת הרבים המתאימה. האיותים האחרים אינם לפי הכלל."],
+  ["child","children",["childs","childes","childrens"],"Child has the irregular plural form children.","לשם העצם הזה יש צורת רבים חריגה שצריך לזכור. אי אפשר ליצור אותה באמצעות סיומת רבים רגילה."],
+  ["tooth","teeth",["tooths","toothes","tooth"],"Tooth has the irregular plural form teeth.","לשם העצם הזה יש שינוי פנימי חריג בצורת הרבים. הצורות שנוצרו בעזרת סיומת רגילה אינן תקינות."],
+  ["foot","feet",["foots","footes","feets"],"Foot has the irregular plural form feet.","לשם העצם הזה יש צורת רבים חריגה עם שינוי בתוך המילה. אין להוסיף לו סיומת רבים רגילה."],
+  ["bus","buses",["buss","bus","busies"],"A noun ending in s takes es, so bus becomes buses.","שם העצם מסתיים בצליל שמחייב סיומת רבים מורחבת. הכפלת האות או השארת היחיד אינן תקינות."],
+  ["leaf","leaves",["leafs","leafes","leave"],"Leaf changes final f to ves, so its plural form is leaves.","בשם העצם הזה הסיום משתנה לפני הוספת צורת הרבים. החלופות משאירות את הסיום המקורי או יוצרות מילה אחרת."]
+];
+const VERB_TYPES=[
+  {prompt:'In "Sam runs every morning," what kind of word is "runs"?',answer:"action verb",wrong:["helping verb","stative verb","not a verb"],explanation:"Runs describes an observable action, so it is an action verb."},
+  {prompt:'In "Maya is reading," what kind of verb is "is"?',answer:"helping verb",wrong:["action verb","stative verb","not a verb"],explanation:"Is helps to form the verb phrase is reading, so it is a helping verb."},
+  {prompt:'In "I know the answer," what kind of verb is "know"?',answer:"stative verb",wrong:["action verb","helping verb","not a verb"],explanation:"Know describes a state of knowledge rather than an observable action."},
+  {prompt:'In "They have finished," what kind of verb is "have"?',answer:"helping verb",wrong:["action verb","stative verb","not a verb"],explanation:"Have supports the main verb finished, so it is a helping verb."},
+  {prompt:'In "The red ball is here," what kind of word is "red"?',answer:"not a verb",wrong:["action verb","helping verb","stative verb"],explanation:"Red describes the noun ball, so it is an adjective rather than a verb."},
+  {prompt:'In "We believe you," what kind of verb is "believe"?',answer:"stative verb",wrong:["action verb","helping verb","not a verb"],explanation:"Believe describes a thought or state of mind, so it is a stative verb."},
+  {instruction:"בחרו את פועל העזר המתאים.",prompt:"Why ___ you crying?",answer:"are",wrong:["did","can","will"],explanation:"The Present Continuous question uses are with the subject you."},
+  {instruction:"בחרו את פועל העזר המתאים.",prompt:"How ___ you sleep last night?",answer:"did",wrong:["are","is","can"],explanation:"A Past Simple question about last night uses did."},
+  {instruction:"בחרו את צורת המצב הנכונה.",prompt:"I ___ the answer right now.",answer:"know",wrong:["am knowing","knowing","knows"],explanation:"Know is a stative verb, so it stays in the Present Simple even with right now."},
+  {instruction:"Choose the sentence where \"have\" describes an activity.",prompt:"Which sentence describes an activity happening now?",answer:"We are having lunch now.",wrong:["I have a blue bag.","Dana has two sisters.","They have a new teacher."],explanation:"Have can describe the activity of eating a meal, while possession normally stays in the Present Simple."},
+  {instruction:"בחרו זוג פעלים מהמשפט.",prompt:"She fell asleep while she was watching a movie.",answer:"fell, was watching",wrong:["she, movie","asleep, while","watching, a"],explanation:"Fell and was watching are the two verb forms in the sentence."},
+  {instruction:"איזו מילה יכולה להיות פועל לפי הסיומת?",prompt:"Choose the verb.",answer:"organize",wrong:["organization","careful","happiness"],explanation:"The ending ize commonly appears in verbs such as organize."}
+];
+const ADJECTIVES=[
+  {prompt:"The small dog runs fast. Which word is the adjective?",answer:"small",wrong:["dog","runs","the"],explanation:"Small describes the noun dog, so it is the adjective."},
+  {prompt:"We ate a sweet apple. Which word is the adjective?",answer:"sweet",wrong:["apple","ate","we"],explanation:"Sweet describes the taste of the apple, so it is the adjective."},
+  {prompt:"Dana has curly hair. Which word is the adjective?",answer:"curly",wrong:["hair","has","Dana"],explanation:"Curly describes the noun hair, so it is the adjective."},
+  {prompt:"It is a cold morning. Which word is the adjective?",answer:"cold",wrong:["morning","is","it"],explanation:"Cold describes the noun morning, so it is the adjective."},
+  {prompt:"The blue kite is high. Which word describes the kite's color?",answer:"blue",wrong:["kite","is","the"],explanation:"Blue describes the color of the kite, so it is an adjective."},
+  {prompt:"Choose the adjective.",answer:"happy",wrong:["table","jump","school"],explanation:"Happy is a describing word, while the other choices are nouns or a verb."},
+  {instruction:"בחרו שם תואר לפי הסיומת.",prompt:"Which word is an adjective?",answer:"careful",wrong:["care","carefully","caringly"],explanation:"The ending ful commonly appears in adjectives such as careful."},
+  {instruction:"בחרו את המשפט הנכון.",prompt:"שני כלבים גדולים:",answer:"two big dogs",wrong:["two bigs dogs","two bigger dog","two dogs bigs"],explanation:"English adjectives do not take plural endings, so big stays unchanged."},
+  {instruction:"בחרו את שם התואר המתאים.",prompt:"I cannot lift the box. It is too ___.",answer:"heavy",wrong:["heavily","weight","lift"],explanation:"Heavy describes the box, so it is the correct adjective."},
+  {instruction:"איזה סוג מידע נותן שם התואר?",prompt:"The colorful umbrella is open.",answer:"color",wrong:["action","person's name","time"],explanation:"Colorful describes the appearance and colors of the umbrella."}
+];
+const COMPARISONS=[
+  {prompt:"A giraffe is ___ than a goat.",answer:"taller",wrong:["tall","tallest","as tall"],explanation:"A comparison between two animals uses the comparative phrase taller than."},
+  {prompt:"This is the ___ tree in the park.",answer:"tallest",wrong:["taller","tall","as tall as"],explanation:"One tree compared with the whole group uses the superlative form the tallest."},
+  {prompt:"My bag is ___ your bag.",answer:"as heavy as",wrong:["heavier","the heaviest","heavy than"],explanation:"Equal weight is expressed with the pattern as heavy as."},
+  {prompt:"A train is ___ than a bicycle.",answer:"faster",wrong:["fastest","fast","as fast"],explanation:"A comparison between two things uses the comparative phrase faster than."},
+  {prompt:"This puzzle is the ___ one in the book.",answer:"most difficult",wrong:["more difficult","difficult","as difficult"],explanation:"A long adjective uses most in the superlative form the most difficult."},
+  {prompt:"The red book is ___ than the blue book.",answer:"more interesting",wrong:["most interesting","interesting","as interesting"],explanation:"A long adjective uses more in the comparative phrase more interesting than."},
+  {prompt:"I am ___ my older brother.",answer:"not as tall as",wrong:["not taller as","the least tall","more tall than"],explanation:"Inequality can be expressed with the pattern not as tall as."},
+  {prompt:"This is the ___ sandwich I have tasted.",answer:"best",wrong:["goodest","most good","better"],explanation:"Good is irregular and changes to better and then best."},
+  {prompt:"That was the ___ day of the trip.",answer:"worst",wrong:["baddest","most bad","worse"],explanation:"Bad is irregular and changes to worse and then worst."},
+  {instruction:"בחרו את המשפט המתוקן.",prompt:"This is the most biggest car.",answer:"This is the biggest car.",wrong:["This is the most big car.","This is the bigger car of all.","This is biggest than the cars."],explanation:"Do not combine most with biggest; the correct superlative is the biggest."},
+  {instruction:"בחרו את המשפט המתוקן.",prompt:"Maya is the happy girl in the class.",answer:"Maya is the happiest girl in the class.",wrong:["Maya is the most happyest girl in the class.","Maya is happier girl in the class.","Maya is the happyest than the class."],explanation:"The adjective happy changes final y to i before the superlative ending est."}
+];
+const CAN_QUESTIONS=[
+  {prompt:"Most birds ___ fly.",answer:"can",wrong:["can't","are","have"],explanation:"Most birds have the ability to fly, so can is correct."},
+  {prompt:"A fish ___ walk to school.",answer:"can't",wrong:["can","is","has"],explanation:"A fish does not have the ability to walk, so can't is correct."},
+  {prompt:"A baby ___ drive a car.",answer:"can't",wrong:["can","does","is"],explanation:"A baby does not have the ability to drive, so can't is correct."},
+  {prompt:"___ you swim? Yes, I can.",answer:"Can",wrong:["Can't","Are","Have"],explanation:"A question about ability begins with can."},
+  {prompt:"The words are easy, so we ___ read this short story.",answer:"can",wrong:["can't","are","has"],explanation:"The easy words make the reading possible, so can read is appropriate."},
+  {prompt:"Tom is sick, so he ___ play today.",answer:"can't",wrong:["can","is","does"],explanation:"Tom's illness prevents him from playing today, so can't is correct."},
+  {instruction:"בחרו בקשה מנומסת.",prompt:"You need help with a heavy box.",answer:"Can you help me, please?",wrong:["You can helping me.","Do can you help?","Can you to help me?"],explanation:"A question beginning with Can you can make a polite request.",speak:"Can you help me, please?"}
+];
+const WH_WORDS=[
+  {prompt:"___ teaches your English class?",answer:"Who",wrong:["Where","When","Why"],explanation:"Who asks for the identity of a person."},
+  {prompt:"___ do you live?",answer:"Where",wrong:["Who","When","What"],explanation:"Where asks for a place."},
+  {prompt:"___ is your birthday?",answer:"When",wrong:["Where","Who","How"],explanation:"When asks for a time or date."},
+  {prompt:"___ are you smiling?",answer:"Why",wrong:["What","Where","Who"],explanation:"Why asks for a reason."},
+  {prompt:"___ do you go to school?",answer:"How",wrong:["Who","What","When"],explanation:"How asks about a method or way."},
+  {prompt:"___ is in your lunchbox?",answer:"What",wrong:["Who","When","Why"],explanation:"What asks for a thing or piece of information."}
+];
+const PLACE_PREPS=[
+  {prompt:"The book touches the top of the table. It is ___ the table.",answer:"on",wrong:["under","between","behind"],explanation:"The book touches the upper surface, so it is on the table."},
+  {prompt:"The chair is above the ball. The ball is ___ the chair.",answer:"under",wrong:["on","in","next to"],explanation:"The chair is higher than the ball, so the ball is under the chair."},
+  {prompt:"There is one box on each side of the cat. The cat is ___ the boxes.",answer:"between",wrong:["behind","on","in"],explanation:"The cat has one box on each side, so it is between the boxes."},
+  {prompt:"The lamp is at the side of the bed. It is ___ the bed.",answer:"next to",wrong:["under","in","between"],explanation:"The lamp is beside the bed, so it is next to the bed."},
+  {prompt:"The shoes are inside the box. They are ___ the box.",answer:"in",wrong:["on","behind","between"],explanation:"The shoes are inside, so they are in the box."},
+  {prompt:"The tree is ___ the house, so we cannot see all of it.",answer:"behind",wrong:["in front of","on","between"],explanation:"The house blocks the view of the tree, so the tree is behind the house."},
+  {prompt:"The bus stops ___ the school entrance.",answer:"in front of",wrong:["behind","under","in"],explanation:"The bus faces the entrance, so it stops in front of the school."}
+];
+const TIME_PREPS=[
+  {prompt:"We have English ___ Monday.",answer:"on",wrong:["in","at","under"],explanation:"Use on before a day of the week."},
+  {prompt:"School starts ___ 8 o'clock.",answer:"at",wrong:["on","in","between"],explanation:"Use at before a precise clock time."},
+  {prompt:"My birthday is ___ July.",answer:"in",wrong:["on","at","under"],explanation:"Use in before a month."},
+  {prompt:"I read ___ the evening.",answer:"in",wrong:["on","at","next to"],explanation:"The natural time expression is in the evening."},
+  {prompt:"We eat lunch ___ noon.",answer:"at",wrong:["in","on","behind"],explanation:"The natural time expression is at noon."},
+  {prompt:"The class trip is ___ 24 May.",answer:"on",wrong:["in","at","between"],explanation:"Use on before a specific date."},
+  {prompt:"This academy opened ___ 2026.",answer:"in",wrong:["on","at","under"],explanation:"Use in before a year."}
+];
+const CONNECTORS=[
+  {instruction:"בחרו מילת קישור שמוסיפה רעיון.",prompt:"I like apples ___ bananas.",answer:"and",wrong:["but","because","so"],explanation:"And joins two items that are added together."},
+  {instruction:"בחרו מילת קישור שמציגה ניגוד.",prompt:"The task was hard, ___ I finished it.",answer:"but",wrong:["and","because","so"],explanation:"But shows the contrast between a hard task and a successful finish."},
+  {instruction:"בחרו מילת קישור שמסבירה סיבה.",prompt:"I took a coat ___ it was cold.",answer:"because",wrong:["and","but","so"],explanation:"Because introduces the reason for taking a coat."},
+  {instruction:"בחרו מילת קישור שמוסיפה יכולת.",prompt:"Maya can sing ___ dance.",answer:"and",wrong:["but","because","so"],explanation:"And adds the second ability to the first ability."},
+  {instruction:"בחרו מילת קישור שמציגה ניגוד.",prompt:"The sun was shining, ___ the air was cold.",answer:"but",wrong:["and","because","so"],explanation:"But shows a contrast between sunshine and cold air."},
+  {instruction:"בחרו מילת קישור שמסבירה סיבה.",prompt:"We stayed inside ___ it was raining.",answer:"because",wrong:["but","and","so"],explanation:"Because introduces the rain as the reason for staying inside."}
+];
+
+const READING_PASSAGES=[
+  {
+    id:"profile",
+    text:"Rina's Active Week\nRina is a pupil in Grade 4. She likes drawing and cycling. On Tuesday evenings, she draws a short comic after she finishes her homework. In March, April, and May, she rides her bicycle in the park twice a week. Spring is her favorite season because the paths are full of colorful flowers.",
+    questions:[
+      {prompt:"How often does Rina ride her bicycle in spring?",answer:"Twice a week",wrong:["Every morning","Once a month","Only on Saturday"],explanation:"The passage says she rides twice a week."},
+      {prompt:"What is the passage mainly about?",answer:"Rina's interests and weekly activities",wrong:["An art teacher's job","Rules for a bicycle race","A rainy winter holiday"],explanation:"The paragraph introduces Rina and describes what she likes and does."},
+      {prompt:"What does Rina do before she draws her comic?",answer:"She finishes her homework",wrong:["She rides to school","She waters flowers","She eats breakfast"],explanation:"She draws after she finishes her homework."},
+      {prompt:'What does "paths" mean in the passage?',answer:"Small ways for walking or cycling",wrong:["Pages in a comic","Kinds of flowers","Rooms in a school"],explanation:"Rina rides in a park, so paths are ways through the park."},
+      {prompt:"Why does Rina probably enjoy cycling in spring?",answer:"The park looks colorful then",wrong:["The park has no paths","Her bicycle stays at school","Spring is always dark"],explanation:"The colorful flowers make the park pleasant for her ride."}
+    ]
+  },
+  {
+    id:"animal",
+    text:"Pip the Parrot\nMy name is Pip. I am a green parrot with a yellow tail. I live with my friend Amir. I like sunflower seeds, but I do not like cheese. Every morning, Amir opens my cage after breakfast. First, I stretch my wings. Then I ring a small bell and say, \"Good morning!\"",
+    questions:[
+      {prompt:"What color is Pip's tail?",answer:"Yellow",wrong:["Green","Blue","Black"],explanation:"The first sentence describes a yellow tail."},
+      {prompt:"What is the passage mainly about?",answer:"A parrot's looks, food, and morning routine",wrong:["A child learning to cook","A wild bird building a nest","A visit to a cheese shop"],explanation:"The passage gives facts about Pip and his routine."},
+      {prompt:"What does Pip do before he rings the bell?",answer:"He stretches his wings",wrong:["He eats cheese","He closes the cage","He goes to sleep"],explanation:"The order is: stretch, ring, speak."},
+      {prompt:'What does "cage" mean in the passage?',answer:"A safe home with bars for a bird",wrong:["A kind of seed","A musical instrument","A yellow feather"],explanation:"Amir opens it so Pip can begin his morning routine."},
+      {prompt:"Why might Amir enjoy living with Pip?",answer:"Pip can greet him with words",wrong:["Pip makes breakfast","Pip teaches school","Pip dislikes every food"],explanation:"Pip says \"Good morning,\" which can make him a cheerful companion."}
+    ]
+  },
+  {
+    id:"email",
+    text:"Dear Yael,\nWe are having a busy day in Haifa. My family is visiting the indoor market because it is raining outside. Mom is choosing a blue scarf, and my brother Gil is buying a small drum. Dad is looking for tomatoes and bread. I am carrying our bags. Next, we are going home to feed our rabbit.\nYour friend,\nTamar",
+    questions:[
+      {prompt:"What is Gil buying?",answer:"A small drum",wrong:["A blue scarf","Tomatoes and bread","A bag for the rabbit"],explanation:"The email says Gil is buying a small drum."},
+      {prompt:"What is the email mainly about?",answer:"A family's rainy shopping trip",wrong:["A sunny day at the beach","A rabbit visiting school","A music lesson at home"],explanation:"Most details describe what the family is doing at the indoor market."},
+      {prompt:"What will the family do after the market?",answer:"Go home and feed the rabbit",wrong:["Visit another city","Play in the rain","Cook at the market"],explanation:"Tamar writes \"Next, we are going home to feed our rabbit.\""},
+      {prompt:'What does "indoor" mean here?',answer:"Inside a building",wrong:["Under the sea","Open only at night","Far from the city"],explanation:"They choose it because it is raining outside."},
+      {prompt:"Why is Tamar probably carrying several bags?",answer:"Different family members are buying things",wrong:["The market has no shops","The family forgot all its money","The rabbit is inside a bag"],explanation:"Several people are choosing food or gifts, so there are likely several bags."}
+    ]
+  },
+  {
+    id:"dialogue",
+    text:"Lunch at Grandpa's\nGrandpa: \"Lior, what would you like to drink?\"\nLior: \"Some orange juice, please.\"\nGrandpa: \"It is on the table. Where is Neta?\"\nLior: \"She is watering the herbs on the balcony.\"\nGrandpa: \"And what is Bamba carrying?\"\nLior: \"Oh no! The dog has my napkin!\"\nGrandpa: \"I can bring you a clean one.\"",
+    questions:[
+      {prompt:"What does Lior ask for?",answer:"Orange juice",wrong:["Hot soup","A cheese sandwich","Cold water"],explanation:"Lior asks for some orange juice."},
+      {prompt:"What is the dialogue mainly about?",answer:"A small surprise during family lunch",wrong:["A dog learning to cook","A trip to a restaurant","A lesson about growing oranges"],explanation:"The family is preparing to eat when the dog takes Lior's napkin."},
+      {prompt:"What happens before they notice Bamba?",answer:"Neta waters the herbs",wrong:["Grandpa brings a clean napkin","Lior leaves the house","The balcony is closed"],explanation:"Neta's action is mentioned before they ask about Bamba."},
+      {prompt:'What does "herbs" mean here?',answer:"Small plants used for flavor",wrong:["Drinks made from oranges","Cloths used at a meal","Toys for a dog"],explanation:"Neta waters them, so they are plants."},
+      {prompt:"How does Grandpa probably feel?",answer:"Helpful and calm",wrong:["Angry with Lior","Afraid of the juice","Ready to leave immediately"],explanation:"He calmly offers a clean napkin instead of getting upset."}
+    ]
+  }
+];
+const WRITING_TASKS=[
+  {kind:"sentence",prompt:"בנו משפט: אחי משחק כדורגל אחרי בית הספר.",order:["My","brother","plays","football","after","school."],explanation:"A regular English sentence begins with the subject, followed by the verb and the remaining information."},
+  {kind:"sentence",prompt:"בנו משפט: החתול הקטן נמצא מתחת לכיסא שלי.",order:["The","small","cat","is","under","my","chair."],explanation:"The adjective small comes before the noun cat."},
+  {kind:"sentence",prompt:"בנו משפט שמתאר פעולה שקורית עכשיו.",order:["We","are","making","sandwiches","now."],explanation:"The Present Continuous sentence uses we, are, and the ing form making."},
+  {kind:"sentence",prompt:"בנו משפט על אתמול.",order:["Yesterday,","Dana","visited","her","grandmother."],explanation:"The time word can begin the sentence, and visited is the Past Simple verb."},
+  {kind:"sentence",prompt:"בנו את המשפט הנכון על שני כובעים.",order:["There","are","two","caps","on","the","shelf."],explanation:"The plural noun phrase two caps requires There are."},
+  {kind:"sentence",prompt:"בנו משפט עם סיבה.",order:["I","am","happy","because","we","won."],explanation:"Because connects the feeling with its reason."},
+  {kind:"paragraph",prompt:"סדרו פסקה קצרה על הכנת תיק לבית הספר.",order:["First, I check my timetable.","Next, I put my books in my bag.","Finally, I add my lunchbox."],explanation:"The sequence words First, Next, and Finally make the order clear."},
+  {kind:"paragraph",prompt:"סדרו פסקה קצרה על העונה האהובה.",order:["My favorite season is spring.","The weather is warm and flowers grow.","I like spring because I can play outside."],explanation:"The first sentence introduces the topic, the second adds details, and the third explains the preference."},
+  {kind:"paragraph",prompt:"סדרו פסקה קצרה על ביקור בספרייה.",order:["Yesterday, our class visited the library.","We chose books and read quietly.","At the end, I borrowed a story about space."],explanation:"The paragraph moves from the opening event, through the activity, to the final result."},
+  {kind:"paragraph",prompt:"סדרו תיאור קצר של חדר.",order:["There is a bed near the window.","There are two books on the desk.","My blue bag is under the chair."],explanation:"The room description introduces one item, adds plural items, and finishes with another location detail."},
+  {kind:"paragraph",prompt:"סדרו תיאור קצר של משפחה דמיונית.",order:["This is the Levi family.","The parents have one son and one daughter.","They like to cook together on Fridays."],explanation:"The paragraph introduces the family, describes the relationships, and ends with a shared activity."}
+];
+
+const FAMILY_RELATIONSHIPS=[
+  {prompt:"My mother's mother is my ___.",answer:"grandmother",wrong:["aunt","sister","daughter"],explanation:"A mother's mother is a grandmother."},
+  {prompt:"My father's father is my ___.",answer:"grandfather",wrong:["uncle","brother","son"],explanation:"A father's father is a grandfather."},
+  {prompt:"My mother's sister is my ___.",answer:"aunt",wrong:["daughter","grandmother","sister"],explanation:"A mother's sister is an aunt."},
+  {prompt:"My father's brother is my ___.",answer:"uncle",wrong:["son","father","brother"],explanation:"A father's brother is an uncle."},
+  {prompt:"My mother and father are my ___.",answer:"parents",wrong:["children","grandparents","brothers"],explanation:"Mother and father together are parents."},
+  {prompt:"Maya is Ben's sister. Ben is Maya's ___.",answer:"brother",wrong:["father","uncle","son"],explanation:"If Maya is Ben's sister, then Ben is Maya's brother."},
+  {prompt:"Ruth is Tom's mother. Tom is Ruth's ___.",answer:"son",wrong:["father","uncle","brother"],explanation:"If Ruth is Tom's mother, then Tom is Ruth's son."},
+  {prompt:"Avi is Dana's father. Dana is Avi's ___.",answer:"daughter",wrong:["mother","aunt","sister"],explanation:"If Avi is Dana's father, then Dana is Avi's daughter."}
+];
+const SEASON_QUESTIONS=[
+  {prompt:"Flowers begin to grow and the weather gets warmer.",answer:"spring",wrong:["summer","autumn","winter"],explanation:"Growing flowers and warmer weather are typical signs of spring."},
+  {prompt:"The days are hot, and many children visit the beach.",answer:"summer",wrong:["spring","autumn","winter"],explanation:"Hot days and beach visits are typical signs of summer."},
+  {prompt:"Leaves change color and fall from trees.",answer:"autumn",wrong:["spring","summer","winter"],explanation:"Changing and falling leaves are typical signs of autumn."},
+  {prompt:"The weather is cold and rainy.",answer:"winter",wrong:["spring","summer","autumn"],explanation:"Cold and rainy weather is typical of winter."}
+];
+
+const HEBREW_EXPLANATION_SETS_A=[
+  {name:"present-simple",items:PRESENT_SIMPLE,values:[
+    "הנושא הוא יחיד בגוף שלישי, ולכן מוסיפים לפועל את סיומת היחיד. צורות של זמן אחר אינן מתאימות להרגל קבוע.",
+    "הנושא הוא רבים בגוף ראשון, ולכן משתמשים בצורת הבסיס של הפועל. תוספת של סיומת יחיד תהיה שגויה.",
+    "שם האב הוא נושא יחיד בגוף שלישי, ולכן הפועל מקבל את סיומת היחיד. צורת הבסיס לבדה אינה מתאימה.",
+    "עם גוף ראשון יחיד משתמשים בצורת הבסיס של הפועל. הצורה שמיועדת לגוף שלישי אינה מתאימה כאן.",
+    "הנושא יחיד בגוף שלישי, והפועל מסתיים בצליל שמחייב סיומת מורחבת. לכן הצורה שבתשובה היא התקינה.",
+    "הנושא הוא קבוצת חברים ולכן הוא רבים. ברבים משתמשים בצורת הבסיס, ולא בסיומת של יחיד.",
+    "במשפט שלילה עם נושא יחיד בגוף שלישי משתמשים בפועל העזר המתאים לפני פועל הבסיס. שאר האפשרויות אינן יוצרות שלילה תקינה.",
+    "בשלילה עם נושא יחיד בגוף שלישי פועל העזר נושא את סימן הגוף, והפועל העיקרי נשאר בצורת הבסיס.",
+    "שאלת כן או לא על נושא יחיד בגוף שלישי מתחילה בפועל העזר המתאים, ואחריו בא פועל בסיס ללא סיומת.",
+    "בשאלת מידע מציבים תחילה מילת שאלה, אחריה פועל עזר ונושא, ולבסוף פועל בסיס. האפשרויות האחרות משבשות את הסדר או את צורת הפועל.",
+    "כאשר מילת השאלה עצמה היא הנושא, אין מוסיפים פועל עזר. הפועל מקבל צורה של יחיד בגוף שלישי.",
+    "כאשר לפני האות האחרונה יש עיצור, מחליפים את הסיום בסיומת המתאימה לגוף שלישי. האיותים האחרים אינם לפי הכלל.",
+    "פועל שמסתיים בצליל המיוחד המופיע בשאלה מקבל סיומת מורחבת בגוף שלישי. לכן נדרשת הצורה שבתשובה.",
+    "כאשר לפני האות האחרונה יש תנועה, משאירים אותה ומוסיפים רק את סיומת היחיד. אין להחליף את הסיום כולו.",
+    "הביטוי מציין פעולה שחוזרת בכל יום, ולכן הוא מתאים להרגל בזמן הווה פשוט. הביטויים האחרים מציינים פעולה שמתרחשת כעת או בעבר.",
+    "הנושא הוא יחיד בגוף שלישי, ולכן הפועל מקבל סיומת יחיד ושינוי איות מתאים. הצורות האחרות חסרות סיומת או שייכות למבנה אחר."
+  ]},
+  {name:"present-continuous",items:PRESENT_CONTINUOUS,values:[
+    "מילת הקריאה מראה שהפעולה מתרחשת עכשיו. הנושא רבים, ולכן נדרש פועל עזר ברבים ואחריו צורת פעולה מתמשכת.",
+    "הפעולה מתרחשת ברגע זה, ועם גוף ראשון יחיד משתמשים בפועל העזר המיוחד לו ואחריו בצורת פעולה מתמשכת.",
+    "הפעולה קורית עכשיו. בעת הוספת סיומת הפעולה משמיטים את האות הסופית השקטה, ולכן האיות שבתשובה נכון.",
+    "החתול נמצא במצב של שכיבה כעת. לפועל הזה יש שינוי איות מיוחד לפני סיומת הפעולה, ולכן החלופות אינן מתאימות.",
+    "מילת ההקשבה מצביעה על פעולה שמתרחשת עכשיו. הנושא רבים, ולכן נדרשים פועל עזר ברבים וצורת פעולה מתמשכת.",
+    "בשאלה על נושא בגוף שני משתמשים בפועל העזר של גוף שני ורבים. שאר האפשרויות מתאימות לנושאים או לזמנים אחרים.",
+    "שלילה בזמן זה נבנית מנושא, פועל עזר, מילת שלילה וצורת פעולה מתמשכת. אין להשתמש בפועל בסיס לאחר פועל העזר.",
+    "שאלת כן או לא מתחילה בפועל העזר, אחריו הנושא ולבסוף צורת הפעולה המתמשכת. האפשרויות האחרות משתמשות בפועל עזר או בצורה שגויים.",
+    "שאלת מידע מתחילה במילת השאלה, ממשיכה בפועל העזר ובנושא, ומסתיימת בצורת הפעולה המתמשכת.",
+    "כאשר שואלים מי מבצע פעולה כעת, מילת השאלה היא הנושא. אחריה בא פועל עזר ביחיד וצורת פעולה מתמשכת.",
+    "בפועל קצר הבנוי מעיצור, תנועה ועיצור מכפילים את העיצור האחרון לפני הוספת הסיומת. איות ללא הכפלה אינו תקין.",
+    "האות האחרונה בפועל הזה אינה מוכפלת לפני הוספת הסיומת. החלופות מוסיפות אות מיותרת או סיומת שאינה שייכת לזמן.",
+    "בסיום המיוחד של הפועל מחליפים את צירוף האותיות לפני הוספת סיומת הפעולה. לכן רק האיות שבתשובה תקין.",
+    "המשפט כולל פועל עזר וצורת פעולה מתמשכת, ולכן הוא בזמן הווה ממושך. האפשרויות האחרות מתארות הרגל, עבר או יכולת.",
+    "אפשר להשתמש בזמן הווה ממושך גם לתוכנית קרובה שכבר נקבעה. צורות של הרגל או עבר אינן מתאימות לתוכנית של הערב."
+  ]},
+  {name:"past-simple",items:PAST_SIMPLE,values:[
+    "מילת הזמן מציינת פעולה שהסתיימה בעבר. זהו פועל רגיל, ולכן מוסיפים לו את סיומת העבר המתאימה.",
+    "הפעולה התרחשה בשבוע שעבר. לפועל יש צורת עבר חריגה שצריך לזכור, ולא יוצרים אותה באמצעות הסיומת הרגילה.",
+    "הנושא הוא רבים והמשפט מתאר מצב בעבר, ולכן משתמשים בצורת העבר של פועל הקישור המתאימה לרבים.",
+    "המשפט מתאר בעלות בעבר. לפועל השייכות יש צורת עבר אחת לכל הגופים, והצורות האחרות הן צורות הווה.",
+    "מילת הזמן מציינת עבר, ולפועל יש צורת עבר חריגה. האפשרויות האחרות הן צורת בסיס, הווה או פעולה מתמשכת.",
+    "הפעולה הסתיימה בסוף השבוע שעבר. לפועל הראייה יש צורת עבר חריגה, ולכן הצורות האחרות אינן מתאימות.",
+    "זהו פועל רגיל המתאר פעולה שהסתיימה בשבת שעברה, ולכן נדרשת סיומת העבר הרגילה.",
+    "מילת הזמן מציינת עבר, ולפועל האכילה יש צורת עבר חריגה. הצורה עם סיומת רגילה אינה קיימת.",
+    "בשלילה בעבר משתמשים בפועל עזר בעבר ובמילת שלילה, ואחריהם פועל בסיס. אין להשאיר גם את הפועל העיקרי בעבר.",
+    "שאלת כן או לא בעבר מתחילה בפועל עזר בעבר, אחריו הנושא ופועל בסיס. החלופות משתמשות בזמן או בצורת פועל שגויים.",
+    "שאלת מידע בעבר מתחילה במילת שאלה, אחריה פועל עזר, נושא ופועל בסיס. אין לסמן את העבר פעמיים.",
+    "כאשר מילת השאלה היא הנושא, משתמשים ישירות בפועל בעבר בלי פועל עזר. לכן סדרי המילים האחרים אינם תקינים.",
+    "כאשר פועל רגיל כבר מסתיים באות השקטה המתאימה, מוסיפים רק את האות האחרונה של סיומת העבר.",
+    "כאשר לפני האות האחרונה יש עיצור, מחליפים את הסיום בסיומת העבר המתאימה. האיותים האחרים אינם לפי הכלל.",
+    "בפועל קצר הבנוי מעיצור, תנועה ועיצור מכפילים את העיצור האחרון לפני סיומת העבר.",
+    "לאחר פועל העזר בשלילה, הפועל העיקרי חוזר לצורת הבסיס. האפשרויות האחרות מסמנות עבר פעמיים או חסרות פועל עזר."
+  ]},
+  {name:"be",items:BE_QUESTIONS,values:[
+    "לגוף ראשון יחיד יש צורה מיוחדת של פועל הקישור בהווה. שאר הצורות שייכות לנושאים אחרים.",
+    "האחות היא נושא יחיד בגוף שלישי, ולכן משתמשים בצורת הקישור של יחיד.",
+    "העפרונות הם נושא רבים, ולכן נדרשת צורת הקישור של רבים ולא של יחיד.",
+    "עם גוף שני משתמשים בצורת הקישור המתאימה גם ליחיד וגם לרבים. החלופות שייכות לגופים אחרים.",
+    "כינוי הגוף לחפץ יחיד מקבל את צורת הקישור של יחיד בגוף שלישי.",
+    "כינוי הגוף של רבים בגוף ראשון מקבל את צורת הקישור של רבים.",
+    "כינוי הגוף של ילדה יחידה דורש את צורת הקישור של יחיד בגוף שלישי.",
+    "כינוי הגוף של שני ילדים הוא רבים, ולכן נדרשת צורת הקישור של רבים.",
+    "משפט זהות באנגלית חייב לכלול פועל קישור. עם גוף ראשון יחיד משתמשים בצורה המיוחדת לו, והחלופות חסרות התאמה."
+  ]},
+  {name:"pronouns",items:PRONOUNS,values:[
+    "השם מציין ילדה אחת המשמשת נושא, ולכן מחליפים אותו בכינוי נושא לנקבה יחידה.",
+    "הצירוף כולל את הדובר ואדם נוסף, ולכן כינוי הנושא צריך להיות בגוף ראשון רבים.",
+    "שם העצם מציין חפץ יחיד, ולכן מחליפים אותו בכינוי המתאים לדבר יחיד.",
+    "שני שמות של ילדים יוצרים נושא רבים, ולכן משתמשים בכינוי גוף של רבים בגוף שלישי.",
+    "השם מופיע אחרי הפועל כמושא ומתייחס לילדה, ולכן נדרש כינוי מושא לנקבה יחידה.",
+    "השם מופיע אחרי הפועל כמושא ומתייחס לילד, ולכן נדרש כינוי מושא לזכר יחיד.",
+    "אחרי מילת יחס משתמשים בכינוי מושא. הדוברת ואדם נוסף יוצרים יחד גוף ראשון רבים.",
+    "שם הילדה הוא נושא יחיד נקבה, ולכן כינוי הנושא צריך להתאים לנקבה יחידה.",
+    "החיה היא יחידה ומינה לא צוין, ולכן משתמשים בכינוי המתאים לדבר או לחיה יחידה.",
+    "הפירוש בשאלה מציין את הדובר יחד עם אחרים, ולכן נדרש כינוי של גוף ראשון רבים. האפשרויות האחרות מציינות גופים שונים."
+  ]},
+  {name:"have-has",items:HAVE_HAS,values:[
+    "עם גוף ראשון יחיד משתמשים בצורת הבסיס של פועל השייכות. הצורה של גוף שלישי אינה מתאימה.",
+    "שם הילדה הוא יחיד בגוף שלישי, ולכן משתמשים בצורת השייכות המיוחדת ליחיד.",
+    "הכלב הוא נושא יחיד בגוף שלישי, ולכן נדרשת צורת השייכות של יחיד.",
+    "עם גוף ראשון רבים משתמשים בצורת הבסיס של פועל השייכות.",
+    "ההורים הם נושא רבים, ולכן משתמשים בצורת הבסיס ולא בצורה של יחיד בגוף שלישי.",
+    "לאחר פועל העזר בשאלה משתמשים בצורת הבסיס של הפועל. אין להשתמש בצורת הגוף השלישי לאחריו."
+  ]},
+  {name:"possessives",items:POSSESSIVES,values:[
+    "כאשר הבעלים הוא הדובר, משתמשים במילת השייכות של גוף ראשון יחיד לפני שם העצם.",
+    "כאשר הבעלים הוא מי שפונים אליו, משתמשים במילת השייכות של גוף שני.",
+    "הבעלים הוא ילד יחיד, ולכן משתמשים במילת השייכות המתאימה לזכר יחיד.",
+    "הבעלים היא ילדה יחידה, ולכן משתמשים במילת השייכות המתאימה לנקבה יחידה.",
+    "כאשר הבעלים הם הדובר וקבוצה נוספת, משתמשים במילת השייכות של גוף ראשון רבים.",
+    "הבעלים הן כמה ילדות, ולכן משתמשים במילת השייכות של גוף שלישי רבים.",
+    "כדי להראות שחפץ שייך לבעלים יחיד, מוסיפים לשם הבעלים סימן שייכות וסיומת. החלופות משמיטות את הסימן או מציבות אותו במקום שגוי."
+  ]},
+  {name:"articles",items:ARTICLES,values:[
+    "שם העצם מתחיל בצליל תנועה, ולכן משתמשים בתווית המתאימה לפני צליל כזה. התווית האחרת מתאימה לצליל עיצור.",
+    "שם העצם מתחיל בצליל עיצור, ולכן משתמשים בתווית של פריט יחיד לפני צליל עיצור.",
+    "שם העצם הוא רבים והכמות המדויקת אינה ידועה, ולכן משתמשים במילת כמות כללית. תוויות היחיד אינן מתאימות.",
+    "מדובר בדלת מסוימת ליד השומע, ולכן משתמשים בתווית המציינת פריט ידוע ומסוים.",
+    "שם העצם אינו ספיר והכמות אינה מדויקת, ולכן משתמשים במילת הכמות המתאימה. תוויות של פריט יחיד אינן מתאימות.",
+    "המילה שאחרי הרווח מתחילה בצליל תנועה, ולכן נדרשת התווית המתאימה לצליל תנועה.",
+    "בתמונה מופיע פרי יחיד ושמו מתחיל בצליל תנועה, ולכן נדרשת תווית היחיד המתאימה.",
+    "בתמונה מופיעה חיה יחידה ושמה מתחיל בצליל עיצור, ולכן נדרשת תווית היחיד המתאימה.",
+    "בתמונה מופיעים כמה פירות בלי מספר מדויק, ולכן משתמשים במילת כמות עם שם עצם ברבים."
+  ]},
+  {name:"there",items:THERE,values:[
+    "הצירוף שאחרי הרווח מציין שני פריטים, ולכן המבנה חייב להיות בצורת רבים. צורת היחיד אינה מתאימה.",
+    "אחרי הרווח מופיע פריט אחד, ולכן משתמשים במבנה הקיום של יחיד.",
+    "שם העצם אינו ספיר ולכן מתייחסים אליו כאל יחיד במבנה הקיום.",
+    "אחרי הרווח מופיעים שלושה בעלי חיים, ולכן נדרש מבנה הקיום של רבים.",
+    "אחרי הרווח מופיע פרי אחד, ולכן נדרש מבנה הקיום של יחיד.",
+    "שם העצם הוא רבים ומופיעה לפניו מילת כמות של רבים, ולכן נדרש מבנה הקיום של רבים.",
+    "בסצנה יש שני ספרים, ולכן המשפט חייב להשתמש במבנה רבים. האפשרויות האחרות אינן מתאימות למספר הפריטים או לפריטים שבתמונה.",
+    "בסצנה יש מנורה אחת, ולכן המשפט חייב להשתמש במבנה יחיד. צורת רבים או מספר שגוי אינם מתאימים.",
+    "בסצנה יש שני כיסאות ליד החלון, ולכן משתמשים במבנה רבים. החלופות מערבבות יחיד ורבים או מתארות פריט אחר."
+  ]}
+];
+
+const HEBREW_EXPLANATION_SETS_B=[
+  {name:"nouns",items:NOUNS,values:[
+    "התשובה היא שם של עיר מסוימת, ולכן היא שם עצם פרטי ונכתבת באות גדולה. שאר האפשרויות הן שמות כלליים.",
+    "התשובה מציינת מקצוע באופן כללי ולא אדם מסוים, ולכן היא שם עצם כללי. האפשרויות האחרות הן שמות פרטיים.",
+    "את החומר שבתשובה מודדים ולא סופרים כיחידות נפרדות, ולכן הוא שם עצם שאינו ספיר. את החלופות אפשר לספור.",
+    "אפשר לספור את החפץ שבתשובה כפריט אחד או ככמה פריטים, ולכן הוא שם עצם ספיר. החלופות אינן נספרות כך.",
+    "התשובה היא שמו של יום מסוים, ולכן היא שם עצם פרטי ונכתבת באות גדולה. המילים האחרות הן שמות כלליים.",
+    "את המזון שבתשובה מתארים בדרך כלל ככמות או כפרוסה ולא כיחידות נפרדות, ולכן הוא אינו ספיר.",
+    "התשובה מציינת קשר ורעיון שאי אפשר לגעת בו, ולכן היא שם עצם מופשט. החלופות מציינות דברים מוחשיים.",
+    "הסיומת של המילה שבתשובה משמשת לעיתים קרובות ליצירת שמות עצם. החלופות הן שם תואר ותואר פועל.",
+    "שם העצם אינו ספיר ולכן מתנהג כיחיד ומקבל פועל ביחיד. צורת הרבים אינה מתאימה.",
+    "שם העצם הוא רבים שאפשר לספור, ולכן מילת הכמות צריכה להתאים לפריטים ספירים.",
+    "שם העצם אינו ספיר, ולכן השאלה על הכמות משתמשת במילה המתאימה לחומר ולא לפריטים נפרדים.",
+    "במשפט יש שם של אדם לפי תפקיד ושם של דבר המסופר. המילה המתארת את הפעולה היא פועל ולא שם עצם.",
+    "המילה המציינת את גרם השמים היא שם עצם, והמילה המתארת אותו היא שם תואר. אין לסווג את התיאור כשם עצם.",
+    "שם החפץ מופיע תמיד בצורת רבים, ולכן הוא מקבל פועל ברבים גם כאשר מדובר בזוג אחד."
+  ]},
+  {name:"verb-types",items:VERB_TYPES,values:[
+    "המילה מתארת פעולה שאפשר לראות, ולכן היא פועל פעולה. היא אינה רק מסייעת לפועל אחר ואינה מתארת מצב.",
+    "המילה מסייעת לבנות את צורת הפעולה המתמשכת של הפועל העיקרי, ולכן היא פועל עזר.",
+    "המילה מתארת מצב של ידיעה ולא פעולה שאפשר לצפות בה, ולכן היא פועל מצב.",
+    "המילה תומכת בפועל העיקרי ובונה איתו זמן מורכב, ולכן היא משמשת כפועל עזר.",
+    "המילה מתארת את צבע הכדור ולכן היא שם תואר, לא פועל פעולה, עזר או מצב.",
+    "המילה מתארת מחשבה או אמונה ולא פעולה חיצונית שאפשר לראות, ולכן היא פועל מצב.",
+    "השאלה מתארת פעולה שמתרחשת עכשיו עם נושא בגוף שני, ולכן נדרש פועל העזר המתאים להווה ממושך.",
+    "ביטוי הזמן מציין את הלילה שעבר, ולכן שאלת העבר דורשת את פועל העזר של עבר פשוט.",
+    "פועל של ידיעה מתאר מצב ולכן נשאר בהווה פשוט גם כאשר מופיע ביטוי המציין את הרגע הנוכחי.",
+    "במשפט הנכון פועל השייכות משנה משמעות ומתאר פעילות של אכילת ארוחה. במשפטים האחרים הוא מתאר בעלות או קשר.",
+    "במשפט מופיעות שתי צורות פועל: אחת מתארת הירדמות ואחת מתארת צפייה מתמשכת. שאר הצירופים כוללים שמות או מילות קישור.",
+    "הסיומת של המילה שבתשובה מופיעה לעיתים קרובות בפעלים. החלופות הן שם עצם ושמות תואר."
+  ]},
+  {name:"adjectives",items:ADJECTIVES,values:[
+    "המילה שבתשובה מתארת את גודל הכלב, ולכן היא שם תואר. שאר המילים הן שם עצם, פועל או תווית.",
+    "המילה שבתשובה מתארת את טעמו של התפוח, ולכן היא שם תואר ולא שם העצם עצמו או הפעולה.",
+    "המילה שבתשובה מתארת את צורת השיער, ולכן היא שם תואר. המילים האחרות מציינות בעלות, שם עצם ושם פרטי.",
+    "המילה שבתשובה מתארת את מזג האוויר של הבוקר, ולכן היא שם תואר.",
+    "המילה שבתשובה מתארת את צבע העפיפון, ולכן היא שם תואר. המילים האחרות אינן מתארות צבע.",
+    "התשובה היא מילה המתארת הרגשה או איכות. החלופות הן שמות עצם או פועל.",
+    "הסיומת של המילה שבתשובה נפוצה בשמות תואר ומתארת תכונה. החלופות שייכות לחלקי דיבור אחרים.",
+    "באנגלית שם תואר אינו מקבל סיומת רבים, גם כאשר שם העצם ברבים. לכן רק הצירוף שבו התיאור נשאר ללא שינוי תקין.",
+    "המילה שבתשובה מתארת את משקל הקופסה ומסבירה מדוע אי אפשר להרים אותה. החלופות אינן שמות תואר מתאימים.",
+    "שם התואר מתאר את המראה והצבעים של המטרייה. הוא אינו מציין פעולה, שם של אדם או זמן."
+  ]},
+  {name:"comparisons",items:COMPARISONS,values:[
+    "משווים בין שני בעלי חיים, ולכן משתמשים בצורת ההשוואה ובמילת ההשוואה. צורת העליונות מתאימה לקבוצה שלמה.",
+    "משווים עץ אחד לכל עצי הפארק, ולכן משתמשים בצורת העליונות עם התווית המתאימה.",
+    "שני התיקים שווים במשקל, ולכן משתמשים במבנה של שוויון שמקיף את שם התואר משני צדדיו.",
+    "משווים בין שני כלי תחבורה, ולכן משתמשים בצורת ההשוואה ולא בצורת העליונות.",
+    "שם התואר ארוך, ובהשוואה של פריט אחד לכל הקבוצה משתמשים במילת העליונות לפניו.",
+    "שם התואר ארוך, ובהשוואה בין שני ספרים משתמשים במילת ההשוואה לפניו ובמילת הקישור אחריו.",
+    "המשפט מציין חוסר שוויון, ולכן משתמשים במבנה השלילי של השוואת שוויון. החלופות מערבבות מבנים שונים.",
+    "לשם התואר הזה יש צורות השוואה חריגות. כשמשווים פריט אחד לכל מה שטעמנו משתמשים בצורת העליונות החריגה.",
+    "לשם התואר הזה יש צורות השוואה חריגות. המשפט מתאר את היום הגרוע ביותר ולכן נדרשת צורת העליונות.",
+    "אין להשתמש יחד במילת עליונות ובסיומת עליונות על אותו שם תואר קצר. הצורה התקינה משתמשת רק בסיומת.",
+    "כאשר שם התואר מסתיים באות האחרונה המיוחדת, מחליפים אותה לפני הוספת סיומת העליונות. החלופות מכפילות סימנים או משתמשות בהשוואה."
+  ]},
+  {name:"can",items:CAN_QUESTIONS,values:[
+    "לרוב הציפורים יש יכולת לעוף, ולכן משתמשים בפועל העזר המציין יכולת. צורת השלילה סותרת את העובדה.",
+    "לדג אין יכולת ללכת לבית הספר, ולכן נדרשת צורת השלילה של יכולת. האפשרות החיובית אינה הגיונית.",
+    "לתינוק אין יכולת לנהוג, ולכן משתמשים בצורת השלילה. האפשרויות האחרות אינן מבטאות חוסר יכולת.",
+    "שאלה על יכולת מתחילה בפועל העזר של יכולת ואחריו הנושא ופועל בסיס. שאר האפשרויות משתמשות בפועל עזר אחר או בשלילה.",
+    "קלות המילים מאפשרת לקבוצה לקרוא את הסיפור, ולכן נדרשת צורת היכולת החיובית.",
+    "המחלה מונעת מהילד לשחק היום, ולכן נדרשת צורת השלילה של יכולת.",
+    "בקשה מנומסת יכולה להתחיל בשאלה על יכולת ולהסתיים במילת נימוס. החלופות משתמשות בסדר או בצורת פועל לא תקינים."
+  ]},
+  {name:"wh-questions",items:WH_WORDS,values:[
+    "השאלה מבקשת לזהות אדם שמלמד את הכיתה, ולכן נדרשת מילת שאלה לאדם. החלופות שואלות על מקום, זמן או סיבה.",
+    "השאלה מבקשת מקום מגורים, ולכן נדרשת מילת השאלה למקום.",
+    "השאלה מבקשת זמן או תאריך של יום הולדת, ולכן נדרשת מילת השאלה לזמן.",
+    "השאלה מבקשת את הסיבה לחיוך, ולכן נדרשת מילת השאלה לסיבה.",
+    "השאלה מבקשת לדעת באיזו דרך מגיעים לבית הספר, ולכן נדרשת מילת השאלה לאופן.",
+    "השאלה מבקשת לזהות דבר שנמצא בקופסת האוכל, ולכן נדרשת מילת השאלה לדבר או למידע."
+  ]},
+  {name:"place-prepositions",items:PLACE_PREPS,values:[
+    "הספר נוגע במשטח העליון של השולחן, ולכן מילת היחס צריכה לציין מגע עם משטח. החלופות מתארות מיקומים אחרים.",
+    "הכיסא גבוה מן הכדור, ולכן הכדור נמצא מתחתיו. האפשרויות האחרות אינן מתאימות ליחס הגובה.",
+    "יש קופסה מכל צד של החתול, ולכן החתול נמצא באמצע שני פריטים. מילת היחס של אמצע היא המתאימה.",
+    "המנורה נמצאת לצד המיטה, ולכן נדרשת מילת יחס המציינת קרבה בצד. היא אינה מתחת למיטה או בתוכה.",
+    "הנעליים נמצאות בתוך הקופסה, ולכן נדרשת מילת היחס של פנים. החלופות מתארות משטח, הסתרה או אמצע.",
+    "הבית מסתיר חלק מן העץ, ולכן העץ נמצא מאחורי הבית. אם היה לפניו היינו רואים אותו במלואו.",
+    "האוטובוס עוצר מול חזית הכניסה, ולכן נדרשת מילת היחס המציינת מיקום לפני דבר אחר."
+  ]},
+  {name:"time-prepositions",items:TIME_PREPS,values:[
+    "לפני שם של יום בשבוע משתמשים במילת היחס המתאימה ליום. החלופות מתאימות לחודש, לשנה או לשעה.",
+    "לפני שעה מדויקת משתמשים במילת היחס המתאימה לנקודת זמן. האפשרויות האחרות מתאימות ליום או לתקופה.",
+    "לפני שם של חודש משתמשים במילת היחס המתאימה לתקופה רחבה. החלופות מתאימות ליום או לשעה.",
+    "חלק מן היום מקבל בדרך כלל את מילת היחס של תקופה. זהו צירוף זמן קבוע שיש לזכור.",
+    "לשעת הצהריים המדויקת יש צירוף זמן קבוע המשתמש במילת היחס של נקודת זמן.",
+    "לפני תאריך מסוים משתמשים במילת היחס המתאימה ליום. מילת היחס של חודש או שעה אינה מתאימה.",
+    "לפני שנה משתמשים במילת היחס המתאימה לתקופה רחבה. החלופות משמשות ליום או לנקודת זמן."
+  ]},
+  {name:"connectors",items:CONNECTORS,values:[
+    "המשפט מוסיף פרי אחד לפרי אחר, ולכן נדרשת מילת קישור של הוספה. המילים האחרות מציינות ניגוד או סיבה.",
+    "הקושי עומד בניגוד לכך שהמשימה הושלמה, ולכן נדרשת מילת קישור של ניגוד.",
+    "הקור מסביר מדוע נלקח מעיל, ולכן נדרשת מילת קישור שמציגה סיבה.",
+    "המשפט מוסיף יכולת אחת ליכולת נוספת, ולכן נדרשת מילת קישור של הוספה.",
+    "השמש עומדת בניגוד לאוויר הקר, ולכן נדרשת מילת קישור של ניגוד.",
+    "הגשם הוא הסיבה להישארות בתוך הבית, ולכן נדרשת מילת קישור שמציגה סיבה."
+  ]},
+  {name:"family",items:FAMILY_RELATIONSHIPS,values:[
+    "אמה של האם היא הסבתא מצד האם. שאר האפשרויות מציינות קרובות משפחה מדורות או קשרים אחרים.",
+    "אביו של האב הוא הסב מצד האב. שאר האפשרויות מציינות קרובי משפחה אחרים.",
+    "אחותה של האם היא דודה. האפשרויות האחרות מציינות בת, סבתא או אחות.",
+    "אחיו של האב הוא דוד. האפשרויות האחרות מציינות בן, אב או אח של הדובר.",
+    "האם והאב יחד נקראים הורים. החלופות מציינות ילדים, סבים או אחים.",
+    "אם הילדה היא אחותו של הילד, הילד הוא אחיה. שאר הקשרים המשפחתיים אינם מתאימים למידע.",
+    "אם האישה היא אמו של הילד, הילד הוא בנה. האפשרויות האחרות מתארות קשרים שונים.",
+    "אם האיש הוא אביה של הילדה, הילדה היא בתו. האפשרויות האחרות אינן מתארות קשר בין אב לבתו."
+  ]},
+  {name:"seasons",items:SEASON_QUESTIONS,values:[
+    "פריחה והתחממות מזג האוויר הן סימנים אופייניים לעונת האביב. העונות האחרות מאופיינות במזג אוויר שונה.",
+    "ימים חמים וביקור בחוף הם סימנים אופייניים לעונת הקיץ. העונות האחרות קרירות יותר.",
+    "עלים שמשנים צבע ונושרים מן העצים הם סימנים אופייניים לעונת הסתיו.",
+    "מזג אוויר קר וגשום אופייני לעונת החורף יותר מאשר לעונות האחרות."
+  ]},
+  {name:"reading-profile",items:READING_PASSAGES[0].questions,values:[
+    "הקטע מציין במפורש שהילדה רוכבת פעמיים בכל שבוע בחודשי האביב. האפשרויות האחרות אינן מופיעות בטקסט.",
+    "רוב המשפטים מתארים את תחומי העניין והפעילויות השבועיות של הילדה, ולכן זהו הרעיון המרכזי.",
+    "לפי מילת הזמן בקטע, הילדה מסיימת את שיעורי הבית לפני שהיא מציירת. שאר הפעולות אינן מתוארות כשלב הקודם.",
+    "מן ההקשר של רכיבה בפארק אפשר להבין שמדובר בדרכים קטנות להליכה או לרכיבה, ולא בדפים או בחדרים.",
+    "הפרחים הצבעוניים הופכים את הפארק לנעים ומסבירים מדוע הילדה נהנית לרכוב באביב. שאר האפשרויות סותרות את הקטע."
+  ]},
+  {name:"reading-animal",items:READING_PASSAGES[1].questions,values:[
+    "המשפט הראשון מתאר במפורש זנב בצבע צהוב. הצבעים האחרים אינם מתארים את הזנב.",
+    "הקטע מציג את מראה התוכי, המזון שהוא אוהב ושגרת הבוקר שלו, ולכן זהו הרעיון המרכזי.",
+    "מילות הרצף מראות שהתוכי מותח את כנפיו לפני שהוא מצלצל בפעמון ומדבר.",
+    "מן הפעולה של פתיחת המקום שבו התוכי גר אפשר להבין שמדובר בבית בטוח עם סורגים לציפור.",
+    "התוכי מברך את חברו במילים בכל בוקר, ולכן סביר שהוא בן לוויה משמח. האפשרויות האחרות אינן נתמכות בקטע."
+  ]},
+  {name:"reading-email",items:READING_PASSAGES[2].questions,values:[
+    "בהודעה נאמר במפורש שהאח קונה תוף קטן. הפריטים האחרים נקנים בידי בני משפחה אחרים.",
+    "רוב פרטי ההודעה מתארים קניות של המשפחה בשוק מקורה ביום גשום, ולכן זהו הנושא המרכזי.",
+    "מילת הרצף מציגה את הפעולה הבאה: המשפחה תחזור הביתה ותאכיל את הארנב.",
+    "המשפחה בוחרת בשוק בגלל הגשם בחוץ, ולכן מן ההקשר מבינים שהמקום נמצא בתוך בניין.",
+    "כמה מבני המשפחה קונים מזון ומתנות, ולכן סביר שיש כמה שקיות לשאת. שאר ההסברים אינם נתמכים בהודעה."
+  ]},
+  {name:"reading-dialogue",items:READING_PASSAGES[3].questions,values:[
+    "בדו־שיח הילד מבקש במפורש מיץ תפוזים. המשקאות והמאכלים האחרים אינם מוזכרים כבקשתו.",
+    "השיחה מתרחשת בזמן ארוחה משפחתית ומגיעה להפתעה כאשר הכלב לוקח מפית, ולכן זהו הרעיון המרכזי.",
+    "השקיית הצמחים מוזכרת לפני שהדוברים מבחינים במה שהכלב נושא, ולכן זו הפעולה הקודמת ברצף.",
+    "העובדה שמשקים אותם מראה שמדובר בצמחים קטנים המשמשים לטעם, ולא במשקה, בבד או בצעצוע.",
+    "הסב מציע בשלווה להביא מפית נקייה, ולכן אפשר להסיק שהוא רגוע ומוכן לעזור."
+  ]},
+  {name:"writing",items:WRITING_TASKS,values:[
+    "משפט רגיל מתחיל בנושא, ממשיך בפועל ומוסיף את הפעילות ואת הזמן. סדר אחר יוצר משפט לא טבעי.",
+    "שם התואר בא לפני שם העצם שהוא מתאר, ולאחר מכן באים פועל הקישור ותיאור המקום.",
+    "כדי לתאר פעולה שמתרחשת עכשיו מציבים נושא, פועל עזר וצורת פעולה מתמשכת, ואחריהם את שאר המידע.",
+    "מילת הזמן יכולה לפתוח את המשפט, אחריה באים הנושא ופועל בעבר, ולבסוף פרטי המשפחה.",
+    "שני כובעים הם רבים, ולכן המשפט מתחיל במבנה קיום של רבים וממשיך במספר, בשם העצם ובמקום.",
+    "מילת הקישור מחברת בין ההרגשה לבין הסיבה לה. שני חלקי המשפט צריכים להופיע בסדר הגיוני.",
+    "מילות הרצף מסמנות התחלה, שלב הבא וסיום. לכן בדיקת המערכת באה לפני הכנסת הספרים, וקופסת האוכל בסוף.",
+    "המשפט הראשון מציג את העונה האהובה, השני מוסיף פרטים על מזג האוויר, והשלישי מסביר את הבחירה.",
+    "הפסקה מתחילה בביקור, ממשיכה בפעילויות שנעשו בספרייה ומסתיימת בתוצאה של השאלת ספר.",
+    "תיאור החדר עובר מפריט יחיד ליד החלון, לפריטים רבים על השולחן, ולבסוף לתיק שמתחת לכיסא.",
+    "תחילה מציגים את המשפחה, אחר כך מתארים את הקשרים בין בני המשפחה, ולבסוף מוסיפים פעילות משותפת."
+  ]}
+];
+
+const HEBREW_EXPLANATION_SETS=[...HEBREW_EXPLANATION_SETS_A,...HEBREW_EXPLANATION_SETS_B];
+HEBREW_EXPLANATION_SETS.forEach(set=>{
+  if(set.items.length!==set.values.length)throw new Error(`Hebrew explanation count mismatch: ${set.name}`);
+  set.items.forEach((item,index)=>{item.explanationHe=authoredHebrew(set.values[index],`${set.name}.explanationHe`)});
+});
+const AUTHORED_QUESTION_BANKS=HEBREW_EXPLANATION_SETS.map(set=>({name:set.name,items:set.items}));
+
+function pluralQuestion(forcedEntry=null){
+  const [singular,answer,wrong,explanation,explanationHe]=forcedEntry||pick(PLURALS);
+  return makeMc("בחרו את צורת הרבים הנכונה.",`one ${singular} → two ___`,answer,wrong,explanation,explanationHe,
+    `${singular}, ${answer}`,{signature:"plural|"+singular});
+}
+function generalGroupQuestion(forcedGroup=""){
+  const groups={school:"school",home:"home",food:"food",animals:"animals",activities:"activities"};
+  const groupsHe={school:"בית הספר",home:"הבית",food:"מזון",animals:"בעלי חיים",activities:"פעילויות"};
+  const group=forcedGroup||pick(Object.keys(groups)),answer=pick(GENERAL.filter(x=>x.group===group));
+  const wrong=shuffle(GENERAL.filter(x=>x.group!==group)).map(x=>x.en).filter((v,i,a)=>a.indexOf(v)===i).slice(0,3);
+  return makeMc("איזו מילה שייכת לקבוצה?",`Choose a word from: ${groups[group]}`,answer.en,wrong,
+    `${answer.en} belongs to the ${group} group.`,
+    "המילה שבתשובה שייכת לקבוצת "+groupsHe[group]+". האפשרויות האחרות שייכות לקבוצות תוכן שונות.",
+    answer.en,{signature:"group|"+group+"|"+answer.en});
+}
+function generalQuestion(forcedMode=""){
+  const mode=forcedMode||(Math.random()<.65?"vocab":"group");
+  return mode==="vocab"?vocabQuestion(GENERAL,"general"):generalGroupQuestion();
+}
+function bodyQuestion(){
+  return Math.random()<.78?vocabQuestion(BODY,"body"):missingLetterQuestion(BODY,"body");
+}
+function familyQuestion(){
+  if(Math.random()<.62)return vocabQuestion(FAMILY,"family");
+  return bankQuestion(FAMILY_RELATIONSHIPS);
+}
+function numberMathQuestion(forcedAdd=null){
+  const add=forcedAdd===null?Math.random()<.65:forcedAdd;
+  const a=add?Math.floor(Math.random()*10)+1:Math.floor(Math.random()*19)+2;
+  const b=add?Math.floor(Math.random()*(20-a))+1:Math.floor(Math.random()*(a-1))+1;
+  const result=add?a+b:a-b,answer=NUMBER_WORDS[result-1];
+  const wrong=shuffle(NUMBER_WORDS.filter((_,i)=>i!==result-1)).slice(0,3);
+  return makeMc("פתרו ובחרו את התוצאה במילה באנגלית.",`${a} ${add?"+":"−"} ${b} = ?`,answer,wrong,
+    `${a} ${add?"+":"−"} ${b} equals ${result}, which is written as ${answer}.`,
+    "תחילה מחשבים את התרגיל. לאחר מכן בוחרים את המילה שמייצגת בדיוק את התוצאה המספרית; שאר המילים מייצגות מספרים אחרים.",
+    answer,{signature:`number|math|${a}|${add?"+":"-"}|${b}`});
+}
+function numberWordQuestion(forcedItem=null){
+  const item=forcedItem||pick(NUMBERS);
+  const wrong=shuffle(NUMBERS.filter(x=>x!==item)).slice(0,3).map(x=>x.en);
+  return makeMc("בחרו את המספר במילים.",String(item.value),item.en,wrong,`${item.value} is written "${item.en}".`,
+    "המילה שבתשובה היא הכתיב המלא של הספרה שהוצגה. האפשרויות האחרות הן שמות של מספרים שונים.",
+    item.en,{signature:"number|word|"+item.value});
+}
+function numberDigitQuestion(forcedItem=null){
+  const item=forcedItem||pick(NUMBERS);
+  const wrong=shuffle(NUMBERS.filter(x=>x!==item)).slice(0,3).map(x=>String(x.value));
+  return makeMc("בחרו את הספרה המתאימה למילה.",item.en,String(item.value),wrong,
+    `"${item.en}" is the number ${item.value}.`,
+    "הספרה שבתשובה מייצגת את מילת המספר שהוצגה בשאלה. האפשרויות האחרות מייצגות ערכים שונים.",
+    item.en,{signature:"number|digit|"+item.value});
+}
+function numbersQuestion(forcedMode=""){
+  const roll=Math.random(),mode=forcedMode||(roll<.38?"math":roll<.7?"word":"digit");
+  return mode==="math"?numberMathQuestion():mode==="word"?numberWordQuestion():numberDigitQuestion();
+}
+function daysQuestion(){
+  const mode=Math.random();return mode<.45?vocabQuestion(DAYS,"days"):mode<.78?sequenceQuestion(DAYS,"days"):missingLetterQuestion(DAYS,"days");
+}
+function monthsQuestion(){
+  const mode=Math.random();return mode<.45?vocabQuestion(MONTHS,"months"):mode<.78?sequenceQuestion(MONTHS,"months"):missingLetterQuestion(MONTHS,"months");
+}
+function seasonsQuestion(){
+  const mode=Math.random();
+  if(mode<.45)return vocabQuestion(SEASONS,"seasons");
+  if(mode<.7)return missingLetterQuestion(SEASONS,"seasons");
+  return bankQuestion(SEASON_QUESTIONS);
+}
+function presentContinuousOrderQuestion(forcedWords=null){
+  const words=forcedWords||pick(PRESENT_CONTINUOUS_ORDERS);
+  return makeOrder("סדרו את המילים כדי ליצור שאלה בהווה ממושך.","בנו שאלה תקינה.",words,
+    "A Present Continuous question places am, is, or are before the subject and uses an ing verb.",
+    "בשאלה בהווה ממושך מציבים את פועל העזר לפני הנושא, ואחריו את צורת הפעולה המתמשכת. סדר אחר אינו יוצר שאלה תקינה.");
+}
+function presentContinuousQuestion(forcedMode=""){
+  const mode=forcedMode||(Math.random()<.22?"order":"bank");
+  return mode==="order"?presentContinuousOrderQuestion():bankQuestion(PRESENT_CONTINUOUS);
+}
+function pastOrderQuestion(forcedWords=null){
+  const words=forcedWords||pick(PAST_ORDERS);
+  return makeOrder("סדרו את המילים כדי ליצור שאלה בעבר פשוט.","בנו שאלה תקינה.",words,
+    words[0]==="Who"?"A subject question uses the Past Simple verb directly.":"A regular Past Simple question uses did followed by the base verb.",
+    words[0]==="Who"?"כאשר מילת השאלה היא הנושא, משתמשים ישירות בפועל בעבר בלי פועל עזר.":"בשאלה רגילה בעבר מציבים פועל עזר לפני הנושא, ואחריו משתמשים בפועל בצורת הבסיס.");
+}
+function pastSimpleQuestion(forcedMode=""){
+  const mode=forcedMode||(Math.random()<.22?"order":"bank");
+  return mode==="order"?pastOrderQuestion():bankQuestion(PAST_SIMPLE);
+}
+function readingQuestion(){
+  const passage=pick(READING_PASSAGES),q=pick(passage.questions);
+  return makeMc("קראו ובחרו את התשובה הטובה ביותר.",q.prompt,q.answer,q.wrong,q.explanation,q.explanationHe,passage.text,
+    {signature:"reading|"+passage.id+"|"+q.prompt,passage:passage.text});
+}
+function writingQuestion(){
+  const task=pick(WRITING_TASKS);
+  return makeOrder(task.kind==="paragraph"?"לחצו על המשפטים לפי סדר הפסקה.":"לחצו על המילים לפי סדר המשפט.",
+    task.prompt,task.order,task.explanation,task.explanationHe);
+}
+
+function topic(id,category,icon,titleEn,titleHe,lesson,rule,examples,generate,challenge=false,showExplanations=true){
+  return {id,category,icon,titleEn,titleHe,lesson,rule,examples,generate,challenge,showExplanations};
+}
+const TOPICS=[
+  topic("body","vocab","🧍","Body Parts","חלקי הגוף","נלמד לזהות ולתאר חלקי גוף בעזרת תמונה, משמעות וצליל. כדאי להצביע על האיבר, לומר את המילה בקול ולחבר אותה למשפט קצר כדי שהזיכרון יהיה חזותי ושמיעתי יחד.","לומדים כל מילה כפריט נפרד ובודקים היטב מילים דומות. חשוב להבחין בין איברי גוף קרובים, לזכור שיש מילים מיוחדות לצורת רבים ולחזור על האיות באמצעות השלמת אות חסרה.",["This is my head.","I see with my eyes.","My knee is part of my leg."],bodyQuestion),
+  topic("family","vocab","👨‍👩‍👧‍👦","Family","משפחה","נלמד מילים המתארות בני משפחה וקשרים ביניהם, ונשתמש בהן כדי להבין עץ משפחה דמיוני. מומלץ לצייר קשרים בין הדמויות ולומר מי קשור למי בלי למסור פרטים אישיים.","כדי לבחור מילה נכונה בודקים את הדור, את המין ואת כיוון הקשר במשפט. יש מילים המתארות שני הורים יחד, מילים לקרובי משפחה מבוגרים ומילים לילדים במשפחה.",["My mother is a teacher.","I have one brother.","Our grandparents visit us."],familyQuestion),
+  topic("numbers","vocab","🔢","Numbers","מספרים","נלמד לקרוא ולכתוב שמות מספרים מאחת עד עשרים ולחבר כל שם לספרה המתאימה. כדאי לתרגל בקול, לספור חפצים ולפתור תרגילים קצרים כדי לקשר בין הכמות, הספרה והמילה.","שמים לב לחלקים שחוזרים בשמות המספרים ולשינויים באיות של מספרים מיוחדים. לאחר חישוב תרגיל בודקים תחילה את התוצאה המספרית ורק אחר כך בוחרים את המילה המתאימה.",["I have four pencils.","There are ten students.","My sister is twelve."],numbersQuestion),
+  topic("days","vocab","📅","Days of the Week","ימי השבוע","נלמד את שבעת ימי השבוע לפי שמם ומקומם ברצף. אפשר לתרגל בעזרת לוח שבועי, לשאול מה בא לפני יום מסוים ומה בא אחריו ולהשלים אותיות חסרות.","שמות הימים נכתבים באות גדולה באנגלית. כשמתארים פעילות ביום מסוים משתמשים במילת היחס המתאימה ליום, ובשאלות רצף נשענים על הסדר הקבוע של השבוע.",["School starts on Sunday.","We have English on Tuesday.","Saturday comes after Friday."],daysQuestion),
+  topic("months","vocab","🗓️","Months","חודשי השנה","נלמד את שנים עשר חודשי השנה ונזהה את מקומו של כל חודש ברצף. מומלץ לחבר חודשים לימי הולדת, לחגים ולעונות ולתרגל מה בא לפני כל חודש ומה בא אחריו.","שמות החודשים נכתבים באות גדולה באנגלית. לפני חודש משתמשים במילת היחס המתאימה לתקופה, ובתרגילי רצף חשוב לזכור את המעבר מסוף שנה לתחילת השנה הבאה.",["January is the first month.","My birthday is in May.","December is the last month."],monthsQuestion),
+  topic("seasons","vocab","🌦️","Seasons","עונות השנה","נלמד להתאים לכל עונה מזג אוויר, בגדים, חפצים ופעילויות אופייניים. כדאי ליצור לכל עונה תמונה בדמיון ולחבר אליה כמה מילים מוכרות.","שמות עונות נכתבים בדרך כלל באות קטנה, אלא אם הם פותחים משפט. כדי לזהות עונה מחפשים רמזים כמו חום, קור, גשם, פריחה או שלכת ולא מסתמכים על מילה אחת בלבד.",["Flowers grow in spring.","Summer is hot.","Winter can be rainy."],seasonsQuestion),
+  topic("general-vocab","vocab","🎒","Lexical Band 1","אוצר מילים כללי","נרחיב אוצר מילים שימושי בנושאי בית ספר, בית, מזון, בעלי חיים ופעילויות יומיומיות. נלמד בעזרת משמעות, תמונה, צליל ומשפט קצר כדי להשתמש במילה ולא רק לזהות אותה.","ממיינים מילים לקבוצות תוכן ומחפשים קשרים ביניהן. כדאי לחזור על כל מילה בהקשר חדש, להקשיב להגייה ולבדוק את האיות במקום לשנן רשימה ללא משמעות.",["The notebook is in my bag.","We make a cheese sandwich.","The rabbit can jump."],generalQuestion,false,false),
+
+  topic("present-simple","grammar","⏰","Present Simple","הווה פשוט","משתמשים בזמן הזה כדי לתאר הרגלים, עובדות ומצבים קבועים. במשפט חיובי מציבים בדרך כלל נושא, אחריו פועל ואז את שאר המידע; מילות תדירות וביטויי זמן חוזרים עוזרים לזהות את השימוש.","עם רוב הנושאים הפועל נשאר בצורת הבסיס, אך עם יחיד בגוף שלישי מוסיפים סיומת ולעיתים משנים את האיות. בשאלות ובשלילות פועל העזר נושא את סימן הגוף והפועל העיקרי חוזר לבסיס; טעות נפוצה היא לסמן את הגוף פעמיים.",["I walk to school every day.","Maya reads before bed.","Does Tom like apples?"],()=>bankQuestion(PRESENT_SIMPLE)),
+  topic("present-continuous","grammar","🎬","Present Continuous / Progressive","הווה ממושך","משתמשים בזמן הזה לפעולה שמתרחשת עכשיו, למצב זמני ולעיתים לתוכנית קרובה שכבר נקבעה. סדר המשפט כולל נושא, פועל עזר מתאים, צורת פעולה מתמשכת ושאר המידע.","בעת הוספת סיומת הפעולה יש פעלים שמשמיטים אות סופית שקטה, פעלים קצרים שמכפילים עיצור אחרון ופעלים בעלי שינוי איות מיוחד. רמזים שימושיים הם מילים שפירושן עכשיו, ברגע זה, היום או הערב; אין להשמיט את פועל העזר.",["I am reading now.","Noa is taking a photo.","The dog is lying on the rug."],presentContinuousQuestion),
+  topic("past-simple","grammar","🕰️","Past Simple","עבר פשוט","זהו נושא אתגר הדרגתי לתיאור פעולות ומצבים שהסתיימו בעבר. לומדים משפטים חיוביים, שליליים ושאלות, ומחפשים רמזי זמן כמו אתמול, בשבוע שעבר או לפני זמן מסוים.","במשפט חיובי משתמשים בצורת העבר של הפועל; לפעלים רגילים יש סיומות לפי כללי איות, ולפעלים חריגים יש צורות שצריך לזכור. בשאלה ובשלילה משתמשים בפועל עזר בעבר ואחריו פועל בסיס, ובמצבי קישור מבחינים בין נושא יחיד לנושא רבים.",["We played yesterday.","She went to the park.","They were at school."],pastSimpleQuestion,true),
+  topic("be","grammar","🟰","am / is / are","הפועל להיות","באנגלית גם משפט שמתאר זהות, גיל, הרגשה, מקום או תכונה זקוק לפועל. בוחרים את צורת פועל הקישור לפי הנושא ומציבים אותה מיד אחריו.","לגוף ראשון יחיד יש צורה מיוחדת, ליחיד בגוף שלישי צורה אחרת, ולגוף שני ולנושאים רבים צורה נוספת. טעות נפוצה היא להשמיט את הפועל או לבחור צורה לפי המילה שאחרי הרווח במקום לפי הנושא.",["I am ready.","The book is new.","We are friends."],()=>bankQuestion(BE_QUESTIONS)),
+  topic("pronouns","grammar","👤","Pronouns","כינויי גוף","כינויי גוף מחליפים שמות ושמות עצם כדי למנוע חזרה מיותרת ולהפוך את הטקסט לזורם. לפני שבוחרים כינוי בודקים מי מבצע את הפעולה, כמה משתתפים יש ומהו המין כאשר הוא ידוע.","כינוי נושא מופיע במקום מי שמבצע את הפעולה, ואילו כינוי מושא מופיע אחרי פועל או מילת יחס. חשוב לשמור על התאמה בין יחיד לרבים ולא להחליף בין צורת נושא לצורת מושא.",["Dana is kind. She helps me.","Ben has a kite. He flies it.","Maya and I read. We enjoy it."],()=>bankQuestion(PRONOUNS)),
+  topic("have-has","grammar","🎒","have / has","יש לי ויש לו","משתמשים בפועל הזה כדי לתאר שייכות, קשרים משפחתיים, תכונות ולעיתים פעילויות קבועות. סדר המשפט הוא נושא, צורת הפועל המתאימה ואז הדבר או הקשר שמתארים.","עם יחיד בגוף שלישי משתמשים בצורה המיוחדת ליחיד, ועם שאר הנושאים בצורת הבסיס. לאחר פועל עזר בשאלה הפועל חוזר לצורת הבסיס; טעות נפוצה היא להשאיר את סימן היחיד גם על הפועל העיקרי.",["I have a pencil.","Maya has a dog.","Does he have a book?"],()=>bankQuestion(HAVE_HAS)),
+  topic("possessives","grammar","🔑","Possessives","שייכות","מילות שייכות מראות למי חפץ, מקום או קשר שייכים. הן באות לפני שם העצם ומתאימות לבעלים, לא לדבר ששייך לו.","לכל כינוי גוף יש מילת שייכות מתאימה. כאשר הבעלים הוא שם יחיד אפשר להוסיף לשמו סימן שייכות וסיומת; חשוב להציב את הסימן אצל הבעלים ולא אצל החפץ, ולא לבלבל בין שייכות לצורת רבים.",["This is my bag.","That is their house.","The dog's tail is long."],()=>bankQuestion(POSSESSIVES)),
+  topic("articles","grammar","🍎","a / an / the / some","תוויות וכמות","המילים הקצרות שלפני שם עצם עוזרות לציין פריט יחיד, פריט מסוים או כמות שאינה מדויקת. הבחירה תלויה בצליל הפותח, במספר הפריטים ובשאלה אם הקורא כבר יודע באיזה פריט מדובר.","לפני פריט יחיד בוחרים תווית לפי הצליל הראשון ולא רק לפי האות הכתובה. לפריט מסוים משתמשים בתווית היידוע, ולכמות לא מדויקת של רבים או של חומר שאינו ספיר משתמשים במילת כמות; אין להשתמש בתווית יחיד לפני רבים.",["I see a cat.","She eats an apple.","We need some water."],()=>bankQuestion(ARTICLES)),
+  topic("there","grammar","📍","There is / There are","יש ונמצאים","מבנה זה מציג דבר שקיים או נמצא במקום מסוים. מתחילים במבנה הקיום, ממשיכים בשם הדבר ומסיימים בדרך כלל בתיאור המקום.","עם פריט אחד או חומר שאינו ספיר משתמשים בצורת יחיד, ועם כמה פריטים בצורת רבים. בוחרים לפי שם העצם שאחרי המבנה; טעות נפוצה היא להתאים למילה אחרת במשפט או להשתמש ביחיד לפני מספר גדול מאחד.",["There is a lamp in the room.","There are two caps on the shelf.","There is some milk in the glass."],()=>bankQuestion(THERE)),
+  topic("nouns","grammar","🏷️","Nouns","שמות עצם","שם עצם יכול לציין אדם, מקום, חפץ, חומר, רעיון או קשר. נלמד להבחין בין שם כללי לשם פרטי, בין דבר מוחשי לרעיון מופשט ובין שמות שאפשר לספור לשמות שמתארים חומר או כמות.","שם פרטי מתחיל באות גדולה באנגלית. שמות ספירים יכולים להופיע ביחיד וברבים ומקבלים מילות כמות מתאימות, ואילו שמות שאינם ספירים מקבלים לרוב פועל ביחיד ומילות כמות אחרות; אין לבלבל בין שם עצם למילה שמתארת אותו.",["Maya is a proper noun.","Friendship is an abstract noun.","Water is uncountable."],()=>bankQuestion(NOUNS)),
+  topic("plurals","grammar","👟👟","Plurals","צורת רבים","צורת רבים מראה שיש יותר מפריט אחד. רוב שמות העצם מקבלים סיומת קצרה, אך הצליל והאותיות בסוף המילה יכולים לחייב סיומת מורחבת או שינוי איות.","אחרי סיומים מסוימים מוסיפים סיומת מורחבת, ובמילים שמסתיימות באות מסוימת בודקים אם לפניה תנועה או עיצור לפני שמשנים את הסיום. יש גם צורות רבים חריגות שצריך לזכור; אין להוסיף סיומת רגילה לצורה חריגה.",["one book — two books","one box — two boxes","one tooth — two teeth"],pluralQuestion),
+  topic("verbs","grammar","🏃","Verb Types","סוגי פעלים","פעלים מספרים מה קורה במשפט: יש פעלים שמתארים פעולה, פעלים שמתארים מצב ופעלי עזר שבונים זמן, שאלה או שלילה. מחפשים מה המילה עושה בהקשר ולא מסתמכים רק על צורתה.","פועל פעולה מתאר דבר שאפשר לעשות או לראות, פועל מצב מתאר ידיעה, רגש או שייכות, ופועל עזר תומך בפועל עיקרי. פעלי מצב נשארים בדרך כלל בזמן פשוט, אך אותה מילה יכולה לשנות תפקיד ומשמעות לפי המשפט.",["Sam runs. (action)","Maya is reading. (helping)","I know the answer. (stative)"],()=>bankQuestion(VERB_TYPES)),
+  topic("adjectives","grammar","🎨","Adjectives","שמות תואר","שמות תואר מוסיפים מידע על צבע, צורה, גודל, הרגשה או איכות. כדי למצוא אותם שואלים איזו מילה מתארת את שם העצם ולא איזו מילה מציינת פעולה או דבר.","שם התואר בא בדרך כלל לפני שם העצם שהוא מתאר ואינו משתנה לפי מין או מספר. לכן גם לפני שם עצם ברבים משאירים את שם התואר ללא סיומת רבים; טעות נפוצה היא להפוך את התיאור לשם עצם או להוסיף לו סיומת.",["a blue kite","curly hair","a happy child"],()=>bankQuestion(ADJECTIVES)),
+  topic("comparisons","grammar","📏","Comparisons","השוואות","משתמשים במבני השוואה כדי לומר ששני דברים שווים, שאחד מהם בעל תכונה חזקה יותר או שאחד בולט מכל הקבוצה. תחילה בודקים אם משווים שני פריטים או פריט אחד לקבוצה שלמה.","בשוויון מקיפים את שם התואר במבנה מתאים, בהשוואה בין שניים משתמשים בצורת השוואה ובמילת קישור, ובעליונות משתמשים בתווית ובצורת העליונות. שמות תואר קצרים וארוכים נבנים בדרכים שונות, ויש צורות חריגות; אין לסמן השוואה פעמיים.",["Tom is as tall as Ben.","A train is faster than a bike.","This is the tallest tree."],()=>bankQuestion(COMPARISONS)),
+  topic("can","grammar","💪","can / can't","יכולת ואי יכולת","פועל עזר זה משמש לתיאור יכולת, אפשרות ובקשה מנומסת. הצורה החיובית מציינת שדבר אפשרי, והצורה השלילית מציינת שאין יכולת או אפשרות.","אחרי פועל העזר בא תמיד פועל בצורת הבסיס, בלי מילת חיבור ובלי סיומת של יחיד. בשאלה מציבים את פועל העזר לפני הנושא; טעות נפוצה היא להוסיף לפועל העיקרי סיומת או להפוך אותו לצורת פעולה מתמשכת.",["I can swim.","A fish can't walk.","Can you help me?"],()=>bankQuestion(CAN_QUESTIONS)),
+  topic("wh-questions","grammar","❓","Wh-Questions","מילות שאלה","מילות שאלה עוזרות לבקש מידע על אדם, דבר, מקום, זמן, סיבה או דרך. לפני שבונים את השאלה מחליטים איזה סוג מידע חסר ובוחרים את מילת השאלה המתאימה.","בשאלת מידע רגילה באים בדרך כלל מילת שאלה, פועל עזר, נושא ופועל עיקרי. כאשר מילת השאלה עצמה היא הנושא, אין מוסיפים פועל עזר מיותר; חשוב לא לערבב בין מילה ששואלת על מקום למילה ששואלת על סיבה או זמן.",["Who is your teacher?","Where do you live?","Why are you happy?"],()=>bankQuestion(WH_WORDS)),
+  topic("place-preps","grammar","🧸","Prepositions of Place","מילות יחס של מקום","מילות יחס של מקום מתארות היכן דבר אחד נמצא ביחס לדבר אחר. כדאי לדמיין או לצייר את הסצנה ולבדוק אם החפץ נמצא בתוך משהו, נוגע במשטח, נמוך ממנו, לצדו או באמצע שני דברים.","בוחרים את מילת היחס לפי הקשר המדויק בין החפצים. מגע במשטח שונה ממיקום בתוך כלי, מיקום באמצע דורש שני פריטים, ומיקום מאחור פירושו שדבר אחר מסתיר אותו; אין לבחור לפי תרגום של מילה בודדת בלי לבדוק את התמונה השלמה.",["The toy is in the box.","The book is on the desk.","The cat is between the chairs."],()=>bankQuestion(PLACE_PREPS)),
+  topic("time-preps","grammar","⏱️","Prepositions of Time","מילות יחס של זמן","מילות יחס של זמן מקשרות פעולה לשעה, יום, תאריך, חודש, שנה או חלק מן היום. מסווגים תחילה את ביטוי הזמן ורק אחר כך בוחרים את מילת היחס.","לנקודת זמן מדויקת מתאימה מילת יחס אחת, ליום או לתאריך מתאימה אחרת, ולחודש, שנה או חלק מן היום מתאימה מילת יחס של תקופה. יש גם צירופים קבועים שכדאי לזכור; טעות נפוצה היא לבחור לפי משמעות כללית ולא לפי סוג הזמן.",["at seven o'clock","on Monday","in August"],()=>bankQuestion(TIME_PREPS)),
+  topic("connectors","grammar","🔗","and / but / because","מילות קישור","מילות קישור מחברות רעיונות ועוזרות לבנות משפט ברור ועשיר. אפשר להוסיף מידע, להציג ניגוד בין שני חלקים או להסביר מדוע דבר קרה.","בוחרים מילת קישור לפי הקשר ההגיוני: הוספה מחברת רעיונות דומים, ניגוד מחבר רעיונות שונים או מפתיעים, וסיבה מסבירה את החלק שלפניה. חשוב לקרוא את שני צדי הרווח ולא לבחור לפי מילה אחת בלבד.",["I read and write.","It is small but strong.","I smiled because I was happy."],()=>bankQuestion(CONNECTORS)),
+
+  topic("reading","skills","📖","Reading Comprehension","הבנת הנקרא","נקרא קטעים קצרים מסוגים שונים ונלמד למצוא מידע בלי לתרגם כל מילה. מתחילים בכותרת, קוראים פעם אחת להבנת הנושא ואז חוזרים למשפטים שמכילים רמזים לתשובה.","בשאלת פרט מחפשים מידע מפורש, בשאלת רעיון מרכזי בודקים על מה רוב הקטע, ובשאלת רצף עוקבים אחר מילות זמן. משמעות של מילה חדשה מסיקים מן המשפטים סביבה, והסקה טובה חייבת להישען על ראיה מן הטקסט.",["Find a detail in the text.","Ask: What is the text mostly about?","Use nearby words to understand a new word."],readingQuestion),
+  topic("writing","skills","✍️","Guided Writing","כתיבה מודרכת","נבנה משפטים ופסקאות באמצעות בחירת מילים ומשפטים לפי סדר, בלי צורך במקלדת. מתחילים ברעיון שרוצים לומר, בוחרים נושא ופועל ומוסיפים פרטים של מקום, זמן או סיבה.","משפט מתחיל באות גדולה ומסתיים בסימן פיסוק. בפסקה קצרה המשפט הראשון מציג את הנושא, המשפטים הבאים מוסיפים פרטים ומילות רצף מסדרות את הרעיונות; בסיום קוראים שוב ובודקים סדר, התאמה ואיות.",["My brother plays football.","There are two caps on the shelf.","First, we plan. Next, we write. Finally, we check."],writingQuestion)
+];
+const MATIC_PATTERNS={
+  body:["Label a body part","Match English and Hebrew words","Complete a missing letter"],
+  family:["Complete family relationships","Sort a family tree","Describe an imaginary family"],
+  numbers:["Solve and choose a number word","Match a word with a numeral"],
+  days:["Recognize all seven days","Order days before and after","Complete a missing letter","Find the correct word"],
+  months:["Recognize all twelve months","Order months before and after","Complete and identify words"],
+  seasons:["Recognize all four seasons","Sort weather and objects","Complete a missing letter","Match a description with a season"],
+  "general-vocab":["Match a word with its meaning","Sort words into everyday groups"],
+  "present-simple":["Complete a verb form","Choose the correct verb","Build affirmative and negative forms","Build three question types","Apply spelling rules","Correct an error"],
+  "present-continuous":["Complete a verb form","Order words into a question","Identify the tense","Build affirmative, negative, and question forms","Apply ing spelling rules","Choose correct spelling"],
+  "past-simple":["Complete a past verb","Change a sentence to negative","Order words into a question","Apply regular spelling rules","Use irregular verbs and was or were"],
+  be:["Choose am, is, or are","Complete a sentence","Complete a short story"],
+  pronouns:["Match a pronoun with its meaning","Replace a noun with a pronoun","Complete a short story","Sort subject and object pronouns"],
+  "have-has":["Complete have or has","Choose according to the subject","Use have after does"],
+  possessives:["Complete a possessive determiner","Use an apostrophe with a singular owner"],
+  articles:["Match a or an with a picture","Choose a, an, or some","Use the for a specific item"],
+  there:["Complete a room scene","Choose There is or There are","Build a room description"],
+  nouns:["Classify countable and uncountable nouns","Classify concrete, abstract, and proper nouns","Find nouns in a sentence","Choose is, are, much, or many"],
+  plurals:["Write a plural form","Choose correct spelling","Use regular and irregular plurals"],
+  verbs:["Complete a helping verb","Find verbs in a sentence","Classify action, helping, and stative verbs","Use context to determine meaning"],
+  adjectives:["Choose a suitable adjective","Find an adjective in a sentence","Classify comparison forms","Correct an error"],
+  comparisons:["Use equality and inequality forms","Use comparative and superlative forms","Correct double-comparison errors"],
+  can:["Describe ability and inability","Ask about ability","Make a polite request"],
+  "wh-questions":["Match a question word with information","Complete a question"],
+  "place-preps":["Match a place description","Complete a spatial preposition"],
+  "time-preps":["Use at for a precise time","Use on for a day or date","Use in for a month or year"],
+  connectors:["Add an idea with and","Show contrast with but","Give a reason with because"],
+  reading:["Read a short profile","Read a first-person animal story","Read an email","Read a dialogue","Answer five comprehension types"],
+  writing:["Order words into a sentence","Order sentences into a paragraph","Describe a room or family"]
+};
+
+let currentTopic=null,currentQuestion=null,round=0,score=0,hadMistake=false,locked=false,lastSignature="";
+let englishVoice=null;
+function loadVoices(){
+  if(!("speechSynthesis" in window))return;
+  englishVoice=speechSynthesis.getVoices().find(v=>/^en(-|_)/i.test(v.lang))||speechSynthesis.getVoices().find(v=>/^en/i.test(v.lang))||null;
+}
+function speakEnglish(text){
+  if(!("speechSynthesis" in window)){showToast("הקראה אינה זמינה בדפדפן הזה.");return}
+  speechSynthesis.cancel();
+  const utterance=new SpeechSynthesisUtterance(String(text).replace(/\n/g,". "));
+  utterance.lang="en-US";utterance.rate=.86;if(englishVoice)utterance.voice=englishVoice;
+  speechSynthesis.speak(utterance);
+}
+function showToast(text){
+  const toast=$("toast");toast.textContent=text;toast.classList.remove("hidden");
+  clearTimeout(showToast.timer);showToast.timer=setTimeout(()=>toast.classList.add("hidden"),2600);
+}
+function audioButton(text,label="השמעת אנגלית"){
+  const button=document.createElement("button");button.className="audio";button.type="button";button.textContent="🔊";
+  button.title=label;button.setAttribute("aria-label",label);button.disabled=!("speechSynthesis" in window);
+  button.addEventListener("click",()=>speakEnglish(text));return button;
+}
+function renderHub(){
+  const colors={vocab:"#2aa89a",grammar:"#2477c8",skills:"#8a63d2"};
+  ["vocab","grammar","skills"].forEach(category=>{
+    const grid=$(category+"-grid");grid.innerHTML="";
+    TOPICS.filter(t=>t.category===category).forEach(t=>{
+      const button=document.createElement("button");button.type="button";
+      button.className="topic-card"+(t.challenge?" challenge":"");button.style.setProperty("--card-color",colors[category]);
+      button.innerHTML=`<span class="icon">${t.icon}</span><strong class="english">${t.titleEn}</strong><small>${t.titleHe}</small>`;
+      button.addEventListener("click",()=>openTopic(t.id));grid.appendChild(button);
+    });
+  });
+  $("topic-count").textContent=String(TOPICS.length);
+}
+function openTopic(id){
+  const found=TOPICS.find(t=>t.id===id);if(!found)return;
+  currentTopic=found;currentQuestion=null;round=0;score=0;lastSignature="";
+  $("hub-view").classList.add("hidden");$("topic-view").classList.remove("hidden");$("practice-card").classList.add("hidden");
+  $("topic-icon").textContent=found.icon;setPureText($("topic-title"),found.titleHe);setPureText($("topic-title-en"),found.titleEn,"ltr");
+  setPureText($("lesson-text"),found.lesson,"rtl");setPureText($("lesson-rule"),found.rule,"rtl");
+  const examples=$("lesson-examples");examples.innerHTML="";
+  found.examples.forEach(text=>{const row=document.createElement("div");row.className="example";
+    const sentence=document.createElement("span");sentence.className="english";setPureText(sentence,text,"ltr");row.append(sentence,audioButton(text));examples.appendChild(row)});
+  const vocabSection=$("vocab-bank-section"),fullBank=$("full-vocab-bank"),bank=VOCAB_BANKS[found.id];
+  fullBank.innerHTML="";vocabSection.open=false;vocabSection.classList.toggle("hidden",!bank);
+  if(bank)bank.forEach(item=>{const chip=document.createElement("button");chip.type="button";chip.className="vocab-chip";
+    if(found.id==="numbers")setPureText(chip,`${item.value} — ${item.en}`,"ltr");
+    else{
+      const wordEn=document.createElement("span"),wordHe=document.createElement("span");
+      wordEn.className="word-en";wordHe.className="word-he";setPureText(wordEn,item.en,"ltr");setPureText(wordHe,item.he,"rtl");
+      chip.append(wordEn,wordHe);
+    }
+    chip.addEventListener("click",()=>speakEnglish(item.en));fullBank.appendChild(chip)});
+  const patterns=$("pattern-list");patterns.innerHTML="";
+  MATIC_PATTERNS[found.id].forEach(text=>{const chip=document.createElement("span");chip.className="pattern-chip";setPureText(chip,text,"ltr");patterns.appendChild(chip)});
+  history.replaceState(null,"","#"+id);window.scrollTo({top:0,behavior:"smooth"});
+}
+function backToHub(){
+  if("speechSynthesis" in window)speechSynthesis.cancel();
+  $("topic-view").classList.add("hidden");$("hub-view").classList.remove("hidden");history.replaceState(null," ",location.pathname+location.search);
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function startPractice(){
+  round=0;score=0;lastSignature="";$("score").textContent="0";$("practice-card").classList.remove("hidden");
+  nextQuestion();setTimeout(()=>$("practice-card").scrollIntoView({behavior:"smooth",block:"start"}),50);
+}
+function nextQuestion(){
+  if(round>=10){showSummary();return}
+  let q=null;
+  for(let attempt=0;attempt<30;attempt++){q=currentTopic.generate();if(q.signature!==lastSignature)break}
+  currentQuestion=q;lastSignature=q.signature;round++;hadMistake=false;locked=false;
+  $("round").textContent=String(round);$("progress-bar").style.width=`${round*10}%`;
+  renderQuestion();
+}
+function renderQuestion(){
+  const q=currentQuestion,area=$("question-area");area.innerHTML="";
+  const box=document.createElement("div");box.className="question-box";
+  const instruction=document.createElement("div");instruction.className="instruction";setPureText(instruction,q.instruction);box.appendChild(instruction);
+  if(q.passage){const passage=document.createElement("div");passage.className="passage english";passage.textContent=q.passage;box.appendChild(passage)}
+  const promptRow=document.createElement("div");promptRow.className="prompt-row";
+  const prompt=document.createElement("div");prompt.className="prompt";setPureText(prompt,q.prompt);promptRow.appendChild(prompt);
+  if(q.speak)promptRow.appendChild(audioButton(q.speak,"השמעת הקטע או המשפט"));
+  box.appendChild(promptRow);
+  if(q.type==="mc")renderChoices(box,q);else renderOrder(box,q);
+  const feedback=document.createElement("div");feedback.id="feedback";feedback.className="feedback";box.appendChild(feedback);
+  const explanation=document.createElement("div");explanation.id="explanation";explanation.className="explanation hidden";
+  const enBlock=document.createElement("div");enBlock.className="explanation-block";enBlock.dir="ltr";
+  const enLabel=document.createElement("strong");enLabel.className="explanation-label";enLabel.textContent="English explanation";
+  const enText=document.createElement("p");enText.id="explanation-en";enText.className="explanation-text english";
+  enBlock.append(enLabel,enText);
+  const heBlock=document.createElement("div");heBlock.className="explanation-block";heBlock.dir="rtl";
+  const heLabel=document.createElement("strong");heLabel.className="explanation-label";heLabel.textContent="הסבר בעברית";
+  const heText=document.createElement("p");heText.id="explanation-he";heText.className="explanation-text";
+  heBlock.append(heLabel,heText);
+  const answerRow=document.createElement("div");answerRow.className="answer-chip-row";answerRow.dir="ltr";
+  const answerLabel=document.createElement("strong");answerLabel.className="answer-chip-label";answerLabel.textContent="Answer";
+  const answerChip=document.createElement("span");answerChip.id="explanation-answer";answerChip.className="answer-chip";
+  answerRow.append(answerLabel,answerChip);explanation.append(enBlock,heBlock,answerRow);box.appendChild(explanation);
+  const next=document.createElement("button");next.id="next-question";next.className="next hidden";next.textContent=round===10?"לסיכום 🏆":"לשאלה הבאה ➜";
+  next.addEventListener("click",nextQuestion);box.appendChild(next);area.appendChild(box);
+}
+function renderChoices(box,q){
+  const choices=document.createElement("div");choices.className="choices";
+  q.choices.forEach(value=>{const button=document.createElement("button");button.className="choice";button.type="button";
+    setPureText(button,value);
+    button.addEventListener("click",()=>checkChoice(button,value));choices.appendChild(button)});
+  box.appendChild(choices);
+}
+function showExplanation(){
+  if(currentTopic&&!currentTopic.showExplanations){
+    $("explanation").classList.add("hidden");return;
+  }
+  setPureText($("explanation-en"),currentQuestion.explanation,"ltr");
+  setPureText($("explanation-he"),currentQuestion.explanationHe,"rtl");
+  const answer=Array.isArray(currentQuestion.answer)?currentQuestion.answer.join(" "):currentQuestion.answer;
+  setPureText($("explanation-answer"),answer);
+  $("explanation").classList.remove("hidden");
+}
+function showOrderPlaceholder(answer=$("order-answer")){
+  answer.innerHTML="";
+  const placeholder=document.createElement("span");placeholder.style.color="#789";placeholder.textContent="הבחירה שלכם תופיע כאן";
+  answer.appendChild(placeholder);
+}
+function checkChoice(button,value){
+  if(locked||button.disabled)return;
+  showExplanation();
+  if(value===currentQuestion.answer){
+    locked=true;button.classList.add("correct");document.querySelectorAll(".choice").forEach(b=>b.disabled=true);
+    if(!hadMistake){score++;$("score").textContent=String(score)}
+    const feedback=$("feedback");feedback.className="feedback good";
+    feedback.textContent=hadMistake?"נכון! מצאתם את התשובה בניסיון נוסף. 🌟":"מצוין! תשובה נכונה. 🎉";
+    $("next-question").classList.remove("hidden");
+  }else{
+    hadMistake=true;button.classList.add("wrong");button.disabled=true;
+    const feedback=$("feedback");feedback.className="feedback try";
+    feedback.textContent=currentTopic&&!currentTopic.showExplanations
+      ?"כמעט! חשבו שוב ונסו אפשרות אחרת. 💛"
+      :"כמעט! קראו את ההסבר ונסו אפשרות אחרת. 💛";
+  }
+}
+function renderOrder(box,q){
+  const answer=document.createElement("div");answer.className="order-answer";answer.id="order-answer";
+  box.appendChild(answer);showOrderPlaceholder(answer);
+  const bank=document.createElement("div");bank.className="order-bank";bank.id="order-bank";
+  q.choices.forEach((value,index)=>{const button=document.createElement("button");button.type="button";setPureText(button,value,"ltr");button.dataset.index=String(index);
+    button.addEventListener("click",()=>placeOrderItem(button,value));bank.appendChild(button)});
+  box.appendChild(bank);
+  const actions=document.createElement("div");actions.className="order-actions";
+  const reset=document.createElement("button");reset.className="reset-order";reset.textContent="↩ התחלה מחדש";reset.addEventListener("click",resetOrder);
+  const check=document.createElement("button");check.className="check-order";check.id="check-order";check.textContent="בדיקה ✓";check.disabled=true;check.addEventListener("click",checkOrder);
+  actions.append(reset,check);box.appendChild(actions);q.selected=[];
+}
+function placeOrderItem(button,value){
+  if(locked)return;currentQuestion.selected.push({value,index:button.dataset.index});button.disabled=true;renderPlaced();
+}
+function renderPlaced(){
+  const answer=$("order-answer");answer.innerHTML="";
+  currentQuestion.selected.forEach(item=>{const span=document.createElement("span");span.className="placed english";setPureText(span,item.value,"ltr");answer.appendChild(span)});
+  $("check-order").disabled=currentQuestion.selected.length!==currentQuestion.answer.length;
+}
+function resetOrder(){
+  if(locked)return;currentQuestion.selected=[];document.querySelectorAll("#order-bank button").forEach(b=>b.disabled=false);
+  showOrderPlaceholder();$("check-order").disabled=true;
+  $("feedback").textContent="";$("explanation").classList.add("hidden");
+}
+function checkOrder(){
+  if(locked)return;
+  const selected=currentQuestion.selected.map(x=>x.value),correct=selected.every((v,i)=>v===currentQuestion.answer[i]);
+  showExplanation();
+  if(correct){
+    locked=true;if(!hadMistake){score++;$("score").textContent=String(score)}$("feedback").className="feedback good";
+    $("feedback").textContent="סדר מצוין! בניתם טקסט נכון. 🎉";$("next-question").classList.remove("hidden");
+    document.querySelectorAll("#order-bank button").forEach(b=>b.disabled=true);
+  }else{
+    hadMistake=true;$("feedback").className="feedback try";
+    $("feedback").textContent="כמעט! קראו את ההסבר, ואז לחצו על „התחלה מחדש” ונסו שוב. 💛";
+  }
+}
+function showSummary(){
+  const area=$("question-area");area.innerHTML="";
+  const summary=document.createElement("div");summary.className="summary";
+  const trophy=document.createElement("div");trophy.className="trophy";trophy.textContent=score>=8?"🏆":score>=5?"🌟":"💪";
+  const heading=document.createElement("h3");heading.textContent="סיימתם סבב!";
+  const result=document.createElement("p");result.append("עניתם נכון בניסיון הראשון על ");
+  const points=document.createElement("strong");points.textContent=String(score);
+  result.append(points," מתוך עשר.");
+  const encouragement=document.createElement("p");
+  encouragement.textContent=score>=8?"עבודה נהדרת!":score>=5?"התקדמות יפה מאוד!":"כל ניסיון בונה ביטחון. נסו סבב נוסף!";
+  summary.append(trophy,heading,result,encouragement);area.appendChild(summary);
+  const again=document.createElement("button");again.className="primary";again.textContent="🔄 סבב חדש";again.addEventListener("click",startPractice);
+  summary.appendChild(again);
+}
+function runSelfTest(){
+  const result=$("selftest-result"),failures=[];
+  result.classList.remove("hidden");
+  if(document.documentElement.scrollWidth>window.innerWidth+1){
+    failures.push(`layout: horizontal overflow ${document.documentElement.scrollWidth}px > ${window.innerWidth}px`);
+  }
+  document.querySelectorAll(".page,.toplinks,.logo,.source-note,.section-title,.topic-grid,.topic-card").forEach(element=>{
+    const rect=element.getBoundingClientRect();
+    if(rect.left<-1||rect.right>window.innerWidth+1){
+      failures.push(`layout: ${element.className||element.tagName} outside viewport (${Math.round(rect.left)}..${Math.round(rect.right)})`);
+    }
+  });
+  Object.entries(REQUIRED_VOCAB).forEach(([id,words])=>{
+    const available=(VOCAB_BANKS[id]||[]).map(item=>item.en);
+    words.forEach(word=>{if(!available.includes(word))failures.push(`${id}: required vocabulary missing: ${word}`)});
+  });
+  ["school","home","food","animals","activities"].forEach(group=>{
+    if(!GENERAL.some(item=>item.group===group))failures.push(`general-vocab: missing group ${group}`);
+  });
+  const checkPure=(label,value)=>{
+    if(value!==undefined&&value!==null&&hasMixedScripts(value))failures.push(`${label}: mixed Hebrew and Latin scripts`);
+  };
+  const checkEnglishOnly=(label,value)=>{
+    if(typeof value!=="string"||!value.trim())failures.push(`${label}: missing English text`);
+    else{
+      if(hasHebrew(value))failures.push(`${label}: English text contains Hebrew`);
+      if(!hasLatin(value))failures.push(`${label}: English text has no Latin letters`);
+    }
+  };
+  const checkHebrewOnly=(label,value)=>{
+    if(typeof value!=="string"||!value.trim())failures.push(`${label}: missing Hebrew text`);
+    else{
+      if(hasLatin(value))failures.push(`${label}: Hebrew text contains Latin letters`);
+      if(!hasHebrew(value))failures.push(`${label}: Hebrew text has no Hebrew letters`);
+    }
+  };
+  const checkEnglishExplanation=(label,value)=>{
+    if(typeof value!=="string"||!value.trim())failures.push(`${label}: missing English explanation`);
+    else{
+      if(hasHebrew(value))failures.push(`${label}: English explanation contains Hebrew`);
+      if(!hasLatin(value))failures.push(`${label}: English explanation has no Latin text`);
+    }
+  };
+  const checkHebrewExplanation=(label,value)=>{
+    if(typeof value!=="string"||!value.trim())failures.push(`${label}: missing Hebrew explanation`);
+    else{
+      if(hasLatin(value))failures.push(`${label}: Hebrew explanation contains Latin text`);
+      if(!hasHebrew(value))failures.push(`${label}: Hebrew explanation has no Hebrew text`);
+    }
+  };
+  const validateQuestion=(q,label)=>{
+    if(!q||!["mc","order"].includes(q.type)||!q.instruction||!q.prompt||!q.explanation||!q.explanationHe||!q.signature){
+      failures.push(`${label}: malformed question`);return;
+    }
+    ["instruction","prompt","passage","speak"].forEach(field=>checkPure(`${label}.${field}`,q[field]));
+    checkEnglishExplanation(`${label}.explanation`,q.explanation);
+    checkHebrewExplanation(`${label}.explanationHe`,q.explanationHe);
+    (Array.isArray(q.answer)?q.answer:[q.answer]).forEach((value,index)=>checkPure(`${label}.answer[${index}]`,value));
+    if(!Array.isArray(q.choices)){failures.push(`${label}: choices are missing`);return}
+    q.choices.forEach((value,index)=>checkPure(`${label}.choices[${index}]`,value));
+    if(q.type==="mc"){
+      if(q.choices.length!==4)failures.push(`${label}: question does not have four choices`);
+      else if(new Set(q.choices).size!==4)failures.push(`${label}: duplicate multiple-choice options`);
+      else if(!q.choices.includes(q.answer))failures.push(`${label}: answer missing from choices`);
+    }else{
+      if(!Array.isArray(q.answer)||q.answer.length<2)failures.push(`${label}: malformed order task`);
+      else if(new Set(q.choices).size!==q.choices.length)failures.push(`${label}: duplicate order choices`);
+      else if(q.answer.some(part=>!q.choices.includes(part)))failures.push(`${label}: ordered answer item missing`);
+    }
+  };
+  const checkTextNodes=(root,label)=>{
+    const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
+    let node;
+    while((node=walker.nextNode())){
+      const text=node.nodeValue.trim();
+      if(text&&hasMixedScripts(text))failures.push(`${label}: mixed visible text node`);
+    }
+  };
+  checkPure("document.title",document.title);
+  checkTextNodes($("hub-view"),"hub");
+  AUTHORED_QUESTION_BANKS.forEach(bank=>{
+    bank.items.forEach((item,index)=>{
+      try{
+        const q=item.order
+          ?makeOrder(item.kind==="paragraph"?"סדרו פסקה.":"סדרו משפט.",item.prompt,item.order,item.explanation,item.explanationHe)
+          :bankQuestion([item]);
+        validateQuestion(q,`${bank.name}.authored[${index}]`);
+      }catch(error){failures.push(`${bank.name}.authored[${index}]: ${error.message}`)}
+    });
+  });
+  const exercisePath=(label,factory)=>{
+    try{validateQuestion(factory(),label)}catch(error){failures.push(`${label}: generator threw ${error.message}`)}
+  };
+  [
+    ["body",BODY,true,false],["family-vocab",FAMILY,false,false],["days",DAYS,true,true],
+    ["months",MONTHS,true,true],["seasons-vocab",SEASONS,true,false],["general-vocab",GENERAL,false,false]
+  ].forEach(([label,bank,missing,sequence])=>{
+    bank.forEach((item,index)=>{
+      exercisePath(`${label}.toEnglish[${index}]`,()=>vocabQuestion(bank,label,"toEnglish",item));
+      exercisePath(`${label}.toHebrew[${index}]`,()=>vocabQuestion(bank,label,"toHebrew",item));
+      if(missing)exercisePath(`${label}.missing[${index}]`,()=>missingLetterQuestion(bank,label,item,[...item.en].findIndex(char=>/[a-z]/i.test(char))));
+    });
+    if(sequence){
+      exercisePath(`${label}.sequence.next`,()=>sequenceQuestion(bank,label,"next"));
+      exercisePath(`${label}.sequence.previous`,()=>sequenceQuestion(bank,label,"previous"));
+    }
+  });
+  ["school","home","food","animals","activities"].forEach(group=>
+    exercisePath(`general-vocab.group.${group}`,()=>generalGroupQuestion(group)));
+  exercisePath("numbers.math.add",()=>numberMathQuestion(true));
+  exercisePath("numbers.math.subtract",()=>numberMathQuestion(false));
+  NUMBERS.forEach((item,index)=>{
+    exercisePath(`numbers.word[${index}]`,()=>numberWordQuestion(item));
+    exercisePath(`numbers.digit[${index}]`,()=>numberDigitQuestion(item));
+  });
+  PLURALS.forEach((entry,index)=>exercisePath(`plurals[${index}]`,()=>pluralQuestion(entry)));
+  PRESENT_CONTINUOUS_ORDERS.forEach((words,index)=>
+    exercisePath(`present-continuous.order[${index}]`,()=>presentContinuousOrderQuestion(words)));
+  PAST_ORDERS.forEach((words,index)=>exercisePath(`past-simple.order[${index}]`,()=>pastOrderQuestion(words)));
+  READING_PASSAGES.forEach(passage=>passage.questions.forEach((q,index)=>
+    exercisePath(`reading.${passage.id}[${index}]`,()=>makeMc("קראו ובחרו את התשובה הטובה ביותר.",q.prompt,q.answer,q.wrong,
+      q.explanation,q.explanationHe,passage.text,{signature:`reading|${passage.id}|${index}`,passage:passage.text}))));
+  TOPICS.forEach(t=>{
+    if(!t.id||!t.titleEn||!t.titleHe||!t.lesson||!t.rule||!Array.isArray(t.examples)||t.examples.length<2||
+      !Array.isArray(MATIC_PATTERNS[t.id])||MATIC_PATTERNS[t.id].length<2||typeof t.generate!=="function"){
+      failures.push(`${t.id||"unknown"}: missing topic lesson data`);return;
+    }
+    checkEnglishOnly(`${t.id}.titleEn`,t.titleEn);
+    ["titleHe","lesson","rule"].forEach(field=>checkHebrewOnly(`${t.id}.${field}`,t[field]));
+    t.examples.forEach((value,index)=>checkEnglishOnly(`${t.id}.examples[${index}]`,value));
+    if(t.id==="general-vocab"?t.showExplanations!==false:t.showExplanations!==true){
+      failures.push(`${t.id}: explanation visibility flag is incorrect`);
+    }
+    MATIC_PATTERNS[t.id].forEach((value,index)=>checkPure(`${t.id}.patterns[${index}]`,value));
+    openTopic(t.id);checkTextNodes($("topic-view"),`${t.id}.rendered`);
+    if($("lesson-text").dir!=="rtl"||$("lesson-rule").dir!=="rtl"){
+      failures.push(`${t.id}: Hebrew lesson direction is incorrect`);
+    }
+    for(let i=0;i<80;i++){
+      let q;
+      try{q=t.generate()}catch(error){failures.push(`${t.id}: generator threw ${error.message}`);break}
+      validateQuestion(q,`${t.id}.run[${i+1}]`);
+      if(failures.length>40)break;
+    }
+  });
+  try{
+    openTopic("body");startPractice();
+    const choiceButtons=[...document.querySelectorAll(".choice")];
+    const wrongButton=choiceButtons.find(button=>button.textContent!==currentQuestion.answer);
+    const correctButton=choiceButtons.find(button=>button.textContent===currentQuestion.answer);
+    if(!wrongButton||!correctButton)failures.push("interaction: body choices did not render");
+    else{
+      wrongButton.click();
+      if(locked||!hadMistake||!wrongButton.classList.contains("wrong"))failures.push("interaction: incorrect-answer retry flow failed");
+      if($("explanation").classList.contains("hidden")||$("explanation-en").textContent!==currentQuestion.explanation||
+        $("explanation-he").textContent!==currentQuestion.explanationHe){
+        failures.push("interaction: bilingual explanations missing after wrong answer");
+      }
+      if($("explanation-en").dir!=="ltr"||$("explanation-he").dir!=="rtl"){
+        failures.push("interaction: explanation directions are incorrect");
+      }
+      checkTextNodes($("explanation"),"interaction.explanation");
+      correctButton.click();
+      if(!locked||!correctButton.classList.contains("correct")||$("next-question").classList.contains("hidden")){
+        failures.push("interaction: correct-answer completion flow failed");
+      }
+      if($("explanation").classList.contains("hidden"))failures.push("interaction: explanations hidden after correct answer");
+    }
+    openTopic("general-vocab");startPractice();
+    const generalChoices=[...document.querySelectorAll(".choice")];
+    const generalWrong=generalChoices.find(button=>button.textContent!==currentQuestion.answer);
+    const generalCorrect=generalChoices.find(button=>button.textContent===currentQuestion.answer);
+    if(!generalWrong||!generalCorrect)failures.push("interaction: general-vocab choices did not render");
+    else{
+      generalWrong.click();
+      if(!$("explanation").classList.contains("hidden")){
+        failures.push("interaction: general-vocab explanation shown after wrong answer");
+      }
+      if($("feedback").textContent.includes("הסבר")){
+        failures.push("interaction: general-vocab wrong feedback mentions an explanation");
+      }
+      generalCorrect.click();
+      if(!$("explanation").classList.contains("hidden")){
+        failures.push("interaction: general-vocab explanation shown after correct answer");
+      }
+    }
+    currentTopic=TOPICS.find(topicItem=>topicItem.id==="writing");
+    currentQuestion=makeOrder("בדיקה","בנו משפט.",["We","read","books."],
+      "The subject comes before the verb and object.","הנושא בא לפני הפועל והמושא במשפט רגיל.");
+    locked=false;hadMistake=false;renderQuestion();
+    currentQuestion.answer.forEach(value=>{
+      const button=[...document.querySelectorAll("#order-bank button")].find(item=>!item.disabled&&item.textContent===value);
+      if(button)button.click();
+    });
+    $("check-order").click();
+    if(!locked||$("next-question").classList.contains("hidden"))failures.push("interaction: ordered-answer flow failed");
+  }catch(error){
+    failures.push(`interaction: ${error.message}`);
+  }
+  result.textContent=failures.length?`SELFTEST: FAIL\n${failures.join("\n")}`:"SELFTEST: PASS";
+}
+
+renderHub();
+$("back-to-hub").addEventListener("click",backToHub);
+$("start-practice").addEventListener("click",startPractice);
+if("speechSynthesis" in window){loadVoices();speechSynthesis.onvoiceschanged=loadVoices}
+const initialId=location.hash.slice(1);if(TOPICS.some(t=>t.id===initialId))openTopic(initialId);
+if(new URLSearchParams(location.search).get("selftest")==="1")setTimeout(runSelfTest,0);
+</script>
+</body>
+</html>

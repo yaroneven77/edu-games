@@ -16,6 +16,7 @@ Edu Games is a collection of educational English and math games created for chil
 - Organize math games by grade: the root links to `math/`, which links to `grade-3/`, `grade-4/`, and future grade folders.
 - Organize English games under `english/`, with each grade in a nested folder such as `english/grade-3/`.
 - Grade 4 currently contains 11 games covering numbers to one million, order of operations, fraction comparison, written arithmetic, number properties, fraction operations, word problems, geometry, measurement, data, and probability.
+- English Grade 4 lives at `english/grade-4/` and contains 28 selectable vocabulary, grammar, reading-comprehension, and guided-writing topics in one data-driven academy.
 - Preserve legacy public URLs with lightweight redirects when moving published games.
 - Treat `sandbox/sandbox.html` as the preview hub for all new or substantially changed content.
 - Add staged content to the sandbox preview hub so the user can test it at the published sandbox URL before production promotion.
@@ -29,9 +30,12 @@ Edu Games is a collection of educational English and math games created for chil
 - Match the existing colorful card-based visual design, rounded controls, shadows, gradients, and responsive layouts.
 - Preserve mobile-first behavior, large touch targets, readable typography, and short interaction flows.
 - Support the repository's right-to-left Hebrew and left-to-right English content correctly.
+- Keep Hebrew and English in separate sentences and DOM elements. Never combine both scripts in one user-visible text field.
+- Write short lesson explanations and rules in Hebrew; keep fixed English examples in their own left-to-right section with optional pronunciation.
 - Match the existing use of Hebrew niqqud when adding Hebrew text for young children.
 - Reuse existing speech-synthesis patterns for English and Hebrew pronunciation.
 - Include clear positive feedback, gentle retry messaging, scores, progress, or celebration effects where appropriate.
+- For English Grade 4 answer feedback, show a specific English explanation, a detailed Hebrew explanation, and the correct English answer as separate directional blocks. The general-vocabulary topic intentionally omits these explanation blocks.
 - Avoid interactions that require precise mouse control, hover, a physical keyboard, or desktop-only behavior.
 - Keep audio optional: the game must remain understandable and playable when speech synthesis is unavailable.
 
@@ -41,6 +45,7 @@ Edu Games is a collection of educational English and math games created for chil
 - Keep questions and answers unambiguous and factually correct.
 - Prefer varied exercises while preventing impossible, duplicate, or misleading answer choices.
 - Keep guided lesson examples fixed and intentional so explanations remain clear and repeatable.
+- Base English Grade 4 topic coverage and exercise patterns on the audited Matic Grade 4 English resources, but write original passages, questions, and examples rather than copying worksheets.
 - Generate game exercises, values, and answer choices dynamically where appropriate; occasional repeats are acceptable, but immediate duplicate rounds should be avoided.
 - Preserve the educational objective of an existing game when extending it.
 - When adding randomized content, ensure generated values always satisfy the exercise's rules.

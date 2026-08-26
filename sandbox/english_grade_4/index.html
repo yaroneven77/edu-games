@@ -74,12 +74,12 @@
     background:#fff;border-radius:26px;padding:clamp(18px,4vw,28px);box-shadow:0 9px 0 var(--shadow);margin-bottom:22px;
   }
   .lesson-card h2,.practice-card h2{margin:0 0 12px;color:var(--blue-dark);font-size:clamp(23px,5vw,30px)}
-  .lesson-text{font-size:18px;line-height:1.75;direction:ltr;text-align:left}
+  .lesson-text{font-size:18px;line-height:1.75;direction:rtl;text-align:right}
   .rule{
     background:#fff5d8;border:3px dashed #dfa43b;border-radius:17px;padding:13px 15px;margin:15px 0;
-    font-size:18px;font-weight:900;line-height:1.7;direction:ltr;text-align:left;
+    font-size:18px;font-weight:900;line-height:1.7;direction:rtl;text-align:right;
   }
-  .rule:before{content:"📌 Rule: "}
+  .rule:before{content:"📌 כלל: "}
   .examples{display:grid;gap:10px;margin:14px 0 18px}
   .example{
     display:flex;direction:ltr;align-items:center;justify-content:space-between;gap:10px;background:var(--pale);
@@ -1086,40 +1086,40 @@ function writingQuestion(){
     task.prompt,task.order,task.explanation,task.explanationHe);
 }
 
-function topic(id,category,icon,titleEn,titleHe,lesson,rule,examples,generate,challenge=false){
-  return {id,category,icon,titleEn,titleHe,lesson,rule,examples,generate,challenge};
+function topic(id,category,icon,titleEn,titleHe,lesson,rule,examples,generate,challenge=false,showExplanations=true){
+  return {id,category,icon,titleEn,titleHe,lesson,rule,examples,generate,challenge,showExplanations};
 }
 const TOPICS=[
-  topic("body","vocab","🧍","Body Parts","חלקי הגוף","Learn to label body parts and match each English word with its Hebrew meaning.","Treat each body-part word as a separate item. Eye and hair must never be confused, and teeth is the plural form of tooth.",["This is my head.","I see with my eyes.","My knee is part of my leg."],bodyQuestion),
-  topic("family","vocab","👨‍👩‍👧‍👦","Family","משפחה","Family words help us complete a family tree and describe relationships without sharing personal details.","Parents means mother and father together. Aunt and uncle name adult relatives, while son and daughter name children.",["My mother is a teacher.","I have one brother.","Our grandparents visit us."],familyQuestion),
-  topic("numbers","vocab","🔢","Numbers","מספרים","Read and write number words from one to twenty, and connect each word with its numeral.","The words thirteen through nineteen usually end in teen.",["I have four pencils.","There are ten students.","My sister is twelve."],numbersQuestion),
-  topic("days","vocab","📅","Days of the Week","ימי השבוע","Learn all seven days through recognition, missing-letter tasks, and sequence questions.","Day names begin with capital letters. Use on before a day of the week.",["School starts on Sunday.","We have English on Tuesday.","Saturday comes after Friday."],daysQuestion),
-  topic("months","vocab","🗓️","Months","חודשי השנה","Learn all twelve months and identify which month comes before or after another month.","Month names begin with capital letters. Use in before a month.",["January is the first month.","My birthday is in May.","December is the last month."],monthsQuestion),
-  topic("seasons","vocab","🌦️","Seasons","עונות השנה","Match spring, summer, autumn, and winter with suitable weather, objects, and activities.","Season names usually begin with lowercase letters unless they start a sentence.",["Flowers grow in spring.","Summer is hot.","Winter can be rainy."],seasonsQuestion),
-  topic("general-vocab","vocab","🎒","Lexical Band 1","אוצר מילים כללי","Build useful vocabulary for school, home, food, animals, and everyday activities.","Learn each word with its meaning and a short sentence instead of memorizing an isolated list.",["The notebook is in my bag.","We make a cheese sandwich.","The rabbit can jump."],generalQuestion),
+  topic("body","vocab","🧍","Body Parts","חלקי הגוף","נלמד לזהות ולתאר חלקי גוף בעזרת תמונה, משמעות וצליל. כדאי להצביע על האיבר, לומר את המילה בקול ולחבר אותה למשפט קצר כדי שהזיכרון יהיה חזותי ושמיעתי יחד.","לומדים כל מילה כפריט נפרד ובודקים היטב מילים דומות. חשוב להבחין בין איברי גוף קרובים, לזכור שיש מילים מיוחדות לצורת רבים ולחזור על האיות באמצעות השלמת אות חסרה.",["This is my head.","I see with my eyes.","My knee is part of my leg."],bodyQuestion),
+  topic("family","vocab","👨‍👩‍👧‍👦","Family","משפחה","נלמד מילים המתארות בני משפחה וקשרים ביניהם, ונשתמש בהן כדי להבין עץ משפחה דמיוני. מומלץ לצייר קשרים בין הדמויות ולומר מי קשור למי בלי למסור פרטים אישיים.","כדי לבחור מילה נכונה בודקים את הדור, את המין ואת כיוון הקשר במשפט. יש מילים המתארות שני הורים יחד, מילים לקרובי משפחה מבוגרים ומילים לילדים במשפחה.",["My mother is a teacher.","I have one brother.","Our grandparents visit us."],familyQuestion),
+  topic("numbers","vocab","🔢","Numbers","מספרים","נלמד לקרוא ולכתוב שמות מספרים מאחת עד עשרים ולחבר כל שם לספרה המתאימה. כדאי לתרגל בקול, לספור חפצים ולפתור תרגילים קצרים כדי לקשר בין הכמות, הספרה והמילה.","שמים לב לחלקים שחוזרים בשמות המספרים ולשינויים באיות של מספרים מיוחדים. לאחר חישוב תרגיל בודקים תחילה את התוצאה המספרית ורק אחר כך בוחרים את המילה המתאימה.",["I have four pencils.","There are ten students.","My sister is twelve."],numbersQuestion),
+  topic("days","vocab","📅","Days of the Week","ימי השבוע","נלמד את שבעת ימי השבוע לפי שמם ומקומם ברצף. אפשר לתרגל בעזרת לוח שבועי, לשאול מה בא לפני יום מסוים ומה בא אחריו ולהשלים אותיות חסרות.","שמות הימים נכתבים באות גדולה באנגלית. כשמתארים פעילות ביום מסוים משתמשים במילת היחס המתאימה ליום, ובשאלות רצף נשענים על הסדר הקבוע של השבוע.",["School starts on Sunday.","We have English on Tuesday.","Saturday comes after Friday."],daysQuestion),
+  topic("months","vocab","🗓️","Months","חודשי השנה","נלמד את שנים עשר חודשי השנה ונזהה את מקומו של כל חודש ברצף. מומלץ לחבר חודשים לימי הולדת, לחגים ולעונות ולתרגל מה בא לפני כל חודש ומה בא אחריו.","שמות החודשים נכתבים באות גדולה באנגלית. לפני חודש משתמשים במילת היחס המתאימה לתקופה, ובתרגילי רצף חשוב לזכור את המעבר מסוף שנה לתחילת השנה הבאה.",["January is the first month.","My birthday is in May.","December is the last month."],monthsQuestion),
+  topic("seasons","vocab","🌦️","Seasons","עונות השנה","נלמד להתאים לכל עונה מזג אוויר, בגדים, חפצים ופעילויות אופייניים. כדאי ליצור לכל עונה תמונה בדמיון ולחבר אליה כמה מילים מוכרות.","שמות עונות נכתבים בדרך כלל באות קטנה, אלא אם הם פותחים משפט. כדי לזהות עונה מחפשים רמזים כמו חום, קור, גשם, פריחה או שלכת ולא מסתמכים על מילה אחת בלבד.",["Flowers grow in spring.","Summer is hot.","Winter can be rainy."],seasonsQuestion),
+  topic("general-vocab","vocab","🎒","Lexical Band 1","אוצר מילים כללי","נרחיב אוצר מילים שימושי בנושאי בית ספר, בית, מזון, בעלי חיים ופעילויות יומיומיות. נלמד בעזרת משמעות, תמונה, צליל ומשפט קצר כדי להשתמש במילה ולא רק לזהות אותה.","ממיינים מילים לקבוצות תוכן ומחפשים קשרים ביניהן. כדאי לחזור על כל מילה בהקשר חדש, להקשיב להגייה ולבדוק את האיות במקום לשנן רשימה ללא משמעות.",["The notebook is in my bag.","We make a cheese sandwich.","The rabbit can jump."],generalQuestion,false,false),
 
-  topic("present-simple","grammar","⏰","Present Simple","הווה פשוט","Use the Present Simple for habits, facts, and states. Practice affirmative sentences, negatives, yes-or-no questions, information questions, and subject questions.","Use the base verb with I, you, we, and they. Add s, es, or ies with he, she, and it. Use do or does in questions and do not or does not in negatives. Common signals include always, usually, often, sometimes, rarely, never, every day, and once a week.",["I walk to school every day.","Maya reads before bed.","Does Tom like apples?"],()=>bankQuestion(PRESENT_SIMPLE)),
-  topic("present-continuous","grammar","🎬","Present Continuous / Progressive","הווה ממושך","Use the Present Continuous for actions happening now, temporary situations, and some arranged future plans.","Build the tense with am, is, or are plus a verb ending in ing. Drop the final e in taking, double the final consonant in cutting, and change ie to y in lying and tying. Words such as now, right now, at the moment, today, and tonight often signal this tense.",["I am reading now.","Noa is taking a photo.","The dog is lying on the rug."],presentContinuousQuestion),
-  topic("past-simple","grammar","🕰️","Past Simple","עבר פשוט","This gradual challenge topic covers completed past actions in affirmative sentences, negatives, and questions.","Use the second verb form in affirmative sentences. Use did or did not with the base verb in questions and negatives. Regular forms may end in d, ed, or ied. Common irregular forms include went, saw, and took. Use was with singular subjects and were with plural subjects.",["We played yesterday.","She went to the park.","They were at school."],pastSimpleQuestion,true),
-  topic("be","grammar","🟰","am / is / are","הפועל להיות","English sentences need a verb even when they describe an identity, feeling, place, or quality.","Use am with I, is with he, she, and it, and are with you, we, and they.",["I am ready.","The book is new.","We are friends."],()=>bankQuestion(BE_QUESTIONS)),
-  topic("pronouns","grammar","👤","Pronouns","כינויי גוף","Pronouns replace names and nouns so that a sentence does not repeat the same words.","Use I, you, he, she, it, we, and they as subjects. Use me, him, her, us, and them after verbs or prepositions.",["Dana is kind. She helps me.","Ben has a kite. He flies it.","Maya and I read. We enjoy it."],()=>bankQuestion(PRONOUNS)),
-  topic("have-has","grammar","🎒","have / has","יש לי ויש לו","Use have and has for possession, relationships, and scheduled activities.","Use has with he, she, and it. Use have with I, you, we, and they. Use have after does.",["I have a pencil.","Maya has a dog.","Does he have a book?"],()=>bankQuestion(HAVE_HAS)),
-  topic("possessives","grammar","🔑","Possessives","שייכות","Possessive words show who owns or is connected to something. A singular noun can also take an apostrophe and s.","Match I with my, you with your, he with his, she with her, we with our, and they with their. Write Dana's book for a book that belongs to Dana.",["This is my bag.","That is their house.","The dog's tail is long."],()=>bankQuestion(POSSESSIVES)),
-  topic("articles","grammar","🍎","a / an / the / some","תוויות וכמות","Use a, an, the, and some to introduce nouns and describe quantity or specificity.","Use a before a consonant sound, an before a vowel sound, the for a specific item, and some for an unspecified plural or uncountable amount.",["I see a cat.","She eats an apple.","We need some water."],()=>bankQuestion(ARTICLES)),
-  topic("there","grammar","📍","There is / There are","יש ונמצאים","Use this structure to introduce something that exists or is present in a place.","Use There is with one item or an uncountable noun. Use There are with plural nouns.",["There is a lamp in the room.","There are two caps on the shelf.","There is some milk in the glass."],()=>bankQuestion(THERE)),
-  topic("nouns","grammar","🏷️","Nouns","שמות עצם","A noun can be concrete, abstract, common, or proper. It can also be countable or uncountable.","Proper nouns begin with capital letters. Use many with countable nouns and much with uncountable nouns. Common noun endings include ness, tion, ment, and ship. In the sentence “The moon is full,” moon is a noun and full is an adjective.",["Maya is a proper noun.","Friendship is an abstract noun.","Water is uncountable."],()=>bankQuestion(NOUNS)),
-  topic("plurals","grammar","👟👟","Plurals","צורת רבים","Most nouns add s, but some nouns follow spelling rules or use irregular plural forms.","Add es after s, x, ch, or sh. Change a consonant plus y to ies. Remember irregular forms such as children, teeth, and feet.",["one book — two books","one box — two boxes","one tooth — two teeth"],pluralQuestion),
-  topic("verbs","grammar","🏃","Verb Types","סוגי פעלים","Verbs can describe actions or states, while helping verbs build tenses, negatives, and questions.","An action verb describes an action. A helping verb supports another verb. A stative verb such as know usually stays in the Present Simple. Some verbs, including have and see, can change meaning according to context.",["Sam runs. (action)","Maya is reading. (helping)","I know the answer. (stative)"],()=>bankQuestion(VERB_TYPES)),
-  topic("adjectives","grammar","🎨","Adjectives","שמות תואר","Adjectives describe color, shape, size, feeling, or quality.","An adjective usually comes before its noun and does not change for gender or plural number. Write two big dogs, never two bigs dogs.",["a blue kite","curly hair","a happy child"],()=>bankQuestion(ADJECTIVES)),
-  topic("comparisons","grammar","📏","Comparisons","השוואות","Use equality, comparative, and superlative forms to compare people, animals, places, and objects.","Use as plus an adjective plus as for equality. Short adjectives usually take er and est, while long adjectives use more and most. Use than in a comparative and the in a superlative. Remember good, better, best and bad, worse, worst.",["Tom is as tall as Ben.","A train is faster than a bike.","This is the tallest tree."],()=>bankQuestion(COMPARISONS)),
-  topic("can","grammar","💪","can / can't","יכולת ואי יכולת","Use can for ability, possibility, and polite requests. Use cannot or can't when something is not possible.","Place the base verb directly after can or can't. Do not add to or s.",["I can swim.","A fish can't walk.","Can you help me?"],()=>bankQuestion(CAN_QUESTIONS)),
-  topic("wh-questions","grammar","❓","Wh-Questions","מילות שאלה","Question words ask for a person, thing, place, time, reason, or method.","Use who for a person, what for a thing, where for a place, when for a time, why for a reason, and how for a method.",["Who is your teacher?","Where do you live?","Why are you happy?"],()=>bankQuestion(WH_WORDS)),
-  topic("place-preps","grammar","🧸","Prepositions of Place","מילות יחס של מקום","Prepositions of place describe where one thing is in relation to another thing.","Use in for inside, on for a surface, under for a lower position, between for the middle of two items, and next to for a nearby position.",["The toy is in the box.","The book is on the desk.","The cat is between the chairs."],()=>bankQuestion(PLACE_PREPS)),
-  topic("time-preps","grammar","⏱️","Prepositions of Time","מילות יחס של זמן","Use at, on, and in with different kinds of time expressions.","Use at for a precise time, on for a day or date, and in for a month, year, or part of the day.",["at seven o'clock","on Monday","in August"],()=>bankQuestion(TIME_PREPS)),
-  topic("connectors","grammar","🔗","and / but / because","מילות קישור","Connectors join ideas and make sentences clearer and richer.","Use and to add an idea, but to show a contrast, and because to give a reason.",["I read and write.","It is small but strong.","I smiled because I was happy."],()=>bankQuestion(CONNECTORS)),
+  topic("present-simple","grammar","⏰","Present Simple","הווה פשוט","משתמשים בזמן הזה כדי לתאר הרגלים, עובדות ומצבים קבועים. במשפט חיובי מציבים בדרך כלל נושא, אחריו פועל ואז את שאר המידע; מילות תדירות וביטויי זמן חוזרים עוזרים לזהות את השימוש.","עם רוב הנושאים הפועל נשאר בצורת הבסיס, אך עם יחיד בגוף שלישי מוסיפים סיומת ולעיתים משנים את האיות. בשאלות ובשלילות פועל העזר נושא את סימן הגוף והפועל העיקרי חוזר לבסיס; טעות נפוצה היא לסמן את הגוף פעמיים.",["I walk to school every day.","Maya reads before bed.","Does Tom like apples?"],()=>bankQuestion(PRESENT_SIMPLE)),
+  topic("present-continuous","grammar","🎬","Present Continuous / Progressive","הווה ממושך","משתמשים בזמן הזה לפעולה שמתרחשת עכשיו, למצב זמני ולעיתים לתוכנית קרובה שכבר נקבעה. סדר המשפט כולל נושא, פועל עזר מתאים, צורת פעולה מתמשכת ושאר המידע.","בעת הוספת סיומת הפעולה יש פעלים שמשמיטים אות סופית שקטה, פעלים קצרים שמכפילים עיצור אחרון ופעלים בעלי שינוי איות מיוחד. רמזים שימושיים הם מילים שפירושן עכשיו, ברגע זה, היום או הערב; אין להשמיט את פועל העזר.",["I am reading now.","Noa is taking a photo.","The dog is lying on the rug."],presentContinuousQuestion),
+  topic("past-simple","grammar","🕰️","Past Simple","עבר פשוט","זהו נושא אתגר הדרגתי לתיאור פעולות ומצבים שהסתיימו בעבר. לומדים משפטים חיוביים, שליליים ושאלות, ומחפשים רמזי זמן כמו אתמול, בשבוע שעבר או לפני זמן מסוים.","במשפט חיובי משתמשים בצורת העבר של הפועל; לפעלים רגילים יש סיומות לפי כללי איות, ולפעלים חריגים יש צורות שצריך לזכור. בשאלה ובשלילה משתמשים בפועל עזר בעבר ואחריו פועל בסיס, ובמצבי קישור מבחינים בין נושא יחיד לנושא רבים.",["We played yesterday.","She went to the park.","They were at school."],pastSimpleQuestion,true),
+  topic("be","grammar","🟰","am / is / are","הפועל להיות","באנגלית גם משפט שמתאר זהות, גיל, הרגשה, מקום או תכונה זקוק לפועל. בוחרים את צורת פועל הקישור לפי הנושא ומציבים אותה מיד אחריו.","לגוף ראשון יחיד יש צורה מיוחדת, ליחיד בגוף שלישי צורה אחרת, ולגוף שני ולנושאים רבים צורה נוספת. טעות נפוצה היא להשמיט את הפועל או לבחור צורה לפי המילה שאחרי הרווח במקום לפי הנושא.",["I am ready.","The book is new.","We are friends."],()=>bankQuestion(BE_QUESTIONS)),
+  topic("pronouns","grammar","👤","Pronouns","כינויי גוף","כינויי גוף מחליפים שמות ושמות עצם כדי למנוע חזרה מיותרת ולהפוך את הטקסט לזורם. לפני שבוחרים כינוי בודקים מי מבצע את הפעולה, כמה משתתפים יש ומהו המין כאשר הוא ידוע.","כינוי נושא מופיע במקום מי שמבצע את הפעולה, ואילו כינוי מושא מופיע אחרי פועל או מילת יחס. חשוב לשמור על התאמה בין יחיד לרבים ולא להחליף בין צורת נושא לצורת מושא.",["Dana is kind. She helps me.","Ben has a kite. He flies it.","Maya and I read. We enjoy it."],()=>bankQuestion(PRONOUNS)),
+  topic("have-has","grammar","🎒","have / has","יש לי ויש לו","משתמשים בפועל הזה כדי לתאר שייכות, קשרים משפחתיים, תכונות ולעיתים פעילויות קבועות. סדר המשפט הוא נושא, צורת הפועל המתאימה ואז הדבר או הקשר שמתארים.","עם יחיד בגוף שלישי משתמשים בצורה המיוחדת ליחיד, ועם שאר הנושאים בצורת הבסיס. לאחר פועל עזר בשאלה הפועל חוזר לצורת הבסיס; טעות נפוצה היא להשאיר את סימן היחיד גם על הפועל העיקרי.",["I have a pencil.","Maya has a dog.","Does he have a book?"],()=>bankQuestion(HAVE_HAS)),
+  topic("possessives","grammar","🔑","Possessives","שייכות","מילות שייכות מראות למי חפץ, מקום או קשר שייכים. הן באות לפני שם העצם ומתאימות לבעלים, לא לדבר ששייך לו.","לכל כינוי גוף יש מילת שייכות מתאימה. כאשר הבעלים הוא שם יחיד אפשר להוסיף לשמו סימן שייכות וסיומת; חשוב להציב את הסימן אצל הבעלים ולא אצל החפץ, ולא לבלבל בין שייכות לצורת רבים.",["This is my bag.","That is their house.","The dog's tail is long."],()=>bankQuestion(POSSESSIVES)),
+  topic("articles","grammar","🍎","a / an / the / some","תוויות וכמות","המילים הקצרות שלפני שם עצם עוזרות לציין פריט יחיד, פריט מסוים או כמות שאינה מדויקת. הבחירה תלויה בצליל הפותח, במספר הפריטים ובשאלה אם הקורא כבר יודע באיזה פריט מדובר.","לפני פריט יחיד בוחרים תווית לפי הצליל הראשון ולא רק לפי האות הכתובה. לפריט מסוים משתמשים בתווית היידוע, ולכמות לא מדויקת של רבים או של חומר שאינו ספיר משתמשים במילת כמות; אין להשתמש בתווית יחיד לפני רבים.",["I see a cat.","She eats an apple.","We need some water."],()=>bankQuestion(ARTICLES)),
+  topic("there","grammar","📍","There is / There are","יש ונמצאים","מבנה זה מציג דבר שקיים או נמצא במקום מסוים. מתחילים במבנה הקיום, ממשיכים בשם הדבר ומסיימים בדרך כלל בתיאור המקום.","עם פריט אחד או חומר שאינו ספיר משתמשים בצורת יחיד, ועם כמה פריטים בצורת רבים. בוחרים לפי שם העצם שאחרי המבנה; טעות נפוצה היא להתאים למילה אחרת במשפט או להשתמש ביחיד לפני מספר גדול מאחד.",["There is a lamp in the room.","There are two caps on the shelf.","There is some milk in the glass."],()=>bankQuestion(THERE)),
+  topic("nouns","grammar","🏷️","Nouns","שמות עצם","שם עצם יכול לציין אדם, מקום, חפץ, חומר, רעיון או קשר. נלמד להבחין בין שם כללי לשם פרטי, בין דבר מוחשי לרעיון מופשט ובין שמות שאפשר לספור לשמות שמתארים חומר או כמות.","שם פרטי מתחיל באות גדולה באנגלית. שמות ספירים יכולים להופיע ביחיד וברבים ומקבלים מילות כמות מתאימות, ואילו שמות שאינם ספירים מקבלים לרוב פועל ביחיד ומילות כמות אחרות; אין לבלבל בין שם עצם למילה שמתארת אותו.",["Maya is a proper noun.","Friendship is an abstract noun.","Water is uncountable."],()=>bankQuestion(NOUNS)),
+  topic("plurals","grammar","👟👟","Plurals","צורת רבים","צורת רבים מראה שיש יותר מפריט אחד. רוב שמות העצם מקבלים סיומת קצרה, אך הצליל והאותיות בסוף המילה יכולים לחייב סיומת מורחבת או שינוי איות.","אחרי סיומים מסוימים מוסיפים סיומת מורחבת, ובמילים שמסתיימות באות מסוימת בודקים אם לפניה תנועה או עיצור לפני שמשנים את הסיום. יש גם צורות רבים חריגות שצריך לזכור; אין להוסיף סיומת רגילה לצורה חריגה.",["one book — two books","one box — two boxes","one tooth — two teeth"],pluralQuestion),
+  topic("verbs","grammar","🏃","Verb Types","סוגי פעלים","פעלים מספרים מה קורה במשפט: יש פעלים שמתארים פעולה, פעלים שמתארים מצב ופעלי עזר שבונים זמן, שאלה או שלילה. מחפשים מה המילה עושה בהקשר ולא מסתמכים רק על צורתה.","פועל פעולה מתאר דבר שאפשר לעשות או לראות, פועל מצב מתאר ידיעה, רגש או שייכות, ופועל עזר תומך בפועל עיקרי. פעלי מצב נשארים בדרך כלל בזמן פשוט, אך אותה מילה יכולה לשנות תפקיד ומשמעות לפי המשפט.",["Sam runs. (action)","Maya is reading. (helping)","I know the answer. (stative)"],()=>bankQuestion(VERB_TYPES)),
+  topic("adjectives","grammar","🎨","Adjectives","שמות תואר","שמות תואר מוסיפים מידע על צבע, צורה, גודל, הרגשה או איכות. כדי למצוא אותם שואלים איזו מילה מתארת את שם העצם ולא איזו מילה מציינת פעולה או דבר.","שם התואר בא בדרך כלל לפני שם העצם שהוא מתאר ואינו משתנה לפי מין או מספר. לכן גם לפני שם עצם ברבים משאירים את שם התואר ללא סיומת רבים; טעות נפוצה היא להפוך את התיאור לשם עצם או להוסיף לו סיומת.",["a blue kite","curly hair","a happy child"],()=>bankQuestion(ADJECTIVES)),
+  topic("comparisons","grammar","📏","Comparisons","השוואות","משתמשים במבני השוואה כדי לומר ששני דברים שווים, שאחד מהם בעל תכונה חזקה יותר או שאחד בולט מכל הקבוצה. תחילה בודקים אם משווים שני פריטים או פריט אחד לקבוצה שלמה.","בשוויון מקיפים את שם התואר במבנה מתאים, בהשוואה בין שניים משתמשים בצורת השוואה ובמילת קישור, ובעליונות משתמשים בתווית ובצורת העליונות. שמות תואר קצרים וארוכים נבנים בדרכים שונות, ויש צורות חריגות; אין לסמן השוואה פעמיים.",["Tom is as tall as Ben.","A train is faster than a bike.","This is the tallest tree."],()=>bankQuestion(COMPARISONS)),
+  topic("can","grammar","💪","can / can't","יכולת ואי יכולת","פועל עזר זה משמש לתיאור יכולת, אפשרות ובקשה מנומסת. הצורה החיובית מציינת שדבר אפשרי, והצורה השלילית מציינת שאין יכולת או אפשרות.","אחרי פועל העזר בא תמיד פועל בצורת הבסיס, בלי מילת חיבור ובלי סיומת של יחיד. בשאלה מציבים את פועל העזר לפני הנושא; טעות נפוצה היא להוסיף לפועל העיקרי סיומת או להפוך אותו לצורת פעולה מתמשכת.",["I can swim.","A fish can't walk.","Can you help me?"],()=>bankQuestion(CAN_QUESTIONS)),
+  topic("wh-questions","grammar","❓","Wh-Questions","מילות שאלה","מילות שאלה עוזרות לבקש מידע על אדם, דבר, מקום, זמן, סיבה או דרך. לפני שבונים את השאלה מחליטים איזה סוג מידע חסר ובוחרים את מילת השאלה המתאימה.","בשאלת מידע רגילה באים בדרך כלל מילת שאלה, פועל עזר, נושא ופועל עיקרי. כאשר מילת השאלה עצמה היא הנושא, אין מוסיפים פועל עזר מיותר; חשוב לא לערבב בין מילה ששואלת על מקום למילה ששואלת על סיבה או זמן.",["Who is your teacher?","Where do you live?","Why are you happy?"],()=>bankQuestion(WH_WORDS)),
+  topic("place-preps","grammar","🧸","Prepositions of Place","מילות יחס של מקום","מילות יחס של מקום מתארות היכן דבר אחד נמצא ביחס לדבר אחר. כדאי לדמיין או לצייר את הסצנה ולבדוק אם החפץ נמצא בתוך משהו, נוגע במשטח, נמוך ממנו, לצדו או באמצע שני דברים.","בוחרים את מילת היחס לפי הקשר המדויק בין החפצים. מגע במשטח שונה ממיקום בתוך כלי, מיקום באמצע דורש שני פריטים, ומיקום מאחור פירושו שדבר אחר מסתיר אותו; אין לבחור לפי תרגום של מילה בודדת בלי לבדוק את התמונה השלמה.",["The toy is in the box.","The book is on the desk.","The cat is between the chairs."],()=>bankQuestion(PLACE_PREPS)),
+  topic("time-preps","grammar","⏱️","Prepositions of Time","מילות יחס של זמן","מילות יחס של זמן מקשרות פעולה לשעה, יום, תאריך, חודש, שנה או חלק מן היום. מסווגים תחילה את ביטוי הזמן ורק אחר כך בוחרים את מילת היחס.","לנקודת זמן מדויקת מתאימה מילת יחס אחת, ליום או לתאריך מתאימה אחרת, ולחודש, שנה או חלק מן היום מתאימה מילת יחס של תקופה. יש גם צירופים קבועים שכדאי לזכור; טעות נפוצה היא לבחור לפי משמעות כללית ולא לפי סוג הזמן.",["at seven o'clock","on Monday","in August"],()=>bankQuestion(TIME_PREPS)),
+  topic("connectors","grammar","🔗","and / but / because","מילות קישור","מילות קישור מחברות רעיונות ועוזרות לבנות משפט ברור ועשיר. אפשר להוסיף מידע, להציג ניגוד בין שני חלקים או להסביר מדוע דבר קרה.","בוחרים מילת קישור לפי הקשר ההגיוני: הוספה מחברת רעיונות דומים, ניגוד מחבר רעיונות שונים או מפתיעים, וסיבה מסבירה את החלק שלפניה. חשוב לקרוא את שני צדי הרווח ולא לבחור לפי מילה אחת בלבד.",["I read and write.","It is small but strong.","I smiled because I was happy."],()=>bankQuestion(CONNECTORS)),
 
-  topic("reading","skills","📖","Reading Comprehension","הבנת הנקרא","Read original short texts in several formats, including a profile, an animal's first-person story, an email, and a dialogue.","Find literal details, the main idea, sequence, vocabulary in context, and simple inferences. Return to the sentence that supports the answer.",["Find a detail in the text.","Ask: What is the text mostly about?","Use nearby words to understand a new word."],readingQuestion),
-  topic("writing","skills","✍️","Guided Writing","כתיבה מודרכת","Build sentences and paragraphs without a physical keyboard by selecting words or sentences in order.","Begin a sentence with a capital letter and end it with punctuation. A short paragraph needs a topic, supporting details, and a clear order.",["My brother plays football.","There are two caps on the shelf.","First, we plan. Next, we write. Finally, we check."],writingQuestion)
+  topic("reading","skills","📖","Reading Comprehension","הבנת הנקרא","נקרא קטעים קצרים מסוגים שונים ונלמד למצוא מידע בלי לתרגם כל מילה. מתחילים בכותרת, קוראים פעם אחת להבנת הנושא ואז חוזרים למשפטים שמכילים רמזים לתשובה.","בשאלת פרט מחפשים מידע מפורש, בשאלת רעיון מרכזי בודקים על מה רוב הקטע, ובשאלת רצף עוקבים אחר מילות זמן. משמעות של מילה חדשה מסיקים מן המשפטים סביבה, והסקה טובה חייבת להישען על ראיה מן הטקסט.",["Find a detail in the text.","Ask: What is the text mostly about?","Use nearby words to understand a new word."],readingQuestion),
+  topic("writing","skills","✍️","Guided Writing","כתיבה מודרכת","נבנה משפטים ופסקאות באמצעות בחירת מילים ומשפטים לפי סדר, בלי צורך במקלדת. מתחילים ברעיון שרוצים לומר, בוחרים נושא ופועל ומוסיפים פרטים של מקום, זמן או סיבה.","משפט מתחיל באות גדולה ומסתיים בסימן פיסוק. בפסקה קצרה המשפט הראשון מציג את הנושא, המשפטים הבאים מוסיפים פרטים ומילות רצף מסדרות את הרעיונות; בסיום קוראים שוב ובודקים סדר, התאמה ואיות.",["My brother plays football.","There are two caps on the shelf.","First, we plan. Next, we write. Finally, we check."],writingQuestion)
 ];
 const MATIC_PATTERNS={
   body:["Label a body part","Match English and Hebrew words","Complete a missing letter"],
@@ -1192,7 +1192,7 @@ function openTopic(id){
   currentTopic=found;currentQuestion=null;round=0;score=0;lastSignature="";
   $("hub-view").classList.add("hidden");$("topic-view").classList.remove("hidden");$("practice-card").classList.add("hidden");
   $("topic-icon").textContent=found.icon;setPureText($("topic-title"),found.titleHe);setPureText($("topic-title-en"),found.titleEn,"ltr");
-  setPureText($("lesson-text"),found.lesson,"ltr");setPureText($("lesson-rule"),found.rule,"ltr");
+  setPureText($("lesson-text"),found.lesson,"rtl");setPureText($("lesson-rule"),found.rule,"rtl");
   const examples=$("lesson-examples");examples.innerHTML="";
   found.examples.forEach(text=>{const row=document.createElement("div");row.className="example";
     const sentence=document.createElement("span");sentence.className="english";setPureText(sentence,text,"ltr");row.append(sentence,audioButton(text));examples.appendChild(row)});
@@ -1262,6 +1262,9 @@ function renderChoices(box,q){
   box.appendChild(choices);
 }
 function showExplanation(){
+  if(currentTopic&&!currentTopic.showExplanations){
+    $("explanation").classList.add("hidden");return;
+  }
   setPureText($("explanation-en"),currentQuestion.explanation,"ltr");
   setPureText($("explanation-he"),currentQuestion.explanationHe,"rtl");
   const answer=Array.isArray(currentQuestion.answer)?currentQuestion.answer.join(" "):currentQuestion.answer;
@@ -1284,7 +1287,10 @@ function checkChoice(button,value){
     $("next-question").classList.remove("hidden");
   }else{
     hadMistake=true;button.classList.add("wrong");button.disabled=true;
-    const feedback=$("feedback");feedback.className="feedback try";feedback.textContent="כמעט! קראו את ההסבר ונסו אפשרות אחרת. 💛";
+    const feedback=$("feedback");feedback.className="feedback try";
+    feedback.textContent=currentTopic&&!currentTopic.showExplanations
+      ?"כמעט! חשבו שוב ונסו אפשרות אחרת. 💛"
+      :"כמעט! קראו את ההסבר ונסו אפשרות אחרת. 💛";
   }
 }
 function renderOrder(box,q){
@@ -1360,6 +1366,20 @@ function runSelfTest(){
   });
   const checkPure=(label,value)=>{
     if(value!==undefined&&value!==null&&hasMixedScripts(value))failures.push(`${label}: mixed Hebrew and Latin scripts`);
+  };
+  const checkEnglishOnly=(label,value)=>{
+    if(typeof value!=="string"||!value.trim())failures.push(`${label}: missing English text`);
+    else{
+      if(hasHebrew(value))failures.push(`${label}: English text contains Hebrew`);
+      if(!hasLatin(value))failures.push(`${label}: English text has no Latin letters`);
+    }
+  };
+  const checkHebrewOnly=(label,value)=>{
+    if(typeof value!=="string"||!value.trim())failures.push(`${label}: missing Hebrew text`);
+    else{
+      if(hasLatin(value))failures.push(`${label}: Hebrew text contains Latin letters`);
+      if(!hasHebrew(value))failures.push(`${label}: Hebrew text has no Hebrew letters`);
+    }
   };
   const checkEnglishExplanation=(label,value)=>{
     if(typeof value!=="string"||!value.trim())failures.push(`${label}: missing English explanation`);
@@ -1452,10 +1472,17 @@ function runSelfTest(){
       !Array.isArray(MATIC_PATTERNS[t.id])||MATIC_PATTERNS[t.id].length<2||typeof t.generate!=="function"){
       failures.push(`${t.id||"unknown"}: missing topic lesson data`);return;
     }
-    ["titleEn","titleHe","lesson","rule"].forEach(field=>checkPure(`${t.id}.${field}`,t[field]));
-    t.examples.forEach((value,index)=>checkPure(`${t.id}.examples[${index}]`,value));
+    checkEnglishOnly(`${t.id}.titleEn`,t.titleEn);
+    ["titleHe","lesson","rule"].forEach(field=>checkHebrewOnly(`${t.id}.${field}`,t[field]));
+    t.examples.forEach((value,index)=>checkEnglishOnly(`${t.id}.examples[${index}]`,value));
+    if(t.id==="general-vocab"?t.showExplanations!==false:t.showExplanations!==true){
+      failures.push(`${t.id}: explanation visibility flag is incorrect`);
+    }
     MATIC_PATTERNS[t.id].forEach((value,index)=>checkPure(`${t.id}.patterns[${index}]`,value));
     openTopic(t.id);checkTextNodes($("topic-view"),`${t.id}.rendered`);
+    if($("lesson-text").dir!=="rtl"||$("lesson-rule").dir!=="rtl"){
+      failures.push(`${t.id}: Hebrew lesson direction is incorrect`);
+    }
     for(let i=0;i<80;i++){
       let q;
       try{q=t.generate()}catch(error){failures.push(`${t.id}: generator threw ${error.message}`);break}
@@ -1485,6 +1512,24 @@ function runSelfTest(){
         failures.push("interaction: correct-answer completion flow failed");
       }
       if($("explanation").classList.contains("hidden"))failures.push("interaction: explanations hidden after correct answer");
+    }
+    openTopic("general-vocab");startPractice();
+    const generalChoices=[...document.querySelectorAll(".choice")];
+    const generalWrong=generalChoices.find(button=>button.textContent!==currentQuestion.answer);
+    const generalCorrect=generalChoices.find(button=>button.textContent===currentQuestion.answer);
+    if(!generalWrong||!generalCorrect)failures.push("interaction: general-vocab choices did not render");
+    else{
+      generalWrong.click();
+      if(!$("explanation").classList.contains("hidden")){
+        failures.push("interaction: general-vocab explanation shown after wrong answer");
+      }
+      if($("feedback").textContent.includes("הסבר")){
+        failures.push("interaction: general-vocab wrong feedback mentions an explanation");
+      }
+      generalCorrect.click();
+      if(!$("explanation").classList.contains("hidden")){
+        failures.push("interaction: general-vocab explanation shown after correct answer");
+      }
     }
     currentTopic=TOPICS.find(topicItem=>topicItem.id==="writing");
     currentQuestion=makeOrder("בדיקה","בנו משפט.",["We","read","books."],

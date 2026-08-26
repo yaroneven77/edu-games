@@ -1143,13 +1143,16 @@ const MATIC_PATTERNS={
 
 let currentTopic=null,currentQuestion=null,round=0,score=0,hadMistake=false,locked=false,lastSignature="";
 let englishVoice=null;
+function stopSpeech(){
+  if("speechSynthesis" in window)speechSynthesis.cancel();
+}
 function loadVoices(){
   if(!("speechSynthesis" in window))return;
   englishVoice=speechSynthesis.getVoices().find(v=>/^en(-|_)/i.test(v.lang))||speechSynthesis.getVoices().find(v=>/^en/i.test(v.lang))||null;
 }
 function speakEnglish(text){
   if(!("speechSynthesis" in window)){showToast("הקראה אינה זמינה בדפדפן הזה.");return}
-  speechSynthesis.cancel();
+  stopSpeech();
   const utterance=new SpeechSynthesisUtterance(String(text).replace(/\n/g,". "));
   utterance.lang="en-US";utterance.rate=.86;if(englishVoice)utterance.voice=englishVoice;
   speechSynthesis.speak(utterance);
@@ -1178,6 +1181,7 @@ function renderHub(){
 }
 function openTopic(id){
   const found=TOPICS.find(t=>t.id===id);if(!found)return;
+  stopSpeech();
   currentTopic=found;currentQuestion=null;round=0;score=0;lastSignature="";
   $("hub-view").classList.add("hidden");$("topic-view").classList.remove("hidden");$("practice-card").classList.add("hidden");
   $("topic-icon").textContent=found.icon;setPureText($("topic-title"),found.titleHe);setPureText($("topic-title-en"),found.titleEn,"ltr");
@@ -1200,7 +1204,7 @@ function openTopic(id){
   history.replaceState(null,"","#"+id);window.scrollTo({top:0,behavior:"smooth"});
 }
 function backToHub(){
-  if("speechSynthesis" in window)speechSynthesis.cancel();
+  stopSpeech();
   $("topic-view").classList.add("hidden");$("hub-view").classList.remove("hidden");history.replaceState(null," ",location.pathname+location.search);
   window.scrollTo({top:0,behavior:"smooth"});
 }
@@ -1209,6 +1213,7 @@ function startPractice(){
   nextQuestion();setTimeout(()=>$("practice-card").scrollIntoView({behavior:"smooth",block:"start"}),50);
 }
 function nextQuestion(){
+  stopSpeech();
   if(round>=10){showSummary();return}
   let q=null;
   for(let attempt=0;attempt<30;attempt++){q=currentTopic.generate();if(q.signature!==lastSignature)break}
@@ -1479,6 +1484,19 @@ function runSelfTest(){
       if(failures.length>40)break;
     }
   });
+  const originalStopSpeech=stopSpeech;
+  let speechStopCount=0;
+  try{
+    stopSpeech=()=>speechStopCount++;
+    openTopic("reading");startPractice();
+    const beforeNextQuestion=speechStopCount;
+    nextQuestion();
+    if(speechStopCount!==beforeNextQuestion+1){
+      failures.push("interaction: speech was not stopped before the next question");
+    }
+  }finally{
+    stopSpeech=originalStopSpeech;
+  }
   try{
     openTopic("body");startPractice();
     const choiceButtons=[...document.querySelectorAll(".choice")];

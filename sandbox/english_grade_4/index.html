@@ -36,6 +36,9 @@
   }
   .subtitle{font-size:clamp(16px,3.5vw,21px);font-weight:800;color:var(--blue-dark);line-height:1.6}
   .english{direction:ltr;unicode-bidi:embed;font-family:"Segoe UI",Arial,sans-serif;max-width:100%}
+  .mixed-bidi{display:flex!important;flex-wrap:wrap;align-items:baseline;column-gap:.28em;row-gap:.12em}
+  .mixed-bidi>span{unicode-bidi:isolate;max-width:100%}
+  button.mixed-bidi,.prompt.mixed-bidi,.instruction.mixed-bidi{justify-content:center}
   .section-title{display:flex;align-items:center;gap:9px;min-width:0;margin:24px 3px 12px;color:var(--blue-dark)}
   .section-title h2{margin:0;font-size:clamp(23px,5vw,31px)}
   .section-title span{font-size:28px}
@@ -249,6 +252,33 @@
 "use strict";
 const $=id=>document.getElementById(id);
 const pick=a=>a[Math.floor(Math.random()*a.length)];
+function setBidiText(element,text,forcedDirection="auto"){
+  const value=String(text);
+  const firstHebrew=value.search(/[\u0590-\u05ff]/),firstEnglish=value.search(/[A-Za-z]/);
+  element.replaceChildren();
+  element.classList.remove("mixed-bidi");
+  element.dir=forcedDirection==="auto"
+    ?(firstHebrew>=0&&(firstEnglish<0||firstHebrew<firstEnglish)?"rtl":"ltr")
+    :forcedDirection;
+  if(firstHebrew<0||firstEnglish<0){
+    element.textContent=value;
+    return;
+  }
+  element.classList.add("mixed-bidi");
+  let runDirection=null,buffer="";
+  const flush=()=>{
+    if(!buffer)return;
+    const isolated=document.createElement("span");isolated.dir=runDirection||element.dir;isolated.textContent=buffer;
+    element.appendChild(isolated);buffer="";
+  };
+  for(const character of value){
+    const characterDirection=/[\u0590-\u05ff]/.test(character)?"rtl":/[A-Za-z0-9]/.test(character)?"ltr":null;
+    if(characterDirection&&runDirection&&characterDirection!==runDirection){flush();runDirection=characterDirection}
+    else if(characterDirection&&!runDirection)runDirection=characterDirection;
+    buffer+=character;
+  }
+  flush();
+}
 function shuffle(values){
   const a=values.slice();
   for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}
@@ -356,8 +386,8 @@ const PRESENT_SIMPLE=[
   {prompt:"My friends ___ to school by bus every day.",answer:"go",wrong:["goes","are going","went"],explanation:"My friends הם they, לכן אומרים go."},
   {prompt:"Ben ___ like cold milk.",answer:"does not",wrong:["do not","is not","not"],explanation:"בשלילה עם he משתמשים ב-does not ואחריו פועל בסיס."},
   {prompt:"Lina ___ milk in the morning.",answer:"does not drink",wrong:["do not drink","does not drinks","is not drink"],explanation:"שלילה עם she: does not + drink בצורת בסיס."},
-  {instruction:"בחרו את שאלת כן/לא הנכונה.",prompt:"שאלה על ההרגל של Lina ללכת לבית הספר:",answer:"Does Lina walk to school?",wrong:["Do Lina walks to school?","Does Lina walks to school?","Is Lina walk to school?"],explanation:"בשאלה עם she משתמשים ב-Does ואחריו פועל בסיס: walk.",speak:"Does Lina walk to school?"},
-  {instruction:"בחרו שאלת מידע נכונה.",prompt:"שואלים באיזו שעה Tom קם בדרך כלל:",answer:"When does Tom get up?",wrong:["When do Tom gets up?","When is Tom get up?","When does Tom gets up?"],explanation:"Wh-word + does + subject + base verb.",speak:"When does Tom get up?"},
+  {instruction:"Choose the correct yes/no question.",prompt:"Question about Lina's habit of going to school:",answer:"Does Lina walk to school?",wrong:["Do Lina walks to school?","Does Lina walks to school?","Is Lina walk to school?"],explanation:"בשאלה עם she משתמשים ב-Does ואחריו פועל בסיס: walk.",speak:"Does Lina walk to school?"},
+  {instruction:"Choose the correct information question.",prompt:"Ask what time Tom usually gets up:",answer:"When does Tom get up?",wrong:["When do Tom gets up?","When is Tom get up?","When does Tom gets up?"],explanation:"Wh-word + does + subject + base verb.",speak:"When does Tom get up?"},
   {instruction:"בחרו שאלת נושא נכונה.",prompt:"שואלים מי אוכל ארוחת בוקר בכל יום:",answer:"Who eats breakfast every day?",wrong:["Who does eat breakfast every day?","Who eat breakfast every day?","Who is eat breakfast every day?"],explanation:"בשאלת נושא עם Who משתמשים בפועל עם s: Who eats…",speak:"Who eats breakfast every day?"},
   {instruction:"בחרו את האיות הנכון.",prompt:"study with she →",answer:"studies",wrong:["studys","studyes","study"],explanation:"עיצור + y משתנה ל-ies: study → studies."},
   {instruction:"בחרו את האיות הנכון.",prompt:"mix with he →",answer:"mixes",wrong:["mixs","mixies","mix"],explanation:"אחרי x מוסיפים es: mix → mixes."},
@@ -374,7 +404,7 @@ const PRESENT_CONTINUOUS=[
   {prompt:"Why ___ you smiling?",answer:"are",wrong:["is","am","do"],explanation:"עם you משתמשים ב-are: Why are you smiling?"},
   {prompt:"I ___ this subject today.",answer:"am not studying",wrong:["do not studying","am not study","not am studying"],explanation:"שלילה: subject + be + not + verb-ing."},
   {instruction:"בחרו שאלת כן/לא נכונה.",prompt:"שואלים אם הם מקשיבים עכשיו:",answer:"Are they listening now?",wrong:["Do they listening now?","Are they listen now?","Is they listening now?"],explanation:"Be + subject + verb-ing: Are they listening now?",speak:"Are they listening now?"},
-  {instruction:"בחרו שאלת מידע נכונה.",prompt:"שואלים מה Adi כותבת:",answer:"What is Adi writing?",wrong:["What does Adi writing?","What Adi is write?","What is Adi write?"],explanation:"What + is + subject + verb-ing.",speak:"What is Adi writing?"},
+  {instruction:"Choose the correct information question.",prompt:"Ask what Adi is writing:",answer:"What is Adi writing?",wrong:["What does Adi writing?","What Adi is write?","What is Adi write?"],explanation:"What + is + subject + verb-ing.",speak:"What is Adi writing?"},
   {instruction:"בחרו שאלת נושא נכונה.",prompt:"שואלים מי מקשיב למורה עכשיו:",answer:"Who is listening now?",wrong:["Who are listening now?","Who does listening now?","Who is listen now?"],explanation:"Who + is + verb-ing.",speak:"Who is listening now?"},
   {instruction:"בחרו את האיות הנכון.",prompt:"cut + ing →",answer:"cutting",wrong:["cuting","cuttingg","cuttinge"],explanation:"בפועל קצר בתבנית עיצור-תנועה-עיצור מכפילים את האות האחרונה."},
   {instruction:"בחרו את האיות הנכון.",prompt:"fix + ing →",answer:"fixing",wrong:["fixxing","fixeing","fixes"],explanation:"אחרי x לא מכפילים: fixing."},
@@ -399,7 +429,7 @@ const PAST_SIMPLE=[
   {prompt:"I ___ an apple after lunch yesterday.",answer:"ate",wrong:["eat","eated","eats"],explanation:"צורת העבר של eat היא ate."},
   {prompt:"We ___ any juice last night.",answer:"did not drink",wrong:["did not drank","do not drink","were not drink"],explanation:"שלילה בעבר: did not + פועל בסיס."},
   {instruction:"בחרו שאלת כן/לא נכונה.",prompt:"שואלים על ביקור אצל סבא וסבתא בשבוע שעבר:",answer:"Did you visit your grandparents last week?",wrong:["Did you visited your grandparents last week?","Do you visit your grandparents last week?","Were you visit your grandparents last week?"],explanation:"Did + subject + base verb.",speak:"Did you visit your grandparents last week?"},
-  {instruction:"בחרו שאלת מידע נכונה.",prompt:"שואלים מדוע Maya התקשרה אתמול:",answer:"Why did Maya call yesterday?",wrong:["Why did Maya called yesterday?","Why Maya did call yesterday?","Why does Maya call yesterday?"],explanation:"Wh-word + did + subject + base verb.",speak:"Why did Maya call yesterday?"},
+  {instruction:"Choose the correct information question.",prompt:"Ask why Maya called yesterday:",answer:"Why did Maya call yesterday?",wrong:["Why did Maya called yesterday?","Why Maya did call yesterday?","Why does Maya call yesterday?"],explanation:"Wh-word + did + subject + base verb.",speak:"Why did Maya call yesterday?"},
   {instruction:"בחרו שאלת נושא נכונה.",prompt:"שואלים מי ביקש עוגייה:",answer:"Who asked for a cookie?",wrong:["Who did ask for a cookie?","Who ask for a cookie?","Who was ask for a cookie?"],explanation:"בשאלת נושא בעבר משתמשים ישירות ב-Verb 2."},
   {instruction:"בחרו את האיות הנכון.",prompt:"love in the past →",answer:"loved",wrong:["loveed","lovied","lovved"],explanation:"פועל שמסתיים ב-e מקבל רק d."},
   {instruction:"בחרו את האיות הנכון.",prompt:"study in the past →",answer:"studied",wrong:["studyed","studyd","studieded"],explanation:"עיצור + y משתנה ל-ied."},
@@ -513,7 +543,7 @@ const VERB_TYPES=[
   {instruction:"בחרו את פועל העזר המתאים.",prompt:"Why ___ you crying?",answer:"are",wrong:["did","can","will"],explanation:"בהווה ממושך עם you משתמשים ב-are."},
   {instruction:"בחרו את פועל העזר המתאים.",prompt:"How ___ you sleep last night?",answer:"did",wrong:["are","is","can"],explanation:"שאלה בעבר פשוט משתמשת ב-did."},
   {instruction:"בחרו את צורת המצב הנכונה.",prompt:"I ___ the answer right now.",answer:"know",wrong:["am knowing","knowing","knows"],explanation:"know הוא stative verb ולכן משתמשים ב-Present Simple גם עכשיו."},
-  {instruction:"בחרו משפט שבו have מתאר פעילות.",prompt:"Which sentence describes an activity happening now?",answer:"We are having lunch now.",wrong:["I have a blue bag.","Dana has two sisters.","They have a new teacher."],explanation:"have יכול להיות פעולה במשמעות אכילה/חוויה; בעלות נשארת בדרך כלל ב-Present Simple."},
+  {instruction:"Choose the sentence where \"have\" describes an activity.",prompt:"Which sentence describes an activity happening now?",answer:"We are having lunch now.",wrong:["I have a blue bag.","Dana has two sisters.","They have a new teacher."],explanation:"have יכול להיות פעולה במשמעות אכילה/חוויה; בעלות נשארת בדרך כלל ב-Present Simple."},
   {instruction:"בחרו זוג פעלים מהמשפט.",prompt:"She fell asleep while she was watching a movie.",answer:"fell, was watching",wrong:["she, movie","asleep, while","watching, a"],explanation:"fell ו-was watching הם הפעלים."},
   {instruction:"איזו מילה יכולה להיות פועל לפי הסיומת?",prompt:"Choose the verb.",answer:"organize",wrong:["organization","careful","happiness"],explanation:"הסיומת -ize נפוצה בפעלים כמו organize."}
 ];
@@ -842,18 +872,18 @@ function openTopic(id){
   const found=TOPICS.find(t=>t.id===id);if(!found)return;
   currentTopic=found;currentQuestion=null;round=0;score=0;lastSignature="";
   $("hub-view").classList.add("hidden");$("topic-view").classList.remove("hidden");$("practice-card").classList.add("hidden");
-  $("topic-icon").textContent=found.icon;$("topic-title").textContent=found.titleHe;$("topic-title-en").textContent=found.titleEn;
-  $("lesson-text").textContent=found.lesson;$("lesson-rule").textContent=found.rule;
+  $("topic-icon").textContent=found.icon;setBidiText($("topic-title"),found.titleHe);setBidiText($("topic-title-en"),found.titleEn,"ltr");
+  setBidiText($("lesson-text"),found.lesson);setBidiText($("lesson-rule"),found.rule);
   const examples=$("lesson-examples");examples.innerHTML="";
   found.examples.forEach(text=>{const row=document.createElement("div");row.className="example";
-    const sentence=document.createElement("span");sentence.className="english";sentence.textContent=text;row.append(sentence,audioButton(text));examples.appendChild(row)});
+    const sentence=document.createElement("span");sentence.className="english";setBidiText(sentence,text,"ltr");row.append(sentence,audioButton(text));examples.appendChild(row)});
   const vocabSection=$("vocab-bank-section"),fullBank=$("full-vocab-bank"),bank=VOCAB_BANKS[found.id];
   fullBank.innerHTML="";vocabSection.open=false;vocabSection.classList.toggle("hidden",!bank);
   if(bank)bank.forEach(item=>{const chip=document.createElement("button");chip.type="button";chip.className="vocab-chip";
-    chip.textContent=found.id==="numbers"?`${item.value} — ${item.en}`:`${item.en} · ${item.he}`;
+    setBidiText(chip,found.id==="numbers"?`${item.value} — ${item.en}`:`${item.en} · ${item.he}`,"ltr");
     chip.addEventListener("click",()=>speakEnglish(item.en));fullBank.appendChild(chip)});
   const patterns=$("pattern-list");patterns.innerHTML="";
-  MATIC_PATTERNS[found.id].forEach(text=>{const chip=document.createElement("span");chip.className="pattern-chip";chip.textContent=text;patterns.appendChild(chip)});
+  MATIC_PATTERNS[found.id].forEach(text=>{const chip=document.createElement("span");chip.className="pattern-chip";setBidiText(chip,text,"rtl");patterns.appendChild(chip)});
   history.replaceState(null,"","#"+id);window.scrollTo({top:0,behavior:"smooth"});
 }
 function backToHub(){
@@ -876,10 +906,10 @@ function nextQuestion(){
 function renderQuestion(){
   const q=currentQuestion,area=$("question-area");area.innerHTML="";
   const box=document.createElement("div");box.className="question-box";
-  const instruction=document.createElement("div");instruction.className="instruction";instruction.textContent=q.instruction;box.appendChild(instruction);
+  const instruction=document.createElement("div");instruction.className="instruction";setBidiText(instruction,q.instruction);box.appendChild(instruction);
   if(q.passage){const passage=document.createElement("div");passage.className="passage english";passage.textContent=q.passage;box.appendChild(passage)}
   const promptRow=document.createElement("div");promptRow.className="prompt-row";
-  const prompt=document.createElement("div");prompt.className="prompt";prompt.dir=/[\u0590-\u05ff]/.test(q.prompt)?"rtl":"ltr";prompt.textContent=q.prompt;promptRow.appendChild(prompt);
+  const prompt=document.createElement("div");prompt.className="prompt";setBidiText(prompt,q.prompt);promptRow.appendChild(prompt);
   if(q.speak)promptRow.appendChild(audioButton(q.speak,"השמעת הקטע או המשפט"));
   box.appendChild(promptRow);
   if(q.type==="mc")renderChoices(box,q);else renderOrder(box,q);
@@ -891,12 +921,12 @@ function renderQuestion(){
 function renderChoices(box,q){
   const choices=document.createElement("div");choices.className="choices";
   q.choices.forEach(value=>{const button=document.createElement("button");button.className="choice";button.type="button";
-    button.dir=/[\u0590-\u05ff]/.test(value)?"rtl":"ltr";button.textContent=value;
+    setBidiText(button,value);
     button.addEventListener("click",()=>checkChoice(button,value));choices.appendChild(button)});
   box.appendChild(choices);
 }
 function showExplanation(){
-  $("explanation").textContent=currentQuestion.explanation;$("explanation").classList.remove("hidden");
+  setBidiText($("explanation"),currentQuestion.explanation);$("explanation").classList.remove("hidden");
 }
 function checkChoice(button,value){
   if(locked||button.disabled)return;
@@ -916,7 +946,7 @@ function renderOrder(box,q){
   const answer=document.createElement("div");answer.className="order-answer";answer.id="order-answer";
   answer.innerHTML="<span style='color:#789'>הבחירה שלכם תופיע כאן</span>";box.appendChild(answer);
   const bank=document.createElement("div");bank.className="order-bank";bank.id="order-bank";
-  q.choices.forEach((value,index)=>{const button=document.createElement("button");button.type="button";button.textContent=value;button.dataset.index=String(index);
+  q.choices.forEach((value,index)=>{const button=document.createElement("button");button.type="button";setBidiText(button,value,"ltr");button.dataset.index=String(index);
     button.addEventListener("click",()=>placeOrderItem(button,value));bank.appendChild(button)});
   box.appendChild(bank);
   const actions=document.createElement("div");actions.className="order-actions";
@@ -929,7 +959,7 @@ function placeOrderItem(button,value){
 }
 function renderPlaced(){
   const answer=$("order-answer");answer.innerHTML="";
-  currentQuestion.selected.forEach(item=>{const span=document.createElement("span");span.className="placed english";span.textContent=item.value;answer.appendChild(span)});
+  currentQuestion.selected.forEach(item=>{const span=document.createElement("span");span.className="placed english";setBidiText(span,item.value,"ltr");answer.appendChild(span)});
   $("check-order").disabled=currentQuestion.selected.length!==currentQuestion.answer.length;
 }
 function resetOrder(){

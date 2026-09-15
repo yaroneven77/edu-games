@@ -2,7 +2,7 @@
 
 ## Project purpose
 
-Edu Games is a collection of educational English and math games created for children. Keep every change child-friendly, simple to use, visually engaging, and appropriate for the intended age group.
+Edu Games is a collection of educational English, math, and Kindergarten games created for children. Keep every change child-friendly, simple to use, visually engaging, and appropriate for the intended age group.
 
 ## Architecture
 
@@ -27,6 +27,60 @@ Edu Games is a collection of educational English and math games created for chil
 - Preserve existing previews as separate files or folders linked from the sandbox hub instead of overwriting unrelated staged content.
 - Keep experimental content out of the production hubs and navigation until the user approves it.
 - Before any production push, publish the proposed behavior in the sandbox and wait for explicit user approval.
+
+## Canonical repository hierarchy
+
+```text
+edu-games/
+├── index.html
+├── assets/
+│   └── theme-selector.js
+├── english/
+│   ├── index.html
+│   ├── grade-3/
+│   │   └── index.html
+│   ├── grade-4/
+│   │   └── index.html
+│   └── english-12plus/
+│       ├── index.html
+│       └── secret-agent/
+│           └── index.html
+├── math/
+│   ├── index.html
+│   ├── grade-3/
+│   │   ├── index.html
+│   │   └── fractions-lesson/
+│   │       └── index.html
+│   └── grade-4/
+│       ├── index.html
+│       ├── numbers/
+│       ├── written-arithmetic/
+│       ├── operations/
+│       ├── number-properties/
+│       ├── fractions/
+│       ├── fraction-operations/
+│       ├── word-problems/
+│       ├── geometry/
+│       ├── measurement/
+│       ├── data/
+│       └── probability/
+└── kindergarten/
+    ├── index.html
+    ├── picture-pairs/
+    │   └── index.html
+    └── number-war/
+        └── index.html
+```
+
+- The root learner hub links only to `english/`, `math/`, and `kindergarten/`.
+- Subject hubs link to their direct children using local relative paths.
+- Home and back controls move one level up through this hierarchy.
+- English 12+ content belongs under `english/english-12plus/`; Secret Agent belongs under its `secret-agent/` folder.
+- Math content belongs under its grade. The fractions lesson belongs under `math/grade-3/fractions-lesson/`.
+- Kindergarten uses a two-card hub with separate Picture Pairs and Number War pages; do not combine them into tabs on the hub.
+- Do not recreate the removed top-level `grade-3/`, `grade-4/`, `fractions-lesson/`, `division-game/`, `english-12plus/`, `secret-agent/`, or `word-game/` folders.
+- Infrastructure and preview folders such as `.github/`, `assets/`, and `sandbox/` are not part of the learner hierarchy.
+- Recalculate `assets/theme-selector.js` paths whenever a page moves. Subject hubs use `../assets/`, grade/category pages use `../../assets/`, and games nested below a grade/category use `../../../assets/`.
 
 ## Existing patterns
 

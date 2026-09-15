@@ -56,6 +56,10 @@
   .explanation.hidden{display:none}
   .block{background:#fff;border-radius:12px;padding:10px 12px;line-height:1.55}
   .block strong{display:block;color:#67518a;margin-bottom:3px}
+  .step{border-inline-start:5px solid var(--purple)}
+  .step.rule{border-inline-start-color:var(--blue)}
+  .step.apply{border-inline-start-color:#e49b27}
+  .step.check{border-inline-start-color:var(--green)}
   .answer{font-weight:900;color:#17683a}
   #selftest-result{white-space:pre-wrap;direction:ltr;background:#fff;border-radius:12px;padding:10px;margin-top:18px}
   @media(max-width:700px){.examples{grid-template-columns:1fr}.choices{grid-template-columns:1fr}}
@@ -106,8 +110,11 @@
         <button class="help" data-target="english-help">🔍 איך פותרים?</button>
         <div class="feedback"></div>
         <div class="explanation hidden" id="english-help">
-          <div class="block" dir="ltr"><strong>English explanation</strong>Maya is third-person singular, so the verb takes <b>-s</b> in the present simple.</div>
-          <div class="block"><strong>הסבר בעברית</strong>מַאיָה הִיא יָחִידָה בְּגוּף שְׁלִישִׁי, לָכֵן מוֹסִיפִים לַפֹּעַל אֶת הַסִּיּוֹמֶת <span dir="ltr">-s</span>.</div>
+          <div class="block step"><strong>שלב 1 · מה מחפשים?</strong>מוצאים את הנושא ואת רמז הזמן. הנושא הוא ילדה אחת, וביטוי הזמן מראה שזו פעולה שחוזרת בכל יום.</div>
+          <div class="block step rule"><strong>שלב 2 · איזה כלל עוזר?</strong>בהווה פשוט, עם יחיד בגוף שלישי מוסיפים לפועל סיומת. בשאלה הזאת צריך לבחור צורת פועל שמתאימה גם לנושא וגם להרגל.</div>
+          <div class="block step apply"><strong>שלב 3 · מיישמים על השאלה</strong>מַאיָה הִיא יָחִידָה בְּגוּף שְׁלִישִׁי, לָכֵן מוֹסִיפִים לַפֹּעַל אֶת הַסִּיּוֹמֶת <span dir="ltr">-s</span>.</div>
+          <div class="block step check"><strong>שלב 4 · איך בודקים?</strong>קוראים את המשפט עם כל אפשרות. הצורה הבסיסית אינה מתאימה לנושא, צורת הפעולה המתמשכת אינה מתאימה להרגל, וצורת העבר אינה מתאימה לביטוי הזמן.</div>
+          <div class="block" dir="ltr"><strong>English rule</strong>Maya is third-person singular, so the verb takes <b>-s</b> in the present simple.</div>
           <div class="block answer english"><strong>Answer</strong>walks</div>
         </div>
       </div>

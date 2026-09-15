@@ -163,6 +163,10 @@
   .feedback.good{color:#1b854c}.feedback.try{color:#bc493f}
   .explanation{margin-top:10px;padding:13px;border-radius:15px;background:#f1ebfb;display:grid;gap:10px}
   .explanation-block{padding:10px 12px;border-radius:12px;background:#fff;line-height:1.6}
+  .explanation-block.help-step{border-inline-start:5px solid var(--purple)}
+  .explanation-block.help-rule{border-inline-start-color:var(--blue)}
+  .explanation-block.help-apply{border-inline-start-color:#e49b27}
+  .explanation-block.help-check{border-inline-start-color:var(--green)}
   .explanation-label{display:block;margin-bottom:3px;color:#67518a;font-size:14px;font-weight:900}
   .explanation-text{margin:0;font-weight:700}
   .answer-chip-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
@@ -1345,7 +1349,7 @@ function startWorldPractice(){
     patterns:["Rotate between every lesson in this world","Review mistakes with detailed feedback","Practice ten mixed questions"],
     generate(){
       const source=pick(members),question=source.generate();
-      return {...question,signature:`${source.id}|${question.signature}`,sourceTitleEn:source.titleEn,
+      return {...question,signature:`${source.id}|${question.signature}`,sourceTopicId:source.id,sourceTitleEn:source.titleEn,
         sourceTitleHe:source.titleHe,showExplanations:source.showExplanations};
     }
   };
@@ -1395,18 +1399,30 @@ function renderQuestion(){
   help.addEventListener("click",toggleQuestionExplanation);box.appendChild(help);
   const feedback=document.createElement("div");feedback.id="feedback";feedback.className="feedback";box.appendChild(feedback);
   const explanation=document.createElement("div");explanation.id="explanation";explanation.className="explanation hidden";
+  const goalBlock=document.createElement("div");goalBlock.className="explanation-block help-step";goalBlock.dir="rtl";
+  const goalLabel=document.createElement("strong");goalLabel.className="explanation-label";goalLabel.textContent="שלב 1 · מה מחפשים?";
+  const goalText=document.createElement("p");goalText.id="help-goal";goalText.className="explanation-text";
+  goalBlock.append(goalLabel,goalText);
+  const ruleBlock=document.createElement("div");ruleBlock.className="explanation-block help-step help-rule";ruleBlock.dir="rtl";
+  const ruleLabel=document.createElement("strong");ruleLabel.className="explanation-label";ruleLabel.textContent="שלב 2 · איזה כלל עוזר?";
+  const ruleText=document.createElement("p");ruleText.id="help-rule";ruleText.className="explanation-text";
+  ruleBlock.append(ruleLabel,ruleText);
   const enBlock=document.createElement("div");enBlock.className="explanation-block";enBlock.dir="ltr";
-  const enLabel=document.createElement("strong");enLabel.className="explanation-label";enLabel.textContent="English explanation";
+  const enLabel=document.createElement("strong");enLabel.className="explanation-label";enLabel.textContent="English rule";
   const enText=document.createElement("p");enText.id="explanation-en";enText.className="explanation-text english";
   enBlock.append(enLabel,enText);
-  const heBlock=document.createElement("div");heBlock.className="explanation-block";heBlock.dir="rtl";
-  const heLabel=document.createElement("strong");heLabel.className="explanation-label";heLabel.textContent="הסבר בעברית";
+  const heBlock=document.createElement("div");heBlock.className="explanation-block help-step help-apply";heBlock.dir="rtl";
+  const heLabel=document.createElement("strong");heLabel.className="explanation-label";heLabel.textContent="שלב 3 · מיישמים על השאלה";
   const heText=document.createElement("p");heText.id="explanation-he";heText.className="explanation-text";
   heBlock.append(heLabel,heText);
+  const checkBlock=document.createElement("div");checkBlock.className="explanation-block help-step help-check";checkBlock.dir="rtl";
+  const checkLabel=document.createElement("strong");checkLabel.className="explanation-label";checkLabel.textContent="שלב 4 · איך בודקים?";
+  const checkText=document.createElement("p");checkText.id="help-check";checkText.className="explanation-text";
+  checkBlock.append(checkLabel,checkText);
   const answerRow=document.createElement("div");answerRow.className="answer-chip-row";answerRow.dir="ltr";
   const answerLabel=document.createElement("strong");answerLabel.className="answer-chip-label";answerLabel.textContent="Answer";
   const answerChip=document.createElement("span");answerChip.id="explanation-answer";answerChip.className="answer-chip";
-  answerRow.append(answerLabel,answerChip);explanation.append(enBlock,heBlock,answerRow);box.appendChild(explanation);
+  answerRow.append(answerLabel,answerChip);explanation.append(goalBlock,ruleBlock,heBlock,checkBlock,enBlock,answerRow);box.appendChild(explanation);
   const next=document.createElement("button");next.id="next-question";next.className="next hidden";next.textContent=round===10?"לסיכום 🏆":"לשאלה הבאה ➜";
   next.addEventListener("click",nextQuestion);box.appendChild(next);area.appendChild(box);
 }
@@ -1418,12 +1434,36 @@ function renderChoices(box,q){
   box.appendChild(choices);
 }
 function showExplanation(){
+  const guide=buildQuestionHelpGuide();
+  setPureText($("help-goal"),guide.goal,"rtl");
+  setPureText($("help-rule"),guide.rule,"rtl");
   setPureText($("explanation-en"),currentQuestion.explanation,"ltr");
   setPureText($("explanation-he"),currentQuestion.explanationHe,"rtl");
+  setPureText($("help-check"),guide.check,"rtl");
   const answer=Array.isArray(currentQuestion.answer)?currentQuestion.answer.join(" "):currentQuestion.answer;
   setPureText($("explanation-answer"),answer);
   $("explanation").classList.remove("hidden");
   $("question-help").textContent="🙈 הסתר הסבר";
+}
+function buildQuestionHelpGuide(){
+  const topicId=currentQuestion.sourceTopicId||currentTopic.id;
+  const topicItem=TOPICS.find(item=>item.id===topicId)||currentTopic;
+  let goal="קראו את ההוראה ואת כל המשפט. מצאו מה חסר, ורק אחר כך עברו על האפשרויות.";
+  let check="הכניסו את התשובה במקום החסר וקראו את המשפט המלא. ודאו שהוא מתאים גם למשמעות וגם לכלל.";
+  if(currentQuestion.passage){
+    goal="קראו קודם את השאלה וסמנו בה מילת מפתח. חזרו לקטע וחפשו משפט שמוסר את אותו מידע או רמז ברור.";
+    check="השוו את התשובה למשפט שמצאתם בקטע. תשובה נכונה חייבת להיות כתובה בקטע או לנבוע ממנו; אין לבחור פרט שנשמע הגיוני אך לא נתמך.";
+  }else if(currentQuestion.type==="order"){
+    goal="זהו אם בונים משפט, שאלה או פסקה. מצאו תחילה את החלק שצריך להופיע ראשון, ואז הוסיפו כל חלק לפי המבנה.";
+    check="קראו את כל הרצף מתחילתו ועד סופו. בדקו שהנושא והפועל בסדר נכון, שמילות הזמן או הרצף במקום המתאים ושנוצר משפט או טקסט טבעי.";
+  }else if(topicItem.category==="vocab"){
+    goal="זהו אם מבקשים משמעות, תרגום, איות, מספר או מקום ברצף. אמרו לעצמכם את התשובה לפני שאתם מסתכלים על האפשרויות.";
+    check="חברו את הבחירה לתמונה, לתרגום או לרצף שבשאלה. פסלו כל אפשרות ששייכת למשמעות אחרת או שאינה כתובה באיות הנכון.";
+  }else if(topicItem.category==="grammar"){
+    goal="מצאו שלושה רמזים: מי הנושא, מתי הפעולה מתרחשת ומה תפקיד המילה החסרה. הרמזים האלה קובעים את הצורה הנכונה.";
+    check="קראו את המשפט עם הבחירה. בדקו התאמה בין הנושא לפועל, התאמה לזמן ולמשמעות, ופסלו אפשרות שמסמנת את אותו כלל פעמיים.";
+  }
+  return {goal,rule:topicItem.rule,check};
 }
 function toggleQuestionExplanation(){
   if($("explanation").classList.contains("hidden"))showExplanation();
@@ -1711,6 +1751,9 @@ function runSelfTest(){
           $("explanation-he").textContent!==currentQuestion.explanationHe){
           failures.push("interaction: pre-answer help did not show the bilingual explanation");
         }
+        ["help-goal","help-rule","help-check"].forEach(id=>{
+          if(!$(id).textContent.trim()||$(id).dir!=="rtl")failures.push(`interaction: ${id} is missing or has incorrect direction`);
+        });
         $("question-help").click();
         if(!$("explanation").classList.contains("hidden"))failures.push("interaction: question help did not hide the explanation");
       }

@@ -93,7 +93,12 @@ edu-games/
 - Match the existing use of Hebrew niqqud when adding Hebrew text for young children.
 - Reuse existing speech-synthesis patterns for English and Hebrew pronunciation.
 - Include clear positive feedback, gentle retry messaging, scores, progress, or celebration effects where appropriate.
-- For every English Grade 4 question, keep an always-visible `🔍 איך פותרים?` button that toggles a specific English explanation, a detailed Hebrew explanation, and the correct English answer as separate directional blocks.
+- In all 11 Math Grade 4 games, keep the `🔍 אֵיךְ פּוֹתְרִים?` button visible as soon as each question appears and after the learner answers. It must toggle the existing step-by-step explanation without requiring a mistake first.
+- For every English Grade 4 question—including general vocabulary, mixed-world practice, multiple choice, reading, and sentence ordering—keep an always-visible `🔍 איך פותרים?` button before and after answering.
+- The English Grade 4 help panel must teach how to derive the answer, not merely reveal it. Present four clear Hebrew steps: what to look for, which lesson rule applies, how the rule applies to this exact question, and how to verify or eliminate choices. Then show the English rule and correct English answer in separate left-to-right blocks.
+- Adapt the help strategy to the question type: vocabulary uses meaning, translation, spelling, or sequence clues; grammar checks subject, time, and word role; reading returns to textual evidence; ordering checks sentence or paragraph structure.
+- Every new or expanded English Grade 4 topic, generator, authored question, mixed-practice source, and question format must use this same four-step help structure and provide question-specific English and Hebrew explanations. Do not add content that only reveals the answer or relies on generic feedback.
+- Keep the English help-button label synchronized between `🔍 איך פותרים?` and `🙈 הסתר הסבר`.
 - In English Grade 4, present the short lesson through a `📚 שיעור קצר` button and modal, alongside a separate button that starts practice directly.
 - Avoid interactions that require precise mouse control, hover, a physical keyboard, or desktop-only behavior.
 - Keep audio optional: the game must remain understandable and playable when speech synthesis is unavailable.

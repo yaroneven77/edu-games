@@ -84,7 +84,7 @@
     <div class="choices" id="choices"></div>
     <div class="feedback" id="feedback"></div>
     <div class="actions">
-      <button class="action help hidden" id="help" onclick="toggleExplain()">🔍 אֵיךְ פּוֹתְרִים?</button>
+      <button class="action help" id="help" onclick="toggleExplain()">🔍 אֵיךְ פּוֹתְרִים?</button>
       <button class="action next hidden" id="next" onclick="newQuestion()">הַבָּא ➜</button>
     </div>
     <div class="explain hidden" id="explain"></div>
@@ -196,7 +196,7 @@ function newQuestion(){
   do{q=pick([valueQuestion,compareQuestion,roundQuestion])();sig=q.type+q.display;tries++;}while(sig===lastSig&&tries<10);
   current=q;lastSig=sig;locked=false;round++;
   $("round").textContent=round;$("kind").textContent=q.kind;$("question").textContent=q.q;$("number").textContent=q.display;
-  $("feedback").textContent="";$("feedback").className="feedback";$("next").classList.add("hidden");$("help").classList.add("hidden");
+  $("feedback").textContent="";$("feedback").className="feedback";$("next").classList.add("hidden");
   $("explain").classList.add("hidden");$("explain").textContent=q.explain;$("help").textContent="🔍 אֵיךְ פּוֹתְרִים?";
   $("choices").className="choices"+(q.type==="compare"?" symbols":"");
   $("choices").innerHTML="";
@@ -211,7 +211,7 @@ function answer(button,value){
   document.querySelectorAll(".choice").forEach(b=>{b.disabled=true;if(b.textContent===(typeof current.answer==="number"?fmt(current.answer):current.answer))b.classList.add("ok");});
   if(ok){score+=10;$("score").textContent=score;$("feedback").textContent=pick(GOOD);$("feedback").className="feedback good";}
   else{button.classList.add("no");$("feedback").textContent=`כִּמְעַט! הַתְּשׁוּבָה הִיא ${typeof current.answer==="number"?fmt(current.answer):current.answer}`;$("feedback").className="feedback bad";}
-  $("next").classList.remove("hidden");$("help").classList.remove("hidden");
+  $("next").classList.remove("hidden");
 }
 function toggleExplain(){
   $("explain").classList.toggle("hidden");

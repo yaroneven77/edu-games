@@ -93,7 +93,7 @@ edu-games/
 - Match the existing use of Hebrew niqqud when adding Hebrew text for young children.
 - Reuse existing speech-synthesis patterns for English and Hebrew pronunciation.
 - Include clear positive feedback, gentle retry messaging, scores, progress, or celebration effects where appropriate.
-- For English Grade 4 answer feedback, show a specific English explanation, a detailed Hebrew explanation, and the correct English answer as separate directional blocks. The general-vocabulary topic intentionally omits these explanation blocks.
+- For every English Grade 4 question, keep an always-visible `🔍 איך פותרים?` button that toggles a specific English explanation, a detailed Hebrew explanation, and the correct English answer as separate directional blocks.
 - In English Grade 4, present the short lesson through a `📚 שיעור קצר` button and modal, alongside a separate button that starts practice directly.
 - Avoid interactions that require precise mouse control, hover, a physical keyboard, or desktop-only behavior.
 - Keep audio optional: the game must remain understandable and playable when speech synthesis is unavailable.

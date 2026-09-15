@@ -80,7 +80,7 @@
     <div class="choices" id="choices"></div>
     <div class="feedback" id="feedback"></div>
     <div class="actions">
-      <button class="action help hidden" id="help" onclick="toggleExplain()">🔍 אֵיךְ פּוֹתְרִים?</button>
+      <button class="action help" id="help" onclick="toggleExplain()">🔍 אֵיךְ פּוֹתְרִים?</button>
       <button class="action next hidden" id="next" onclick="newQuestion()">הַבָּא ➜</button>
     </div>
     <div class="explain hidden" id="explain"></div>
@@ -176,7 +176,7 @@ function newQuestion(){
   current=q;lastSig=sig;locked=false;round++;$("round").textContent=round;
   $("n1").textContent=q.a.n;$("d1").textContent=q.a.d;$("n2").textContent=q.b.n;$("d2").textContent=q.b.d;
   renderBar("bar1",q.a);renderBar("bar2",q.b);
-  $("feedback").textContent="";$("feedback").className="feedback";$("next").classList.add("hidden");$("help").classList.add("hidden");
+  $("feedback").textContent="";$("feedback").className="feedback";$("next").classList.add("hidden");
   $("explain").classList.add("hidden");$("help").textContent="🔍 אֵיךְ פּוֹתְרִים?";
   $("explain").innerHTML=`כּוֹפְלִים בַּהֲצְלָבָה:<br><span class="calc">${q.a.n} × ${q.b.d} = ${q.left}</span>
     וְ־<span class="calc">${q.b.n} × ${q.a.d} = ${q.right}</span><br>
@@ -190,7 +190,7 @@ function answer(button,value){
   document.querySelectorAll(".choice").forEach(b=>{b.disabled=true;if(b.textContent===current.answer)b.classList.add("ok");});
   if(ok){score+=10;$("score").textContent=score;$("feedback").textContent=pick(GOOD);$("feedback").className="feedback good";}
   else{button.classList.add("no");$("feedback").textContent=`כִּמְעַט! הַסִּימָן הַנָּכוֹן הוּא ${current.answer}`;$("feedback").className="feedback bad";}
-  $("next").classList.remove("hidden");$("help").classList.remove("hidden");
+  $("next").classList.remove("hidden");
 }
 function toggleExplain(){
   $("explain").classList.toggle("hidden");$("help").textContent=$("explain").classList.contains("hidden")?"🔍 אֵיךְ פּוֹתְרִים?":"🙈 הַסְתֵּר הֶסְבֵּר";

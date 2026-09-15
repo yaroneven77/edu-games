@@ -133,7 +133,7 @@
   .vocab-chip{border:2px solid #c9dfef;background:#fff;border-radius:999px;padding:6px 10px;cursor:pointer;font-weight:800}
   .vocab-chip .word-en,.vocab-chip .word-he{display:block}
   .vocab-chip .word-en{direction:ltr}.vocab-chip .word-he{direction:rtl;color:var(--muted);font-size:12px}
-  .primary,.secondary,.next,.check-order,.reset-order{
+  .primary,.secondary,.next,.question-help,.check-order,.reset-order{
     border:0;border-radius:16px;padding:12px 20px;font-weight:900;cursor:pointer;box-shadow:0 4px 0 var(--shadow);
   }
   .primary{background:var(--green);color:#fff;font-size:18px}
@@ -168,6 +168,7 @@
   .answer-chip-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
   .answer-chip-label{color:#67518a;font-size:14px;font-weight:900}
   .answer-chip{padding:5px 10px;border:2px solid #c9b8e8;border-radius:999px;background:#fff;color:#453565;font-weight:900}
+  .question-help{display:block;margin:13px auto 0;background:var(--purple);color:#fff}
   .next{display:block;margin:14px auto 0;background:var(--blue);color:#fff}
   .order-answer{
     min-height:67px;direction:ltr;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;
@@ -1126,7 +1127,7 @@ const TOPICS=[
   topic("days","vocab","📅","Days of the Week","ימי השבוע","נלמד את שבעת ימי השבוע לפי שמם ומקומם ברצף. אפשר לתרגל בעזרת לוח שבועי, לשאול מה בא לפני יום מסוים ומה בא אחריו ולהשלים אותיות חסרות.","שמות הימים נכתבים באות גדולה באנגלית. כשמתארים פעילות ביום מסוים משתמשים במילת היחס המתאימה ליום, ובשאלות רצף נשענים על הסדר הקבוע של השבוע.",["School starts on Sunday.","We have English on Tuesday.","Saturday comes after Friday."],daysQuestion),
   topic("months","vocab","🗓️","Months","חודשי השנה","נלמד את שנים עשר חודשי השנה ונזהה את מקומו של כל חודש ברצף. מומלץ לחבר חודשים לימי הולדת, לחגים ולעונות ולתרגל מה בא לפני כל חודש ומה בא אחריו.","שמות החודשים נכתבים באות גדולה באנגלית. לפני חודש משתמשים במילת היחס המתאימה לתקופה, ובתרגילי רצף חשוב לזכור את המעבר מסוף שנה לתחילת השנה הבאה.",["January is the first month.","My birthday is in May.","December is the last month."],monthsQuestion),
   topic("seasons","vocab","🌦️","Seasons","עונות השנה","נלמד להתאים לכל עונה מזג אוויר, בגדים, חפצים ופעילויות אופייניים. כדאי ליצור לכל עונה תמונה בדמיון ולחבר אליה כמה מילים מוכרות.","שמות עונות נכתבים בדרך כלל באות קטנה, אלא אם הם פותחים משפט. כדי לזהות עונה מחפשים רמזים כמו חום, קור, גשם, פריחה או שלכת ולא מסתמכים על מילה אחת בלבד.",["Flowers grow in spring.","Summer is hot.","Winter can be rainy."],seasonsQuestion),
-  topic("general-vocab","vocab","🎒","Lexical Band 1","אוצר מילים כללי","נרחיב אוצר מילים שימושי בנושאי בית ספר, בית, מזון, בעלי חיים ופעילויות יומיומיות. נלמד בעזרת משמעות, תמונה, צליל ומשפט קצר כדי להשתמש במילה ולא רק לזהות אותה.","ממיינים מילים לקבוצות תוכן ומחפשים קשרים ביניהן. כדאי לחזור על כל מילה בהקשר חדש, להקשיב להגייה ולבדוק את האיות במקום לשנן רשימה ללא משמעות.",["The notebook is in my bag.","We make a cheese sandwich.","The rabbit can jump."],generalQuestion,false,false),
+  topic("general-vocab","vocab","🎒","Lexical Band 1","אוצר מילים כללי","נרחיב אוצר מילים שימושי בנושאי בית ספר, בית, מזון, בעלי חיים ופעילויות יומיומיות. נלמד בעזרת משמעות, תמונה, צליל ומשפט קצר כדי להשתמש במילה ולא רק לזהות אותה.","ממיינים מילים לקבוצות תוכן ומחפשים קשרים ביניהן. כדאי לחזור על כל מילה בהקשר חדש, להקשיב להגייה ולבדוק את האיות במקום לשנן רשימה ללא משמעות.",["The notebook is in my bag.","We make a cheese sandwich.","The rabbit can jump."],generalQuestion),
 
   topic("present-simple","grammar","⏰","Present Simple","הווה פשוט","משתמשים בזמן הזה כדי לתאר הרגלים, עובדות ומצבים קבועים. במשפט חיובי מציבים בדרך כלל נושא, אחריו פועל ואז את שאר המידע; מילות תדירות וביטויי זמן חוזרים עוזרים לזהות את השימוש.","עם רוב הנושאים הפועל נשאר בצורת הבסיס, אך עם יחיד בגוף שלישי מוסיפים סיומת ולעיתים משנים את האיות. בשאלות ובשלילות פועל העזר נושא את סימן הגוף והפועל העיקרי חוזר לבסיס; טעות נפוצה היא לסמן את הגוף פעמיים.",["I walk to school every day.","Maya reads before bed.","Does Tom like apples?"],()=>bankQuestion(PRESENT_SIMPLE)),
   topic("present-continuous","grammar","🎬","Present Continuous / Progressive","הווה ממושך","משתמשים בזמן הזה לפעולה שמתרחשת עכשיו, למצב זמני ולעיתים לתוכנית קרובה שכבר נקבעה. סדר המשפט כולל נושא, פועל עזר מתאים, צורת פעולה מתמשכת ושאר המידע.","בעת הוספת סיומת הפעולה יש פעלים שמשמיטים אות סופית שקטה, פעלים קצרים שמכפילים עיצור אחרון ופעלים בעלי שינוי איות מיוחד. רמזים שימושיים הם מילים שפירושן עכשיו, ברגע זה, היום או הערב; אין להשמיט את פועל העזר.",["I am reading now.","Noa is taking a photo.","The dog is lying on the rug."],presentContinuousQuestion),
@@ -1390,6 +1391,8 @@ function renderQuestion(){
   if(q.speak)promptRow.appendChild(audioButton(q.speak,"השמעת הקטע או המשפט"));
   box.appendChild(promptRow);
   if(q.type==="mc")renderChoices(box,q);else renderOrder(box,q);
+  const help=document.createElement("button");help.id="question-help";help.className="question-help";help.textContent="🔍 איך פותרים?";
+  help.addEventListener("click",toggleQuestionExplanation);box.appendChild(help);
   const feedback=document.createElement("div");feedback.id="feedback";feedback.className="feedback";box.appendChild(feedback);
   const explanation=document.createElement("div");explanation.id="explanation";explanation.className="explanation hidden";
   const enBlock=document.createElement("div");enBlock.className="explanation-block";enBlock.dir="ltr";
@@ -1415,17 +1418,19 @@ function renderChoices(box,q){
   box.appendChild(choices);
 }
 function showExplanation(){
-  const explanationsEnabled=currentQuestion&&currentQuestion.showExplanations!==undefined
-    ?currentQuestion.showExplanations
-    :currentTopic&&currentTopic.showExplanations;
-  if(!explanationsEnabled){
-    $("explanation").classList.add("hidden");return;
-  }
   setPureText($("explanation-en"),currentQuestion.explanation,"ltr");
   setPureText($("explanation-he"),currentQuestion.explanationHe,"rtl");
   const answer=Array.isArray(currentQuestion.answer)?currentQuestion.answer.join(" "):currentQuestion.answer;
   setPureText($("explanation-answer"),answer);
   $("explanation").classList.remove("hidden");
+  $("question-help").textContent="🙈 הסתר הסבר";
+}
+function toggleQuestionExplanation(){
+  if($("explanation").classList.contains("hidden"))showExplanation();
+  else{
+    $("explanation").classList.add("hidden");
+    $("question-help").textContent="🔍 איך פותרים?";
+  }
 }
 function showOrderPlaceholder(answer=$("order-answer")){
   answer.innerHTML="";
@@ -1444,12 +1449,7 @@ function checkChoice(button,value){
   }else{
     hadMistake=true;button.classList.add("wrong");button.disabled=true;
     const feedback=$("feedback");feedback.className="feedback try";
-    const explanationsEnabled=currentQuestion&&currentQuestion.showExplanations!==undefined
-      ?currentQuestion.showExplanations
-      :currentTopic&&currentTopic.showExplanations;
-    feedback.textContent=!explanationsEnabled
-      ?"כמעט! חשבו שוב ונסו אפשרות אחרת. 💛"
-      :"כמעט! קראו את ההסבר ונסו אפשרות אחרת. 💛";
+    feedback.textContent="כמעט! קראו את ההסבר ונסו אפשרות אחרת. 💛";
   }
 }
 function renderOrder(box,q){
@@ -1475,7 +1475,7 @@ function renderPlaced(){
 function resetOrder(){
   if(locked)return;currentQuestion.selected=[];document.querySelectorAll("#order-bank button").forEach(b=>b.disabled=false);
   showOrderPlaceholder();$("check-order").disabled=true;
-  $("feedback").textContent="";$("explanation").classList.add("hidden");
+  $("feedback").textContent="";$("explanation").classList.add("hidden");$("question-help").textContent="🔍 איך פותרים?";
 }
 function checkOrder(){
   if(locked)return;
@@ -1659,7 +1659,7 @@ function runSelfTest(){
     checkEnglishOnly(`${t.id}.titleEn`,t.titleEn);
     ["titleHe","lesson","rule"].forEach(field=>checkHebrewOnly(`${t.id}.${field}`,t[field]));
     t.examples.forEach((value,index)=>checkEnglishOnly(`${t.id}.examples[${index}]`,value));
-    if(t.id==="general-vocab"?t.showExplanations!==false:t.showExplanations!==true){
+    if(t.showExplanations!==true){
       failures.push(`${t.id}: explanation visibility flag is incorrect`);
     }
     MATIC_PATTERNS[t.id].forEach((value,index)=>checkPure(`${t.id}.patterns[${index}]`,value));
@@ -1703,6 +1703,17 @@ function runSelfTest(){
     const correctButton=choiceButtons.find(button=>button.textContent===currentQuestion.answer);
     if(!wrongButton||!correctButton)failures.push("interaction: body choices did not render");
     else{
+      if(!$("question-help")||$("question-help").classList.contains("hidden")){
+        failures.push("interaction: question help is not initially visible");
+      }else{
+        $("question-help").click();
+        if($("explanation").classList.contains("hidden")||$("explanation-en").textContent!==currentQuestion.explanation||
+          $("explanation-he").textContent!==currentQuestion.explanationHe){
+          failures.push("interaction: pre-answer help did not show the bilingual explanation");
+        }
+        $("question-help").click();
+        if(!$("explanation").classList.contains("hidden"))failures.push("interaction: question help did not hide the explanation");
+      }
       wrongButton.click();
       if(locked||!hadMistake||!wrongButton.classList.contains("wrong"))failures.push("interaction: incorrect-answer retry flow failed");
       if($("explanation").classList.contains("hidden")||$("explanation-en").textContent!==currentQuestion.explanation||
@@ -1726,21 +1737,24 @@ function runSelfTest(){
     if(!generalWrong||!generalCorrect)failures.push("interaction: general-vocab choices did not render");
     else{
       generalWrong.click();
-      if(!$("explanation").classList.contains("hidden")){
-        failures.push("interaction: general-vocab explanation shown after wrong answer");
+      if($("explanation").classList.contains("hidden")){
+        failures.push("interaction: general-vocab explanation missing after wrong answer");
       }
-      if($("feedback").textContent.includes("הסבר")){
-        failures.push("interaction: general-vocab wrong feedback mentions an explanation");
+      if(!$("feedback").textContent.includes("הסבר")){
+        failures.push("interaction: general-vocab wrong feedback does not mention the explanation");
       }
       generalCorrect.click();
-      if(!$("explanation").classList.contains("hidden")){
-        failures.push("interaction: general-vocab explanation shown after correct answer");
+      if($("explanation").classList.contains("hidden")){
+        failures.push("interaction: general-vocab explanation missing after correct answer");
       }
     }
     currentTopic=TOPICS.find(topicItem=>topicItem.id==="writing");
     currentQuestion=makeOrder("בדיקה","בנו משפט.",["We","read","books."],
       "The subject comes before the verb and object.","הנושא בא לפני הפועל והמושא במשפט רגיל.");
     locked=false;hadMistake=false;renderQuestion();
+    if(!$("question-help")||$("question-help").classList.contains("hidden")){
+      failures.push("interaction: ordered-question help is not initially visible");
+    }
     currentQuestion.answer.forEach(value=>{
       const button=[...document.querySelectorAll("#order-bank button")].find(item=>!item.disabled&&item.textContent===value);
       if(button)button.click();

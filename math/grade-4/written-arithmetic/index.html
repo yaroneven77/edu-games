@@ -96,7 +96,7 @@
     <div class="choices" id="choices"></div>
     <div class="feedback" id="feedback"></div>
     <div class="actions">
-      <button class="action help hidden" id="help" onclick="toggleExplain()">🔍 אֵיךְ פּוֹתְרִים?</button>
+      <button class="action help" id="help" onclick="toggleExplain()">🔍 אֵיךְ פּוֹתְרִים?</button>
       <button class="action next hidden" id="next" onclick="newQuestion()">הַבָּא ➜</button>
     </div>
     <div class="explain hidden" id="explain"></div>
@@ -215,7 +215,7 @@ function newQuestion(){
   $("visual").className="visual "+(question.visualClass||"");$("visual").innerHTML=question.visual||"";
   $("choices").innerHTML="";
   question.choices.forEach(value=>{const button=document.createElement("button");button.className="choice";button.textContent=value;button.onclick=()=>answerQuestion(button,value);$("choices").appendChild(button)});
-  $("feedback").textContent="";$("feedback").className="feedback";$("help").classList.add("hidden");$("next").classList.add("hidden");
+  $("feedback").textContent="";$("feedback").className="feedback";$("next").classList.add("hidden");
   $("explain").classList.add("hidden");$("explain").innerHTML=question.explain;$("help").textContent="🔍 אֵיךְ פּוֹתְרִים?";
 }
 function answerQuestion(button,value){
@@ -223,7 +223,7 @@ function answerQuestion(button,value){
   document.querySelectorAll(".choice").forEach(option=>{option.disabled=true;if(option.textContent===current.answer)option.classList.add("ok")});
   if(ok){score+=10;$("score").textContent=score;$("feedback").textContent=pick(GOOD);$("feedback").className="feedback good"}
   else{button.classList.add("no");$("feedback").textContent=`כִּמְעַט! הַתְּשׁוּבָה הִיא ${current.answer}`;$("feedback").className="feedback bad"}
-  $("help").classList.remove("hidden");$("next").classList.remove("hidden");
+  $("next").classList.remove("hidden");
 }
 function toggleExplain(){
   $("explain").classList.toggle("hidden");$("help").textContent=$("explain").classList.contains("hidden")?"🔍 אֵיךְ פּוֹתְרִים?":"🙈 הַסְתֵּר הֶסְבֵּר";

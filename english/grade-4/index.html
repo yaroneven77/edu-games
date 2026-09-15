@@ -133,9 +133,6 @@
   .vocab-chip{border:2px solid #c9dfef;background:#fff;border-radius:999px;padding:6px 10px;cursor:pointer;font-weight:800}
   .vocab-chip .word-en,.vocab-chip .word-he{display:block}
   .vocab-chip .word-en{direction:ltr}.vocab-chip .word-he{direction:rtl;color:var(--muted);font-size:12px}
-  .pattern-box{background:#eefaf4;border:2px solid #bde7cf;border-radius:17px;padding:12px 14px;margin:15px 0 19px;line-height:1.55}
-  .pattern-list{display:flex;direction:ltr;flex-wrap:wrap;gap:7px;justify-content:center;margin-top:9px}
-  .pattern-chip{direction:ltr;background:#fff;border:2px solid #c8e8d5;border-radius:999px;padding:5px 10px;font-size:13px;font-weight:800}
   .primary,.secondary,.next,.check-order,.reset-order{
     border:0;border-radius:16px;padding:12px 20px;font-weight:900;cursor:pointer;box-shadow:0 4px 0 var(--shadow);
   }
@@ -276,10 +273,6 @@
         <summary>🔤 מחסן המילים המלא · לחצו על מילה כדי לשמוע</summary>
         <div class="full-vocab-bank" id="full-vocab-bank"></div>
       </details>
-      <div class="pattern-box">
-        <strong>🧪 דפוסי התרגול שנלקחו מחומרי המקור ועובדו למשחק:</strong>
-        <div class="pattern-list" id="pattern-list"></div>
-      </div>
     </article>
   </div>
 
@@ -1340,8 +1333,6 @@ function showTopic(found){
       chip.append(wordEn,wordHe);
     }
     chip.addEventListener("click",()=>speakEnglish(item.en));fullBank.appendChild(chip)});
-  const patterns=$("pattern-list");patterns.innerHTML="";
-  (found.patterns||MATIC_PATTERNS[found.id]).forEach(text=>{const chip=document.createElement("span");chip.className="pattern-chip";setPureText(chip,text,"ltr");patterns.appendChild(chip)});
   history.replaceState(null,"","#"+found.id);window.scrollTo({top:0,behavior:"smooth"});
 }
 function startWorldPractice(){

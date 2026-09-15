@@ -92,9 +92,11 @@
   .topic-heading .big-icon{font-size:43px}
   .topic-heading h1{margin:3px 0;color:var(--blue-dark);font-size:clamp(27px,6vw,41px)}
   .topic-heading p{margin:0;font-weight:800;color:var(--muted)}
-  .lesson-card,.practice-card{
+  .topic-actions,.lesson-card,.practice-card{
     background:#fff;border-radius:26px;padding:clamp(18px,4vw,28px);box-shadow:0 9px 0 var(--shadow);margin-bottom:22px;
   }
+  .topic-actions{display:flex;justify-content:center;gap:11px;flex-wrap:wrap}
+  .lesson-open{background:var(--purple);color:#fff;font-size:18px}
   .lesson-card h2,.practice-card h2{margin:0 0 12px;color:var(--blue-dark);font-size:clamp(23px,5vw,30px)}
   .lesson-text{font-size:18px;line-height:1.75;direction:rtl;text-align:right}
   .rule{
@@ -113,6 +115,18 @@
   }
   .audio:disabled{filter:grayscale(1);opacity:.45;cursor:not-allowed}
   .lesson-action{text-align:center}
+  .lesson-overlay{
+    position:fixed;inset:0;z-index:50;background:rgba(20,40,60,.68);display:flex;align-items:center;justify-content:center;
+    padding:16px;overflow:hidden;
+  }
+  .lesson-modal{
+    width:min(760px,100%);max-height:94vh;overflow:auto;background:#fff;border-radius:26px;padding:20px;
+    box-shadow:0 18px 45px rgba(20,60,90,.38);
+  }
+  .lesson-modal-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+  .lesson-modal-head h2{margin:0;color:var(--blue-dark);font-size:clamp(23px,5vw,30px)}
+  .lesson-close{border:0;border-radius:13px;background:#e7eef5;color:#43617c;padding:8px 12px;font-weight:900;cursor:pointer}
+  body.lesson-opened{overflow:hidden}
   .wordbank-details{background:#f2f8ff;border:2px solid #c9dfef;border-radius:17px;padding:10px 12px;margin:15px 0}
   .wordbank-details summary{cursor:pointer;font-weight:900;color:var(--blue-dark)}
   .full-vocab-bank{display:flex;direction:ltr;flex-wrap:wrap;justify-content:center;gap:7px;margin-top:11px}
@@ -233,8 +247,27 @@
         <p class="english" id="topic-title-en"></p>
       </div>
     </div>
-    <article class="lesson-card">
-      <h2>📚 שיעור קצר</h2>
+    <section class="topic-actions">
+      <button class="primary lesson-open" id="open-lesson">📚 שיעור קצר</button>
+      <button class="primary" id="start-practice">🎮 מתחילים לתרגל</button>
+    </section>
+    <section class="practice-card hidden" id="practice-card">
+      <div class="practice-top">
+        <span class="pill">שאלה <span id="round">1</span> מתוך 10</span>
+        <h2>תרגול</h2>
+        <span class="pill">⭐ <span id="score">0</span></span>
+      </div>
+      <div class="progress"><span id="progress-bar"></span></div>
+      <div id="question-area"></div>
+    </section>
+  </main>
+
+  <div class="lesson-overlay hidden" id="lesson-overlay" role="dialog" aria-modal="true" aria-labelledby="lesson-modal-title">
+    <article class="lesson-modal">
+      <div class="lesson-modal-head">
+        <h2 id="lesson-modal-title">📚 שיעור קצר</h2>
+        <button class="lesson-close" id="close-lesson">✕ סגור</button>
+      </div>
       <div class="lesson-text" id="lesson-text"></div>
       <div class="rule" id="lesson-rule"></div>
       <h3>דוגמאות נכונות וקבועות:</h3>
@@ -247,20 +280,8 @@
         <strong>🧪 דפוסי התרגול שנלקחו מחומרי המקור ועובדו למשחק:</strong>
         <div class="pattern-list" id="pattern-list"></div>
       </div>
-      <div class="lesson-action">
-        <button class="primary" id="start-practice">🎮 מתחילים לתרגל</button>
-      </div>
     </article>
-    <section class="practice-card hidden" id="practice-card">
-      <div class="practice-top">
-        <span class="pill">שאלה <span id="round">1</span> מתוך 10</span>
-        <h2>תרגול</h2>
-        <span class="pill">⭐ <span id="score">0</span></span>
-      </div>
-      <div class="progress"><span id="progress-bar"></span></div>
-      <div id="question-area"></div>
-    </section>
-  </main>
+  </div>
 
   <div id="selftest-result" class="hidden" aria-live="polite"></div>
   <footer><div>תוכן לימודי מקורי לכיתה ד׳</div><div class="english">English Grade 4</div></footer>
@@ -1223,6 +1244,17 @@ let englishVoice=null;
 function stopSpeech(){
   if("speechSynthesis" in window)speechSynthesis.cancel();
 }
+function openLesson(){
+  stopSpeech();
+  $("lesson-overlay").classList.remove("hidden");
+  document.body.classList.add("lesson-opened");
+  $("close-lesson").focus();
+}
+function closeLesson(){
+  stopSpeech();
+  $("lesson-overlay").classList.add("hidden");
+  document.body.classList.remove("lesson-opened");
+}
 function loadVoices(){
   if(!("speechSynthesis" in window))return;
   englishVoice=speechSynthesis.getVoices().find(v=>/^en(-|_)/i.test(v.lang))||speechSynthesis.getVoices().find(v=>/^en/i.test(v.lang))||null;
@@ -1271,7 +1303,7 @@ function createTopicButton(topicItem){
 }
 function openWorld(id){
   const world=WORLDS.find(item=>item.id===id);if(!world)return;
-  stopSpeech();activeWorld=world;
+  closeLesson();activeWorld=world;
   $("hub-view").classList.add("hidden");$("topic-view").classList.add("hidden");$("world-view").classList.remove("hidden");
   $("world-icon").textContent=world.icon;setPureText($("world-title"),world.titleHe,"rtl");
   setPureText($("world-title-en"),world.titleEn,"ltr");setPureText($("world-description"),world.description,"rtl");
@@ -1280,7 +1312,7 @@ function openWorld(id){
   history.replaceState(null,"","#world-"+id);window.scrollTo({top:0,behavior:"smooth"});
 }
 function backToWorlds(){
-  stopSpeech();activeWorld=null;$("world-view").classList.add("hidden");$("topic-view").classList.add("hidden");
+  closeLesson();activeWorld=null;$("world-view").classList.add("hidden");$("topic-view").classList.add("hidden");
   $("hub-view").classList.remove("hidden");history.replaceState(null," ",location.pathname+location.search);
   window.scrollTo({top:0,behavior:"smooth"});
 }
@@ -1289,7 +1321,7 @@ function openTopic(id){
   showTopic(found);
 }
 function showTopic(found){
-  stopSpeech();
+  closeLesson();
   currentTopic=found;currentQuestion=null;round=0;score=0;lastSignature="";
   $("hub-view").classList.add("hidden");$("world-view").classList.add("hidden");$("topic-view").classList.remove("hidden");$("practice-card").classList.add("hidden");
   $("back-to-hub").textContent=activeWorld?"↩ חזרה לעולם הלמידה":"↩ כל עולמות הלמידה";
@@ -1328,7 +1360,7 @@ function startWorldPractice(){
   showTopic(mixedTopic);startPractice();
 }
 function backToHub(){
-  stopSpeech();
+  closeLesson();
   $("topic-view").classList.add("hidden");
   if(activeWorld){
     $("world-view").classList.remove("hidden");history.replaceState(null,"","#world-"+activeWorld.id);
@@ -1338,6 +1370,7 @@ function backToHub(){
   window.scrollTo({top:0,behavior:"smooth"});
 }
 function startPractice(){
+  closeLesson();
   round=0;score=0;lastSignature="";$("score").textContent="0";$("practice-card").classList.remove("hidden");
   nextQuestion();setTimeout(()=>$("practice-card").scrollIntoView({behavior:"smooth",block:"start"}),50);
 }
@@ -1664,6 +1697,15 @@ function runSelfTest(){
     stopSpeech=originalStopSpeech;
   }
   try{
+    openTopic("present-simple");
+    openLesson();
+    if($("lesson-overlay").classList.contains("hidden")||!document.body.classList.contains("lesson-opened")){
+      failures.push("interaction: lesson modal did not open");
+    }
+    closeLesson();
+    if(!$("lesson-overlay").classList.contains("hidden")||document.body.classList.contains("lesson-opened")){
+      failures.push("interaction: lesson modal did not close");
+    }
     openTopic("body");startPractice();
     const choiceButtons=[...document.querySelectorAll(".choice")];
     const wrongButton=choiceButtons.find(button=>button.textContent!==currentQuestion.answer);
@@ -1724,7 +1766,11 @@ renderHub();
 $("back-to-hub").addEventListener("click",backToHub);
 $("back-to-worlds").addEventListener("click",backToWorlds);
 $("start-world-practice").addEventListener("click",startWorldPractice);
+$("open-lesson").addEventListener("click",openLesson);
+$("close-lesson").addEventListener("click",closeLesson);
+$("lesson-overlay").addEventListener("click",event=>{if(event.target===$("lesson-overlay"))closeLesson()});
 $("start-practice").addEventListener("click",startPractice);
+document.addEventListener("keydown",event=>{if(event.key==="Escape"&&!$("lesson-overlay").classList.contains("hidden"))closeLesson()});
 if("speechSynthesis" in window){loadVoices();speechSynthesis.onvoiceschanged=loadVoices}
 const initialId=location.hash.slice(1);
 if(initialId.startsWith("world-")&&WORLDS.some(world=>world.id===initialId.slice(6)))openWorld(initialId.slice(6));

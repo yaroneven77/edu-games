@@ -76,7 +76,7 @@
   <header>
     <h1>🔍 „איך פותרים?” תמיד זמין</h1>
     <div class="subtitle">תצוגת בדיקה · חשבון ואנגלית לכיתה ד'</div>
-    <div class="note">הכפתור מופיע מיד עם השאלה. לא צריך לטעות כדי לקבל עזרה.</div>
+    <div class="note">הכפתור מופיע מיד עם השאלה. בחשבון, תשובה שגויה גם פותחת את ההסבר באופן אוטומטי.</div>
   </header>
 
   <main class="examples">
@@ -152,10 +152,17 @@
           if(choice.dataset.answer===correct)choice.classList.add("correct");
         });
         if(button.dataset.answer!==correct)button.classList.add("wrong");
-        demo.querySelector(".feedback").textContent=button.dataset.answer===correct
+        const isCorrect=button.dataset.answer===correct;
+        demo.querySelector(".feedback").textContent=isCorrect
           ?"מצוין! תשובה נכונה. 🎉"
-          :"כמעט! אפשר לפתוח את ההסבר ולבדוק. 💛";
-        if(button.dataset.answer===correct)demo.querySelectorAll(".next").forEach(next=>next.classList.remove("hidden"));
+          :demo.classList.contains("math")
+            ?"כמעט! ההסבר נפתח כדי לעזור להבין. 💛"
+            :"כמעט! אפשר לפתוח את ההסבר ולבדוק. 💛";
+        if(!isCorrect&&demo.classList.contains("math")){
+          document.getElementById("math-help").classList.remove("hidden");
+          demo.querySelector(".help").textContent="🙈 הסתר הסבר";
+        }
+        if(isCorrect)demo.querySelectorAll(".next").forEach(next=>next.classList.remove("hidden"));
       });
     });
   });
@@ -171,6 +178,10 @@
       button.click();
       if(!target.classList.contains("hidden"))failures.push(button.dataset.target+": help did not close");
     });
+    const mathDemo=document.querySelector(".math");
+    mathDemo.querySelector('[data-answer="135"]').click();
+    if(document.getElementById("math-help").classList.contains("hidden"))failures.push("math help did not open after wrong answer");
+    if(mathDemo.querySelector(".help").textContent!=="🙈 הסתר הסבר")failures.push("math help label not updated after wrong answer");
     const englishDemo=document.querySelector(".english-demo");
     const nextButtons=[...englishDemo.querySelectorAll(".next")];
     if(nextButtons.length!==2)failures.push("english does not have two next buttons");

@@ -40,6 +40,8 @@
   .screen.hidden{display:none}
   .app-header{display:flex;justify-content:space-between;align-items:center;gap:12px;position:relative;z-index:2}
   .app-logo{font-size:clamp(23px,5vw,35px);font-weight:1000;color:var(--accent)}
+  .header-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+  .template-button{border:0;border-radius:999px;padding:8px 12px;background:var(--accent);color:#fff;font-weight:900;cursor:pointer;box-shadow:0 4px 0 var(--shadow)}
   .profile{background:var(--surface);border-radius:999px;padding:8px 12px;font-weight:900;box-shadow:0 4px 0 var(--shadow)}
   .hero{position:relative;z-index:1;text-align:center;margin:22px auto 17px;max-width:760px}
   .hero-icon{font-size:76px;filter:drop-shadow(0 5px 3px rgba(0,0,0,.13))}
@@ -71,6 +73,18 @@
   .feedback.good{color:#18834a}.feedback.try{color:#b64139}
   .next{display:none;margin:12px auto 0;border:0;border-radius:14px;background:var(--accent);color:#fff;padding:10px 18px;font-weight:900;cursor:pointer}
   .next.show{display:block}
+  .template-modal{position:absolute;inset:0;z-index:20;background:rgba(18,31,48,.72);display:flex;align-items:center;justify-content:center;padding:18px}
+  .template-panel{width:min(720px,100%);max-height:92%;overflow:auto;background:#fff;color:var(--ink);border-radius:26px;padding:20px;box-shadow:0 16px 45px rgba(0,0,0,.35)}
+  .template-panel h2{margin:0;text-align:center;color:#175f98;font-size:29px}
+  .template-help{text-align:center;color:var(--muted);font-weight:800;line-height:1.5}
+  .template-options{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;margin:17px 0}
+  .template-option{border:3px solid #d8e4ec;border-radius:18px;background:#f8fbfd;padding:11px 7px;cursor:pointer;color:var(--ink)}
+  .template-option.selected{border-color:#ffb72b;background:#fff8de;box-shadow:0 0 0 3px rgba(255,183,43,.2)}
+  .template-option .icon{display:block;font-size:32px}.template-option .en{display:block;direction:ltr;font-size:13px;font-weight:900;color:#175f98;margin-top:4px}.template-option .he{display:block;font-size:12px;font-weight:800;color:var(--muted);margin-top:3px}
+  .template-actions{display:flex;justify-content:center;gap:9px;flex-wrap:wrap}
+  .template-action{border:0;border-radius:14px;padding:10px 15px;font-weight:900;cursor:pointer}
+  .template-action.confirm{background:#2e9b63;color:#fff}.template-action.cancel{background:#e7eff5;color:#31546e}.template-action.reset{background:#fff0d8;color:#8a5700}
+  .storage-note{min-height:22px;text-align:center;color:#a13f38;font-size:13px;font-weight:800;margin-top:8px}
 
   .device[data-theme="adventure"]{--accent:#2d8c63;--accent2:#e5a93a;--surface:#fffdf4;--scene:linear-gradient(#bfe9ff 0 43%,#91d675 43% 100%)}
   .device[data-theme="adventure"] .world{border:3px solid #d4b46a}.device[data-theme="adventure"] .screen:after{content:"";position:absolute;bottom:-55px;left:20%;width:60%;height:260px;border:22px dashed #efd288;border-radius:50%;transform:rotate(-8deg);opacity:.65}
@@ -99,6 +113,7 @@
     body{padding:10px}.design-picker{grid-template-columns:repeat(2,minmax(0,1fr))}.preview-wrap{padding:7px;border-radius:25px}
     .device{border-width:5px;min-height:700px}.screen{padding:14px;min-height:635px}.worlds{grid-template-columns:1fr 1fr}
     .choices{grid-template-columns:1fr}.mascot{font-size:55px}.speech{font-size:14px}.topbar{font-size:12px}
+    .template-options{grid-template-columns:repeat(2,minmax(0,1fr))}.template-panel{padding:16px}.template-button{padding:7px 10px}
   }
   @media(max-width:370px){.design-picker{grid-template-columns:1fr}.worlds{grid-template-columns:1fr}}
 </style>
@@ -131,7 +146,10 @@
         <span class="decoration three" id="decoration-three"></span>
         <div class="app-header">
           <div class="app-logo english" id="app-logo"></div>
-          <div class="profile">⭐ 42</div>
+          <div class="header-actions">
+            <button class="template-button open-template">🎨 עיצוב</button>
+            <div class="profile">⭐ 42</div>
+          </div>
         </div>
         <div class="hero">
           <div class="hero-icon" id="hero-icon"></div>
@@ -149,7 +167,10 @@
         <div class="game-shell">
           <div class="game-top">
             <div class="game-title english" id="game-title"></div>
-            <div class="score">⭐ <span id="score">3</span></div>
+            <div class="header-actions">
+              <button class="template-button open-template">🎨 עיצוב</button>
+              <div class="score">⭐ <span id="score">3</span></div>
+            </div>
           </div>
           <div class="mascot-row">
             <div class="mascot" id="mascot"></div>
@@ -167,6 +188,20 @@
             <div class="feedback" id="feedback"></div>
             <button class="next" id="next-question">לשאלה הבאה ➜</button>
           </div>
+        </div>
+      </div>
+
+      <div class="template-modal hidden" id="template-modal" role="dialog" aria-modal="true" aria-labelledby="template-heading">
+        <div class="template-panel">
+          <h2 id="template-heading">בחרו את העיצוב שלכם</h2>
+          <p class="template-help">אפשר לראות כל עיצוב לפני ששומרים אותו. הבחירה תישמר בדפדפן הזה.</p>
+          <div class="template-options" id="template-options"></div>
+          <div class="template-actions">
+            <button class="template-action confirm" id="confirm-template">בחרתי בעיצוב הזה</button>
+            <button class="template-action cancel" id="cancel-template">ביטול</button>
+            <button class="template-action reset" id="reset-template">חזרה לעיצוב הרגיל</button>
+          </div>
+          <div class="storage-note" id="storage-note"></div>
         </div>
       </div>
     </div>
@@ -191,6 +226,32 @@ const DESIGNS=[
   {id:"arcade",icon:"🕹️",titleEn:"Mini-Game Arcade",titleHe:"ארקייד משחקים",logo:"English Arcade",heroIcon:"👾",heroTitle:"בחרו משחק",heroText:"כל נושא הופך למכונת משחק קצרה עם סוג פעילות שונה.",decorations:["⚡","🎮","💎"],mascot:"👾",mascotText:"בחרו תשובה וצברו רצף של הצלחות.",questionLabel:"שלב ראשון",worlds:[["🎯","Word Match","התאמת מילים"],["🧱","Sentence Builder","בניית משפט"],["🏎️","Quick Quiz","חידון מהיר"]],notesTitle:"עיצוב מגוון ומהיר",notesText:"מתאים לילדים שאוהבים שינוי וקצב. אותם נושאי לימוד מופיעים כהתאמה, מיון, זיכרון, בניית משפט וחידון קצר."}
 ];
 let currentDesign=DESIGNS[0];
+const STORAGE_KEY="edu-games-grade4-design";
+let savedDesignId="adventure",pendingDesignId="adventure";
+
+function readSavedDesign(){
+  try{
+    const value=localStorage.getItem(STORAGE_KEY);
+    return DESIGNS.some(design=>design.id===value)?value:"adventure";
+  }catch(error){
+    $("storage-note").textContent="שמירת העיצוב אינה זמינה בדפדפן הזה.";
+    return "adventure";
+  }
+}
+function writeSavedDesign(id){
+  try{
+    localStorage.setItem(STORAGE_KEY,id);$("storage-note").textContent="";return true;
+  }catch(error){
+    $("storage-note").textContent="לא הצלחנו לשמור את העיצוב בדפדפן הזה.";return false;
+  }
+}
+function removeSavedDesign(){
+  try{
+    localStorage.removeItem(STORAGE_KEY);$("storage-note").textContent="";return true;
+  }catch(error){
+    $("storage-note").textContent="לא הצלחנו לאפס את העיצוב בדפדפן הזה.";return false;
+  }
+}
 
 function renderPicker(){
   const picker=$("design-picker");picker.innerHTML="";
@@ -224,6 +285,37 @@ function selectDesign(id){
   });
   document.querySelectorAll(".design-button").forEach(button=>button.setAttribute("aria-pressed",String(button.dataset.design===id)));
   resetQuestion();
+}
+function renderTemplateOptions(){
+  const options=$("template-options");options.innerHTML="";
+  DESIGNS.forEach(design=>{
+    const button=document.createElement("button");button.type="button";button.className="template-option";
+    button.classList.toggle("selected",design.id===pendingDesignId);button.dataset.design=design.id;
+    const icon=document.createElement("span");icon.className="icon";icon.textContent=design.icon;
+    const en=document.createElement("span");en.className="en";en.textContent=design.titleEn;
+    const he=document.createElement("span");he.className="he";he.textContent=design.titleHe;
+    button.append(icon,en,he);
+    button.addEventListener("click",()=>{
+      pendingDesignId=design.id;selectDesign(design.id);renderTemplateOptions();
+    });
+    options.appendChild(button);
+  });
+}
+function openTemplateSelector(){
+  pendingDesignId=currentDesign.id;renderTemplateOptions();$("template-modal").classList.remove("hidden");
+}
+function closeTemplateSelector(restoreSaved=false){
+  if(restoreSaved)selectDesign(savedDesignId);
+  $("template-modal").classList.add("hidden");
+}
+function confirmTemplate(){
+  const saved=writeSavedDesign(pendingDesignId);
+  if(saved)savedDesignId=pendingDesignId;
+  closeTemplateSelector(!saved);
+}
+function resetTemplate(){
+  if(removeSavedDesign())savedDesignId="adventure";
+  pendingDesignId=savedDesignId;selectDesign(savedDesignId);closeTemplateSelector();
 }
 function showScreen(name){
   const home=name==="home";$("home-screen").classList.toggle("hidden",!home);$("game-screen").classList.toggle("hidden",home);
@@ -265,6 +357,14 @@ function runSelfTest(){
     wrong.click();if(!wrong.classList.contains("wrong"))failures.push(`${design.id}: wrong-answer flow failed`);
     correct.click();if(!correct.classList.contains("correct")||!$("next-question").classList.contains("show"))failures.push(`${design.id}: correct-answer flow failed`);
   });
+  openTemplateSelector();
+  if($("template-options").children.length!==5||$("template-modal").classList.contains("hidden"))failures.push("Template selector did not open");
+  pendingDesignId="space";selectDesign("space");renderTemplateOptions();confirmTemplate();
+  if(savedDesignId!=="space"||currentDesign.id!=="space"||!$("template-modal").classList.contains("hidden"))failures.push("Template confirmation failed");
+  try{if(localStorage.getItem(STORAGE_KEY)!=="space")failures.push("Template preference was not persisted")}catch(error){failures.push("Template persistence check failed")}
+  openTemplateSelector();resetTemplate();
+  if(savedDesignId!=="adventure"||currentDesign.id!=="adventure")failures.push("Template reset failed");
+  try{if(localStorage.getItem(STORAGE_KEY)!==null)failures.push("Template preference was not cleared")}catch(error){failures.push("Template reset check failed")}
   showScreen("home");selectDesign("adventure");
   const result=$("selftest-result");result.classList.remove("hidden");
   result.textContent=failures.length?`SELFTEST: FAIL\n${failures.join("\n")}`:"SELFTEST: PASS";
@@ -272,9 +372,15 @@ function runSelfTest(){
 
 $("show-home").addEventListener("click",()=>showScreen("home"));
 $("show-game").addEventListener("click",()=>showScreen("game"));
+$("confirm-template").addEventListener("click",confirmTemplate);
+$("cancel-template").addEventListener("click",()=>closeTemplateSelector(true));
+$("reset-template").addEventListener("click",resetTemplate);
+$("template-modal").addEventListener("click",event=>{if(event.target===$("template-modal"))closeTemplateSelector(true)});
+document.querySelectorAll(".open-template").forEach(button=>button.addEventListener("click",openTemplateSelector));
 $("next-question").addEventListener("click",resetQuestion);
 document.querySelectorAll(".choice").forEach(button=>button.addEventListener("click",()=>answer(button)));
-renderPicker();selectDesign("adventure");
+document.addEventListener("keydown",event=>{if(event.key==="Escape"&&!$("template-modal").classList.contains("hidden"))closeTemplateSelector(true)});
+savedDesignId=readSavedDesign();pendingDesignId=savedDesignId;renderPicker();selectDesign(savedDesignId);
 if(new URLSearchParams(location.search).get("selftest")==="1")setTimeout(runSelfTest,0);
 </script>
 </body>

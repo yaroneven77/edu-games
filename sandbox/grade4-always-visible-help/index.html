@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>תצוגת עזרה תמיד זמינה · כיתה ד'</title>
+<script src="../../assets/theme-selector.js" defer></script>
+<script data-goatcounter="https://yaroneven.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+<style>
+  :root{
+    --ink:#243b53;--muted:#607d96;--blue:#1f7fc4;--green:#32a863;--red:#d9564a;
+    --purple:#7048b8;--shadow:rgba(20,60,90,.18);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{
+    margin:0;min-height:100vh;font-family:"Segoe UI","Arial Hebrew",Arial,sans-serif;color:var(--ink);
+    background:linear-gradient(160deg,#fff7e6,#cdeffd);padding:18px 14px 34px;
+  }
+  .page{width:100%;max-width:920px;margin:auto}
+  .back{
+    display:inline-block;background:#fff;color:#155f93;text-decoration:none;border-radius:14px;padding:8px 14px;
+    font-weight:900;box-shadow:0 4px 0 var(--shadow);
+  }
+  header{text-align:center;margin:12px 0 22px}
+  h1{margin:0;color:var(--purple);font-size:clamp(28px,7vw,46px)}
+  .subtitle{margin-top:8px;color:var(--muted);font-size:18px;font-weight:800}
+  .note{
+    max-width:720px;margin:14px auto 0;background:#fff4d6;border:2px dashed #e0a23a;border-radius:16px;
+    padding:10px 14px;color:#805900;font-weight:800;line-height:1.5;
+  }
+  .examples{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .demo{background:#fff;border-radius:25px;padding:21px;box-shadow:0 8px 0 var(--shadow)}
+  .demo.math{border-top:9px solid var(--blue)}
+  .demo.english-demo{border-top:9px solid var(--green)}
+  .demo h2{margin:0 0 6px;font-size:27px}
+  .label{color:var(--muted);font-weight:800;margin-bottom:16px}
+  .question{background:#f6fafe;border:3px solid #d6e8f4;border-radius:18px;padding:16px;text-align:center}
+  .prompt{font-size:clamp(22px,5vw,30px);font-weight:900;line-height:1.45;margin:4px 0 15px}
+  .english{direction:ltr}
+  .choices{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .choice{
+    border:3px solid #cfe2ef;background:#fff;border-radius:15px;padding:11px 8px;min-height:52px;
+    font:900 18px inherit;color:var(--ink);cursor:pointer;
+  }
+  .choice.correct{background:#d9f6e3;border-color:var(--green)}
+  .choice.wrong{background:#ffe0dc;border-color:var(--red)}
+  .help{
+    display:block;margin:14px auto 0;border:0;border-radius:16px;padding:12px 20px;background:var(--purple);
+    color:#fff;font:900 17px inherit;cursor:pointer;box-shadow:0 4px 0 var(--shadow);
+  }
+  .feedback{min-height:28px;margin-top:11px;font-size:17px;font-weight:900}
+  .explanation{
+    margin-top:12px;padding:13px;background:#f1ebfb;border-radius:15px;display:grid;gap:9px;text-align:start;
+  }
+  .explanation.hidden{display:none}
+  .block{background:#fff;border-radius:12px;padding:10px 12px;line-height:1.55}
+  .block strong{display:block;color:#67518a;margin-bottom:3px}
+  .answer{font-weight:900;color:#17683a}
+  #selftest-result{white-space:pre-wrap;direction:ltr;background:#fff;border-radius:12px;padding:10px;margin-top:18px}
+  @media(max-width:700px){.examples{grid-template-columns:1fr}.choices{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="page">
+  <a class="back" href="../">⬅️ חזרה למרכז הבדיקות</a>
+  <header>
+    <h1>🔍 „איך פותרים?” תמיד זמין</h1>
+    <div class="subtitle">תצוגת בדיקה · חשבון ואנגלית לכיתה ד'</div>
+    <div class="note">הכפתור מופיע מיד עם השאלה. לא צריך לטעות כדי לקבל עזרה.</div>
+  </header>
+
+  <main class="examples">
+    <section class="demo math">
+      <h2>➗ חשבון</h2>
+      <div class="label">סדר פעולות</div>
+      <div class="question">
+        <div class="prompt" dir="ltr">24 + 3 × 5 = ?</div>
+        <div class="choices">
+          <button class="choice" data-answer="39">39</button>
+          <button class="choice" data-answer="135">135</button>
+          <button class="choice" data-answer="27">27</button>
+          <button class="choice" data-answer="32">32</button>
+        </div>
+        <button class="help" data-target="math-help">🔍 אֵיךְ פּוֹתְרִים?</button>
+        <div class="feedback"></div>
+        <div class="explanation hidden" id="math-help">
+          <div class="block">קוֹדֶם פּוֹתְרִים כֶּפֶל: <span dir="ltr">3 × 5 = 15</span>.</div>
+          <div class="block">אַחַר כָּךְ מְחַבְּרִים: <span dir="ltr">24 + 15 = 39</span>.</div>
+          <div class="block answer">הַתְּשׁוּבָה: 39</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="demo english-demo">
+      <h2>🔤 אנגלית</h2>
+      <div class="label">Present Simple</div>
+      <div class="question">
+        <div class="prompt english">Maya ___ to school every day.</div>
+        <div class="choices english">
+          <button class="choice" data-answer="walks">walks</button>
+          <button class="choice" data-answer="walk">walk</button>
+          <button class="choice" data-answer="walking">walking</button>
+          <button class="choice" data-answer="walked">walked</button>
+        </div>
+        <button class="help" data-target="english-help">🔍 איך פותרים?</button>
+        <div class="feedback"></div>
+        <div class="explanation hidden" id="english-help">
+          <div class="block" dir="ltr"><strong>English explanation</strong>Maya is third-person singular, so the verb takes <b>-s</b> in the present simple.</div>
+          <div class="block"><strong>הסבר בעברית</strong>מַאיָה הִיא יָחִידָה בְּגוּף שְׁלִישִׁי, לָכֵן מוֹסִיפִים לַפֹּעַל אֶת הַסִּיּוֹמֶת <span dir="ltr">-s</span>.</div>
+          <div class="block answer english"><strong>Answer</strong>walks</div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <div id="selftest-result" hidden></div>
+</div>
+<script>
+  document.querySelectorAll(".help").forEach(button=>{
+    button.addEventListener("click",()=>{
+      const explanation=document.getElementById(button.dataset.target);
+      const opening=explanation.classList.contains("hidden");
+      explanation.classList.toggle("hidden");
+      button.textContent=opening?"🙈 הסתר הסבר":button.closest(".english-demo")?"🔍 איך פותרים?":"🔍 אֵיךְ פּוֹתְרִים?";
+    });
+  });
+
+  document.querySelectorAll(".demo").forEach(demo=>{
+    const correct=demo.classList.contains("math")?"39":"walks";
+    demo.querySelectorAll(".choice").forEach(button=>{
+      button.addEventListener("click",()=>{
+        demo.querySelectorAll(".choice").forEach(choice=>{
+          choice.disabled=true;
+          if(choice.dataset.answer===correct)choice.classList.add("correct");
+        });
+        if(button.dataset.answer!==correct)button.classList.add("wrong");
+        demo.querySelector(".feedback").textContent=button.dataset.answer===correct
+          ?"מצוין! תשובה נכונה. 🎉"
+          :"כמעט! אפשר לפתוח את ההסבר ולבדוק. 💛";
+      });
+    });
+  });
+
+  if(new URLSearchParams(location.search).get("selftest")==="1"){
+    const failures=[];
+    document.querySelectorAll(".help").forEach(button=>{
+      const target=document.getElementById(button.dataset.target);
+      if(getComputedStyle(button).display==="none")failures.push(button.dataset.target+": help hidden initially");
+      if(!target.classList.contains("hidden"))failures.push(button.dataset.target+": explanation visible initially");
+      button.click();
+      if(target.classList.contains("hidden"))failures.push(button.dataset.target+": help did not open");
+      button.click();
+      if(!target.classList.contains("hidden"))failures.push(button.dataset.target+": help did not close");
+    });
+    const result=document.getElementById("selftest-result");
+    result.hidden=false;
+    result.textContent=failures.length?"SELFTEST: FAIL\n"+failures.join("\n"):"SELFTEST: PASS";
+  }
+</script>
+</body>
+</html>

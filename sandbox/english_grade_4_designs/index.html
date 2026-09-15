@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Five Grade 4 English Designs</title>
+<style>
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  :root{--ink:#243b53;--muted:#61788d;--paper:#fff;--shadow:rgba(28,59,86,.2)}
+  body{
+    margin:0;min-height:100vh;font-family:"Segoe UI","Arial Hebrew",Arial,sans-serif;color:var(--ink);
+    background:linear-gradient(145deg,#fff8e8,#dff4ff);padding:16px;
+  }
+  button,a{font:inherit}
+  button{touch-action:manipulation}
+  .page{width:min(1180px,100%);margin:auto}
+  .topbar{display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .back{color:#155f93;background:#fff;text-decoration:none;font-weight:900;border-radius:14px;padding:9px 13px;box-shadow:0 4px 0 var(--shadow)}
+  .status{background:#fff0cf;color:#865800;border:2px dashed #dda033;border-radius:999px;padding:6px 12px;font-size:12px;font-weight:900}
+  h1{text-align:center;color:#175f98;font-size:clamp(30px,7vw,52px);margin:18px 0 4px}
+  .intro{text-align:center;font-size:18px;font-weight:800;color:var(--muted);line-height:1.55}
+  .intro-en{direction:ltr;text-align:center;color:#46718e;font-weight:800;margin-top:4px}
+  .design-picker{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:11px;margin:24px 0}
+  .design-button{
+    border:3px solid transparent;border-radius:20px;background:#fff;padding:13px 8px;cursor:pointer;color:var(--ink);
+    box-shadow:0 5px 0 var(--shadow);min-width:0;
+  }
+  .design-button[aria-pressed="true"]{border-color:#ffb72b;transform:translateY(2px);box-shadow:0 3px 0 var(--shadow)}
+  .design-button .icon{display:block;font-size:34px}
+  .design-button .en{display:block;direction:ltr;font-weight:900;color:#155f93;margin-top:4px;overflow-wrap:anywhere}
+  .design-button .he{display:block;font-size:13px;font-weight:800;color:var(--muted);margin-top:3px}
+  .preview-wrap{background:#c9d5df;border-radius:34px;padding:14px;box-shadow:0 12px 30px rgba(23,67,100,.22)}
+  .device{--accent:#2d966c;--accent2:#f2b53d;--surface:#fff;--scene:#dff6e8;position:relative;overflow:hidden;min-height:650px;border:7px solid #243b53;border-radius:25px;background:var(--scene)}
+  .preview-toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#fff;padding:10px 13px;border-bottom:2px solid #d8e2e9}
+  .theme-name{display:flex;align-items:center;gap:8px;font-weight:1000;color:var(--accent)}
+  .view-switch{display:flex;gap:7px}
+  .view-button{border:0;border-radius:12px;padding:8px 12px;background:#e8f0f5;color:#31546e;font-weight:900;cursor:pointer}
+  .view-button.active{background:var(--accent);color:#fff}
+  .screen{padding:20px;min-height:585px;position:relative}
+  .screen.hidden{display:none}
+  .app-header{display:flex;justify-content:space-between;align-items:center;gap:12px;position:relative;z-index:2}
+  .app-logo{font-size:clamp(23px,5vw,35px);font-weight:1000;color:var(--accent)}
+  .profile{background:var(--surface);border-radius:999px;padding:8px 12px;font-weight:900;box-shadow:0 4px 0 var(--shadow)}
+  .hero{position:relative;z-index:1;text-align:center;margin:22px auto 17px;max-width:760px}
+  .hero-icon{font-size:76px;filter:drop-shadow(0 5px 3px rgba(0,0,0,.13))}
+  .hero h2{font-size:clamp(26px,6vw,42px);margin:5px 0;color:var(--accent)}
+  .hero p{margin:5px auto;color:#38576d;font-size:17px;font-weight:800;line-height:1.55}
+  .progress-card{position:relative;z-index:2;background:var(--surface);border-radius:18px;padding:12px 15px;max-width:760px;margin:auto;box-shadow:0 5px 0 var(--shadow)}
+  .progress-row{display:flex;justify-content:space-between;gap:10px;font-weight:900}
+  .progress-track{height:13px;border-radius:999px;background:#dbe6ed;overflow:hidden;margin-top:9px}
+  .progress-fill{height:100%;width:42%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:inherit}
+  .worlds{position:relative;z-index:2;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;max-width:850px;margin:18px auto 0}
+  .world{background:var(--surface);border:0;border-radius:21px;padding:16px 10px;min-height:130px;box-shadow:0 6px 0 var(--shadow);color:var(--ink);text-align:center}
+  .world span{display:block;font-size:38px}.world strong{display:block;direction:ltr;color:var(--accent);font-size:17px;margin-top:7px}.world small{font-weight:800;color:var(--muted)}
+  .decoration{position:absolute;pointer-events:none;opacity:.72}
+  .decoration.one{top:88px;left:6%;font-size:50px}.decoration.two{top:150px;right:6%;font-size:55px}.decoration.three{bottom:20px;left:12%;font-size:45px}
+  .game-shell{position:relative;z-index:2;max-width:780px;margin:auto}
+  .game-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .game-title{font-size:25px;font-weight:1000;color:var(--accent)}
+  .score{background:var(--surface);border-radius:999px;padding:8px 13px;font-weight:900;box-shadow:0 4px 0 var(--shadow)}
+  .mascot-row{display:flex;align-items:center;justify-content:center;gap:13px;margin:25px 0 15px}
+  .mascot{font-size:70px}
+  .speech{position:relative;background:var(--surface);border-radius:18px;padding:13px 16px;font-weight:900;box-shadow:0 5px 0 var(--shadow);max-width:420px}
+  .question-card{background:var(--surface);border-radius:25px;padding:22px;box-shadow:0 8px 0 var(--shadow);text-align:center}
+  .question-label{color:var(--accent);font-weight:1000}
+  .sentence{direction:ltr;font-size:clamp(24px,6vw,35px);font-weight:1000;margin:16px 0}
+  .choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+  .choice{direction:ltr;border:3px solid color-mix(in srgb,var(--accent) 35%,#dce7ee);background:#fff;border-radius:16px;padding:13px;font-size:20px;font-weight:900;cursor:pointer}
+  .choice.correct{background:#d9f6e3;border-color:#2d9b5f;color:#17683a}.choice.wrong{background:#ffe0dc;border-color:#d9574e;color:#9f3028}
+  .feedback{min-height:31px;margin-top:14px;font-size:18px;font-weight:1000}
+  .feedback.good{color:#18834a}.feedback.try{color:#b64139}
+  .next{display:none;margin:12px auto 0;border:0;border-radius:14px;background:var(--accent);color:#fff;padding:10px 18px;font-weight:900;cursor:pointer}
+  .next.show{display:block}
+
+  .device[data-theme="adventure"]{--accent:#2d8c63;--accent2:#e5a93a;--surface:#fffdf4;--scene:linear-gradient(#bfe9ff 0 43%,#91d675 43% 100%)}
+  .device[data-theme="adventure"] .world{border:3px solid #d4b46a}.device[data-theme="adventure"] .screen:after{content:"";position:absolute;bottom:-55px;left:20%;width:60%;height:260px;border:22px dashed #efd288;border-radius:50%;transform:rotate(-8deg);opacity:.65}
+  .device[data-theme="space"]{--accent:#72d8ff;--accent2:#c07cff;--surface:#18234a;--scene:radial-gradient(circle at 15% 20%,#31458a,#0d1333 55%,#080c22);color:#eef8ff}
+  .device[data-theme="space"] .app-logo,.device[data-theme="space"] .hero h2,.device[data-theme="space"] .world strong,.device[data-theme="space"] .game-title,.device[data-theme="space"] .question-label{color:#72d8ff}
+  .device[data-theme="space"] .hero p,.device[data-theme="space"] .world small{color:#c7d9f7}.device[data-theme="space"] .world,.device[data-theme="space"] .question-card,.device[data-theme="space"] .speech,.device[data-theme="space"] .score,.device[data-theme="space"] .profile,.device[data-theme="space"] .progress-card{color:#eef8ff;border:2px solid #5168b6}
+  .device[data-theme="space"] .screen{background-image:radial-gradient(#fff 1px,transparent 1px);background-size:38px 38px}
+  .device[data-theme="classroom"]{--accent:#276b50;--accent2:#f0b735;--surface:#fffdf5;--scene:linear-gradient(#f4e6c6 0 76%,#ba8253 76%)}
+  .device[data-theme="classroom"] .hero{background:#2f7258;border:10px solid #9b673c;border-radius:8px;padding:17px;color:#fff;box-shadow:0 8px 0 rgba(74,42,20,.25)}
+  .device[data-theme="classroom"] .hero h2,.device[data-theme="classroom"] .hero p{color:#fff}
+  .device[data-theme="classroom"] .world{border-bottom:10px solid #a46e43;border-radius:10px}
+  .device[data-theme="stickers"]{--accent:#e05b86;--accent2:#4eb6d8;--surface:#fff;--scene:repeating-linear-gradient(#fff 0,#fff 31px,#cce7f3 32px)}
+  .device[data-theme="stickers"] .screen{border-left:4px solid #f2a5b3}.device[data-theme="stickers"] .world{border:3px dashed var(--accent);transform:rotate(-1deg)}.device[data-theme="stickers"] .world:nth-child(2){transform:rotate(2deg)}.device[data-theme="stickers"] .question-card{border:4px dashed #e05b86}
+  .device[data-theme="arcade"]{--accent:#48f5bb;--accent2:#ff55c8;--surface:#17213b;--scene:linear-gradient(135deg,#11182d,#25204b);color:#fff}
+  .device[data-theme="arcade"] .screen{background-image:linear-gradient(rgba(72,245,187,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(72,245,187,.07) 1px,transparent 1px);background-size:24px 24px}
+  .device[data-theme="arcade"] .app-logo,.device[data-theme="arcade"] .hero h2,.device[data-theme="arcade"] .world strong,.device[data-theme="arcade"] .game-title,.device[data-theme="arcade"] .question-label{color:#48f5bb;text-transform:uppercase}
+  .device[data-theme="arcade"] .hero p,.device[data-theme="arcade"] .world small{color:#d7ddf5}.device[data-theme="arcade"] .world,.device[data-theme="arcade"] .question-card,.device[data-theme="arcade"] .speech,.device[data-theme="arcade"] .score,.device[data-theme="arcade"] .profile,.device[data-theme="arcade"] .progress-card{color:#fff;border:3px solid #48f5bb;box-shadow:0 0 18px rgba(72,245,187,.28)}
+  .device[data-theme="arcade"] .choice{border-radius:4px}
+  .notes{background:#fff;border-radius:22px;margin:22px 0;padding:18px;box-shadow:0 6px 0 var(--shadow)}
+  .notes h2{margin:0 0 10px;color:#175f98}.notes p{margin:0;line-height:1.65;font-weight:700}
+  #selftest-result{white-space:pre-wrap;direction:ltr;text-align:left;background:#fff;border:4px solid #7256b5;border-radius:16px;padding:14px;font:700 14px Consolas,monospace;margin-top:20px}
+  .hidden{display:none!important}
+  footer{text-align:center;color:#638099;font-size:13px;padding:20px}
+  @media(max-width:850px){.design-picker{grid-template-columns:repeat(3,minmax(0,1fr))}}
+  @media(max-width:620px){
+    body{padding:10px}.design-picker{grid-template-columns:repeat(2,minmax(0,1fr))}.preview-wrap{padding:7px;border-radius:25px}
+    .device{border-width:5px;min-height:700px}.screen{padding:14px;min-height:635px}.worlds{grid-template-columns:1fr 1fr}
+    .choices{grid-template-columns:1fr}.mascot{font-size:55px}.speech{font-size:14px}.topbar{font-size:12px}
+  }
+  @media(max-width:370px){.design-picker{grid-template-columns:1fr}.worlds{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="topbar">
+    <a class="back" href="../sandbox.html">⬆️🏠 מרכז הבדיקות</a>
+    <span class="status">🧪 ממתין לבדיקה</span>
+  </div>
+  <h1>חמש הצעות עיצוב</h1>
+  <div class="intro">בחרו עיצוב והשוו בין מסך האפליקציה לבין מסך המשחק.</div>
+  <div class="intro-en">Five interactive design directions for Grade 4 English</div>
+
+  <div class="design-picker" id="design-picker"></div>
+
+  <section class="preview-wrap">
+    <div class="device" id="device" data-theme="adventure">
+      <div class="preview-toolbar">
+        <div class="theme-name"><span id="theme-icon"></span><span class="english" id="theme-name"></span></div>
+        <div class="view-switch">
+          <button class="view-button active" id="show-home">מסך האפליקציה</button>
+          <button class="view-button" id="show-game">מסך המשחק</button>
+        </div>
+      </div>
+
+      <div class="screen" id="home-screen">
+        <span class="decoration one" id="decoration-one"></span>
+        <span class="decoration two" id="decoration-two"></span>
+        <span class="decoration three" id="decoration-three"></span>
+        <div class="app-header">
+          <div class="app-logo english" id="app-logo"></div>
+          <div class="profile">⭐ 42</div>
+        </div>
+        <div class="hero">
+          <div class="hero-icon" id="hero-icon"></div>
+          <h2 id="hero-title"></h2>
+          <p id="hero-text"></p>
+        </div>
+        <div class="progress-card">
+          <div class="progress-row"><span>ההתקדמות השבועית</span><span>42%</span></div>
+          <div class="progress-track"><div class="progress-fill"></div></div>
+        </div>
+        <div class="worlds" id="worlds"></div>
+      </div>
+
+      <div class="screen hidden" id="game-screen">
+        <div class="game-shell">
+          <div class="game-top">
+            <div class="game-title english" id="game-title"></div>
+            <div class="score">⭐ <span id="score">3</span></div>
+          </div>
+          <div class="mascot-row">
+            <div class="mascot" id="mascot"></div>
+            <div class="speech" id="mascot-text"></div>
+          </div>
+          <div class="question-card">
+            <div class="question-label" id="question-label"></div>
+            <div class="sentence">She ___ a book every evening.</div>
+            <div class="choices">
+              <button class="choice">read</button>
+              <button class="choice">reads</button>
+              <button class="choice">reading</button>
+              <button class="choice">is read</button>
+            </div>
+            <div class="feedback" id="feedback"></div>
+            <button class="next" id="next-question">לשאלה הבאה ➜</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="notes">
+    <h2 id="notes-title"></h2>
+    <p id="notes-text"></p>
+  </section>
+  <div id="selftest-result" class="hidden"></div>
+  <footer><div>תצוגת עיצוב בלבד</div><div class="english">Sandbox</div></footer>
+</div>
+
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const DESIGNS=[
+  {id:"adventure",icon:"🗺️",titleEn:"Adventure Map",titleHe:"מפת הרפתקה",logo:"English Adventure",heroIcon:"🏕️",heroTitle:"המסע ממשיך",heroText:"מתקדמים בין איים, פותרים אתגרים ופותחים שבילים חדשים.",decorations:["🌳","🏔️","🧭"],mascot:"🦊",mascotText:"מצאו את המילה שתפתח את השער הבא.",questionLabel:"אתגר בשביל היער",worlds:[["🌿","Words Island","אי המילים"],["⏳","Time Valley","עמק הזמנים"],["📖","Story Castle","טירת הסיפורים"]],notesTitle:"עיצוב של מסע והתקדמות",notesText:"מתאים לילדים שאוהבים לחקור. כל עולם למידה הוא אזור במפה, והתרגול החוזר פותח שבילים, אוצרות ודמויות."},
+  {id:"space",icon:"🚀",titleEn:"Space Academy",titleHe:"אקדמיית החלל",logo:"Space English",heroIcon:"🪐",heroTitle:"המשימה הבאה מוכנה",heroText:"טסים בין כוכבי לימוד ואוספים אנרגיה מתשובות נכונות.",decorations:["✨","🌙","🛰️"],mascot:"🤖",mascotText:"השלימו את המשפט כדי להפעיל את החללית.",questionLabel:"משימת דקדוק",worlds:[["🌍","Word Planet","כוכב המילים"],["⏰","Time Station","תחנת הזמן"],["📡","Story Base","בסיס הסיפורים"]],notesTitle:"עיצוב של משימות חלל",notesText:"מתאים לילדים שאוהבים מדע וטכנולוגיה. ההתקדמות מוצגת כמסע בין כוכבים, וכל סבב הוא משימה קצרה וברורה."},
+  {id:"classroom",icon:"🏫",titleEn:"Friendly Classroom",titleHe:"כיתה ידידותית",logo:"Our English Class",heroIcon:"👩‍🏫",heroTitle:"בוקר טוב לכיתה",heroText:"המורה מציגה משימה קצרה וכל פינת לימוד מובילה לנושא אחר.",decorations:["✏️","📐","🎒"],mascot:"🦉",mascotText:"קראו את המשפט ובדקו מי מבצע את הפעולה.",questionLabel:"משימה על הלוח",worlds:[["🔤","Word Corner","פינת המילים"],["🧩","Grammar Desk","שולחן הדקדוק"],["📚","Reading Shelf","מדף הקריאה"]],notesTitle:"עיצוב מוכר ורגוע",notesText:"מתאים לילדים שמעדיפים סביבה ברורה ולא תחרותית. מורה או דמות מלווה מסבירה, מעודדת ומציגה את המשימה הבאה."},
+  {id:"stickers",icon:"📒",titleEn:"Sticker Album",titleHe:"אלבום מדבקות",logo:"My English Album",heroIcon:"🌟",heroTitle:"האלבום שלי",heroText:"מתרגלים כדי לאסוף מדבקות ולהשלים עמודים צבעוניים.",decorations:["🦄","🌈","🐼"],mascot:"🐰",mascotText:"תשובה נכונה תוסיף מדבקה חדשה לאלבום.",questionLabel:"אתגר המדבקה",worlds:[["🐯","Animal Page","עמוד החיות"],["🍎","Word Page","עמוד המילים"],["🏆","Master Page","עמוד האלופים"]],notesTitle:"עיצוב של איסוף והשלמה",notesText:"מתאים לילדים שנהנים מאוספים. במקום נקודות בלבד, כל הצלחה מעניקה מדבקה ומשלימה בהדרגה עמוד בנושא שנלמד."},
+  {id:"arcade",icon:"🕹️",titleEn:"Mini-Game Arcade",titleHe:"ארקייד משחקים",logo:"English Arcade",heroIcon:"👾",heroTitle:"בחרו משחק",heroText:"כל נושא הופך למכונת משחק קצרה עם סוג פעילות שונה.",decorations:["⚡","🎮","💎"],mascot:"👾",mascotText:"בחרו תשובה וצברו רצף של הצלחות.",questionLabel:"שלב ראשון",worlds:[["🎯","Word Match","התאמת מילים"],["🧱","Sentence Builder","בניית משפט"],["🏎️","Quick Quiz","חידון מהיר"]],notesTitle:"עיצוב מגוון ומהיר",notesText:"מתאים לילדים שאוהבים שינוי וקצב. אותם נושאי לימוד מופיעים כהתאמה, מיון, זיכרון, בניית משפט וחידון קצר."}
+];
+let currentDesign=DESIGNS[0];
+
+function renderPicker(){
+  const picker=$("design-picker");picker.innerHTML="";
+  DESIGNS.forEach(design=>{
+    const button=document.createElement("button");button.className="design-button";button.type="button";
+    button.dataset.design=design.id;button.setAttribute("aria-pressed",String(design===currentDesign));
+    const icon=document.createElement("span");icon.className="icon";icon.textContent=design.icon;
+    const en=document.createElement("span");en.className="en";en.textContent=design.titleEn;
+    const he=document.createElement("span");he.className="he";he.textContent=design.titleHe;
+    button.append(icon,en,he);button.addEventListener("click",()=>selectDesign(design.id));picker.appendChild(button);
+  });
+}
+function selectDesign(id){
+  currentDesign=DESIGNS.find(design=>design.id===id)||DESIGNS[0];
+  $("device").dataset.theme=currentDesign.id;
+  $("theme-icon").textContent=currentDesign.icon;$("theme-name").textContent=currentDesign.titleEn;
+  $("app-logo").textContent=currentDesign.logo;$("hero-icon").textContent=currentDesign.heroIcon;
+  $("hero-title").textContent=currentDesign.heroTitle;$("hero-text").textContent=currentDesign.heroText;
+  $("decoration-one").textContent=currentDesign.decorations[0];$("decoration-two").textContent=currentDesign.decorations[1];
+  $("decoration-three").textContent=currentDesign.decorations[2];$("mascot").textContent=currentDesign.mascot;
+  $("mascot-text").textContent=currentDesign.mascotText;$("question-label").textContent=currentDesign.questionLabel;
+  $("game-title").textContent=currentDesign.titleEn;$("notes-title").textContent=currentDesign.notesTitle;
+  $("notes-text").textContent=currentDesign.notesText;
+  const worlds=$("worlds");worlds.innerHTML="";
+  currentDesign.worlds.forEach(([icon,titleEn,titleHe])=>{
+    const card=document.createElement("div");card.className="world";
+    const picture=document.createElement("span");picture.textContent=icon;
+    const en=document.createElement("strong");en.textContent=titleEn;
+    const he=document.createElement("small");he.textContent=titleHe;
+    card.append(picture,en,he);worlds.appendChild(card);
+  });
+  document.querySelectorAll(".design-button").forEach(button=>button.setAttribute("aria-pressed",String(button.dataset.design===id)));
+  resetQuestion();
+}
+function showScreen(name){
+  const home=name==="home";$("home-screen").classList.toggle("hidden",!home);$("game-screen").classList.toggle("hidden",home);
+  $("show-home").classList.toggle("active",home);$("show-game").classList.toggle("active",!home);
+}
+function resetQuestion(){
+  document.querySelectorAll(".choice").forEach(button=>{button.disabled=false;button.classList.remove("correct","wrong")});
+  $("feedback").textContent="";$("feedback").className="feedback";$("next-question").classList.remove("show");
+}
+function answer(button){
+  if(button.disabled)return;
+  if(button.textContent==="reads"){
+    button.classList.add("correct");document.querySelectorAll(".choice").forEach(choice=>choice.disabled=true);
+    $("feedback").textContent="מצוין! עם גוף שלישי יחיד מוסיפים סיומת לפועל.";$("feedback").className="feedback good";
+    $("next-question").classList.add("show");
+  }else{
+    button.classList.add("wrong");button.disabled=true;$("feedback").textContent="כמעט! בדקו שוב מי מבצע את הפעולה.";
+    $("feedback").className="feedback try";
+  }
+}
+function runSelfTest(){
+  const failures=[];
+  if(DESIGNS.length!==5)failures.push("Expected five designs");
+  if(document.documentElement.scrollWidth>window.innerWidth+1)failures.push("Horizontal overflow");
+  const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
+  let node;
+  while((node=walker.nextNode())){
+    if(node.parentElement&&node.parentElement.closest("script,style"))continue;
+    const text=node.nodeValue.trim();
+    if(text&&/[A-Za-z]/.test(text)&&/[\u0590-\u05ff]/.test(text))failures.push("Mixed scripts in one visible text node");
+  }
+  DESIGNS.forEach(design=>{
+    selectDesign(design.id);
+    if($("device").dataset.theme!==design.id)failures.push(`${design.id}: theme did not switch`);
+    if($("worlds").children.length!==3)failures.push(`${design.id}: world cards missing`);
+    showScreen("game");
+    const wrong=[...document.querySelectorAll(".choice")].find(button=>button.textContent==="read");
+    const correct=[...document.querySelectorAll(".choice")].find(button=>button.textContent==="reads");
+    wrong.click();if(!wrong.classList.contains("wrong"))failures.push(`${design.id}: wrong-answer flow failed`);
+    correct.click();if(!correct.classList.contains("correct")||!$("next-question").classList.contains("show"))failures.push(`${design.id}: correct-answer flow failed`);
+  });
+  showScreen("home");selectDesign("adventure");
+  const result=$("selftest-result");result.classList.remove("hidden");
+  result.textContent=failures.length?`SELFTEST: FAIL\n${failures.join("\n")}`:"SELFTEST: PASS";
+}
+
+$("show-home").addEventListener("click",()=>showScreen("home"));
+$("show-game").addEventListener("click",()=>showScreen("game"));
+$("next-question").addEventListener("click",resetQuestion);
+document.querySelectorAll(".choice").forEach(button=>button.addEventListener("click",()=>answer(button)));
+renderPicker();selectDesign("adventure");
+if(new URLSearchParams(location.search).get("selftest")==="1")setTimeout(runSelfTest,0);
+</script>
+</body>
+</html>

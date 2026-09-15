@@ -2,6 +2,8 @@
 
 A collection of small, self-contained educational games for kids. Each game is a single offline-capable HTML file living in its own folder. No build step, no dependencies — hosted free on GitHub Pages. Exercises are generated dynamically, while interactive lesson examples remain fixed for clear teaching.
 
+Every active page includes a persistent five-template design selector. A choice made on one page follows the learner across the site without requiring an account.
+
 ## ▶️ Play
 **https://yaroneven77.github.io/edu-games/**
 
@@ -21,6 +23,8 @@ The root page (`index.html`) is a hub that links to every game.
 ```
 edu-games/
 ├── index.html             # landing hub linking to subject sections
+├── assets/
+│   └── theme-selector.js  # shared persistent visual-theme selector
 ├── math/
 │   └── index.html         # math grade selector
 ├── grade-3/

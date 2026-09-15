@@ -17,6 +17,8 @@ Edu Games is a collection of educational English and math games created for chil
 - Organize English games under `english/`, with each grade in a nested folder such as `english/grade-3/`.
 - Grade 4 currently contains 11 games covering numbers to one million, order of operations, fraction comparison, written arithmetic, number properties, fraction operations, word problems, geometry, measurement, data, and probability.
 - English Grade 4 lives at `english/grade-4/` and groups 28 vocabulary, grammar, reading-comprehension, and guided-writing topics into six learning worlds. Preserve both mixed world practice and direct access to every topic.
+- All active production pages load `assets/theme-selector.js`. Preserve the upper-right five-template selector, the `edu-games-site-design` preference, and consistent theme behavior across navigation.
+- The shared theme selector is the intentional exception to the otherwise self-contained game-page architecture; game content and behavior must remain usable if the optional theme script fails to load.
 - Preserve legacy public URLs with lightweight redirects when moving published games.
 - Treat `sandbox/sandbox.html` as the preview hub for all new or substantially changed content.
 - Add staged content to the sandbox preview hub so the user can test it at the published sandbox URL before production promotion.

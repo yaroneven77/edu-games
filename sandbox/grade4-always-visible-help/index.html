@@ -52,7 +52,7 @@
   }
   .help{background:var(--purple)}
   .next{background:var(--blue)}
-  .next:disabled{background:#a9bfd0;color:#eef5fa;cursor:not-allowed;box-shadow:0 4px 0 #8fa6b8}
+  .next-bottom{display:block;margin:14px auto 0}
   .hidden{display:none!important}
   .feedback{min-height:28px;margin-top:11px;font-size:17px;font-weight:900}
   .explanation{
@@ -116,7 +116,7 @@
         </div>
         <div class="question-actions">
           <button class="help" data-target="english-help">🔍 איך פותרים?</button>
-          <button class="next" disabled>לשאלה הבאה ➜</button>
+          <button class="next next-top hidden">לשאלה הבאה ➜</button>
         </div>
         <div class="feedback"></div>
         <div class="explanation hidden" id="english-help">
@@ -127,6 +127,7 @@
           <div class="block" dir="ltr"><strong>English rule</strong>Maya is third-person singular, so the verb takes <b>-s</b> in the present simple.</div>
           <div class="block answer english"><strong>Answer</strong>walks</div>
         </div>
+        <button class="next next-bottom hidden">לשאלה הבאה ➜</button>
       </div>
     </section>
   </main>
@@ -154,8 +155,7 @@
         demo.querySelector(".feedback").textContent=button.dataset.answer===correct
           ?"מצוין! תשובה נכונה. 🎉"
           :"כמעט! אפשר לפתוח את ההסבר ולבדוק. 💛";
-        const next=demo.querySelector(".next");
-        if(next&&button.dataset.answer===correct)next.disabled=false;
+        if(button.dataset.answer===correct)demo.querySelectorAll(".next").forEach(next=>next.classList.remove("hidden"));
       });
     });
   });
@@ -172,12 +172,13 @@
       if(!target.classList.contains("hidden"))failures.push(button.dataset.target+": help did not close");
     });
     const englishDemo=document.querySelector(".english-demo");
-    const next=englishDemo.querySelector(".next");
-    if(next.hidden||getComputedStyle(next).display==="none")failures.push("english next is not visible before correct answer");
-    if(!next.disabled)failures.push("english next enabled before correct answer");
+    const nextButtons=[...englishDemo.querySelectorAll(".next")];
+    if(nextButtons.length!==2)failures.push("english does not have two next buttons");
+    if(nextButtons.some(next=>!next.classList.contains("hidden")))failures.push("english next visible before correct answer");
     englishDemo.querySelector('[data-answer="walks"]').click();
-    if(next.disabled)failures.push("english next disabled after correct answer");
-    if(next.parentElement!==englishDemo.querySelector(".help").parentElement)failures.push("english next is not beside help");
+    if(nextButtons.some(next=>next.classList.contains("hidden")))failures.push("english next hidden after correct answer");
+    if(englishDemo.querySelector(".next-top").parentElement!==englishDemo.querySelector(".help").parentElement)failures.push("top next is not beside help");
+    if(englishDemo.querySelector(".next-bottom").previousElementSibling.id!=="english-help")failures.push("bottom next is not below explanation");
     const result=document.getElementById("selftest-result");
     result.hidden=false;
     result.textContent=failures.length?"SELFTEST: FAIL\n"+failures.join("\n"):"SELFTEST: PASS";

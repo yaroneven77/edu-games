@@ -182,8 +182,11 @@ function answer(button,value){
   if(locked)return;locked=true;const ok=value===current.answer;
   document.querySelectorAll(".choice").forEach(b=>{b.disabled=true;if(Number(b.textContent)===current.answer)b.classList.add("ok");});
   if(ok){score+=10;$("score").textContent=score;$("feedback").textContent=pick(GOOD);$("feedback").className="feedback good";}
-  else{button.classList.add("no");$("feedback").textContent=`כִּמְעַט! הַתְּשׁוּבָה הִיא ${current.answer}`;$("feedback").className="feedback bad";}
+  else{button.classList.add("no");$("feedback").textContent=`כִּמְעַט! הַתְּשׁוּבָה הִיא ${current.answer}`;$("feedback").className="feedback bad";openExplain();}
   $("next").classList.remove("hidden");
+}
+function openExplain(){
+  $("explain").classList.remove("hidden");$("help").textContent="🙈 הַסְתֵּר הֶסְבֵּר";
 }
 function toggleExplain(){
   $("explain").classList.toggle("hidden");$("help").textContent=$("explain").classList.contains("hidden")?"🔍 אֵיךְ פּוֹתְרִים?":"🙈 הַסְתֵּר הֶסְבֵּר";

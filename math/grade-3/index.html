@@ -268,6 +268,12 @@ class Game {
       $('#'+this.id+'-help').textContent='🔍 אֵיךְ פּוֹתְרִים?';
     }
   }
+  openExplain(){
+    const box=$('#'+this.id+'-explain');
+    box.innerHTML=this.explain();
+    box.classList.remove('hidden');
+    $('#'+this.id+'-help').textContent='🙈 הַסְתֵּר הֶסְבֵּר';
+  }
   addScore(n){ this.score+=n; this.streak = n>0?this.streak+1:0; $('#'+this.id+'-score').textContent=this.score; }
   setFb(ok,msg){ const fb=$('#'+this.id+'-fb'); fb.className='feedback '+(ok?'good':'bad'); fb.textContent=msg; }
   showNext(){ $('#'+this.id+'-check').classList.add('hidden'); $('#'+this.id+'-next').classList.remove('hidden'); }
@@ -316,7 +322,7 @@ class G1 extends Game {
     const q=parseInt($('#g1-q').value,10), r=parseInt($('#g1-r').value,10);
     if(isNaN(q)||isNaN(r)){this.setFb(false,"מַלְּאוּ אֶת שְׁנֵי הַמִּסְפָּרִים 🙂");return;}
     if(q===c.q && r===c.r){this.addScore(10);sndGood();this.setFb(true,pick(GOOD));this.showNext();}
-    else{sndBad();this.setFb(false,`הַתְשׁוּבָה: ${c.q} קְבוּצוֹת וְעוֹד ${c.r} בַּשְּׁאֵרִית`);}
+    else{sndBad();this.setFb(false,`הַתְשׁוּבָה: ${c.q} קְבוּצוֹת וְעוֹד ${c.r} בַּשְּׁאֵרִית`);this.openExplain();}
   }
   explain(){
     const c=this.cur;
@@ -357,7 +363,7 @@ class G2 extends Game {
     const v=parseInt($('#g2-ans').value,10);
     if(isNaN(v)){this.setFb(false,"כִּתְבוּ אֶת הַתְּשׁוּבָה 🙂");return;}
     if(v===c.ans){this.addScore(10);sndGood();this.setFb(true,pick(GOOD));this.showNext();}
-    else{sndBad();this.setFb(false,`הַתְשׁוּבָה הַנְּכוֹנָה: ${c.ans}`);}
+    else{sndBad();this.setFb(false,`הַתְשׁוּבָה הַנְּכוֹנָה: ${c.ans}`);this.openExplain();}
   }
   explain(){
     const c=this.cur;
@@ -432,7 +438,7 @@ class G3 extends Game {
     const v=parseInt($('#g3-ans').value,10);
     if(isNaN(v)){this.setFb(false,"כִּתְבוּ אֶת הַתְּשׁוּבָה 🙂");return;}
     if(v===c.ans){this.addScore(10);sndGood();this.setFb(true,pick(GOOD));this.showNext();}
-    else{sndBad();this.setFb(false,`הַתְשׁוּבָה הַנְּכוֹנָה: ${c.ans}`);}
+    else{sndBad();this.setFb(false,`הַתְשׁוּבָה הַנְּכוֹנָה: ${c.ans}`);this.openExplain();}
   }
   explain(){
     const c=this.cur;
@@ -467,7 +473,7 @@ class G4 extends Game {
     if(d===c.den){btn.classList.add('ok');this.addScore(10);sndGood();this.setFb(true,pick(GOOD));}
     else{btn.classList.add('no');sndBad();
       document.querySelector(`#g4-choices .choice[data-d="${c.den}"]`).classList.add('ok');
-      this.setFb(false,`הַתְשׁוּבָה: ${FRAC_NAMES[c.den]||"1/"+c.den}`);}
+      this.setFb(false,`הַתְשׁוּבָה: ${FRAC_NAMES[c.den]||"1/"+c.den}`);this.openExplain();}
     $('#g4-next').classList.remove('hidden');
   }
   explain(){
@@ -509,7 +515,7 @@ class G5 extends Game {
     const u5=a5.value==="yes", u10=a10.value==="yes";
     if(u5===c.by5 && u10===c.by10){this.addScore(10);sndGood();this.setFb(true,pick(GOOD));this.showNext();}
     else{sndBad();
-      this.setFb(false,`${c.n} ${c.by5?"מִתְחַלֵּק":"לֹא מִתְחַלֵּק"} בְּ-5, ${c.by10?"וּמִתְחַלֵּק":"וְלֹא מִתְחַלֵּק"} בְּ-10`);}
+      this.setFb(false,`${c.n} ${c.by5?"מִתְחַלֵּק":"לֹא מִתְחַלֵּק"} בְּ-5, ${c.by10?"וּמִתְחַלֵּק":"וְלֹא מִתְחַלֵּק"} בְּ-10`);this.openExplain();}
   }
   explain(){
     const c=this.cur;
@@ -550,7 +556,7 @@ class G6 extends Game {
     else{btn.classList.add('no');sndBad();
       document.querySelector(`#g6-choices .choice[data-i="${c.correctIdx}"]`).classList.add('ok');
       const o=c.options[c.correctIdx];
-      this.setFb(false,`הַתְּשׁוּבָה: ${o.q} וְשָׁאֵרִית ${o.r}`);}
+      this.setFb(false,`הַתְּשׁוּבָה: ${o.q} וְשָׁאֵרִית ${o.r}`);this.openExplain();}
     $('#g6-next').classList.remove('hidden');
   }
   explain(){
@@ -593,7 +599,7 @@ class G7 extends Game {
     const c=this.cur;
     const cnt=c.sel.filter(Boolean).length;
     if(cnt===c.num){this.addScore(10);sndGood();this.setFb(true,pick(GOOD));this.showNext();}
-    else{sndBad();this.setFb(false,`צָבַעְתֶּם ${cnt} חֲלָקִים, צְרִיכִים ${c.num}`);}
+    else{sndBad();this.setFb(false,`צָבַעְתֶּם ${cnt} חֲלָקִים, צְרִיכִים ${c.num}`);this.openExplain();}
   }
   explain(){
     const c=this.cur;
@@ -641,7 +647,7 @@ class G8 extends Game {
     const c=this.cur;
     if(c.placed<c.total){this.setFb(false,`עוֹד נִשְׁאֲרוּ ${c.total-c.placed} בָּעֲרֵמָה`);return;}
     if(c.dist.every(x=>x===c.per)){this.addScore(10);sndGood();this.setFb(true,pick(GOOD));this.showNext();}
-    else{sndBad();this.setFb(false,`הַחֲלוּקָה לֹא שָׁוָה – בְּכָל צַלַּחַת צָרִיךְ ${c.per}`);}
+    else{sndBad();this.setFb(false,`הַחֲלוּקָה לֹא שָׁוָה – בְּכָל צַלַּחַת צָרִיךְ ${c.per}`);this.openExplain();}
   }
   explain(){
     const c=this.cur;
@@ -691,7 +697,7 @@ class G9 extends Game {
       this.addScore(10);sndGood();this.setFb(true,pick(GOOD));}
     else{btn.classList.add('no');sndBad();blank.textContent=c.prod;
       document.querySelector(`#g9-opts .choice[data-v="${c.prod}"]`).classList.add('ok');
-      this.setFb(false,`${c.r} × ${c.c} = ${c.prod}`);}
+      this.setFb(false,`${c.r} × ${c.c} = ${c.prod}`);this.openExplain();}
     $('#g9-next').classList.remove('hidden');
   }
   explain(){

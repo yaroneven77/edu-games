@@ -93,6 +93,7 @@ edu-games/
 - Match the existing use of Hebrew niqqud when adding Hebrew text for young children.
 - Reuse existing speech-synthesis patterns for English and Hebrew pronunciation.
 - Include clear positive feedback, gentle retry messaging, scores, progress, or celebration effects where appropriate.
+- Across every game and preview in the repository, whenever an incorrect selection reveals the correct answer, automatically open the corresponding `איך פותרים?` explanation and update the help-button label to its open state. Apply this consistently to existing and future content.
 - In all 11 Math Grade 4 games, keep the `🔍 אֵיךְ פּוֹתְרִים?` button visible as soon as each question appears and after the learner answers. It must toggle the existing step-by-step explanation without requiring a mistake first.
 - For every English Grade 4 question—including general vocabulary, mixed-world practice, multiple choice, reading, and sentence ordering—keep an always-visible `🔍 איך פותרים?` button before and after answering.
 - The English Grade 4 help panel must teach how to derive the answer, not merely reveal it. Present four clear Hebrew steps: what to look for, which lesson rule applies, how the rule applies to this exact question, and how to verify or eliminate choices. Then show the English rule and correct English answer in separate left-to-right blocks.

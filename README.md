@@ -50,14 +50,12 @@ edu-games/
     └── number-war/index.html
 ```
 
-Published paths that predate this hierarchy remain as lightweight redirects.
-
 ## ➕ Add a new game
 1. Create a new folder under the appropriate subject and grade.
 2. Put a self-contained `index.html` inside it.
 3. Add a card to the appropriate grade hub.
 4. Add or update the subject/grade selector only when introducing a new grade.
-5. Preserve an old public URL with a redirect if published content moves.
+5. Keep game content only in the canonical subject and grade hierarchy.
 
 ## 🧪 Sandbox review workflow
 1. Stage every new or substantially changed experience under [`sandbox/`](./sandbox/).

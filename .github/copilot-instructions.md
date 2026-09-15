@@ -99,6 +99,7 @@ edu-games/
 - Adapt the help strategy to the question type: vocabulary uses meaning, translation, spelling, or sequence clues; grammar checks subject, time, and word role; reading returns to textual evidence; ordering checks sentence or paragraph structure.
 - Every new or expanded English Grade 4 topic, generator, authored question, mixed-practice source, and question format must use this same four-step help structure and provide question-specific English and Hebrew explanations. Do not add content that only reveals the answer or relies on generic feedback.
 - Keep the English help-button label synchronized between `🔍 איך פותרים?` and `🙈 הסתר הסבר`.
+- Keep two synchronized English Grade 4 `לשאלה הבאה` or final-summary buttons: one beside `איך פותרים?` and one below the complete help panel. Hide both until the learner gives the correct answer, then reveal both so the learner can continue from either scroll position.
 - In English Grade 4, present the short lesson through a `📚 שיעור קצר` button and modal, alongside a separate button that starts practice directly.
 - Avoid interactions that require precise mouse control, hover, a physical keyboard, or desktop-only behavior.
 - Keep audio optional: the game must remain understandable and playable when speech synthesis is unavailable.

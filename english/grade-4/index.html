@@ -172,8 +172,10 @@
   .answer-chip-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
   .answer-chip-label{color:#67518a;font-size:14px;font-weight:900}
   .answer-chip{padding:5px 10px;border:2px solid #c9b8e8;border-radius:999px;background:#fff;color:#453565;font-weight:900}
-  .question-help{display:block;margin:13px auto 0;background:var(--purple);color:#fff}
-  .next{display:block;margin:14px auto 0;background:var(--blue);color:#fff}
+  .question-actions{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;margin-top:13px}
+  .question-help{background:var(--purple);color:#fff}
+  .next{background:var(--blue);color:#fff}
+  .next-bottom{display:block;margin:14px auto 0}
   .order-answer{
     min-height:67px;direction:ltr;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;
     border:3px dashed #b8cfe0;border-radius:16px;background:#fff;padding:10px;margin-top:13px;
@@ -1395,8 +1397,12 @@ function renderQuestion(){
   if(q.speak)promptRow.appendChild(audioButton(q.speak,"השמעת הקטע או המשפט"));
   box.appendChild(promptRow);
   if(q.type==="mc")renderChoices(box,q);else renderOrder(box,q);
+  const questionActions=document.createElement("div");questionActions.className="question-actions";
   const help=document.createElement("button");help.id="question-help";help.className="question-help";help.textContent="🔍 איך פותרים?";
-  help.addEventListener("click",toggleQuestionExplanation);box.appendChild(help);
+  help.addEventListener("click",toggleQuestionExplanation);
+  const nextTop=document.createElement("button");nextTop.id="next-question-top";nextTop.className="next hidden";nextTop.textContent=round===10?"לסיכום 🏆":"לשאלה הבאה ➜";
+  nextTop.addEventListener("click",nextQuestion);
+  questionActions.append(help,nextTop);box.appendChild(questionActions);
   const feedback=document.createElement("div");feedback.id="feedback";feedback.className="feedback";box.appendChild(feedback);
   const explanation=document.createElement("div");explanation.id="explanation";explanation.className="explanation hidden";
   const goalBlock=document.createElement("div");goalBlock.className="explanation-block help-step";goalBlock.dir="rtl";
@@ -1423,8 +1429,13 @@ function renderQuestion(){
   const answerLabel=document.createElement("strong");answerLabel.className="answer-chip-label";answerLabel.textContent="Answer";
   const answerChip=document.createElement("span");answerChip.id="explanation-answer";answerChip.className="answer-chip";
   answerRow.append(answerLabel,answerChip);explanation.append(goalBlock,ruleBlock,heBlock,checkBlock,enBlock,answerRow);box.appendChild(explanation);
-  const next=document.createElement("button");next.id="next-question";next.className="next hidden";next.textContent=round===10?"לסיכום 🏆":"לשאלה הבאה ➜";
-  next.addEventListener("click",nextQuestion);box.appendChild(next);area.appendChild(box);
+  const nextBottom=document.createElement("button");nextBottom.id="next-question-bottom";nextBottom.className="next next-bottom hidden";nextBottom.textContent=nextTop.textContent;
+  nextBottom.addEventListener("click",nextQuestion);box.appendChild(nextBottom);
+  area.appendChild(box);
+}
+function showNextQuestionButtons(){
+  $("next-question-top").classList.remove("hidden");
+  $("next-question-bottom").classList.remove("hidden");
 }
 function renderChoices(box,q){
   const choices=document.createElement("div");choices.className="choices";
@@ -1485,7 +1496,7 @@ function checkChoice(button,value){
     if(!hadMistake){score++;$("score").textContent=String(score)}
     const feedback=$("feedback");feedback.className="feedback good";
     feedback.textContent=hadMistake?"נכון! מצאתם את התשובה בניסיון נוסף. 🌟":"מצוין! תשובה נכונה. 🎉";
-    $("next-question").classList.remove("hidden");
+    showNextQuestionButtons();
   }else{
     hadMistake=true;button.classList.add("wrong");button.disabled=true;
     const feedback=$("feedback");feedback.className="feedback try";
@@ -1523,7 +1534,7 @@ function checkOrder(){
   showExplanation();
   if(correct){
     locked=true;if(!hadMistake){score++;$("score").textContent=String(score)}$("feedback").className="feedback good";
-    $("feedback").textContent="סדר מצוין! בניתם טקסט נכון. 🎉";$("next-question").classList.remove("hidden");
+    $("feedback").textContent="סדר מצוין! בניתם טקסט נכון. 🎉";showNextQuestionButtons();
     document.querySelectorAll("#order-bank button").forEach(b=>b.disabled=true);
   }else{
     hadMistake=true;$("feedback").className="feedback try";
@@ -1746,6 +1757,9 @@ function runSelfTest(){
       if(!$("question-help")||$("question-help").classList.contains("hidden")){
         failures.push("interaction: question help is not initially visible");
       }else{
+        if(!$("next-question-top").classList.contains("hidden")||!$("next-question-bottom").classList.contains("hidden")){
+          failures.push("interaction: next-question buttons are visible before a correct answer");
+        }
         $("question-help").click();
         if($("explanation").classList.contains("hidden")||$("explanation-en").textContent!==currentQuestion.explanation||
           $("explanation-he").textContent!==currentQuestion.explanationHe){
@@ -1768,8 +1782,15 @@ function runSelfTest(){
       }
       checkTextNodes($("explanation"),"interaction.explanation");
       correctButton.click();
-      if(!locked||!correctButton.classList.contains("correct")||$("next-question").classList.contains("hidden")){
+      if(!locked||!correctButton.classList.contains("correct")||
+        $("next-question-top").classList.contains("hidden")||$("next-question-bottom").classList.contains("hidden")){
         failures.push("interaction: correct-answer completion flow failed");
+      }
+      if($("next-question-top").parentElement!==$("question-help").parentElement){
+        failures.push("interaction: top next-question button is not beside question help");
+      }
+      if($("next-question-bottom").previousElementSibling!==$("explanation")){
+        failures.push("interaction: bottom next-question button is not below the explanation");
       }
       if($("explanation").classList.contains("hidden"))failures.push("interaction: explanations hidden after correct answer");
     }
@@ -1798,12 +1819,17 @@ function runSelfTest(){
     if(!$("question-help")||$("question-help").classList.contains("hidden")){
       failures.push("interaction: ordered-question help is not initially visible");
     }
+    if(!$("next-question-top").classList.contains("hidden")||!$("next-question-bottom").classList.contains("hidden")){
+      failures.push("interaction: ordered next-question buttons are visible before a correct answer");
+    }
     currentQuestion.answer.forEach(value=>{
       const button=[...document.querySelectorAll("#order-bank button")].find(item=>!item.disabled&&item.textContent===value);
       if(button)button.click();
     });
     $("check-order").click();
-    if(!locked||$("next-question").classList.contains("hidden"))failures.push("interaction: ordered-answer flow failed");
+    if(!locked||$("next-question-top").classList.contains("hidden")||$("next-question-bottom").classList.contains("hidden")){
+      failures.push("interaction: ordered-answer flow failed");
+    }
   }catch(error){
     failures.push(`interaction: ${error.message}`);
   }

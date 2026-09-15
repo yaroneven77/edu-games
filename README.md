@@ -15,7 +15,7 @@ The root page (`index.html`) is a hub that links to every game.
 | [`grade-4/`](./grade-4/) | חֶשְׁבּוֹן לְכִתָּה ד' | 11 Grade 4 math games covering numbers, written arithmetic, order of operations, number properties, fractions, word problems, geometry, measurement, data, and probability. Each game includes an interactive Hebrew lesson with narration, examples, and practice. |
 | [`english/`](./english/) | מִשְׂחֲקֵי אַנְגְּלִית | English grade selector. |
 | [`english/grade-3/`](./english/grade-3/) | English Grade 3 | Learn English words via pictures and phonics with sound and Hebrew translations. |
-| [`english/grade-4/`](./english/grade-4/) | English Grade 4 | 28 vocabulary, grammar, reading, and guided-writing topics with Hebrew lessons, English audio, randomized practice, and detailed bilingual answer explanations. |
+| [`english/grade-4/`](./english/grade-4/) | English Grade 4 | Six learning worlds containing all 28 vocabulary, grammar, reading, and guided-writing topics, with mixed practice, Hebrew lessons, English audio, and detailed bilingual answer explanations. |
 
 ## 📁 Project structure
 ```
@@ -43,7 +43,7 @@ edu-games/
 │   ├── grade-3/
 │   │   └── index.html     # Grade 3 English games
 │   └── grade-4/
-│       └── index.html     # Grade 4 English academy with 28 topics
+│       └── index.html     # Grade 4 English academy with 6 worlds and 28 topics
 ├── division-game/
 │   └── index.html         # legacy redirect to grade-3/
 └── word-game/

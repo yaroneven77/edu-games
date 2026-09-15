@@ -55,6 +55,27 @@
     content:"אתגר הדרגתי";display:inline-block;margin-top:9px;background:#fff0cf;color:#8a5700;
     border-radius:999px;padding:3px 9px;font-size:11px;font-weight:900;
   }
+  .world-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:20px}
+  .world-card{
+    min-height:230px;border:0;border-top:10px solid var(--world-color,var(--blue));border-radius:26px;background:#fff;
+    padding:22px 17px;color:var(--ink);box-shadow:0 8px 0 var(--shadow);cursor:pointer;text-align:center;
+    transition:transform .12s,box-shadow .12s;width:100%;
+  }
+  .world-card:active{transform:translateY(4px);box-shadow:0 4px 0 var(--shadow)}
+  .world-card:focus-visible{outline:4px solid #ffbf2f;outline-offset:3px}
+  .world-card .icon{display:block;font-size:52px;line-height:1;margin-bottom:12px}
+  .world-card strong{display:block;color:var(--blue-dark);font-size:22px;line-height:1.25}
+  .world-card .world-title-he{display:block;margin-top:5px;font-size:18px;font-weight:900}
+  .world-card p{margin:11px 0;color:var(--muted);font-weight:700;line-height:1.5}
+  .world-count{display:inline-block;border-radius:999px;padding:5px 11px;background:#eef6fb;color:var(--blue-dark);font-size:13px;font-weight:900}
+  .world-shell{max-width:960px;margin:auto}
+  .world-head{text-align:center;background:#fff;border-radius:26px;padding:22px;box-shadow:0 8px 0 var(--shadow);margin-bottom:22px}
+  .world-head .big-icon{font-size:62px}
+  .world-head h1{margin:5px 0 0;color:var(--blue-dark);font-size:clamp(28px,6vw,42px)}
+  .world-head .world-description{font-size:18px;line-height:1.65;color:var(--muted);font-weight:800;margin:12px auto;max-width:720px}
+  .world-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:16px}
+  .question-topic{display:flex;justify-content:center;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:8px}
+  .question-topic span{background:#e9f4fb;border-radius:999px;padding:4px 9px;color:var(--blue-dark);font-size:13px;font-weight:900}
   .count-note{background:#fff;border-radius:18px;padding:11px 15px;box-shadow:0 4px 0 var(--shadow);font-weight:800;text-align:center}
   .source-note{
     margin:12px auto 0;max-width:920px;background:#f5efff;border:2px solid #d7c3f3;border-radius:16px;
@@ -159,9 +180,10 @@
     border-radius:14px;padding:10px 15px;font-weight:800;box-shadow:0 5px 18px rgba(0,0,0,.25);
   }
   footer{text-align:center;color:#67829a;font-size:13px;padding:25px 8px 5px}
-  @media(max-width:850px){.topic-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+  @media(max-width:850px){.topic-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.world-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
   @media(max-width:620px){
-    .topic-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+    .topic-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.world-grid{grid-template-columns:1fr;gap:14px}
+    .world-card{min-height:0;padding:19px 15px}.world-card .icon{font-size:45px}
     .topic-card{min-height:145px;padding:15px 8px}.topic-card strong{font-size:16px}
     .choices{grid-template-columns:1fr}.topic-head{align-items:flex-start}.hub-back{padding:8px 10px}
     .logo{font-size:clamp(25px,7vw,32px)}.logo .english{display:block;white-space:normal}
@@ -178,28 +200,32 @@
       <a class="home" href="../">⬆️🏠 בחירת כיתה</a>
     </div>
     <div class="logo"><span class="english">English Academy</span> 🎓</div>
-    <div class="subtitle">אקדמיית האנגלית של כיתה ד' · לומדים, מקשיבים ומתרגלים</div>
+    <div class="subtitle">אקדמיית האנגלית של כיתה ד' · פחות בחירות, כל חומר הלימוד</div>
   </header>
 
   <main id="hub-view">
-    <div class="count-note">בחרו נושא. בכל נושא מחכים שיעור קצר, דוגמאות קבועות ותרגול מתחלף. מספר נושאים לבחירה: <span id="topic-count"></span></div>
-    <section>
-      <div class="section-title"><span>🧠</span><div><h2>אוצר מילים</h2><div class="section-en">Vocabulary</div></div></div>
-      <div class="topic-grid" id="vocab-grid"></div>
+    <div class="count-note">בחרו עולם למידה אחד. כל <span id="topic-count"></span> הנושאים המקוריים עדיין נמצאים בפנים.</div>
+    <div class="world-grid" id="world-grid"></div>
+  </main>
+
+  <main id="world-view" class="world-shell hidden">
+    <button class="hub-back" id="back-to-worlds">↩ כל עולמות הלמידה</button>
+    <section class="world-head">
+      <div class="big-icon" id="world-icon"></div>
+      <h1 id="world-title"></h1>
+      <div class="english section-en" id="world-title-en"></div>
+      <div class="world-description" id="world-description"></div>
+      <div class="world-actions">
+        <button class="primary" id="start-world-practice">🎲 תרגול מעורב מכל העולם</button>
+      </div>
     </section>
-    <section>
-      <div class="section-title"><span>🧩</span><div><h2>דקדוק</h2><div class="section-en">Grammar</div></div></div>
-      <div class="topic-grid" id="grammar-grid"></div>
-    </section>
-    <section>
-      <div class="section-title"><span>🚀</span><div><h2>מיומנויות</h2><div class="section-en">Skills</div></div></div>
-      <div class="topic-grid" id="skills-grid"></div>
-    </section>
+    <div class="section-title"><span>📚</span><div><h2>בחירת שיעור מסוים</h2><div class="section-en">Choose a specific lesson</div></div></div>
+    <div class="topic-grid" id="world-topic-grid"></div>
   </main>
 
   <main id="topic-view" class="topic-shell hidden">
     <div class="topic-head">
-      <button class="hub-back" id="back-to-hub">↩ כל הנושאים</button>
+      <button class="hub-back" id="back-to-hub">↩ חזרה</button>
       <div class="topic-heading">
         <div class="big-icon" id="topic-icon"></div>
         <h1 id="topic-title"></h1>
@@ -1110,6 +1136,56 @@ const TOPICS=[
   topic("reading","skills","📖","Reading Comprehension","הבנת הנקרא","נקרא קטעים קצרים מסוגים שונים ונלמד למצוא מידע בלי לתרגם כל מילה. מתחילים בכותרת, קוראים פעם אחת להבנת הנושא ואז חוזרים למשפטים שמכילים רמזים לתשובה.","בשאלת פרט מחפשים מידע מפורש, בשאלת רעיון מרכזי בודקים על מה רוב הקטע, ובשאלת רצף עוקבים אחר מילות זמן. משמעות של מילה חדשה מסיקים מן המשפטים סביבה, והסקה טובה חייבת להישען על ראיה מן הטקסט.",["Find a detail in the text.","Ask: What is the text mostly about?","Use nearby words to understand a new word."],readingQuestion),
   topic("writing","skills","✍️","Guided Writing","כתיבה מודרכת","נבנה משפטים ופסקאות באמצעות בחירת מילים ומשפטים לפי סדר, בלי צורך במקלדת. מתחילים ברעיון שרוצים לומר, בוחרים נושא ופועל ומוסיפים פרטים של מקום, זמן או סיבה.","משפט מתחיל באות גדולה ומסתיים בסימן פיסוק. בפסקה קצרה המשפט הראשון מציג את הנושא, המשפטים הבאים מוסיפים פרטים ומילות רצף מסדרות את הרעיונות; בסיום קוראים שוב ובודקים סדר, התאמה ואיות.",["My brother plays football.","There are two caps on the shelf.","First, we plan. Next, we write. Finally, we check."],writingQuestion)
 ];
+const WORLDS=[
+  {
+    id:"words",icon:"🧠",color:"#2aa89a",titleEn:"Words Around Me",titleHe:"מילים סביבי",
+    description:"לומדים מילים שימושיות דרך תמונות, משמעות, צליל, סדר וקבוצות תוכן.",
+    lesson:"בכל סבב נפגוש שאלות מאוצר המילים של כיתה ד'. השאלות מתחלפות בין חלקי גוף, משפחה, מספרים, לוח השנה, עונות ומילים מחיי היום יום.",
+    rule:"מסתכלים על כל הרמזים בשאלה, אומרים את המילה בקול ובודקים משמעות ואיות לפני שבוחרים.",
+    examples:["My family visits in summer.","Tuesday comes after Monday.","The notebook is in my bag."],
+    topics:["body","family","numbers","days","months","seasons","general-vocab"]
+  },
+  {
+    id:"sentences",icon:"🧩",color:"#2477c8",titleEn:"Sentence Builders",titleHe:"בוני המשפטים",
+    description:"בונים משפטים נכונים בעזרת שמות עצם, כינויים, שייכות, תוויות ותיאורים.",
+    lesson:"בכל סבב נתרגל את החלקים שמהם בנוי משפט. נבחר צורת פועל מתאימה, כינוי, תווית, שם עצם, רבים או תיאור לפי ההקשר.",
+    rule:"קוראים את כל המשפט, מזהים את הנושא ואת שם העצם ורק אז בוחרים את הצורה שמתאימה במספר ובמשמעות.",
+    examples:["She has a blue bag.","There are two books.","The dog's tail is long."],
+    topics:["be","pronouns","have-has","possessives","articles","there","nouns","plurals"]
+  },
+  {
+    id:"actions",icon:"🏃",color:"#f39a3f",titleEn:"Actions and Descriptions",titleHe:"פעולות ותיאורים",
+    description:"מזהים פעלים ושמות תואר, מתארים יכולת ומשווים בין אנשים וחפצים.",
+    lesson:"בכל סבב נבדוק מה קורה במשפט, איזו מילה מתארת ואיך משווים בין דברים. חלק מהשאלות עוסקות גם ביכולת ובבקשות.",
+    rule:"בודקים את תפקיד המילה בתוך המשפט ולא רק את צורתה. בהשוואה מזהים אם משווים שני דברים או פריט אחד לקבוצה.",
+    examples:["The rabbit can jump.","A train is faster than a bike.","Maya is reading."],
+    topics:["verbs","adjectives","comparisons","can"]
+  },
+  {
+    id:"time",icon:"⏳",color:"#8a63d2",titleEn:"Time Travelers",titleHe:"נוסעים בזמן",
+    description:"מתרגלים הרגלים, פעולות שקורות עכשיו ואירועים שהסתיימו בעבר.",
+    lesson:"בכל סבב נבחר בין זמני הפועל שלומדים בכיתה ד'. נחפש רמזי זמן ונבנה משפטים חיוביים, שליליים ושאלות.",
+    rule:"לפני שבוחרים פועל מחפשים מתי הפעולה קורית. לאחר פועל עזר משתמשים בדרך כלל בצורת הבסיס של הפועל.",
+    examples:["I walk to school every day.","Noa is taking a photo.","We played yesterday."],
+    topics:["present-simple","present-continuous","past-simple"]
+  },
+  {
+    id:"details",icon:"❓",color:"#df5b51",titleEn:"Questions and Details",titleHe:"שאלות ופרטים",
+    description:"שואלים שאלות ומוסיפים מידע על מקום, זמן והקשר בין רעיונות.",
+    lesson:"בכל סבב נתרגל בחירת מילת שאלה, תיאור מקום או זמן וחיבור בין שני רעיונות במשפט.",
+    rule:"מחליטים איזה מידע חסר, בודקים את סוג המקום או הזמן וקוראים את שני חלקי המשפט לפני שבוחרים מילת קישור.",
+    examples:["Where do you live?","The book is on the desk.","I smiled because I was happy."],
+    topics:["wh-questions","place-preps","time-preps","connectors"]
+  },
+  {
+    id:"stories",icon:"📖",color:"#32aa66",titleEn:"Story Academy",titleHe:"אקדמיית הסיפורים",
+    description:"קוראים קטעים, מוצאים ראיות ובונים משפטים ופסקאות לפי סדר ברור.",
+    lesson:"בכל סבב נקרא, נמצא פרטים ונארגן מילים או משפטים. המטרה היא להבין רעיון שלם ולא לתרגם כל מילה בנפרד.",
+    rule:"בתשובות לקריאה חוזרים לטקסט ומחפשים ראיה. בכתיבה מסדרים תחילה את הרעיון המרכזי ואחר כך את הפרטים.",
+    examples:["Find a detail in the text.","First, we plan. Next, we write.","The final sentence closes the paragraph."],
+    topics:["reading","writing"]
+  }
+];
 const MATIC_PATTERNS={
   body:["Label a body part","Match English and Hebrew words","Complete a missing letter"],
   family:["Complete family relationships","Sort a family tree","Describe an imaginary family"],
@@ -1141,7 +1217,7 @@ const MATIC_PATTERNS={
   writing:["Order words into a sentence","Order sentences into a paragraph","Describe a room or family"]
 };
 
-let currentTopic=null,currentQuestion=null,round=0,score=0,hadMistake=false,locked=false,lastSignature="";
+let currentTopic=null,currentQuestion=null,activeWorld=null,round=0,score=0,hadMistake=false,locked=false,lastSignature="";
 let englishVoice=null;
 function stopSpeech(){
   if("speechSynthesis" in window)speechSynthesis.cancel();
@@ -1167,23 +1243,55 @@ function audioButton(text,label="השמעת אנגלית"){
   button.addEventListener("click",()=>speakEnglish(text));return button;
 }
 function renderHub(){
-  const colors={vocab:"#2aa89a",grammar:"#2477c8",skills:"#8a63d2"};
-  ["vocab","grammar","skills"].forEach(category=>{
-    const grid=$(category+"-grid");grid.innerHTML="";
-    TOPICS.filter(t=>t.category===category).forEach(t=>{
-      const button=document.createElement("button");button.type="button";
-      button.className="topic-card"+(t.challenge?" challenge":"");button.style.setProperty("--card-color",colors[category]);
-      button.innerHTML=`<span class="icon">${t.icon}</span><strong class="english">${t.titleEn}</strong><small>${t.titleHe}</small>`;
-      button.addEventListener("click",()=>openTopic(t.id));grid.appendChild(button);
-    });
+  const grid=$("world-grid");grid.innerHTML="";
+  WORLDS.forEach(world=>{
+    const button=document.createElement("button");button.type="button";button.className="world-card";
+    button.style.setProperty("--world-color",world.color);
+    const icon=document.createElement("span");icon.className="icon";icon.textContent=world.icon;
+    const titleEn=document.createElement("strong");titleEn.className="english";setPureText(titleEn,world.titleEn,"ltr");
+    const titleHe=document.createElement("span");titleHe.className="world-title-he";setPureText(titleHe,world.titleHe,"rtl");
+    const description=document.createElement("p");setPureText(description,world.description,"rtl");
+    const count=document.createElement("span");count.className="world-count";count.textContent=`${world.topics.length} נושאים`;
+    button.append(icon,titleEn,titleHe,description,count);
+    button.addEventListener("click",()=>openWorld(world.id));grid.appendChild(button);
   });
   $("topic-count").textContent=String(TOPICS.length);
 }
+function createTopicButton(topicItem){
+  const colors={vocab:"#2aa89a",grammar:"#2477c8",skills:"#8a63d2"};
+  const button=document.createElement("button");button.type="button";
+  button.className="topic-card"+(topicItem.challenge?" challenge":"");
+  button.style.setProperty("--card-color",colors[topicItem.category]);
+  const icon=document.createElement("span");icon.className="icon";icon.textContent=topicItem.icon;
+  const titleEn=document.createElement("strong");titleEn.className="english";setPureText(titleEn,topicItem.titleEn,"ltr");
+  const titleHe=document.createElement("small");setPureText(titleHe,topicItem.titleHe,"rtl");
+  button.append(icon,titleEn,titleHe);button.addEventListener("click",()=>openTopic(topicItem.id));
+  return button;
+}
+function openWorld(id){
+  const world=WORLDS.find(item=>item.id===id);if(!world)return;
+  stopSpeech();activeWorld=world;
+  $("hub-view").classList.add("hidden");$("topic-view").classList.add("hidden");$("world-view").classList.remove("hidden");
+  $("world-icon").textContent=world.icon;setPureText($("world-title"),world.titleHe,"rtl");
+  setPureText($("world-title-en"),world.titleEn,"ltr");setPureText($("world-description"),world.description,"rtl");
+  const grid=$("world-topic-grid");grid.innerHTML="";
+  world.topics.map(idValue=>TOPICS.find(topicItem=>topicItem.id===idValue)).forEach(topicItem=>grid.appendChild(createTopicButton(topicItem)));
+  history.replaceState(null,"","#world-"+id);window.scrollTo({top:0,behavior:"smooth"});
+}
+function backToWorlds(){
+  stopSpeech();activeWorld=null;$("world-view").classList.add("hidden");$("topic-view").classList.add("hidden");
+  $("hub-view").classList.remove("hidden");history.replaceState(null," ",location.pathname+location.search);
+  window.scrollTo({top:0,behavior:"smooth"});
+}
 function openTopic(id){
   const found=TOPICS.find(t=>t.id===id);if(!found)return;
+  showTopic(found);
+}
+function showTopic(found){
   stopSpeech();
   currentTopic=found;currentQuestion=null;round=0;score=0;lastSignature="";
-  $("hub-view").classList.add("hidden");$("topic-view").classList.remove("hidden");$("practice-card").classList.add("hidden");
+  $("hub-view").classList.add("hidden");$("world-view").classList.add("hidden");$("topic-view").classList.remove("hidden");$("practice-card").classList.add("hidden");
+  $("back-to-hub").textContent=activeWorld?"↩ חזרה לעולם הלמידה":"↩ כל עולמות הלמידה";
   $("topic-icon").textContent=found.icon;setPureText($("topic-title"),found.titleHe);setPureText($("topic-title-en"),found.titleEn,"ltr");
   setPureText($("lesson-text"),found.lesson,"rtl");setPureText($("lesson-rule"),found.rule,"rtl");
   const examples=$("lesson-examples");examples.innerHTML="";
@@ -1200,12 +1308,32 @@ function openTopic(id){
     }
     chip.addEventListener("click",()=>speakEnglish(item.en));fullBank.appendChild(chip)});
   const patterns=$("pattern-list");patterns.innerHTML="";
-  MATIC_PATTERNS[found.id].forEach(text=>{const chip=document.createElement("span");chip.className="pattern-chip";setPureText(chip,text,"ltr");patterns.appendChild(chip)});
-  history.replaceState(null,"","#"+id);window.scrollTo({top:0,behavior:"smooth"});
+  (found.patterns||MATIC_PATTERNS[found.id]).forEach(text=>{const chip=document.createElement("span");chip.className="pattern-chip";setPureText(chip,text,"ltr");patterns.appendChild(chip)});
+  history.replaceState(null,"","#"+found.id);window.scrollTo({top:0,behavior:"smooth"});
+}
+function startWorldPractice(){
+  if(!activeWorld)return;
+  const world=activeWorld,members=world.topics.map(id=>TOPICS.find(topicItem=>topicItem.id===id));
+  const mixedTopic={
+    id:"world-"+world.id,icon:world.icon,titleEn:world.titleEn,titleHe:world.titleHe,
+    lesson:world.lesson,rule:world.rule,examples:world.examples,showExplanations:true,
+    patterns:["Rotate between every lesson in this world","Review mistakes with detailed feedback","Practice ten mixed questions"],
+    generate(){
+      const source=pick(members),question=source.generate();
+      return {...question,signature:`${source.id}|${question.signature}`,sourceTitleEn:source.titleEn,
+        sourceTitleHe:source.titleHe,showExplanations:source.showExplanations};
+    }
+  };
+  showTopic(mixedTopic);startPractice();
 }
 function backToHub(){
   stopSpeech();
-  $("topic-view").classList.add("hidden");$("hub-view").classList.remove("hidden");history.replaceState(null," ",location.pathname+location.search);
+  $("topic-view").classList.add("hidden");
+  if(activeWorld){
+    $("world-view").classList.remove("hidden");history.replaceState(null,"","#world-"+activeWorld.id);
+  }else{
+    $("hub-view").classList.remove("hidden");history.replaceState(null," ",location.pathname+location.search);
+  }
   window.scrollTo({top:0,behavior:"smooth"});
 }
 function startPractice(){
@@ -1224,6 +1352,12 @@ function nextQuestion(){
 function renderQuestion(){
   const q=currentQuestion,area=$("question-area");area.innerHTML="";
   const box=document.createElement("div");box.className="question-box";
+  if(q.sourceTitleEn){
+    const source=document.createElement("div");source.className="question-topic";
+    const sourceHe=document.createElement("span");setPureText(sourceHe,q.sourceTitleHe,"rtl");
+    const sourceEn=document.createElement("span");sourceEn.className="english";setPureText(sourceEn,q.sourceTitleEn,"ltr");
+    source.append(sourceHe,sourceEn);box.appendChild(source);
+  }
   const instruction=document.createElement("div");instruction.className="instruction";setPureText(instruction,q.instruction);box.appendChild(instruction);
   if(q.passage){const passage=document.createElement("div");passage.className="passage english";passage.textContent=q.passage;box.appendChild(passage)}
   const promptRow=document.createElement("div");promptRow.className="prompt-row";
@@ -1256,7 +1390,10 @@ function renderChoices(box,q){
   box.appendChild(choices);
 }
 function showExplanation(){
-  if(currentTopic&&!currentTopic.showExplanations){
+  const explanationsEnabled=currentQuestion&&currentQuestion.showExplanations!==undefined
+    ?currentQuestion.showExplanations
+    :currentTopic&&currentTopic.showExplanations;
+  if(!explanationsEnabled){
     $("explanation").classList.add("hidden");return;
   }
   setPureText($("explanation-en"),currentQuestion.explanation,"ltr");
@@ -1282,7 +1419,10 @@ function checkChoice(button,value){
   }else{
     hadMistake=true;button.classList.add("wrong");button.disabled=true;
     const feedback=$("feedback");feedback.className="feedback try";
-    feedback.textContent=currentTopic&&!currentTopic.showExplanations
+    const explanationsEnabled=currentQuestion&&currentQuestion.showExplanations!==undefined
+      ?currentQuestion.showExplanations
+      :currentTopic&&currentTopic.showExplanations;
+    feedback.textContent=!explanationsEnabled
       ?"כמעט! חשבו שוב ונסו אפשרות אחרת. 💛"
       :"כמעט! קראו את ההסבר ונסו אפשרות אחרת. 💛";
   }
@@ -1345,7 +1485,7 @@ function runSelfTest(){
   if(document.documentElement.scrollWidth>window.innerWidth+1){
     failures.push(`layout: horizontal overflow ${document.documentElement.scrollWidth}px > ${window.innerWidth}px`);
   }
-  document.querySelectorAll(".page,.toplinks,.logo,.source-note,.section-title,.topic-grid,.topic-card").forEach(element=>{
+  document.querySelectorAll(".page,.toplinks,.logo,.source-note,.section-title,.world-grid,.world-card,.topic-grid,.topic-card").forEach(element=>{
     const rect=element.getBoundingClientRect();
     if(rect.left<-1||rect.right>window.innerWidth+1){
       failures.push(`layout: ${element.className||element.tagName} outside viewport (${Math.round(rect.left)}..${Math.round(rect.right)})`);
@@ -1409,6 +1549,31 @@ function runSelfTest(){
       else if(q.answer.some(part=>!q.choices.includes(part)))failures.push(`${label}: ordered answer item missing`);
     }
   };
+  const groupedTopicIds=WORLDS.flatMap(world=>world.topics);
+  if(WORLDS.length!==6)failures.push(`worlds: expected 6 worlds, found ${WORLDS.length}`);
+  if(groupedTopicIds.length!==TOPICS.length||new Set(groupedTopicIds).size!==TOPICS.length){
+    failures.push("worlds: topics are missing or duplicated");
+  }
+  TOPICS.forEach(topicItem=>{
+    if(!groupedTopicIds.includes(topicItem.id))failures.push(`worlds: missing topic ${topicItem.id}`);
+  });
+  WORLDS.forEach(world=>{
+    checkHebrewOnly(`${world.id}.titleHe`,world.titleHe);
+    checkHebrewOnly(`${world.id}.description`,world.description);
+    checkHebrewOnly(`${world.id}.lesson`,world.lesson);
+    checkHebrewOnly(`${world.id}.rule`,world.rule);
+    checkEnglishOnly(`${world.id}.titleEn`,world.titleEn);
+    world.examples.forEach((value,index)=>checkEnglishOnly(`${world.id}.examples[${index}]`,value));
+    openWorld(world.id);
+    if($("world-topic-grid").children.length!==world.topics.length){
+      failures.push(`${world.id}: incorrect topic-card count`);
+    }
+    startWorldPractice();
+    validateQuestion(currentQuestion,`${world.id}.mixed`);
+    if(!currentQuestion.sourceTitleEn||!currentQuestion.sourceTitleHe){
+      failures.push(`${world.id}: mixed question is missing its source topic`);
+    }
+  });
   const checkTextNodes=(root,label)=>{
     const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
     let node;
@@ -1556,9 +1721,13 @@ function runSelfTest(){
 
 renderHub();
 $("back-to-hub").addEventListener("click",backToHub);
+$("back-to-worlds").addEventListener("click",backToWorlds);
+$("start-world-practice").addEventListener("click",startWorldPractice);
 $("start-practice").addEventListener("click",startPractice);
 if("speechSynthesis" in window){loadVoices();speechSynthesis.onvoiceschanged=loadVoices}
-const initialId=location.hash.slice(1);if(TOPICS.some(t=>t.id===initialId))openTopic(initialId);
+const initialId=location.hash.slice(1);
+if(initialId.startsWith("world-")&&WORLDS.some(world=>world.id===initialId.slice(6)))openWorld(initialId.slice(6));
+else if(TOPICS.some(t=>t.id===initialId))openTopic(initialId);
 if(new URLSearchParams(location.search).get("selftest")==="1")setTimeout(runSelfTest,0);
 </script>
 </body>

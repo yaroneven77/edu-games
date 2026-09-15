@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Picture Pairs · Kindergarten</title>
+<script src="../../assets/theme-selector.js" defer></script>
+<script data-goatcounter="https://yaroneven.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  body{
+    font-family:"Comic Sans MS","Segoe UI",system-ui,sans-serif;
+    background:linear-gradient(135deg,#ffd194,#f9a1bc);min-height:100vh;
+    display:flex;align-items:flex-start;justify-content:center;padding:16px;
+  }
+  .wrap{width:100%;max-width:480px;}
+  .nav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;}
+  .home,.title{
+    background:#fff;border-radius:14px;padding:8px 12px;box-shadow:0 3px 0 rgba(20,60,90,.18);
+    text-decoration:none;color:#8a4d2d;font-size:18px;font-weight:800;
+  }
+  .title{flex:1;text-align:center;}
+  .card{background:#fff;border-radius:28px;box-shadow:0 20px 50px rgba(0,0,0,.2);padding:24px 24px 30px;text-align:center;}
+  .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:20px;font-weight:bold;color:#555;}
+  .score{color:#2e9e5b;}.moves{color:#e8870c;}
+  .he-instr{font-size:20px;color:#c0399b;font-weight:700;margin:-6px 0 14px;text-align:center;}
+  .memboard{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:6px 0 4px;}
+  .memcard{
+    aspect-ratio:1;min-width:0;overflow:hidden;font-family:inherit;font-size:30px;font-weight:bold;
+    border:0;border-radius:14px;background:#ffd9a8;color:#b9572f;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;transition:transform .1s,background .2s;
+  }
+  .memcard.flipped{background:#fff7d6;}
+  .memcard.matched{background:#34d399;color:#fff;cursor:default;}
+  .memcard:active:not(.matched){transform:scale(.94);}
+  .feedback{min-height:34px;font-size:24px;font-weight:bold;margin-top:14px;}
+  .next{
+    margin-top:12px;font-family:inherit;font-size:20px;font-weight:bold;padding:12px 32px;border:0;
+    border-radius:16px;background:#d2693e;color:#fff;cursor:pointer;visibility:hidden;
+  }
+  .next:hover{background:#b9572f;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="nav">
+    <a class="home" href="../" title="Back to kindergarten games">⬆️🏠</a>
+    <div class="title">🧠 Picture Pairs</div>
+  </div>
+  <div class="card" id="game">
+    <div class="topbar">
+      <span class="score">✅ <span id="game-score">0</span>/6</span>
+      <span class="moves">🔁 <span id="game-moves">0</span></span>
+    </div>
+    <div class="he-instr" dir="rtl">מָצְאוּ אֶת הַזּוּגוֹת! לְחַצוּ עַל קְלָף וְאִמְרוּ אֶת הַמִּלָּה בְּאַנְגְּלִית פַּעֲמַיִם.</div>
+    <div class="memboard" id="game-board"></div>
+    <div class="feedback" id="game-feedback"></div>
+    <button class="next" id="game-next">Play again 🔄</button>
+  </div>
+</div>
+<script>
+  function shuffle(items){
+    for(let i=items.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      [items[i],items[j]]=[items[j],items[i]];
+    }
+    return items;
+  }
+
+  let femaleVoice=null;
+  let hebrewVoice=null;
+  function loadVoices(){
+    const voices=window.speechSynthesis.getVoices();
+    const preferred=["Google US English","Microsoft Aria","Microsoft Zira","Microsoft Jenny","Samantha","Karen","Moira","Tessa","Female"];
+    const englishVoices=voices.filter(voice=>/en/i.test(voice.lang));
+    femaleVoice=preferred.map(name=>englishVoices.find(voice=>voice.name.includes(name))).find(Boolean) || englishVoices[0] || voices[0] || null;
+    hebrewVoice=voices.find(voice=>/he|iw/i.test(voice.lang)) || null;
+  }
+  if("speechSynthesis" in window){
+    loadVoices();
+    window.speechSynthesis.onvoiceschanged=loadVoices;
+  }
+
+  function sayWord(word){
+    if(!word || !("speechSynthesis" in window)) return null;
+    window.speechSynthesis.cancel();
+    const utterance=new SpeechSynthesisUtterance(word);
+    utterance.lang="en-US";
+    utterance.rate=.6;
+    utterance.pitch=1.2;
+    if(femaleVoice) utterance.voice=femaleVoice;
+    window.speechSynthesis.speak(utterance);
+    return utterance;
+  }
+
+  function speakPraise(praise){
+    if(!("speechSynthesis" in window)) return;
+    window.speechSynthesis.cancel();
+    const strip=text=>text.replace(/[\u0591-\u05C7]/g,"")
+      .replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2190}-\u{21FF}\u{2B00}-\u{2BFF}\uFE0F\u200D]/gu,"").trim();
+    const english=new SpeechSynthesisUtterance(strip(praise.en));
+    english.lang="en-US";
+    english.rate=.8;
+    english.pitch=1.3;
+    if(femaleVoice) english.voice=femaleVoice;
+    window.speechSynthesis.speak(english);
+    const hebrew=new SpeechSynthesisUtterance(strip(praise.he));
+    hebrew.lang="he-IL";
+    hebrew.rate=.85;
+    hebrew.pitch=1.2;
+    if(hebrewVoice) hebrew.voice=hebrewVoice;
+    window.speechSynthesis.speak(hebrew);
+  }
+
+  function speakAfterWord(wordUtterance,praise){
+    let spoken=false;
+    const speak=()=>{
+      if(spoken) return;
+      spoken=true;
+      setTimeout(()=>speakPraise(praise),1000);
+    };
+    if(wordUtterance){
+      wordUtterance.onend=speak;
+      setTimeout(speak,3000);
+    }else{
+      speak();
+    }
+  }
+
+  const PRAISE=[
+    {en:"Well done!",he:"כָּל הַכָּבוֹד!"},
+    {en:"Amazing!",he:"מְדַהִים!"},
+    {en:"Great job!",he:"עֲבוֹדָה נֶהְדֶּרֶת!"},
+    {en:"Fantastic!",he:"פַנְטַסְטִי!"},
+    {en:"Super!",he:"סוּפֶּר!"},
+    {en:"Wonderful!",he:"נֶהְדָּר!"}
+  ];
+  const MEM_POOL={
+    dog:"🐕",sun:"☀️",goat:"🐐",bear:"🐻",milkshake:"🥤",moon:"🌙",
+    horse:"🐴",hippo:"🦛",bird:"🐦",duck:"🦆",deer:"🦌",dolphin:"🐬",
+    sandals:"👡",giraffe:"🦒",sheep:"🐑",spider:"🕷️",elevator:"🛗",lion:"🦁",
+    cow:"🐮",mouse:"🐭",monkey:"🐵",snail:"🐌",elephant:"🐘",cactus:"🌵",
+    dad:"👨",bag:"🎒",cat:"🐱",egg:"🥚",hat:"🎩",can:"🥫",pan:"🍳",
+    pen:"🖊️",cab:"🚕",hen:"🐔",ant:"🐜",tag:"🏷️",bat:"🦇",net:"🥅",
+    bed:"🛏️",tap:"🚰",pet:"🐶"
+  };
+
+  class PicturePairs{
+    constructor(id){
+      this.board=document.getElementById(id+"-board");
+      this.feedback=document.getElementById(id+"-feedback");
+      this.next=document.getElementById(id+"-next");
+      this.score=document.getElementById(id+"-score");
+      this.movesElement=document.getElementById(id+"-moves");
+      this.words=[];
+      this.round=0;
+      this.next.onclick=()=>this.newRound();
+      this.newRound();
+    }
+
+    newRound(){
+      if(this.round%10===0 || this.words.length===0){
+        this.words=shuffle(Object.keys(MEM_POOL)).slice(0,6);
+      }
+      this.round++;
+      this.build();
+    }
+
+    build(){
+      this.first=null;
+      this.locked=false;
+      this.matched=0;
+      this.moves=0;
+      this.score.textContent="0";
+      this.movesElement.textContent="0";
+      this.feedback.textContent="מָצְאוּ אֶת כָּל 6 הַזּוּגוֹת! 🧠";
+      this.feedback.style.color="#e8870c";
+      this.next.style.visibility="hidden";
+      const cards=[];
+      this.words.forEach(word=>{
+        cards.push({word,face:MEM_POOL[word]},{word,face:MEM_POOL[word]});
+      });
+      shuffle(cards);
+      this.board.innerHTML="";
+      cards.forEach(card=>{
+        const button=document.createElement("button");
+        button.className="memcard";
+        button.dataset.word=card.word;
+        button.dataset.face=card.face;
+        button.textContent="❓";
+        button.onclick=()=>this.flip(button);
+        this.board.appendChild(button);
+      });
+    }
+
+    flip(card){
+      if(this.locked || card.classList.contains("flipped") || card.classList.contains("matched")) return;
+      card.classList.add("flipped");
+      card.textContent=card.dataset.face;
+      const utterance=sayWord(card.dataset.word);
+      if(!this.first){
+        this.first=card;
+        return;
+      }
+      this.moves++;
+      this.movesElement.textContent=this.moves;
+      if(this.first.dataset.word===card.dataset.word && this.first!==card){
+        this.first.classList.add("matched");
+        card.classList.add("matched");
+        this.matched++;
+        this.score.textContent=this.matched;
+        this.first=null;
+        const praise=this.matched===this.words.length
+          ? {en:"Amazing! You did it!",he:"מְדַהִים! הִצְלַחְתֶּם!"}
+          : PRAISE[Math.floor(Math.random()*PRAISE.length)];
+        this.feedback.textContent=(this.matched===this.words.length ? "🎉 " : "")+praise.he+" 🌟";
+        this.feedback.style.color="#2e9e5b";
+        if(this.matched===this.words.length) this.next.style.visibility="visible";
+        speakAfterWord(utterance,praise);
+        return;
+      }
+      this.locked=true;
+      const first=this.first;
+      this.first=null;
+      this.feedback.textContent="מָצְאוּ אֶת כָּל 6 הַזּוּגוֹת! 🧠";
+      this.feedback.style.color="#e8870c";
+      let returned=false;
+      const flipBack=()=>{
+        if(returned) return;
+        returned=true;
+        setTimeout(()=>{
+          [first,card].forEach(item=>{
+            item.classList.remove("flipped");
+            item.textContent="❓";
+          });
+          this.locked=false;
+        },700);
+      };
+      if(utterance){
+        utterance.onend=flipBack;
+        setTimeout(flipBack,3000);
+      }else{
+        flipBack();
+      }
+    }
+  }
+
+  new PicturePairs("game");
+</script>
+</body>
+</html>

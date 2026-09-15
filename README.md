@@ -13,11 +13,13 @@ The root page (`index.html`) is a hub that links to every game.
 | Folder | Game | Description |
 |--------|------|-------------|
 | [`math/`](./math/) | מִשְׂחֲקֵי חֶשְׁבּוֹן | Math grade selector. |
-| [`grade-3/`](./grade-3/) | חֶשְׁבּוֹן לְכִתָּה ג' | 9 Hebrew math mini-games for 3rd grade: division with remainder, multiplication and division, word problems, fractions, divisibility, grouping division, and the multiplication table. |
-| [`grade-4/`](./grade-4/) | חֶשְׁבּוֹן לְכִתָּה ד' | 11 Grade 4 math games covering numbers, written arithmetic, order of operations, number properties, fractions, word problems, geometry, measurement, data, and probability. Each game includes an interactive Hebrew lesson with narration, examples, and practice. |
+| [`math/grade-3/`](./math/grade-3/) | חֶשְׁבּוֹן לְכִתָּה ג' | 9 Hebrew math mini-games for 3rd grade: division with remainder, multiplication and division, word problems, fractions, divisibility, grouping division, and the multiplication table. |
+| [`math/grade-4/`](./math/grade-4/) | חֶשְׁבּוֹן לְכִתָּה ד' | 11 Grade 4 math games covering numbers, written arithmetic, order of operations, number properties, fractions, word problems, geometry, measurement, data, and probability. Each game includes an interactive Hebrew lesson with narration, examples, and practice. |
 | [`english/`](./english/) | מִשְׂחֲקֵי אַנְגְּלִית | English grade selector. |
 | [`english/grade-3/`](./english/grade-3/) | English Grade 3 | Learn English words via pictures and phonics with sound and Hebrew translations. |
 | [`english/grade-4/`](./english/grade-4/) | English Grade 4 | Six learning worlds containing all 28 vocabulary, grammar, reading, and guided-writing topics, with mixed practice, Hebrew lessons, English audio, and detailed bilingual answer explanations. |
+| [`english/english-12plus/`](./english/english-12plus/) | English 12+ | English adventure games for ages 12 and up. |
+| [`kindergarten/`](./kindergarten/) | גַּן · Kindergarten | Picture Pairs and Number War for young learners. |
 
 ## 📁 Project structure
 ```
@@ -26,33 +28,29 @@ edu-games/
 ├── assets/
 │   └── theme-selector.js  # shared persistent visual-theme selector
 ├── math/
-│   └── index.html         # math grade selector
-├── grade-3/
-│   └── index.html         # Grade 3 math games
-├── grade-4/
-│   ├── index.html         # Grade 4 math hub
-│   ├── numbers/index.html
-│   ├── operations/index.html
-│   ├── fractions/index.html
-│   ├── written-arithmetic/index.html
-│   ├── number-properties/index.html
-│   ├── fraction-operations/index.html
-│   ├── word-problems/index.html
-│   ├── geometry/index.html
-│   ├── measurement/index.html
-│   ├── data/index.html
-│   └── probability/index.html
+│   ├── index.html         # math grade selector
+│   ├── grade-3/
+│   │   ├── index.html     # Grade 3 math games
+│   │   └── fractions-lesson/index.html
+│   └── grade-4/
+│       ├── index.html     # Grade 4 math hub
+│       └── [11 game folders]/index.html
 ├── english/
 │   ├── index.html         # English grade selector
 │   ├── grade-3/
 │   │   └── index.html     # Grade 3 English games
-│   └── grade-4/
-│       └── index.html     # Grade 4 English academy with 6 worlds and 28 topics
-├── division-game/
-│   └── index.html         # legacy redirect to grade-3/
-└── word-game/
-    └── index.html         # legacy redirect to english/grade-3/
+│   ├── grade-4/
+│   │   └── index.html     # Grade 4 English academy with 6 worlds and 28 topics
+│   └── english-12plus/
+│       ├── index.html
+│       └── secret-agent/index.html
+└── kindergarten/
+    ├── index.html         # kindergarten game selector
+    ├── picture-pairs/index.html
+    └── number-war/index.html
 ```
+
+Published paths that predate this hierarchy remain as lightweight redirects.
 
 ## ➕ Add a new game
 1. Create a new folder under the appropriate subject and grade.

@@ -13,8 +13,10 @@ Edu Games is a collection of educational English and math games created for chil
 - Preserve offline capability except for optional services already used by the project, such as analytics.
 - Add a new game in its own folder with an `index.html` file.
 - Link new games from the appropriate section hub and, when relevant, from the root `index.html`.
-- Organize math games by grade: the root links to `math/`, which links to `grade-3/`, `grade-4/`, and future grade folders.
-- Organize English games under `english/`, with each grade in a nested folder such as `english/grade-3/`.
+- Keep the learner hierarchy rooted in `english/`, `math/`, and `kindergarten/`.
+- Organize math games by grade under `math/`, such as `math/grade-3/` and `math/grade-4/`.
+- Organize English games under `english/`, with categories at `english/grade-3/`, `english/grade-4/`, and `english/english-12plus/`.
+- Keep the two Kindergarten games at `kindergarten/picture-pairs/` and `kindergarten/number-war/`, linked from `kindergarten/index.html`.
 - Grade 4 currently contains 11 games covering numbers to one million, order of operations, fraction comparison, written arithmetic, number properties, fraction operations, word problems, geometry, measurement, data, and probability.
 - English Grade 4 lives at `english/grade-4/` and groups 28 vocabulary, grammar, reading-comprehension, and guided-writing topics into six learning worlds. Preserve both mixed world practice and direct access to every topic.
 - All active production pages load `assets/theme-selector.js`. Preserve the upper-right five-template selector, the `edu-games-site-design` preference, and consistent theme behavior across navigation.

@@ -146,6 +146,120 @@ edu-games/
 - Do not add advertising, external tracking, purchases, or data collection unless explicitly requested.
 - Do not collect personal information from children.
 
+## Curriculum preview: scope and source data
+
+- The content expansion is under `sandbox/curriculum-refresh/`. Publishing this sandbox does **not** promote its content to canonical games or synchronize `edu-games2/`. Require explicit promotion approval before replacing production files.
+- The paths and counts below describe this preview, not the older canonical question banks. Keep this inventory and the README current when adding content.
+- Keep complete vocabulary, questions, translations, scenes and images in the game HTML/assets listed below. This instructions file documents their format and invariants; do not duplicate entire question banks here or use documentation as a runtime database.
+- `sandbox/curriculum-refresh/index.html` is the preview landing page and educational-source directory. `english/index.html` mirrors the canonical English hierarchy; `math/grade-4/index.html` links all 11 Math games.
+
+| Preview path under `sandbox/curriculum-refresh/` | Content and preservation requirements |
+| --- | --- |
+| `english/grade-3/index.html` | Eight tabs: picture-to-word, word-to-picture, first sound, missing letter, sentences, memory, reading, build-a-sentence. Preserve 13 authored reading pages, including translations and images. |
+| `english/grade-4/index.html` | 28 topics, six worlds, original lessons/examples, expanded authored banks and constrained sentence composition. |
+| `english/english-12plus/index.html` | Age-category navigation hub, not another game engine. |
+| `english/english-12plus/secret-agent/index.html` | One active world, six missions, six actions per mission; six local scene photographs under `img/`. Worlds 2-4 remain defined but hidden. |
+| `math/grade-4/*/index.html` | All 11 numerical/geometry/data/probability games; fixed `LESSON_STEPS` and existing learning flow stay intact. |
+| `english-sentence-review.html` | Static review of 360 Grade 4 composed questions, answers, options and four-step help. |
+| `english-all-levels-review.html` | Static searchable review of 740 practice entries: 236 Grade 3 mode-specific entries, 360 Grade 4 sentences and 144 Secret Agent clues. Entries are not all distinct sentences. |
+
+- Preview asset paths must resolve to root `assets/`: the English subject hub uses `../../../assets/`, its grade/category pages use `../../../../assets/`, and Secret Agent uses `../../../../../assets/`. Preserve explicit `index.html` navigation for local-file use.
+- Retain all five approved templates and original panel geometry. Curriculum expansion does not authorize another redesign.
+
+## Israeli learner context and educational sources
+
+- Target Israeli children learning English as an additional language. A grade or age label is not a native-English reading level or a guarantee of proficiency.
+- Use familiar school, home, library, park, bus and family contexts; inclusive fictional characters; Hebrew guidance; and existing niqqud conventions for younger learners.
+- Use shekels and metric units in numerical contexts. Exercise prices, quantities and fictional journeys are practice data, not current tariffs, verified distances or factual claims about a real institution.
+- Write original exercises. Do not copy worksheets, passages, images or audio from external teaching resources. Existing game assets and authored passages stay in their established locations.
+- Ministry of Education elementary guidance is the primary reference for elementary level/context; Cambridge English and British Council are supplementary resources, not proof of Israeli grade alignment.
+- Do not claim Ministry approval, complete curriculum coverage, or completion of A1/Band I in Grade 4. Preserve existing enrichment topics without presenting all of them as compulsory grade-level content.
+- Multiple choice and guided ordering do not replace listening, speaking, interaction and other classroom learning.
+- Official math guidance describes a phased curriculum transition: Grade 3 joins in 2026-27. Recheck the official rollout before making year-specific Grade 4 alignment claims.
+
+Reference links already used by the preview:
+
+- English elementary curriculum: https://pop.education.gov.il/tchumey_daat/english/yesodi/curriculum/
+- English curriculum components: https://pop.education.gov.il/tchumey_daat/english/yesodi/curriculum/components/
+- Beginner communication descriptors: https://pop.education.gov.il/tchumey_daat/english/yesodi/curriculum/basic-user-a2/ (the page presents Pre-basic/Pre-A1 material despite its URL slug; do not infer level from the URL).
+- Math curriculum and rollout: https://pop.education.gov.il/tchumey_daat/matmatika/yesodi/oraat-math/tohnit-limudim/
+- Cambridge Pre-A1: https://www.cambridgeenglish.org/learning-english/parents-and-children/activities-for-children/pre-a1-level/
+- Cambridge A1: https://www.cambridgeenglish.org/learning-english/parents-and-children/activities-for-children/a1-level/
+- British Council possession grammar: https://learnenglishkids.britishcouncil.org/grammar-vocabulary/grammar-practice/have-got
+- British Council present tenses: https://learnenglishkids.britishcouncil.org/grammar-vocabulary/grammar-practice/present-simple-present-continuous
+
+The British Council links were identified through search; direct fetching was blocked. Do not describe their worksheets as downloaded or audited. Do not mix `have/has`, `do/does have`, and `have got` syntax when adapting examples.
+
+## English data formats and generation rules
+
+### Shared invariants
+
+- Compose new practice from compatible vocabulary and explicitly reviewed phrase families, not arbitrary word substitution. Reading passages and fixed lesson examples remain carefully authored; never randomize their words or facts.
+- Verify subject agreement, tense, articles, inflections, meaning and the supported answer together. Store irregular or spelling-changing forms explicitly when needed.
+- Keep the question, accepted answer, Hebrew guidance and spoken English synchronized. Replaying speech, opening help or rerendering must not silently generate a different question.
+- Pure phonics and memory games retain their original objectives; do not turn every tab into a sentence/grammar task.
+- Prevent repeats using meaningful question identity, not answer order, punctuation, cosmetic instructions or theme. Use bounded finite decks/history; never promise unlimited novelty from a finite vocabulary.
+- No external service generates content during play. Reload may reset in-memory histories; repeats across sessions are possible.
+
+### Grade 3: picture-supported sentences
+
+- Existing vocabulary maps include `WORDS1`, `WORDS2`, `PICS`, `CVC`, `MEM_POOL` and Hebrew `HE`/`HE_EXTRA`. Do not casually merge pools: each supports a different skill.
+- `SENTENCES` maps full English sentences to picture strings; `SENT_HE` maps those same keys to complete Hebrew translations.
+- `PRACTICE_PEOPLE`, `PRACTICE_FAMILIES`, `PRACTICE_ANIMALS` and `PRACTICE_PLACES` produce `GENERATED_SCENES`. Human actions use compatible possession, food, drink, reading and sport families; animal/place combinations stay simple.
+- A build scene has `{emoji, pre, mid, post, subj:{word,distractors}, obj:{word,distractors}, he}`; generated scenes also have `topic` and `generated`. `sceneSentence` joins these fields into the spoken/rendered sentence. Put articles in the appropriate fixed phrase.
+- The preview has 120 generated combinations. After overlaps with existing content, 118 new matching questions and 118 new build questions are added: 126 total sentence questions and 145 total build scenes.
+- Preserve eight original sentence questions and 27 original build scenes. Nine missing-article corrections affect rendered/spoken practice only, not authored reading pages.
+- `sentenceOptions` deduplicates visual choices and filters ambiguous named-child pictures. Different text keys or synonyms must not produce indistinguishable correct-looking choices.
+- Use `nextPractice` for a finite shuffled cycle without a repeat at the cycle boundary. `installHelp` keeps the Hebrew explanation and completed English sentence available and synchronized.
+
+### Grade 4: authored banks and composed questions
+
+- Vocabulary items use `{en, he, emoji, group?}`. Preserve existing bank-specific fields such as numerical `value`.
+- Authored multiple-choice items use `{prompt, answer, wrong, explanation, explanationHe, instruction?}`. `extendBank(name, rows)` takes `[prompt, answer, wrong, explanation, explanationHe, instruction?]`.
+- `HEBREW_EXPLANATION_SETS` pairs each bank's `items` with Hebrew `values`; their lengths must match exactly. `AUTHORED_QUESTION_BANKS` derives from these sets.
+- `makeMc` returns `{type:"mc", instruction, prompt, answer, choices, explanation, explanationHe, speak, signature, passage}`. Require four unique choices with the correct answer included.
+- `makeOrder` uses ordered answer tokens/phrases and shuffled choices. Ensure the intended order is unambiguous from the prompt and punctuation, and avoid indistinguishable duplicate tiles.
+- Reading passages use `{id, text, questions}`. New reading questions include `{prompt, answer, wrong, explanation, explanationHe, evidence, kind}`; evidence must occur in the passage. Cover detail, main idea, sequence, vocabulary and inference without unsupported outside knowledge.
+- Writing tasks use `{kind, prompt, order, explanation, explanationHe}`; keep sentence/paragraph content authored and use explicit sequence cues or ordering instructions.
+- Expanded inventory: 72 general vocabulary words; 30 Have/Has questions; other grammar banks generally 20 each; 20 plural entries; 12 family-relationship questions; 12 reading passages with five questions each; 30 writing tasks; 12 present-continuous ordering tasks and 12 past ordering tasks.
+- `SENTENCE_SUBJECTS` entries have `{en, he, third, be, agreement}`. Ten human subjects encode third-person agreement and the correct auxiliary.
+- `SENTENCE_POSSESSIONS` uses `{en, he}` for 12 compatible noun phrases. `SENTENCE_ACTIONS` uses `{base, third, ing, object, he}` for 12 verb/object phrases; keep the verb and its compatible object together.
+- `composedSentenceQuestion` and `composedSentencePool` support exactly the `COMPOSED_TOPICS`: `have-has`, `present-simple`, `present-continuous`. Each currently has 120 combinations, 360 total. Adding a topic requires its own grammar, distractors, guidance and tests.
+- `topicQuestionPool` retains authored content plus composed practice. `questionContentKey` and `distinctQuestions` ignore answer shuffling; vocabulary direction changes do not count as a new word.
+- `topicPracticeDeck` mixes five authored and five composed questions in a direct ten-question session for these three topics. `createPracticeDeck` uses the same topic decks in mixed-world practice.
+- Preserve honest finite capacity: seasons has eight distinct practice identities, not a fabricated ten unique questions.
+- Reuse `buildQuestionHelpGuide`, the strict Hebrew/English validators and both synchronized next buttons. Generated English speech uses the completed sentence, never a blank placeholder.
+
+### English 12+: Secret Agent
+
+- `WORLD1` mission data contains scene objects `{key,en,...geometry}` and authored actions `{sentence,he,target}`. Preserve pictures, hitboxes, mission/action order and the active `WORLDS=[WORLD1]`; do not enable hidden worlds as part of content expansion.
+- `PRACTICE_CLUES[missionIndex][actionIndex]` contains four tuples `[englishClue, hebrewClue, acceptedTargetKeys]` per action slot, 144 combinations total.
+- `practiceOptions` constructs full bilingual instructions; `selectPractice` uses bounded history of three recent clues per slot. `state.practiceAction` keeps the selected clue stable through narration, translation, hints and rerendering.
+- Ground every descriptor, spatial relation, colour and function in the actual scene. Two blue cups require a specific location or an accepted set containing both; a broad clue may have multiple valid targets, all of which must be accepted.
+- Do not introduce fictional object locations or arbitrary adjective/object combinations. Ambiguous authored clues remain stored but need not be selected for practice when a reviewed replacement is available.
+
+## Math numerical freshness and validity
+
+- All 11 Grade 4 preview games retain authored lessons while generating practice values within valid ranges. Classification/shape/event questions may use finite pools.
+- `CONTENT_BUILDERS` identifies generator families. `freshQuestion` tracks up to 32 meaningful exercises per builder using `exerciseSignature`; include operands, fractions, actual angles and chart data, not shuffled options or chart/table styling.
+- Declare small domains through `finitePool`/`builder.capacity`, with history at most capacity minus one. Larger generators use bounded sampling and a verified 33-exercise reserve for stalled randomness. Reject a falsely large domain explicitly rather than silently repeat or loop forever.
+- Keep correct numerical answers in the option set before selecting distractors. Require four distinct numeric choices where that game expects four; fixed semantic choices such as comparison symbols keep their intended format.
+- Check mathematical equivalence, not just string equality, for fraction distractors. Identify digit position clearly when digits repeat. Construct exact division where required.
+- New Operations patterns include division, giving eight patterns total. Broader operand ranges must remain appropriate for the existing learning objective.
+- Keep each worked equation in an existing LTR `.step`/`.calc` element inside RTL Hebrew explanations; otherwise division and subtraction operands can display in reverse.
+
+## Review pages, validation and publication
+
+- Review HTML is a static export of actual runtime content, not a separate handwritten question database. Refresh affected exports when generators change; keep the older Grade 4 review available.
+- Use review export records `{sentence, he, topic}` with optional `choices`, `targets` and `help`; an export envelope may use `{summary, records}`. Escape text before generating HTML and keep Hebrew/English elements separate.
+- Preserve correct counts: the all-level review has 236 Grade 3 mode-specific records representing 120 unique sentences, plus 360 Grade 4 sentences and 144 Secret Agent clues.
+- Review pages must work with `file://` and HTTP, support level/topic and text filtering, show empty/reset states, and link to the corresponding preview games. They do not fetch runtime data or automatically synchronize.
+- Game selftests use `?selftest=1` and `window.__eduSelfTest`. Test hooks must not appear in ordinary play. Test every finite combination, correct-answer inclusion, distinct options, meaningful nonrepetition, stalled randomness and preservation of authored reading/lesson data.
+- Exercise wrong/correct answers, help toggles, both Grade 4 next controls, pronunciation text, retries, replay, hints and mission transitions. Structural assertions do not replace reading generated language or checking scene descriptions against images.
+- Check all five themes at 390px and 1280px, local-file loading, resource links and horizontal overflow. Test expanded help as well as initial pages.
+- Keep canonical `english/`, `math/`, shared assets and `edu-games2/` unchanged during sandbox-only work. Committing/pushing a preview is separate from promoting it.
+- Use explicit staging paths. Never read, modify, delete, stage, commit or push `lastSession.md`; it is an intentionally excluded conversation export.
+
 ## Code changes
 
 - Make focused changes and avoid unrelated refactoring, especially in the large single-file games.

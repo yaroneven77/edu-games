@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>סֵדֶר פְּעֻלּוֹת · כִּתָּה ד'</title>
+<script src="../../../../../assets/theme-selector.js" defer></script>
+<script data-goatcounter="https://yaroneven.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+<style>
+  :root{--blue:#1f7fc4;--green:#3fbf6b;--red:#e6604f;--purple:#a974d6;--ink:#243b53;--shadow:rgba(20,60,90,.18);}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  body{margin:0;min-height:100vh;font-family:"Segoe UI","Arial Hebrew",Arial,sans-serif;color:var(--ink);
+    background:linear-gradient(160deg,#fff7e6,#cdeffd);display:flex;flex-direction:column;align-items:center;
+    -webkit-user-select:none;user-select:none;}
+  header{text-align:center;padding:14px 8px 4px;}
+  .home{display:inline-block;background:#fff;border-radius:14px;padding:5px 12px;font-size:20px;line-height:1;text-decoration:none;
+    box-shadow:0 3px 0 var(--shadow);margin-bottom:8px;}
+  .logo{font-weight:900;font-size:clamp(27px,7vw,46px);color:#ffce3a;
+    text-shadow:2px 2px 0 var(--red),4px 4px 0 var(--blue),0 6px 14px var(--shadow);}
+  .logo small{display:block;font-size:.43em;color:#155f93;text-shadow:none;margin-top:4px;}
+  main{width:100%;max-width:700px;padding:8px 14px 30px;flex:1;}
+  .topbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-bottom:12px;gap:8px;}
+  .pill{background:#fff;border-radius:16px;padding:8px 14px;font-weight:900;box-shadow:0 4px 0 var(--shadow);}
+  .learn{border:none;border-radius:16px;padding:9px 14px;background:var(--purple);color:#fff;font:800 15px inherit;cursor:pointer;box-shadow:0 4px 0 var(--shadow);}
+  .card{background:#fff;border-radius:24px;padding:22px 18px;box-shadow:0 8px 0 var(--shadow);text-align:center;}
+  h2{font-size:clamp(20px,5vw,27px);margin:0 0 10px;}
+  .rule{color:#5b7b99;font-weight:700;margin-bottom:16px;}
+  .expression{direction:ltr;font-size:clamp(35px,11vw,58px);font-weight:900;color:#155f93;margin:14px 0 22px;}
+  .choices{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .choice{border:3px solid #f0d9d5;background:#fff1ee;border-radius:18px;padding:15px 8px;font:900 25px inherit;
+    color:var(--ink);cursor:pointer;direction:ltr;}
+  .choice:active{transform:scale(.97)} .choice.ok{background:#d8f5e2;border-color:var(--green)} .choice.no{background:#fcdcd6;border-color:var(--red)}
+  .feedback{min-height:38px;font-size:22px;font-weight:900;margin:16px 0 8px;}
+  .feedback.good{color:var(--green)} .feedback.bad{color:var(--red)}
+  .actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+  button.action{border:none;border-radius:16px;padding:11px 18px;font:800 16px inherit;color:#fff;cursor:pointer;box-shadow:0 4px 0 var(--shadow);}
+  .help{background:var(--purple)} .next{background:var(--blue)}
+  .explain{margin-top:14px;background:#f3ecfb;border:3px dashed #c9a8ec;border-radius:18px;padding:14px 16px;line-height:1.75;text-align:right;font-size:17px;}
+  .step{direction:ltr;display:inline-block;background:#fff;border-radius:8px;padding:1px 8px;font-weight:900;margin:2px;}
+  .hidden{display:none!important;}
+  .lesson-overlay{position:fixed;inset:0;background:rgba(20,40,60,.6);display:none;align-items:center;justify-content:center;padding:16px;z-index:50;}
+  .lesson-overlay.show{display:flex;}
+  .lesson-modal{background:#fff;border-radius:24px;width:100%;max-width:650px;max-height:94vh;overflow:auto;padding:22px 18px;text-align:center;box-shadow:0 18px 45px rgba(20,60,90,.35);}
+  .lesson-close{float:left;border:none;background:#e7eef5;color:#43617c;border-radius:12px;padding:7px 11px;font:800 14px inherit;cursor:pointer;}
+  .lesson-progress{color:var(--purple);font-weight:900;font-size:14px;clear:both;padding-top:4px;}
+  .lesson-title{font-size:clamp(22px,6vw,30px);font-weight:900;color:#155f93;margin:8px 0;}
+  .lesson-text{font-size:clamp(17px,4.5vw,21px);line-height:1.65;min-height:60px;}
+  .lesson-visual{direction:ltr;font-size:clamp(32px,10vw,54px);font-weight:900;color:#155f93;margin:18px 0;background:#f4f9fd;border-radius:18px;padding:16px 8px;}
+  .lesson-rule{background:#fff4d6;border:2px dashed #e0a23a;border-radius:14px;padding:10px;font-weight:900;line-height:1.7;margin:10px 0;}
+  .lesson-options{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px;}
+  .lesson-options button{border:3px solid #d6e7f3;background:#fff;border-radius:14px;padding:10px 18px;font:900 19px inherit;cursor:pointer;direction:ltr;}
+  .lesson-options button.ok{background:#d8f5e2;border-color:var(--green)}.lesson-options button.no{background:#fcdcd6;border-color:var(--red)}
+  .lesson-feedback{min-height:28px;font-weight:900;margin-top:8px;}
+  .lesson-nav{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:14px;}
+  .lesson-nav button{border:none;border-radius:14px;padding:10px 15px;font:800 15px inherit;color:#fff;cursor:pointer;box-shadow:0 3px 0 var(--shadow);}
+  .gray{background:#8aa4bd}.green{background:var(--green)}.blue{background:var(--blue)}
+  footer{padding:10px;color:#6b87a3;font-size:12px;}
+</style>
+<link rel="stylesheet" href="../../../../../assets/refresh.css">
+<style id="math-refresh">
+  #edu-refresh main{max-width:780px;padding:8px 20px 32px;min-width:0}
+  #edu-refresh .card{padding:28px 24px}
+  #edu-refresh h2,#edu-refresh .qtitle{font-size:clamp(20px,4.5vw,24px);line-height:1.7;margin-bottom:16px}
+  #edu-refresh .topbar{gap:10px;margin-bottom:18px;flex-wrap:wrap}
+  #edu-refresh .pill,#edu-refresh .score{font-size:15px;padding:9px 12px}
+  #edu-refresh .actions{gap:10px;flex-wrap:wrap;margin-top:12px}
+  #edu-refresh .btn,#edu-refresh .action,#edu-refresh .learn,#edu-refresh .lesson-nav button,#edu-refresh .lesson-close{font:700 16px/1.5 "Segoe UI","Arial Hebrew",Arial,sans-serif}
+  #edu-refresh .choices,#edu-refresh .mopts{gap:12px}
+  #edu-refresh .choice{min-height:70px;padding:16px 10px;font-family:inherit;font-size:clamp(22px,5vw,27px);font-weight:800;line-height:1.5;border-width:2px}
+  #edu-refresh .choice:not(.ok):not(.no),#edu-refresh .lesson-options button:not(.ok):not(.no){background:var(--refresh-surface)!important;color:var(--refresh-text)!important;border:2px solid var(--refresh-border)!important}
+  #edu-refresh .choice:hover:not(:disabled):not(.ok):not(.no),#edu-refresh .lesson-options button:hover:not(:disabled):not(.ok):not(.no){background:var(--refresh-soft)!important;border-color:var(--refresh-accent)!important}
+  #edu-refresh .choice.ok,#edu-refresh .lesson-options button.ok{background:#e8f6ed!important;border-color:#35845a!important;color:#185736!important}
+  #edu-refresh .choice.no,#edu-refresh .lesson-options button.no{background:#fff0ed!important;border-color:#c25f4e!important;color:#8b352a!important}
+  #edu-refresh .feedback{font-size:19px;line-height:1.8;margin:18px 0 12px}
+  #edu-refresh .explain{padding:20px;line-height:2;font-size:18px}
+  #edu-refresh .explain li{line-height:1.95;margin-bottom:12px}
+  #edu-refresh .calc,#edu-refresh .step{background:var(--refresh-surface);color:var(--refresh-text);padding:4px 9px;margin:4px 2px;max-width:100%;overflow-wrap:anywhere}
+  #edu-refresh .rule{font-size:16px;line-height:1.9;color:var(--refresh-muted);margin-bottom:22px}
+  #edu-refresh .kind{padding:6px 12px;margin-bottom:4px}
+  #edu-refresh .expression,#edu-refresh .number{background:var(--refresh-soft);border:1px solid var(--refresh-border);border-radius:18px;padding:22px 10px;margin:12px 0 24px;font-size:clamp(28px,6vw,46px);line-height:1.6;letter-spacing:0;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+  #edu-refresh .visual{color:var(--refresh-accent);padding:20px 12px;margin:16px 0 22px;max-width:100%}
+  #edu-refresh .visual-note{color:var(--refresh-muted);line-height:1.8}
+  #edu-refresh .lesson-overlay{z-index:100}
+  #edu-refresh .lesson-modal{padding:24px 22px;max-height:94dvh}
+  #edu-refresh .lesson-title{font-size:clamp(23px,5vw,29px);line-height:1.6}
+  #edu-refresh .lesson-text{font-size:19px;line-height:1.9}
+  #edu-refresh .lesson-progress{color:var(--refresh-muted)}
+  #edu-refresh .lesson-rule{background:var(--refresh-soft);color:var(--refresh-text);border:1px solid var(--refresh-border);padding:14px;line-height:1.9}
+  #edu-refresh .lesson-visual{padding:18px 10px;font-size:clamp(27px,7vw,43px);line-height:1.65;border-radius:16px;overflow-wrap:anywhere}
+  #edu-refresh .lesson-options button{font:800 21px/1.5 "Segoe UI","Arial Hebrew",Arial,sans-serif;min-height:54px}
+  #edu-refresh .lesson-feedback{color:var(--refresh-text)!important;line-height:1.8}
+  #edu-refresh .lesson-feedback[style*="--green"]{color:#237849!important}
+  #edu-refresh .lesson-feedback[style*="--red"]{color:#ac463b!important}
+  html[data-edu-theme="space"] #edu-refresh .lesson-feedback[style*="--green"],html[data-edu-theme="arcade"] #edu-refresh .lesson-feedback[style*="--green"]{color:#93e5b4!important}
+  html[data-edu-theme="space"] #edu-refresh .lesson-feedback[style*="--red"],html[data-edu-theme="arcade"] #edu-refresh .lesson-feedback[style*="--red"]{color:#ffb0a5!important}
+  #edu-refresh .lesson-nav{gap:10px;margin-top:20px}
+  #edu-refresh footer{line-height:1.8}
+  @media(max-width:520px){
+    #edu-refresh main{padding-inline:14px}
+    #edu-refresh .card{padding:24px 16px}
+    #edu-refresh .actions>.btn,#edu-refresh .actions>.action{flex:1 1 120px}
+    #edu-refresh .lesson-modal{padding:20px 14px}
+    #edu-refresh .lesson-text{font-size:18px}
+    #edu-refresh .explain{padding:16px}
+  }
+
+  #edu-refresh .shape-svg,#edu-refresh .angle-svg{background:#fff;border-radius:12px;max-width:100%}
+  #edu-refresh .column-math .line{border-color:currentColor}
+  #edu-refresh .data-table{background:var(--refresh-surface);color:var(--refresh-text);max-width:100%}
+  #edu-refresh .data-table th{background:var(--refresh-soft)}
+  #edu-refresh .data-table th,#edu-refresh .data-table td{border-color:var(--refresh-border);padding:9px 8px;line-height:1.6}
+  #edu-refresh .bar-item,#edu-refresh .cube-stack{color:var(--refresh-text)}
+</style>
+
+</head>
+<body id="edu-refresh">
+<header>
+  <a class="home" href="../index.html" title="לְתַפְרִיט כִּתָּה ד'">⬆️🏠</a>
+  <div class="logo">סֵדֶר פְּעֻלּוֹת<small>חֶשְׁבּוֹן לְכִתָּה ד'</small></div>
+</header>
+<main>
+  <div class="topbar"><div class="pill">שְׁאֵלָה <span id="round">1</span></div><button class="learn" onclick="openLesson()">📚 שִׁעוּר קָצָר</button><div class="pill">⭐ <span id="score">0</span></div></div>
+  <div class="card">
+    <h2>מָה תּוֹצָאַת הַתַּרְגִּיל?</h2>
+    <div class="rule">זוֹכְרִים: סוֹגְרַיִם ← כֶּפֶל וְחִלּוּק ← חִבּוּר וְחִסּוּר</div>
+    <div class="expression" id="expression"></div>
+    <div class="choices" id="choices"></div>
+    <div class="feedback" id="feedback"></div>
+    <div class="actions">
+      <button class="action help" id="help" onclick="toggleExplain()">🔍 אֵיךְ פּוֹתְרִים?</button>
+      <button class="action next hidden" id="next" onclick="newQuestion()">הַבָּא ➜</button>
+    </div>
+    <div class="explain hidden" id="explain"></div>
+  </div>
+</main>
+<div class="lesson-overlay" id="lesson-overlay">
+  <div class="lesson-modal">
+    <button class="lesson-close" onclick="closeLesson()">✕ סְגֹר</button>
+    <div class="lesson-progress" id="lesson-progress"></div>
+    <div class="lesson-title" id="lesson-title"></div>
+    <div class="lesson-text" id="lesson-text"></div>
+    <div class="lesson-rule" id="lesson-rule"></div>
+    <div class="lesson-visual" id="lesson-visual"></div>
+    <div id="lesson-practice"></div>
+    <div class="lesson-nav">
+      <button class="gray" id="lesson-prev" onclick="moveLesson(-1)">◀ הַקּוֹדֵם</button>
+      <button class="green" onclick="speakLesson()">🔊 הַשְׁמֵעַ</button>
+      <button class="blue" id="lesson-next" onclick="moveLesson(1)">הַבָּא ▶</button>
+    </div>
+  </div>
+</div>
+<footer>סֵדֶר פְּעֻלּוֹת חֶשְׁבּוֹן · כִּתָּה ד'</footer>
+<script>
+const $=id=>document.getElementById(id);
+let drawRandom=()=>Math.random();
+const rnd=(min,max)=>Math.floor(drawRandom()*(max-min+1))+min;
+const pick=a=>a[rnd(0,a.length-1)];
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=rnd(0,i);[a[i],a[j]]=[a[j],a[i]];}return a;}
+const GOOD=["מְצֻיָּן! ⭐","בְּדִיּוּק! 🎯","כָּל הַכָּבוֹד! 👏","אַלּוּפֵי סֵדֶר הַפְּעֻלּוֹת! 🏆"];
+let score=0,round=0,current=null,locked=false,lastExpr="";
+let lessonIndex=0,hebrewVoice=null;
+
+const LESSON_STEPS=[
+  {title:"מַכִּירִים אֶת הַסֵּדֶר",text:"לֹא תָּמִיד פּוֹתְרִים אֶת הַתַּרְגִּיל מִשְּׂמֹאל לְיָמִין.",rule:"1. סוֹגְרַיִם  ←  2. כֶּפֶל וְחִלּוּק  ←  3. חִבּוּר וְחִסּוּר",visual:"",practice:false,say:"בסדר פעולות חשבון פותרים קודם סוגריים, אחר כך כפל וחילוק, ולבסוף חיבור וחיסור."},
+  {title:"כֶּפֶל לִפְנֵי חִבּוּר",text:"בַּתַּרְגִּיל 12 + 3 × 4 פּוֹתְרִים קוֹדֶם אֶת הַכֶּפֶל.",rule:"3 × 4 = 12",visual:"12 + 12 = 24",practice:false,say:"בתרגיל שתים עשרה ועוד שלוש כפול ארבע, פותרים קודם שלוש כפול ארבע. מקבלים שתים עשרה, ואז שתים עשרה ועוד שתים עשרה שווה עשרים וארבע."},
+  {title:"סוֹגְרַיִם תָּמִיד קוֹדְמִים",text:"בַּתַּרְגִּיל (6 + 4) × 3 פּוֹתְרִים קוֹדֶם אֶת מָה שֶׁבַּסּוֹגְרַיִם.",rule:"6 + 4 = 10",visual:"10 × 3 = 30",practice:false,say:"כשיש סוגריים, פותרים אותם ראשונים. שש ועוד ארבע שווה עשר, ועשר כפול שלוש שווה שלושים."},
+  {title:"עַכְשָׁו תּוֹרְכֶם!",text:"מָה תּוֹצָאַת הַתַּרְגִּיל 18 − 2 × 5?",rule:"זִכְרוּ: כֶּפֶל לִפְנֵי חִסּוּר",visual:"18 − 2 × 5 = ?",practice:true,say:"עכשיו תורכם. מה תוצאת התרגיל שמונה עשרה פחות שתיים כפול חמש?"}
+];
+function loadVoices(){
+  if(!("speechSynthesis" in window))return;
+  hebrewVoice=speechSynthesis.getVoices().find(v=>/^(he|iw)/i.test(v.lang))||null;
+}
+if("speechSynthesis" in window){loadVoices();speechSynthesis.onvoiceschanged=loadVoices;}
+function speakHebrew(text){
+  if(!("speechSynthesis" in window))return;
+  speechSynthesis.cancel();const utterance=new SpeechSynthesisUtterance(text);utterance.lang="he-IL";utterance.rate=.9;
+  if(hebrewVoice)utterance.voice=hebrewVoice;speechSynthesis.speak(utterance);
+}
+function openLesson(){lessonIndex=0;$("lesson-overlay").classList.add("show");renderLesson();}
+function closeLesson(){$("lesson-overlay").classList.remove("show");if("speechSynthesis" in window)speechSynthesis.cancel();}
+function moveLesson(direction){const next=lessonIndex+direction;if(next<0||next>=LESSON_STEPS.length)return;lessonIndex=next;renderLesson();}
+function speakLesson(){speakHebrew(LESSON_STEPS[lessonIndex].say);}
+function renderLesson(){
+  const step=LESSON_STEPS[lessonIndex];
+  $("lesson-progress").textContent=`שָׁלָב ${lessonIndex+1} מִתּוֹךְ ${LESSON_STEPS.length}`;
+  $("lesson-title").textContent=step.title;$("lesson-text").textContent=step.text;$("lesson-rule").textContent=step.rule;
+  $("lesson-visual").textContent=step.visual;$("lesson-visual").style.display=step.visual?"block":"none";
+  $("lesson-practice").innerHTML=step.practice?`<div class="lesson-options">
+    <button onclick="checkLessonAnswer(this,8)">8</button><button onclick="checkLessonAnswer(this,80)">80</button><button onclick="checkLessonAnswer(this,16)">16</button>
+    </div><div class="lesson-feedback" id="lesson-feedback"></div>`:"";
+  $("lesson-prev").disabled=lessonIndex===0;$("lesson-next").disabled=lessonIndex===LESSON_STEPS.length-1;
+  speakLesson();
+}
+function checkLessonAnswer(button,value){
+  document.querySelectorAll(".lesson-options button").forEach(option=>{option.disabled=true;if(option.textContent==="8")option.classList.add("ok");});
+  const feedback=$("lesson-feedback");
+  if(value===8){feedback.textContent="🎉 נָכוֹן! 2 × 5 = 10, וְ־18 − 10 = 8.";feedback.style.color="var(--green)";}
+  else{button.classList.add("no");feedback.textContent="כִּמְעַט! פּוֹתְרִים קוֹדֶם 2 × 5.";feedback.style.color="var(--red)";}
+}
+
+function buildQuestion(type=rnd(0,7)){let a,b,c,d,expr,answer,steps;
+  if(type===0){
+    a=rnd(10,70);b=rnd(2,9);c=rnd(2,9);answer=a+b*c;expr=`${a} + ${b} × ${c}`;
+    steps=`קוֹדֶם כֶּפֶל: <span class="step">${b} × ${c} = ${b*c}</span><br>אַחַר כָּךְ חִבּוּר: <span class="step">${a} + ${b*c} = ${answer}</span>`;
+  }else if(type===1){
+    a=rnd(2,12);b=rnd(2,12);c=rnd(2,7);answer=(a+b)*c;expr=`(${a} + ${b}) × ${c}`;
+    steps=`קוֹדֶם סוֹגְרַיִם: <span class="step">${a} + ${b} = ${a+b}</span><br>אַחַר כָּךְ כֶּפֶל: <span class="step">${a+b} × ${c} = ${answer}</span>`;
+  }else if(type===2){
+    a=rnd(5,14);b=rnd(3,9);c=rnd(5,a*b-1);answer=a*b-c;expr=`${a} × ${b} − ${c}`;
+    steps=`קוֹדֶם כֶּפֶל: <span class="step">${a} × ${b} = ${a*b}</span><br>אַחַר כָּךְ חִסּוּר: <span class="step">${a*b} − ${c} = ${answer}</span>`;
+  }else if(type===3){
+    a=rnd(8,18);b=rnd(2,a-1);c=rnd(2,8);answer=(a-b)*c;expr=`(${a} − ${b}) × ${c}`;
+    steps=`קוֹדֶם סוֹגְרַיִם: <span class="step">${a} − ${b} = ${a-b}</span><br>אַחַר כָּךְ כֶּפֶל: <span class="step">${a-b} × ${c} = ${answer}</span>`;
+  }else if(type===4){
+    a=rnd(10,40);b=rnd(2,8);c=rnd(2,8);d=rnd(1,Math.min(15,a+b*c-1));answer=a+b*c-d;expr=`${a} + ${b} × ${c} − ${d}`;
+    steps=`קוֹדֶם כֶּפֶל: <span class="step">${b} × ${c} = ${b*c}</span><br>אַחַר כָּךְ מִשְּׂמֹאל לְיָמִין: <span class="step">${a} + ${b*c} = ${a+b*c}</span>, וְאָז <span class="step">${a+b*c} − ${d} = ${answer}</span>`;
+  }
+  if(type>=5){
+    b=rnd(2,12);c=rnd(2,12);a=b*c;d=rnd(2,30);
+    if(type===5){expr=`${d} + ${a} ÷ ${b}`;answer=d+c;steps=`קוֹדֶם חִלּוּק: <span class="step">${a} ÷ ${b} = ${c}</span><br>אַחַר כָּךְ חִבּוּר: <span class="step">${d} + ${c} = ${answer}</span>`}
+    else if(type===6){expr=`(${a+d} − ${d}) ÷ ${b}`;answer=c;steps=`קוֹדֶם סוֹגְרַיִם: <span class="step">${a+d} − ${d} = ${a}</span><br>אַחַר כָּךְ חִלּוּק: <span class="step">${a} ÷ ${b} = ${answer}</span>`}
+    else{expr=`${a} ÷ ${b} × ${d}`;answer=c*d;steps=`לְחִלּוּק וּלְכֶפֶל אוֹתָהּ קְדִימוּת. פּוֹתְרִים מִשְּׂמֹאל לְיָמִין: <span class="step">${a} ÷ ${b} = ${c}</span>, וְאָז <span class="step">${c} × ${d} = ${answer}</span>`}
+  }
+  const wrong=[answer+rnd(1,9),Math.max(0,answer-rnd(1,9)),(a+b)*(c||1),a+(b||0)+(c||0)].filter(n=>n!==answer);
+  const choices=[...new Set([answer,...wrong])].slice(0,4);
+  let offset=1;
+  while(choices.length<4){
+    const n=answer+(offset%2?offset:-offset);
+    if(n>=0&&!choices.includes(n))choices.push(n);
+    offset++;
+  }
+  return {expr,answer,steps,choices:shuffle(choices)};
+}
+function newQuestion(){
+  const q=freshQuestion(pick(CONTENT_BUILDERS));
+  current=q;lastExpr=q.expr;locked=false;round++;$("round").textContent=round;$("expression").textContent=q.expr;
+  $("feedback").textContent="";$("feedback").className="feedback";$("next").classList.add("hidden");
+  $("explain").classList.add("hidden");$("explain").innerHTML=q.steps;$("help").textContent="🔍 אֵיךְ פּוֹתְרִים?";
+  $("choices").innerHTML="";
+  q.choices.forEach(v=>{const b=document.createElement("button");b.className="choice";b.textContent=v;b.onclick=()=>answer(b,v);$("choices").appendChild(b);});
+}
+function answer(button,value){
+  if(locked)return;locked=true;const ok=value===current.answer;
+  document.querySelectorAll(".choice").forEach(b=>{b.disabled=true;if(Number(b.textContent)===current.answer)b.classList.add("ok");});
+  if(ok){score+=10;$("score").textContent=score;$("feedback").textContent=pick(GOOD);$("feedback").className="feedback good";}
+  else{button.classList.add("no");$("feedback").textContent=`כִּמְעַט! הַתְּשׁוּבָה הִיא ${current.answer}`;$("feedback").className="feedback bad";openExplain();}
+  $("next").classList.remove("hidden");
+}
+function openExplain(){
+  $("explain").classList.remove("hidden");$("help").textContent="🙈 הַסְתֵּר הֶסְבֵּר";
+}
+function toggleExplain(){
+  $("explain").classList.toggle("hidden");$("help").textContent=$("explain").classList.contains("hidden")?"🔍 אֵיךְ פּוֹתְרִים?":"🙈 הַסְתֵּר הֶסְבֵּר";
+}
+
+function plainNumbers(text){return (String(text).replace(/,/g,"").match(/\d+/g)||[]).map(Number)}
+function fractionValue(text){
+  const parts=String(text).trim().split(" "),f=parts.pop().split("/").map(Number);
+  return (parts.length?Number(parts[0]):0)+(f.length===2?f[0]/f[1]:f[0]);
+}
+function visualFractions(q){return [...q.visual.matchAll(/class="top">(\d+)<\/span><span class="bottom">(\d+)/g)].map(m=>[+m[1],+m[2]])}
+function numericAnswer(q,value){return plainNumbers(q.answer)[0]===value}
+
+// Exercise identity excludes shuffled answers and presentation-only chart/table changes.
+const RECENT_LIMIT=32, recentExercises=new Map();
+let freshnessFallbacks=0;
+const reserveExercises=new Map();
+function reserveQuestions(builder){
+  if(reserveExercises.has(builder))return reserveExercises.get(builder);
+  const questions=new Map(),previous=drawRandom;let seed=9173;
+  try{
+    drawRandom=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296};
+    for(let i=0;i<4096&&questions.size<=RECENT_LIMIT;i++){
+      const q=builder();questions.set(exerciseSignature(q),q);
+    }
+  }finally{drawRandom=previous}
+  if(questions.size<=RECENT_LIMIT)throw new Error("Small exercise pool must be declared: "+builder.name);
+  const pool=[...questions.values()];reserveExercises.set(builder,pool);return pool;
+}
+function exerciseSignature(q){
+  if(q.signature)return q.signature;
+  if(q.a&&q.b)return JSON.stringify([q.a,q.b]);
+  return JSON.stringify([q.type||q.kind||"",q.q||q.question||"",q.expr||q.display||q.visual||""]);
+}
+function freshQuestion(builder,history=recentExercises){
+  const key=builder.name,limit=Math.min(RECENT_LIMIT,(builder.capacity||Infinity)-1);
+  const recent=history.get(key)||[];
+  let q;
+  if(builder.pool){
+    const available=builder.pool.filter(item=>!recent.includes(exerciseSignature(item)));
+    q=builder(pick(available).poolIndex);
+  }else{
+    for(let attempt=0;attempt<128;attempt++){
+      q=builder();
+      if(!recent.includes(exerciseSignature(q)))break;
+    }
+    // A 33-exercise reserve always has an option outside the 32-item recent history.
+    if(recent.includes(exerciseSignature(q))){
+      q=pick(reserveQuestions(builder).filter(item=>!recent.includes(exerciseSignature(item))));
+      freshnessFallbacks++;
+    }
+  }
+  recent.push(exerciseSignature(q));
+  if(recent.length>limit)recent.splice(0,recent.length-limit);
+  history.set(key,recent);
+  return q;
+}
+function finitePool(builder,size){
+  builder.pool=Array.from({length:size},(_,index)=>({...builder(index),poolIndex:index}));
+  builder.capacity=new Set(builder.pool.map(exerciseSignature)).size;
+}
+function runContentSelfTest(){
+  const failures=[],coverage=[];let assertions=0;
+  const check=(ok,label)=>{assertions++;if(!ok&&failures.length<30)failures.push(label)};
+  const before=freshnessFallbacks;
+  for(const builder of CONTENT_BUILDERS){
+    const seen=new Set();
+    for(let i=0;i<500;i++){
+      const q=builder(),choices=q.choices||["<","=",">"];
+      check(choices.includes(q.answer),builder.name+": correct answer present");
+      check(new Set(choices).size===choices.length,builder.name+": unique options");
+      check(verifyGenerated(q,builder.name),builder.name+": mathematical answer and distractors");
+      if(choices.every(v=>/^[\d,]+(?:\s|$)/.test(String(v))))check(choices.length===4,builder.name+": four numeric options");
+      seen.add(exerciseSignature(q));
+    }
+    let repeats=0;
+    // Five independent 100-question sequences; history tracks actual exercises, not choice order.
+    for(let sequence=0;sequence<5;sequence++){
+      const history=new Map(),recent=[],limit=Math.min(RECENT_LIMIT,(builder.capacity||Infinity)-1);
+      for(let i=0;i<100;i++){
+        const q=freshQuestion(builder,history),sig=exerciseSignature(q);
+        if(recent.includes(sig))repeats++;
+        recent.push(sig);if(recent.length>limit)recent.shift();
+      }
+    }
+    check(repeats===0,builder.name+": zero repeats in recent window");
+    coverage.push({type:builder.name,randomChecks:500,freshnessQuestions:500,recentWindow:Math.min(RECENT_LIMIT,(builder.capacity||Infinity)-1),repeats,poolSize:builder.capacity||null,sampledDistinct:seen.size});
+  }
+  contentRegressions(check);
+  const ordinaryFallbacks=freshnessFallbacks-before;
+  check(ordinaryFallbacks===0,"ordinary random generation needed no reserve");
+  const random=Math.random;let recoveryChecks=0;
+  try{
+    Math.random=()=>0;
+    for(const builder of CONTENT_BUILDERS.filter(b=>!b.pool)){
+      const pool=reserveQuestions(builder),history=new Map(),recent=[];
+      check(new Set(pool.map(exerciseSignature)).size===33,builder.name+": complete recovery reserve");
+      for(let i=0;i<40;i++){
+        const q=freshQuestion(builder,history),sig=exerciseSignature(q),choices=q.choices||["<","=",">"];
+        check(!recent.includes(sig)&&verifyGenerated(q,builder.name)&&choices.includes(q.answer)&&new Set(choices).size===choices.length,builder.name+": stalled random source stays fresh and correct");
+        recent.push(sig);if(recent.length>RECENT_LIMIT)recent.shift();recoveryChecks++;
+      }
+    }
+  }finally{Math.random=random}
+  window.__eduSelfTest={passed:failures.length===0,assertions,failures,coverage,freshnessFallbacks:ordinaryFallbacks,recoveryChecks};
+}
+
+function verifyGenerated(q){return /^[\d +×÷−()]+$/.test(q.expr)&&Function("return "+q.expr.replaceAll("×","*").replaceAll("÷","/").replaceAll("−","-"))()===q.answer}
+function contentRegressions(check){
+  for(let type=0;type<8;type++)for(let i=0;i<100;i++){const q=buildQuestion(type);check(q.choices.includes(q.answer)&&new Set(q.choices).size===4&&verifyGenerated(q),"operation type "+type+" retains the evaluated answer")}
+  for(let type=5;type<8;type++){
+    const q=buildQuestion(type),help=document.createElement("div");
+    help.innerHTML=q.steps;
+    const equations=[...help.querySelectorAll(".step")];
+    check(equations.length===2,"division type "+type+" isolates both worked equations");
+    equations.forEach(equation=>equation.remove());
+    check(!/\d/.test(help.textContent),"division type "+type+" has no unisolated operands");
+  }
+  const random=Math.random;try{Math.random=()=>.15;const q=buildQuestion(0);check(q.expr==="19 + 3 × 3"&&q.answer===28&&q.choices.includes(28)&&q.choices.length===4,"hard-coded 19 + 3 × 3 missing-answer regression")}finally{Math.random=random}
+}
+
+const CONTENT_BUILDERS=Array.from({length:8},(_,type)=>{const builder=()=>buildQuestion(type);Object.defineProperty(builder,"name",{value:"operation"+type});return builder});
+if(new URLSearchParams(location.search).get("selftest")==="1")runContentSelfTest();
+newQuestion();
+if(new URLSearchParams(location.search).get("lesson")==="1")setTimeout(openLesson,0);
+</script>
+</body>
+</html>

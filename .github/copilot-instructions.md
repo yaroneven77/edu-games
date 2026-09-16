@@ -135,6 +135,7 @@ edu-games/
 
 - Use age-appropriate vocabulary, instructions, examples, and difficulty.
 - Keep questions and answers unambiguous and factually correct.
+- English questions may combine vocabulary into varied sentences, but use semantically compatible subject/action/object combinations, correct inflections, one unambiguous answer, and Hebrew guidance that matches the exact generated sentence.
 - Prefer varied exercises while preventing impossible, duplicate, or misleading answer choices.
 - Keep guided lesson examples fixed and intentional so explanations remain clear and repeatable.
 - Base English Grade 4 topic coverage and exercise patterns on the audited Matic Grade 4 English resources, but write original passages, questions, and examples rather than copying worksheets.

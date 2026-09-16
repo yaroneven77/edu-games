@@ -136,6 +136,7 @@ edu-games/
 - Use age-appropriate vocabulary, instructions, examples, and difficulty.
 - Keep questions and answers unambiguous and factually correct.
 - English questions may combine vocabulary into varied sentences, but use semantically compatible subject/action/object combinations, correct inflections, one unambiguous answer, and Hebrew guidance that matches the exact generated sentence.
+- Match English generation to each game's learner level and skill: short picture-supported sentences for Grade 3, grammar agreement for Grade 4, and scene-grounded clues for Secret Agent. Keep reading passages and fixed lesson examples authored; do not randomize their words or facts.
 - Prefer varied exercises while preventing impossible, duplicate, or misleading answer choices.
 - Keep guided lesson examples fixed and intentional so explanations remain clear and repeatable.
 - Base English Grade 4 topic coverage and exercise patterns on the audited Matic Grade 4 English resources, but write original passages, questions, and examples rather than copying worksheets.

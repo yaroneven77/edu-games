@@ -10,7 +10,7 @@
     $("load-error").textContent = `לא ניתן להציג את ההדגמה: ${message} יש לבדוק שקובצי ההדגמה קיימים ולרענן את הדף.`;
     $("load-error").hidden = false;
     $("character-stage").hidden = true;
-    document.querySelectorAll("#word-form input, #word-form button, #assist, #hint-box button, #category-select, #new-character, #level-select").forEach(node => { node.disabled = true; });
+    document.querySelectorAll("#word-form input, #word-form button, #assist, #hint-box button, #all-clues button, #category-select, #new-character, #level-select").forEach(node => { node.disabled = true; });
     $("feedback").textContent = "המשחק אינו זמין עד לתיקון שגיאת הטעינה.";
   }
   function assert(condition, message) {
@@ -52,12 +52,16 @@
   const state = {
     category: "Superhero", characterId: null, level: "beginner", accessories: [], targets: [],
     learnedIds: new Set(), activeHintId: null, revealedPositions: new Set(),
-    letterClicks: 0, incorrectGuesses: 0, wordShown: false
+    letterClicks: 0, incorrectGuesses: 0, wordShown: false,
+    successStreak: 0, bonusIds: new Set(), bonusId: null, previewing: false
   };
   let roundAliases = new Map();
   let targetById = new Map();
   let spellingAttempt = null;
   let highlightLayer = null;
+  let bonusTimer = null;
+  let previewTimer = null;
+  let previewControls = [];
   const feedback = message => { $("feedback").textContent = message; };
   const choose = items => items[Math.floor(Math.random() * items.length)];
   const validEllipse = region => region && ["cx", "cy", "rx", "ry"].every(key => Number.isFinite(region[key])) &&
@@ -67,7 +71,7 @@
     for (const [key, value] of Object.entries(attributes)) node.setAttribute(key, String(value));
     return node;
   }
-  function renderCharacter(character) {
+  function renderCharacter(character, completePreview = false) {
     const artwork = window.IllustratedLayers[character.id];
     assert(artwork && Array.isArray(artwork.layers), `Missing independent artwork: ${character.id}`);
     const layers = new Map(artwork.layers.map(layer => [layer.id, layer]));
@@ -76,11 +80,12 @@
       assert(layers.has(target.id) || target.accessoryIds.length > 0, `Missing independent piece: ${character.id}/${target.id}`);
     }
     const svg = svgNode("svg", { viewBox: "0 0 600 800", role: "img",
-      "aria-label": `${character.nameHe} · ${character.nameEn}, ${state.learnedIds.size} פריטים שנכתבו`,
+      "aria-label": completePreview ? `${character.nameHe} · ${character.nameEn}, הצצה לדמות המלאה` :
+        `${character.nameHe} · ${character.nameEn}, ${state.learnedIds.size} פריטים שנכתבו`,
       preserveAspectRatio: "xMidYMid meet" });
-    // Only independent earned fragments are inserted; the complete illustration is never loaded.
+    // A departing-round preview may show all fragments without granting learned-word credit.
     svg.innerHTML = artwork.defs || "";
-    const learnedTargets = state.targets.filter(target => state.learnedIds.has(target.id));
+    const learnedTargets = state.targets.filter(target => completePreview || state.learnedIds.has(target.id));
     learnedTargets.sort((a, b) => (layers.get(a.id)?.order ?? 200) - (layers.get(b.id)?.order ?? 200));
     for (const target of learnedTargets) {
       const group = svgNode("g", { "data-concept": target.id, "aria-hidden": "true" });
@@ -97,7 +102,7 @@
     highlightLayer = svgNode("g", { "aria-hidden": "true", "pointer-events": "none", "data-highlight": "" });
     svg.append(highlightLayer);
     $("character-stage").replaceChildren(svg);
-    $("empty-canvas").hidden = state.learnedIds.size > 0;
+    $("empty-canvas").hidden = completePreview || state.learnedIds.size > 0;
     for (const target of learnedTargets) {
       target.renderRegions = [...target.regions];
       const group = [...svg.children].find(node => node.dataset.concept === target.id);
@@ -111,7 +116,7 @@
     }
   }
   function showLocation(target) {
-    if (broken || !state.learnedIds.has(target.id)) return;
+    if (broken || state.previewing || !state.learnedIds.has(target.id)) return;
     highlightLayer.replaceChildren();
     highlightLayer.dataset.highlight = target.id;
     for (const region of target.renderRegions) {
@@ -151,6 +156,7 @@
     $("hint-box").hidden = !word;
     $("hint-he").textContent = word ? word.hints[state.level].he : "";
     renderLetterHint();
+    updateSelectedClue();
   }
   function setHint(id) {
     if (id !== state.activeHintId) {
@@ -202,12 +208,29 @@
       const card = document.createElement("li");
       card.className = `clue-card${found ? " found" : ""}`;
       card.dataset.concept = target.id;
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "clue-select";
+      button.setAttribute("aria-controls", "hint-box");
+      button.disabled = found || broken || state.previewing;
+      button.addEventListener("click", () => {
+        if (broken || state.previewing || state.learnedIds.has(target.id)) return;
+        setHint(target.id);
+        if (spellingAttempt?.id === target.id) {
+          state.incorrectGuesses = Math.max(state.incorrectGuesses, spellingAttempt.count);
+          renderLetterHint();
+        }
+        feedback("הרמז שבחרתם מוצג כעת באזור העזרה. אפשר לחשוף אותיות ולכתוב את התשובה בתיבה.");
+        $("hint-box").focus({ preventScroll: true });
+        $("hint-box").scrollIntoView({ block: "center", behavior: "instant" });
+      });
       const marker = document.createElement("span");
       marker.className = "clue-marker";
       marker.setAttribute("aria-hidden", "true");
       marker.textContent = found ? "✓" : String(index + 1);
-      const text = document.createElement("div");
-      const sentence = document.createElement("p");
+      const text = document.createElement("span");
+      text.className = "clue-copy";
+      const sentence = document.createElement("span");
       sentence.className = "clue-sentence";
       sentence.lang = "he"; sentence.dir = "rtl";
       sentence.textContent = target.hints[state.level].he;
@@ -215,9 +238,30 @@
       status.className = "clue-status";
       status.textContent = found ? "נמצא!" : "עוד לא נמצא";
       text.append(sentence, status);
-      card.append(marker, text);
+      if (found) {
+        const answer = document.createElement("span");
+        answer.className = "clue-answer";
+        const english = document.createElement("span");
+        english.className = "en"; english.lang = "en"; english.dir = "ltr";
+        english.textContent = target.canonical;
+        const hebrew = document.createElement("span");
+        hebrew.lang = "he"; hebrew.dir = "rtl";
+        hebrew.textContent = target.he;
+        answer.append(english, hebrew);
+        text.append(answer);
+      }
+      button.append(marker, text);
+      card.append(button);
       $("all-clues").append(card);
     });
+    updateSelectedClue();
+  }
+  function updateSelectedClue() {
+    for (const card of $("all-clues").children) {
+      const selected = card.dataset.concept === state.activeHintId;
+      card.classList.toggle("selected", selected);
+      card.querySelector("button").setAttribute("aria-pressed", String(selected));
+    }
   }
   function renderLearned() {
     renderClues();
@@ -252,6 +296,37 @@
     const key = normalize(value);
     return roundAliases.get(key) || allAliases.get(key) || null;
   }
+  function renderStreak() {
+    $("bonus-streak").textContent = state.learnedIds.size === state.targets.length ?
+      "כל המילים נמצאו — עבודה נהדרת!" : `רצף לבונוס: ${state.successStreak} מתוך 3 מילים חדשות`;
+  }
+  function clearBonusNotice() {
+    state.bonusId = null;
+    dismissBonusPopup();
+    $("word-input").classList.remove("bonus-input");
+  }
+  function dismissBonusPopup() {
+    clearTimeout(bonusTimer);
+    bonusTimer = null;
+    const restoreFocus = document.activeElement === $("bonus-close");
+    $("bonus-message").hidden = true;
+    if (restoreFocus) $("word-input").focus();
+  }
+  function rewardStreak() {
+    if (state.successStreak < 3) return;
+    state.successStreak = 0;
+    const missing = state.targets.filter(target => !state.learnedIds.has(target.id));
+    if (!missing.length) return;
+    const fresh = missing.filter(target => !state.bonusIds.has(target.id));
+    const bonus = choose(fresh.length ? fresh : missing);
+    state.bonusIds.add(bonus.id);
+    state.bonusId = bonus.id;
+    $("word-input").value = bonus.canonical;
+    $("word-input").classList.add("bonus-input");
+    $("bonus-message").hidden = false;
+    clearTimeout(bonusTimer);
+    bonusTimer = setTimeout(dismissBonusPopup, 4000);
+  }
   function spellingDistance(a, b) {
     const distances = Array.from({ length: a.length + 1 }, (_, i) => [i]);
     for (let j = 1; j <= b.length; j++) distances[0][j] = j;
@@ -281,15 +356,18 @@
   }
   function submit(event) {
     event.preventDefault();
-    if (broken) return;
+    if (broken || state.previewing) return;
     const value = normalize($("word-input").value);
     if (!value) {
       feedback("כתבו מילה באנגלית כדי להוסיף משהו לדמות.");
       $("word-input").focus();
       return;
     }
+    clearBonusNotice();
     const target = roundAliases.get(value);
     if (!target) {
+      state.successStreak = 0;
+      renderStreak();
       if (allAliases.has(value)) {
         spellingAttempt = null;
         feedback("האיות נכון, אבל הפריט הזה אינו באוסף האפשרויות של הדמות בסבב הזה. נסו חלק גוף או בקשו רמז לפריט מתאים.");
@@ -305,6 +383,7 @@
     }
     spellingAttempt = null;
     const known = state.learnedIds.has(target.id);
+    const bonusAnswer = state.bonusIds.has(target.id);
     state.learnedIds.add(target.id);
     if (state.activeHintId === target.id) setHint(null);
     renderCharacter(window.IllustratedCharacters[state.characterId]);
@@ -312,8 +391,14 @@
     showLocation(target);
     feedback(known ? "נכון! המילה כבר באוסף ונספרת פעם אחת. המיקום סומן שוב." :
       state.learnedIds.size === state.targets.length ? "מצאתם את כל המילים בדמות הזאת! אפשר לבחור דמות חדשה." :
+        bonusAnswer ? "נהדר! מילת הבונוס נוספה לדמות. עכשיו ממשיכים לגלות מילים חדשות — אתם אלופים!" :
         "נכון! רק החלק או הפריט שכתבתם נוסף לציור, והמילה והפירוש נוספו לאוסף.");
     $("word-input").value = "";
+    if (!known && !bonusAnswer) {
+      state.successStreak++;
+      rewardStreak();
+    }
+    renderStreak();
     $("word-input").focus();
   }
   function showLevelSuggestion() {
@@ -324,8 +409,34 @@
     };
     $("level-suggestion").textContent = `${text[state.level]} בכל רמה כל המילים של הסבב מתקבלות.`;
   }
+  function finishPreview() {
+    clearTimeout(previewTimer);
+    previewTimer = null;
+    state.previewing = false;
+    $("character-preview").hidden = true;
+    for (const [control, disabled] of previewControls) control.disabled = disabled;
+    previewControls = [];
+  }
+  function previewNextCharacter() {
+    if (broken || state.previewing) return;
+    clearBonusNotice();
+    state.previewing = true;
+    previewControls = [...document.querySelectorAll("#word-form input, #word-form button, #assist, #hint-box button, #all-clues button, #category-select, #new-character, #level-select, #learned-words button")]
+      .map(control => [control, control.disabled]);
+    for (const [control] of previewControls) control.disabled = true;
+    renderCharacter(window.IllustratedCharacters[state.characterId], true);
+    $("character-preview").hidden = false;
+    $("location-status").textContent = "";
+    feedback("כל הכבוד על התרגול! הצצה לדמות המלאה — בעוד שלוש שניות מתחילים דמות חדשה.");
+    $("character-stage").scrollIntoView({ block: "center", behavior: "instant" });
+    previewTimer = setTimeout(() => {
+      startRound();
+      $("word-input").focus({ preventScroll: true });
+    }, 3000);
+  }
   function startRound() {
     assert(!broken, "Reload the page after fixing the reported error.");
+    finishPreview();
     const category = $("category-select").value;
     const pool = characters.filter(character => character.category === category);
     const alternatives = pool.filter(character => character.id !== state.characterId);
@@ -361,6 +472,9 @@
     targetById = new Map(state.targets.map(target => [target.id, target]));
     roundAliases = aliasMap(state.targets);
     state.learnedIds.clear();
+    state.successStreak = 0;
+    state.bonusIds.clear();
+    clearBonusNotice();
     spellingAttempt = null;
     setHint(null);
     $("word-input").value = "";
@@ -377,12 +491,15 @@
     $("character-name").textContent = `${character.nameHe} · ${character.nameEn}`;
     renderCharacter(character);
     renderLearned();
+    renderStreak();
     feedback("הבמה ריקה. כתבו חלק גוף, בגד או אביזר כדי להוסיף אותו. אפשר להתחיל בכל סדר!");
   }
   $("word-form").addEventListener("submit", submit);
+  $("word-input").addEventListener("input", clearBonusNotice);
   $("help-open").addEventListener("click", () => $("help-dialog").showModal());
   $("help-dialog").addEventListener("close", () => $("help-open").focus());
-  $("new-character").addEventListener("click", startRound);
+  $("bonus-close").addEventListener("click", dismissBonusPopup);
+  $("new-character").addEventListener("click", previewNextCharacter);
   $("category-select").addEventListener("change", startRound);
   $("level-select").addEventListener("change", () => {
     if (broken) return;
@@ -432,7 +549,9 @@
     accessoryIds: state.accessories.map(item => item.id), targets: state.targets.map(target => target.id),
     targetIds: state.targets.map(target => target.id), lastHighlightId: highlightLayer?.dataset.highlight || null,
     learnedIds: [...state.learnedIds], activeHintId: state.activeHintId,
-    visibleIds: [...state.learnedIds],
+    visibleIds: [...$("character-stage").querySelectorAll("[data-concept]")].map(node => node.dataset.concept),
+    previewing: state.previewing,
+    successStreak: state.successStreak, bonusIds: [...state.bonusIds], bonusId: state.bonusId,
     hintProgress: { revealedPositions: [...state.revealedPositions].sort((a, b) => a - b),
       letterClicks: state.letterClicks, incorrectGuesses: state.incorrectGuesses, wordShown: state.wordShown }
   });

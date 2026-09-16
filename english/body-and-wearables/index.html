@@ -20,15 +20,24 @@ input,select{width:100%;padding:10px;background:var(--edu-input,#fff)}button{pad
 button:disabled{opacity:.55;cursor:default}button:hover:not(:disabled){filter:brightness(.96)}
 button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--edu-accent,#285f9f);outline-offset:4px}
 .primary{background:var(--edu-accent,#285f9f);color:var(--edu-action-text,#fff)}.wide{width:100%}
-.en{direction:ltr;text-align:left;unicode-bidi:isolate}.entry-row{display:flex;gap:8px}.entry-row input{min-width:0;font-size:1.25rem}.entry-row button{flex-shrink:0}
+.en{direction:ltr;text-align:left;unicode-bidi:isolate}.entry-row{position:relative;display:flex;gap:8px}.entry-row input{min-width:0;font-size:1.25rem}.entry-row button{flex-shrink:0}
 .note{font-size:.88rem;line-height:1.7}.feedback{min-height:64px;padding:12px;border-inline-start:4px solid var(--edu-accent,#286493);background:var(--edu-soft,#edf3fb);border-radius:8px;margin:16px 0}
+.bonus-message{position:absolute;z-index:5;top:calc(100% + 8px);inset-inline:0;padding:16px;border:2px solid var(--edu-accent,#285f9f);border-radius:16px;background:var(--edu-surface,#fff);box-shadow:0 12px 30px #16365740;line-height:1.7}
+.bonus-head{display:flex;align-items:center;justify-content:space-between;gap:8px}#bonus-close{padding:4px;min-width:44px;font-size:1.4rem}
+.bonus-message strong{display:block;font-size:1.15rem}.bonus-message p{margin:6px 0 0}
+#word-input.bonus-input{border:2px solid var(--edu-accent,#285f9f);background:var(--edu-soft,#edf3fb)}
 .hint-box{padding:16px;margin-top:14px;border:1px dashed var(--edu-border,#aac1d3);border-radius:16px;background:var(--edu-soft,#f3f7fb)}.hint-actions{display:flex;flex-wrap:wrap;gap:8px}.hint-actions button{font-size:.88rem}
 #hint-he{font-size:1.15rem;font-weight:700;margin-top:0}#first-letter{font-size:1.65rem;font-weight:800;white-space:pre-wrap;overflow-wrap:anywhere}
 .clue-panel{margin-top:20px;border-top:4px solid var(--edu-accent,#285f9f)}
 .clue-panel .note{margin-top:0}.clue-list{list-style:none;padding:0;margin:18px 0 0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-.clue-card{display:flex;align-items:flex-start;gap:10px;min-width:0;padding:16px;border:1px solid var(--edu-border,#d5dfec);border-radius:16px;background:var(--edu-soft,#edf3fb)}
+.clue-card{display:flex;min-width:0;border:1px solid var(--edu-border,#d5dfec);border-radius:16px;background:var(--edu-soft,#edf3fb)}
+.clue-select{display:flex;align-items:flex-start;gap:10px;width:100%;padding:16px;border:0;border-radius:inherit;background:transparent;text-align:start;font-weight:400}
+.clue-select:disabled{opacity:1}
+.clue-copy{min-width:0}.clue-card.selected{outline:3px solid var(--edu-accent,#285f9f);outline-offset:2px}
 .clue-marker{flex-shrink:0;display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--edu-surface,#fff);font-weight:800;font-size:.85rem}
-.clue-sentence{margin:0;line-height:1.7;overflow-wrap:anywhere}.clue-status{display:block;font-size:.78rem;margin-top:6px;font-weight:700}
+.clue-sentence{display:block;margin:0;line-height:1.7;overflow-wrap:anywhere}.clue-status{display:block;font-size:.78rem;margin-top:6px;font-weight:700}
+.clue-answer{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:10px;font-weight:800;line-height:1.6;overflow-wrap:anywhere}
+.clue-answer span{padding:3px 8px;border-radius:8px;background:var(--edu-soft,#edf3fb)}
 .clue-card.found{border-inline-start:4px solid var(--edu-accent,#285f9f);background:var(--edu-surface,#fff)}
 .clue-card.found .clue-sentence{text-decoration:line-through;text-decoration-thickness:2px;color:var(--edu-text,#243b53)}
 .clue-card.found .clue-marker{background:var(--edu-accent,#285f9f);color:var(--edu-action-text,#fff)}
@@ -38,6 +47,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 .help-dialog::backdrop{background:#14293f99}.help-dialog li{line-height:1.8;margin-bottom:12px}.help-dialog form{text-align:end}
 .studio-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap}.count{padding:7px 11px;border-radius:99px;background:var(--edu-soft,#edf3fb);font-size:.85rem}
 #character-name{margin:0;font-size:.95rem}.canvas-wrap{position:relative;height:520px;margin:12px 0;border:1px solid #c8d5e5;border-radius:20px;overflow:hidden;background:#f8fafc}
+#character-preview{margin:12px 0;padding:10px;border-radius:12px;background:var(--edu-soft,#edf3fb);color:var(--edu-text,#243b53);text-align:center;font-weight:700}
 #empty-canvas{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;padding:24px;text-align:center;color:#506679;pointer-events:none}
 #character-stage,#character-stage>svg{display:block;width:100%;height:100%}.location-outline{fill:#fff00018;stroke:#fff;stroke-width:7;vector-effect:non-scaling-stroke}.location-outline.front{fill:none;stroke:#9b1761;stroke-width:3;stroke-dasharray:7 4}
 #location-status{min-height:28px;margin:8px 0}.collection-title{margin-top:22px}.collection{list-style:none;margin:0;padding:3px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;max-height:380px;overflow:auto}
@@ -57,6 +67,8 @@ footer{text-align:center;font-size:.83rem;margin-top:24px;line-height:1.8}[hidde
 <dialog id="help-dialog" class="help-dialog" aria-labelledby="help-title">
 <h2 id="help-title" tabindex="-1" autofocus>איך משחקים?</h2>
 <ul><li>בכל סגנון שתי דמויות מקוריות. כפתור הדמות החדשה מגריל את הדמות האחרת וחמישה אביזרים אפשריים, ומחזיר את הבמה למצב ריק.</li><li>כל 27 מילות הגוף מתקבלות בכל רמה. הרמה משנה רק את הרמזים וההצעות.</li><li>כל מילה מציגה רק את החלק או הפריט שלה. כתיבת עיניים אינה מציגה ראש, וכתיבת כובע אינה מציגה שיער. החלקים נשארים במקומם עד שתוסיפו את שכניהם.</li><li>בגדים מוצגים מעל חלקי הגוף שכבר הוספתם. מילים שכבר נמצאות באוסף אינן נספרות שוב.</li><li>הרמזים בעברית. בפאנל כל הרמזים, משפטים של מילים שמצאתם מסומנים בקו ובסימן ✓. רמזי אותיות והצגת המילה אינם מוסיפים ציור — עדיין צריך להקליד תשובה נכונה.</li><li>אם טעיתם באיות, לחצו על רמז כדי לקבל עזרה למילה שניסיתם לכתוב. לרמז למילה אחרת, נקו את תיבת הכתיבה.</li><li>אין טיימר ואין שמירת התקדמות. רענון הדף מתחיל מחדש.</li></ul>
+<p class="note">בונוס: כל שלוש מילים חדשות ברצף ללא תשובה שגויה מזכות במילה חסרה שמופיעה בתיבה. לחצו על בדיקה כדי להוסיף אותה. מילת בונוס ומילה שכבר נמצאה לא מקדמות את הרצף הבא; רמזים ותיבה ריקה לא מאפסים אותו.</p>
+<p class="note">הודעת הבונוס מופיעה ליד תיבת הכתיבה ונסגרת אחרי 4 שניות או בלחיצה על ×. המילה נשארת בתיבה. בלחיצה על דמות חדשה רואים את הדמות הנוכחית בשלמותה למשך 3 שניות, ואז מתחילים מדף ריק עם דמות אחרת.</p>
 <form method="dialog"><button class="primary">הבנתי, בואו נשחק!</button></form>
 </dialog>
 <div id="load-error" class="error" role="alert" hidden></div>
@@ -72,13 +84,17 @@ footer{text-align:center;font-size:.83rem;margin-top:24px;line-height:1.8}[hidde
 <p class="note">דמות חדשה או שינוי סגנון מתחילים סבב חדש ומאפסים את המילים והרמזים. הבחירות בגלריה נפרדות ואינן משתנות.</p>
 <form id="word-form" autocomplete="off">
 <label for="word-input">כתבו מילה באנגלית</label>
-<div class="entry-row"><input id="word-input" class="en" lang="en" dir="ltr" type="text" maxlength="64" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" enterkeyhint="done" aria-describedby="input-help" placeholder="English word"><button class="primary" type="submit">בדיקה</button></div>
+<div class="entry-row"><input id="word-input" class="en" lang="en" dir="ltr" type="text" maxlength="64" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" enterkeyhint="done" aria-describedby="input-help" placeholder="English word"><button class="primary" type="submit">בדיקה</button>
+<div id="bonus-message" class="bonus-message" role="status" aria-live="polite" aria-atomic="true" hidden><div class="bonus-head"><strong>🎉 כל הכבוד! זכיתם בבונוס!</strong><button id="bonus-close" type="button" aria-label="סגירת הודעת הבונוס">×</button></div><p>מצאתם 3 מילים חדשות ברצף — אלופים! מילת מתנה הוכנסה לתיבת הכתיבה. לחצו על בדיקה כדי להוסיף אותה לדמות.</p></div>
+</div>
 <p id="input-help" class="note">כל 27 מילות הגוף מתקבלות, וגם פריטי הלבוש והאביזרים שבאוסף הדמות לסבב הזה. אם יש טעות באיות, לחצו על רמז כדי לקבל עזרה למילה שניסיתם לכתוב. לרמז למילה אחרת, נקו את תיבת הכתיבה. רק תשובה נכונה מוסיפה את החלק עצמו ואת כרטיס המילה.</p>
 </form>
 <div id="feedback" class="feedback" role="status" aria-live="polite" aria-atomic="true">מכינים את הדמות…</div>
+<p id="bonus-streak" class="note" role="status" aria-live="polite"></p>
+<p class="note">כל 3 מילים חדשות ברצף מזכות בבונוס. תשובה שלא מתקבלת מתחילה רצף חדש. מילים שכבר נמצאו ומילות בונוס לא נספרות ברצף; עזרה ורמזים תמיד מותר!</p>
 <p id="level-suggestion" class="note"></p>
 <button id="assist" class="wide" type="button">💡 רמז למילה נוספת</button>
-<section id="hint-box" class="hint-box" aria-label="רמז למילה" hidden>
+<section id="hint-box" class="hint-box" aria-label="רמז למילה" tabindex="-1" hidden>
 <p id="hint-he" lang="he" dir="rtl"></p>
 <div class="hint-actions"><button id="hint-letter" type="button" aria-controls="letter-progress">אות לפי הסדר</button><button id="hint-random-letter" type="button" aria-controls="letter-progress">אות אקראית</button><button id="hint-show-word" type="button" aria-controls="letter-progress" hidden>הצגת המילה</button></div>
 <div id="letter-progress" aria-live="polite" aria-atomic="true"><p id="first-letter" class="en" lang="en" dir="ltr" hidden></p><p id="letter-count" class="note"></p><p id="hint-attempts" class="note"></p></div>
@@ -88,6 +104,7 @@ footer{text-align:center;font-size:.83rem;margin-top:24px;line-height:1.8}[hidde
 <section class="panel studio" aria-labelledby="studio-title">
 <div class="studio-head"><h2 id="studio-title">הדמות שלכם</h2><span class="count"><b id="learned-count">0</b> מתוך <b id="target-count">0</b> מילים</span></div>
 <p id="character-name"></p>
+<p id="character-preview" role="status" hidden>הצצה לדמות המלאה — מיד מתחילים דמות חדשה!</p>
 <div class="canvas-wrap"><div id="character-stage"></div><div id="empty-canvas"><strong>מתחילים מדף ריק</strong><span>כתבו מילה באנגלית, ורק החלק שלה יופיע כאן.</span></div></div>
 <p id="location-status" class="note" role="status" aria-live="polite"></p>
 <p class="note">רק הפריטים שכבר כתבתם מופיעים בציור. בגדים עשויים לכסות חלקים שנלמדו; אפשר לסמן שוב מילה מהאוסף.</p>
@@ -99,7 +116,7 @@ footer{text-align:center;font-size:.83rem;margin-top:24px;line-height:1.8}[hidde
 </div>
 <section class="panel clue-panel" aria-labelledby="clue-title">
 <div class="studio-head"><h2 id="clue-title">💡 כל הרמזים לדמות שלכם</h2><span id="clue-summary" class="count" role="status" aria-live="polite"></span></div>
-<p class="note">קראו רמז בעברית וכתבו את המילה באנגלית. רמזים למילים שמצאתם מסומנים בקו ובסימן ✓. הרמזים מתעדכנים לפי הרמה והדמות שבחרתם.</p>
+<p class="note">לחצו על רמז שעוד לא פתרתם כדי לפתוח אותו באזור העזרה ולחשוף אותיות, ואז כתבו את המילה באנגלית. רמזים למילים שמצאתם מסומנים בקו ובסימן ✓, עם המילה באנגלית והפירוש בעברית, ואינם ניתנים לבחירה. הרמזים מתעדכנים לפי הרמה והדמות שבחרתם.</p>
 <progress id="clue-progress" value="0" max="1" aria-label="התקדמות במציאת המילים"></progress>
 <ul id="all-clues" class="clue-list" aria-label="כל רמזי הסבב בעברית"></ul>
 </section>

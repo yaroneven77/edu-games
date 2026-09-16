@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>בְּחִירַת כִּתָּה · מִשְׂחֲקֵי אַנְגְּלִית</title>
+<script src="../../assets/theme-selector.js" defer></script>
+<script data-goatcounter="https://yaroneven.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+<style>
+  :root{
+    --bg1:#fff7e6;--bg2:#cdeffd;--blue:#1f7fc4;--blue-d:#155f93;
+    --yellow:#ffce3a;--red:#e6604f;--green:#3fbf6b;--ink:#243b53;--shadow:rgba(20,60,90,.18);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;height:100%;}
+  body{
+    font-family:"Segoe UI","Arial Hebrew",Arial,sans-serif;color:var(--ink);
+    background:linear-gradient(160deg,var(--bg1),var(--bg2));min-height:100%;
+    display:flex;flex-direction:column;align-items:center;
+  }
+  header{width:100%;text-align:center;padding:14px 8px 4px;}
+  .home{
+    display:inline-block;background:#fff;border-radius:14px;padding:5px 12px;font-size:20px;
+    line-height:1;text-decoration:none;box-shadow:0 3px 0 var(--shadow);margin-bottom:8px;
+  }
+  .logo{
+    display:inline-block;font-weight:900;font-size:clamp(28px,7vw,48px);color:var(--yellow);
+    text-shadow:2px 2px 0 var(--red),4px 4px 0 var(--green),0 6px 14px var(--shadow);letter-spacing:1px;
+  }
+  .logo small{display:block;font-size:.45em;color:var(--blue-d);text-shadow:none;font-weight:800;margin-top:4px;}
+  main{width:100%;max-width:760px;flex:1;padding:18px 14px 30px;}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  @media(max-width:560px){.grid{grid-template-columns:1fr;}}
+  a.grade{
+    text-decoration:none;color:inherit;background:#fff;border-radius:24px;padding:32px 18px;
+    box-shadow:0 8px 0 var(--shadow);text-align:center;transition:transform .08s,box-shadow .08s;
+  }
+  a.grade:active{transform:translateY(4px);box-shadow:0 3px 0 var(--shadow);}
+  a.grade .emoji{display:block;font-size:58px;margin-bottom:10px;}
+  a.grade h2{font-size:clamp(25px,7vw,34px);margin:0 0 7px;}
+  a.grade p{margin:0;color:#5b7b99;line-height:1.5;}
+  a.three{border-top:9px solid var(--green);}
+  a.four{border-top:9px solid var(--blue);}
+  a.plus{border-top:9px solid #8a63d2;}
+  .coming{
+    border:3px dashed #cfe0ee;background:rgba(255,255,255,.55);border-radius:24px;padding:32px 18px;
+    text-align:center;color:#6b87a3;
+  }
+  .coming .emoji{display:block;font-size:48px;margin-bottom:8px;}
+  .coming h2{margin:0 0 7px;font-size:clamp(22px,6vw,30px);}
+  .coming p{margin:0;line-height:1.5;}
+  footer{padding:10px;color:#6b87a3;font-size:12px;text-align:center;}
+</style>
+<link rel="stylesheet" href="../assets/refresh.css">
+<style id="english-refresh">
+  #edu-refresh main{max-width:900px;padding:20px 16px 36px}
+  #edu-refresh .grid{gap:20px}
+  #edu-refresh a.grade{padding:26px 22px;text-align:start;border-top:4px solid var(--refresh-accent)!important}
+  #edu-refresh a.grade .emoji{font-size:42px;margin-bottom:14px}
+  #edu-refresh a.grade h2{font-size:28px;margin-bottom:10px}
+  #edu-refresh a.grade p{font-size:17px;color:var(--refresh-muted)!important}
+</style>
+</head>
+<body id="edu-refresh">
+<nav class="version-compare" aria-label="השוואת גרסאות" dir="rtl">
+  <a class="version-home" href="../index.html" lang="en" dir="ltr">Edu Games 2</a>
+  <span>עיצוב חדש</span>
+  <a class="version-original" href="../../english/index.html" target="_blank" rel="noopener">פתיחת המקור להשוואה ↗</a>
+</nav>
+<header>
+  <a class="home" href="../index.html" title="לַעַמּוּד הָרָאשִׁי">⬆️🏠</a>
+  <div class="logo">מִשְׂחֲקֵי אַנְגְּלִית 🔤<small>בַּחֲרוּ כִּתָּה</small></div>
+</header>
+<main>
+  <div class="grid">
+    <a class="grade three" href="./grade-3/index.html">
+      <span class="emoji">3️⃣</span>
+      <h2>כִּתָּה ג'</h2>
+      <p>לוֹמְדִים מִלִּים בְּאַנְגְּלִית עִם תְּמוּנוֹת, צְלִילִים, תַּרְגּוּם לְעִבְרִית וּמִשְׂחֲקֵי פוֹנִיקְס.</p>
+    </a>
+    <a class="grade four" href="./grade-4/index.html">
+      <span class="emoji">4️⃣</span>
+      <h2>כִּתָּה ד'</h2>
+      <p>28 נוֹשְׂאִים בְּאוֹצַר מִלִּים, דִּקְדּוּק, הֲבָנַת הַנִּקְרָא וּכְתִיבָה, עִם שִׁעוּרִים בְּעִבְרִית וְתִרְגּוּל מִתְחַלֵּף.</p>
+    </a>
+    <a class="grade plus" href="./english-12plus/index.html">
+      <span class="emoji">🕶️</span>
+      <h2>English 12+</h2>
+      <p>מִשְׂחֲקֵי אַנְגְּלִית לְגִיל 12 וָמַעְלָה, עִם מְשִׂימוֹת הַרְפַּתְקָה וְהַקְשָׁבָה.</p>
+    </a>
+  </div>
+</main>
+<footer>מִשְׂחֲקֵי אַנְגְּלִית · בְּחִירַת כִּתָּה</footer>
+</body>
+</html>

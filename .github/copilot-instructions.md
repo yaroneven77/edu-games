@@ -7,7 +7,7 @@ Edu Games is a collection of educational English, math, and Kindergarten games c
 ## Architecture
 
 - Keep the project dependency-free unless the user explicitly requests otherwise.
-- Each game should remain a self-contained HTML file with its CSS and JavaScript embedded.
+- Each game should keep its curriculum and JavaScript self-contained in its HTML file; shared presentation assets are limited to `assets/theme-selector.js` and `assets/refresh.css`.
 - Do not introduce a build step, framework, package manager, or server requirement for ordinary content additions.
 - Keep games usable from GitHub Pages and when opened locally in a browser.
 - Preserve offline capability except for optional services already used by the project, such as analytics.
@@ -20,8 +20,8 @@ Edu Games is a collection of educational English, math, and Kindergarten games c
 - Grade 4 currently contains 11 games covering numbers to one million, order of operations, fraction comparison, written arithmetic, number properties, fraction operations, word problems, geometry, measurement, data, and probability.
 - English Grade 4 lives at `english/grade-4/` and groups 28 vocabulary, grammar, reading-comprehension, and guided-writing topics into six learning worlds. Preserve both mixed world practice and direct access to every topic.
 - All active production pages load `assets/theme-selector.js`. Preserve the upper-right five-template selector, the `edu-games-site-design` preference, and consistent theme behavior across navigation.
-- The shared theme selector is the intentional exception to the otherwise self-contained game-page architecture; game content and behavior must remain usable if the optional theme script fails to load.
-- Keep game content only in the canonical `english/`, `math/`, and `kindergarten/` hierarchy; do not retain parallel top-level redirect folders.
+- Shared presentation assets are intentional exceptions to the otherwise self-contained game-page architecture; game content and behavior must remain usable if optional styling or the theme script fails to load.
+- Keep original game content in the canonical `english/`, `math/`, and `kindergarten/` hierarchy; the approved comparison version mirrors these paths inside `edu-games2/`. Do not recreate obsolete top-level redirect folders.
 - Treat `sandbox/sandbox.html` as the preview hub for all new or substantially changed content.
 - Add staged content to the sandbox preview hub so the user can test it at the published sandbox URL before production promotion.
 - Preserve existing previews as separate files or folders linked from the sandbox hub instead of overwriting unrelated staged content.
@@ -34,7 +34,8 @@ Edu Games is a collection of educational English, math, and Kindergarten games c
 edu-games/
 ├── index.html
 ├── assets/
-│   └── theme-selector.js
+│   ├── theme-selector.js
+│   └── refresh.css
 ├── english/
 │   ├── index.html
 │   ├── grade-3/
@@ -81,6 +82,31 @@ edu-games/
 - Do not recreate the removed top-level `grade-3/`, `grade-4/`, `fractions-lesson/`, `division-game/`, `english-12plus/`, `secret-agent/`, or `word-game/` folders.
 - Infrastructure and preview folders such as `.github/`, `assets/`, and `sandbox/` are not part of the learner hierarchy.
 - Recalculate `assets/theme-selector.js` paths whenever a page moves. Subject hubs use `../assets/`, grade/category pages use `../../assets/`, and games nested below a grade/category use `../../../assets/`.
+
+## Improving the existing games
+
+- Preserve the existing page hierarchy, curriculum, game structure, and answer/scoring logic when improving appearance and usability.
+- Start with one sandbox demo and obtain approval before expanding a redesign to other games.
+- Prefer clearer typography, spacing, feedback, and controls. Do not add adventure layers, prerequisite puzzles, extra stages, or new scoring systems unless explicitly requested.
+- The experimental adventure remake was rejected and removed. Do not restore its added puzzles or use it as the basis for future improvements.
+- The simple visual-refresh demo remains at `sandbox/simple-refresh/index.html`. The subsequently approved design from `edu-games2/` has been promoted to the canonical pages; the theme engine and original gameplay scripts remain unchanged.
+
+## Approved design and retained Edu Games 2 preview
+
+- The user approved recreating `edu-games2/` as a visual-refresh copy of all original learner pages, not an adventure remake. Mirror the same subject, grade, and game hierarchy, including all curriculum and existing lessons.
+- The user approved applying the new presentation to the main site locally. Canonical pages load root `assets/refresh.css`, retain their original gameplay scripts, and have no comparison bars or dependency on `edu-games2/`. A local promotion does not authorize a commit or push.
+- Retain `edu-games2/` as a separate preview; do not automatically synchronize future edits. Its comparison links now open the refreshed canonical site. The earlier design is preserved in Git history.
+- Preserve existing game mechanics, questions, scoring, help, next controls, and learning sequence. Use clearer typography, spacing, readable controls, and calmer styling; do not add prerequisite puzzles, extra stages, or new reward systems.
+- Match page-title sizing and spacing to the corresponding original `edu-games` page across all five templates; do not enlarge or compact those headers as part of the refresh.
+- English Grade 4 retains the original panel geometry, including topic actions, practice, explanations, and lesson dialogs. Its `data-original-layout`/`original-layout` markers opt out of shared layout overrides; comparison links share the existing top control area rather than adding page height.
+- Every copied learner page has a clearly labeled comparison bar linking to its matching original in a separate tab, keeping the new version open. Internal game/home links stay within `edu-games2/`.
+- Support **all five templates**: Adventure, Space, Classroom, Stickers, and Arcade. Keep their selector, distinct palettes, dark/light readability, and the shared `edu-games-site-design` preference across both versions.
+- Preserve the selected template's decorative background pictures in the refreshed version. Keep them non-interactive and outside document flow so they never change panel sizes or positions.
+- Give each template its own subtle background texture: Adventure scenery, Classroom paper/wood, Stickers notebook lines, Space stars, and Arcade grid. Keep text panels readable and their geometry unchanged.
+- Load root `assets/theme-selector.js` as a read-only shared asset. Main-site pages use root `assets/refresh.css`; the retained preview uses its own `edu-games2/assets/refresh.css`. Keep page-specific refinements embedded in each HTML file. Do not copy or fork the theme engine.
+- Keep the comparison version dependency-free and playable locally and on GitHub Pages. Use explicit `index.html` navigation links for local-file use; copy required local images and other game assets into matching relative locations.
+- Link the comparison version from `sandbox/sandbox.html`; retain the earlier previews and obtain approval before any replacement of original pages or push.
+- Validate matching page paths, asset links, curriculum/script parity, and active game states at mobile and desktop sizes in all five templates. Any gameplay correction must be small, necessary for playable questions, documented, and confined to the new version unless a cross-version change is approved.
 
 ## Existing patterns
 

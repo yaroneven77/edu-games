@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Picture Pairs · Kindergarten</title>
 <script src="../../assets/theme-selector.js" defer></script>
 <script data-goatcounter="https://yaroneven.goatcounter.com/count"
@@ -41,11 +41,27 @@
   }
   .next:hover{background:#b9572f;}
 </style>
+<link rel="stylesheet" href="../../assets/refresh.css">
+<style id="picture-pairs-refresh">
+  #edu-refresh .wrap{max-width:540px}
+  #edu-refresh #game{padding:24px 20px}
+  #edu-refresh .topbar{gap:12px;font-size:18px;margin-bottom:18px}
+  #edu-refresh .score{padding:5px 10px;border-radius:10px!important}
+  #edu-refresh .moves{color:var(--refresh-muted)}
+  #edu-refresh .he-instr{font-size:20px;color:var(--refresh-secondary);line-height:1.8;margin-bottom:20px}
+  #edu-refresh #game-board{gap:10px}
+  #edu-refresh #game-board .memcard{background:var(--refresh-soft)!important;color:var(--refresh-text)!important;border:2px solid var(--refresh-border)!important;border-radius:14px!important;font-size:clamp(26px,7vw,38px)}
+  #edu-refresh #game-board .memcard.flipped{background:var(--refresh-surface)!important;border-color:var(--refresh-accent)!important}
+  #edu-refresh #game-board .memcard.matched{background:#def3e7!important;border-color:#39835c!important;color:#175837!important}
+  #edu-refresh #game-feedback{font-size:20px;line-height:1.85;color:var(--refresh-text)!important;min-height:40px}
+  #edu-refresh #game-next{font:700 18px "Segoe UI",Arial,sans-serif;min-height:48px}
+  @media(max-width:420px){#edu-refresh #game{padding:20px 14px}#edu-refresh #game-board{gap:8px}}
+</style>
 </head>
-<body>
+<body id="edu-refresh">
 <div class="wrap">
   <div class="nav">
-    <a class="home" href="../" title="Back to kindergarten games">⬆️🏠</a>
+    <a class="home" href="../index.html" title="Back to kindergarten games">⬆️🏠</a>
     <div class="title">🧠 Picture Pairs</div>
   </div>
   <div class="card" id="game">

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>מִשְׂחֲקֵי גַּן · Kindergarten</title>
+<script src="../../assets/theme-selector.js" defer></script>
+<script data-goatcounter="https://yaroneven.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+<style>
+  :root{--ink:#6b3b22;--shadow:rgba(99,54,30,.2);}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;min-height:100%;}
+  body{
+    min-height:100vh;font-family:"Comic Sans MS","Segoe UI","Arial Hebrew",Arial,sans-serif;
+    color:var(--ink);background:linear-gradient(135deg,#ffd194,#f9a1bc);
+    display:flex;flex-direction:column;align-items:center;
+  }
+  header{width:100%;text-align:center;padding:16px 10px 4px;}
+  .home{
+    display:inline-block;background:#fff;border-radius:14px;padding:6px 12px;font-size:20px;
+    line-height:1;text-decoration:none;box-shadow:0 3px 0 var(--shadow);margin-bottom:10px;
+  }
+  .logo{font-size:clamp(30px,8vw,50px);font-weight:900;color:#fff;text-shadow:2px 3px 0 #d2693e;}
+  .sub{font-size:clamp(16px,4vw,21px);font-weight:800;margin-top:5px;}
+  main{width:100%;max-width:760px;flex:1;padding:20px 14px 32px;}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .game{
+    text-decoration:none;color:inherit;background:#fff;border-radius:26px;padding:28px 18px;
+    box-shadow:0 8px 0 var(--shadow);text-align:center;transition:transform .08s,box-shadow .08s;
+  }
+  .game:active{transform:translateY(4px);box-shadow:0 3px 0 var(--shadow);}
+  .game .emoji{display:block;font-size:64px;margin-bottom:10px;}
+  .game h2{margin:0 0 8px;font-size:clamp(24px,6vw,32px);}
+  .game p{margin:0;color:#8a5d45;font-size:16px;line-height:1.55;}
+  .pairs{border-top:9px solid #d2693e;}
+  .war{border-top:9px solid #2563eb;}
+  footer{padding:10px;color:#84583f;font-size:12px;text-align:center;}
+  @media(max-width:560px){.grid{grid-template-columns:1fr;}}
+</style>
+<link rel="stylesheet" href="../assets/refresh.css">
+<style id="kindergarten-refresh">
+  #edu-refresh .game{background:var(--refresh-surface);color:var(--refresh-text);border:1px solid var(--refresh-border);border-top:4px solid var(--refresh-accent);border-radius:22px;box-shadow:var(--refresh-shadow);padding:28px 20px}
+  #edu-refresh .game.pairs{border-top-color:var(--refresh-secondary)}
+  #edu-refresh .game h2{font-size:26px}
+  #edu-refresh .game p{color:var(--refresh-muted);font-size:17px;line-height:1.85}
+</style>
+</head>
+<body id="edu-refresh">
+<nav class="version-compare" aria-label="השוואת גרסאות" dir="rtl">
+  <a class="version-home" href="../index.html" lang="en" dir="ltr">Edu Games 2</a>
+  <span>עיצוב חדש</span>
+  <a class="version-original" href="../../kindergarten/index.html" target="_blank" rel="noopener">פתיחת המקור להשוואה ↗</a>
+</nav>
+<header>
+  <a class="home" href="../index.html" title="לַעַמּוּד הָרָאשִׁי">⬆️🏠</a>
+  <div class="logo">מִשְׂחֲקֵי גַּן 🧸</div>
+  <div class="sub">בַּחֲרוּ מִשְׂחָק</div>
+</header>
+<main>
+  <div class="grid">
+    <a class="game pairs" href="./picture-pairs/index.html">
+      <span class="emoji">🧠🃏</span>
+      <h2 dir="ltr">Picture Pairs</h2>
+      <p>מוֹצְאִים זוּגוֹת וְאוֹמְרִים אֶת הַמִּלִּים בְּאַנְגְּלִית.</p>
+    </a>
+    <a class="game war" href="./number-war/index.html">
+      <span class="emoji">⚔️🔢</span>
+      <h2>מִלְחֶמֶת מִסְפָּרִים</h2>
+      <p>מְגַלִּים קְלָפִים וְלוֹמְדִים אֶת הַמִּסְפָּרִים בְּאַנְגְּלִית.</p>
+    </a>
+  </div>
+</main>
+<footer>מִשְׂחֲקֵי גַּן · Kindergarten</footer>
+</body>
+</html>

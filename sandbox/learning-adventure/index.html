@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>הַרְפַּתְקָה קְטַנָּה · מִשְׂחֲקֵי לְמִידָה</title>
+<script src="../../assets/theme-selector.js" defer></script>
+<style>
+  *{box-sizing:border-box}
+  [hidden]{display:none!important}
+  :root{--edu-surface:#fffefa;--edu-soft:#edf4ee;--edu-text:#243e35;--edu-muted:#53695e;--edu-heading:#25644b;--edu-accent:#297353;--edu-border:#c7d6cc;--edu-action-text:#fff}
+  body{margin:0;padding:62px 20px 40px;background:#eff3eb;color:var(--edu-text);font:18px/1.65 "Segoe UI","Arial Hebrew",Arial,sans-serif}
+  button,a{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+  button{font:inherit;font-weight:700;padding:11px 20px;min-height:48px;border:1px solid var(--edu-border);border-radius:16px;background:var(--edu-soft);color:var(--edu-text);cursor:pointer}
+  button:disabled{cursor:default;opacity:.65}
+  button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid var(--edu-heading);outline-offset:5px}
+  button:hover:not(:disabled){box-shadow:0 3px 10px #0002}
+  a{color:var(--edu-heading)}
+  .shell{max-width:1100px;margin:auto}
+  .mast{display:flex;align-items:center;justify-content:space-between;gap:20px;margin:8px 0 28px}
+  .back{text-decoration:none;padding:10px 16px;border-radius:14px;font-weight:700}
+  .eyebrow{font-size:.8rem;font-weight:700;letter-spacing:.04em}
+  h1{font-size:clamp(32px,5vw,48px);line-height:1.2;margin:6px 0 16px}
+  h2{font-size:clamp(25px,4vw,34px);line-height:1.35;margin:0 0 12px}
+  h3{font-size:20px;margin:0 0 8px}
+  p{margin:8px 0 16px}
+  .hero{padding:12px 0 24px;max-width:800px}
+  .muted{color:var(--edu-muted)}
+  .activities{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+  .activity{text-align:start;padding:20px 24px;display:flex;align-items:center;gap:18px;position:relative}
+  .activity[aria-pressed="true"]{outline:3px solid var(--edu-heading);outline-offset:3px}
+  .activity .icon{font-size:38px}
+  .activity strong,.activity small{display:block}
+  .activity small{font-size:14px}
+  .activity .check{margin-inline-start:auto}
+  .surface{background:var(--edu-surface);border:1px solid var(--edu-border);border-radius:26px;padding:clamp(20px,4vw,38px);box-shadow:0 12px 32px #15271b0d}
+  #activity,.sentence{scroll-margin-top:64px}
+  .welcome{display:grid;grid-template-columns:1.3fr 1fr;gap:36px;align-items:center}
+  .welcome-art{border-radius:24px;background:var(--edu-soft);padding:32px;text-align:center}
+  .welcome-art .big{font-size:80px;line-height:1.5}
+  .english{direction:ltr;text-align:left;font-family:"Segoe UI",Arial,sans-serif}
+  .english-title{font-size:15px;color:var(--edu-muted);margin-bottom:12px}
+  .sentence{font-size:clamp(22px,4vw,30px);line-height:1.5;background:var(--edu-soft);border-radius:16px;padding:16px 20px;font-weight:700}
+  .actions{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin:20px 0}
+  .primary,.next{background:var(--edu-accent);color:var(--edu-action-text)}
+  .round-head{display:flex;justify-content:space-between;gap:20px;align-items:start}
+  .round-meta{font-size:15px;min-width:120px}
+  progress{width:100%;height:10px;accent-color:var(--edu-accent);display:block;margin:12px 0 26px}
+  .game-layout{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:28px;align-items:start}
+  .market{background:var(--edu-soft);border-radius:20px;padding:24px;text-align:center}
+  .awning{height:24px;background:repeating-linear-gradient(90deg,#779e83 0 32px,#faf3df 32px 64px);border-radius:10px 10px 4px 4px;margin:-24px -24px 20px}
+  .shelf{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin:18px 0}
+  .product{font-size:52px;line-height:1.3}
+  .price{display:inline-block;border:1px solid var(--edu-border);border-radius:12px;padding:8px 16px;background:var(--edu-surface)}
+  .wallet{border-top:1px solid var(--edu-border);padding-top:18px;margin-top:22px}
+  .wallet strong{font-size:26px;display:block}
+  .choices{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .choice{font-size:24px;min-height:68px}
+  .correct{background:#e1f4e7;border:3px solid #26744c}
+  .wrong{background:#fff0e8;border:3px solid #a64a30}
+  .feedback{min-height:34px;font-weight:700;margin-top:20px}
+  .help-panel{background:var(--edu-soft);border-radius:18px;padding:24px;margin-top:18px}
+  .steps{list-style:none;padding:0;margin:16px 0;display:grid;grid-template-columns:1fr 1fr;gap:14px;counter-reset:steps}
+  .steps li{background:var(--edu-surface);border:1px solid var(--edu-border);border-radius:14px;padding:18px;counter-increment:steps}
+  .steps li::before{content:counter(steps) " · ";font-weight:800;color:var(--edu-heading)}
+  .equation{direction:ltr;unicode-bidi:isolate;display:block;font-weight:800;font-size:22px;margin-top:10px}
+  .bottom-actions{display:flex;justify-content:flex-end;margin-top:24px}
+  .object-bank{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+  .object{flex:1;padding:10px 12px;min-width:78px}
+  .object span{display:block;font-size:36px;line-height:1.3}
+  .object[aria-pressed="true"]{outline:3px solid var(--edu-heading);outline-offset:2px}
+  .scene{position:relative;isolation:isolate;height:340px;width:100%;background:var(--edu-soft);border:1px solid var(--edu-border);border-radius:20px;overflow:hidden;direction:ltr}
+  .scene svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
+  .target{position:absolute;transform:translate(-50%,-50%);width:64px;height:64px;min-height:64px;padding:0;border:2px dashed var(--edu-heading);display:grid;place-content:center;line-height:1.1}
+  .target span{font-size:38px;line-height:1}
+  .target span+small{position:absolute;top:100%;left:0;width:100%}
+  .target small{font-size:12px;display:block}
+  .target:disabled{opacity:1}
+  .scene-caption{font-size:14px;text-align:center;margin:8px 0}
+  .summary{text-align:center;max-width:720px;margin:auto}
+  .summary .medal{font-size:64px}
+  .scoreboard{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0}
+  .stat{border:1px solid var(--edu-border);border-radius:16px;padding:20px}
+  .stat strong{display:block;font-size:36px}
+  .footer-note{text-align:center;font-size:14px;margin-top:26px}
+  #selftest-result{white-space:pre-wrap;overflow-wrap:anywhere;padding:16px;background:var(--edu-surface)}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+  @media(max-width:720px){body{padding-inline:14px}.mast{margin-bottom:14px}.hero{padding-bottom:16px}.activities{gap:12px}.activity{padding:16px 12px;gap:10px;flex-wrap:wrap}.activity .icon{font-size:28px}.activity .check{display:none}.welcome,.game-layout{grid-template-columns:1fr;gap:22px}.welcome-art{order:-1;padding:12px}.welcome-art .big{font-size:52px}.steps{grid-template-columns:1fr}.round-head{flex-wrap:wrap;gap:6px}.round-meta{width:100%}.scene{height:320px}.surface{padding:20px}.actions button{flex-grow:1}.back{font-size:15px}.mast .eyebrow{font-size:12px}}
+  @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}body a,body button{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="mast"><a class="back" href="../sandbox.html">↗ חֲזָרָה לְמֶרְכַּז הַבְּדִיקוֹת</a><span class="eyebrow">דֶּמוֹ · לְבְדִיקָה בִּלְבַד</span></div>
+  <header class="hero">
+    <div class="eyebrow">סַקְרָנוּת קְטַנָּה, הַצְלָחוֹת גְּדוֹלוֹת</div>
+    <h1>מָה נְגַלֶּה הַיּוֹם?</h1>
+    <p>בּוֹחֲרִים מִשְׂחָק, מְנַסִּים בַּקֶּצֶב שֶׁלָּנוּ, וּמְבַקְשִׁים עֶזְרָה בְּכָל רֶגַע.</p>
+  </header>
+  <nav class="activities" aria-label="בְּחִירַת פְּעִילוּת">
+    <button class="activity" data-game="shop" aria-pressed="true"><span class="icon" aria-hidden="true">🛍️</span><span><strong>הַחֲנוּת הַקְּטַנָּה שֶׁלִּי</strong><small>חֶשְׁבּוֹן · קְנִיָּה וְעֹדֶף</small></span><span class="check" aria-hidden="true">✓</span></button>
+    <button class="activity" data-game="scene" aria-pressed="false"><span class="icon" aria-hidden="true">🌳</span><span><strong>בּוֹנִים תְּמוּנָה</strong><small>אַנְגְּלִית · מִלִּים שֶׁל מָקוֹם</small></span><span class="check" aria-hidden="true" hidden>✓</span></button>
+  </nav>
+  <main id="activity" class="surface" aria-label="אֵזוֹר הַמִּשְׂחָק"></main>
+  <div id="announcement" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
+  <p class="footer-note">אַרְבַּע מְשִׂימוֹת בְּכָל סֶבֶב · בְּלִי שָׁעוֹן וּבְלִי הוֹרָדַת נְקֻדּוֹת · הַהִתְקַדְּמוּת נִשְׁמֶרֶת רַק בַּדַּף הַפָּתוּחַ</p>
+  <output id="selftest-result" dir="ltr" lang="en" hidden></output>
+</div>
+<script>
+(() => {
+  "use strict";
+  const $ = selector => document.querySelector(selector);
+  const root = $("#activity");
+  const objects = {
+    apple:{icon:"🍎",he:"תַּפּוּחַ"},
+    ball:{icon:"⚽",he:"כַּדּוּר"},
+    book:{icon:"📘",he:"סֵפֶר"}
+  };
+  // Coordinates are shared by tappable targets, placed objects and guided examples.
+  const positions = {
+    on:{x:50,y:35.5,he:"עַל הַשֻּׁלְחָן",number:1},
+    under:{x:50,y:75,he:"מִתַּחַת לַשֻּׁלְחָן",number:2},
+    left:{x:14,y:64,he:"מִשְּׂמֹאל לַשֻּׁלְחָן",number:3},
+    right:{x:86,y:64,he:"מִיָּמִין לַשֻּׁלְחָן",number:4}
+  };
+  const shop = [
+    {icon:"🍎",item:"תַּפּוּחִים",unit:"תַּפּוּחַ",qty:3,price:2,pay:10,kind:"change",choices:[6,4,8,2]},
+    {icon:"✏️",item:"עֶפְרוֹנוֹת",unit:"עִפָּרוֹן",qty:4,price:3,pay:20,kind:"total",choices:[7,16,12,8]},
+    {icon:"📒",item:"מַחְבָּרוֹת",unit:"מַחְבֶּרֶת",qty:2,price:7,pay:20,kind:"change",choices:[14,6,13,8]},
+    {icon:"🌼",item:"פְּרָחִים",unit:"פֶּרַח",qty:3,price:5,pay:20,kind:"change",choices:[15,10,5,8]}
+  ];
+  const scenes = [
+    {object:"apple",target:"under",sentence:"Put the apple under the table.",rule:"Under means in the space below something.",clue:"מְחַפְּשִׂים אֶת הַתַּפּוּחַ וְאֶת הַמָּקוֹם שֶׁמִּתַּחַת לַשֻּׁלְחָן.",apply:"בּוֹחֲרִים בַּתַּפּוּחַ, וְאָז בָּעִגּוּל שֶׁבֵּין רַגְלֵי הַשֻּׁלְחָן.",check:"הַתַּפּוּחַ צָרִיךְ לִהְיוֹת נָמוּךְ מִמִּשְׁטַח הַשֻּׁלְחָן, בֵּין הָרַגְלַיִם. לֹא עַל הַמִּשְׁטָח וְלֹא לְצִדּוֹ."},
+    {object:"ball",target:"on",sentence:"Put the ball on the table.",rule:"On means resting on a surface.",clue:"מְחַפְּשִׂים אֶת הַכַּדּוּר וְאֶת הַמִּשְׁטָח הָעֶלְיוֹן שֶׁל הַשֻּׁלְחָן.",apply:"בּוֹחֲרִים בַּכַּדּוּר, וְאָז בָּעִגּוּל שֶׁמֵּעַל מִשְׁטַח הַשֻּׁלְחָן, כָּךְ שֶׁהַכַּדּוּר יָנוּחַ עָלָיו.",check:"הַכַּדּוּר נוֹגֵעַ בַּמִּשְׁטָח מִלְמַעְלָה. אִם הוּא בֵּין הָרַגְלַיִם, הוּא מִתַּחַת וְלֹא עַל הַשֻּׁלְחָן."},
+    {object:"book",target:"left",sentence:"Put the book to the left of the table.",rule:"To the left of means on the left-hand side.",clue:"מְחַפְּשִׂים אֶת הַסֵּפֶר וְאֶת צַד שְׂמֹאל שֶׁל הַתְּמוּנָה.",apply:"בּוֹחֲרִים בַּסֵּפֶר, וְאָז בָּעִגּוּל שֶׁמִּשְּׂמֹאל לַשֻּׁלְחָן, כְּמוֹ שֶׁאָנוּ רוֹאִים אוֹתוֹ עַל הַמָּסָךְ.",check:"הַסֵּפֶר צָרִיךְ לִהְיוֹת לְיַד הַקָּצֶה הַשְּׂמָאלִי, מִחוּץ לְרַגְלֵי הַשֻּׁלְחָן. כִּוּוּן הַקְּרִיאָה לֹא מַחֲלִיף אֶת הַצְּדָדִים."},
+    {object:"apple",target:"right",sentence:"Put the apple to the right of the table.",rule:"To the right of means on the right-hand side.",clue:"מְחַפְּשִׂים אֶת הַתַּפּוּחַ וְאֶת צַד יָמִין שֶׁל הַתְּמוּנָה.",apply:"בּוֹחֲרִים בַּתַּפּוּחַ, וְאָז בָּעִגּוּל שֶׁמִּיָּמִין לַשֻּׁלְחָן, כְּמוֹ שֶׁאָנוּ רוֹאִים אוֹתוֹ עַל הַמָּסָךְ.",check:"הַתַּפּוּחַ צָרִיךְ לִהְיוֹת לְיַד הַקָּצֶה הַיְמָנִי, מִחוּץ לְרַגְלֵי הַשֻּׁלְחָן. לֹא מִשְּׂמֹאל וְלֹא בֵּין הָרַגְלַיִם."}
+  ];
+  const examples = {
+    shop:{icon:"🍐",item:"אַגָּסִים",unit:"אַגָּס",qty:2,price:4,pay:10,kind:"change"},
+    scene:{object:"book",target:"under",sentence:"Put the book under the table.",rule:"Under means in the space below something.",clue:"מְחַפְּשִׂים אֶת הַסֵּפֶר וְאֶת הַמָּקוֹם שֶׁמִּתַּחַת לַשֻּׁלְחָן.",apply:"בַּדֻּגְמָה בָּחַרְנוּ בַּסֵּפֶר וְהִנַּחְנוּ אוֹתוֹ בָּעִגּוּל שֶׁבֵּין רַגְלֵי הַשֻּׁלְחָן.",check:"רוֹאִים שֶׁהַסֵּפֶר נָמוּךְ מִמִּשְׁטַח הַשֻּׁלְחָן וּנְמָצָא בֵּין הָרַגְלַיִם. הוּא מִתַּחַת לַשֻּׁלְחָן, וְלֹא עָלָיו."}
+  };
+  const titles = {shop:"הַחֲנוּת הַקְּטַנָּה שֶׁלִּי",scene:"בּוֹנִים תְּמוּנָה"};
+  const englishTitles = {shop:"My Little Shop",scene:"Build the Scene"};
+  function fresh(mode="welcome") { return {mode,index:0,results:[],solved:false,assisted:false,help:false,selected:null,placed:null,wrong:null,message:""}; }
+  let active="shop";
+  const states={shop:fresh(),scene:fresh()};
+  const state=()=>states[active];
+  const questions=()=>active==="shop"?shop:scenes;
+  const question=()=>questions()[state().index];
+  const answer=q=>q.kind==="total"?q.qty*q.price:q.pay-q.qty*q.price;
+  function steps(q,game) {
+    if(game==="scene") return `<ol class="steps"><li>${q.clue}</li><li>מִלַּת הַמָּקוֹם אוֹמֶרֶת אֵיפֹה לְהַנִּיחַ אֶת הַחֵפֶץ. כָּאן הַמָּקוֹם הוּא ${positions[q.target].he}.</li><li>${q.apply}</li><li>${q.check}</li></ol><div class="english" lang="en" dir="ltr"><p>${q.rule}</p><p><strong>${q.sentence}</strong></p></div>`;
+    const total=q.qty*q.price;
+    const sum=Array(q.qty).fill(q.price).join(" + ");
+    return `<ol class="steps">
+      <li>קוֹרְאִים אֶת הַסַּל: ${q.qty} ${q.item}, בִּמְחִיר ${q.price} שְׁקָלִים לְכָל ${q.unit}. מְשַׁלְּמִים בְּ־${q.pay} שְׁקָלִים.</li>
+      <li>מְחַבְּרִים אֶת מְחִירֵי הַפְּרִיטִים, אוֹ כּוֹפְלִים כַּמּוּת בִּמְחִיר.<span class="equation">${sum} = ${total}</span></li>
+      <li>${q.kind==="total"?"הַשְּׁאֵלָה הִיא כַּמָּה עוֹלָה הַקְּנִיָּה, לֹא כַּמָּה עֹדֶף מְקַבְּלִים. זֶהוּ סְכוּם מְחִירֵי הַפְּרִיטִים.":"כְּדֵי לִמְצֹא עֹדֶף, מְחַסְּרִים אֶת מְחִיר הַקְּנִיָּה מֵהַסְּכוּם שֶׁשִּׁלַּמְנוּ."}<span class="equation">${q.kind==="total"?`${q.qty} × ${q.price} = ${total}`:`${q.pay} − ${total} = ${answer(q)}`}</span></li>
+      <li>בּוֹדְקִים: מְחִיר הַקְּנִיָּה וְהָעֹדֶף יַחַד שָׁוִים לַתַּשְׁלוּם.<span class="equation">${total} + ${q.pay-total} = ${q.pay}</span>לָכֵן ${q.kind==="total"?"מְחִיר הַקְּנִיָּה":"הָעֹדֶף"} הוּא ${answer(q)} שְׁקָלִים.</li>
+    </ol>`;
+  }
+  function scenePicture(q,placed=null,reveal=false,example=false) {
+    return `<div class="scene" role="group" aria-label="שֻׁלְחָן וְאַרְבָּעָה מְקוֹמוֹת לְהַנָּחָה">
+      <svg viewBox="0 0 600 360" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0 322H600" stroke="var(--edu-border)" stroke-width="2"/>
+        <rect x="42" y="26" width="76" height="60" rx="12" fill="var(--edu-surface)" stroke="var(--edu-border)" stroke-width="2"/>
+        <circle cx="81" cy="56" r="15" fill="#e9bd61"/>
+        <path d="M212 170V318M388 170V318" stroke="#815735" stroke-width="18" stroke-linecap="round"/>
+        <rect x="194" y="148" width="212" height="24" rx="7" fill="#c69764" stroke="#815735" stroke-width="3"/>
+      </svg>
+      ${Object.entries(positions).map(([key,p])=>{
+        const here=placed&&placed.target===key;
+        const correct=reveal&&q.target===key;
+        const content=here?`<span aria-hidden="true">${objects[placed.object].icon}</span><small>${correct?"✓":p.number}</small>`:correct?`<small>כָּאן ✓</small>`:`<b>${p.number}</b>`;
+        const attrs=`style="left:${p.x}%;top:${p.y}%" aria-label="${p.he}${here?", "+objects[placed.object].he:""}"`;
+        return example?`<div class="target" ${attrs}>${content}</div>`:`<button class="target${correct?" correct":""}" data-place="${key}" ${attrs} ${state().solved?"disabled":""}>${content}</button>`;
+      }).join("")}
+    </div>`;
+  }
+  function market(q) {
+    return `<div class="market"><div class="awning" aria-hidden="true"></div><h3>הַסַּל שֶׁלָּנוּ</h3><div class="shelf" aria-hidden="true">${Array(q.qty).fill(`<span class="product">${q.icon}</span>`).join("")}</div><p>${q.qty} ${q.item}</p><div class="price">${q.price} שְׁקָלִים לְכָל ${q.unit}</div><div class="wallet">👛 מְשַׁלְּמִים מֵהָאַרְנָק<strong>${q.pay} שְׁקָלִים</strong></div></div>`;
+  }
+  function render(focus=null) {
+    const s=state(),q=question();
+    document.querySelectorAll("[data-game]").forEach(button=>{
+      const selected=button.dataset.game===active;
+      button.setAttribute("aria-pressed",selected);
+      button.querySelector(".check").hidden=!selected;
+    });
+    const heading=`<div class="english english-title" lang="en" dir="ltr">${englishTitles[active]}</div><h2 id="activity-title" tabindex="-1">${titles[active]}</h2>`;
+    if(s.mode==="welcome") {
+      root.innerHTML=`<div class="welcome"><div>${heading}<p>${active==="shop"?"נִקְנֶה פְּרִיטִים, נְחַשֵּׁב מְחִיר וְנִבְדֹּק אֶת הָעֹדֶף.":"נִקְרָא מִשְׁפָּט בְּאַנְגְּלִית וְנָנִיחַ חֵפֶץ בַּמָּקוֹם הַמַּתְאִים בַּתְּמוּנָה."}</p><p class="muted">אַרְבַּע מְשִׂימוֹת קְצָרוֹת. אֶפְשָׁר לִרְאוֹת דֻּגְמָה אוֹ לְהַתְחִיל מִיָּד.</p><div class="actions"><button class="primary" data-action="start">מַתְחִילִים לְשַׂחֵק ←</button><button data-action="example">📖 לוֹמְדִים בְּדֻגְמָה</button></div></div><div class="welcome-art"><div class="big" aria-hidden="true">${active==="shop"?"🛍️ 🍎":"📘 🌳"}</div><p>מְנַסִּים. מְגַלִּים. מַצְלִיחִים.</p><small>עֶזְרָה הִיא חֵלֶק מֵהַלְּמִידָה.</small></div></div>`;
+    } else if(s.mode==="example") {
+      const example=examples[active];
+      root.innerHTML=`${heading}<h3>📖 דֻּגְמָה פְּתוּרָה · לְלֹא סְפִירָה</h3><p>עוֹצְרִים לְרֶגַע וְרוֹאִים אֵיךְ חוֹשְׁבִים. הַדֻּגְמָה לֹא מְשַׁנָּה אֶת הַהִתְקַדְּמוּת.</p><div class="actions"><button class="primary" data-action="return">${s.returnMode==="practice"?"חוֹזְרִים לַמְּשִׂימָה":"מַתְחִילִים לְתַרְגֵּל"}</button></div>${active==="shop"?market(example):`<p class="sentence english" dir="ltr" lang="en">${example.sentence}</p>${scenePicture(example,{object:example.object,target:example.target},true,true)}<p>בַּמִּשְׂחָק: לוֹחֲצִים עַל חֵפֶץ, וְאָז עַל עִגּוּל בַּתְּמוּנָה. אֵין צֹרֶךְ לִגְרֹר.</p>`}<div class="help-panel"><h3>אֵיךְ פּוֹתְרִים?</h3>${steps(example,active)}</div><div class="bottom-actions"><button class="primary" data-action="return">${s.returnMode==="practice"?"חוֹזְרִים לַמְּשִׂימָה":"מַתְחִילִים לְתַרְגֵּל"}</button></div>`;
+    } else if(s.mode==="summary") {
+      const independent=s.results.filter(value=>value==="independent").length;
+      root.innerHTML=`<div class="summary"><div class="medal" aria-hidden="true">🌟</div>${heading}<h3>סִיַּמְנוּ סֶבֶב. כָּל הַכָּבוֹד!</h3><p>פָּתַרְנוּ אֶת כָּל אַרְבַּע הַמְּשִׂימוֹת.</p><div class="scoreboard"><div class="stat"><strong>${independent}</strong>פָּתַרְנוּ בְּעַצְמֵנוּ</div><div class="stat"><strong>${s.results.length-independent}</strong>פָּתַרְנוּ בְּעֶזְרַת הֶסְבֵּר</div></div><p>שְׁתֵּי הַדְּרָכִים הֵן הַצְלָחָה. לֹא מוֹרִידִים נְקֻדּוֹת עַל עֶזְרָה.</p><div class="actions"><button class="primary" data-action="start">סֶבֶב חָדָשׁ ↺</button><button data-action="other">נְנַסֶּה אֶת הַמִּשְׂחָק הַשֵּׁנִי</button></div></div>`;
+    } else {
+      root.innerHTML=`<div class="round-head"><div>${heading}</div><div class="round-meta">מְשִׂימָה ${s.index+1} מִתּוֹךְ ${questions().length}<br>✓ ${s.results.length} הֻשְׁלְמוּ</div></div><progress max="${questions().length}" value="${s.results.length}" aria-label="מְשִׂימוֹת שֶׁהֻשְׁלְמוּ"></progress>
+        ${active==="shop"?`<div class="game-layout">${market(q)}<div><h3>${q.kind==="total"?"כַּמָּה עוֹלָה הַקְּנִיָּה?":"כַּמָּה עֹדֶף נְקַבֵּל?"}</h3><p>בּוֹחֲרִים סְכוּם בִּשְׁקָלִים.</p><div class="choices">${q.choices.map(value=>`<button class="choice${s.help&&value===answer(q)||s.solved&&value===answer(q)?" correct":s.wrong===value?" wrong":""}" data-answer="${value}" ${s.solved?"disabled":""}>${value} ₪${(s.help||s.solved)&&value===answer(q)?" ✓":s.wrong===value?" ↺":""}</button>`).join("")}</div></div></div>`:
+        `<p class="sentence english" lang="en" dir="ltr">${q.sentence}</p><div class="game-layout"><div><h3>1 · בּוֹחֲרִים חֵפֶץ</h3><div class="object-bank">${Object.entries(objects).map(([key,o])=>`<button class="object" data-object="${key}" aria-pressed="${s.selected===key}" ${s.solved?"disabled":""}><span aria-hidden="true">${o.icon}</span>${o.he}</button>`).join("")}</div><h3>2 · לוֹחֲצִים עַל מָקוֹם בַּתְּמוּנָה</h3><p>הַחֵפֶץ יַעֲבוֹר לָעִגּוּל שֶׁבָּחַרְתֶּם. אֶפְשָׁר לִבְחֹר שׁוּב, בְּלִי לִגְרֹר.</p><p class="muted">בְּמִקְלֶדֶת: עוֹבְרִים עִם מַקָּשׁ הַטַּאב, וּבוֹחֲרִים עִם מַקָּשׁ הָרֶוַח אוֹ הָאִשּׁוּר.</p></div><div>${scenePicture(q,s.placed,s.help||s.solved)}<p class="scene-caption">הַצְּדָדִים הֵם כְּמוֹ שֶׁרוֹאִים אוֹתָם עַל הַמָּסָךְ.</p></div></div>`}
+        <div class="feedback">${s.message}</div>
+        <div class="actions"><button data-action="help" aria-expanded="${s.help}" aria-controls="solution">${s.help?"🙈 הַסְתֵּר הֶסְבֵּר":"🔍 אֵיךְ פּוֹתְרִים?"}</button><button class="next" data-next="top" ${s.solved?"":"hidden"}>${s.index===questions().length-1?"לְסִכּוּם הַסֶּבֶב ←":"לַמְּשִׂימָה הַבָּאָה ←"}</button><button data-action="example">📖 דֻּגְמָה</button></div>
+        <section class="help-panel" id="solution" aria-label="אֵיךְ פּוֹתְרִים?" ${s.help?"":"hidden"}><h3>אֵיךְ פּוֹתְרִים?</h3><p>נַחְשֹׁב יַחַד. הָעֶזְרָה לֹא מוֹרִידָה נְקֻדּוֹת.</p>${steps(q,active)}</section>
+        <div class="bottom-actions"><button class="next" data-next="bottom" ${s.solved?"":"hidden"}>${s.index===questions().length-1?"לְסִכּוּם הַסֶּבֶב ←":"לַמְּשִׂימָה הַבָּאָה ←"}</button></div>`;
+    }
+    $("#announcement").textContent=s.mode==="practice"?s.message:"";
+    if(focus) root.querySelector(focus)?.focus({preventScroll:true});
+  }
+  function openHelp() {
+    const s=state();
+    s.help=true;
+    if(!s.solved) s.assisted=true;
+  }
+  function finish(correct) {
+    const s=state();
+    if(s.solved) return;
+    if(!correct) {
+      openHelp();
+      s.message="עוֹד לֹא, וְזֶה בְּסֵדֶר. פָּתַחְנוּ אֶת הַהֶסְבֵּר וְסִמַּנּוּ אֶת הַפִּתְרוֹן בְּ־✓. נְנַסֶּה שׁוּב.";
+    } else {
+      s.solved=true;
+      s.results.push(s.assisted?"assisted":"independent");
+      s.message=s.assisted?"✓ הִצְלַחְנוּ בְּעֶזְרַת הֶסְבֵּר! מַמְשִׁיכִים כְּשֶׁמוּכָנִים.":"✓ הִצְלַחְנוּ בְּעַצְמֵנוּ! מַמְשִׁיכִים כְּשֶׁמוּכָנִים.";
+    }
+  }
+  function next() {
+    const s=state();
+    if(!s.solved) return;
+    if(s.index===questions().length-1) s.mode="summary";
+    else states[active]={...fresh("practice"),index:s.index+1,results:s.results};
+    render("#activity-title");
+    root.scrollIntoView({block:"start"});
+  }
+  document.querySelectorAll("[data-game]").forEach(button=>button.addEventListener("click",()=>{
+    active=button.dataset.game;render("#activity-title");
+  }));
+  root.addEventListener("click",event=>{
+    const button=event.target.closest("button");
+    if(!button||button.disabled) return;
+    const s=state(),q=question(),action=button.dataset.action;
+    let focus="#activity-title";
+    if(button.dataset.next) { next();return; }
+    if(action==="start") states[active]=fresh("practice");
+    else if(action==="help") { if(s.help) s.help=false;else openHelp();focus='[data-action="help"]'; }
+    else if(action==="example") {
+      s.returnMode=s.mode;
+      // Consulting the lesson during an unsolved task counts as support, never as a penalty.
+      if(s.mode==="practice"&&!s.solved) s.assisted=true;
+      s.mode="example";
+    }
+    else if(action==="return") {
+      if(s.returnMode==="practice") s.mode="practice";
+      else states[active]=fresh("practice");
+    }
+    else if(action==="other") active=active==="shop"?"scene":"shop";
+    else if(button.dataset.answer!==undefined&&!s.solved) {
+      const value=Number(button.dataset.answer);s.wrong=value===answer(q)?null:value;
+      finish(value===answer(q));focus=s.solved?'[data-next="top"]':`[data-answer="${value}"]`;
+    }
+    else if(button.dataset.object&&!s.solved) {
+      s.selected=button.dataset.object;s.message=`נִבְחַר: ${objects[s.selected].he}. עַכְשָׁו בּוֹחֲרִים מָקוֹם בַּתְּמוּנָה.`;
+      focus=`[data-object="${s.selected}"]`;
+    }
+    else if(button.dataset.place&&!s.solved) {
+      const target=button.dataset.place;
+      if(!s.selected) s.message="קוֹדֶם בּוֹחֲרִים חֵפֶץ, וְאָז מָקוֹם. אֶפְשָׁר לְבַקֵּשׁ עֶזְרָה בְּכָל רֶגַע.";
+      else { s.placed={object:s.selected,target};finish(s.selected===q.object&&target===q.target); }
+      focus=s.solved?'[data-next="top"]':`[data-place="${target}"]`;
+    } else return;
+    render(focus);
+  });
+  render();
+  function runSelfTests() {
+    const failures=[];let assertions=0;
+    const check=(condition,message)=>{assertions++;if(!condition)failures.push(message);};
+    const click=selector=>{const element=$(selector);check(Boolean(element),"Missing control "+selector);element?.click();};
+    const correct=()=>{
+      if(active==="shop") click(`[data-answer="${answer(question())}"]`);
+      else {click(`[data-object="${question().object}"]`);click(`[data-place="${question().target}"]`);}
+    };
+    const wrong=()=>{
+      if(active==="shop")click(`[data-answer="${question().choices.find(n=>n!==answer(question()))}"]`);
+      else {click(`[data-object="${question().object}"]`);click(`[data-place="${Object.keys(positions).find(key=>key!==question().target)}"]`);}
+    };
+    for(const game of ["shop","scene"]) {
+      active=game;states[game]=fresh();render();
+      check(state().mode==="welcome"&&!$("[data-next]"),game+" welcome");
+      click('[data-action="example"]');check(state().mode==="example",game+" example entry");
+      click('[data-action="return"]');check(state().mode==="practice"&&!state().assisted,game+" direct practice after lesson");
+      check(!state().solved&&!state().help&&state().results.length===0,game+" initial state");
+      next();check(state().index===0,game+" cannot skip");
+      check([...root.querySelectorAll("[data-next]")].every(b=>b.hidden),game+" next controls initially hidden");
+      if(game==="scene") {click('[data-place="under"]');check(!state().placed&&!state().assisted,game+" placement requires object");}
+      wrong();check(state().help&&!$("#solution").hidden&&!state().solved,game+" wrong opens actual help");
+      check($('[data-action="help"]').getAttribute("aria-expanded")==="true",game+" help label/expanded");
+      check($('[data-action="help"]').textContent.includes("הַסְתֵּר"),game+" open label");
+      correct();check(state().results[0]==="assisted",game+" retry scores assisted");
+      check([...root.querySelectorAll("[data-next]")].every(b=>!b.hidden),game+" both nexts visible");
+      click('[data-next="top"]');check(state().index===1&&!state().help&&!state().solved,game+" top next resets question");
+      click('[data-action="help"]');wrong();check(state().help&&!$("#solution").hidden,game+" open-before-wrong stays open");
+      click('[data-action="help"]');check(!state().help&&state().assisted,game+" hiding help retains assistance");
+      check($('[data-action="help"]').getAttribute("aria-expanded")==="false",game+" closed expanded state");
+      wrong();check(state().help,game+" wrong reopens hidden help");
+      correct();click('[data-next="bottom"]');check(state().index===2,game+" bottom next");
+      correct();check(state().results[2]==="independent",game+" independent completion");
+      click('[data-action="help"]');check(state().results[2]==="independent",game+" post-solve help does not change result");
+      click('[data-next="top"]');correct();click('[data-next="bottom"]');
+      check(state().mode==="summary"&&state().results.length===4,game+" full round summary");
+      check(state().results.filter(r=>r==="independent").length===2,game+" independent/assisted totals");
+      click('[data-action="start"]');check(state().index===0&&!state().help&&!state().solved&&!state().selected&&!state().placed&&state().results.length===0,game+" replay resets");
+      click('[data-action="example"]');click('[data-action="return"]');check(state().mode==="practice"&&state().assisted,game+" practice example preserves round and marks support");
+    }
+    for(const [index,q] of shop.entries()) {
+      check(new Set(q.choices).size===4&&q.choices.filter(n=>n===answer(q)).length===1,"Shop "+index+" unique valid answer");
+      check(q.qty*q.price<=q.pay&&answer(q)>=0,"Shop "+index+" affordable");
+      check(steps(q,"shop").includes(`${answer(q)} שְׁקָלִים`),"Shop "+index+" exact explanation");
+    }
+    const authored=[["apple","under"],["ball","on"],["book","left"],["apple","right"]];
+    active="scene";
+    scenes.forEach((q,index)=>{
+      states.scene={...fresh("practice"),index};render();
+      check(q.object===authored[index][0]&&q.target===authored[index][1],"Scene "+index+" authored mapping");
+      const target=$(`[data-place="${q.target}"]`);
+      check(target.style.left===positions[q.target].x+"%"&&target.style.top===positions[q.target].y+"%","Scene "+index+" visual coordinates");
+      click(`[data-object="${Object.keys(objects).find(key=>key!==q.object)}"]`);
+      click(`[data-place="${q.target}"]`);
+      check(!state().solved&&state().help,"Scene "+index+" wrong object cannot solve");
+      correct();
+      check(state().placed.object===q.object&&state().placed.target===q.target&&state().solved,"Scene "+index+" actual placement");
+      check($(`[data-place="${q.target}"]`).textContent.includes(objects[q.object].icon),"Scene "+index+" object visible in target");
+      check($(".sentence").dir==="ltr"&&$(".sentence").lang==="en","Scene "+index+" English isolated");
+    });
+    active="shop";states.shop=fresh("practice");states.scene=fresh();render();
+    correct();click('[data-game="scene"]');click('[data-game="shop"]');
+    check(state().solved&&state().results.length===1,"Switching activities preserves progress");
+    states.shop=fresh();states.scene=fresh();active="shop";render();
+    const result={passed:failures.length===0,assertions,failures};
+    window.learningAdventureSelfTest=result;
+    $("#selftest-result").hidden=false;
+    $("#selftest-result").textContent=`SELFTEST ${result.passed?"PASS":"FAIL"} · ${assertions} assertions\n${failures.join("\n")}`;
+  }
+  if(new URLSearchParams(location.search).get("selftest")==="1") {
+    try { runSelfTests(); }
+    catch(error) {
+      window.learningAdventureSelfTest={passed:false,failures:[error.stack]};
+      $("#selftest-result").hidden=false;$("#selftest-result").textContent="SELFTEST FAIL: "+error.message;
+    }
+  }
+})();
+</script>
+</body>
+</html>

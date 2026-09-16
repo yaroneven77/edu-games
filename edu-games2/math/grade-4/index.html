@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>חֶשְׁבּוֹן לְכִתָּה ד' · Edu Games</title>
+<script src="../../../assets/theme-selector.js" defer></script>
+<script data-goatcounter="https://yaroneven.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+<style>
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  body{
+    margin:0;min-height:100vh;font-family:"Segoe UI","Arial Hebrew",Arial,sans-serif;
+    color:#243b53;background:linear-gradient(160deg,#fff7e6 0%,#cdeffd 100%);
+    display:flex;flex-direction:column;align-items:center;padding:24px 14px;
+  }
+  .home{display:inline-block;align-self:center;background:#fff;border-radius:14px;padding:5px 12px;
+    font-size:20px;line-height:1;text-decoration:none;box-shadow:0 3px 0 rgba(20,60,90,.18);margin-bottom:8px;}
+  .logo{
+    text-align:center;font-weight:900;font-size:clamp(32px,8vw,54px);color:#ffce3a;
+    text-shadow:2px 2px 0 #e6604f,4px 4px 0 #1f7fc4,0 6px 14px rgba(20,60,90,.18);margin:14px 0 2px;
+  }
+  .sub{text-align:center;color:#155f93;font-weight:800;font-size:clamp(15px,4vw,20px);margin-bottom:26px;}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;width:100%;max-width:920px;}
+  @media(max-width:760px){.grid{grid-template-columns:1fr;max-width:520px;}}
+  a.tile{
+    text-decoration:none;color:inherit;background:#fff;border-radius:24px;padding:26px 18px;
+    box-shadow:0 8px 0 rgba(20,60,90,.18);text-align:center;transition:transform .08s,box-shadow .08s;
+  }
+  a.tile:active{transform:translateY(4px);box-shadow:0 3px 0 rgba(20,60,90,.18);}
+  a.tile .emoji{font-size:54px;display:block;margin-bottom:10px;}
+  a.tile h2{margin:0 0 6px;font-size:clamp(20px,5vw,25px);}
+  a.tile p{margin:0;color:#5b7b99;font-size:15px;line-height:1.5;}
+  a.numbers{border-top:9px solid #1f7fc4;}
+  a.operations{border-top:9px solid #e6604f;}
+  a.fractions{border-top:9px solid #a974d6;}
+  a.written{border-top:9px solid #e6604f;}
+  a.properties{border-top:9px solid #1f7fc4;}
+  a.fractionOps{border-top:9px solid #a974d6;}
+  a.problems{border-top:9px solid #f0883e;}
+  a.geometry{border-top:9px solid #2bb3a3;}
+  a.measurement{border-top:9px solid #3fbf6b;}
+  a.data{border-top:9px solid #e6604f;}
+  a.probability{border-top:9px solid #8a63d2;}
+  footer{margin-top:30px;color:#6b87a3;font-size:13px;text-align:center;}
+</style>
+<link rel="stylesheet" href="../../assets/refresh.css">
+<style id="math-refresh">
+  #edu-refresh main{max-width:780px;padding:8px 20px 32px;min-width:0}
+  #edu-refresh .card{padding:28px 24px}
+  #edu-refresh h2,#edu-refresh .qtitle{font-size:clamp(20px,4.5vw,24px);line-height:1.7;margin-bottom:16px}
+  #edu-refresh .topbar{gap:10px;margin-bottom:18px;flex-wrap:wrap}
+  #edu-refresh .pill,#edu-refresh .score{font-size:15px;padding:9px 12px}
+  #edu-refresh .actions{gap:10px;flex-wrap:wrap;margin-top:12px}
+  #edu-refresh .btn,#edu-refresh .action,#edu-refresh .learn,#edu-refresh .lesson-nav button,#edu-refresh .lesson-close{font:700 16px/1.5 "Segoe UI","Arial Hebrew",Arial,sans-serif}
+  #edu-refresh .choices,#edu-refresh .mopts{gap:12px}
+  #edu-refresh .choice{min-height:70px;padding:16px 10px;font-family:inherit;font-size:clamp(22px,5vw,27px);font-weight:800;line-height:1.5;border-width:2px}
+  #edu-refresh .choice:not(.ok):not(.no),#edu-refresh .lesson-options button:not(.ok):not(.no){background:var(--refresh-surface)!important;color:var(--refresh-text)!important;border:2px solid var(--refresh-border)!important}
+  #edu-refresh .choice:hover:not(:disabled):not(.ok):not(.no),#edu-refresh .lesson-options button:hover:not(:disabled):not(.ok):not(.no){background:var(--refresh-soft)!important;border-color:var(--refresh-accent)!important}
+  #edu-refresh .choice.ok,#edu-refresh .lesson-options button.ok{background:#e8f6ed!important;border-color:#35845a!important;color:#185736!important}
+  #edu-refresh .choice.no,#edu-refresh .lesson-options button.no{background:#fff0ed!important;border-color:#c25f4e!important;color:#8b352a!important}
+  #edu-refresh .feedback{font-size:19px;line-height:1.8;margin:18px 0 12px}
+  #edu-refresh .explain{padding:20px;line-height:2;font-size:18px}
+  #edu-refresh .explain li{line-height:1.95;margin-bottom:12px}
+  #edu-refresh .calc,#edu-refresh .step{background:var(--refresh-surface);color:var(--refresh-text);padding:4px 9px;margin:4px 2px;max-width:100%;overflow-wrap:anywhere}
+  #edu-refresh .rule{font-size:16px;line-height:1.9;color:var(--refresh-muted);margin-bottom:22px}
+  #edu-refresh .kind{padding:6px 12px;margin-bottom:4px}
+  #edu-refresh .expression,#edu-refresh .number{background:var(--refresh-soft);border:1px solid var(--refresh-border);border-radius:18px;padding:22px 10px;margin:12px 0 24px;font-size:clamp(28px,6vw,46px);line-height:1.6;letter-spacing:0;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+  #edu-refresh .visual{color:var(--refresh-accent);padding:20px 12px;margin:16px 0 22px;max-width:100%}
+  #edu-refresh .visual-note{color:var(--refresh-muted);line-height:1.8}
+  #edu-refresh .lesson-overlay{z-index:100}
+  #edu-refresh .lesson-modal{padding:24px 22px;max-height:94dvh}
+  #edu-refresh .lesson-title{font-size:clamp(23px,5vw,29px);line-height:1.6}
+  #edu-refresh .lesson-text{font-size:19px;line-height:1.9}
+  #edu-refresh .lesson-progress{color:var(--refresh-muted)}
+  #edu-refresh .lesson-rule{background:var(--refresh-soft);color:var(--refresh-text);border:1px solid var(--refresh-border);padding:14px;line-height:1.9}
+  #edu-refresh .lesson-visual{padding:18px 10px;font-size:clamp(27px,7vw,43px);line-height:1.65;border-radius:16px;overflow-wrap:anywhere}
+  #edu-refresh .lesson-options button{font:800 21px/1.5 "Segoe UI","Arial Hebrew",Arial,sans-serif;min-height:54px}
+  #edu-refresh .lesson-feedback{color:var(--refresh-text)!important;line-height:1.8}
+  #edu-refresh .lesson-feedback[style*="--green"]{color:#237849!important}
+  #edu-refresh .lesson-feedback[style*="--red"]{color:#ac463b!important}
+  html[data-edu-theme="space"] #edu-refresh .lesson-feedback[style*="--green"],html[data-edu-theme="arcade"] #edu-refresh .lesson-feedback[style*="--green"]{color:#93e5b4!important}
+  html[data-edu-theme="space"] #edu-refresh .lesson-feedback[style*="--red"],html[data-edu-theme="arcade"] #edu-refresh .lesson-feedback[style*="--red"]{color:#ffb0a5!important}
+  #edu-refresh .lesson-nav{gap:10px;margin-top:20px}
+  #edu-refresh footer{line-height:1.8}
+  @media(max-width:520px){
+    #edu-refresh main{padding-inline:14px}
+    #edu-refresh .card{padding:24px 16px}
+    #edu-refresh .actions>.btn,#edu-refresh .actions>.action{flex:1 1 120px}
+    #edu-refresh .lesson-modal{padding:20px 14px}
+    #edu-refresh .lesson-text{font-size:18px}
+    #edu-refresh .explain{padding:16px}
+  }
+
+  #edu-refresh .grid,#edu-refresh .menu{gap:18px}
+  #edu-refresh .tile,#edu-refresh .grade{text-align:right;padding:26px 22px}
+  #edu-refresh .tile .emoji,#edu-refresh .grade .emoji{font-size:38px;margin-bottom:14px}
+  #edu-refresh .tile h2,#edu-refresh .tile h3,#edu-refresh .grade h2{font-size:24px;margin-bottom:10px}
+  #edu-refresh .tile p,#edu-refresh .grade p{font-size:16px;line-height:1.95}
+</style>
+</head>
+<body id="edu-refresh">
+<nav class="version-compare" aria-label="השוואת גרסאות" dir="rtl">
+  <a class="version-home" href="../../index.html" lang="en" dir="ltr">Edu Games 2</a>
+  <span>עיצוב חדש</span>
+  <a class="version-original" href="../../../math/grade-4/index.html" target="_blank" rel="noopener">פתיחת המקור להשוואה ↗</a>
+</nav>
+  <a class="home" href="../index.html" title="לְבְחִירַת כִּתָּה">⬆️🏠</a>
+  <div class="logo">חֶשְׁבּוֹן לְכִתָּה ד' 🚀</div>
+  <div class="sub">מְתַרְגְּלִים, מְבִינִים וּמִתְקַדְּמִים צַעַד אַחַר צַעַד</div>
+  <div class="grid">
+    <a class="tile numbers" href="./numbers/index.html">
+      <span class="emoji">🔢</span>
+      <h2>מִסְפָּרִים עַד מִילְיוֹן</h2>
+      <p>עֵרֶךְ הַסִּפְרָה, הַשְׁוָאַת מִסְפָּרִים וְעִגּוּל לַאֲלָפִים.</p>
+    </a>
+    <a class="tile operations" href="./operations/index.html">
+      <span class="emoji">🧠</span>
+      <h2>סֵדֶר פְּעֻלּוֹת</h2>
+      <p>סוֹגְרַיִם, כֶּפֶל, חִבּוּר וְחִסּוּר בַּסֵּדֶר הַנָּכוֹן.</p>
+    </a>
+    <a class="tile fractions" href="./fractions/index.html">
+      <span class="emoji">🍕</span>
+      <h2>הַשְׁוָאַת שְׁבָרִים</h2>
+      <p>מִי גָּדוֹל יוֹתֵר? מַשְׁוִים שְׁבָרִים בְּעֶזְרַת צִיּוּר וְכֶפֶל בַּהֲצְלָבָה.</p>
+    </a>
+    <a class="tile written" href="./written-arithmetic/index.html">
+      <span class="emoji">✏️</span>
+      <h2>חִשּׁוּב בִּכְתָב</h2>
+      <p>חִבּוּר, חִסּוּר, כֶּפֶל בִּמְאֻנָּךְ וְחִלּוּק אָרֹךְ רִאשׁוֹנִי.</p>
+    </a>
+    <a class="tile properties" href="./number-properties/index.html">
+      <span class="emoji">🔍</span>
+      <h2>תְּכוּנוֹת מִסְפָּרִים</h2>
+      <p>גּוֹרְמִים, כְּפֻלּוֹת, רִאשׁוֹנִיּוּת, הִתְחַלְּקוּת וַחֲזָקוֹת.</p>
+    </a>
+    <a class="tile fractionOps" href="./fraction-operations/index.html">
+      <span class="emoji">🍰</span>
+      <h2>פְּעֻלּוֹת בִּשְׁבָרִים</h2>
+      <p>שֶׁבֶר מִכַּמּוּת, שְׁקִילוּת, מְעֹרָבִים, חִבּוּר וְכֶפֶל.</p>
+    </a>
+    <a class="tile problems" href="./word-problems/index.html">
+      <span class="emoji">📖</span>
+      <h2>בְּעָיוֹת מִלּוּלִיּוֹת</h2>
+      <p>בְּעָיוֹת רַב־שְׁלָבִיּוֹת בְּמִסְפָּרִים, כֶּסֶף, מִדּוֹת וּשְׁבָרִים.</p>
+    </a>
+    <a class="tile geometry" href="./geometry/index.html">
+      <span class="emoji">📐</span>
+      <h2>הַנְדָּסָה</h2>
+      <p>צוּרוֹת, זָוִיּוֹת, מַקְבִּילוּת, אֲלַכְסוֹנִים וְסִימֶטְרִיָּה.</p>
+    </a>
+    <a class="tile measurement" href="./measurement/index.html">
+      <span class="emoji">📏</span>
+      <h2>מְדִידוֹת</h2>
+      <p>הֲמָרוֹת, זְמַן, הֶקֵּף, שֶׁטַח וְנֶפַח בְּקֻבִּיּוֹת.</p>
+    </a>
+    <a class="tile data" href="./data/index.html">
+      <span class="emoji">📊</span>
+      <h2>נְתוּנִים וְתַרְשִׁימִים</h2>
+      <p>טַבְלָאוֹת, תַּרְשִׁימֵי עַמּוּדוֹת, הֶפְרֵשִׁים וּמַסְקָנוֹת.</p>
+    </a>
+    <a class="tile probability" href="./probability/index.html">
+      <span class="emoji">🎲</span>
+      <h2>סִכּוּיִים</h2>
+      <p>וַדַּאי, אֶפְשָׁרִי, בִּלְתִּי אֶפְשָׁרִי וּמַצָּבִים שְׁוֵי סִכּוּי.</p>
+    </a>
+  </div>
+  <footer>מִשְׂחֲקֵי חֶשְׁבּוֹן מְקוֹרִיִּים לְכִתָּה ד'</footer>
+</body>
+</html>

@@ -284,11 +284,54 @@
   .rnav:disabled { opacity: 0.4; cursor: default; }
   .read-count { font-size: 18px; font-weight: bold; color: #555; }
 </style>
+<link rel="stylesheet" href="../../assets/refresh.css">
+<style id="english-refresh">
+  #edu-refresh{align-items:flex-start}
+  #edu-refresh .wrap{max-width:620px;margin:12px auto 24px;min-width:0}
+  #edu-refresh .tabs{gap:8px;margin-bottom:18px}
+  #edu-refresh .tab{flex-basis:28%;font-size:14px;line-height:1.5;padding:10px 8px;border:1px solid var(--refresh-border)}
+  #edu-refresh .tab.active{background:var(--refresh-accent)!important;color:var(--edu-action-text,#fff)!important;box-shadow:inset 0 -3px 0 var(--refresh-secondary)!important}
+  #edu-refresh .tabs a{min-height:44px}
+  #edu-refresh .card{padding:24px}
+  #edu-refresh .topbar{gap:12px;margin-bottom:18px;color:var(--refresh-muted)}
+  #edu-refresh .score{padding:4px 10px;border-radius:12px}
+  #edu-refresh .streak,#edu-refresh .banklabel,#edu-refresh .read-count{color:var(--refresh-muted)}
+  #edu-refresh .he-instr{font-size:20px;line-height:1.7;color:var(--refresh-secondary);margin:0 0 16px}
+  #edu-refresh .picrow{flex-wrap:wrap;gap:12px;margin:12px 0 16px}
+  #edu-refresh .wordtext{font-size:clamp(34px,8vw,56px);letter-spacing:1px;max-width:100%;overflow-wrap:anywhere;color:var(--refresh-accent)}
+  #edu-refresh .sentence{color:var(--refresh-text);font-size:clamp(23px,5vw,28px);line-height:1.6;max-width:100%;overflow-wrap:anywhere}
+  #edu-refresh .picture{font-size:clamp(80px,20vw,110px);max-width:100%}
+  #edu-refresh .hebrew{font-size:24px;line-height:1.6;color:var(--refresh-accent)}
+  #edu-refresh .blankword{font-size:clamp(30px,8vw,48px);letter-spacing:3px;overflow-wrap:anywhere;color:var(--refresh-accent)}
+  #edu-refresh .blankword .blank,#edu-refresh .slot{color:var(--refresh-secondary);border-color:var(--refresh-secondary)}
+  #edu-refresh .slot.filled{color:var(--refresh-accent);border-color:var(--refresh-accent)}
+  #edu-refresh .options,#edu-refresh .wordbank{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  #edu-refresh .options button,#edu-refresh .wordbank button{overflow-wrap:anywhere;line-height:1.45;border:1px solid var(--refresh-border);padding:14px 10px}
+  #edu-refresh .options button.correct,#edu-refresh .wordbank button.correct,#edu-refresh .memcard.matched{background:#d9f6e3!important;color:#145c35!important;border:2px solid #237849!important;opacity:1}
+  #edu-refresh .options button.wrong,#edu-refresh .wordbank button.wrong{background:#ffe0dc!important;color:#8c2c28!important;border:2px solid #ac463b!important;opacity:1}
+  #edu-refresh .memcard{border:1px solid var(--refresh-border);font-size:32px}
+  #edu-refresh .memcard.word{font-size:clamp(15px,4vw,21px)}
+  #edu-refresh .memcard.flipped:not(.matched){background:var(--refresh-surface)!important;color:var(--refresh-accent)!important;border:2px solid var(--refresh-accent)}
+  #edu-refresh .feedback{font-size:21px;line-height:1.7}
+  #edu-refresh .feedback[style]{color:var(--refresh-secondary)!important}
+  #edu-refresh .feedback[style*="46, 158, 91"]{color:#237849!important}
+  #edu-refresh .feedback[style*="220, 38, 38"]{color:#ac463b!important}
+  html[data-edu-theme="space"] #edu-refresh .feedback[style*="46, 158, 91"],html[data-edu-theme="arcade"] #edu-refresh .feedback[style*="46, 158, 91"]{color:#93e5b4!important}
+  html[data-edu-theme="space"] #edu-refresh .feedback[style*="220, 38, 38"],html[data-edu-theme="arcade"] #edu-refresh .feedback[style*="220, 38, 38"]{color:#ffb0a5!important}
+  #edu-refresh .read-nav{flex-wrap:wrap}
+  #edu-refresh .read-img{box-shadow:none;border:1px solid var(--refresh-border)}
+  @media(max-width:520px){
+    #edu-refresh .card{padding:20px 14px}
+    #edu-refresh .tab{flex-basis:40%;font-size:13px}
+    #edu-refresh .sentence:not(.build),#edu-refresh .wordtext{flex-basis:100%}
+    #edu-refresh .rnav{padding:12px 9px;font-size:15px}
+  }
+</style>
 </head>
-<body>
-  <div class="wrap">
+<body id="edu-refresh">
+<div class="wrap">
     <div class="tabs">
-      <a href="../" title="Back to English grades" style="display:inline-flex;align-items:center;background:#fff;border-radius:14px;padding:6px 11px;font-size:18px;line-height:1;text-decoration:none;box-shadow:0 3px 0 rgba(20,60,90,.18);">⬆️🏠</a>
+      <a href="../index.html" title="Back to English grades" style="display:inline-flex;align-items:center;background:#fff;border-radius:14px;padding:6px 11px;font-size:18px;line-height:1;text-decoration:none;box-shadow:0 3px 0 rgba(20,60,90,.18);">⬆️🏠</a>
       <button class="tab active" data-tab="g1">🖼️ Picture → Word</button>
       <button class="tab" data-tab="g2">📖 Word → Picture</button>
       <button class="tab" data-tab="g3">🔤 First Sound</button>

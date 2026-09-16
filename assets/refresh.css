@@ -1,0 +1,201 @@
+/* Visual shell only; each page retains its original game engine and curriculum. */
+html {
+  --refresh-bg: #f4f7fb;
+  --refresh-background: linear-gradient(var(--refresh-bg), var(--refresh-bg));
+  --refresh-background-size: auto;
+  --refresh-surface: #fff;
+  --refresh-soft: #edf3fb;
+  --refresh-text: #243b53;
+  --refresh-muted: #52677e;
+  --refresh-accent: #285f9f;
+  --refresh-secondary: #76549f;
+  --refresh-border: #d5dfec;
+  --refresh-shadow: 0 10px 32px #1d34540b;
+}
+html[data-edu-theme="adventure"] {
+  --refresh-background:
+    radial-gradient(ellipse at 8% 108%, #d5e9c9 0 30%, transparent 30.2%),
+    radial-gradient(ellipse at 95% 112%, #e1efd6 0 36%, transparent 36.2%),
+    linear-gradient(180deg, #e0f1fc, #f4f9fd 65%, #eef5e8);
+}
+html[data-edu-theme="classroom"] {
+  --refresh-bg: #f4f7f2;
+  --refresh-soft: #edf4e9;
+  --refresh-accent: #316e52;
+  --refresh-border: #d4e0d3;
+  --refresh-background:
+    repeating-linear-gradient(90deg, transparent 0 79px, #9f794515 79px 80px),
+    linear-gradient(180deg, #faf6e9 0 82%, #e6d2b3 82% 83%, #eedfc8 83%);
+}
+html[data-edu-theme="stickers"] {
+  --refresh-bg: #fcf5f8;
+  --refresh-soft: #fceef4;
+  --refresh-accent: #aa426a;
+  --refresh-border: #ead5df;
+  --refresh-background:
+    linear-gradient(90deg, transparent 0 39px, #eab4c5 39px 40px, transparent 40px),
+    repeating-linear-gradient(180deg, #fffcfe 0 31px, #dce7f2 31px 32px);
+}
+html[data-edu-theme="space"] {
+  --refresh-bg: #111a2e;
+  --refresh-surface: #1d2b44;
+  --refresh-soft: #253957;
+  --refresh-text: #edf4ff;
+  --refresh-muted: #bbcbe0;
+  --refresh-accent: #85d7fa;
+  --refresh-secondary: #c6a2ee;
+  --refresh-border: #405777;
+  --refresh-shadow: 0 10px 32px #0002;
+  --refresh-background:
+    radial-gradient(circle at 18px 24px, #d5edff66 0 1px, transparent 1.5px),
+    radial-gradient(circle at 65px 57px, #b1c4f044 0 1px, transparent 1.5px),
+    radial-gradient(ellipse at 20% 0%, #243957, #111a2e 70%);
+  --refresh-background-size: 96px 96px, 151px 151px, 100% 100%;
+}
+html[data-edu-theme="arcade"] {
+  --refresh-bg: #152526;
+  --refresh-surface: #203437;
+  --refresh-soft: #29474a;
+  --refresh-text: #edf9f5;
+  --refresh-muted: #bdd6d1;
+  --refresh-accent: #85e3bf;
+  --refresh-secondary: #edb0d8;
+  --refresh-border: #426260;
+  --refresh-shadow: 0 10px 32px #0002;
+  --refresh-background:
+    linear-gradient(#85e3bf12 1px, transparent 1px),
+    linear-gradient(90deg, #85e3bf12 1px, transparent 1px),
+    linear-gradient(135deg, #152526, #1c3035);
+  --refresh-background-size: 32px 32px, 32px 32px, 100% 100%;
+}
+html[data-edu-theme][data-edu-theme] {
+  --edu-surface: var(--refresh-surface);
+  --edu-soft: var(--refresh-soft);
+  --edu-input: var(--refresh-surface);
+  --edu-text: var(--refresh-text);
+  --edu-muted: var(--refresh-muted);
+  --edu-heading: var(--refresh-accent);
+  --edu-accent: var(--refresh-accent);
+  --edu-secondary: var(--refresh-secondary);
+  --edu-border: var(--refresh-border);
+  --edu-card-shadow: var(--refresh-shadow);
+  --edu-control: var(--refresh-surface);
+  --edu-control-text: var(--refresh-text);
+  --edu-radius: 22px;
+  --edu-button-radius: 14px;
+}
+html[data-edu-theme][data-edu-theme]:not([data-original-layout]) { --edu-font: "Segoe UI", "Arial Hebrew", Arial, sans-serif; }
+html body#edu-refresh {
+  isolation: isolate;
+  background: var(--refresh-background) !important;
+  background-size: var(--refresh-background-size) !important;
+  background-attachment: fixed !important;
+  color: var(--refresh-text) !important;
+  font-family: "Segoe UI", "Arial Hebrew", Arial, sans-serif !important;
+  padding-top: 62px !important;
+  padding-bottom: 24px;
+}
+/* Reuse the selected template's illustrations without affecting panel layout. */
+#edu-refresh::before, #edu-refresh::after {
+  display: block !important;
+  position: fixed;
+  bottom: 18px;
+  top: auto;
+  z-index: -1;
+  pointer-events: none;
+  font-size: clamp(64px, 9vw, 110px) !important;
+  line-height: 1;
+  opacity: .3 !important;
+  filter: none !important;
+}
+#edu-refresh::before { left: 16px; right: auto; }
+#edu-refresh::after { right: 16px; left: auto; }
+#edu-refresh .version-compare {
+  position: absolute;
+  top: 54px;
+  inset-inline: 14px;
+  width: auto;
+  max-width: 1000px;
+  margin-inline: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--refresh-border);
+  border-radius: 14px;
+  background: var(--refresh-surface);
+  color: var(--refresh-muted);
+  font: 14px/1.5 "Segoe UI", "Arial Hebrew", Arial, sans-serif;
+}
+#edu-refresh .version-compare a { color: var(--refresh-accent); text-underline-offset: 3px; }
+#edu-refresh .version-home { font-weight: 800; text-decoration: none; white-space: nowrap; }
+#edu-refresh .version-original { margin-inline-start: auto; }
+#edu-refresh :where(.logo, .app-logo, .game-title, h1, h2, h3) {
+  text-shadow: none !important;
+}
+#edu-refresh:where(:not(.original-layout)) :where(h2, h3) { line-height: 1.45; }
+#edu-refresh:where(:not(.original-layout)) :where(.card, .tile, .grade, .lesson-card, .practice-card, .question-box, .question-card, .world-card, .world-head, .progress-card, .modal, .lesson-modal, .explain, .panel, .game-card, .menu-card, .stage-card, .content-card) {
+  border: 1px solid var(--refresh-border) !important;
+  box-shadow: var(--refresh-shadow) !important;
+}
+#edu-refresh:where(:not(.original-layout)) :where(.pill, .score, .count-note, .source-note) {
+  box-shadow: none !important;
+  border: 1px solid var(--refresh-border) !important;
+}
+#edu-refresh :where(button, .btn, .home, .back) { touch-action: manipulation; }
+#edu-refresh:where(:not(.original-layout)) :where(button:not(.memcard), .btn) { min-height: 44px; }
+#edu-refresh :where(button, .btn) { box-shadow: none !important; }
+#edu-refresh :where(a, button, input, select, textarea):focus-visible {
+  outline: 3px solid #b97a19 !important;
+  outline-offset: 3px;
+}
+#edu-refresh:where(:not(.original-layout)) :where(.rule, .instruction, .instructions, .feedback, .explain, .lesson-text, .tile p, .grade p) { line-height: 1.85; }
+#edu-refresh:where(:not(.original-layout)) :where(.help, .secondary) {
+  background: var(--refresh-soft) !important;
+  color: var(--refresh-secondary) !important;
+  border: 1px solid var(--refresh-border) !important;
+}
+#edu-refresh :where(.home, a.back) {
+  box-shadow: none !important;
+  text-decoration: none;
+}
+#edu-refresh :where(.feedback.good, .feedback.correct, .feedback.ok) { color: #237849 !important; }
+#edu-refresh :where(.feedback.bad, .feedback.wrong, .feedback.no) { color: #ac463b !important; }
+html[data-edu-theme="space"] #edu-refresh :where(.feedback.good, .feedback.correct, .feedback.ok),
+html[data-edu-theme="arcade"] #edu-refresh :where(.feedback.good, .feedback.correct, .feedback.ok) { color: #93e5b4 !important; }
+html[data-edu-theme="space"] #edu-refresh :where(.feedback.bad, .feedback.wrong, .feedback.no),
+html[data-edu-theme="arcade"] #edu-refresh :where(.feedback.bad, .feedback.wrong, .feedback.no) { color: #ffb0a5 !important; }
+#edu-refresh [hidden] { display: none !important; }
+/* Comparison controls must not displace pages that retain original geometry. */
+html body#edu-refresh.original-layout {
+  padding-top: 62px !important;
+  padding-bottom: 0;
+  font-family: var(--edu-font, "Segoe UI") !important;
+}
+#edu-refresh.original-layout .version-compare {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  right: auto;
+  max-width: calc(100% - 202px);
+  margin: 0;
+  padding: 6px 8px;
+  gap: 8px;
+  font-size: 12px;
+  min-height: 36px;
+  z-index: 30;
+}
+#edu-refresh.original-layout .version-compare > span { display: none; }
+@media (max-width: 520px) {
+  #edu-refresh .version-compare { gap: 8px; font-size: 12px; padding-inline: 10px; }
+  #edu-refresh .version-compare > span { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #edu-refresh *, #edu-refresh *::before, #edu-refresh *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

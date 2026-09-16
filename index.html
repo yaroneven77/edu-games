@@ -34,20 +34,30 @@
   a.kindergarten{border-top:9px solid #f0883e;}
   footer{margin-top:30px;color:#6b87a3;font-size:13px;text-align:center;}
 </style>
+<link rel="stylesheet" href="assets/refresh.css">
+<style id="home-refresh">
+  #edu-refresh .grid{max-width:900px;gap:18px}
+  #edu-refresh .tile{padding:30px 22px;border-top:4px solid var(--refresh-accent)!important}
+  #edu-refresh .tile h2{font-size:24px}
+  #edu-refresh .tile p{font-size:16px}
+  #edu-refresh .tile:hover{transform:translateY(-2px)}
+  #edu-refresh .tile.english{border-top-color:var(--refresh-secondary)!important}
+  #edu-refresh .tile.kindergarten{border-top-color:#c17c36!important}
+</style>
 </head>
-<body>
-  <div class="logo">Edu Games 🎓</div>
+<body id="edu-refresh">
+<div class="logo" lang="en" dir="ltr">Edu Games 🎓</div>
   <div class="sub">מִשְׂחֲקֵי לִמּוּד לְיְלָדִים</div>
   <div class="grid">
-    <a class="tile math" href="./math/">
+    <a class="tile math" href="./math/index.html">
       <span class="emoji">➗</span>
       <h2>מִשְׂחֲקֵי חֶשְׁבּוֹן</h2>
     </a>
-    <a class="tile english" href="./english/">
+    <a class="tile english" href="./english/index.html">
       <span class="emoji">🔤</span>
       <h2>מִשְׂחֲקֵי אַנְגְּלִית</h2>
     </a>
-    <a class="tile kindergarten" href="./kindergarten/">
+    <a class="tile kindergarten" href="./kindergarten/index.html">
       <span class="emoji">🧸</span>
       <h2>גַּן · Kindergarten</h2>
       <p>מִשְׂחַק זִכָּרוֹן עִם מִלִּים בְּאַנְגְּלִית וּמִלְחֶמֶת מִסְפָּרִים.</p>

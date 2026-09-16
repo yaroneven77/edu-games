@@ -2,7 +2,7 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>הַשְׁוָאַת שְׁבָרִים · כִּתָּה ד'</title>
 <script src="../../../assets/theme-selector.js" defer></script>
 <script data-goatcounter="https://yaroneven.goatcounter.com/count"
@@ -61,10 +61,69 @@
   .gray{background:#8aa4bd}.green{background:var(--green)}.blue{background:var(--blue)}
   footer{padding:10px;color:#6b87a3;font-size:12px;}
 </style>
+<link rel="stylesheet" href="../../../assets/refresh.css">
+<style id="math-refresh">
+  #edu-refresh main{max-width:780px;padding:8px 20px 32px;min-width:0}
+  #edu-refresh .card{padding:28px 24px}
+  #edu-refresh h2,#edu-refresh .qtitle{font-size:clamp(20px,4.5vw,24px);line-height:1.7;margin-bottom:16px}
+  #edu-refresh .topbar{gap:10px;margin-bottom:18px;flex-wrap:wrap}
+  #edu-refresh .pill,#edu-refresh .score{font-size:15px;padding:9px 12px}
+  #edu-refresh .actions{gap:10px;flex-wrap:wrap;margin-top:12px}
+  #edu-refresh .btn,#edu-refresh .action,#edu-refresh .learn,#edu-refresh .lesson-nav button,#edu-refresh .lesson-close{font:700 16px/1.5 "Segoe UI","Arial Hebrew",Arial,sans-serif}
+  #edu-refresh .choices,#edu-refresh .mopts{gap:12px}
+  #edu-refresh .choice{min-height:70px;padding:16px 10px;font-family:inherit;font-size:clamp(22px,5vw,27px);font-weight:800;line-height:1.5;border-width:2px}
+  #edu-refresh .choice:not(.ok):not(.no),#edu-refresh .lesson-options button:not(.ok):not(.no){background:var(--refresh-surface)!important;color:var(--refresh-text)!important;border:2px solid var(--refresh-border)!important}
+  #edu-refresh .choice:hover:not(:disabled):not(.ok):not(.no),#edu-refresh .lesson-options button:hover:not(:disabled):not(.ok):not(.no){background:var(--refresh-soft)!important;border-color:var(--refresh-accent)!important}
+  #edu-refresh .choice.ok,#edu-refresh .lesson-options button.ok{background:#e8f6ed!important;border-color:#35845a!important;color:#185736!important}
+  #edu-refresh .choice.no,#edu-refresh .lesson-options button.no{background:#fff0ed!important;border-color:#c25f4e!important;color:#8b352a!important}
+  #edu-refresh .feedback{font-size:19px;line-height:1.8;margin:18px 0 12px}
+  #edu-refresh .explain{padding:20px;line-height:2;font-size:18px}
+  #edu-refresh .explain li{line-height:1.95;margin-bottom:12px}
+  #edu-refresh .calc,#edu-refresh .step{background:var(--refresh-surface);color:var(--refresh-text);padding:4px 9px;margin:4px 2px;max-width:100%;overflow-wrap:anywhere}
+  #edu-refresh .rule{font-size:16px;line-height:1.9;color:var(--refresh-muted);margin-bottom:22px}
+  #edu-refresh .kind{padding:6px 12px;margin-bottom:4px}
+  #edu-refresh .expression,#edu-refresh .number{background:var(--refresh-soft);border:1px solid var(--refresh-border);border-radius:18px;padding:22px 10px;margin:12px 0 24px;font-size:clamp(28px,6vw,46px);line-height:1.6;letter-spacing:0;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+  #edu-refresh .visual{color:var(--refresh-accent);padding:20px 12px;margin:16px 0 22px;max-width:100%}
+  #edu-refresh .visual-note{color:var(--refresh-muted);line-height:1.8}
+  #edu-refresh .lesson-overlay{z-index:100}
+  #edu-refresh .lesson-modal{padding:24px 22px;max-height:94dvh}
+  #edu-refresh .lesson-title{font-size:clamp(23px,5vw,29px);line-height:1.6}
+  #edu-refresh .lesson-text{font-size:19px;line-height:1.9}
+  #edu-refresh .lesson-progress{color:var(--refresh-muted)}
+  #edu-refresh .lesson-rule{background:var(--refresh-soft);color:var(--refresh-text);border:1px solid var(--refresh-border);padding:14px;line-height:1.9}
+  #edu-refresh .lesson-visual{padding:18px 10px;font-size:clamp(27px,7vw,43px);line-height:1.65;border-radius:16px;overflow-wrap:anywhere}
+  #edu-refresh .lesson-options button{font:800 21px/1.5 "Segoe UI","Arial Hebrew",Arial,sans-serif;min-height:54px}
+  #edu-refresh .lesson-feedback{color:var(--refresh-text)!important;line-height:1.8}
+  #edu-refresh .lesson-feedback[style*="--green"]{color:#237849!important}
+  #edu-refresh .lesson-feedback[style*="--red"]{color:#ac463b!important}
+  html[data-edu-theme="space"] #edu-refresh .lesson-feedback[style*="--green"],html[data-edu-theme="arcade"] #edu-refresh .lesson-feedback[style*="--green"]{color:#93e5b4!important}
+  html[data-edu-theme="space"] #edu-refresh .lesson-feedback[style*="--red"],html[data-edu-theme="arcade"] #edu-refresh .lesson-feedback[style*="--red"]{color:#ffb0a5!important}
+  #edu-refresh .lesson-nav{gap:10px;margin-top:20px}
+  #edu-refresh footer{line-height:1.8}
+  @media(max-width:520px){
+    #edu-refresh main{padding-inline:14px}
+    #edu-refresh .card{padding:24px 16px}
+    #edu-refresh .actions>.btn,#edu-refresh .actions>.action{flex:1 1 120px}
+    #edu-refresh .lesson-modal{padding:20px 14px}
+    #edu-refresh .lesson-text{font-size:18px}
+    #edu-refresh .explain{padding:16px}
+  }
+
+  #edu-refresh .shape-svg,#edu-refresh .angle-svg{background:#fff;border-radius:12px;max-width:100%}
+  #edu-refresh .column-math .line{border-color:currentColor}
+  #edu-refresh .data-table{background:var(--refresh-surface);color:var(--refresh-text);max-width:100%}
+  #edu-refresh .data-table th{background:var(--refresh-soft)}
+  #edu-refresh .data-table th,#edu-refresh .data-table td{border-color:var(--refresh-border);padding:9px 8px;line-height:1.6}
+  #edu-refresh .bar-item,#edu-refresh .cube-stack{color:var(--refresh-text)}
+
+  #edu-refresh .fractions{margin:24px 0;gap:22px}
+  #edu-refresh .bars,#edu-refresh .lesson-bars{gap:18px;margin-block:20px}
+  #edu-refresh .choices .choice{font-size:34px}
+</style>
 </head>
-<body>
+<body id="edu-refresh">
 <header>
-  <a class="home" href="../" title="לְתַפְרִיט כִּתָּה ד'">⬆️🏠</a>
+  <a class="home" href="../index.html" title="לְתַפְרִיט כִּתָּה ד'">⬆️🏠</a>
   <div class="logo">הַשְׁוָאַת שְׁבָרִים<small>חֶשְׁבּוֹן לְכִתָּה ד'</small></div>
 </header>
 <main>

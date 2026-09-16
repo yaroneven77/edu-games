@@ -2,12 +2,22 @@
 
 A collection of small, self-contained educational games for kids. Each game is a single offline-capable HTML file living in its own folder. No build step, no dependencies — hosted free on GitHub Pages. Exercises are generated dynamically, while interactive lesson examples remain fixed for clear teaching.
 
-Every active page includes a persistent five-template design selector. A choice made on one page follows the learner across the site without requiring an account.
+Every active page includes the approved refreshed design and a persistent five-template selector. Adventure scenery, Space stars, Classroom textures, Stickers notebook lines, and the Arcade grid accompany the template pictures. A choice made on one page follows the learner across the site without requiring an account.
 
 ## ▶️ Play
 **https://yaroneven77.github.io/edu-games/**
 
 The root page (`index.html`) is a hub that links to every game.
+
+## Approved design and retained preview
+
+The approved design is now applied to the main site's local files. Open `index.html` to use it. This promotion changes presentation only: the existing curriculum, lessons, questions, scoring, help, and next-button behavior are preserved. English Grade 4 retains its original panel sizes and positions.
+
+[`edu-games2/index.html`](./edu-games2/index.html) remains as the approved preview, also linked from the [sandbox hub](./sandbox/sandbox.html). Its comparison links now open the refreshed main site, not the old design. The old design remains available in Git history. Future edits do not automatically synchronize the two copies.
+
+Main pages use `assets/theme-selector.js`, `assets/refresh.css`, and embedded game-specific styling, with no dependency on `edu-games2/`. Comparison-only bars are absent from the main site. No build or server is needed. Publishing still requires a separately authorized commit and push.
+
+The preview retains its demo-only Order of Operations answer-choice correction. Main-site gameplay scripts, including existing choice-generation defects, are unchanged by this visual promotion.
 
 ## 🎮 Games
 | Folder | Game | Description |
@@ -26,7 +36,8 @@ The root page (`index.html`) is a hub that links to every game.
 edu-games/
 ├── index.html             # landing hub linking to subject sections
 ├── assets/
-│   └── theme-selector.js  # shared persistent visual-theme selector
+│   ├── theme-selector.js  # shared persistent visual-theme selector
+│   └── refresh.css        # approved five-template presentation
 ├── math/
 │   ├── index.html         # math grade selector
 │   ├── grade-3/

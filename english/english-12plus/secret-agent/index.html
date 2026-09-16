@@ -2,7 +2,7 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>הסוכן החשאי · Secret Agent</title>
 <script src="../../../assets/theme-selector.js" defer></script>
 <style>
@@ -171,13 +171,48 @@
   /* confetti */
   .confetti { position: fixed; top: -10px; width: 10px; height: 14px; z-index: 60; pointer-events: none; }
 </style>
+<link rel="stylesheet" href="../../../assets/refresh.css">
+<style id="english-refresh">
+  #edu-refresh #app{max-width:860px;padding:18px 14px}
+  #edu-refresh #screen-play{background:var(--refresh-bg)!important}
+  #edu-refresh .exit-link{display:inline-flex;align-items:center;min-height:44px;background:var(--refresh-surface);color:var(--refresh-accent);border-color:var(--refresh-border)}
+  #edu-refresh .world-list{gap:16px}
+  #edu-refresh .world-card{padding:20px;gap:16px}
+  #edu-refresh .wc-info{min-width:0}
+  #edu-refresh .wc-name{font-size:20px;line-height:1.5}
+  #edu-refresh .wc-desc{font-size:15px;line-height:1.7;color:var(--refresh-muted);opacity:1}
+  #edu-refresh .topbar{gap:14px;margin-bottom:14px}
+  #edu-refresh .progress-info{color:var(--refresh-text);font-size:15px;line-height:1.6}
+  #edu-refresh .progress-bar{background:var(--refresh-soft);height:10px}
+  #edu-refresh .sentence-box{background:var(--refresh-surface);border:1px solid var(--refresh-border);padding:18px;gap:14px}
+  #edu-refresh .sentence-text{color:var(--refresh-text);font-size:clamp(20px,4vw,28px);line-height:1.6;overflow-wrap:anywhere}
+  #edu-refresh .room{border-color:var(--refresh-border)}
+  /* These controls are precisely positioned targets, not ordinary page buttons. */
+  #edu-refresh .hotspot,#edu-refresh .obj-scene{min-height:0!important;min-width:0!important;background:transparent!important;box-shadow:none!important;border-color:transparent!important}
+  #edu-refresh .hotspot{border-radius:14px!important}
+  #edu-refresh .hotspot.correct{border-color:#38e08a!important;background:rgba(56,224,138,.18)!important;box-shadow:0 0 0 4px rgba(56,224,138,.55)!important}
+  #edu-refresh .hotspot.wrong{border-color:#ff6b6b!important;background:rgba(255,107,107,.2)!important}
+  #edu-refresh .obj.correct{background:#d9f6e3!important}
+  #edu-refresh .obj.wrong{background:#ffe0dc!important}
+  #edu-refresh .hotspot.hintpulse{border-color:#38e08a!important}
+  #edu-refresh .obj-scene.hintpulse{outline:3px solid #38e08a;outline-offset:3px}
+  #edu-refresh .overlay{background:var(--refresh-bg);color:var(--refresh-text);overflow:auto;z-index:2147483001}
+  #edu-refresh .overlay .en-line{opacity:1;color:var(--refresh-muted);line-height:1.7}
+  #edu-refresh .listen-badge{top:112px;max-width:calc(100% - 24px);text-align:center}
+  #edu-refresh .footer{opacity:1;color:var(--refresh-muted);font-size:12px;line-height:1.6;margin-top:18px}
+  @media(max-width:520px){
+    #edu-refresh .sentence-box{padding:14px 10px;gap:8px}
+    #edu-refresh .speak-btn{width:44px;height:44px;min-width:44px;font-size:22px}
+    #edu-refresh .world-card{padding:16px 12px;gap:12px}
+  }
+</style>
 </head>
-<body>
+<body id="edu-refresh">
 <div id="app">
 
   <!-- START -->
   <section id="screen-start" class="screen active">
-    <a href="../" class="exit-link">⬅️ חזרה ל-English 12+</a>
+    <a href="../index.html" class="exit-link">⬅️ חזרה ל-English 12+</a>
     <div class="agent-badge">🕵️</div>
     <h1>הסוכן החשאי</h1>
     <div class="subtitle">Secret Agent · משימות באנגלית 🇬🇧</div>

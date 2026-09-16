@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="he" dir="rtl">
+<html lang="he" dir="rtl" data-original-layout>
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -211,12 +211,31 @@
   }
   @media(max-width:370px){.topic-grid{grid-template-columns:1fr}.topic-card{min-height:126px}}
 </style>
+<link rel="stylesheet" href="../../assets/refresh.css">
+<style id="english-refresh">
+  #edu-refresh .subtitle,#edu-refresh .section-en{color:var(--refresh-muted)!important}
+  #edu-refresh .world-card strong,#edu-refresh .topic-card strong{color:var(--refresh-accent)}
+  #edu-refresh .world-count,#edu-refresh .question-topic span{background:var(--refresh-soft);color:var(--refresh-accent)}
+  #edu-refresh .topic-card{border-color:var(--refresh-border);box-shadow:var(--refresh-shadow)}
+  #edu-refresh .topic-actions{background:var(--refresh-surface);box-shadow:var(--refresh-shadow)}
+  #edu-refresh .topic-heading p,#edu-refresh .world-description{color:var(--refresh-muted)!important}
+  #edu-refresh .rule,#edu-refresh .wordbank-details,#edu-refresh .example,#edu-refresh .explanation{background:var(--refresh-soft);border-color:var(--refresh-border);color:var(--refresh-text)}
+  #edu-refresh .passage,#edu-refresh .explanation-block,#edu-refresh .answer-chip{background:var(--refresh-surface);border-color:var(--refresh-border);color:var(--refresh-text)}
+  #edu-refresh .explanation-label,#edu-refresh .answer-chip-label,#edu-refresh .instruction{color:var(--refresh-secondary)!important}
+  #edu-refresh .placed{background:var(--refresh-soft);color:var(--refresh-text)}
+  #edu-refresh .order-answer>span[style]{color:var(--refresh-muted)!important}
+  #edu-refresh .choice.correct{background:#d9f6e3!important;color:#145c35!important;border-color:#237849!important}
+  #edu-refresh .choice.wrong{background:#ffe0dc!important;color:#8c2c28!important;border-color:#ac463b!important}
+  #edu-refresh .feedback.try{color:#ac463b!important}
+  html[data-edu-theme="space"] #edu-refresh .feedback.try,html[data-edu-theme="arcade"] #edu-refresh .feedback.try{color:#ffb0a5!important}
+  #edu-refresh .lesson-overlay{z-index:2147483001}
+</style>
 </head>
-<body>
+<body id="edu-refresh" class="original-layout">
 <div class="page">
   <header>
     <div class="toplinks">
-      <a class="home" href="../">⬆️🏠 בחירת כיתה</a>
+      <a class="home" href="../index.html">⬆️🏠 בחירת כיתה</a>
     </div>
     <div class="logo"><span class="english">English Academy</span> 🎓</div>
     <div class="subtitle">אקדמיית האנגלית של כיתה ד' · פחות בחירות, כל חומר הלימוד</div>

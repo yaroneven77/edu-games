@@ -2,7 +2,7 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>מִשְׂחֲקֵי גַּן · Kindergarten</title>
 <script src="../assets/theme-selector.js" defer></script>
 <script data-goatcounter="https://yaroneven.goatcounter.com/count"
@@ -38,21 +38,28 @@
   footer{padding:10px;color:#84583f;font-size:12px;text-align:center;}
   @media(max-width:560px){.grid{grid-template-columns:1fr;}}
 </style>
+<link rel="stylesheet" href="../assets/refresh.css">
+<style id="kindergarten-refresh">
+  #edu-refresh .game{background:var(--refresh-surface);color:var(--refresh-text);border:1px solid var(--refresh-border);border-top:4px solid var(--refresh-accent);border-radius:22px;box-shadow:var(--refresh-shadow);padding:28px 20px}
+  #edu-refresh .game.pairs{border-top-color:var(--refresh-secondary)}
+  #edu-refresh .game h2{font-size:26px}
+  #edu-refresh .game p{color:var(--refresh-muted);font-size:17px;line-height:1.85}
+</style>
 </head>
-<body>
+<body id="edu-refresh">
 <header>
-  <a class="home" href="../" title="לַעַמּוּד הָרָאשִׁי">⬆️🏠</a>
+  <a class="home" href="../index.html" title="לַעַמּוּד הָרָאשִׁי">⬆️🏠</a>
   <div class="logo">מִשְׂחֲקֵי גַּן 🧸</div>
   <div class="sub">בַּחֲרוּ מִשְׂחָק</div>
 </header>
 <main>
   <div class="grid">
-    <a class="game pairs" href="./picture-pairs/">
+    <a class="game pairs" href="./picture-pairs/index.html">
       <span class="emoji">🧠🃏</span>
       <h2 dir="ltr">Picture Pairs</h2>
       <p>מוֹצְאִים זוּגוֹת וְאוֹמְרִים אֶת הַמִּלִּים בְּאַנְגְּלִית.</p>
     </a>
-    <a class="game war" href="./number-war/">
+    <a class="game war" href="./number-war/index.html">
       <span class="emoji">⚔️🔢</span>
       <h2>מִלְחֶמֶת מִסְפָּרִים</h2>
       <p>מְגַלִּים קְלָפִים וְלוֹמְדִים אֶת הַמִּסְפָּרִים בְּאַנְגְּלִית.</p>

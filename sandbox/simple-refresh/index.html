@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>סֵדֶר פְּעֻלּוֹת · כִּתָּה ד'</title>
+<script src="../../assets/theme-selector.js" defer></script>
+<script data-goatcounter="https://yaroneven.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+<style>
+  :root{--blue:#1f7fc4;--green:#3fbf6b;--red:#e6604f;--purple:#a974d6;--ink:#243b53;--shadow:rgba(20,60,90,.18);}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  body{margin:0;min-height:100vh;font-family:"Segoe UI","Arial Hebrew",Arial,sans-serif;color:var(--ink);
+    background:linear-gradient(160deg,#fff7e6,#cdeffd);display:flex;flex-direction:column;align-items:center;
+    -webkit-user-select:none;user-select:none;}
+  header{text-align:center;padding:14px 8px 4px;}
+  .home{display:inline-block;background:#fff;border-radius:14px;padding:5px 12px;font-size:20px;line-height:1;text-decoration:none;
+    box-shadow:0 3px 0 var(--shadow);margin-bottom:8px;}
+  .logo{font-weight:900;font-size:clamp(27px,7vw,46px);color:#ffce3a;
+    text-shadow:2px 2px 0 var(--red),4px 4px 0 var(--blue),0 6px 14px var(--shadow);}
+  .logo small{display:block;font-size:.43em;color:#155f93;text-shadow:none;margin-top:4px;}
+  main{width:100%;max-width:700px;padding:8px 14px 30px;flex:1;}
+  .topbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-bottom:12px;gap:8px;}
+  .pill{background:#fff;border-radius:16px;padding:8px 14px;font-weight:900;box-shadow:0 4px 0 var(--shadow);}
+  .learn{border:none;border-radius:16px;padding:9px 14px;background:var(--purple);color:#fff;font:800 15px inherit;cursor:pointer;box-shadow:0 4px 0 var(--shadow);}
+  .card{background:#fff;border-radius:24px;padding:22px 18px;box-shadow:0 8px 0 var(--shadow);text-align:center;}
+  h2{font-size:clamp(20px,5vw,27px);margin:0 0 10px;}
+  .rule{color:#5b7b99;font-weight:700;margin-bottom:16px;}
+  .expression{direction:ltr;font-size:clamp(35px,11vw,58px);font-weight:900;color:#155f93;margin:14px 0 22px;}
+  .choices{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .choice{border:3px solid #f0d9d5;background:#fff1ee;border-radius:18px;padding:15px 8px;font:900 25px inherit;
+    color:var(--ink);cursor:pointer;direction:ltr;}
+  .choice:active{transform:scale(.97)} .choice.ok{background:#d8f5e2;border-color:var(--green)} .choice.no{background:#fcdcd6;border-color:var(--red)}
+  .feedback{min-height:38px;font-size:22px;font-weight:900;margin:16px 0 8px;}
+  .feedback.good{color:var(--green)} .feedback.bad{color:var(--red)}
+  .actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+  button.action{border:none;border-radius:16px;padding:11px 18px;font:800 16px inherit;color:#fff;cursor:pointer;box-shadow:0 4px 0 var(--shadow);}
+  .help{background:var(--purple)} .next{background:var(--blue)}
+  .explain{margin-top:14px;background:#f3ecfb;border:3px dashed #c9a8ec;border-radius:18px;padding:14px 16px;line-height:1.75;text-align:right;font-size:17px;}
+  .step{direction:ltr;display:inline-block;background:#fff;border-radius:8px;padding:1px 8px;font-weight:900;margin:2px;}
+  .hidden{display:none!important;}
+  .lesson-overlay{position:fixed;inset:0;background:rgba(20,40,60,.6);display:none;align-items:center;justify-content:center;padding:16px;z-index:50;}
+  .lesson-overlay.show{display:flex;}
+  .lesson-modal{background:#fff;border-radius:24px;width:100%;max-width:650px;max-height:94vh;overflow:auto;padding:22px 18px;text-align:center;box-shadow:0 18px 45px rgba(20,60,90,.35);}
+  .lesson-close{float:left;border:none;background:#e7eef5;color:#43617c;border-radius:12px;padding:7px 11px;font:800 14px inherit;cursor:pointer;}
+  .lesson-progress{color:var(--purple);font-weight:900;font-size:14px;clear:both;padding-top:4px;}
+  .lesson-title{font-size:clamp(22px,6vw,30px);font-weight:900;color:#155f93;margin:8px 0;}
+  .lesson-text{font-size:clamp(17px,4.5vw,21px);line-height:1.65;min-height:60px;}
+  .lesson-visual{direction:ltr;font-size:clamp(32px,10vw,54px);font-weight:900;color:#155f93;margin:18px 0;background:#f4f9fd;border-radius:18px;padding:16px 8px;}
+  .lesson-rule{background:#fff4d6;border:2px dashed #e0a23a;border-radius:14px;padding:10px;font-weight:900;line-height:1.7;margin:10px 0;}
+  .lesson-options{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px;}
+  .lesson-options button{border:3px solid #d6e7f3;background:#fff;border-radius:14px;padding:10px 18px;font:900 19px inherit;cursor:pointer;direction:ltr;}
+  .lesson-options button.ok{background:#d8f5e2;border-color:var(--green)}.lesson-options button.no{background:#fcdcd6;border-color:var(--red)}
+  .lesson-feedback{min-height:28px;font-weight:900;margin-top:8px;}
+  .lesson-nav{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:14px;}
+  .lesson-nav button{border:none;border-radius:14px;padding:10px 15px;font:800 15px inherit;color:#fff;cursor:pointer;box-shadow:0 3px 0 var(--shadow);}
+  .gray{background:#8aa4bd}.green{background:var(--green)}.blue{background:var(--blue)}
+  footer{padding:10px;color:#6b87a3;font-size:12px;}
+  html body#simple-refresh{background:#f4f7fb!important;user-select:text;-webkit-user-select:text;padding-top:42px!important;padding-bottom:20px;font-family:"Segoe UI","Arial Hebrew",Arial,sans-serif!important}
+  html body:before,html body:after{display:none!important}
+  header{width:100%;max-width:740px;text-align:right;padding:20px 20px 14px}
+  #simple-refresh .home{font-size:15px;line-height:1.5;box-shadow:none!important;margin-bottom:12px;background:white!important;color:#345575!important}
+  html body .logo{font-size:clamp(28px,6vw,38px);text-shadow:none!important;color:#214f88!important}
+  html body .logo small{font-size:16px;font-weight:600;margin-top:6px;color:#56677e!important}
+  .preview-note{font-size:14px;color:#56677e;margin:12px 0 0}
+  .preview-note a{color:inherit;text-underline-offset:3px}
+  main{max-width:740px;padding:8px 20px 30px}
+  .topbar{gap:10px;margin-bottom:18px}
+  .pill{font-size:15px}
+  html body .card{background:#fff!important;border:1px solid #dce4ef!important;border-radius:24px!important;box-shadow:0 10px 32px #1d34540b!important;padding:30px 26px;color:#243b53!important}
+  html body .pill{background:#fff!important;border:1px solid #dce4ef!important;border-radius:14px!important;box-shadow:none!important;color:#243b53!important}
+  #simple-refresh h2{color:#243b53!important;font-size:22px;margin:0 0 14px}
+  .rule{font-size:16px;line-height:1.9;color:#5c6e83;margin:0 auto 22px;max-width:530px}
+  html body #expression{background:#f2f6fc;color:#214f88!important;border:1px solid #e0e9f6;border-radius:18px;padding:24px 10px;font-size:clamp(30px,7vw,48px);font-variant-numeric:tabular-nums;line-height:1.5;margin:0 0 24px;overflow-wrap:anywhere}
+  html body #choices .choice{position:relative;background:#fff!important;color:#243b53!important;border:2px solid #cdd9e9!important;border-radius:16px!important;box-shadow:none!important;font:800 27px "Segoe UI",Arial,sans-serif;min-height:76px;padding:14px}
+  html body #choices .choice:hover:not(:disabled){background:#f0f6ff!important;border-color:#5687c4!important}
+  html body #choices .choice.ok{background:#e8f6ed!important;border-color:#35845a!important;color:#185736!important}
+  html body #choices .choice.no{background:#fff0ed!important;border-color:#c25f4e!important;color:#8b352a!important}
+  #choices .choice.ok:after{content:"✓";position:absolute;right:10px;top:6px;font-size:18px}
+  #choices .choice.no:after{content:"✕";position:absolute;right:10px;top:6px;font-size:18px}
+  .feedback{font-size:19px;line-height:1.65;margin:18px 0 14px}
+  html body #feedback.good{color:#236d43!important}html body #feedback.bad{color:#a24636!important}
+  html body #help{background:#f1ecfa!important;color:#684598!important;border:1px solid #d7c9eb!important;box-shadow:none!important;border-radius:14px!important}
+  html body #next,#simple-refresh .learn{background:#285f9f!important;color:white!important;border:1px solid #285f9f!important;box-shadow:none!important;border-radius:14px!important}
+  button{min-height:48px;touch-action:manipulation}
+  button.action,.learn{font:700 16px "Segoe UI",Arial,sans-serif}
+  html body #explain{background:#f8f5fc!important;color:#3d3650!important;border:1px solid #dfd2ef!important;border-radius:16px!important;box-shadow:none!important;padding:20px;line-height:2.1;font-size:18px}
+  #explain .step{background:white;color:#3d3650;padding:5px 10px;margin:6px 2px}
+  html body .lesson-modal{background:#fff!important;color:#243b53!important;border:1px solid #dce4ef!important;border-radius:22px!important;box-shadow:0 20px 60px #152e4933!important}
+  html body .lesson-title,html body .lesson-text,html body .lesson-progress{color:#243b53!important}
+  html body .lesson-visual{color:#214f88!important;background:#f2f6fc!important}
+  .lesson-overlay{z-index:100}
+  a:focus-visible,button:focus-visible{outline:3px solid #b97a19!important;outline-offset:4px}
+  @media(max-width:500px){main{padding-inline:14px}header{padding-inline:16px}html body .card{padding:24px 16px}html body h2{font-size:20px}.rule{font-size:15px}html body #expression{padding:20px 8px}.actions button{flex:1}.topbar .pill{padding:8px 10px}.learn{padding:9px 10px;font-size:14px}}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body id="simple-refresh">
+<header>
+  <a class="home" href="../sandbox.html">↗ חזרה למרכז הבדיקות</a>
+  <div class="logo">סֵדֶר פְּעֻלּוֹת<small>חֶשְׁבּוֹן לְכִתָּה ד'</small></div>
+  <p class="preview-note">דמו עיצוב בלבד · אותו משחק, בלי שלבים נוספים · <a href="../../math/grade-4/operations/index.html">למשחק המקורי</a></p>
+</header>
+<main>
+  <div class="topbar"><div class="pill">שְׁאֵלָה <span id="round">1</span></div><button class="learn" onclick="openLesson()">📚 שִׁעוּר קָצָר</button><div class="pill">⭐ <span id="score">0</span></div></div>
+  <div class="card">
+    <h2>מָה תּוֹצָאַת הַתַּרְגִּיל?</h2>
+    <div class="rule">זוֹכְרִים: סוֹגְרַיִם ← כֶּפֶל וְחִלּוּק ← חִבּוּר וְחִסּוּר</div>
+    <div class="expression" id="expression"></div>
+    <div class="choices" id="choices"></div>
+    <div class="feedback" id="feedback" role="status" aria-live="polite"></div>
+    <div class="actions">
+      <button class="action help" id="help" onclick="toggleExplain()">🔍 אֵיךְ פּוֹתְרִים?</button>
+      <button class="action next hidden" id="next" onclick="newQuestion()">הַבָּא ➜</button>
+    </div>
+    <div class="explain hidden" id="explain"></div>
+  </div>
+</main>
+<div class="lesson-overlay" id="lesson-overlay">
+  <div class="lesson-modal">
+    <button class="lesson-close" onclick="closeLesson()">✕ סְגֹר</button>
+    <div class="lesson-progress" id="lesson-progress"></div>
+    <div class="lesson-title" id="lesson-title"></div>
+    <div class="lesson-text" id="lesson-text"></div>
+    <div class="lesson-rule" id="lesson-rule"></div>
+    <div class="lesson-visual" id="lesson-visual"></div>
+    <div id="lesson-practice"></div>
+    <div class="lesson-nav">
+      <button class="gray" id="lesson-prev" onclick="moveLesson(-1)">◀ הַקּוֹדֵם</button>
+      <button class="green" onclick="speakLesson()">🔊 הַשְׁמֵעַ</button>
+      <button class="blue" id="lesson-next" onclick="moveLesson(1)">הַבָּא ▶</button>
+    </div>
+  </div>
+</div>
+<footer>סֵדֶר פְּעֻלּוֹת חֶשְׁבּוֹן · כִּתָּה ד'</footer>
+<script>
+const $=id=>document.getElementById(id);
+const rnd=(min,max)=>Math.floor(Math.random()*(max-min+1))+min;
+const pick=a=>a[rnd(0,a.length-1)];
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=rnd(0,i);[a[i],a[j]]=[a[j],a[i]];}return a;}
+const GOOD=["מְצֻיָּן! ⭐","בְּדִיּוּק! 🎯","כָּל הַכָּבוֹד! 👏","אַלּוּפֵי סֵדֶר הַפְּעֻלּוֹת! 🏆"];
+let score=0,round=0,current=null,locked=false,lastExpr="";
+let lessonIndex=0,hebrewVoice=null;
+
+const LESSON_STEPS=[
+  {title:"מַכִּירִים אֶת הַסֵּדֶר",text:"לֹא תָּמִיד פּוֹתְרִים אֶת הַתַּרְגִּיל מִשְּׂמֹאל לְיָמִין.",rule:"1. סוֹגְרַיִם  ←  2. כֶּפֶל וְחִלּוּק  ←  3. חִבּוּר וְחִסּוּר",visual:"",practice:false,say:"בסדר פעולות חשבון פותרים קודם סוגריים, אחר כך כפל וחילוק, ולבסוף חיבור וחיסור."},
+  {title:"כֶּפֶל לִפְנֵי חִבּוּר",text:"בַּתַּרְגִּיל 12 + 3 × 4 פּוֹתְרִים קוֹדֶם אֶת הַכֶּפֶל.",rule:"3 × 4 = 12",visual:"12 + 12 = 24",practice:false,say:"בתרגיל שתים עשרה ועוד שלוש כפול ארבע, פותרים קודם שלוש כפול ארבע. מקבלים שתים עשרה, ואז שתים עשרה ועוד שתים עשרה שווה עשרים וארבע."},
+  {title:"סוֹגְרַיִם תָּמִיד קוֹדְמִים",text:"בַּתַּרְגִּיל (6 + 4) × 3 פּוֹתְרִים קוֹדֶם אֶת מָה שֶׁבַּסּוֹגְרַיִם.",rule:"6 + 4 = 10",visual:"10 × 3 = 30",practice:false,say:"כשיש סוגריים, פותרים אותם ראשונים. שש ועוד ארבע שווה עשר, ועשר כפול שלוש שווה שלושים."},
+  {title:"עַכְשָׁו תּוֹרְכֶם!",text:"מָה תּוֹצָאַת הַתַּרְגִּיל 18 − 2 × 5?",rule:"זִכְרוּ: כֶּפֶל לִפְנֵי חִסּוּר",visual:"18 − 2 × 5 = ?",practice:true,say:"עכשיו תורכם. מה תוצאת התרגיל שמונה עשרה פחות שתיים כפול חמש?"}
+];
+function loadVoices(){
+  if(!("speechSynthesis" in window))return;
+  hebrewVoice=speechSynthesis.getVoices().find(v=>/^(he|iw)/i.test(v.lang))||null;
+}
+if("speechSynthesis" in window){loadVoices();speechSynthesis.onvoiceschanged=loadVoices;}
+function speakHebrew(text){
+  if(!("speechSynthesis" in window))return;
+  speechSynthesis.cancel();const utterance=new SpeechSynthesisUtterance(text);utterance.lang="he-IL";utterance.rate=.9;
+  if(hebrewVoice)utterance.voice=hebrewVoice;speechSynthesis.speak(utterance);
+}
+function openLesson(){lessonIndex=0;$("lesson-overlay").classList.add("show");renderLesson();}
+function closeLesson(){$("lesson-overlay").classList.remove("show");if("speechSynthesis" in window)speechSynthesis.cancel();}
+function moveLesson(direction){const next=lessonIndex+direction;if(next<0||next>=LESSON_STEPS.length)return;lessonIndex=next;renderLesson();}
+function speakLesson(){speakHebrew(LESSON_STEPS[lessonIndex].say);}
+function renderLesson(){
+  const step=LESSON_STEPS[lessonIndex];
+  $("lesson-progress").textContent=`שָׁלָב ${lessonIndex+1} מִתּוֹךְ ${LESSON_STEPS.length}`;
+  $("lesson-title").textContent=step.title;$("lesson-text").textContent=step.text;$("lesson-rule").textContent=step.rule;
+  $("lesson-visual").textContent=step.visual;$("lesson-visual").style.display=step.visual?"block":"none";
+  $("lesson-practice").innerHTML=step.practice?`<div class="lesson-options">
+    <button onclick="checkLessonAnswer(this,8)">8</button><button onclick="checkLessonAnswer(this,80)">80</button><button onclick="checkLessonAnswer(this,16)">16</button>
+    </div><div class="lesson-feedback" id="lesson-feedback"></div>`:"";
+  $("lesson-prev").disabled=lessonIndex===0;$("lesson-next").disabled=lessonIndex===LESSON_STEPS.length-1;
+  speakLesson();
+}
+function checkLessonAnswer(button,value){
+  document.querySelectorAll(".lesson-options button").forEach(option=>{option.disabled=true;if(option.textContent==="8")option.classList.add("ok");});
+  const feedback=$("lesson-feedback");
+  if(value===8){feedback.textContent="🎉 נָכוֹן! 2 × 5 = 10, וְ־18 − 10 = 8.";feedback.style.color="var(--green)";}
+  else{button.classList.add("no");feedback.textContent="כִּמְעַט! פּוֹתְרִים קוֹדֶם 2 × 5.";feedback.style.color="var(--red)";}
+}
+
+function buildQuestion(){
+  const type=rnd(0,4);let a,b,c,d,expr,answer,steps;
+  if(type===0){
+    a=rnd(10,70);b=rnd(2,9);c=rnd(2,9);answer=a+b*c;expr=`${a} + ${b} × ${c}`;
+    steps=`קוֹדֶם כֶּפֶל: <span class="step">${b} × ${c} = ${b*c}</span><br>אַחַר כָּךְ חִבּוּר: <span class="step">${a} + ${b*c} = ${answer}</span>`;
+  }else if(type===1){
+    a=rnd(2,12);b=rnd(2,12);c=rnd(2,7);answer=(a+b)*c;expr=`(${a} + ${b}) × ${c}`;
+    steps=`קוֹדֶם סוֹגְרַיִם: <span class="step">${a} + ${b} = ${a+b}</span><br>אַחַר כָּךְ כֶּפֶל: <span class="step">${a+b} × ${c} = ${answer}</span>`;
+  }else if(type===2){
+    a=rnd(5,14);b=rnd(3,9);c=rnd(5,a*b-1);answer=a*b-c;expr=`${a} × ${b} − ${c}`;
+    steps=`קוֹדֶם כֶּפֶל: <span class="step">${a} × ${b} = ${a*b}</span><br>אַחַר כָּךְ חִסּוּר: <span class="step">${a*b} − ${c} = ${answer}</span>`;
+  }else if(type===3){
+    a=rnd(8,18);b=rnd(2,a-1);c=rnd(2,8);answer=(a-b)*c;expr=`(${a} − ${b}) × ${c}`;
+    steps=`קוֹדֶם סוֹגְרַיִם: <span class="step">${a} − ${b} = ${a-b}</span><br>אַחַר כָּךְ כֶּפֶל: <span class="step">${a-b} × ${c} = ${answer}</span>`;
+  }else{
+    a=rnd(10,40);b=rnd(2,8);c=rnd(2,8);d=rnd(1,Math.min(15,a+b*c-1));answer=a+b*c-d;expr=`${a} + ${b} × ${c} − ${d}`;
+    steps=`קוֹדֶם כֶּפֶל: <span class="step">${b} × ${c} = ${b*c}</span><br>אַחַר כָּךְ מִשְּׂמֹאל לְיָמִין: <span class="step">${a} + ${b*c} = ${a+b*c}</span>, וְאָז <span class="step">${a+b*c} − ${d} = ${answer}</span>`;
+  }
+  const wrong=[answer+rnd(1,9),Math.max(0,answer-rnd(1,9)),(a+b)*(c||1),a+(b||0)+(c||0)].filter(n=>n!==answer);
+  const choices=[answer,...shuffle([...new Set(wrong)]).slice(0,3)];
+  let offset=1;
+  while(choices.length<4){
+    const n=answer+(offset%2?offset:-offset);
+    if(n>=0&&!choices.includes(n))choices.push(n);
+    offset++;
+  }
+  return {expr,answer,steps,choices:shuffle(choices)};
+}
+function newQuestion(){
+  let q,tries=0;do{q=buildQuestion();tries++;}while(q.expr===lastExpr&&tries<10);
+  current=q;lastExpr=q.expr;locked=false;round++;$("round").textContent=round;$("expression").textContent=q.expr;
+  $("feedback").textContent="";$("feedback").className="feedback";$("next").classList.add("hidden");
+  $("explain").classList.add("hidden");$("explain").innerHTML=q.steps;$("help").textContent="🔍 אֵיךְ פּוֹתְרִים?";
+  $("choices").innerHTML="";
+  q.choices.forEach(v=>{const b=document.createElement("button");b.className="choice";b.textContent=v;b.onclick=()=>answer(b,v);$("choices").appendChild(b);});
+}
+function answer(button,value){
+  if(locked)return;locked=true;const ok=value===current.answer;
+  document.querySelectorAll(".choice").forEach(b=>{b.disabled=true;if(Number(b.textContent)===current.answer)b.classList.add("ok");});
+  if(ok){score+=10;$("score").textContent=score;$("feedback").textContent=pick(GOOD);$("feedback").className="feedback good";}
+  else{button.classList.add("no");$("feedback").textContent=`כִּמְעַט! הַתְּשׁוּבָה הִיא ${current.answer}`;$("feedback").className="feedback bad";openExplain();}
+  $("next").classList.remove("hidden");
+}
+function openExplain(){
+  $("explain").classList.remove("hidden");$("help").textContent="🙈 הַסְתֵּר הֶסְבֵּר";
+}
+function toggleExplain(){
+  $("explain").classList.toggle("hidden");$("help").textContent=$("explain").classList.contains("hidden")?"🔍 אֵיךְ פּוֹתְרִים?":"🙈 הַסְתֵּר הֶסְבֵּר";
+}
+newQuestion();
+if(new URLSearchParams(location.search).get("lesson")==="1")setTimeout(openLesson,0);
+</script>
+<script>
+if(new URLSearchParams(location.search).get("selftest")==="1"){
+  const failures=[];let assertions=0;
+  const check=(value,message)=>{assertions++;if(!value)failures.push(message)};
+  for(let i=0;i<500;i++){
+    const q=buildQuestion();
+    check(q.choices.includes(q.answer)&&new Set(q.choices).size===4,"four unique choices including answer");
+    check(Function("return "+q.expr.replaceAll("×","*").replaceAll("−","-"))()===q.answer,"correct calculation");
+  }
+  check(LESSON_STEPS.length===4,"original four lesson steps");
+  check(!$("help").classList.contains("hidden"),"help available before answering");
+  const wrong=[...$("choices").children].find(button=>Number(button.textContent)!==current.answer);
+  wrong.click();
+  check(score===0&&locked,"wrong answer preserves original scoring and lock");
+  check(!$("explain").classList.contains("hidden"),"wrong answer opens explanation");
+  check(!$("next").classList.contains("hidden"),"original next behavior after answering");
+  openExplain();check(!$("explain").classList.contains("hidden"),"already open help stays open");
+  const previous=round;$("next").click();
+  check(round===previous+1&&!locked&&$("explain").classList.contains("hidden"),"next resets question");
+  const correct=[...$("choices").children].find(button=>Number(button.textContent)===current.answer);
+  correct.click();correct.click();
+  check(score===10,"correct answer awarded once");
+  check($("explain").classList.contains("hidden"),"correct answer retains original collapsed help");
+  $("help").click();check(!$("explain").classList.contains("hidden"),"manual help after correct answer");
+  $("help").click();check($("explain").classList.contains("hidden"),"manual help closes");
+  newQuestion();$("help").click();
+  [...$("choices").children].find(button=>Number(button.textContent)!==current.answer).click();
+  check(!$("explain").classList.contains("hidden"),"wrong answer does not close already open help");
+  openLesson();check($("lesson-overlay").classList.contains("show")&&$("lesson-prev").disabled,"lesson opens at first step");
+  moveLesson(1);moveLesson(1);moveLesson(1);
+  check(lessonIndex===3&&$("lesson-next").disabled,"lesson reaches original practice");
+  document.querySelector(".lesson-options button").click();
+  check(document.querySelector(".lesson-options button").classList.contains("ok"),"lesson correct answer");
+  moveLesson(-1);moveLesson(1);
+  document.querySelectorAll(".lesson-options button")[1].click();
+  check(document.querySelectorAll(".lesson-options button")[1].classList.contains("no"),"lesson wrong answer");
+  closeLesson();check(!$("lesson-overlay").classList.contains("show"),"lesson closes");
+  score=0;round=0;lastExpr="";$("score").textContent="0";newQuestion();
+  window.__eduSelfTest={passed:failures.length===0,assertions,failures};
+  const output=document.createElement("output");output.id="selftest-result";output.hidden=true;
+  output.textContent=JSON.stringify(window.__eduSelfTest);document.body.append(output);
+}
+</script>
+</body>
+</html>

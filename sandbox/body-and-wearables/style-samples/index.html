@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>שמונה דמויות · הצעות לסגנון האיור</title>
+<script src="../../../assets/theme-selector.js"></script>
+<link rel="stylesheet" href="../../../assets/refresh.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:76px 20px 32px;background:#f6f5f1;color:#26333e;font-family:"Segoe UI",Arial,sans-serif}
+main{max-width:1320px;margin:auto}
+nav{display:flex;gap:18px;flex-wrap:wrap;margin:18px 0 28px}
+a{color:var(--edu-accent,#285f9f);text-underline-offset:4px}
+h1{font-size:clamp(30px,5vw,54px);line-height:1.2;max-width:850px;margin:12px 0}
+h2{font-size:clamp(24px,3vw,34px);margin:0}
+p{line-height:1.75}
+.eyebrow{font-weight:800;letter-spacing:.12em;color:var(--edu-muted,#61717a)}
+.intro{max-width:920px;font-size:18px}
+.notice{padding:16px 20px;border-inline-start:4px solid var(--edu-accent,#285f9f);background:var(--edu-surface,#fff);border-radius:12px;max-width:950px}
+.notice p{margin:4px 0}
+.filters{display:flex;flex-wrap:wrap;gap:10px;margin:26px 0 16px}
+button{font:inherit;font-weight:700;min-height:44px;padding:10px 18px;border:1px solid #a4b5be;border-radius:12px;background:#fff;color:#26333e;cursor:pointer}
+button[aria-pressed="true"]{outline:3px solid var(--edu-accent,#285f9f);outline-offset:2px}
+button:focus-visible,a:focus-visible{outline:3px solid var(--edu-accent,#285f9f);outline-offset:4px}
+.category{margin:44px 0 60px;scroll-margin-top:85px}
+.section-head{display:flex;align-items:baseline;justify-content:space-between;gap:15px;border-bottom:1px solid var(--edu-border,#ccd4db);padding-bottom:16px;margin-bottom:22px}
+.section-head span{font-size:14px;color:var(--edu-muted,#61717a)}
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.sample{min-width:0;border-radius:22px;overflow:hidden;border:1px solid var(--edu-border,#d8dfe4);background:var(--edu-surface,#fff)}
+.image-link{display:block;background:#fff}
+.image-link img{display:block;width:100%;height:auto;aspect-ratio:3/4;object-fit:contain}
+.art-stage{position:relative;width:100%;background:#fff}
+.art-stage img{display:block;width:100%;height:auto;aspect-ratio:3/4;object-fit:contain}
+.accessory-overlay{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.accessory-controls{border:1px solid var(--edu-border,#ccd4db);border-radius:12px;margin:18px 0;padding:12px}
+.accessory-controls legend{font-weight:700;padding:0 6px}
+.accessory-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.accessory-option{display:flex;align-items:center;gap:8px;min-height:48px;padding:8px;border:1px solid var(--edu-border,#ccd4db);border-radius:8px;cursor:pointer}
+.accessory-option input{width:20px;height:20px;flex-shrink:0;accent-color:var(--edu-accent,#285f9f)}
+.accessory-option span{min-width:0;overflow-wrap:anywhere}
+.accessory-option bdi{display:block;font-weight:700}
+.accessory-option small{display:block}
+.accessory-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.accessory-actions button{font-size:14px;padding:8px 12px}
+.accessory-count{font-size:14px}
+input:focus-visible{outline:3px solid var(--edu-accent,#285f9f);outline-offset:3px}
+dialog{width:min(860px,calc(100% - 24px));max-height:calc(100dvh - 24px);padding:16px;border:1px solid var(--edu-border,#ccd4db);border-radius:18px;color:var(--edu-text,#26333e);background:var(--edu-surface,#fff)}
+dialog::backdrop{background:#15212bc9}
+.preview-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.preview-heading h2{font-size:24px}
+#preview-art{max-width:600px;margin:auto}
+.caption{padding:22px}
+.caption h3{margin:0;font-size:24px}
+.caption .english{font-size:14px;font-weight:700;letter-spacing:.08em;margin:5px 0 14px;color:var(--edu-muted,#61717a)}
+.caption p{margin:10px 0}
+.caption a{display:inline-block;padding:8px 0;min-height:44px}
+.number{font-variant-numeric:tabular-nums;color:var(--edu-muted,#61717a);font-size:13px}
+.error{padding:12px;color:#8c2c28;background:#fff0ee}
+footer{border-top:1px solid var(--edu-border,#ccd4db);padding-top:20px;line-height:1.8;color:var(--edu-muted,#61717a)}
+[hidden]{display:none!important}
+@media(max-width:680px){body{padding-inline:12px}.pair{grid-template-columns:1fr}.caption{padding:18px}.section-head{align-items:start;flex-direction:column;gap:6px}.intro{font-size:16px}.filters{gap:9px}.filters button{padding:9px 13px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body id="edu-refresh">
+<main>
+<nav aria-label="ניווט"><a href="../illustrated-demo.html">למשחק עם הדמויות החדשות</a><a href="../index.html">למשחק הבנייה המקורי</a><a href="../review.html">למילון ולדמויות הקודמות</a><a href="../../sandbox.html">לארגז החול</a></nav>
+<header>
+<div class="eyebrow" lang="en" dir="ltr">CHARACTER DESIGN / EXPLORATION 02</div>
+<h1>אותו משחק. יותר אופי לדמויות.</h1>
+<p class="intro">שמונה הצעות מקוריות בהשראת הכיוונים החזותיים ששלחתם: שתי דמויות אנימה, שני גיבורי־על, שתי דמויות מצוירות ושתי דמויות מנגה בשחור ולבן.</p>
+<div class="notice">
+<p><strong>אלו הצעות איור לבדיקה, לא החלפה של הדמויות במשחק.</strong> העיצוב, המבנה וכללי המשחק שאהבתם נשארים ללא שינוי. לאחר בחירת כיוון יהיה צורך להתאים את האיורים לשכבות הגוף והלבוש הנפרדות.</p>
+<p>האיורים נוצרו בקוד וקטורי מקורי. ההצללות בדמויות המצוירות מציעות תחושת נפח, אך אינן הדמיה תלת־ממדית. תמונות ההשראה לא הועתקו ולא נכללות בגלריה. קטגוריית החיות נשארה ללא שינוי.</p>
+<p>לכל דמות אוסף של עשרה אביזרים. בביקור הראשון נבחרים חמישה באקראי; לחצו על ״ערבוב אביזרים״ לבחירה חדשה. אפשר להציג ולהסתיר כל אביזר בנפרד, ואביזרים שמתחרים על אותו מקום אינם נבחרים יחד. הבחירות ומצב ההצגה נשמרים אוטומטית בדפדפן זה וחוזרים בפתיחה הבאה. לחיצה על האיור מגדילה את הבחירה הנוכחית. הלבוש המקורי נשאר קבוע.</p>
+<p id="accessory-storage-warning" class="error" role="alert" hidden></p>
+</div>
+</header>
+<div class="filters" role="group" aria-label="בחירת סגנון">
+<button type="button" data-filter="all" aria-pressed="true">הכול · 8 דמויות</button>
+<button type="button" data-filter="anime" aria-pressed="false">אנימה</button>
+<button type="button" data-filter="superhero" aria-pressed="false">גיבורי־על</button>
+<button type="button" data-filter="cartoon" aria-pressed="false">מצויר</button>
+<button type="button" data-filter="manga" aria-pressed="false">מנגה</button>
+</div>
+<p id="result-count" role="status">מוצגות 8 דמויות בארבעה סגנונות.</p>
+<section class="category" data-category="anime" id="anime" aria-labelledby="anime-heading">
+<div class="section-head"><h2 id="anime-heading">אנימה · צבע, שיער ותנועה</h2><span>שתי דמויות מקוריות</span></div>
+<div class="pair">
+<article class="sample">
+<a class="image-link" href="./anime-01.svg" target="_blank" rel="noopener" aria-label="הגדלת האיור של קאיט"><img src="./anime-01.svg" width="600" height="800" alt="קאיט, הצעת דמות אנימה מקורית בבגדי מסע עירוניים"></a>
+<div class="caption"><span class="number">01 / ANIME</span><h3>קאיט</h3><p class="english" lang="en" dir="ltr">KITE · STREET EXPLORER</p><p>כיוון עירוני: שיער מעוצב, לבוש בשכבות ופרטי תפרים. הצללות חדות ועיניים מודגשות מחליפות את מראה הבובה הפשוט.</p><a href="./anime-01.svg" target="_blank" rel="noopener">פתיחה בגודל מלא ↗</a></div>
+</article>
+<article class="sample">
+<a class="image-link" href="./anime-02.svg" target="_blank" rel="noopener" aria-label="הגדלת האיור של אמבר"><img src="./anime-02.svg" width="600" height="800" alt="אמבר, הצעת דמות אנימה מקורית בסגנון שליחת שמיים"></a>
+<div class="caption"><span class="number">02 / ANIME</span><h3>אמבר</h3><p class="english" lang="en" dir="ltr">EMBER · SKY COURIER</p><p>כיוון הרפתקה: תלבושת מסע, שיער זורם ובד בתנועה. צללית אחרת, עם יותר קפלים ואופי באיור.</p><a href="./anime-02.svg" target="_blank" rel="noopener">פתיחה בגודל מלא ↗</a></div>
+</article>
+</div></section>
+<section class="category" data-category="superhero" id="superhero" aria-labelledby="superhero-heading">
+<div class="section-head"><h2 id="superhero-heading">גיבורי־על · נוכחות של קומיקס</h2><span>שתי דמויות מקוריות</span></div>
+<div class="pair">
+<article class="sample">
+<a class="image-link" href="./superhero-01.svg" target="_blank" rel="noopener" aria-label="הגדלת האיור של מגדלור"><img src="./superhero-01.svg" width="600" height="800" alt="מגדלור, גיבור קומיקס מקורי עם גלימה ותלבושת טורקיז ונחושת"></a>
+<div class="caption"><span class="number">03 / SUPERHERO</span><h3>מגדלור</h3><p class="english" lang="en" dir="ltr">BEACON · LIGHT GUARDIAN</p><p>כיוון קומיקס קלאסי: מבנה אתלטי גבוה יותר, גלימה, קווי מתאר מודגשים וחלוקת אור וצל על התלבושת.</p><a href="./superhero-01.svg" target="_blank" rel="noopener">פתיחה בגודל מלא ↗</a></div>
+</article>
+<article class="sample">
+<a class="image-link" href="./superhero-02.svg" target="_blank" rel="noopener" aria-label="הגדלת האיור של פעימה"><img src="./superhero-02.svg" width="600" height="800" alt="פעימה, גיבורת חילוץ מקורית בתלבושת עתידנית"></a>
+<div class="caption"><span class="number">04 / SUPERHERO</span><h3>פעימה</h3><p class="english" lang="en" dir="ltr">PULSE · RESCUE PILOT</p><p>גיבורת חילוץ עם תלבושת טכנית ומחווה ידידותית. הראש הוגדל וכף היד המורמת הוקטנה לפרופורציות מאוזנות יותר.</p><a href="./superhero-02.svg" target="_blank" rel="noopener">פתיחה בגודל מלא ↗</a></div>
+</article>
+</div></section>
+<section class="category" data-category="cartoon" id="cartoon" aria-labelledby="cartoon-heading">
+<div class="section-head"><h2 id="cartoon-heading">מצויר · צורות רכות ותחושת נפח</h2><span>שתי דמויות מקוריות</span></div>
+<div class="pair">
+<article class="sample">
+<a class="image-link" href="./cartoon-01.svg" target="_blank" rel="noopener" aria-label="הגדלת האיור של מילו"><img src="./cartoon-01.svg" width="600" height="800" alt="מילו, ילד מצויר מקורי בעל שיער מתולתל וסרבל"></a>
+<div class="caption"><span class="number">05 / CARTOON</span><h3>מילו</h3><p class="english" lang="en" dir="ltr">MILO · LITTLE EXPLORER</p><p>ראש קטן ומאוזן יותר, תלתלים בולטים וחיוך רחב. כפות הידיים צוירו מחדש: אחת נינוחה לצד הגוף והשנייה אוחזת ברצועת התיק.</p><a href="./cartoon-01.svg" target="_blank" rel="noopener">פתיחה בגודל מלא ↗</a></div>
+</article>
+<article class="sample">
+<a class="image-link" href="./cartoon-02.svg" target="_blank" rel="noopener" aria-label="הגדלת האיור של טלי"><img src="./cartoon-02.svg" width="600" height="800" alt="טלי, ילדה מצוירת מקורית במעיל צהוב ונעליים צבעוניות"></a>
+<div class="caption"><span class="number">06 / CARTOON</span><h3>טלי</h3><p class="english" lang="en" dir="ltr">TALI · SUNNY TRAVELLER</p><p>כיוון צבעוני ושמח עם גוון עור בהיר. הרגליים צוירו מחדש בעמידה נינוחה ויציבה, בלי הפיתול הקודם בברך.</p><a href="./cartoon-02.svg" target="_blank" rel="noopener">פתיחה בגודל מלא ↗</a></div>
+</article>
+</div></section>
+<section class="category" data-category="manga" id="manga" aria-labelledby="manga-heading">
+<div class="section-head"><h2 id="manga-heading">מנגה · דיו, קו ומרקם</h2><span>שתי דמויות מקוריות בשחור ולבן</span></div>
+<div class="pair">
+<article class="sample">
+<a class="image-link" href="./manga-01.svg" target="_blank" rel="noopener" aria-label="הגדלת האיור של סורה"><img src="./manga-01.svg" width="600" height="800" alt="סורה, דמות מנגה מקורית בשחור ולבן עם תספורת קצרה ולבוש בשכבות"></a>
+<div class="caption"><span class="number">07 / MANGA</span><h3>סורה</h3><p class="english" lang="en" dir="ltr">SORA · EVERYDAY STORIES</p><p>עיניים קטנות בצורת שקד, קווים עדינים ומבט רגוע. פנים רכות וחיוך קטן וסגור, לצד מרקמי הדיו בבגדים.</p><a href="./manga-01.svg" target="_blank" rel="noopener">פתיחה בגודל מלא ↗</a></div>
+</article>
+<article class="sample">
+<a class="image-link" href="./manga-02.svg" target="_blank" rel="noopener" aria-label="הגדלת האיור של רן"><img src="./manga-02.svg" width="600" height="800" alt="רן, דמות מנגה מקורית עם שיער בהיר, צעיף ומעיל מסע ארוך"></a>
+<div class="caption"><span class="number">08 / MANGA</span><h3>רן</h3><p class="english" lang="en" dir="ltr">REN · WIND WALKER</p><p>כיוון הרפתקה גרפי: מעיל ארוך, צעיף בתנועה וניגוד חזק בין שטחים כהים לקווי שיער בהירים.</p><a href="./manga-02.svg" target="_blank" rel="noopener">פתיחה בגודל מלא ↗</a></div>
+</article>
+</div></section>
+<footer>הצעות סגנון בלבד · שמונה איורים מקוריים · ללא שינוי בדמויות המשחק · לחצו על איור לפתיחה ולהגדלה בדפדפן.</footer>
+<noscript><p>כל שמונת האיורים המקוריים מוצגים גם ללא הפעלת תסריטים. הסינון וחמשת האביזרים הנוספים לכל דמות דורשים הפעלת תסריטים.</p></noscript>
+</main>
+<dialog id="accessory-preview" aria-labelledby="preview-title" aria-describedby="preview-description">
+<div class="preview-heading"><h2 id="preview-title"></h2><button type="button" id="preview-close" autofocus>סגירה</button></div>
+<p id="preview-description"></p>
+<div id="preview-art"></div>
+</dialog>
+<script src="./accessories-anime-manga.js"></script>
+<script src="./accessories-hero-cartoon.js"></script>
+<script src="./accessory-selection.js"></script>
+<script src="./accessory-storage.js"></script>
+<script src="./accessory-gallery.js"></script>
+<script>
+"use strict";
+const filters=[...document.querySelectorAll("[data-filter]")];
+const sections=[...document.querySelectorAll("[data-category]")];
+for(const button of filters)button.addEventListener("click",()=>{
+  const selected=button.dataset.filter;
+  for(const control of filters)control.setAttribute("aria-pressed",String(control===button));
+  for(const section of sections)section.hidden=selected!=="all"&&section.dataset.category!==selected;
+  document.getElementById("result-count").textContent=selected==="all"?"מוצגות 8 דמויות בארבעה סגנונות.":"מוצגות 2 דמויות בסגנון שנבחר.";
+});
+for(const image of document.querySelectorAll(".sample img"))image.addEventListener("error",()=>{
+  const message=document.createElement("p");message.className="error";message.setAttribute("role","alert");
+  message.textContent="האיור לא נטען. בדקו שקובץ האיור נמצא ליד עמוד הגלריה.";
+  image.parentElement.after(message);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,251 @@
+# English Body Parts and Wearables - Design and Implementation Plan
+
+## Approved publication - September 16, 2026
+
+- The user approved committing and pushing the illustrated game, directly under the English section for all grades.
+- Production entry point: english/body-and-wearables/index.html. Keep the original prototype, art gallery and illustrated sandbox as separate snapshots.
+- Current illustrated hints appear in Hebrew. List all round clues in a styled panel and cross out found clues. Assist prioritizes likely misspellings; no automatic answer credit.
+- Put instructions in a popup below the description. Remove close-up controls and keep the full canvas view.
+- The approval does not expand the library to 50 characters.
+
+## Corrected illustrated demo behavior - September 16, 2026, 22:57
+
+- The user's correction supersedes the earlier visible-character choice below: "you should show the objects only when i write them".
+- Start the illustrated demo with a genuinely empty canvas. A correct word reveals only its own body part, clothing item or accessory, in any entry order.
+- Preserve category selection, random choice between two characters per category, five random accessory options and the existing hint rules.
+- Split the eight illustrated characters into independent body/clothing geometry. Do not reveal clipped regions of a complete illustration, or accidentally reveal neighbouring parts.
+- All 27 body concepts and each character's actual base outfit have separate fragments. Additional accessories already have independent geometry.
+- Hints, translations, Show word and rejected submissions must not reveal artwork. New character/category clears all earned pieces.
+- Keep the original builder and the gallery's saved display preferences independent.
+
+## Earlier illustrated naming demo decision - superseded above
+
+- The user approved a separate playable demo using the eight new illustrated samples: two each for Anime, Superhero, Cartoon and Manga.
+- Choose a category; the character is chosen randomly. A new round chooses another character in that category and five compatible random accessories.
+- The user explicitly chose showing the character and typing the names of its body parts and accessories, rather than building from an empty panel.
+- This visible-character identification mode is separate from the original builder described below. It does not replace its 73-layer architecture or authorize the full 50-character expansion.
+- Include all 27 required body-location concepts, the actual base outfit and the selected accessories. Clearly explain that body parts hidden by clothes are taught by location beneath the clothing.
+- Reuse authored vocabulary and the progressive hint rules; add authored definitions for illustrated accessories not in the original dictionary. Highlight a correctly named location and add the word to the learned collection.
+- New character/category resets the round. The demo does not save progress or modify the gallery's separately saved accessory settings.
+
+## Authorized hint update - September 16, 2026
+
+This update supersedes the original first-letter-only and no-manual-reveal rules below:
+
+- Sequential letter hints reveal the next unrevealed letter, keeping previous letters visible.
+- Random-letter hints reveal an unrevealed position in the same word; both controls share progress.
+- Display a masked word, revealed/total letter count and next sequential letter number. Spaces and hyphens remain visible but do not count as letters.
+- After either three nonempty rejected guesses OR three letter-hint clicks for the current clue, offer Show word. The counters are separate, not combined.
+- Showing the word also opens its Hebrew clue but never types the answer, adds a layer or grants credit. The learner must type it.
+- Empty input, translation and other valid words do not count as failed guesses. Preserve progress on level changes; clear it for a different clue, a solved clue or a new character.
+
+Historical phase-one status (superseded by the approved publication above): implemented and verified after the user's "execute the plan" authorization. The five-character sandbox demo and parent review catalogue were ready; at that point expansion, commit/push and production promotion had not yet been approved.
+
+## Purpose and confirmed requirements
+
+Create a new English vocabulary/spelling game for Israeli children, with predefined dictionaries for external body parts and wearable items.
+
+- Panel 1: a text input for entering an English word and an Assist button.
+- Incorrect spelling receives gentle feedback and an invitation to correct or replace the word.
+- For a likely misspelling, say it needs correction and offer a hint without revealing or automatically applying the correct spelling. No credit is given until a valid form is typed.
+- Panel 2: each correctly entered word is displayed.
+- The character should gradually reveal or become dressed as correct words are entered, rather than showing the complete picture from the start.
+- Confirmed implementation direction: add separate body/clothing pieces to build and dress the character. Do not implement this as merely revealing areas of a flattened picture.
+- The second panel starts empty. Correct entries assemble the character piece by piece; no initial silhouette or fully visible base character.
+- Accept entries in any order, including eyes before head or a hat before hair. Draw only named parts/items at their intended coordinates; do not require prerequisites or automatically credit/show neighbouring parts.
+- Free-building mode is confirmed: any predefined word supported by the selected character can add its corresponding part or item. There is no prescribed target outfit.
+- When two items occupy the same clothing slot, the newly entered item replaces the displayed one. Both words remain in the learned-word collection.
+- Sessions are free play: show the learned-concept count and let the child choose when to start a new character. Do not automatically finish after a word quota or after completing level suggestions.
+- Starting a new character resets the drawing, learned-word collection and count. Do not carry learned words across characters or persist them across visits.
+- Animals means upright cartoon animals that can wear clothes, not realistic four-legged animals or humans in animal costumes.
+- Animal characters use human-like cartoon anatomy, including hands, palms, fingers and feet, so all 27 mandatory body concepts work for them too.
+- Create original layered SVG characters and clothing in code. Review samples before producing the complete 50-character library; no external image-generation service or illustrator is required for the chosen approach.
+- Assist provides an English clue about a body part or wearable item.
+- Assist also offers optional Hebrew translation and first-letter help, with stronger support suggested for beginners. These aids do not automatically submit or credit an answer.
+- The requested picture library has five categories and ten pictures per category: Superhero, Cartoon, Anime, Animals, Manga; 50 pictures total.
+- Anime uses colourful animation-style characters. Manga uses black-and-white comic-style characters. Both remain distinct from the five site UI themes.
+- Vocabulary must come from predefined lists, not arbitrary runtime-generated answers.
+- Include all four proposed wearable groups: clothing, footwear, accessories/headwear, and costume extras such as capes, masks and crowns.
+- All 27 body-part concepts explicitly listed by the user are mandatory, including forehead, jaw, thighs, palms and heels. Do not reduce the game to the existing 17-word body bank.
+- Version 1 uses exactly those 27 body concepts. Extra body terms and animal-specific vocabulary are deferred until after demo review.
+- Provide selectable beginner, intermediate and advanced levels. These are English proficiency levels, not fixed age assumptions.
+- Combine open vocabulary with progressive learning: accept any correctly spelled, supported dictionary word at every level; introduce vocabulary through level-specific suggestions, hints and learning targets. Advanced coverage includes all 27 required body concepts.
+- A beginner who correctly types an advanced word still receives credit and its visual part. Do not reject a correct word merely because it is outside the current level's suggested subset.
+- Accept singular and plural forms as the same learned concept, including irregular pairs such as foot/feet. Entering another accepted form must not award duplicate credit or add duplicate body parts.
+- Ignore letter case and accept predefined common variants such as T-shirt/tshirt and trainers/sneakers, in addition to the agreed singular/plural forms. Genuine misspellings are not accepted.
+
+## Current codebase findings
+
+- The site is dependency-free, with standalone HTML games, local images, optional speech synthesis and Hebrew guidance.
+- Canonical English content is organized by Grade 3, Grade 4 and English 12+.
+- `english/grade-4/index.html` already has a `BODY` bank of 17 terms with Hebrew meanings. Reuse consistent translations where appropriate; existing `stomach` means belly in everyday usage, but this game should distinguish external features from internal organs.
+- Grade 3 has picture-supported vocabulary and separate Hebrew/English presentation. Secret Agent demonstrates image-specific accepted targets, useful if this new game uses picture-specific vocabulary.
+- Existing modes do not provide this exact two-panel typed-word spelling experience; this requires a new game, not a replacement of an existing one.
+- Keep all five visual templates through root `assets/theme-selector.js` and `assets/refresh.css`.
+- Stage a new game separately in the sandbox, preserve current previews and production games, and promote only after explicit approval.
+
+## Predefined vocabulary - required body coverage and proposed additions
+
+Version 1 includes exactly the required 27 body concepts plus the four wearable groups below. Extra body and animal-specific words are deferred until after demo review. All supported dictionary words are accepted at every level; allocate suggested learning targets and hints progressively without restricting correct free-form entries. Every character, including upright animals with human-like anatomy, must support all 27 required terms.
+
+### Required external body parts - all 27 concepts
+
+| Group | Required vocabulary, using the user's requested forms |
+| --- | --- |
+| Head and face | head, hair, forehead, eyes, ears, nose, cheeks, mouth, lips, chin, jaw |
+| Neck and torso | neck, shoulders, chest, waist |
+| Arms and hands | arms, elbows, wrists, hands, palms, fingers |
+| Legs and feet | legs, thighs, knees, ankles, feet, heels |
+
+- Give each concept its own vocabulary entry, Hebrew meaning, hint and identifiable visual region or detail.
+- Do not merge chin with jaw, hands with palms, legs with thighs, or feet with heels. Related regions may share an anatomical parent but remain separate learning targets.
+- All character artwork must support the complete required anatomy. Upright animal characters deliberately use human-like cartoon hands, palms, fingers and feet; do not reject a mandatory body word because an animal was selected.
+- Add a coverage assertion for this exact 27-concept set; a total-count check alone is insufficient.
+- Broad parts provide a neutral base shape; detailed vocabulary adds its own recognizable feature or region. For example, head does not pre-render eyes, ears, hair or lips. Hand does not automatically earn palms or fingers. Keep detailed layers above their parent shapes regardless of entry order.
+
+### Deferred vocabulary - not part of version 1
+
+Do not add face, tooth/teeth, toe/toes, eyebrow, eyelash, tongue, thumb, fingernail, back, belly or hip in the first version. Consider them only after the demo is reviewed.
+
+Confirmed singular/plural policy; list these forms explicitly in the dictionary:
+
+- eye / eyes, ear / ears, cheek / cheeks, lip / lips, shoulder / shoulders.
+- arm / arms, elbow / elbows, wrist / wrists, hand / hands, palm / palms, finger / fingers.
+- leg / legs, thigh / thighs, knee / knees, ankle / ankles, foot / feet, heel / heels.
+- `hair` stays `hair` when referring to the hair on someone's head.
+- Exclude internal organs such as heart and lungs from the visible-body dictionary.
+
+Also defer the animal-specific entries:
+
+paw, tail, wing, beak, fur, feather, hoof, horn, whisker.
+
+Version 1 animals deliberately have the agreed human-like anatomy and use the same 27 body concepts.
+
+### Clothing
+
+T-shirt, shirt, blouse, sweater, hoodie, jacket, coat, raincoat, vest, dress, skirt, shorts, trousers, jeans, leggings, socks, tights.
+
+### Footwear
+
+shoes, boots, trainers, sandals, slippers.
+
+### Headwear and accessories
+
+hat, cap, beanie, helmet, scarf, gloves, mittens, belt, tie, bow tie, glasses, sunglasses, watch, necklace, bracelet, ring, earrings, backpack, headband, hair clip.
+
+### Costume extras
+
+cape, mask, costume, crown.
+
+Accepted common variants to encode explicitly:
+
+- T-shirt / t-shirt / tshirt / t shirt.
+- trainers / sneakers.
+- trousers / pants.
+- sweater / jumper.
+- glasses / eyeglasses.
+- backpack / schoolbag for the school-style backpack asset.
+
+This is a 46-concept wearable inventory: 17 clothing, 5 footwear, 20 accessories/headwear and 4 costume entries. With the 27 body concepts, version 1 has 73 concepts; accepted word forms do not increase that count.
+
+Canonical entries include a Hebrew meaning and explicit accepted forms. Do not treat all near-synonyms as universally interchangeable. In particular, do not automatically remove a trailing `s`: `glass` is not an alias for wearable `glasses`, and `short` is not an alias for `shorts`.
+
+## Acceptance and hint design
+
+Confirmed level behaviour:
+
+- All levels accept the same complete supported dictionary.
+- Beginner, intermediate and advanced introduce suggested vocabulary gradually, with level-appropriate hint difficulty and support.
+- Every Assist clue offers optional Hebrew translation and first-letter help. Use authored clues, not random adjective/object combinations; all difficulty levels retain access to the optional aids.
+- Suggested body progression: beginner focuses on head, hair, eyes, ears, nose, mouth, arms, hands, fingers, legs, knees and feet; intermediate adds cheeks, lips, chin, neck, shoulders, chest, waist, elbows and wrists; advanced adds forehead, jaw, palms, thighs, ankles and heels. These are cumulative hint pools, not restrictions on correct input.
+- Wearable suggestions progress from familiar clothes/shoes/hats to more specific accessories and costume vocabulary. All 46 remain accepted at every level.
+
+Input and hint rules:
+
+- All 27 body entries have drawable layers on every character. Provide compatible wearable layers/adapters for the complete first-version inventory rather than exposing vocabulary with missing assets.
+- A correct item does not need to be visible before submission: adding it is the intended action.
+- Trim surrounding whitespace, normalize repeated spaces and ignore letter case. Accept only explicitly listed word forms; do not broadly strip punctuation or auto-correct spelling.
+- Check exact accepted forms first. Confirmed: a likely typo prompts a retry and optional hint, without revealing its corrected spelling or silently receiving credit.
+- For an unrecognized entry, use neutral wording such as "This word is not in our list. Check the spelling or try another word." Do not claim a correctly spelled but out-of-scope English word is a spelling mistake.
+- Never expose an item with missing artwork as a normal learner error; validate vocabulary-to-layer coverage before shipping.
+- Singular/plural aliases count as one concept (confirmed); do not introduce separate number-practice scoring.
+- Assist selects an unfound suggested item and gives a semantically accurate clue; it is not limited to items already drawn. After the current level's suggestions are exhausted, offer additional unfound vocabulary without ending free play.
+- A clue such as "You wear it on your head" is ambiguous if both a hat and a helmet are eligible. Add distinctive details or accept all valid answers.
+- Because this is free building, another valid word remains acceptable while a hint is displayed. Clear the active hint when its concept is found; a hint is not a mandatory challenge or prerequisite.
+- Example body clue: "This body part is between your eyes and your mouth. You smell with it." Answer: nose. Example wearable clue: "You fasten this around your waist to hold up trousers." Answer: belt.
+- A duplicate or singular/plural alias does not increase the count. Re-entering a previously found but replaced garment puts it back on the character without counting it again.
+- Confirmed: a learned-concept count with a manual new-character action, not timed or quota-based rounds. New character resets the drawing/list/count; do not add cross-character history, points, penalties, streaks or persistent progress.
+
+## Character artwork and two-panel interface
+
+- Confirmed: assemble separate body/clothing layers on an initially empty panel in any entry order. Detached parts appear at their final coordinates until neighbouring parts are named; no prerequisite sequence.
+- Desktop: two clear panels. The input/Assist panel follows the site's RTL layout; the English input is LTR. The character panel includes the assembled SVG, learned-concept count and English word chips. Mobile stacks the same two panels without introducing extra stages.
+- Keep the learned-word collection in the character panel. Offer Hebrew meaning and optional pronunciation for found words without mixing Hebrew and English within one text element.
+- Confirmed: free building from supported dictionary words, not identification of an already-visible completed outfit.
+- Animals is confirmed as upright dressed cartoon animals with human-like anatomy supporting all 27 required concepts.
+- Confirmed: colourful Anime and black-and-white comic-style Manga. Clothing and accessories must follow the selected artwork style while remaining recognizable.
+- Use original characters with appropriate rights, not copies of recognizable franchise characters.
+- First deliver one playable sample character per category (five total), then stop for visual review. Only after that approval produce ten per category (50 total); not merely ten palette swaps.
+- Confirmed artwork workflow: create original SVG character parts and clothing in code, approve samples, then expand to ten original designs in each category. Do not depend on external image generation.
+- The requested 50 pictures now imply 50 character designs with compatible, independently displayable layers. A flat image alone is insufficient.
+- Every character design needs reviewed vocabulary, attachment points, layer order and compatible-item metadata. Image generation alone does not guarantee correct anatomy, aligned layers, clear accessories or accurate labels.
+- Use readable, child-friendly, non-explicit stylized anatomy. Pose hands/feet so palms, wrists, ankles and heels are distinguishable; provide optional close-up inspection for small face/hand/foot details without granting vocabulary credit.
+- Position every part using a stable coordinate system. Unnamed parent shapes remain absent; hidden anchor coordinates may exist but must not draw an automatic silhouette.
+- Use exclusive slots for alternatives such as hat/cap/helmet and footwear. Allow compatible layers such as a shirt under a coat; a cape sits behind the torso. Define garment conflicts explicitly instead of letting accidental SVG ordering decide them.
+- For a body part covered by clothing, retain the correct underlying layer and explain its location in the found-word display; do not unexpectedly remove the child's outfit. Themes must not recolour meaningful artwork, and Manga remains monochrome.
+
+## Proposed implementation structure
+
+New preview path: `sandbox/body-and-wearables/index.html`. It has its own level selector and is linked only from the sandbox until approved for production. Final canonical placement can be decided during promotion.
+
+- Standalone HTML game using existing shared themes and local SVG assets; no network requirement during play.
+- Keep game content and logic self-contained in the HTML, following repository conventions. Use local SVG assets where useful; do not add a framework, build requirement or online service.
+- Predefined vocabulary records such as `{id, category, canonical, acceptedForms, he, suggestedLevel, hints}`. Hint records include English text, Hebrew translation and accepted concept IDs where a clue can reasonably describe more than one item.
+- Character records such as `{id, category, previewImage, altHe, altEn, supportedItemIds, layers}`. Each layer references its vocabulary concept, asset, normalized attachment point, clothing slot and draw order. Encode compatible layers and conflicts explicitly; same-slot clothing replacement never removes a concept from learned words.
+- Round state includes `{characterId, level, learnedIds, activeSlots, activeHintId, feedback}`. Derive the count from the unique learned-ID set. New character clears all round-specific state.
+- Separate RTL Hebrew instructions/feedback from LTR English input, clues and word labels.
+- Support mobile input, Enter-to-submit, clear focus, optional pronunciation and non-colour-only feedback.
+- Scope typed-input behaviour explicitly: this game intentionally requires keyboard/touch-keyboard input, unlike existing choice-only games.
+
+## Implementation todos and approval gates
+
+### Phase 1 - five-character demo
+
+1. Author the exact 27 body and 46 wearable entries, Hebrew meanings, explicit spelling forms and level-appropriate clues. Validate alias uniqueness and conceptual distinctions.
+2. Define the SVG coordinate/layer/slot contract and create one original character in each category with the complete required vocabulary coverage.
+3. Implement the two-panel free-building flow, spelling feedback, Assist aids, duplicate/replacement behaviour, count, new-character reset and optional speech.
+4. Create `sandbox/body-and-wearables/review.html` with the dictionary, hints, sample characters and layer coverage for parent review.
+5. Link the preview from `sandbox/sandbox.html`; update directly related README/instructions only when implementation exists. Do not modify current games or existing review snapshots.
+6. Run the acceptance checks below, then stop for the user's artwork/gameplay review. Approval of this plan authorizes only this initial demo phase when implementation is requested.
+
+### Phase 2 - full library, after sample approval
+
+7. Expand to ten original, distinct designs in each category, preserving the tested vocabulary and layer contract.
+8. Update the review catalogue and validate every character/item combination, all five templates, and mobile/desktop/offline behaviour.
+9. Present the finished sandbox for review. Commit/push and canonical promotion still require explicit authorization.
+
+## Acceptance checks
+
+- Assert the exact required 27 body IDs and all 46 wearable IDs, with no deferred body/animal vocabulary accidentally included.
+- Check every accepted word form, irregular plural, capitalization and supported hyphen/space variant. Reject real typos without revealing or auto-applying the corrected spelling.
+- Check unknown words, empty input, multiple-word garment names and safe rendering of typed text.
+- Ensure aliases count once, and re-equipping an old garment replaces the current item without duplicate credit.
+- Test eyes before head, hat before hair, fingers before hands, heels before feet, and parent parts entered after their details. No unnamed neighbour is automatically drawn or credited.
+- Verify jaw/chin, hand/palm, leg/thigh and foot/heel remain visually and educationally distinct.
+- Check every SVG layer, anchor, slot conflict, clipping and draw order. Body parts under clothes remain logically present; new-character reset returns to an empty panel/list/count.
+- Validate hint meaning and ambiguity, first-letter accuracy across accepted forms, language separation and acceptance of other valid words while a hint is active.
+- Exhausted suggested hint pools must not loop indefinitely or end free play.
+- Compare all five UI themes at phone and desktop widths. Verify English input direction, keyboard submission/focus, touch controls, optional audio and local-file operation.
+- Confirm production files, existing authored lessons/readings and previous sandbox games are unchanged.
+
+## Approval boundaries
+
+Planning did not change repository files or artwork. The user subsequently authorized phase-one implementation. The five-character demo, the expansion to 50 characters, publication and production promotion have separate approval gates.
+
+## Phase-one result
+
+- Implemented `sandbox/body-and-wearables/index.html`: exact 73-concept dictionary, 159 normalized accepted forms, three hint levels, five original SVG sample characters, free building, garment replacement/re-equipping and empty reset.
+- Added the self-contained `review.html` snapshot: actual dictionary, all authored clues, five sample drawings and 365 isolated character/concept layers, with filters and detail zoom.
+- Linked only the sandbox hub and updated directly related README/repository instructions. Existing production games, previous previews and shared assets remain unchanged.
+- Verified exact inventory and aliases, 365 isolated layers, stable draw order, clothing transitions, hint exhaustion, optional speech/error handling, physical Enter submission, all five themes at 390px/1280px, SVG bounds, monochrome Manga and local-file operation.
+- Stopped at the five-character review gate. Nothing committed, pushed or promoted.

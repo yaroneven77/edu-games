@@ -66,7 +66,7 @@ footer{text-align:center;font-size:.83rem;margin-top:24px;line-height:1.8}[hidde
 <button id="help-open" class="help-trigger" type="button" aria-haspopup="dialog" aria-controls="help-dialog">איך משחקים במצב ההדגמה?</button>
 <dialog id="help-dialog" class="help-dialog" aria-labelledby="help-title">
 <h2 id="help-title" tabindex="-1" autofocus>איך משחקים במצב ההדגמה?</h2>
-<ul><li>בכל סגנון שתי דמויות מקוריות. כפתור הדמות החדשה מגריל את הדמות האחרת וחמישה אביזרים אפשריים, ומחזיר את הבמה למצב ריק.</li><li>כל 27 מילות הגוף מתקבלות בכל רמה. הרמה משנה רק את הרמזים וההצעות.</li><li>כל מילה מציגה רק את החלק או הפריט שלה. כתיבת עיניים אינה מציגה ראש, וכתיבת כובע אינה מציגה שיער. החלקים נשארים במקומם עד שתוסיפו את שכניהם.</li><li>בגדים מוצגים מעל חלקי הגוף שכבר הוספתם. מילים שכבר נמצאות באוסף אינן נספרות שוב.</li><li>הרמזים בעברית. בפאנל כל הרמזים, משפטים של מילים שמצאתם מסומנים בקו ובסימן ✓. רמזי אותיות והצגת המילה אינם מוסיפים ציור — עדיין צריך להקליד תשובה נכונה.</li><li>אם טעיתם באיות, לחצו על רמז כדי לקבל עזרה למילה שניסיתם לכתוב. לרמז למילה אחרת, נקו את תיבת הכתיבה.</li><li>אין טיימר ואין שמירת התקדמות. רענון הדף מתחיל מחדש.</li></ul>
+<ul><li>בכל סגנון 10 דמויות מקוריות. כפתור הדמות החדשה מגריל דמות אחרת וחמישה אביזרים אפשריים, ומחזיר את הבמה למצב ריק.</li><li>כל 27 מילות הגוף מתקבלות בכל רמה. הרמה משנה רק את הרמזים וההצעות.</li><li>כל מילה מציגה רק את החלק או הפריט שלה. כתיבת עיניים אינה מציגה ראש, וכתיבת כובע אינה מציגה שיער. החלקים נשארים במקומם עד שתוסיפו את שכניהם.</li><li>בגדים מוצגים מעל חלקי הגוף שכבר הוספתם. מילים שכבר נמצאות באוסף אינן נספרות שוב.</li><li>הרמזים בעברית. בפאנל כל הרמזים, משפטים של מילים שמצאתם מסומנים בקו ובסימן ✓. רמזי אותיות והצגת המילה אינם מוסיפים ציור — עדיין צריך להקליד תשובה נכונה.</li><li>אם טעיתם באיות, לחצו על רמז כדי לקבל עזרה למילה שניסיתם לכתוב. לרמז למילה אחרת, נקו את תיבת הכתיבה.</li><li>אין טיימר ואין שמירת התקדמות. רענון הדף מתחיל מחדש.</li></ul>
 <p class="note">בונוס: כל שלוש מילים חדשות ברצף ללא תשובה שגויה מזכות במילה חסרה שמופיעה בתיבה. לחצו על בדיקה כדי להוסיף אותה. מילת בונוס ומילה שכבר נמצאה לא מקדמות את הרצף הבא; רמזים ותיבה ריקה לא מאפסים אותו.</p>
 <p class="note">הודעת הבונוס מופיעה ליד תיבת הכתיבה ונסגרת אחרי 4 שניות או בלחיצה על ×. המילה נשארת בתיבה. בלחיצה על דמות חדשה רואים את הדמות הנוכחית בשלמותה למשך 3 שניות, ואז מתחילים מדף ריק עם דמות אחרת.</p>
 <form method="dialog"><button class="primary">הבנתי, בואו נשחק!</button></form>
@@ -120,7 +120,7 @@ footer{text-align:center;font-size:.83rem;margin-top:24px;line-height:1.8}[hidde
 <progress id="clue-progress" value="0" max="1" aria-label="התקדמות במציאת המילים"></progress>
 <ul id="all-clues" class="clue-list" aria-label="כל רמזי הסבב בעברית"></ul>
 </section>
-<footer>שמונה דמויות בשכבות נפרדות · בונים רק ממילים שכתבתם · ללא חשבון וללא שמירת התקדמות</footer>
+<footer>40 דמויות בשכבות נפרדות · 10 בכל סגנון · ללא חשבון וללא שמירת התקדמות</footer>
 </main>
 <script src="./style-samples/accessories-anime-manga.js"></script>
 <script src="./style-samples/accessories-hero-cartoon.js"></script>
@@ -129,6 +129,10 @@ footer{text-align:center;font-size:.83rem;margin-top:24px;line-height:1.8}[hidde
 <script src="./style-samples/illustrated-hero-cartoon.js"></script>
 <script src="./style-samples/illustrated-layers-anime-manga.js"></script>
 <script src="./style-samples/illustrated-layers-hero-cartoon.js"></script>
+<script src="./style-samples/collection-anime.js"></script>
+<script src="./style-samples/collection-superhero.js"></script>
+<script src="./style-samples/collection-cartoon.js"></script>
+<script src="./style-samples/collection-manga.js"></script>
 <script src="./illustrated-vocabulary.js"></script>
 <script src="./illustrated-content.js"></script>
 <script src="./illustrated-game.js"></script>

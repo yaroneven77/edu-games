@@ -1,5 +1,35 @@
 # English Body Parts and Wearables - Design and Implementation Plan
 
+## Approved 40-character publication - September 17, 2026
+
+- The user approved the pictures and explicitly selected publishing all 40 characters in the main English game, including saving, committing and pushing the complete collection.
+- Publish ten characters each in Anime, Superhero, Cartoon and Manga at english/body-and-wearables/index.html, preserving the original eight designs and Manga's five-color/five-monochrome split.
+- Retain all 40 standalone SVGs in both production and sandbox, with independent production runtime scripts and the sandbox source registries/export generators. Preserve English navigation without sandbox-only links.
+- Preserve empty-canvas earned-only rendering, rear/front bag layers, Hebrew clues, selectable unsolved clues, solved bilingual answers, typo help, three-word bonus prefill, four-second popup and three-second departing-current-character preview.
+- Keep the original five-character builder/review and unrelated previews unchanged. This supersedes the expansion's earlier sandbox-only publication restriction, not the separate 50-character proposal.
+
+## Manga reference redesign - September 17, 2026
+
+- Replace the eight newer Manga designs with more detailed original illustrations inspired by the user's seven local reference images: natural proportions, expressive faces, layered hair and convincing clothing folds.
+- Exact total: five color and five monochrome Manga characters. Preserve the original monochrome manga-01/02; redesign manga-03..07 in color and manga-08..10 in monochrome, including their optional accessories.
+- Store the new character palette in colorMode; gallery labels and validation use that authored choice, never the site theme.
+- Retain independently earned body/outfit pieces, ten accessory choices per character and all approved game behavior. Reference images are not copied or shipped.
+- This supersedes the earlier all-monochrome direction for the expanded illustrated collection, now approved for production above. The original five-character builder remains unchanged.
+
+## Requested illustrated library expansion - September 17, 2026
+
+- Add eight new original characters to each of Anime, Superhero, Cartoon and Manga, preserving the original two per category: 40 total, ten per category.
+- Use friendly/positive anime, cool anime-inspired superheroes, detailed manga in the revised five-color/five-monochrome split, and positive cartoon art direction. Vary silhouettes, hair and outfit design rather than producing palette swaps. No copied franchise characters or reference images.
+- Each new character needs all 27 independent body layers, its actual outfit layers, matching metadata, a standalone gallery SVG and ten fitted accessories, with five compatible accessories selected randomly.
+- Initially integrate into the sandbox gallery and illustrated builder; the subsequent explicit publication approval above promotes all 40 characters and authorizes commit/push.
+- This expands the four current categories, not the older proposed 50-character library with Animals.
+- Style search directions supplied by the user:
+  https://www.google.com/search?q=anime+positive+characters&udm=2
+  https://www.google.com/search?q=cool+superhero+anime&udm=2
+  https://www.google.com/search?q=manga+positive+anime&udm=2
+  https://www.google.com/search?q=cartoon+positive+anime&udm=2
+- Direct image-search pages returned HTTP 429; alternate public search and the existing approved designs supply broad style guidance, not copied artwork.
+
 ## Approved publication - September 16, 2026
 
 - The user approved committing and pushing the illustrated game, directly under the English section for all grades.

@@ -29,8 +29,8 @@
   const normalize = content.normalize;
   const byId = new Map(vocabulary.map(word => [word.id, word]));
   assert(byId.size === vocabulary.length, "Duplicate vocabulary IDs.");
-  assert(characters.length === 8 && categories.every(category =>
-    characters.filter(character => character.category === category).length === 2), "Expected two characters in each of four categories.");
+  assert(characters.length === 40 && categories.every(category =>
+    characters.filter(character => character.category === category).length === 10), "Expected ten characters in each of four categories.");
   for (const word of vocabulary) {
     assert(word.id && word.canonical && word.he && Array.isArray(word.acceptedForms) &&
       word.acceptedForms.some(form => normalize(form) === normalize(word.canonical)) &&
@@ -87,6 +87,18 @@
     svg.innerHTML = artwork.defs || "";
     const learnedTargets = state.targets.filter(target => completePreview || state.learnedIds.has(target.id));
     learnedTargets.sort((a, b) => (layers.get(a.id)?.order ?? 200) - (layers.get(b.id)?.order ?? 200));
+    const rearLayers = new Map();
+    for (const target of learnedTargets) {
+      for (const accessoryId of target.accessoryIds) {
+        const item = state.accessories.find(accessory => accessory.id === accessoryId);
+        assert(item, `Missing earned accessory: ${accessoryId}`);
+        if (!item.rearSvg) continue;
+        const rear = svgNode("g", { "data-accessory-rear": item.id, "aria-hidden": "true" });
+        rear.innerHTML = item.rearSvg;
+        svg.append(rear);
+        rearLayers.set(item.id, rear);
+      }
+    }
     for (const target of learnedTargets) {
       const group = svgNode("g", { "data-concept": target.id, "aria-hidden": "true" });
       if (layers.has(target.id)) group.innerHTML = layers.get(target.id).svg;
@@ -106,7 +118,9 @@
     for (const target of learnedTargets) {
       target.renderRegions = [...target.regions];
       const group = [...svg.children].find(node => node.dataset.concept === target.id);
-      for (const accessoryGroup of group.querySelectorAll("[data-accessory]")) {
+      const accessoryGroups = [...group.querySelectorAll("[data-accessory]"),
+        ...target.accessoryIds.map(id => rearLayers.get(id)).filter(Boolean)];
+      for (const accessoryGroup of accessoryGroups) {
         const box = accessoryGroup.getBBox();
         assert(box.width > 0 && box.height > 0, `Empty accessory artwork: ${accessoryGroup.dataset.accessory}`);
         target.renderRegions.push({ cx: box.x + box.width / 2, cy: box.y + box.height / 2,

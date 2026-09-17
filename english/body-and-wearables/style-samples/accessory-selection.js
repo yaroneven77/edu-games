@@ -1,7 +1,10 @@
 "use strict";
 (() => {
   function slotFor(item) {
-    return item.slot || ({ hat: "headwear", glasses: "eyewear", scarf: "neckwear" }[item.id]) || item.id;
+    return item.slot || ({
+      hat: "headwear", cap: "headwear", beret: "headwear", beanie: "headwear",
+      glasses: "eyewear", scarf: "neckwear"
+    }[item.id]) || item.id;
   }
 
   function pick(items, previousIds = []) {

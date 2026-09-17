@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>שמונה דמויות · הצעות לסגנון האיור</title>
+<title>40 דמויות · גלריית הסגנונות</title>
 <script src="../../../assets/theme-selector.js"></script>
 <link rel="stylesheet" href="../../../assets/refresh.css">
 <style>
@@ -31,8 +31,8 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--edu-accent,#285f9f)
 .image-link{display:block;background:#fff}
 .image-link img{display:block;width:100%;height:auto;aspect-ratio:3/4;object-fit:contain}
 .art-stage{position:relative;width:100%;background:#fff}
-.art-stage img{display:block;width:100%;height:auto;aspect-ratio:3/4;object-fit:contain}
-.accessory-overlay{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.art-stage img{position:relative;display:block;width:100%;height:auto;aspect-ratio:3/4;object-fit:contain}
+.accessory-overlay,.accessory-underlay{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 .accessory-controls{border:1px solid var(--edu-border,#ccd4db);border-radius:12px;margin:18px 0;padding:12px}
 .accessory-controls legend{font-weight:700;padding:0 6px}
 .accessory-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
@@ -69,22 +69,22 @@ footer{border-top:1px solid var(--edu-border,#ccd4db);padding-top:20px;line-heig
 <header>
 <div class="eyebrow" lang="en" dir="ltr">CHARACTER DESIGN / EXPLORATION 02</div>
 <h1>אותו משחק. יותר אופי לדמויות.</h1>
-<p class="intro">שמונה הצעות מקוריות בהשראת הכיוונים החזותיים ששלחתם: שתי דמויות אנימה, שני גיבורי־על, שתי דמויות מצוירות ושתי דמויות מנגה בשחור ולבן.</p>
+<p class="intro">40 דמויות מקוריות: 10 דמויות אנימה, 10 גיבורי־על, 10 דמויות מצוירות ו־10 דמויות מנגה — חמש בצבע וחמש בשחור ולבן. שמונה הדמויות שאהבתם נשמרו, ולכל סגנון נוספו שמונה דמויות חדשות.</p>
 <div class="notice">
-<p><strong>אלו הצעות איור לבדיקה, לא החלפה של הדמויות במשחק.</strong> העיצוב, המבנה וכללי המשחק שאהבתם נשארים ללא שינוי. לאחר בחירת כיוון יהיה צורך להתאים את האיורים לשכבות הגוף והלבוש הנפרדות.</p>
+<p><strong>האוסף המורחב זמין במשחק ההדגמה לבדיקה.</strong> לכל דמות שכבות גוף ולבוש נפרדות. כללי המשחק שאהבתם נשמרו; המשחק הראשי נשאר עם שמונה הדמויות המאושרות עד לאישור האוסף החדש.</p>
 <p>האיורים נוצרו בקוד וקטורי מקורי. ההצללות בדמויות המצוירות מציעות תחושת נפח, אך אינן הדמיה תלת־ממדית. תמונות ההשראה לא הועתקו ולא נכללות בגלריה. קטגוריית החיות נשארה ללא שינוי.</p>
 <p>לכל דמות אוסף של עשרה אביזרים. בביקור הראשון נבחרים חמישה באקראי; לחצו על ״ערבוב אביזרים״ לבחירה חדשה. אפשר להציג ולהסתיר כל אביזר בנפרד, ואביזרים שמתחרים על אותו מקום אינם נבחרים יחד. הבחירות ומצב ההצגה נשמרים אוטומטית בדפדפן זה וחוזרים בפתיחה הבאה. לחיצה על האיור מגדילה את הבחירה הנוכחית. הלבוש המקורי נשאר קבוע.</p>
 <p id="accessory-storage-warning" class="error" role="alert" hidden></p>
 </div>
 </header>
 <div class="filters" role="group" aria-label="בחירת סגנון">
-<button type="button" data-filter="all" aria-pressed="true">הכול · 8 דמויות</button>
+<button type="button" data-filter="all" aria-pressed="true">הכול · 40 דמויות</button>
 <button type="button" data-filter="anime" aria-pressed="false">אנימה</button>
 <button type="button" data-filter="superhero" aria-pressed="false">גיבורי־על</button>
 <button type="button" data-filter="cartoon" aria-pressed="false">מצויר</button>
 <button type="button" data-filter="manga" aria-pressed="false">מנגה</button>
 </div>
-<p id="result-count" role="status">מוצגות 8 דמויות בארבעה סגנונות.</p>
+<p id="result-count" role="status">מכינים את גלריית הדמויות…</p>
 <section class="category" data-category="anime" id="anime" aria-labelledby="anime-heading">
 <div class="section-head"><h2 id="anime-heading">אנימה · צבע, שיער ותנועה</h2><span>שתי דמויות מקוריות</span></div>
 <div class="pair">
@@ -124,16 +124,16 @@ footer{border-top:1px solid var(--edu-border,#ccd4db);padding-top:20px;line-heig
 <section class="category" data-category="manga" id="manga" aria-labelledby="manga-heading">
 <div class="section-head"><h2 id="manga-heading">מנגה · דיו, קו ומרקם</h2><span>שתי דמויות מקוריות בשחור ולבן</span></div>
 <div class="pair">
-<article class="sample">
+<article class="sample" data-color-mode="monochrome">
 <a class="image-link" href="./manga-01.svg" target="_blank" rel="noopener" aria-label="הגדלת האיור של סורה"><img src="./manga-01.svg" width="600" height="800" alt="סורה, דמות מנגה מקורית בשחור ולבן עם תספורת קצרה ולבוש בשכבות"></a>
 <div class="caption"><span class="number">07 / MANGA</span><h3>סורה</h3><p class="english" lang="en" dir="ltr">SORA · EVERYDAY STORIES</p><p>עיניים קטנות בצורת שקד, קווים עדינים ומבט רגוע. פנים רכות וחיוך קטן וסגור, לצד מרקמי הדיו בבגדים.</p><a href="./manga-01.svg" target="_blank" rel="noopener">פתיחה בגודל מלא ↗</a></div>
 </article>
-<article class="sample">
+<article class="sample" data-color-mode="monochrome">
 <a class="image-link" href="./manga-02.svg" target="_blank" rel="noopener" aria-label="הגדלת האיור של רן"><img src="./manga-02.svg" width="600" height="800" alt="רן, דמות מנגה מקורית עם שיער בהיר, צעיף ומעיל מסע ארוך"></a>
 <div class="caption"><span class="number">08 / MANGA</span><h3>רן</h3><p class="english" lang="en" dir="ltr">REN · WIND WALKER</p><p>כיוון הרפתקה גרפי: מעיל ארוך, צעיף בתנועה וניגוד חזק בין שטחים כהים לקווי שיער בהירים.</p><a href="./manga-02.svg" target="_blank" rel="noopener">פתיחה בגודל מלא ↗</a></div>
 </article>
 </div></section>
-<footer>הצעות סגנון בלבד · שמונה איורים מקוריים · ללא שינוי בדמויות המשחק · לחצו על איור לפתיחה ולהגדלה בדפדפן.</footer>
+<footer>40 איורים מקוריים לבדיקה · לחצו על איור להגדלה · המשחק הראשי נשאר ללא שינוי.</footer>
 <noscript><p>כל שמונת האיורים המקוריים מוצגים גם ללא הפעלת תסריטים. הסינון וחמשת האביזרים הנוספים לכל דמות דורשים הפעלת תסריטים.</p></noscript>
 </main>
 <dialog id="accessory-preview" aria-labelledby="preview-title" aria-describedby="preview-description">
@@ -145,16 +145,26 @@ footer{border-top:1px solid var(--edu-border,#ccd4db);padding-top:20px;line-heig
 <script src="./accessories-hero-cartoon.js"></script>
 <script src="./accessory-selection.js"></script>
 <script src="./accessory-storage.js"></script>
+<script src="./collection-anime.js"></script>
+<script src="./collection-superhero.js"></script>
+<script src="./collection-cartoon.js"></script>
+<script src="./collection-manga.js"></script>
+<script src="./collection-gallery.js"></script>
 <script src="./accessory-gallery.js"></script>
 <script>
 "use strict";
 const filters=[...document.querySelectorAll("[data-filter]")];
 const sections=[...document.querySelectorAll("[data-category]")];
+const updateCount=()=>{
+  const count=sections.filter(section=>!section.hidden).reduce((sum,section)=>sum+section.querySelectorAll(".sample").length,0);
+  document.getElementById("result-count").textContent=`מוצגות ${count} דמויות.`;
+};
+updateCount();
 for(const button of filters)button.addEventListener("click",()=>{
   const selected=button.dataset.filter;
   for(const control of filters)control.setAttribute("aria-pressed",String(control===button));
   for(const section of sections)section.hidden=selected!=="all"&&section.dataset.category!==selected;
-  document.getElementById("result-count").textContent=selected==="all"?"מוצגות 8 דמויות בארבעה סגנונות.":"מוצגות 2 דמויות בסגנון שנבחר.";
+  updateCount();
 });
 for(const image of document.querySelectorAll(".sample img"))image.addEventListener("error",()=>{
   const message=document.createElement("p");message.className="error";message.setAttribute("role","alert");

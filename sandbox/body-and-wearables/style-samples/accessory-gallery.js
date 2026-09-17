@@ -38,6 +38,11 @@
     stage.className = "art-stage";
     image.replaceWith(stage);
     stage.append(image);
+    const underlay = document.createElementNS(svgNamespace, "svg");
+    underlay.setAttribute("viewBox", "0 0 600 800");
+    underlay.setAttribute("aria-hidden", "true");
+    underlay.classList.add("accessory-underlay");
+    stage.prepend(underlay);
     const overlay = document.createElementNS(svgNamespace, "svg");
     overlay.setAttribute("viewBox", "0 0 600 800");
     overlay.setAttribute("aria-hidden", "true");
@@ -68,7 +73,10 @@
       });
     }
     function update(persist = true) {
-      for (const { input, layer } of entries) layer.style.display = input.checked ? "" : "none";
+      for (const { input, layer, rearLayer } of entries) {
+        layer.style.display = input.checked ? "" : "none";
+        if (rearLayer) rearLayer.style.display = layer.style.display;
+      }
       const selected = selectedNames();
       count.textContent = `מוצגים ${selected.length} מתוך 5: ${selected.length ? selected.join(", ") : "ללא אביזרים נוספים"}.`;
       image.alt = originalAlt + (selected.length ? `. אביזרים נוספים: ${selected.join(", ")}.` : ". ללא אביזרים נוספים.");
@@ -78,7 +86,15 @@
       entries.length = 0;
       options.replaceChildren();
       overlay.replaceChildren();
+      underlay.replaceChildren();
       for (const item of selectedItems) {
+        let rearLayer;
+        if (item.rearSvg) {
+          rearLayer = document.createElementNS(svgNamespace, "g");
+          rearLayer.dataset.accessory = item.id;
+          rearLayer.innerHTML = item.rearSvg;
+          underlay.append(rearLayer);
+        }
         const layer = document.createElementNS(svgNamespace, "g");
         layer.dataset.accessory = item.id;
         // These SVG fragments are authored local assets, never user-provided markup.
@@ -100,7 +116,7 @@
         text.append(english, hebrew);
         label.append(input, text);
         options.append(label);
-        entries.push({ item, input, layer });
+        entries.push({ item, input, layer, rearLayer });
         input.addEventListener("change", () => update());
       }
       update(false);

@@ -164,8 +164,8 @@
     }
     for (const item of character.outfit) add(item.id, item.regions);
     for (const accessory of accessories) {
-      add(accessory.id === "hat" ? hatIds[character.id] :
-        accessoryIds[accessory.id] || accessory.id, [], accessory.id);
+      add(accessory.conceptId ?? (accessory.id === "hat" ? hatIds[character.id] || "hat" :
+        accessoryIds[accessory.id] || accessory.id), [], accessory.id);
     }
     return [...targets.values()];
   }

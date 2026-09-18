@@ -13,6 +13,7 @@ body{margin:0;padding:62px 16px 28px;background:var(--edu-bg,#f1f6fa);color:var(
 main{max-width:1200px;margin:auto}a{color:var(--edu-accent,#286493)}nav{display:flex;flex-wrap:wrap;gap:8px 20px}nav a{display:inline-flex;align-items:center;min-height:44px}
 h1{font-size:clamp(1.7rem,3vw,2.4rem);margin:14px 0 8px}h2{font-size:1.15rem;margin:0 0 14px}p{line-height:1.7}.intro{max-width:850px;margin:0 0 22px}
 .layout{display:grid;grid-template-columns:minmax(300px,.95fr) minmax(360px,1.05fr);gap:20px;align-items:start}
+.play-column{display:grid;gap:20px;min-width:0}.learned-panel .collection-title{margin-top:0}
 .panel{min-width:0;padding:24px;border:1px solid var(--edu-border,#d5dfec);border-radius:24px;background:var(--edu-surface,#fff);box-shadow:0 10px 32px #1d345410}
 .game-toolbar{display:grid;grid-template-columns:auto minmax(0,1fr) minmax(0,1fr) auto;align-items:end;gap:12px;margin-bottom:12px}.setup-note{margin:0 0 22px}label{display:block;font-weight:700;margin-bottom:7px}
 button,input,select{font:inherit;min-height:44px;border:1px solid var(--edu-border,#b8cad9);border-radius:12px;color:inherit}
@@ -27,6 +28,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 .bonus-message strong{display:block;font-size:1.15rem}.bonus-message p{margin:6px 0 0}
 #word-input.bonus-input{border:2px solid var(--edu-accent,#285f9f);background:var(--edu-soft,#edf3fb)}
 .hint-box{padding:16px;margin-top:14px;border:1px dashed var(--edu-border,#aac1d3);border-radius:16px;background:var(--edu-soft,#f3f7fb)}.hint-actions{display:flex;flex-wrap:wrap;gap:8px}.hint-actions button{font-size:.88rem}
+#assist{margin-top:12px}
+#round-info-open{margin-top:14px}
 #hint-he{font-size:1.15rem;font-weight:700;margin-top:0}#first-letter{font-size:1.65rem;font-weight:800;white-space:pre-wrap;overflow-wrap:anywhere}
 .hint-word-row{display:flex;align-items:center;gap:12px;direction:ltr}.hint-word-row #first-letter{min-width:0;flex:0 1 auto}#hint-speak{flex-shrink:0;min-width:44px;padding:8px;font-size:1.25rem}
 .clue-panel{margin-top:20px;border-top:4px solid var(--edu-accent,#285f9f)}
@@ -84,8 +87,23 @@ footer{text-align:center;font-size:.83rem;margin-top:24px;line-height:1.8}[hidde
 <form method="dialog"><button class="primary">הבנתי, בואו נשחק!</button></form>
 </dialog>
 <div id="load-error" class="error" role="alert" hidden></div>
+<dialog id="hint-help-dialog" class="help-dialog" aria-labelledby="hint-help-title">
+<h2 id="hint-help-title" tabindex="-1" autofocus>איך משתמשים ברמזים?</h2>
+<p>האותיות שנחשפו נשמרות. כשנחשפת לפחות מחצית מהאותיות, ללא רווחים ומקפים, אפשר לשמוע את המילה באנגלית. אחרי שלושה ניסיונות איות שלא התקבלו או שלוש חשיפות אות, אפשר להציג את המילה. השמעה והצגת המילה אינן מוסיפות ציור או ניקוד — עדיין צריך להקליד אותה בעצמכם. אפשר תמיד לענות במילה אחרת.</p>
+<form method="dialog"><button type="submit">סגירה</button></form>
+</dialog>
 <noscript><p class="error">כדי לשחק צריך להפעיל JavaScript בדפדפן.</p></noscript>
+<dialog id="round-info-dialog" class="help-dialog" aria-labelledby="round-info-title">
+<h2 id="round-info-title" tabindex="-1" autofocus>מידע על הסבב והבונוס</h2>
+<p id="input-help" class="note">המילים המתאימות לרמה ולדמות מופיעות בפאנל כל הרמזים. אם יש טעות באיות, לחצו על רמז כדי לקבל עזרה למילה שניסיתם לכתוב. לרמז למילה אחרת, נקו את תיבת הכתיבה. רק תשובה נכונה מוסיפה את החלק עצמו ואת כרטיס המילה.</p>
+<div id="feedback" class="feedback" role="status" aria-live="polite" aria-atomic="true">מכינים את הדמות…</div>
+<p id="bonus-streak" class="note" role="status" aria-live="polite"></p>
+<p class="note">כל 3 מילים חדשות ברצף מזכות בבונוס. תשובה שלא מתקבלת מתחילה רצף חדש. מילים שכבר נמצאו ומילות בונוס לא נספרות ברצף; עזרה ורמזים תמיד מותר!</p>
+<p id="level-suggestion" class="note"></p>
+<form method="dialog"><button type="submit">סגירה</button></form>
+</dialog>
 <div class="layout">
+<div class="play-column">
 <section class="panel" aria-labelledby="play-title">
 <h2 id="play-title">איזה חלק נוסיף?</h2>
 <form id="word-form" autocomplete="off">
@@ -93,12 +111,7 @@ footer{text-align:center;font-size:.83rem;margin-top:24px;line-height:1.8}[hidde
 <div class="entry-row"><input id="word-input" class="en" lang="en" dir="ltr" type="text" maxlength="64" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" enterkeyhint="done" aria-describedby="input-help" placeholder="English word"><button class="primary" type="submit">בדיקה</button>
 <div id="bonus-message" class="bonus-message" role="status" aria-live="polite" aria-atomic="true" hidden><div class="bonus-head"><strong>🎉 כל הכבוד! זכיתם בבונוס!</strong><button id="bonus-close" type="button" aria-label="סגירת הודעת הבונוס">×</button></div><p>מצאתם 3 מילים חדשות ברצף — אלופים! מילת מתנה הוכנסה לתיבת הכתיבה. לחצו על בדיקה כדי להוסיף אותה לדמות.</p></div>
 </div>
-<p id="input-help" class="note">המילים המתאימות לרמה ולדמות מופיעות בפאנל כל הרמזים. אם יש טעות באיות, לחצו על רמז כדי לקבל עזרה למילה שניסיתם לכתוב. לרמז למילה אחרת, נקו את תיבת הכתיבה. רק תשובה נכונה מוסיפה את החלק עצמו ואת כרטיס המילה.</p>
 </form>
-<div id="feedback" class="feedback" role="status" aria-live="polite" aria-atomic="true">מכינים את הדמות…</div>
-<p id="bonus-streak" class="note" role="status" aria-live="polite"></p>
-<p class="note">כל 3 מילים חדשות ברצף מזכות בבונוס. תשובה שלא מתקבלת מתחילה רצף חדש. מילים שכבר נמצאו ומילות בונוס לא נספרות ברצף; עזרה ורמזים תמיד מותר!</p>
-<p id="level-suggestion" class="note"></p>
 <button id="assist" class="wide" type="button">💡 רמז למילה נוספת</button>
 <section id="hint-box" class="hint-box" aria-label="רמז למילה" tabindex="-1" hidden>
 <p id="hint-he" lang="he" dir="rtl"></p>
@@ -106,9 +119,17 @@ footer{text-align:center;font-size:.83rem;margin-top:24px;line-height:1.8}[hidde
 <div class="hint-word-row"><p id="first-letter" class="en" lang="en" dir="ltr" aria-live="polite" aria-atomic="true" hidden></p><button id="hint-speak" type="button" aria-label="השמעה" title="השמעה" aria-describedby="hint-speech-status" hidden disabled><span aria-hidden="true">🔊</span></button></div>
 <p id="hint-speech-status" class="note" role="status" aria-live="polite"></p>
 <div id="letter-progress" aria-live="polite" aria-atomic="true"><p id="letter-count" class="note"></p><p id="hint-attempts" class="note"></p></div>
-<p class="note">האותיות שנחשפו נשמרות. כשנחשפת לפחות מחצית מהאותיות, ללא רווחים ומקפים, אפשר לשמוע את המילה באנגלית. אחרי שלושה ניסיונות איות שלא התקבלו או שלוש חשיפות אות, אפשר להציג את המילה. השמעה והצגת המילה אינן מוסיפות ציור או ניקוד — עדיין צריך להקליד אותה בעצמכם. אפשר תמיד לענות במילה אחרת.</p>
+<button id="hint-help-open" type="button" aria-haspopup="dialog" aria-controls="hint-help-dialog">איך משתמשים ברמזים?</button>
 </section>
+<button id="round-info-open" type="button" aria-haspopup="dialog" aria-controls="round-info-dialog">מידע על הסבב והבונוס</button>
 </section>
+<section class="panel learned-panel" aria-labelledby="collection-title">
+<h2 id="collection-title" class="collection-title">המילים שמצאתם</h2>
+<p id="empty-collection" class="note">כתבו מילה נכונה כדי לגלות כאן את האיות והפירוש.</p>
+<ul id="learned-words" class="collection" aria-label="מילים שנלמדו"></ul>
+<p id="speech-status" class="note" role="status" aria-live="polite"></p>
+</section>
+</div>
 <section class="panel studio" aria-labelledby="studio-title">
 <div class="studio-head"><h2 id="studio-title">הדמות שלכם</h2><span class="count"><b id="learned-count">0</b> מתוך <b id="target-count">0</b> מילים</span></div>
 <p id="character-name"></p>
@@ -116,10 +137,6 @@ footer{text-align:center;font-size:.83rem;margin-top:24px;line-height:1.8}[hidde
 <div class="canvas-wrap"><div id="character-stage"></div><div id="empty-canvas"><strong>מתחילים מדף ריק</strong><span>כתבו מילה באנגלית, ורק החלק שלה יופיע כאן.</span></div></div>
 <p id="location-status" class="note" role="status" aria-live="polite"></p>
 <p class="note">רק הפריטים שכבר כתבתם מופיעים בציור. בגדים עשויים לכסות חלקים שנלמדו; אפשר לסמן שוב מילה מהאוסף.</p>
-<h2 class="collection-title">המילים שמצאתם</h2>
-<p id="empty-collection" class="note">כתבו מילה נכונה כדי לגלות כאן את האיות והפירוש.</p>
-<ul id="learned-words" class="collection" aria-label="מילים שנלמדו"></ul>
-<p id="speech-status" class="note" role="status" aria-live="polite"></p>
 </section>
 </div>
 <section class="panel clue-panel" aria-labelledby="clue-title">

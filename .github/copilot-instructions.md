@@ -263,6 +263,12 @@ The British Council links were identified through search; direct fetching was bl
 
 ## Body and Wearables game and retained previews
 
+- Place `המילים שמצאתם` in its own panel directly beneath the right-hand input/clue panel, not below the character canvas. On mobile, keep the canvas first, then input/clues and the learned-word panel.
+
+- Keep the detailed letter-hint/pronunciation/Show word explanation in a labeled popup opened by `איך משתמשים ברמזים?` in the clue panel, not as an inline paragraph. Support close/Escape and restore focus to its trigger without changing progress.
+
+- In production, place the additional-word hint button immediately below the word-entry form and its clue panel immediately below that button. The user explicitly requested input-help text, live answer feedback, bonus streak, bonus explanation and level description inside the `מידע על הסבב והבונוס` popup, opened below the clue panel. Keep these values updated while closed, with close/Escape and focus restoration. Do not automatically open it on answers; retain the separate earned-bonus popup near the input.
+
 - Display clue pronunciation as a speaker-icon button beside the revealed/masked English word on the same row, not among the letter-hint controls. Use `השמעה` as its accessible name and tooltip; retain the half-visible-letters threshold and a minimum 44px touch target.
 
 - The user approved publishing all 40 illustrated characters in the main English game on September 17, 2026, including saving, committing and pushing their pictures. The expansion adds eight original characters to each of Anime, Superhero, Cartoon and Manga (IDs 03-10), giving ten per category. Keep original IDs 01-02 and their approved artwork unchanged. Retain all 40 standalone SVGs and complete runtime registries independently under production and sandbox; keep source/export generators in the sandbox. This approval does not add Animals or authorize the old 50-character plan.

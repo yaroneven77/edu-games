@@ -529,6 +529,10 @@
   $("word-input").addEventListener("input", clearBonusNotice);
   $("help-open").addEventListener("click", () => $("help-dialog").showModal());
   $("help-dialog").addEventListener("close", () => $("help-open").focus());
+  $("hint-help-open").addEventListener("click", () => $("hint-help-dialog").showModal());
+  $("hint-help-dialog").addEventListener("close", () => $("hint-help-open").focus());
+  $("round-info-open").addEventListener("click", () => $("round-info-dialog").showModal());
+  $("round-info-dialog").addEventListener("close", () => $("round-info-open").focus());
   $("bonus-close").addEventListener("click", dismissBonusPopup);
   $("new-character").addEventListener("click", previewNextCharacter);
   $("category-select").addEventListener("change", () => startRound());

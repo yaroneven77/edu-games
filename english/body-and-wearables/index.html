@@ -14,7 +14,7 @@ main{max-width:1200px;margin:auto}a{color:var(--edu-accent,#286493)}nav{display:
 h1{font-size:clamp(1.7rem,3vw,2.4rem);margin:14px 0 8px}h2{font-size:1.15rem;margin:0 0 14px}p{line-height:1.7}.intro{max-width:850px;margin:0 0 22px}
 .layout{display:grid;grid-template-columns:minmax(300px,.95fr) minmax(360px,1.05fr);gap:20px;align-items:start}
 .panel{min-width:0;padding:24px;border:1px solid var(--edu-border,#d5dfec);border-radius:24px;background:var(--edu-surface,#fff);box-shadow:0 10px 32px #1d345410}
-.setup{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}label{display:block;font-weight:700;margin-bottom:7px}
+.game-toolbar{display:grid;grid-template-columns:auto minmax(0,1fr) minmax(0,1fr) auto;align-items:end;gap:12px;margin-bottom:12px}.setup-note{margin:0 0 22px}label{display:block;font-weight:700;margin-bottom:7px}
 button,input,select{font:inherit;min-height:44px;border:1px solid var(--edu-border,#b8cad9);border-radius:12px;color:inherit}
 input,select{width:100%;padding:10px;background:var(--edu-input,#fff)}button{padding:10px 14px;background:var(--edu-soft,#edf3fb);font-weight:700;cursor:pointer}
 button:disabled{opacity:.55;cursor:default}button:hover:not(:disabled){filter:brightness(.96)}
@@ -42,7 +42,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 .clue-card.found .clue-sentence{text-decoration:line-through;text-decoration-thickness:2px;color:var(--edu-text,#243b53)}
 .clue-card.found .clue-marker{background:var(--edu-accent,#285f9f);color:var(--edu-action-text,#fff)}
 #clue-progress{display:block;width:100%;height:10px;margin-top:14px;accent-color:var(--edu-accent,#285f9f)}
-.help-trigger{margin:0 0 22px}
+.help-trigger{margin:0}
 .help-dialog{width:min(620px,calc(100% - 32px));max-height:85vh;overflow:auto;border:1px solid var(--edu-border,#d5dfec);border-radius:24px;padding:24px;color:var(--edu-text,#243b53);background:var(--edu-surface,#fff);box-shadow:0 20px 70px #0004}
 .help-dialog::backdrop{background:#14293f99}.help-dialog li{line-height:1.8;margin-bottom:12px}.help-dialog form{text-align:end}
 .studio-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap}.count{padding:7px 11px;border-radius:99px;background:var(--edu-soft,#edf3fb);font-size:.85rem}
@@ -54,8 +54,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 .word-card{min-width:0;padding:12px;border:1px solid var(--edu-border,#d5dfec);border-radius:14px;background:var(--edu-soft,#f5f8fc);overflow-wrap:anywhere}.word-card p{margin:0}.word-card .en{font-weight:800;font-size:1.05rem}.word-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}.word-actions button{font-size:.82rem;padding:8px}
 .error{padding:18px;border:2px solid #b21b38;border-radius:12px;background:var(--edu-surface,#fff);margin-bottom:16px;overflow-wrap:anywhere}
 footer{text-align:center;font-size:.83rem;margin-top:24px;line-height:1.8}[hidden]{display:none!important}
-@media(max-width:760px){body{padding-inline:12px}.layout{grid-template-columns:1fr}.panel{padding:18px}.studio{grid-row:1}.canvas-wrap{height:450px}.collection{max-height:300px}.setup{gap:8px}.clue-list{grid-template-columns:1fr}}
-@media(max-width:350px){.collection{grid-template-columns:1fr}.panel{padding:12px}.setup{grid-template-columns:1fr}}
+@media(max-width:900px){.game-toolbar{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){body{padding-inline:12px}.layout{grid-template-columns:1fr}.panel{padding:18px}.studio{grid-row:1}.canvas-wrap{height:450px}.collection{max-height:300px}.game-toolbar{gap:8px}.clue-list{grid-template-columns:1fr}}
+@media(max-width:350px){.collection{grid-template-columns:1fr}.panel{padding:12px}.game-toolbar{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
 </style>
 </head>
@@ -63,7 +64,13 @@ footer{text-align:center;font-size:.83rem;margin-top:24px;line-height:1.8}[hidde
 <main>
 <nav aria-label="ניווט"><a href="../index.html">← משחקי אנגלית</a></nav>
 <header><h1>בונים דמות מאוירת במילים</h1><p class="intro">בוחרים סגנון והמשחק מגריל דמות ואוסף של חמישה אביזרים אפשריים. הבמה מתחילה ריקה: רק חלק גוף, בגד או אביזר שכתבתם נכון באנגלית יופיעו. אפשר להתחיל מעיניים, מכפות רגליים או מכובע — בכל סדר.</p></header>
+<div class="game-toolbar">
 <button id="help-open" class="help-trigger" type="button" aria-haspopup="dialog" aria-controls="help-dialog">איך משחקים?</button>
+<div><label for="category-select">סגנון הדמות</label><select id="category-select" aria-describedby="setup-note"><option value="Anime">אנימה · Anime</option><option value="Superhero" selected>גיבורי־על · Superhero</option><option value="Cartoon">מצויר · Cartoon</option><option value="Manga">מנגה · Manga</option></select></div>
+<div><label for="level-select">רמת הרמזים</label><select id="level-select"><option value="beginner">מתחילים</option><option value="intermediate">ממשיכים</option><option value="advanced">מתקדמים</option></select></div>
+<button id="new-character" type="button" aria-describedby="setup-note">דמות אקראית חדשה בסגנון הזה</button>
+</div>
+<p id="setup-note" class="note setup-note">דמות חדשה או שינוי סגנון מתחילים סבב חדש ומאפסים את המילים והרמזים. הבחירות בגלריה נפרדות ואינן משתנות.</p>
 <dialog id="help-dialog" class="help-dialog" aria-labelledby="help-title">
 <h2 id="help-title" tabindex="-1" autofocus>איך משחקים?</h2>
 <ul><li>בכל סגנון 10 דמויות מקוריות. כפתור הדמות החדשה מגריל דמות אחרת וחמישה אביזרים אפשריים, ומחזיר את הבמה למצב ריק.</li><li>כל 27 מילות הגוף מתקבלות בכל רמה. הרמה משנה רק את הרמזים וההצעות.</li><li>כל מילה מציגה רק את החלק או הפריט שלה. כתיבת עיניים אינה מציגה ראש, וכתיבת כובע אינה מציגה שיער. החלקים נשארים במקומם עד שתוסיפו את שכניהם.</li><li>בגדים מוצגים מעל חלקי הגוף שכבר הוספתם. מילים שכבר נמצאות באוסף אינן נספרות שוב.</li><li>הרמזים בעברית. בפאנל כל הרמזים, משפטים של מילים שמצאתם מסומנים בקו ובסימן ✓. רמזי אותיות והצגת המילה אינם מוסיפים ציור — עדיין צריך להקליד תשובה נכונה.</li><li>אם טעיתם באיות, לחצו על רמז כדי לקבל עזרה למילה שניסיתם לכתוב. לרמז למילה אחרת, נקו את תיבת הכתיבה.</li><li>אין טיימר ואין שמירת התקדמות. רענון הדף מתחיל מחדש.</li></ul>
@@ -76,12 +83,6 @@ footer{text-align:center;font-size:.83rem;margin-top:24px;line-height:1.8}[hidde
 <div class="layout">
 <section class="panel" aria-labelledby="play-title">
 <h2 id="play-title">איזה חלק נוסיף?</h2>
-<div class="setup">
-<div><label for="category-select">סגנון הדמות</label><select id="category-select"><option value="Anime">אנימה · Anime</option><option value="Superhero" selected>גיבורי־על · Superhero</option><option value="Cartoon">מצויר · Cartoon</option><option value="Manga">מנגה · Manga</option></select></div>
-<div><label for="level-select">רמת הרמזים</label><select id="level-select"><option value="beginner">מתחילים</option><option value="intermediate">ממשיכים</option><option value="advanced">מתקדמים</option></select></div>
-</div>
-<button id="new-character" class="wide" type="button">דמות אקראית חדשה בסגנון הזה</button>
-<p class="note">דמות חדשה או שינוי סגנון מתחילים סבב חדש ומאפסים את המילים והרמזים. הבחירות בגלריה נפרדות ואינן משתנות.</p>
 <form id="word-form" autocomplete="off">
 <label for="word-input">כתבו מילה באנגלית</label>
 <div class="entry-row"><input id="word-input" class="en" lang="en" dir="ltr" type="text" maxlength="64" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" enterkeyhint="done" aria-describedby="input-help" placeholder="English word"><button class="primary" type="submit">בדיקה</button>

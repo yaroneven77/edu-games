@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>כל מילות המשחק · בונים דמות במילים</title>
+<script src="../../assets/theme-selector.js"></script>
+<link rel="stylesheet" href="../../assets/refresh.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:64px 16px 32px;font-family:"Segoe UI",Arial,sans-serif;background:var(--edu-bg,#f1f6fa);color:var(--edu-text,#243b53)}
+main{max-width:800px;margin:auto}
+a{display:inline-flex;align-items:center;min-height:44px;color:var(--edu-accent,#286493)}
+h1{font-size:clamp(1.6rem,5vw,2.2rem)}
+p{line-height:1.7}
+table{width:100%;border-collapse:collapse;table-layout:fixed;background:var(--edu-surface,#fff);direction:ltr}
+caption{text-align:start;padding:12px 0;font-weight:700;direction:rtl}
+th,td{border:1px solid var(--edu-border,#b8cad9);padding:12px 16px;overflow-wrap:anywhere;line-height:1.6}
+th{background:var(--edu-soft,#edf3fb)}
+th:first-child,td:first-child{text-align:left}
+th:last-child,td:last-child{direction:rtl;text-align:right}
+[hidden]{display:none!important}
+.error{border:2px solid #b21b38;padding:16px}
+@media print{body{padding:0;background:white;color:black}nav{display:none}thead{display:table-header-group}tr{break-inside:avoid}}
+</style>
+</head>
+<body id="edu-refresh">
+<main>
+<nav><a href="./index.html">חזרה למשחק</a></nav>
+<h1>כל מילות המשחק</h1>
+<p>מילים ייחודיות מכל הדמויות ומכל אפשרויות האביזרים, לפי סדר אלפביתי באנגלית. בכל סבב מופיע רק חלק מהאוסף. הטבלה מציגה את צורת המילה הראשית, ללא חזרות של צורות איות חלופיות.</p>
+<p id="load-error" class="error" role="alert" hidden></p>
+<noscript><p class="error">יש להפעיל JavaScript כדי לטעון את המילים מתוך נתוני המשחק.</p></noscript>
+<table id="word-table" hidden>
+<caption id="word-count"></caption>
+<thead><tr><th scope="col" lang="en" dir="ltr">Word</th><th scope="col" lang="he">עברית</th></tr></thead>
+<tbody id="words"></tbody>
+</table>
+</main>
+<script src="./style-samples/accessories-anime-manga.js"></script>
+<script src="./style-samples/accessories-hero-cartoon.js"></script>
+<script src="./style-samples/illustrated-anime-manga.js"></script>
+<script src="./style-samples/illustrated-hero-cartoon.js"></script>
+<script src="./style-samples/collection-anime.js"></script>
+<script src="./style-samples/collection-superhero.js"></script>
+<script src="./style-samples/collection-cartoon.js"></script>
+<script src="./style-samples/collection-manga.js"></script>
+<script src="./illustrated-vocabulary.js"></script>
+<script src="./illustrated-content.js"></script>
+<script>
+"use strict";
+(() => {
+  try {
+    const characters = Object.values(window.IllustratedCharacters || {});
+    if (!characters.length || !window.IllustratedContent || !window.CharacterAccessories) {
+      throw new Error("Missing character vocabulary data.");
+    }
+    const words = new Map();
+    for (const character of characters) {
+      const accessories = window.CharacterAccessories[character.id];
+      if (!Array.isArray(accessories)) throw new Error(`Missing accessories: ${character.id}`);
+      for (const word of window.IllustratedContent.buildTargets(character, accessories)) {
+        if (!word.canonical || !word.he) throw new Error(`Missing translation: ${word.id}`);
+        words.set(word.id, word);
+      }
+    }
+    const rows = document.createDocumentFragment();
+    for (const word of [...words.values()].sort((a, b) => a.canonical.localeCompare(b.canonical, "en"))) {
+      const row = document.createElement("tr");
+      const english = document.createElement("td");
+      english.lang = "en";
+      english.dir = "ltr";
+      english.textContent = word.canonical;
+      const hebrew = document.createElement("td");
+      hebrew.lang = "he";
+      hebrew.dir = "rtl";
+      hebrew.textContent = word.he;
+      row.append(english, hebrew);
+      rows.append(row);
+    }
+    document.getElementById("words").replaceChildren(rows);
+    document.getElementById("word-count").textContent = `${words.size} מילים · ${characters.length} דמויות`;
+    document.getElementById("word-table").hidden = false;
+  } catch (error) {
+    console.error("Unable to display the word list.", error);
+    const warning = document.getElementById("load-error");
+    warning.textContent = "לא ניתן לטעון את רשימת המילים. ודאו שקובצי המשחק נמצאים לצד עמוד זה ורעננו.";
+    warning.hidden = false;
+  }
+})();
+</script>
+</body>
+</html>

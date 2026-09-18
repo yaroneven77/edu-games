@@ -13,15 +13,30 @@ main{max-width:800px;margin:auto}
 a{display:inline-flex;align-items:center;min-height:44px;color:var(--edu-accent,#286493)}
 h1{font-size:clamp(1.6rem,5vw,2.2rem)}
 p{line-height:1.7}
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0}
+.filters button{font:inherit;font-weight:700;min-height:44px;padding:10px 18px;border:1px solid var(--edu-border,#b8cad9);border-radius:12px;background:var(--edu-surface,#fff);color:inherit;cursor:pointer}
+.filters button[aria-pressed="true"]{background:var(--edu-accent,#286493);color:var(--edu-action-text,#fff)}
+.filters button:focus-visible{outline:3px solid var(--edu-accent,#286493);outline-offset:3px}
 table{width:100%;border-collapse:collapse;table-layout:fixed;background:var(--edu-surface,#fff);direction:ltr}
 caption{text-align:start;padding:12px 0;font-weight:700;direction:rtl}
 th,td{border:1px solid var(--edu-border,#b8cad9);padding:12px 16px;overflow-wrap:anywhere;line-height:1.6}
 th{background:var(--edu-soft,#edf3fb)}
 th:first-child,td:first-child{text-align:left}
-th:last-child,td:last-child{direction:rtl;text-align:right}
+th:nth-child(2),td:nth-child(2){direction:rtl;text-align:right}
+.selection-column{width:76px;text-align:center}
+.row-select{display:flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;cursor:pointer}
+.row-select input{width:22px;height:22px;accent-color:var(--edu-accent,#286493);cursor:pointer}
+.row-select input:focus-visible{outline:3px solid var(--edu-accent,#286493);outline-offset:4px}
+tr.selected{background:var(--edu-soft,#edf3fb)}
+.selected-panel{margin:20px 0;padding:16px;border:1px solid var(--edu-border,#b8cad9);border-radius:16px;background:var(--edu-surface,#fff)}
+.selected-panel h2{margin:0;font-size:1.2rem}
+#selected-words{padding-inline-start:24px;line-height:1.8;overflow-wrap:anywhere}
+#selected-words li{padding:4px}
+#selected-english{display:block;width:100%;min-height:88px;margin-top:8px;padding:12px;font:inherit;line-height:1.6;resize:vertical;border:1px solid var(--edu-border,#b8cad9);border-radius:8px;background:var(--edu-surface,#fff);color:inherit;direction:ltr;text-align:left}
+#selected-english:focus-visible{outline:3px solid var(--edu-accent,#286493);outline-offset:3px}
 [hidden]{display:none!important}
 .error{border:2px solid #b21b38;padding:16px}
-@media print{body{padding:0;background:white;color:black}nav{display:none}thead{display:table-header-group}tr{break-inside:avoid}}
+@media print{body{padding:0;background:white;color:black}nav,.filters{display:none}thead{display:table-header-group}tr{break-inside:avoid}}
 </style>
 </head>
 <body id="edu-refresh">
@@ -31,9 +46,24 @@ th:last-child,td:last-child{direction:rtl;text-align:right}
 <p>מילים ייחודיות מכל הדמויות ומכל אפשרויות האביזרים, לפי סדר אלפביתי באנגלית. בכל סבב מופיע רק חלק מהאוסף. הטבלה מציגה את צורת המילה הראשית, ללא חזרות של צורות איות חלופיות.</p>
 <p id="load-error" class="error" role="alert" hidden></p>
 <noscript><p class="error">יש להפעיל JavaScript כדי לטעון את המילים מתוך נתוני המשחק.</p></noscript>
+<div id="word-filters" class="filters" role="group" aria-label="סינון מילים" hidden>
+<button type="button" data-filter="all" aria-pressed="true" aria-controls="words">הכול</button>
+<button type="button" data-filter="body" aria-pressed="false" aria-controls="words">חלקי גוף</button>
+<button type="button" data-filter="items" aria-pressed="false" aria-controls="words">פריטים</button>
+</div>
+<section id="selected-panel" class="selected-panel" aria-labelledby="selected-title" hidden>
+<h2 id="selected-title">המילים שבחרתם</h2>
+<p id="selection-count" role="status" aria-live="polite" aria-atomic="true"></p>
+<p id="selection-empty">סמנו מילים בטבלה כדי להוסיף אותן לרשימה. ביטול הסימון מסיר מילה. הבחירה נשמרת בזמן סינון, אך מתאפסת ברענון הדף.</p>
+<ul id="selected-words" hidden></ul>
+<div id="selected-english-panel" hidden>
+<label for="selected-english">המילים שנבחרו באנגלית, מופרדות בפסיקים — להעתקה</label>
+<textarea id="selected-english" lang="en" dir="ltr" readonly spellcheck="false"></textarea>
+</div>
+</section>
 <table id="word-table" hidden>
-<caption id="word-count"></caption>
-<thead><tr><th scope="col" lang="en" dir="ltr">Word</th><th scope="col" lang="he">עברית</th></tr></thead>
+<caption id="word-count" aria-live="polite" aria-atomic="true"></caption>
+<thead><tr><th scope="col" lang="en" dir="ltr">Word</th><th scope="col" lang="he">עברית</th><th scope="col" class="selection-column" lang="he" dir="rtl">בחירה</th></tr></thead>
 <tbody id="words"></tbody>
 </table>
 </main>
@@ -64,9 +94,35 @@ th:last-child,td:last-child{direction:rtl;text-align:right}
         words.set(word.id, word);
       }
     }
+    const selected = new Map();
+    function renderSelection() {
+      const list = document.getElementById("selected-words");
+      const entries = document.createDocumentFragment();
+      for (const word of selected.values()) {
+        const item = document.createElement("li");
+        const english = document.createElement("bdi");
+        english.lang = "en";
+        english.dir = "ltr";
+        english.textContent = word.canonical;
+        const hebrew = document.createElement("bdi");
+        hebrew.lang = "he";
+        hebrew.dir = "rtl";
+        hebrew.textContent = word.he;
+        item.append(english, " — ", hebrew);
+        entries.append(item);
+      }
+      list.replaceChildren(entries);
+      list.hidden = selected.size === 0;
+      document.getElementById("selected-english").value =
+        [...selected.values()].map(word => word.canonical).join(", ");
+      document.getElementById("selected-english-panel").hidden = selected.size === 0;
+      document.getElementById("selection-empty").hidden = selected.size !== 0;
+      document.getElementById("selection-count").textContent = `${selected.size} מילים נבחרו`;
+    }
     const rows = document.createDocumentFragment();
     for (const word of [...words.values()].sort((a, b) => a.canonical.localeCompare(b.canonical, "en"))) {
       const row = document.createElement("tr");
+      row.dataset.category = word.category === "body" ? "body" : "items";
       const english = document.createElement("td");
       english.lang = "en";
       english.dir = "ltr";
@@ -75,11 +131,47 @@ th:last-child,td:last-child{direction:rtl;text-align:right}
       hebrew.lang = "he";
       hebrew.dir = "rtl";
       hebrew.textContent = word.he;
-      row.append(english, hebrew);
+      const selection = document.createElement("td");
+      const label = document.createElement("label");
+      label.className = "row-select";
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.dataset.wordId = word.id;
+      checkbox.setAttribute("aria-label", `בחירת ${word.canonical} — ${word.he}`);
+      checkbox.setAttribute("aria-controls", "selected-words");
+      checkbox.addEventListener("change", () => {
+        if (checkbox.checked) selected.set(word.id, word);
+        else selected.delete(word.id);
+        row.classList.toggle("selected", checkbox.checked);
+        renderSelection();
+      });
+      label.append(checkbox);
+      selection.append(label);
+      row.append(english, hebrew, selection);
       rows.append(row);
     }
     document.getElementById("words").replaceChildren(rows);
-    document.getElementById("word-count").textContent = `${words.size} מילים · ${characters.length} דמויות`;
+    const filters = document.getElementById("word-filters");
+    const labels = { all: "כל המילים", body: "חלקי גוף", items: "פריטים" };
+    function filterWords(category) {
+      let count = 0;
+      for (const row of document.getElementById("words").rows) {
+        row.hidden = category !== "all" && row.dataset.category !== category;
+        if (!row.hidden) count++;
+      }
+      for (const button of filters.querySelectorAll("button")) {
+        button.setAttribute("aria-pressed", String(button.dataset.filter === category));
+      }
+      document.getElementById("word-count").textContent =
+        `${labels[category]} · ${count} מתוך ${words.size} מילים · ${characters.length} דמויות`;
+    }
+    for (const button of filters.querySelectorAll("button")) {
+      button.addEventListener("click", () => filterWords(button.dataset.filter));
+    }
+    filterWords("all");
+    renderSelection();
+    document.getElementById("selected-panel").hidden = false;
+    filters.hidden = false;
     document.getElementById("word-table").hidden = false;
   } catch (error) {
     console.error("Unable to display the word list.", error);

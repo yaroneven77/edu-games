@@ -21,7 +21,7 @@
   }
   const content = window.IllustratedContent;
   assert(content && Array.isArray(content.vocabulary) && typeof content.normalize === "function" &&
-    typeof content.buildTargets === "function", "Missing IllustratedContent API.");
+    typeof content.buildTargets === "function" && typeof content.targetsForLevel === "function", "Missing IllustratedContent API.");
   assert(window.IllustratedCharacters && window.CharacterAccessories && window.IllustratedLayers &&
     typeof window.AccessorySelection?.pick === "function", "Missing character or accessory data.");
   const characters = Object.values(window.IllustratedCharacters);
@@ -50,12 +50,13 @@
   }
   const allAliases = aliasMap(vocabulary);
   const state = {
-    category: "Superhero", characterId: null, level: "beginner", accessories: [], targets: [],
+    category: "Superhero", characterId: null, level: $("level-select").value, accessories: [], targets: [], fullTargets: [],
     learnedIds: new Set(), activeHintId: null, revealedPositions: new Set(),
     letterClicks: 0, incorrectGuesses: 0, wordShown: false,
     successStreak: 0, bonusIds: new Set(), bonusId: null, previewing: false
   };
   let roundAliases = new Map();
+  let fullRoundAliases = new Map();
   let targetById = new Map();
   let spellingAttempt = null;
   let highlightLayer = null;
@@ -76,7 +77,7 @@
     assert(artwork && Array.isArray(artwork.layers), `Missing independent artwork: ${character.id}`);
     const layers = new Map(artwork.layers.map(layer => [layer.id, layer]));
     assert(layers.size === artwork.layers.length, `Duplicate artwork layer: ${character.id}`);
-    for (const target of state.targets) {
+    for (const target of state.fullTargets) {
       assert(layers.has(target.id) || target.accessoryIds.length > 0, `Missing independent piece: ${character.id}/${target.id}`);
     }
     const svg = svgNode("svg", { viewBox: "0 0 600 800", role: "img",
@@ -85,7 +86,8 @@
       preserveAspectRatio: "xMidYMid meet" });
     // A departing-round preview may show all fragments without granting learned-word credit.
     svg.innerHTML = artwork.defs || "";
-    const learnedTargets = state.targets.filter(target => completePreview || state.learnedIds.has(target.id));
+    const learnedTargets = completePreview ? [...state.fullTargets] :
+      state.targets.filter(target => state.learnedIds.has(target.id));
     learnedTargets.sort((a, b) => (layers.get(a.id)?.order ?? 200) - (layers.get(b.id)?.order ?? 200));
     const rearLayers = new Map();
     for (const target of learnedTargets) {
@@ -150,6 +152,12 @@
   function canShowWord() {
     return state.activeHintId !== null && (state.incorrectGuesses >= 3 || state.letterClicks >= 3);
   }
+  function canSpeakHint() {
+    const word = targetById.get(state.activeHintId);
+    const positions = word ? letterPositions(word.canonical) : [];
+    return positions.length > 0 &&
+      positions.filter(index => state.revealedPositions.has(index)).length >= Math.ceil(positions.length / 2);
+  }
   function renderLetterHint() {
     const word = targetById.get(state.activeHintId);
     const positions = word ? letterPositions(word.canonical) : [];
@@ -164,6 +172,8 @@
     $("hint-attempts").textContent = word ? `ניסיונות איות שלא התקבלו: ${state.incorrectGuesses} · רמזי אותיות: ${state.letterClicks}` : "";
     $("hint-show-word").hidden = !canShowWord();
     $("hint-show-word").disabled = state.wordShown;
+    $("hint-speak").hidden = !canSpeakHint();
+    $("hint-speak").disabled = broken || state.previewing || !canSpeakHint();
   }
   function displayHint() {
     const word = targetById.get(state.activeHintId);
@@ -178,12 +188,13 @@
       state.letterClicks = 0;
       state.incorrectGuesses = 0;
       state.wordShown = false;
+      $("hint-speech-status").textContent = "";
     }
     state.activeHintId = id;
     displayHint();
   }
   function revealLetter(random) {
-    if (broken) return;
+    if (broken || state.previewing) return;
     const word = targetById.get(state.activeHintId);
     if (!word) return;
     const remaining = letterPositions(word.canonical).filter(index => !state.revealedPositions.has(index));
@@ -192,8 +203,7 @@
     state.letterClicks++;
     renderLetterHint();
   }
-  function speak(word) {
-    const status = $("speech-status");
+  function speak(word, status = $("speech-status")) {
     if (!("speechSynthesis" in window) || typeof window.SpeechSynthesisUtterance !== "function") {
       status.textContent = "השמעה אינה זמינה בדפדפן הזה. אפשר להמשיך ללא קול.";
       return;
@@ -203,8 +213,7 @@
       const utterance = new window.SpeechSynthesisUtterance(word.canonical);
       utterance.lang = "en-GB";
       utterance.rate = .82;
-      status.textContent = "מכינים השמעה באנגלית…";
-      utterance.onend = () => { status.textContent = "ההשמעה הסתיימה."; };
+      status.textContent = "";
       utterance.onerror = () => { status.textContent = "לא ניתן להשמיע כרגע. אפשר להמשיך ללא קול."; };
       window.speechSynthesis.speak(utterance);
     } catch (error) {
@@ -308,7 +317,7 @@
   }
   function resolve(value) {
     const key = normalize(value);
-    return roundAliases.get(key) || allAliases.get(key) || null;
+    return roundAliases.get(key) || fullRoundAliases.get(key) || allAliases.get(key) || null;
   }
   function renderStreak() {
     $("bonus-streak").textContent = state.learnedIds.size === state.targets.length ?
@@ -382,9 +391,11 @@
     if (!target) {
       state.successStreak = 0;
       renderStreak();
-      if (allAliases.has(value)) {
+      if (fullRoundAliases.has(value) || allAliases.has(value)) {
         spellingAttempt = null;
-        feedback("האיות נכון, אבל הפריט הזה אינו באוסף האפשרויות של הדמות בסבב הזה. נסו חלק גוף או בקשו רמז לפריט מתאים.");
+        feedback(fullRoundAliases.has(value) ?
+          "האיות נכון, אבל המילה הזאת אינה נכללת ברמת המשחק הנוכחית. בקשו רמז למילה שמתאימה לרמה." :
+          "האיות נכון, אבל הפריט הזה אינו באוסף האפשרויות של הדמות בסבב הזה. נסו חלק גוף או בקשו רמז לפריט מתאים.");
       } else {
         const id = spellingTarget(value);
         spellingAttempt = id ? { id, count: spellingAttempt?.id === id ? spellingAttempt.count + 1 : 1 } : null;
@@ -417,11 +428,11 @@
   }
   function showLevelSuggestion() {
     const text = {
-      beginner: "מתחילים: הרמזים מציעים תחילה מילים מוכרות ותיאורים פשוטים.",
-      intermediate: "ממשיכים: הרמזים מציעים גם מפרקים, פרטי פנים ואביזרים.",
-      advanced: "מתקדמים: הרמזים יכולים להתייחס לכל פרט, גם למיקומים קטנים."
+      beginner: "מתחילים: 18 חלקי גוף מוכרים ורק פריטים מרשימת המתחילים הזמינים לדמות בסבב הזה.",
+      intermediate: "ממשיכים: כל 27 חלקי הגוף וכל פריטי הסבב, עם רמזים ברמת ביניים.",
+      advanced: "מתקדמים: כל 27 חלקי הגוף וכל פריטי הסבב, עם הרמזים המאתגרים."
     };
-    $("level-suggestion").textContent = `${text[state.level]} בכל רמה כל המילים של הסבב מתקבלות.`;
+    $("level-suggestion").textContent = `${text[state.level]} מספר המילים משתנה לפי הדמות והאביזרים.`;
   }
   function finishPreview() {
     clearTimeout(previewTimer);
@@ -448,13 +459,15 @@
       $("word-input").focus({ preventScroll: true });
     }, 3000);
   }
-  function startRound() {
+  function startRound(reuseCharacter = false) {
     assert(!broken, "Reload the page after fixing the reported error.");
+    assert(levels.includes(state.level), `Unsupported level: ${state.level}`);
     finishPreview();
     const category = $("category-select").value;
     const pool = characters.filter(character => character.category === category);
     const alternatives = pool.filter(character => character.id !== state.characterId);
-    const character = choose(alternatives.length ? alternatives : pool);
+    const character = reuseCharacter ? window.IllustratedCharacters[state.characterId] :
+      choose(alternatives.length ? alternatives : pool);
     assert(character && character.image && character.nameEn && character.nameHe &&
       character.bodyRegions && Object.keys(character.bodyRegions).length === 27 && Array.isArray(character.outfit),
     `Incomplete character metadata: ${character?.id}`);
@@ -468,7 +481,7 @@
     const accessories = window.CharacterAccessories[character.id];
     assert(Array.isArray(accessories) && accessories.length === 10 &&
       accessories.every(item => item.id && item.svg), `Missing accessory artwork: ${character.id}`);
-    const selected = window.AccessorySelection.pick(accessories);
+    const selected = reuseCharacter ? state.accessories : window.AccessorySelection.pick(accessories);
     assert(selected.length === 5 && new Set(selected.map(item => item.id)).size === 5, "Expected five distinct accessories.");
     const builtTargets = content.buildTargets(character, selected);
     assert(Array.isArray(builtTargets) && builtTargets.length > 0, "No targets were built for this character.");
@@ -482,7 +495,10 @@
     assert(character.outfit.every(item => builtTargets.some(target => target.id === item.id)) &&
       selected.every(item => builtTargets.some(target => target.accessoryIds.includes(item.id))), "Missing visible outfit or accessory targets.");
     state.category = category; state.characterId = character.id; state.accessories = selected;
-    state.targets = builtTargets.map(target => ({ ...target, regions: [...target.regions], accessoryIds: [...target.accessoryIds] }));
+    state.fullTargets = builtTargets;
+    fullRoundAliases = aliasMap(builtTargets);
+    state.targets = content.targetsForLevel(builtTargets, state.level)
+      .map(target => ({ ...target, regions: [...target.regions], accessoryIds: [...target.accessoryIds] }));
     targetById = new Map(state.targets.map(target => [target.id, target]));
     roundAliases = aliasMap(state.targets);
     state.learnedIds.clear();
@@ -506,6 +522,7 @@
     renderCharacter(character);
     renderLearned();
     renderStreak();
+    showLevelSuggestion();
     feedback("הבמה ריקה. כתבו חלק גוף, בגד או אביזר כדי להוסיף אותו. אפשר להתחיל בכל סדר!");
   }
   $("word-form").addEventListener("submit", submit);
@@ -514,15 +531,25 @@
   $("help-dialog").addEventListener("close", () => $("help-open").focus());
   $("bonus-close").addEventListener("click", dismissBonusPopup);
   $("new-character").addEventListener("click", previewNextCharacter);
-  $("category-select").addEventListener("change", startRound);
+  $("category-select").addEventListener("change", () => startRound());
   $("level-select").addEventListener("change", () => {
     if (broken) return;
-    state.level = $("level-select").value;
+    if (state.previewing) { $("level-select").value = state.level; return; }
+    const level = $("level-select").value;
+    assert(levels.includes(level), `Unsupported level: ${level}`);
+    if (level === state.level) return;
+    const restart = level === "beginner" || state.level === "beginner";
+    state.level = level;
+    if (restart) {
+      startRound(true);
+      feedback("רמת המשחק השתנתה. מתחילים מחדש עם אותה דמות ואותם אביזרים, לפי המילים של הרמה שבחרתם.");
+      return;
+    }
     showLevelSuggestion(); displayHint(); renderClues();
-    feedback("רמת הרמזים השתנתה. המילים והאותיות שנחשפו נשמרו; כל מילות הסבב עדיין מתקבלות.");
+    feedback("רמת המשחק השתנתה. במעבר בין ממשיכים למתקדמים כל ההתקדמות נשמרת; רק הרמזים משתנים.");
   });
   $("assist").addEventListener("click", () => {
-    if (broken) return;
+    if (broken || state.previewing) return;
     const value = normalize($("word-input").value);
     const spellingId = spellingTarget(value);
     if (spellingId) {
@@ -546,8 +573,12 @@
   });
   $("hint-letter").addEventListener("click", () => revealLetter(false));
   $("hint-random-letter").addEventListener("click", () => revealLetter(true));
+  $("hint-speak").addEventListener("click", () => {
+    if (broken || state.previewing || !canSpeakHint()) return;
+    speak(targetById.get(state.activeHintId), $("hint-speech-status"));
+  });
   $("hint-show-word").addEventListener("click", () => {
-    if (broken || !canShowWord() || state.wordShown) return;
+    if (broken || state.previewing || !canShowWord() || state.wordShown) return;
     state.wordShown = true;
     letterPositions(targetById.get(state.activeHintId).canonical).forEach(index => state.revealedPositions.add(index));
     displayHint();
@@ -574,6 +605,5 @@
       getState, normalize, resolve: value => { const word = resolve(value); return word ? frozenCopy(word) : null; } }),
     writable: false, configurable: false
   });
-  showLevelSuggestion();
   startRound();
 })();

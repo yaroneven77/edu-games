@@ -143,6 +143,34 @@
     scarf: ["neckerchief", "silk scarf"], gloves: ["fingerless gloves"],
     ring: ["flower ring"], whistle: ["necklace", "necklaces"]
   };
+  const beginnerBodyIds = Object.freeze([
+    "arms", "cheeks", "chest", "chin", "ears", "elbows", "eyes", "feet", "fingers",
+    "hair", "hands", "head", "legs", "lips", "mouth", "neck", "nose", "shoulders"
+  ]);
+  const beginnerItems = Object.freeze([
+    "bag", "belt", "boots", "coat", "dress", "glasses", "gloves", "hat",
+    "jeans", "ring", "shirt", "shoes", "skirt", "watch", "pants"
+  ]);
+  const beginnerMeanings = { bag: "תיק", hat: "כובע", shirt: "חולצה", shoes: "נעליים", pants: "מכנסיים" };
+  if (new Set(beginnerBodyIds).size !== 18 ||
+    !beginnerBodyIds.every(id => byId.get(id)?.category === "body") ||
+    new Set(beginnerItems).size !== 15 || !beginnerItems.every(form => vocabulary.some(word =>
+      word.category !== "body" && word.acceptedForms.some(alias => normalize(alias) === form)))) {
+    throw new Error("Invalid beginner vocabulary lists.");
+  }
+  function targetsForLevel(targets, level) {
+    if (!["beginner", "intermediate", "advanced"].includes(level)) throw new Error(`Unsupported level: ${level}`);
+    if (level !== "beginner") return targets;
+    return targets.flatMap(target => {
+      if (target.category === "body") return beginnerBodyIds.includes(target.id) ? [target] : [];
+      const canonical = beginnerItems.includes(normalize(target.canonical)) ? target.canonical :
+        beginnerItems.find(form => target.acceptedForms.some(alias => normalize(alias) === form));
+      if (!canonical) return [];
+      // Keep the artwork/credit identity and every authored alias, but teach the familiar spelling.
+      return [{ ...target, canonical,
+        he: canonical === target.canonical ? target.he : beginnerMeanings[canonical] || target.he }];
+    });
+  }
   function buildTargets(character, accessories) {
     const targets = new Map();
     function add(id, regions = [], accessoryId) {
@@ -176,6 +204,6 @@
     Object.freeze(word);
   }
   window.IllustratedContent = Object.freeze({
-    vocabulary: Object.freeze(vocabulary), normalize, buildTargets
+    vocabulary: Object.freeze(vocabulary), normalize, buildTargets, targetsForLevel
   });
 })();

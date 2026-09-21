@@ -9,9 +9,9 @@
   }
   const extras = [
     extra("overalls", "overalls", ["overalls", "dungarees"], "סרבל", "intermediate", [
-      "These trousers have a front panel and straps over the shoulders.", "למכנסיים האלה יש חלק קדמי ורצועות מעל הכתפיים.",
-      "This one-piece outfit joins trousers to a bib with shoulder straps.", "הבגד הזה מחבר מכנסיים לחלק קדמי עם רצועות כתף.",
-      "Look for the garment with a chest bib, buckled straps and trouser legs.", "חפשו בגד עם חלק שמכסה את החזה, רצועות עם אבזמים ורגלי מכנסיים."
+      "These pants have a front panel and straps over the shoulders.", "למכנסיים האלה יש חלק קדמי ורצועות מעל הכתפיים.",
+      "This one-piece outfit joins pants to a bib with shoulder straps.", "הבגד הזה מחבר מכנסיים לחלק קדמי עם רצועות כתף.",
+      "Look for the garment with a chest bib, buckled straps and pant legs.", "חפשו בגד עם חלק שמכסה את החזה, רצועות עם אבזמים ורגלי מכנסיים."
     ], "clothing"),
     extra("bag", "bag", ["bag", "bags", "shoulder bag", "crossbody bag", "satchel"], "תיק", "beginner", [
       "You carry things inside it. This one hangs from a strap.", "נושאים בתוכו דברים. התיק הזה תלוי על רצועה.",
@@ -123,8 +123,17 @@
       }
     }
   };
-  const vocabulary = [...window.BodyWearablesVocabulary.map(word => illustratedClues[word.id] ?
-    { ...word, ...illustratedClues[word.id] } : word), ...extras];
+  const vocabulary = [...window.BodyWearablesVocabulary, ...extras].map(word => {
+    const adjusted = { ...word, ...illustratedClues[word.id] };
+    return {
+      ...adjusted, canonical: word.id === "trousers" ? "pants" : adjusted.canonical,
+      hints: Object.fromEntries(Object.entries(adjusted.hints).map(([level, hint]) => [level, {
+        ...hint, en: word.id === "hands" && level === "advanced" ?
+          "These grasping parts extend beyond the wrists and have fingers." :
+          hint.en.replace(/\btrousers\b/g, "pants")
+      }]))
+    };
+  });
   const byId = new Map(vocabulary.map(item => [item.id, item]));
   if (byId.size !== vocabulary.length) throw new Error("Duplicate illustrated vocabulary ID.");
   const normalize = value => String(value).trim().replace(/\s+/g, " ").toLowerCase();
@@ -143,33 +152,81 @@
     scarf: ["neckerchief", "silk scarf"], gloves: ["fingerless gloves"],
     ring: ["flower ring"], whistle: ["necklace", "necklaces"]
   };
-  const beginnerBodyIds = Object.freeze([
+  const excludedConceptIds = new Set([
+    "anklets", "beanie", "blouse", "beret", "boot-bow", "boot-chain", "boot-wings",
+    "bow-tie", "brooch", "knee-pads", "leg-warmers", "leggings", "mittens", "palms",
+    "shoe-charm", "shoulder-cord", "waist-chain"
+  ]);
+  function playableTargets(targets) {
+    return targets.filter(target => !excludedConceptIds.has(target.id));
+  }
+  function accessoryConceptId(character, accessory) {
+    return accessory.conceptId ?? (accessory.id === "hat" ? hatIds[character.id] || "hat" :
+      accessoryIds[accessory.id] || accessory.id);
+  }
+  function availableAccessories(character, accessories) {
+    return accessories.filter(accessory => !excludedConceptIds.has(accessoryConceptId(character, accessory)));
+  }
+  const basicBodyIds = Object.freeze([
     "arms", "cheeks", "chest", "chin", "ears", "elbows", "eyes", "feet", "fingers",
     "hair", "hands", "head", "legs", "lips", "mouth", "neck", "nose", "shoulders"
   ]);
-  const beginnerItems = Object.freeze([
+  const basicItems = Object.freeze([
     "bag", "belt", "boots", "coat", "dress", "glasses", "gloves", "hat",
     "jeans", "ring", "shirt", "shoes", "skirt", "watch", "pants"
   ]);
-  const beginnerMeanings = { bag: "תיק", hat: "כובע", shirt: "חולצה", shoes: "נעליים", pants: "מכנסיים" };
-  if (new Set(beginnerBodyIds).size !== 18 ||
-    !beginnerBodyIds.every(id => byId.get(id)?.category === "body") ||
-    new Set(beginnerItems).size !== 15 || !beginnerItems.every(form => vocabulary.some(word =>
+  const basicMeanings = { bag: "תיק", hat: "כובע", shirt: "חולצה", shoes: "נעליים", pants: "מכנסיים" };
+  if (new Set(basicBodyIds).size !== 18 ||
+    !basicBodyIds.every(id => byId.get(id)?.category === "body") ||
+    new Set(basicItems).size !== 15 || !basicItems.every(form => vocabulary.some(word =>
       word.category !== "body" && word.acceptedForms.some(alias => normalize(alias) === form)))) {
-    throw new Error("Invalid beginner vocabulary lists.");
+    throw new Error("Invalid basic vocabulary lists.");
   }
   function targetsForLevel(targets, level) {
     if (!["beginner", "intermediate", "advanced"].includes(level)) throw new Error(`Unsupported level: ${level}`);
-    if (level !== "beginner") return targets;
+    targets = playableTargets(targets);
+    if (level !== "intermediate") return targets;
     return targets.flatMap(target => {
-      if (target.category === "body") return beginnerBodyIds.includes(target.id) ? [target] : [];
-      const canonical = beginnerItems.includes(normalize(target.canonical)) ? target.canonical :
-        beginnerItems.find(form => target.acceptedForms.some(alias => normalize(alias) === form));
+      if (target.category === "body") return basicBodyIds.includes(target.id) ? [target] : [];
+      const canonical = basicItems.includes(normalize(target.canonical)) ? target.canonical :
+        basicItems.find(form => target.acceptedForms.some(alias => normalize(alias) === form));
       if (!canonical) return [];
       // Keep the artwork/credit identity and every authored alias, but teach the familiar spelling.
       return [{ ...target, canonical,
-        he: canonical === target.canonical ? target.he : beginnerMeanings[canonical] || target.he }];
+        he: canonical === target.canonical ? target.he : basicMeanings[canonical] || target.he }];
     });
+  }
+  function shuffle(items) {
+    const result = [...items];
+    for (let i = result.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [result[i], result[j]] = [result[j], result[i]];
+    }
+    return result;
+  }
+  function spellingOptions(target, roundTargets = []) {
+    const word = target.canonical;
+    const excluded = new Set([
+      ...vocabulary.flatMap(item => [item.canonical, ...item.acceptedForms]),
+      ...Object.values(contextualAliases).flat(),
+      ...roundTargets.flatMap(item => [item.canonical, ...item.acceptedForms]),
+      word, ...target.acceptedForms
+    ].map(normalize));
+    const candidates = new Set();
+    const add = candidate => {
+      if (!excluded.has(normalize(candidate))) candidates.add(candidate);
+    };
+    // Retain every original letter: swap neighbours or repeat one letter.
+    // Keeping the first letter intact makes the options close visual matches.
+    for (let i = 0; i < word.length; i++) {
+      if (!/[a-z]/i.test(word[i])) continue;
+      if (i > 0 && /[a-z]/i.test(word[i + 1] || "") && word[i] !== word[i + 1]) {
+        add(word.slice(0, i) + word[i + 1] + word[i] + word.slice(i + 2));
+      }
+      add(word.slice(0, i) + word[i] + word.slice(i));
+    }
+    if (candidates.size < 3) throw new Error(`Not enough spelling distractors: ${word}`);
+    return shuffle([word, ...shuffle([...candidates]).slice(0, 3)]);
   }
   function buildTargets(character, accessories) {
     const targets = new Map();
@@ -192,8 +249,7 @@
     }
     for (const item of character.outfit) add(item.id, item.regions);
     for (const accessory of accessories) {
-      add(accessory.conceptId ?? (accessory.id === "hat" ? hatIds[character.id] || "hat" :
-        accessoryIds[accessory.id] || accessory.id), [], accessory.id);
+      add(accessoryConceptId(character, accessory), [], accessory.id);
     }
     return [...targets.values()];
   }
@@ -204,6 +260,7 @@
     Object.freeze(word);
   }
   window.IllustratedContent = Object.freeze({
-    vocabulary: Object.freeze(vocabulary), normalize, buildTargets, targetsForLevel
+    vocabulary: Object.freeze(vocabulary), normalize, buildTargets, playableTargets, availableAccessories,
+    targetsForLevel, spellingOptions
   });
 })();

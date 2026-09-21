@@ -89,7 +89,8 @@ tr.selected{background:var(--edu-soft,#edf3fb)}
     for (const character of characters) {
       const accessories = window.CharacterAccessories[character.id];
       if (!Array.isArray(accessories)) throw new Error(`Missing accessories: ${character.id}`);
-      for (const word of window.IllustratedContent.buildTargets(character, accessories)) {
+      for (const word of window.IllustratedContent.playableTargets(
+        window.IllustratedContent.buildTargets(character, accessories))) {
         if (!word.canonical || !word.he) throw new Error(`Missing translation: ${word.id}`);
         words.set(word.id, word);
       }

@@ -28,6 +28,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 .bonus-message strong{display:block;font-size:1.15rem}.bonus-message p{margin:6px 0 0}
 #word-input.bonus-input{border:2px solid var(--edu-accent,#285f9f);background:var(--edu-soft,#edf3fb)}
 .hint-box{padding:16px;margin-top:14px;border:1px dashed var(--edu-border,#aac1d3);border-radius:16px;background:var(--edu-soft,#f3f7fb)}.hint-actions{display:flex;flex-wrap:wrap;gap:8px}.hint-actions button{font-size:.88rem}
+.spelling-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.spelling-choices button{min-height:48px;font-size:1.15rem;overflow-wrap:anywhere}
+#edu-refresh #spelling-choices button.incorrect:disabled{background:#b21b38!important;color:#fff!important;border:2px solid #b21b38!important;opacity:1!important;text-decoration:line-through;cursor:not-allowed}
+#choice-feedback:empty{display:none}
 #assist{margin-top:12px}
 #round-info-open{margin-top:14px}
 #hint-he{font-size:1.15rem;font-weight:700;margin-top:0}#first-letter{font-size:1.65rem;font-weight:800;white-space:pre-wrap;overflow-wrap:anywhere}
@@ -67,29 +70,39 @@ footer{text-align:center;font-size:.83rem;margin-top:24px;line-height:1.8}[hidde
 <body id="edu-refresh">
 <main>
 <nav aria-label="ניווט"><a href="../index.html">← משחקי אנגלית</a></nav>
-<header><h1>בונים דמות מאוירת במילים</h1><p class="intro">בוחרים סגנון והמשחק מגריל דמות ואוסף של חמישה אביזרים אפשריים. הבמה מתחילה ריקה: רק חלק גוף, בגד או אביזר שכתבתם נכון באנגלית יופיעו. אפשר להתחיל מעיניים, מכפות רגליים או מכובע — בכל סדר.</p></header>
+<header><h1>בונים דמות מאוירת במילים</h1><p id="game-intro" class="intro">בוחרים רמז בעברית ואת האיות הנכון מבין ארבע אפשרויות באנגלית. הבמה מתחילה ריקה, ורק החלק שמצאתם יופיע. בממשיכים ובמתקדמים מקלידים את התשובות.</p></header>
 <div class="game-toolbar">
 <button id="help-open" class="help-trigger" type="button" aria-haspopup="dialog" aria-controls="help-dialog">איך משחקים?</button>
 <div><label for="category-select">סגנון הדמות</label><select id="category-select" aria-describedby="setup-note"><option value="Anime">אנימה · Anime</option><option value="Superhero" selected>גיבורי־על · Superhero</option><option value="Cartoon">מצויר · Cartoon</option><option value="Manga">מנגה · Manga</option></select></div>
 <div><label for="level-select">רמת המשחק</label><select id="level-select" aria-describedby="setup-note"><option value="beginner">מתחילים</option><option value="intermediate">ממשיכים</option><option value="advanced">מתקדמים</option></select></div>
 <button id="new-character" type="button" aria-describedby="setup-note">דמות אקראית חדשה בסגנון הזה</button>
 </div>
-<p id="setup-note" class="note setup-note">דמות חדשה או שינוי סגנון מתחילים סבב חדש. מעבר אל מתחילים או ממנה מאפס את ההתקדמות עם אותה דמות ואותם אביזרים. מעבר בין ממשיכים למתקדמים שומר את ההתקדמות. הבחירות בגלריה נפרדות ואינן משתנות.</p>
+<p id="setup-note" class="note setup-note">דמות חדשה או שינוי סגנון מתחילים סבב חדש. שינוי רמה מתחיל מחדש עם אותה דמות ועם המילים והאביזרים המתאימים לרמה. בכל רמה נשמרת בחירת האביזרים שלה עד להחלפת הדמות. הבחירות בגלריה נפרדות ואינן משתנות.</p>
 <dialog id="help-dialog" class="help-dialog" aria-labelledby="help-title">
 <h2 id="help-title" tabindex="-1" autofocus>איך משחקים?</h2>
-<ul><li>בכל סגנון 10 דמויות מקוריות. כפתור הדמות החדשה מגריל דמות אחרת וחמישה אביזרים אפשריים, ומחזיר את הבמה למצב ריק.</li><li>מתחילים: 18 חלקי גוף מוכרים ורק פריטי רשימת המתחילים שקיימים אצל הדמות בסבב הזה.</li><li>ממשיכים ומתקדמים: כל 27 חלקי הגוף וכל הבגדים והאביזרים של הסבב. בממשיכים רמזי ביניים, ובמתקדמים רמזים מאתגרים יותר. מספר המילים משתנה לפי הדמות והאביזרים.</li><li>מעבר אל מתחילים או ממנה מתחיל מחדש עם אותה דמות ואותם חמישה אביזרים, ומאפס מילים, בונוסים ורמזים. מעבר בין ממשיכים למתקדמים שומר את כל ההתקדמות.</li><li>כל מילה מציגה רק את החלק או הפריט שלה. כתיבת עיניים אינה מציגה ראש, וכתיבת כובע אינה מציגה שיער. החלקים נשארים במקומם עד שתוסיפו את שכניהם. גם בסיום מתחילים לא נוספים חלקים שלא כתבתם.</li><li>בגדים מוצגים מעל חלקי הגוף שכבר הוספתם. מילים שכבר נמצאות באוסף אינן נספרות שוב.</li><li>הרמזים בעברית. בפאנל כל הרמזים, משפטים של מילים שמצאתם מסומנים בקו ובסימן ✓. רמזי אותיות והצגת המילה אינם מוסיפים ציור — עדיין צריך להקליד תשובה נכונה.</li><li>אם טעיתם באיות, לחצו על רמז כדי לקבל עזרה למילה שניסיתם לכתוב. לרמז למילה אחרת, נקו את תיבת הכתיבה.</li><li>אין טיימר ואין שמירת התקדמות. רענון הדף מתחיל מחדש.</li></ul>
-<p class="note">חלקי הגוף במתחילים:</p>
+<ul>
+<li>בכל סגנון 10 דמויות מקוריות. כפתור הדמות החדשה מגריל דמות אחרת עם פריטים שמתאימים לרמה, ומחזיר את הבמה למצב ריק.</li>
+<li>מתחילים: בכל דמות 38 מילים — כל 26 חלקי הגוף המותרים ו־12 בגדים ואביזרים. בוחרים רמז בעברית ואז את האיות הנכון מארבע אפשרויות באנגלית. אחרי תשובה נכונה נבחר רמז חדש אוטומטית. אין תיבת כתיבה או רמזי אותיות. אפשר לשמוע מילים שכבר מצאתם בלחיצה על השמעה בפאנל המילים שמצאתם. אחרי טעות אפשר לנסות שוב באותן אפשרויות.</li>
+<li>ממשיכים: מקלידים מתוך רשימה בסיסית של 18 חלקי גוף מוכרים ורק פריטים בסיסיים שזמינים לדמות בסבב הזה. לדמות נבחרים חמישה אביזרים אפשריים.</li>
+<li>מתקדמים: מקלידים מתוך 26 חלקי הגוף וכל הבגדים והאביזרים המותרים של הסבב, עם רמזים מאתגרים יותר וחמישה אביזרים אפשריים. מספר המילים משתנה לפי הדמות והאביזרים.</li>
+<li>כל שינוי רמה מתחיל מחדש עם אותה דמות ועם הפריטים המתאימים לרמה, ומאפס מילים, רצף, בונוסים ורמזים. בחירת הפריטים של כל רמה נשמרת עד להחלפת הדמות.</li>
+<li>במהלך הסבב כל תשובה נכונה מציגה רק את החלק שלה. עיניים אינן מציגות ראש, וכובע אינו מציג שיער. כשמוצאים את כל מילות הסבב, הדמות מוצגת בשלמותה עם כל החלקים המותרים שלה, בלי להוסיף מילים או ניקוד. פריטים שהוסרו מהמשחק אינם חוזרים. בגדים מוצגים מעל חלקי הגוף.</li>
+<li>הרמזים בעברית. רמזים שנפתרו מסומנים בקו ובסימן ✓, עם המילה באנגלית והפירוש בעברית. מילים שכבר באוסף אינן נספרות שוב.</li>
+<li>בממשיכים ובמתקדמים, רמזי אותיות והצגת המילה אינם מוסיפים ציור — עדיין צריך להקליד תשובה נכונה. אם טעיתם באיות, לחצו על רמז לעזרה במילה שניסיתם לכתוב. לרמז אחר, נקו את התיבה.</li>
+<li>אין טיימר ואין שמירת התקדמות. רענון הדף מתחיל מחדש.</li>
+</ul>
+<p class="note">חלקי הגוף בממשיכים:</p>
 <p class="en" lang="en" dir="ltr">arms, cheeks, chest, chin, ears, elbows, eyes, feet, fingers, hair, hands, head, legs, lips, mouth, neck, nose, shoulders</p>
-<p class="note">פריטים במתחילים — רק מה שזמין לדמות בסבב:</p>
+<p class="note">פריטים בממשיכים — רק מה שזמין לדמות בסבב:</p>
 <p class="en" lang="en" dir="ltr">bag, belt, boots, coat, dress, glasses, gloves, hat, jeans, ring, shirt, shoes, skirt, watch, pants</p>
-<p class="note">בונוס: כל שלוש מילים חדשות ברצף ללא תשובה שגויה מזכות במילה חסרה שמופיעה בתיבה. לחצו על בדיקה כדי להוסיף אותה. מילת בונוס ומילה שכבר נמצאה לא מקדמות את הרצף הבא; רמזים ותיבה ריקה לא מאפסים אותו.</p>
-<p class="note">הודעת הבונוס מופיעה ליד תיבת הכתיבה ונסגרת אחרי 4 שניות או בלחיצה על ×. המילה נשארת בתיבה. בלחיצה על דמות חדשה רואים את הדמות הנוכחית בשלמותה למשך 3 שניות, ואז מתחילים מדף ריק עם דמות אחרת.</p>
+<p class="note">כל שלוש מילים חדשות ברצף ללא טעות מזכות במחמאה בלבד במתחילים — בלי מילת מתנה או תשובה שנחשפת. בממשיכים ובמתקדמים מקבלים מילת מתנה בתיבת הכתיבה: לחצו על בדיקה כדי להוסיף אותה. מילת בונוס ומילה שכבר נמצאה לא מקדמות את הרצף הבא; רמזים ותיבה ריקה לא מאפסים אותו.</p>
+<p class="note">בממשיכים ובמתקדמים הודעת הבונוס ליד התיבה נסגרת אחרי 4 שניות או בלחיצה על ×, והמילה נשארת בתיבה. במתחילים המשוב והמחמאה מופיעים ליד אפשרויות האיות. מידע נוסף על הסבב והרצף נמצא בכפתור מידע על הסבב והבונוס. בלחיצה על דמות חדשה רואים את הדמות הנוכחית בשלמותה למשך 3 שניות ללא ניקוד, ואז מתחילים מדף ריק עם דמות אחרת.</p>
 <form method="dialog"><button class="primary">הבנתי, בואו נשחק!</button></form>
 </dialog>
 <div id="load-error" class="error" role="alert" hidden></div>
 <dialog id="hint-help-dialog" class="help-dialog" aria-labelledby="hint-help-title">
 <h2 id="hint-help-title" tabindex="-1" autofocus>איך משתמשים ברמזים?</h2>
-<p>האותיות שנחשפו נשמרות. כשנחשפת לפחות מחצית מהאותיות, ללא רווחים ומקפים, אפשר לשמוע את המילה באנגלית. אחרי שלושה ניסיונות איות שלא התקבלו או שלוש חשיפות אות, אפשר להציג את המילה. השמעה והצגת המילה אינן מוסיפות ציור או ניקוד — עדיין צריך להקליד אותה בעצמכם. אפשר תמיד לענות במילה אחרת.</p>
+<p id="hint-help-text"></p>
 <form method="dialog"><button type="submit">סגירה</button></form>
 </dialog>
 <noscript><p class="error">כדי לשחק צריך להפעיל JavaScript בדפדפן.</p></noscript>
@@ -98,7 +111,7 @@ footer{text-align:center;font-size:.83rem;margin-top:24px;line-height:1.8}[hidde
 <p id="input-help" class="note">המילים המתאימות לרמה ולדמות מופיעות בפאנל כל הרמזים. אם יש טעות באיות, לחצו על רמז כדי לקבל עזרה למילה שניסיתם לכתוב. לרמז למילה אחרת, נקו את תיבת הכתיבה. רק תשובה נכונה מוסיפה את החלק עצמו ואת כרטיס המילה.</p>
 <div id="feedback" class="feedback" role="status" aria-live="polite" aria-atomic="true">מכינים את הדמות…</div>
 <p id="bonus-streak" class="note" role="status" aria-live="polite"></p>
-<p class="note">כל 3 מילים חדשות ברצף מזכות בבונוס. תשובה שלא מתקבלת מתחילה רצף חדש. מילים שכבר נמצאו ומילות בונוס לא נספרות ברצף; עזרה ורמזים תמיד מותר!</p>
+<p id="round-bonus-help" class="note"></p>
 <p id="level-suggestion" class="note"></p>
 <form method="dialog"><button type="submit">סגירה</button></form>
 </dialog>
@@ -106,21 +119,28 @@ footer{text-align:center;font-size:.83rem;margin-top:24px;line-height:1.8}[hidde
 <div class="play-column">
 <section class="panel" aria-labelledby="play-title">
 <h2 id="play-title">איזה חלק נוסיף?</h2>
-<form id="word-form" autocomplete="off">
+<form id="word-form" autocomplete="off" hidden>
 <label for="word-input">כתבו מילה באנגלית</label>
-<div class="entry-row"><input id="word-input" class="en" lang="en" dir="ltr" type="text" maxlength="64" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" enterkeyhint="done" aria-describedby="input-help" placeholder="English word"><button class="primary" type="submit">בדיקה</button>
+<div class="entry-row"><input id="word-input" class="en" lang="en" dir="ltr" type="text" maxlength="64" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" enterkeyhint="done" aria-describedby="input-help" placeholder="English word" disabled><button class="primary" type="submit" disabled>בדיקה</button>
 <div id="bonus-message" class="bonus-message" role="status" aria-live="polite" aria-atomic="true" hidden><div class="bonus-head"><strong>🎉 כל הכבוד! זכיתם בבונוס!</strong><button id="bonus-close" type="button" aria-label="סגירת הודעת הבונוס">×</button></div><p>מצאתם 3 מילים חדשות ברצף — אלופים! מילת מתנה הוכנסה לתיבת הכתיבה. לחצו על בדיקה כדי להוסיף אותה לדמות.</p></div>
 </div>
 </form>
 <button id="assist" class="wide" type="button">💡 רמז למילה נוספת</button>
 <section id="hint-box" class="hint-box" aria-label="רמז למילה" tabindex="-1" hidden>
 <p id="hint-he" lang="he" dir="rtl"></p>
+<div id="choice-task" hidden>
+<p id="choice-instruction">איזו אפשרות מאויתת נכון? בחרו תשובה אחת:</p>
+<div id="spelling-choices" class="spelling-choices" role="group" aria-labelledby="hint-he choice-instruction"></div>
+</div>
+<div id="typing-hints">
 <div class="hint-actions"><button id="hint-letter" type="button" aria-controls="first-letter letter-progress">אות לפי הסדר</button><button id="hint-random-letter" type="button" aria-controls="first-letter letter-progress">אות אקראית</button><button id="hint-show-word" type="button" aria-controls="first-letter letter-progress" hidden>הצגת המילה</button></div>
 <div class="hint-word-row"><p id="first-letter" class="en" lang="en" dir="ltr" aria-live="polite" aria-atomic="true" hidden></p><button id="hint-speak" type="button" aria-label="השמעה" title="השמעה" aria-describedby="hint-speech-status" hidden disabled><span aria-hidden="true">🔊</span></button></div>
 <p id="hint-speech-status" class="note" role="status" aria-live="polite"></p>
 <div id="letter-progress" aria-live="polite" aria-atomic="true"><p id="letter-count" class="note"></p><p id="hint-attempts" class="note"></p></div>
+</div>
 <button id="hint-help-open" type="button" aria-haspopup="dialog" aria-controls="hint-help-dialog">איך משתמשים ברמזים?</button>
 </section>
+<p id="choice-feedback" class="feedback" role="status" aria-live="polite" aria-atomic="true"></p>
 <button id="round-info-open" type="button" aria-haspopup="dialog" aria-controls="round-info-dialog">מידע על הסבב והבונוס</button>
 </section>
 <section class="panel learned-panel" aria-labelledby="collection-title">
@@ -134,14 +154,14 @@ footer{text-align:center;font-size:.83rem;margin-top:24px;line-height:1.8}[hidde
 <div class="studio-head"><h2 id="studio-title">הדמות שלכם</h2><span class="count"><b id="learned-count">0</b> מתוך <b id="target-count">0</b> מילים</span></div>
 <p id="character-name"></p>
 <p id="character-preview" role="status" hidden>הצצה לדמות המלאה — מיד מתחילים דמות חדשה!</p>
-<div class="canvas-wrap"><div id="character-stage"></div><div id="empty-canvas"><strong>מתחילים מדף ריק</strong><span>כתבו מילה באנגלית, ורק החלק שלה יופיע כאן.</span></div></div>
+<div class="canvas-wrap"><div id="character-stage"></div><div id="empty-canvas"><strong>מתחילים מדף ריק</strong><span id="empty-canvas-instruction">בחרו רמז ואת האיות הנכון, ורק החלק שלו יופיע כאן.</span></div></div>
 <p id="location-status" class="note" role="status" aria-live="polite"></p>
-<p class="note">רק הפריטים שכבר כתבתם מופיעים בציור. בגדים עשויים לכסות חלקים שנלמדו; אפשר לסמן שוב מילה מהאוסף.</p>
+<p class="note">רק הפריטים שכבר מצאתם מופיעים בציור. בגדים עשויים לכסות חלקים שנלמדו; אפשר לסמן שוב מילה מהאוסף.</p>
 </section>
 </div>
 <section class="panel clue-panel" aria-labelledby="clue-title">
 <div class="studio-head"><h2 id="clue-title">💡 כל הרמזים לדמות שלכם</h2><span id="clue-summary" class="count" role="status" aria-live="polite"></span></div>
-<p class="note">לחצו על רמז שעוד לא פתרתם כדי לפתוח אותו באזור העזרה ולחשוף אותיות, ואז כתבו את המילה באנגלית. רמזים למילים שמצאתם מסומנים בקו ובסימן ✓, עם המילה באנגלית והפירוש בעברית, ואינם ניתנים לבחירה. הרמזים מתעדכנים לפי הרמה והדמות שבחרתם.</p>
+<p id="clue-instruction" class="note"></p>
 <progress id="clue-progress" value="0" max="1" aria-label="התקדמות במציאת המילים"></progress>
 <ul id="all-clues" class="clue-list" aria-label="כל רמזי הסבב בעברית"></ul>
 </section>
@@ -160,6 +180,7 @@ footer{text-align:center;font-size:.83rem;margin-top:24px;line-height:1.8}[hidde
 <script src="./style-samples/collection-manga.js"></script>
 <script src="./illustrated-vocabulary.js"></script>
 <script src="./illustrated-content.js"></script>
+<script src="./beginner-round.js"></script>
 <script src="./illustrated-game.js"></script>
 </body>
 </html>

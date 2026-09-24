@@ -261,6 +261,6 @@
   }
   window.IllustratedContent = Object.freeze({
     vocabulary: Object.freeze(vocabulary), normalize, buildTargets, playableTargets, availableAccessories,
-    targetsForLevel, spellingOptions
+    targetsForLevel, spellingOptions, shuffle
   });
 })();

@@ -48,13 +48,16 @@
     entry.publicWords = Object.freeze(entry.words.map(word => Object.freeze({ id: word.id, canonical: word.canonical })));
   }
   let character = characters[0];
-  let { art, ids, words, byId } = character;
+  let { art, words, byId } = character;
   const coveredBody = new Set(["shoulders", "chest", "waist", "arms", "elbows", "legs", "thighs", "knees", "ankles", "feet", "heels"]);
-  const fresh = () => ({ learned: new Set(), visited: new Set(), active: bodyIds[0], cache: new Map(), streak: 0, feedback: "", selected: null });
+  const fresh = entry => {
+    const order = content.shuffle(entry.ids);
+    return { order, learned: new Set(), visited: new Set(), active: order[0], cache: new Map(), streak: 0, feedback: "", selected: null };
+  };
   const states = new Map(characters.map(entry => {
-    const explore = fresh();
-    explore.visited.add(bodyIds[0]); explore.selected = bodyIds[0];
-    return [entry.id, { explore, finish: fresh() }];
+    const explore = fresh(entry);
+    explore.visited.add(explore.active); explore.selected = explore.active;
+    return [entry.id, { explore, finish: fresh(entry) }];
   }));
   let mode = "explore";
   const state = () => states.get(character.id)[mode];
@@ -138,7 +141,8 @@
   }
   function renderClues() {
     $("clues").replaceChildren();
-    for (const word of words) {
+    for (const id of state().order) {
+      const word = byId.get(id);
       const item = document.createElement("li"), button = document.createElement("button");
       const found = state().learned.has(word.id);
       button.type = "button"; button.dataset.word = word.id;
@@ -242,7 +246,7 @@
   }
   function reset() {
     if (failed || !active) return;
-    stopSpeech(); states.get(character.id)[mode] = fresh();
+    stopSpeech(); states.get(character.id)[mode] = fresh(character);
     if (mode === "explore") { state().visited.add(state().active); state().selected = state().active; }
     render();
   }
@@ -253,8 +257,9 @@
   $("explore-speak").addEventListener("click", () => { if (mode === "explore") speak(byId.get(state().active)); });
   $("explore-next").addEventListener("click", () => {
     if (failed || !active || mode !== "explore") return;
-    const unvisited = ids.filter(id => !state().visited.has(id));
-    state().active = unvisited[0] || ids[(ids.indexOf(state().active) + 1) % ids.length];
+    const { order } = state();
+    const unvisited = order.filter(id => !state().visited.has(id));
+    state().active = unvisited[0] || order[(order.indexOf(state().active) + 1) % order.length];
     state().selected = state().active; state().visited.add(state().active); render();
   });
   $("help").addEventListener("close", () => $("help-open").focus());
@@ -272,7 +277,7 @@
     if (failed || !active || next === character) return;
     stopSpeech();
     character = next;
-    ({ art, ids, words, byId } = character);
+    ({ art, words, byId } = character);
     render();
   }
   $("character-select").addEventListener("change", () => selectCharacter($("character-select").value));

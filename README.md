@@ -28,6 +28,9 @@ clears only the selected character in the active picture mode; switching keeps
 progress until reload. Returning to an existing level restores all four styles
 and the previous selection. Both reference images and redraws live in the
 production folder; a picture-load error affects only that character.
+Both picture modes shuffle their word/clue list and starting word for each new
+round. The order stays stable while playing and switching modes or characters;
+restarting reshuffles only the active character and picture mode.
 
 Beacon (`superhero-01`) shows the approved cartoon reference from
 `english/body-and-wearables/completion-art/beacon.png` after completing a round

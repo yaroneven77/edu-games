@@ -9,6 +9,35 @@ Every active page includes the approved refreshed design and a persistent five-t
 
 The root page (`index.html`) is a hub that links to every game.
 
+## Body and Wearables picture games
+
+The production [Body and Wearables game](./english/body-and-wearables/index.html)
+now offers five choices in one dropdown, in order: learn from the picture,
+build and reveal the picture, Beginner, Intermediate, and Advanced. The first
+two offer Beacon (Superhero1) and Pulse (Superhero2), each with its own 26 body
+concepts, 12 matching wearables, independently drawn cartoon layers and accurate
+reference-picture highlights. Progress is separate for each character and mode;
+the three existing levels retain the 40-character collection and their original
+mechanics. Selecting an existing level starts a fresh round with the previous
+collection character. Picture artwork and logic live in the production folder,
+with no runtime dependency on the separate sandbox demo.
+The picture modes retain the standard toolbar, character panel, learned-word
+panel and full-width clue panel. Their character-type dropdown offers only
+Superhero, with a separate dropdown for the two supplied characters. Restart
+clears only the selected character in the active picture mode; switching keeps
+progress until reload. Returning to an existing level restores all four styles
+and the previous selection. Both reference images and redraws live in the
+production folder; a picture-load error affects only that character.
+
+Beacon (`superhero-01`) shows the approved cartoon reference from
+`english/body-and-wearables/completion-art/beacon.png` after completing a round
+in the original three levels. The picture is a celebration illustration, not an
+exact record of the randomized wardrobe. Gameplay and departing previews retain
+independent SVG layers. A toggle returns to the game drawing; found-word location
+buttons also restore that drawing for accurate highlights. Other characters in
+the original levels are unchanged. If the picture cannot load, an explicit notice
+accompanies the completed SVG.
+
 ## Approved design and retained preview
 
 The approved design is now applied to the main site's local files. Open `index.html` to use it. This promotion changes presentation only: the existing curriculum, lessons, questions, scoring, help, and next-button behavior are preserved. English Grade 4 retains its original panel sizes and positions.

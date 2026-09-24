@@ -2,6 +2,9 @@
 (() => {
   const $ = id => document.getElementById(id);
   const levels = ["beginner", "intermediate", "advanced"];
+  const pictureModes = ["explore", "finish"];
+  let activeMode = null;
+  const classicSetupNote = $("setup-note").textContent;
   const categories = ["Anime", "Superhero", "Cartoon", "Manga"];
   const ns = "http://www.w3.org/2000/svg";
   let broken = false;
@@ -54,7 +57,7 @@
   }
   const allAliases = aliasMap(content.playableTargets(vocabulary));
   const state = {
-    category: "Superhero", characterId: null, level: $("level-select").value, accessories: [], targets: [], fullTargets: [],
+    category: "Superhero", characterId: null, level: "beginner", accessories: [], targets: [], fullTargets: [],
     learnedIds: new Set(), activeHintId: null, revealedPositions: new Set(),
     letterClicks: 0, incorrectGuesses: 0, wordShown: false,
     successStreak: 0, bonusIds: new Set(), bonusId: null, previewing: false
@@ -72,6 +75,12 @@
   const choiceCache = new Map();
   let typedAccessories = [];
   let beginnerAccessories = null;
+  let completionArtFailed = false;
+  function showCompletionArt(show) {
+    $("completion-art").hidden = !show;
+    $("character-stage").hidden = show;
+    $("completion-art-toggle").textContent = show ? "הצגת ציור המשחק" : "הצגת איור הסיום";
+  }
   const isBeginner = () => state.level === "beginner";
   const feedback = message => { $("feedback").textContent = message; };
   const choiceFeedback = message => {
@@ -87,6 +96,7 @@
     return node;
   }
   function renderCharacter(character, completePreview = false) {
+    showCompletionArt(false);
     const artwork = window.IllustratedLayers[character.id];
     assert(artwork && Array.isArray(artwork.layers), `Missing independent artwork: ${character.id}`);
     const layers = new Map(artwork.layers.map(layer => [layer.id, layer]));
@@ -147,6 +157,10 @@
       }
       assert(target.renderRegions.length > 0 && target.renderRegions.every(validEllipse), `Missing target location: ${target.id}`);
     }
+    const eligible = completed && character.id === "superhero-01" && !completePreview;
+    $("completion-art-controls").hidden = !eligible || completionArtFailed;
+    $("completion-art-error").hidden = !eligible || !completionArtFailed;
+    showCompletionArt(eligible && !completionArtFailed);
   }
   function showLocation(target) {
     if (broken || state.previewing || !state.learnedIds.has(target.id)) return;
@@ -395,7 +409,11 @@
       const location = document.createElement("button");
       location.type = "button"; location.textContent = "הצגת מיקום";
       location.setAttribute("aria-label", `הצגת המיקום של ${target.he}`);
-      location.addEventListener("click", () => showLocation(target));
+      location.addEventListener("click", () => {
+        if (broken || state.previewing) return;
+        showCompletionArt(false);
+        showLocation(target);
+      });
       const speech = document.createElement("button");
       speech.type = "button"; speech.textContent = "🔊 השמעה";
       speech.setAttribute("aria-label", `השמעת ${target.canonical}`);
@@ -691,28 +709,79 @@
       "הבמה ריקה. כתבו חלק גוף, בגד או אביזר כדי להוסיף אותו. אפשר להתחיל בכל סדר!");
   }
   $("word-form").addEventListener("submit", submit);
+  $("completion-art-toggle").addEventListener("click", () => {
+    if (broken || state.previewing || $("completion-art-controls").hidden) return;
+    showCompletionArt($("completion-art").hidden);
+  });
+  $("completion-art").addEventListener("error", () => {
+    completionArtFailed = true;
+    const eligible = state.characterId === "superhero-01" && state.targets.length > 0 &&
+      state.learnedIds.size === state.targets.length && !state.previewing;
+    $("completion-art-controls").hidden = true;
+    $("completion-art-error").hidden = !eligible;
+    if (!broken) showCompletionArt(false);
+  });
+  if ($("completion-art").complete && !$("completion-art").naturalWidth) completionArtFailed = true;
   $("word-input").addEventListener("input", clearBonusNotice);
-  $("help-open").addEventListener("click", () => $("help-dialog").showModal());
+  $("help-open").addEventListener("click", () => {
+    if (pictureModes.includes(activeMode)) window.PictureGame?.openHelp();
+    else $("help-dialog").showModal();
+  });
   $("help-dialog").addEventListener("close", () => $("help-open").focus());
   $("hint-help-open").addEventListener("click", () => $("hint-help-dialog").showModal());
   $("hint-help-dialog").addEventListener("close", () => $("hint-help-open").focus());
   $("round-info-open").addEventListener("click", () => $("round-info-dialog").showModal());
   $("round-info-dialog").addEventListener("close", () => $("round-info-open").focus());
   $("bonus-close").addEventListener("click", dismissBonusPopup);
-  $("new-character").addEventListener("click", previewNextCharacter);
+  $("new-character").addEventListener("click", () => {
+    if (pictureModes.includes(activeMode)) window.PictureGame?.reset();
+    else previewNextCharacter();
+  });
   $("category-select").addEventListener("change", () => {
+    if (pictureModes.includes(activeMode)) { $("category-select").value = "Superhero"; return; }
     if (broken || state.previewing) { $("category-select").value = state.category; return; }
     startRound();
   });
+  function selectGame(mode) {
+    assert([...pictureModes, ...levels].includes(mode), `Unsupported game: ${mode}`);
+    if (mode === activeMode) return;
+    const picture = pictureModes.includes(mode);
+    window.PictureGame?.deactivate();
+    clearBonusNotice();
+    activeMode = mode;
+    $("classic-game").hidden = picture;
+    $("picture-game").hidden = !picture;
+    $("picture-character-control").hidden = !picture;
+    $("game-toolbar").classList.toggle("picture-active", picture);
+    for (const option of $("category-select").options) {
+      option.hidden = option.disabled = picture && option.value !== "Superhero";
+    }
+    $("category-select").value = picture ? "Superhero" : state.category;
+    $("help-open").setAttribute("aria-controls", picture ? "picture-help" : "help-dialog");
+    $("new-character").textContent = picture ? "מתחילים מחדש עם הדמות" : "דמות אקראית חדשה בסגנון הזה";
+    $("setup-note").textContent = picture ?
+      "במשחקי התמונה בוחרים מגדלור (Superhero1) או פעימה (Superhero2), בסגנון גיבורי־על. חלקי הבנייה הם ציורים מצוירים חדשים בהשראת התמונות. ההתקדמות נשמרת בנפרד לכל דמות ולכל משחק עד לרענון; התחלה מחדש מאפסת רק את הבחירה הנוכחית. בשלוש הרמות האחרות אפשר לבחור מבין 40 דמויות." :
+      classicSetupNote;
+    if (picture) {
+      roundVersion++;
+      choiceView = null;
+      if (!window.PictureGame) {
+        $("picture-error").hidden = false;
+        $("picture-error").textContent = "משחקי התמונה לא נטענו. בדקו שקובצי הציור והמשחק קיימים ורעננו. אפשר עדיין לבחור אחת משלוש הרמות האחרות.";
+        $("game-intro").textContent = "משחקי התמונה אינם זמינים כרגע.";
+        return;
+      }
+      window.PictureGame.activate(mode);
+    } else {
+      state.level = mode;
+      startRound(Boolean(state.characterId));
+      feedback("מתחילים סבב עם המילים והאביזרים המתאימים לרמה שבחרתם.");
+    }
+  }
   $("level-select").addEventListener("change", () => {
     if (broken) return;
-    if (state.previewing) { $("level-select").value = state.level; return; }
-    const level = $("level-select").value;
-    assert(levels.includes(level), `Unsupported level: ${level}`);
-    if (level === state.level) return;
-    state.level = level;
-    startRound(true);
-    feedback("רמת המשחק השתנתה. מתחילים מחדש עם אותה דמות ועם המילים והאביזרים המתאימים לרמה שבחרתם.");
+    if (state.previewing) { $("level-select").value = activeMode; return; }
+    selectGame($("level-select").value);
   });
   $("assist").addEventListener("click", () => {
     if (broken || state.previewing) return;
@@ -755,6 +824,7 @@
     return value;
   }
   const getState = () => ({
+    gameMode: activeMode,
     category: state.category, characterId: state.characterId, level: state.level,
     accessoryIds: state.accessories.map(item => item.id), targets: state.targets.map(target => target.id),
     fullTargetIds: state.fullTargets.map(target => target.id),
@@ -771,5 +841,5 @@
       getState, normalize, resolve: value => { const word = resolve(value); return word ? frozenCopy(word) : null; } }),
     writable: false, configurable: false
   });
-  startRound();
+  selectGame($("level-select").value);
 })();

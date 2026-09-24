@@ -16,6 +16,7 @@ h1{font-size:clamp(1.7rem,3vw,2.4rem);margin:14px 0 8px}h2{font-size:1.15rem;mar
 .play-column{display:grid;gap:20px;min-width:0}.learned-panel .collection-title{margin-top:0}
 .panel{min-width:0;padding:24px;border:1px solid var(--edu-border,#d5dfec);border-radius:24px;background:var(--edu-surface,#fff);box-shadow:0 10px 32px #1d345410}
 .game-toolbar{display:grid;grid-template-columns:auto minmax(0,1fr) minmax(0,1fr) auto;align-items:end;gap:12px;margin-bottom:12px}.setup-note{margin:0 0 22px}label{display:block;font-weight:700;margin-bottom:7px}
+.game-toolbar.picture-active{grid-template-columns:auto repeat(3,minmax(0,1fr)) auto}
 button,input,select{font:inherit;min-height:44px;border:1px solid var(--edu-border,#b8cad9);border-radius:12px;color:inherit}
 input,select{width:100%;padding:10px;background:var(--edu-input,#fff)}button{padding:10px 14px;background:var(--edu-soft,#edf3fb);font-weight:700;cursor:pointer}
 button:disabled{opacity:.55;cursor:default}button:hover:not(:disabled){filter:brightness(.96)}
@@ -55,15 +56,38 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 .studio-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap}.count{padding:7px 11px;border-radius:99px;background:var(--edu-soft,#edf3fb);font-size:.85rem}
 #character-name{margin:0;font-size:.95rem}.canvas-wrap{position:relative;height:520px;margin:12px 0;border:1px solid #c8d5e5;border-radius:20px;overflow:hidden;background:#f8fafc}
 #character-preview{margin:12px 0;padding:10px;border-radius:12px;background:var(--edu-soft,#edf3fb);color:var(--edu-text,#243b53);text-align:center;font-weight:700}
+#completion-art{display:block;width:100%;height:100%;object-fit:contain}
 #empty-canvas{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;padding:24px;text-align:center;color:#506679;pointer-events:none}
 #character-stage,#character-stage>svg{display:block;width:100%;height:100%}.location-outline{fill:#fff00018;stroke:#fff;stroke-width:7;vector-effect:non-scaling-stroke}.location-outline.front{fill:none;stroke:#9b1761;stroke-width:3;stroke-dasharray:7 4}
 #location-status{min-height:28px;margin:8px 0}.collection-title{margin-top:22px}.collection{list-style:none;margin:0;padding:3px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;max-height:380px;overflow:auto}
 .word-card{min-width:0;padding:12px;border:1px solid var(--edu-border,#d5dfec);border-radius:14px;background:var(--edu-soft,#f5f8fc);overflow-wrap:anywhere}.word-card p{margin:0}.word-card .en{font-weight:800;font-size:1.05rem}.word-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}.word-actions button{font-size:.82rem;padding:8px}
 .error{padding:18px;border:2px solid #b21b38;border-radius:12px;background:var(--edu-surface,#fff);margin-bottom:16px;overflow-wrap:anywhere}
 footer{text-align:center;font-size:.83rem;margin-top:24px;line-height:1.8}[hidden]{display:none!important}
-@media(max-width:900px){.game-toolbar{grid-template-columns:repeat(2,minmax(0,1fr))}}
+#picture-game .picture-layout{display:grid;grid-template-columns:minmax(300px,.95fr) minmax(360px,1.05fr);gap:20px;align-items:start}
+#picture-game .picture-studio{grid-column:2;grid-row:1}
+#picture-game .picture-controls{grid-column:1;grid-row:1;display:grid;gap:20px;min-width:0}
+#picture-game .picture-canvas{position:relative;background:#fff;border:1px solid #c8d5e5;border-radius:20px;overflow:hidden;height:520px;margin:12px 0}
+#picture-stage{display:block;width:100%;height:100%}
+#edu-refresh #picture-empty{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:20px;color:#536879!important;pointer-events:none}
+#picture-game .picture-outline{fill:#f8dc5533;stroke:#a01362;stroke-width:6;stroke-dasharray:10 5}
+#picture-game .en{font-size:1.2rem;font-weight:700;overflow-wrap:anywhere}
+#picture-progress-bar{width:100%}
+#picture-spelling-task{display:grid;gap:16px}#picture-another-hint{justify-self:start}
+#picture-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#picture-choices button{overflow-wrap:anywhere;font-size:1.15rem}
+#edu-refresh #picture-choices button.wrong:disabled{background:#b21b38!important;color:#fff!important;border:2px solid #b21b38!important;opacity:1!important;text-decoration:line-through}
+#picture-game .picture-words,#picture-game .picture-clues{list-style:none;padding:4px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;max-height:440px;overflow:auto}
+#picture-game .picture-clues{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;max-height:none;overflow:visible}
+#picture-game .picture-words li{padding:12px;border:1px solid var(--edu-border,#ccc);border-radius:10px;min-width:0}
+#picture-game .picture-words p{margin:2px 0 10px}
+#picture-game .picture-clues button{width:100%;height:100%;text-align:start}
+#picture-game .picture-clues button[aria-pressed="true"]{outline:2px solid var(--edu-accent,#257895)}
+#picture-game .picture-clues button.found{text-decoration:line-through}
+#picture-feedback{min-height:1.6em}
+@media(max-width:900px){.game-toolbar,.game-toolbar.picture-active{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){#picture-game .picture-layout{grid-template-columns:1fr}#picture-game .picture-studio{grid-column:1;grid-row:1}#picture-game .picture-controls{grid-column:1;grid-row:2}#picture-game .picture-canvas{height:450px}#picture-game .picture-clues{grid-template-columns:1fr}}
 @media(max-width:760px){body{padding-inline:12px}.layout{grid-template-columns:1fr}.panel{padding:18px}.studio{grid-row:1}.canvas-wrap{height:450px}.collection{max-height:300px}.game-toolbar{gap:8px}.clue-list{grid-template-columns:1fr}}
-@media(max-width:350px){.collection{grid-template-columns:1fr}.panel{padding:12px}.game-toolbar{grid-template-columns:1fr}}
+@media(max-width:350px){.collection{grid-template-columns:1fr}.panel{padding:12px}.game-toolbar,.game-toolbar.picture-active{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
 </style>
 </head>
@@ -71,10 +95,11 @@ footer{text-align:center;font-size:.83rem;margin-top:24px;line-height:1.8}[hidde
 <main>
 <nav aria-label="ניווט"><a href="../index.html">← משחקי אנגלית</a></nav>
 <header><h1>בונים דמות מאוירת במילים</h1><p id="game-intro" class="intro">בוחרים רמז בעברית ואת האיות הנכון מבין ארבע אפשרויות באנגלית. הבמה מתחילה ריקה, ורק החלק שמצאתם יופיע. בממשיכים ובמתקדמים מקלידים את התשובות.</p></header>
-<div class="game-toolbar">
+<div id="game-toolbar" class="game-toolbar">
 <button id="help-open" class="help-trigger" type="button" aria-haspopup="dialog" aria-controls="help-dialog">איך משחקים?</button>
-<div><label for="category-select">סגנון הדמות</label><select id="category-select" aria-describedby="setup-note"><option value="Anime">אנימה · Anime</option><option value="Superhero" selected>גיבורי־על · Superhero</option><option value="Cartoon">מצויר · Cartoon</option><option value="Manga">מנגה · Manga</option></select></div>
-<div><label for="level-select">רמת המשחק</label><select id="level-select" aria-describedby="setup-note"><option value="beginner">מתחילים</option><option value="intermediate">ממשיכים</option><option value="advanced">מתקדמים</option></select></div>
+<div id="category-control"><label for="category-select">סגנון הדמות</label><select id="category-select" aria-describedby="setup-note"><option value="Anime">אנימה · Anime</option><option value="Superhero" selected>גיבורי־על · Superhero</option><option value="Cartoon">מצויר · Cartoon</option><option value="Manga">מנגה · Manga</option></select></div>
+<div id="picture-character-control" hidden><label for="picture-character-select">בחירת הדמות</label><select id="picture-character-select" aria-describedby="setup-note"><option value="superhero-01">מגדלור · Superhero1</option><option value="superhero-02">פעימה · Superhero2</option></select></div>
+<div id="level-control"><label for="level-select">משחק ורמה</label><select id="level-select" aria-describedby="setup-note"><option value="explore">לומדים מהתמונה</option><option value="finish">בונים וחושפים תמונה</option><option value="beginner">מתחילים</option><option value="intermediate">ממשיכים</option><option value="advanced">מתקדמים</option></select></div>
 <button id="new-character" type="button" aria-describedby="setup-note">דמות אקראית חדשה בסגנון הזה</button>
 </div>
 <p id="setup-note" class="note setup-note">דמות חדשה או שינוי סגנון מתחילים סבב חדש. שינוי רמה מתחיל מחדש עם אותה דמות ועם המילים והאביזרים המתאימים לרמה. בכל רמה נשמרת בחירת האביזרים שלה עד להחלפת הדמות. הבחירות בגלריה נפרדות ואינן משתנות.</p>
@@ -85,7 +110,8 @@ footer{text-align:center;font-size:.83rem;margin-top:24px;line-height:1.8}[hidde
 <li>מתחילים: בכל דמות 38 מילים — כל 26 חלקי הגוף המותרים ו־12 בגדים ואביזרים. בוחרים רמז בעברית ואז את האיות הנכון מארבע אפשרויות באנגלית. אחרי תשובה נכונה נבחר רמז חדש אוטומטית. אין תיבת כתיבה או רמזי אותיות. אפשר לשמוע מילים שכבר מצאתם בלחיצה על השמעה בפאנל המילים שמצאתם. אחרי טעות אפשר לנסות שוב באותן אפשרויות.</li>
 <li>ממשיכים: מקלידים מתוך רשימה בסיסית של 18 חלקי גוף מוכרים ורק פריטים בסיסיים שזמינים לדמות בסבב הזה. לדמות נבחרים חמישה אביזרים אפשריים.</li>
 <li>מתקדמים: מקלידים מתוך 26 חלקי הגוף וכל הבגדים והאביזרים המותרים של הסבב, עם רמזים מאתגרים יותר וחמישה אביזרים אפשריים. מספר המילים משתנה לפי הדמות והאביזרים.</li>
-<li>כל שינוי רמה מתחיל מחדש עם אותה דמות ועם הפריטים המתאימים לרמה, ומאפס מילים, רצף, בונוסים ורמזים. בחירת הפריטים של כל רמה נשמרת עד להחלפת הדמות.</li>
+<li>בשתי האפשרויות הראשונות בוחרים מגדלור או פעימה: לומדים מילים ומיקומים מהתמונה, או בונים 38 חלקים וחושפים את התמונה בסיום. לכל דמות ולכל משחק נשמרת התקדמות נפרדת כל עוד העמוד פתוח.</li>
+<li>בחירה במתחילים, ממשיכים או מתקדמים מתחילה מחדש עם אותה דמות ועם הפריטים המתאימים לרמה, ומאפסת מילים, רצף, בונוסים ורמזים. בחירת הפריטים של כל רמה נשמרת עד להחלפת הדמות.</li>
 <li>במהלך הסבב כל תשובה נכונה מציגה רק את החלק שלה. עיניים אינן מציגות ראש, וכובע אינו מציג שיער. כשמוצאים את כל מילות הסבב, הדמות מוצגת בשלמותה עם כל החלקים המותרים שלה, בלי להוסיף מילים או ניקוד. פריטים שהוסרו מהמשחק אינם חוזרים. בגדים מוצגים מעל חלקי הגוף.</li>
 <li>הרמזים בעברית. רמזים שנפתרו מסומנים בקו ובסימן ✓, עם המילה באנגלית והפירוש בעברית. מילים שכבר באוסף אינן נספרות שוב.</li>
 <li>בממשיכים ובמתקדמים, רמזי אותיות והצגת המילה אינם מוסיפים ציור — עדיין צריך להקליד תשובה נכונה. אם טעיתם באיות, לחצו על רמז לעזרה במילה שניסיתם לכתוב. לרמז אחר, נקו את התיבה.</li>
@@ -115,6 +141,7 @@ footer{text-align:center;font-size:.83rem;margin-top:24px;line-height:1.8}[hidde
 <p id="level-suggestion" class="note"></p>
 <form method="dialog"><button type="submit">סגירה</button></form>
 </dialog>
+<div id="classic-game" hidden>
 <div class="layout">
 <div class="play-column">
 <section class="panel" aria-labelledby="play-title">
@@ -154,7 +181,9 @@ footer{text-align:center;font-size:.83rem;margin-top:24px;line-height:1.8}[hidde
 <div class="studio-head"><h2 id="studio-title">הדמות שלכם</h2><span class="count"><b id="learned-count">0</b> מתוך <b id="target-count">0</b> מילים</span></div>
 <p id="character-name"></p>
 <p id="character-preview" role="status" hidden>הצצה לדמות המלאה — מיד מתחילים דמות חדשה!</p>
-<div class="canvas-wrap"><div id="character-stage"></div><div id="empty-canvas"><strong>מתחילים מדף ריק</strong><span id="empty-canvas-instruction">בחרו רמז ואת האיות הנכון, ורק החלק שלו יופיע כאן.</span></div></div>
+<div class="canvas-wrap"><div id="character-stage"></div><img id="completion-art" src="./completion-art/beacon.png" alt="מגדלור — איור חגיגי של גיבור העל שהשלמתם" hidden><div id="empty-canvas"><strong>מתחילים מדף ריק</strong><span id="empty-canvas-instruction">בחרו רמז ואת האיות הנכון, ורק החלק שלו יופיע כאן.</span></div></div>
+<div id="completion-art-controls" hidden><p class="note">כל המילים נמצאו! זהו איור חגיגי של מגדלור; האביזרים בו עשויים להיות שונים מפריטי הסבב. להצגת מיקומי המילים חוזרים לציור המשחק.</p><button id="completion-art-toggle" type="button" aria-controls="completion-art character-stage">הצגת ציור המשחק</button></div>
+<p id="completion-art-error" class="note" role="status" hidden>איור הסיום לא נטען. ציור המשחק המלא מוצג במקום.</p>
 <p id="location-status" class="note" role="status" aria-live="polite"></p>
 <p class="note">רק הפריטים שכבר מצאתם מופיעים בציור. בגדים עשויים לכסות חלקים שנלמדו; אפשר לסמן שוב מילה מהאוסף.</p>
 </section>
@@ -166,6 +195,41 @@ footer{text-align:center;font-size:.83rem;margin-top:24px;line-height:1.8}[hidde
 <ul id="all-clues" class="clue-list" aria-label="כל רמזי הסבב בעברית"></ul>
 </section>
 <footer>40 דמויות בשכבות נפרדות · 10 בכל סגנון · ללא חשבון וללא שמירת התקדמות</footer>
+</div>
+<div id="picture-game" hidden>
+<p id="picture-error" class="error" role="alert" hidden></p>
+<div class="picture-layout">
+<section class="panel picture-studio" aria-labelledby="picture-studio-title">
+<div class="studio-head"><h2 id="picture-studio-title">הדמות שלכם</h2><span id="picture-progress" class="count"></span></div>
+<p id="picture-character-name">מגדלור · Beacon</p>
+<div class="picture-canvas">
+<svg id="picture-stage" viewBox="0 0 1024 1536" role="img" aria-label="מגדלור"><g id="picture-drawing"></g><g id="picture-highlight" aria-hidden="true" pointer-events="none"></g></svg>
+<p id="picture-empty" hidden>הבמה ריקה — כל מילה נכונה מוסיפה רק את החלק שלה.</p>
+</div>
+<p id="picture-picture-note" class="note"></p>
+<p id="picture-location" class="note" role="status"></p>
+</section>
+<div class="picture-controls">
+<section class="panel" aria-labelledby="picture-task-title">
+<h2 id="picture-task-title">בוחרים מילה</h2>
+<div id="picture-explore-task"><p id="picture-explore-en" class="en" lang="en" dir="ltr"></p><p id="picture-explore-he"></p><button id="picture-explore-speak" type="button">🔊 השמעה</button><button id="picture-explore-next" type="button">מילה נוספת</button></div>
+<div id="picture-spelling-task" hidden><div id="picture-hint-focus" tabindex="-1"><p id="picture-hint"></p></div><div id="picture-choices" role="group" aria-labelledby="picture-hint"></div><button id="picture-another-hint" type="button">💡 רמז אחר</button></div>
+<p id="picture-feedback" role="status" aria-live="polite" aria-atomic="true"></p>
+<p id="picture-speech-status" class="note" role="status" aria-live="polite"></p>
+</section>
+<section class="panel" aria-labelledby="picture-found-title"><h2 id="picture-found-title">המילים שמצאתם</h2><p id="picture-no-words">המילים יופיעו כאן אחרי תשובה נכונה.</p><ul id="picture-learned" class="picture-words"></ul></section>
+</div>
+</div>
+<section class="panel clue-panel" aria-labelledby="picture-clues-title"><h2 id="picture-clues-title">💡 כל המילים והרמזים לדמות שלכם</h2><progress id="picture-progress-bar" max="38" value="0" aria-label="התקדמות"></progress><ul id="picture-clues" class="picture-clues"></ul></section>
+<dialog id="picture-help" class="help-dialog" aria-labelledby="picture-help-title">
+<h2 id="picture-help-title" tabindex="-1" autofocus>איך משחקים עם התמונה?</h2>
+<p>בלומדים מהתמונה בוחרים מילה מהרשימה, רואים את הפירוש ושומעים אותה. סימון על תמונת המקור מראה את המיקום. חלקי גוף שמתחת לבגדים מסומנים לפי מיקומם; הם לא נחשפים דרך הבגד.</p>
+<p>בבונים וחושפים תמונה יש 38 מילים: 26 חלקי גוף ו־12 בגדים ואביזרים. מתחילים מרמז בעברית ובוחרים איות נכון מתוך ארבע אפשרויות. טעות מסומנת באדום ונחסמת. תשובה נכונה מוסיפה חלק ומעבירה אוטומטית לרמז הבא. כל שלוש הצלחות ברצף מקבלים מחמאה בלבד.</p>
+<p>חלקי הבנייה הם ציור מצויר חדש בהשראת התמונה, לא חיתוכים שלה. אחרי כל 38 המילים רואים את תמונת המקור. אפשר לשמוע מילים שנמצאו ולהציג את מיקומן בציור או בתמונה.</p>
+<p>בשני משחקי התמונה אפשר לבחור מגדלור (Superhero1) או פעימה (Superhero2). לכל דמות ציור עצמאי, 26 חלקי גוף ו־12 פריטי לבוש ואביזרים המתאימים לתמונה שלה. מעבר בין דמויות ומשחקים שומר התקדמות נפרדת כל עוד העמוד פתוח. התחלה מחדש מאפסת רק את הדמות במשחק התמונה הנוכחי; רענון מאפס הכול. שלוש רמות המשחק האחרות ממשיכות להשתמש ב־40 הדמויות.</p>
+<form method="dialog"><button type="submit">הבנתי</button></form>
+</dialog>
+</div>
 </main>
 <script src="./style-samples/accessories-anime-manga.js"></script>
 <script src="./style-samples/accessories-hero-cartoon.js"></script>
@@ -181,6 +245,9 @@ footer{text-align:center;font-size:.83rem;margin-top:24px;line-height:1.8}[hidde
 <script src="./illustrated-vocabulary.js"></script>
 <script src="./illustrated-content.js"></script>
 <script src="./beginner-round.js"></script>
+<script src="./beacon-art.js"></script>
+<script src="./pulse-art.js"></script>
+<script src="./picture-game.js"></script>
 <script src="./illustrated-game.js"></script>
 </body>
 </html>

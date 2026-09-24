@@ -14,16 +14,20 @@ The root page (`index.html`) is a hub that links to every game.
 The production [Body and Wearables game](./english/body-and-wearables/index.html)
 now offers five choices in one dropdown, in order: learn from the picture,
 build and reveal the picture, Beginner, Intermediate, and Advanced. The first
-two offer Beacon (Superhero1) and Pulse (Superhero2), each with its own 26 body
-concepts, 12 matching wearables, independently drawn cartoon layers and accurate
-reference-picture highlights. Progress is separate for each character and mode;
+two offer all 40 characters across Anime, Superhero, Cartoon and Manga, including
+Beacon (Superhero1), Pulse (Superhero2), and the 38 original Stage 1 pictures.
+Original PNGs are displayed unchanged during exploration and as completion
+rewards. Each character has 26 body concepts, its own fixed 12-item wardrobe,
+independent construction artwork, and separately authored original-picture
+highlights. The building artwork is an approximation, not a reconstruction or
+cut-up version of the original PNG. Progress is separate for each character and mode;
 the three existing levels retain the 40-character collection and their original
 mechanics. Selecting an existing level starts a fresh round with the previous
 collection character. Picture artwork and logic live in the production folder,
 with no runtime dependency on the separate sandbox demo.
 The picture modes retain the standard toolbar, character panel, learned-word
-panel and full-width clue panel. Their character-type dropdown offers only
-Superhero, with a separate dropdown for the two supplied characters. Restart
+panel and full-width clue panel. The character-type dropdown offers all four
+styles, with a separate dropdown for each style's ten characters. Restart
 clears only the selected character in the active picture mode; switching keeps
 progress until reload. Returning to an existing level restores all four styles
 and the previous selection. Both reference images and redraws live in the
@@ -31,6 +35,12 @@ production folder; a picture-load error affects only that character.
 Both picture modes shuffle their word/clue list and starting word for each new
 round. The order stays stable while playing and switching modes or characters;
 restarting reshuffles only the active character and picture mode.
+The 38 additional building characters reuse the existing independent game
+artwork, with 13 newly drawn shirt/pants layers where their fixed inventories
+need them; they do not use the rejected generated asset packages. Rear/front
+accessory fragments stay attached to one word and retain their paint order.
+If an item is not visible in an original picture, its location action says so
+instead of marking an invented location. Original pictures load on demand.
 
 Beacon (`superhero-01`) shows the approved cartoon reference from
 `english/body-and-wearables/completion-art/beacon.png` after completing a round

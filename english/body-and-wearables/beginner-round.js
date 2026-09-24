@@ -263,5 +263,63 @@
     }
     return selected;
   }
-  window.BeginnerRound = Object.freeze({ selectAccessories });
+  function selectFixedAccessories(character, allAccessories, requiredItemIds) {
+    if (!Array.isArray(requiredItemIds) || requiredItemIds.length !== desiredCount ||
+        new Set(requiredItemIds).size !== desiredCount) {
+      throw new Error(`Fixed wardrobe needs twelve distinct item IDs: ${character.id}.`);
+    }
+    const required = new Set(requiredItemIds);
+    const baseTargets = content.playableTargets(content.buildTargets(character, []));
+    const base = baseTargets.filter(target => target.category !== "body")
+      .map(target => describe(character, target.id, null));
+    if (baseTargets.filter(target => target.category === "body").length !== 26 ||
+        base.some(entry => !required.has(entry.concept))) {
+      throw new Error(`Fixed wardrobe has an unexpected base outfit: ${character.id}.`);
+    }
+    const originals = content.availableAccessories(character, allAccessories)
+      .map(item => describe(character, conceptFor(character, item), item));
+    // Keep the original timepiece when source watch/bracelet drawings share a wrist.
+    const missing = requiredItemIds.filter(id => !base.some(entry => entry.concept === id))
+      .sort((a, b) => Number(b === "watch") - Number(a === "watch"));
+    const choices = missing.map(concept => {
+      const candidates = originals.filter(entry => entry.concept === concept);
+      if (supplementalConcepts.includes(concept) &&
+          (concept !== "badge" || base.some(entry => tops.has(entry.concept)))) {
+        for (const side of ["watch", "bracelet"].includes(concept) ? [0, 1] : [0]) {
+          candidates.push({ ...describe(character, concept, null, true, side), side });
+        }
+      }
+      if (!candidates.length) throw new Error(`Fixed wardrobe has no recipe for ${character.id}/${concept}.`);
+      return candidates;
+    });
+    let best = null, bestOriginalCount = -1;
+    function search(chosen, originalCount) {
+      if (originalCount + choices.length - chosen.length <= bestOriginalCount) return;
+      if (chosen.length === choices.length) {
+        best = chosen;
+        bestOriginalCount = originalCount;
+        return;
+      }
+      for (const candidate of choices[chosen.length]) {
+        if (compatible(candidate, [...base, ...chosen])) {
+          search([...chosen, candidate], originalCount + (candidate.supplemental ? 0 : 1));
+        }
+      }
+    }
+    search([], 0);
+    if (!best) throw new Error(`Fixed wardrobe has incompatible required items: ${character.id}.`);
+    const selected = best.map(entry => ({
+      ...(entry.item || supplementalArt(character, entry.concept, entry.side)),
+      slot: entry.slot
+    }));
+    const targets = content.playableTargets(content.buildTargets(character, selected));
+    const clothing = targets.filter(target => target.category !== "body");
+    if (targets.length !== 38 || clothing.length !== desiredCount ||
+        clothing.some(target => !required.has(target.id)) ||
+        new Set(selected.map(item => item.id)).size !== selected.length) {
+      throw new Error(`Invalid fixed twelve-item wardrobe: ${character.id}.`);
+    }
+    return selected;
+  }
+  window.BeginnerRound = Object.freeze({ selectAccessories, selectFixedAccessories });
 })();

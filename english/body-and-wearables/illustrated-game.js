@@ -738,7 +738,10 @@
     else previewNextCharacter();
   });
   $("category-select").addEventListener("change", () => {
-    if (pictureModes.includes(activeMode)) { $("category-select").value = "Superhero"; return; }
+    if (pictureModes.includes(activeMode)) {
+      window.PictureGame?.selectCategory($("category-select").value);
+      return;
+    }
     if (broken || state.previewing) { $("category-select").value = state.category; return; }
     startRound();
   });
@@ -754,13 +757,13 @@
     $("picture-character-control").hidden = !picture;
     $("game-toolbar").classList.toggle("picture-active", picture);
     for (const option of $("category-select").options) {
-      option.hidden = option.disabled = picture && option.value !== "Superhero";
+      option.hidden = option.disabled = false;
     }
-    $("category-select").value = picture ? "Superhero" : state.category;
+    $("category-select").value = picture ? window.PictureGame?.getState().category || "Superhero" : state.category;
     $("help-open").setAttribute("aria-controls", picture ? "picture-help" : "help-dialog");
     $("new-character").textContent = picture ? "מתחילים מחדש עם הדמות" : "דמות אקראית חדשה בסגנון הזה";
     $("setup-note").textContent = picture ?
-      "במשחקי התמונה בוחרים מגדלור (Superhero1) או פעימה (Superhero2), בסגנון גיבורי־על. חלקי הבנייה הם ציורים מצוירים חדשים בהשראת התמונות. ההתקדמות נשמרת בנפרד לכל דמות ולכל משחק עד לרענון; התחלה מחדש מאפסת רק את הבחירה הנוכחית. בשלוש הרמות האחרות אפשר לבחור מבין 40 דמויות." :
+      "במשחקי התמונה בוחרים סגנון ודמות — 40 דמויות, 10 בכל סגנון. תמונות המקור נשמרות ללא שינוי; ציור הבנייה הוא ציור משחק נפרד, לא שחזור מדויק של התמונה. סדר המילים אקראי ונשמר יחד עם ההתקדמות לכל דמות ולכל משחק; התחלה מחדש מאפסת ומערבבת רק את הבחירה הנוכחית." :
       classicSetupNote;
     if (picture) {
       roundVersion++;

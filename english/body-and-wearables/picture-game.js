@@ -11,10 +11,10 @@
     "hands", "fingers", "legs", "thighs", "knees", "ankles", "feet", "heels"
   ];
   const characters = [
-    { id: "superhero-01", nameHe: "מגדלור", nameEn: "Beacon", image: "./picture-art/beacon.png",
+    { id: "superhero-01", category: "Superhero", nameHe: "מגדלור", nameEn: "Beacon", image: "./picture-art/beacon.png",
       art: window.BeaconDemoArt,
       itemIds: ["costume", "cape", "belt", "boots", "necklace", "armband", "glasses", "ring", "headband", "watch", "bracelet", "earrings"] },
-    { id: "superhero-02", nameHe: "פעימה", nameEn: "Pulse", image: "./picture-art/pulse.png",
+    { id: "superhero-02", category: "Superhero", nameHe: "פעימה", nameEn: "Pulse", image: "./picture-art/pulse.png",
       art: window.PulseDemoArt,
       itemIds: ["costume", "belt", "boots", "earrings", "glasses", "armband", "badge", "hair-clip", "scarf", "ring", "watch", "bracelet"] }
   ];
@@ -31,14 +31,28 @@
       [r.cx, r.cy, r.rx, r.ry].every(Number.isFinite) && r.rx > 0 && r.ry > 0 &&
       (r.angle === undefined || Number.isFinite(r.angle)));
   }
+  if (!window.PictureCollection || window.PictureCollection.characters.length !== 38) {
+    error("לא ניתן לטעון את אוסף התמונות: חסרים נתוני הדמויות. רעננו לאחר תיקון הקבצים.");
+    return;
+  }
+  characters.push(...window.PictureCollection.characters);
+  if (new Set(characters.map(entry => entry.id)).size !== 40 ||
+    ["Anime", "Superhero", "Cartoon", "Manga"].some(category =>
+      characters.filter(entry => entry.category === category).length !== 10)) {
+    error("לא ניתן לטעון את אוסף התמונות: נדרשות 40 דמויות שונות, 10 בכל סגנון.");
+    return;
+  }
   for (const entry of characters) {
     entry.ids = [...bodyIds, ...entry.itemIds];
     const artwork = entry.art;
-    if (!artwork || !content || !Array.isArray(artwork.layers) || artwork.layers.length !== 38 ||
+    if (!artwork || !content || !Array.isArray(artwork.layers) || artwork.layers.length < 38 ||
       artwork.width !== 1024 || artwork.height !== 1536 || new Set(entry.ids).size !== 38 ||
+      entry.absentItems?.some(id => !entry.itemIds.includes(id)) ||
       new Set(artwork.layers.map(layer => layer.id)).size !== 38 ||
+      artwork.layers.some(layer => !entry.ids.includes(layer.id) || !layer.svg || !Number.isFinite(layer.order)) ||
       entry.ids.some(id => !artwork.layers.some(layer => layer.id === id && layer.svg && Number.isFinite(layer.order)) ||
-        !validRegions(artwork.regions?.[id]) || !validRegions(artwork.photoRegions?.[id]) ||
+        !validRegions(artwork.regions?.[id]) ||
+        (!validRegions(artwork.photoRegions?.[id]) && !entry.absentItems?.includes(id)) ||
         !content.vocabulary.some(word => word.id === id))) {
       error(`לא ניתן לטעון את ${entry.nameHe}: חסרים נתוני מילים, ציור או מיקומים. רעננו לאחר תיקון הקבצים.`);
       return;
@@ -49,6 +63,11 @@
   }
   let character = characters[0];
   let { art, words, byId } = character;
+  const selectedByCategory = new Map();
+  const photographs = new Map();
+  for (const entry of characters) {
+    if (!selectedByCategory.has(entry.category)) selectedByCategory.set(entry.category, entry.id);
+  }
   const coveredBody = new Set(["shoulders", "chest", "waist", "arms", "elbows", "legs", "thighs", "knees", "ankles", "feet", "heels"]);
   const fresh = entry => {
     const order = content.shuffle(entry.ids);
@@ -98,6 +117,10 @@
     $("location").textContent = "";
     if (!id) return;
     const regions = (photograph() ? art.photoRegions : art.regions)[id];
+    if (photograph() && character.absentItems?.includes(id)) {
+      $("location").textContent = `${byId.get(id).he}: הפריט קיים בציור הבנייה, אך אינו נראה בתמונת המקור.`;
+      return;
+    }
     for (const region of regions) {
       $("highlight").append(svgNode("ellipse", {
         cx: region.cx, cy: region.cy, rx: region.rx, ry: region.ry,
@@ -130,7 +153,8 @@
       }
     }
     $("empty").hidden = mode === "explore" || state().learned.size > 0;
-    $("picture-note").textContent = photograph() ? "תמונת המקור שסיפקתם." : "ציור חדש מחלקים עצמאיים, בהשראת תמונת המקור.";
+    $("picture-note").textContent = photograph() ? "תמונת המקור שסיפקתם, ללא שינוי." :
+      "ציור משחק מחלקים עצמאיים — אינו שחזור מדויק או חיתוך של תמונת המקור.";
     $("stage").setAttribute("aria-label", photograph() ? `${character.nameHe} בתמונת המקור` : `${character.nameHe} בציור החדש, ${state().learned.size} חלקים שנמצאו`);
     drawHighlight(state().selected);
   }
@@ -232,6 +256,17 @@
   function render() {
     viewVersion++;
     $("character-name").textContent = `${character.nameHe} · ${character.nameEn}`;
+    document.getElementById("category-select").value = character.category;
+    if ($("character-select").dataset.category !== character.category) {
+      $("character-select").replaceChildren();
+      for (const entry of characters.filter(entry => entry.category === character.category)) {
+        const option = document.createElement("option");
+        option.value = entry.id;
+        option.textContent = `${entry.nameHe} · ${entry.nameEn}`;
+        $("character-select").append(option);
+      }
+      $("character-select").dataset.category = character.category;
+    }
     $("character-select").value = character.id;
     $("reset").textContent = `מתחילים מחדש עם ${character.nameHe}`;
     $("mode-description").textContent = {
@@ -242,6 +277,7 @@
     $("progress").textContent = `${count} מתוך 38 מילים ${mode === "explore" ? "נבדקו" : "נמצאו"}`;
     $("progress-bar").value = count;
     $("feedback").textContent = state().feedback;
+    loadPhoto(character);
     draw(); renderClues(); renderLearned(); renderTask();
   }
   function reset() {
@@ -263,8 +299,10 @@
     state().selected = state().active; state().visited.add(state().active); render();
   });
   $("help").addEventListener("close", () => $("help-open").focus());
-  for (const entry of characters) {
+  function loadPhoto(entry) {
+    if (photographs.has(entry.id)) return;
     const image = new Image();
+    photographs.set(entry.id, image);
     image.onerror = () => {
       photoFailures.add(entry.id);
       if (active && character.id === entry.id) render();
@@ -277,8 +315,14 @@
     if (failed || !active || next === character) return;
     stopSpeech();
     character = next;
+    selectedByCategory.set(character.category, character.id);
     ({ art, words, byId } = character);
     render();
+  }
+  function selectCategory(category) {
+    const id = selectedByCategory.get(category);
+    if (!id) throw new Error(`Unsupported picture category: ${category}`);
+    selectCharacter(id);
   }
   $("character-select").addEventListener("change", () => selectCharacter($("character-select").value));
   window.PictureGame = Object.freeze({
@@ -289,9 +333,10 @@
     deactivate() { active = false; viewVersion++; stopSpeech(); },
     reset,
     selectCharacter,
+    selectCategory,
     openHelp() { $("help").showModal(); },
-    getState: () => ({ characterId: character.id, mode, active: state().active, learned: [...state().learned], visited: [...state().visited], photograph: photograph(), complete: complete() }),
-    characters: Object.freeze(characters.map(entry => Object.freeze({ id: entry.id, nameHe: entry.nameHe, nameEn: entry.nameEn }))),
+    getState: () => ({ characterId: character.id, category: character.category, mode, active: state().active, learned: [...state().learned], visited: [...state().visited], photograph: photograph(), complete: complete() }),
+    characters: Object.freeze(characters.map(entry => Object.freeze({ id: entry.id, category: entry.category, nameHe: entry.nameHe, nameEn: entry.nameEn }))),
     get words() { return character.publicWords; }
   });
 })();

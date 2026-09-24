@@ -262,9 +262,38 @@ The British Council links were identified through search; direct fetching was bl
 - Keep canonical `english/`, `math/`, shared assets and `edu-games2/` unchanged during sandbox-only work. Committing/pushing a preview is separate from promoting it.
 - Use explicit staging paths. Never read, modify, delete, stage, commit or push `lastSession.md`; it is an intentionally excluded conversation export.
 
-## Creating complete cartoon character asset packages
+## Character pictures from GPT: default workflow
 
-- For new character-generation requests and prompts, require the COMPLETE game asset package, not an assembled-only picture or a "Stage 1" substitute. The reusable character-specific prompts are in `english/body-and-wearables/character-prompts.html`; preserve their written designs, exact inventories, stable concept IDs and excluded vocabulary.
+- Ask GPT to create finished PNG character pictures only. Do not ask GPT for SVG layers, separated body parts, layered asset packages, manifests, JavaScript or game previews in the normal workflow.
+- The user reviews and supplies the approved PNGs. Copilot then handles the independent SVG building artwork, location highlights and game integration locally, reusing approved layers and drawing missing pieces as needed.
+- Keep the approved PNG unchanged. GPT's rejected SVG-layer packages were not used in the published 40-character picture games. An approved PNG is a valid handoff for Copilot, not an incomplete layered-package delivery.
+- Use the following reusable GPT prompt with each character's actual design and inventory. This is the current PNG-only request template, not a claim about the exact historical prompt used for the existing pictures.
+
+```text
+Create one finished PNG picture of an original, child-friendly cartoon
+character for an English-learning game.
+
+Character: <name and identity>
+Style: <Anime | Superhero | Cartoon | Manga>
+Design: <face, hair, pose, proportions and distinctive details>
+Palette: <approved colors, or strictly neutral grayscale for monochrome>
+Outfit and accessories: <the character's exact 12 wearable items>
+
+Use a 1024 x 1536 portrait canvas. Show the entire character, including
+hands and feet, without cropping, against a simple unobtrusive background.
+Make the specified clothing and accessories recognizable and visible
+where practical. Preserve the supplied design and palette.
+Use polished 2D cartoon artwork, not photography or a 3D render.
+Do not add text, labels, word lists or game UI to the picture.
+
+Deliver the finished PNG only. Do not generate SVGs, separate layers,
+body-part crops, code, manifests or an interactive preview.
+Copilot will create or adapt the separate game layers afterward.
+```
+
+## Optional complete cartoon character asset packages
+
+- Apply this section only if the user explicitly requests a complete standalone layered asset package instead of the default GPT-PNG/Copilot-layers workflow. Do not include these package requirements in ordinary GPT picture prompts. For an explicit complete-package request, require the COMPLETE game asset package, not an assembled-only picture or a "Stage 1" substitute. The character-specific briefs in `english/body-and-wearables/character-prompts.html` may supply designs and inventories; preserve those details, stable concept IDs and excluded vocabulary, but do not copy their older layered-package requirements into PNG-only prompts.
 - Always create original, child-friendly 2D CARTOON artwork, never photographs, photorealistic people or 3D renders. Preserve each character's approved palette, including black-and-white Manga designs.
 - Use SVG-first construction: draw actual editable paths and shapes for the separate parts before rendering the finished character. If an image generator cannot produce precise aligned image layers, create the SVG files using code/file tools instead. Do not stop at a reference picture or promise that separately generated images will align.
 - Each new package requires exactly 38 concepts: 26 allowed body parts and 12 distinct clothing/accessory concepts from its brief. Supply self-contained SVG sources and corresponding transparent PNG exports on the same 1024 x 1536 canvas; SVG viewBox is `0 0 1024 1536`. Preserve origin, pose, scale and coordinates without cropping or recentering.
@@ -277,6 +306,8 @@ The British Council links were identified through search; direct fetching was bl
 
 ## Body and Wearables picture games
 
+- Default character-authoring workflow: ask GPT for finished PNG pictures only; the user supplies the approved pictures, and Copilot creates or adapts the independent body-part and wearable SVG layers needed for the game. Do not require the user or GPT to supply a layered package first. Reuse suitable approved independent artwork where available and draw missing pieces, following the approved 40-character integration pattern.
+- Preserve the supplied picture unchanged for exploration and the completion reveal. Use it as the visual reference for the separate building artwork, preserving identity, palette and outfit as closely as practical. The generated layers are an approximation, not extracted original pixels or a guaranteed exact reconstruction; never replace the approved picture with a generic redraw. Author original-picture highlights separately from vector-layer highlights.
 - Keep the shared game dropdown in this exact order: `explore` / `לומדים מהתמונה`, `finish` / `בונים וחושפים תמונה`, `beginner` / `מתחילים`, `intermediate` / `ממשיכים`, `advanced` / `מתקדמים`. Picture exploration is the initial selection. Do not restore a separate build-only game; it was removed as redundant.
 - Picture exploration shows the supplied complete cartoon, English words, Hebrew meanings, pronunciation and location highlights. Track visited words separately from earned construction words; exploring a word must not grant construction credit.
 - Build-and-reveal starts with an empty canvas and uses 38 concepts: 26 body parts and 12 wearables. Each correct spelling choice reveals only that concept's independent SVG artwork, then selects the next unanswered hint. Keep four similar spelling choices, persistent red/disabled wrong options and pronunciation for found words. Only after all 38 words are found does the original picture replace the assembled vector drawing.
@@ -288,6 +319,86 @@ The British Council links were identified through search; direct fetching was bl
 - The 38 additional picture characters reuse the approved legacy independent SVGs, with thirteen separately drawn shirt/pants layers for eleven characters explicitly approved by the user. Do not relabel excluded blouse/leggings geometry. Resolve fixed wardrobes without randomness or mutation of the classic registries. Preserve each accessory's rear/front fragments under its concept and global paint order; normalize the native 600x800 drawing and its vector highlights uniformly to the 1024x1536 picture canvas. Namespace SVG IDs to avoid collisions with hidden classic artwork.
 - Clearly label building artwork as a separate approximation, not a faithful reconstruction of the original PNG. For an item not visible in an original photo, keep its construction word but display an explicit absence notice rather than a fabricated highlight. Do not infer original-photo locations from the legacy SVG coordinates. Shuffle each character/mode's clue order and starting word on a fresh round, preserve the order during play and switches, and reshuffle only the active bucket on reset.
 - Preserve the existing Beginner, Intermediate and Advanced mechanics and 40-character collection. Asset production, game integration and publishing are separate actions; never treat incoming packages or their claimed PASS reports as approval to replace artwork.
+
+### Reusable template: supplied pictures to 40 playable characters
+
+This template records the approved workflow for all 40 characters: Beacon and Pulse plus the 38 additional supplied pictures. It is not an image-generation prompt that originally produced those pictures. Beacon/Pulse use bespoke independent SVG artwork; the other 38 reuse approved independent SVG artwork with missing garments added. Neither approach extracts layers from the PNGs.
+
+The following is Copilot's local integration template, not a prompt to send to GPT. Use it after the user supplies an approved PNG, replacing the placeholders with the character's actual data:
+
+```text
+Add a supplied character picture to both Body and Wearables picture games.
+
+Inputs:
+- Character ID: <stable-id>
+- Category: <Anime | Superhero | Cartoon | Manga>
+- Names: <English name> and <Hebrew name, stored separately>
+- Original picture: <local source PNG path>
+- Approved design: <identity, pose, palette, outfit, color or monochrome>
+- Fixed wearable vocabulary: <exactly 12 existing concept IDs>
+- Approved independent artwork, if available: <registry character ID>
+
+1. Preserve the source picture.
+   Copy it unchanged to picture-art/<stable-id>.png. Use this original
+   for exploration and the completion reward, never a replacement redraw.
+   Inspect the actual picture before placing highlights or authoring art.
+
+2. Create the independent building artwork.
+   Reuse suitable approved SVG layers; draw missing body/clothing/accessory
+   pieces with editable SVG paths and shapes. Follow the picture's design
+   as closely as practical, while clearly describing the build as a separate
+   approximation. Do not claim pixel extraction or exact reconstruction.
+   Keep 26 allowed body concepts plus the exact 12 wearable concepts.
+   Use the existing vocabulary/filtering helpers, not a new word list.
+   Draw actual missing garments; never rename excluded garment geometry.
+   Each concept must reveal only its own artwork on an initially empty
+   canvas. No whole-picture crops, masks, baked-in neighbors or outlines.
+
+3. Preserve alignment and rendering.
+   Keep one shared coordinate system per drawing and fixed global paint
+   order. Retain rear/front fragments under their common concept ID.
+   When reusing the legacy 600 x 800 artwork, use picture-collection.js
+   to scale uniformly onto 1024 x 1536 with its vertical centering offset.
+   Transform vector highlights with the artwork and namespace SVG IDs.
+   Resolve the fixed wardrobe deterministically without mutating the
+   original character, layer or accessory registries.
+
+4. Author original-picture locations separately.
+   Inspect the original 1024 x 1536 picture and record its own ellipses.
+   Do not copy vector coordinates onto the original image.
+   Record genuinely absent wearables in absentItems and show the existing
+   absence notice; retain their build vocabulary without fake highlights.
+   Explain covered anatomy rather than pretending it is visible clothing.
+
+5. Wire the character into the existing production-local pipeline.
+   For legacy-art characters, PicturePhotoData[<stable-id>] contains
+   sourceFile, itemIds, regions and absentItems; PictureWardrobe.build
+   supplies independent artwork and fixed accessories; PictureCollection
+   creates the game entry. For bespoke artwork, follow the existing
+   Beacon/Pulse entry pattern instead of forcing it through that adapter.
+   Game entries use id, category, nameHe, nameEn, image, itemIds, art
+   and optional absentItems. Ellipses use cx, cy, rx, ry and optional angle.
+   The art object contains width, height, defs, layers, regions and
+   photoRegions; each drawable fragment contains id, order and svg.
+   Reuse the current helpers and registries rather than creating a second
+   renderer. Do not load source-package or sandbox files at runtime.
+
+6. Preserve gameplay and verify the actual result.
+   Check exact concept IDs, nonempty isolated pieces, empty resets,
+   earned-only rendering, arbitrary answer order, fixed fragment order,
+   both sets of highlights and the final unchanged-picture reward.
+   Preserve shuffled clues, per-character/per-mode progress, wrong-answer
+   feedback, category selection and isolated image-failure fallback.
+   Review the original beside the build, all five themes, 390px and 1280px,
+   and local-file operation. Report limitations honestly.
+
+7. Keep preview, approval and publication separate.
+   Link the preview from the sandbox hub and obtain approval before
+   production publication. Do not commit or push merely because assets
+   were generated.
+```
+
+For a batch, repeat with explicit per-character inputs, not one generic recolored design. The full 40-character collection consists of Beacon/Pulse plus Anime 01-10, Superhero 03-10, Cartoon 01-10 and Manga 01-10, giving ten characters in each of the four categories. When intentionally extending the collection beyond these 40, update catalog count/category assertions and corresponding coverage together rather than bypassing validation.
 
 ## Body and Wearables game and retained previews
 

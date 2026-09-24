@@ -122,10 +122,22 @@
       return;
     }
     for (const region of regions) {
-      $("highlight").append(svgNode("ellipse", {
+      const attributes = {
         cx: region.cx, cy: region.cy, rx: region.rx, ry: region.ry,
-        transform: `rotate(${region.angle || 0} ${region.cx} ${region.cy})`, class: "picture-outline"
-      }));
+        transform: `rotate(${region.angle || 0} ${region.cx} ${region.cy})`
+      };
+      if (mode === "explore") {
+        attributes.rx = Math.max(26, region.rx + 10);
+        attributes.ry = Math.max(26, region.ry + 10);
+        const outline = svgNode("g");
+        outline.append(
+          svgNode("ellipse", { ...attributes, class: "picture-outline-contrast" }),
+          svgNode("ellipse", { ...attributes, class: "picture-outline-contrast picture-outline-contrast-inner" })
+        );
+        $("highlight").append(outline);
+      } else {
+        $("highlight").append(svgNode("ellipse", { ...attributes, class: "picture-outline" }));
+      }
     }
     $("location").textContent = `המיקום המסומן: ${byId.get(id).he}`;
     if (coveredBody.has(id) && (photograph() || state().learned.has("costume") || state().learned.has("boots"))) {

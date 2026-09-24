@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>שלוש דרכים להבליט פריט בתמונה</title>
+<script src="../../assets/theme-selector.js"></script>
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:24px 16px;font-family:"Segoe UI",Arial,sans-serif;background:#eef5ff;color:#203049}
+main{max-width:1260px;margin:auto}
+a{color:inherit}
+h1{font-size:clamp(24px,4vw,34px);margin:18px 0 8px}
+.intro{line-height:1.6;margin:0 0 16px}
+.controls{padding:16px;border:2px solid #c9d5e6;border-radius:20px;background:white}
+.fields,.actions{display:flex;gap:12px;align-items:end;flex-wrap:wrap}
+.actions{margin-top:12px;align-items:center}
+label{display:grid;gap:5px;font-weight:700}
+select,button{font:inherit;min-height:44px;border:2px solid #9aaec9;border-radius:12px;padding:8px 12px}
+select{max-width:100%;background:white}
+button{cursor:pointer;background:#eff5ff;color:#203049;font-weight:700}
+:focus-visible{outline:3px solid #af2685;outline-offset:3px}
+.baseline{display:flex;align-items:center;gap:8px;min-height:44px}
+input[type=checkbox]{width:22px;height:22px}
+.selection{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:14px 0 6px}
+#word-en{font-size:28px;font-weight:800}
+#word-he{font-size:21px;font-weight:700}
+#location-note{min-height:24px;margin:6px 0 12px;line-height:1.5}
+.comparison{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+article{min-width:0;padding:14px;border:2px solid #c9d5e6;border-radius:20px;background:white}
+h2{font-size:20px;margin:0 0 6px}
+.description{font-size:15px;line-height:1.5;min-height:45px;margin:0 0 12px}
+.stage{position:relative;aspect-ratio:2/3;max-width:420px;margin:auto;background:white;border-radius:12px;overflow:hidden}
+.stage img,.stage svg{display:block;width:100%;height:100%;position:absolute;inset:0}
+.stage img{object-fit:contain}
+.stage svg{pointer-events:none}
+.pulse{animation:attention 1.1s ease-in-out 3}
+@keyframes attention{0%,100%{opacity:1}50%{opacity:.45}}
+@media(prefers-reduced-motion:reduce){.pulse{animation:none}}
+@media(max-width:800px){.comparison{grid-template-columns:1fr}.description{min-height:0}}
+[hidden]{display:none!important}
+.error{padding:12px;border:2px solid #ac263e;background:#fff1f2;color:#78142c}
+.footnote{line-height:1.6;margin:18px 0}
+</style>
+</head>
+<body>
+<main>
+<a href="../sandbox.html">חזרה למרכז הבדיקות</a>
+<h1>איזה סימון הכי קל לראות?</h1>
+<p class="intro">אותה תמונה ואותה מילה בשלוש אפשרויות. בחרו גם פריטים קטנים, כמו טבעת או עגילים. האפשרות הראשונה אושרה למשחק הראשי; שתי האחרות נשארות להדגמה בלבד.</p>
+<div class="controls">
+  <div class="fields">
+    <label for="character">דמות<select id="character" lang="en" dir="ltr"></select></label>
+    <label for="word">מילה<select id="word" lang="en" dir="ltr"></select></label>
+    <button id="next" type="button">המילה הבאה</button>
+    <button id="replay" type="button">הפעילו שוב את ההדגשה</button>
+  </div>
+  <div class="actions">
+    <button type="button" data-example="ring">טבעת</button>
+    <button type="button" data-example="earrings">עגילים</button>
+    <button type="button" data-example="eyes">עיניים</button>
+    <button type="button" data-example="boots">מגפיים</button>
+    <label class="baseline"><input id="baseline" type="checkbox">השוו לסימון הקודם במשחק</label>
+  </div>
+</div>
+<div class="selection" aria-live="polite"><span id="word-en" lang="en" dir="ltr"></span><span id="word-he"></span></div>
+<p id="location-note"></p>
+<p id="error" class="error" role="alert" hidden></p>
+<noscript><p class="error">יש להפעיל JavaScript כדי להציג את התמונות והסימונים.</p></noscript>
+<div class="comparison">
+  <article>
+    <h2>1. קו עבה ובולט</h2>
+    <p class="description">מסגרת כהה עם קו צהוב בהיר. התמונה נשארת מוארת במלואה.</p>
+    <div class="stage" data-style="contrast"><img alt=""><svg viewBox="0 0 1024 1536" aria-hidden="true"></svg></div>
+  </article>
+  <article>
+    <h2>2. זרקור על הפריט</h2>
+    <p class="description">הפריט נשאר מואר, ושאר התמונה מתכהה בעדינות.</p>
+    <div class="stage" data-style="spotlight"><img alt=""><svg viewBox="0 0 1024 1536" aria-hidden="true"></svg></div>
+  </article>
+  <article>
+    <h2>3. פעימה קצרה וחץ</h2>
+    <p class="description">הסימון פועם שלוש פעמים. חץ קבוע מצביע לאחד האזורים המסומנים.</p>
+    <div class="stage" data-style="pointer"><img alt=""><svg viewBox="0 0 1024 1536" aria-hidden="true"></svg></div>
+  </article>
+</div>
+<p class="footnote">אפשר להשוות את כל ארבעים הדמויות. בתצוגת טלפון האפשרויות מופיעות זו מתחת לזו. כאשר מוגדרת הפחתת תנועה במכשיר, הסימון והחץ מוצגים ללא פעימה.</p>
+</main>
+<script src="../../english/body-and-wearables/illustrated-vocabulary.js"></script>
+<script src="../../english/body-and-wearables/illustrated-content.js"></script>
+<script src="../../english/body-and-wearables/beacon-art.js"></script>
+<script src="../../english/body-and-wearables/pulse-art.js"></script>
+<script src="../../english/body-and-wearables/picture-regions-anime-cartoon.js"></script>
+<script src="../../english/body-and-wearables/picture-regions-hero-manga.js"></script>
+<script>
+"use strict";
+(() => {
+  const $ = id => document.getElementById(id);
+  const stages = [...document.querySelectorAll(".stage")];
+  const base = "../../english/body-and-wearables/picture-art/";
+  const ns = "http://www.w3.org/2000/svg";
+  function fail(message) {
+    $("error").textContent = message;
+    $("error").hidden = false;
+  }
+  if (!window.IllustratedContent || !window.BeaconDemoArt || !window.PulseDemoArt ||
+      !window.PicturePhotoData || Object.keys(window.PicturePhotoData).length !== 38) {
+    fail("נתוני הדמו לא נטענו. יש לשמור את הדמו בתוך תיקיית האתר עם קובצי המשחק.");
+    document.querySelectorAll("button,select,input").forEach(control => { control.disabled = true; });
+    return;
+  }
+  const vocabulary = new Map(IllustratedContent.vocabulary.map(word => [word.id, word]));
+  const characters = [
+    { id: "superhero-01", name: "Beacon", image: "beacon.png", regions: BeaconDemoArt.photoRegions, absentItems: [] },
+    { id: "superhero-02", name: "Pulse", image: "pulse.png", regions: PulseDemoArt.photoRegions, absentItems: [] },
+    ...Object.entries(PicturePhotoData).map(([id, photo]) => ({
+      id, name: photo.sourceFile.replace(/^\d+-/, "").replace(/\.png$/i, ""),
+      image: `${id}.png`, regions: photo.regions, absentItems: photo.absentItems
+    }))
+  ];
+  const covered = new Set(["shoulders", "chest", "waist", "arms", "elbows", "legs", "thighs", "knees", "ankles", "feet", "heels"]);
+  function node(tag, attributes = {}) {
+    const result = document.createElementNS(ns, tag);
+    Object.entries(attributes).forEach(([name, value]) => result.setAttribute(name, String(value)));
+    return result;
+  }
+  function ellipse(region, attributes = {}) {
+    return node("ellipse", {
+      cx: region.cx, cy: region.cy, rx: region.rx, ry: region.ry,
+      transform: `rotate(${region.angle || 0} ${region.cx} ${region.cy})`, ...attributes
+    });
+  }
+  function outline(parent, region, color, width) {
+    parent.append(ellipse(region, { fill: "none", stroke: color, "stroke-width": width, "vector-effect": "non-scaling-stroke" }));
+  }
+  function pointer(svg, region) {
+    const angle = (region.angle || 0) * Math.PI / 180;
+    const ex = Math.hypot(region.rx * Math.cos(angle), region.ry * Math.sin(angle));
+    const ey = Math.hypot(region.rx * Math.sin(angle), region.ry * Math.cos(angle));
+    // Place the arrow on the side with most room, accounting for rotated ellipses.
+    const sides = [
+      { dx: -1, dy: 0, extent: ex, room: region.cx - ex },
+      { dx: 1, dy: 0, extent: ex, room: 1024 - region.cx - ex },
+      { dx: 0, dy: -1, extent: ey, room: region.cy - ey },
+      { dx: 0, dy: 1, extent: ey, room: 1536 - region.cy - ey }
+    ].sort((a, b) => b.room - a.room);
+    const { dx, dy, extent, room } = sides[0];
+    const x = region.cx + dx * (extent + 14), y = region.cy + dy * (extent + 14);
+    const length = Math.min(160, room - 40);
+    const d = `M ${x + dx * length} ${y + dy * length} L ${x} ${y}
+      M ${x + dx * 30 - dy * 20} ${y + dy * 30 + dx * 20} L ${x} ${y}
+      L ${x + dx * 30 + dy * 20} ${y + dy * 30 - dx * 20}`;
+    for (const [color, width] of [["#ffffff", 9], ["#7b145e", 4]]) {
+      svg.append(node("path", { d, class: "pointer", fill: "none", stroke: color,
+        "stroke-width": width, "stroke-linecap": "round", "stroke-linejoin": "round", "vector-effect": "non-scaling-stroke" }));
+    }
+  }
+  function draw() {
+    const character = characters.find(entry => entry.id === $("character").value);
+    const word = vocabulary.get($("word").value);
+    const absent = character.absentItems.includes(word.id);
+    const original = character.regions[word.id];
+    const baseline = $("baseline").checked;
+    $("word-en").textContent = word.canonical;
+    $("word-he").textContent = word.he;
+    $("location-note").textContent = absent ? "הפריט אינו נראה בתמונת המקור, ולכן לא מסומן כאן." :
+      covered.has(word.id) ? "הסימון מציין מיקום בגוף; האזור עשוי להיות מכוסה בבגד." :
+      baseline ? "בכל שלוש התמונות מוצג כעת הסימון המקורי, לצורך השוואה." : "אותו פריט מסומן בכל שלוש התמונות.";
+    for (const stage of stages) {
+      const svg = stage.querySelector("svg");
+      const image = stage.querySelector("img");
+      const source = base + character.image;
+      if (image.getAttribute("src") !== source) {
+        image.onerror = () => fail("תמונת הדמות לא נטענה. בדקו שקובץ התמונה קיים בתיקיית המשחק.");
+        image.src = source;
+      }
+      image.alt = `${character.name}: ${word.canonical}`;
+      svg.replaceChildren();
+      if (absent) continue;
+      if (baseline) {
+        original.forEach(region => svg.append(ellipse(region, {
+          fill: "#f8dc5533", stroke: "#a01362", "stroke-width": 6, "stroke-dasharray": "10 5"
+        })));
+        continue;
+      }
+      const regions = original.map(region => ({ ...region, rx: Math.max(26, region.rx + 10), ry: Math.max(26, region.ry + 10) }));
+      const style = stage.dataset.style;
+      if (style === "spotlight") {
+        const defs = node("defs");
+        const mask = node("mask", { id: "spotlight-mask", maskUnits: "userSpaceOnUse", x: 0, y: 0, width: 1024, height: 1536 });
+        mask.append(node("rect", { width: 1024, height: 1536, fill: "white" }));
+        regions.forEach(region => mask.append(ellipse(region, { fill: "black" })));
+        defs.append(mask);
+        svg.append(defs, node("rect", { width: 1024, height: 1536, fill: "#081020", opacity: .58, mask: "url(#spotlight-mask)" }));
+      }
+      const group = node("g", { class: style === "pointer" ? "pulse" : "steady" });
+      svg.append(group);
+      regions.forEach(region => {
+        outline(group, region, style === "contrast" ? "#101827" : "#ffffff", style === "spotlight" ? 3 : 8);
+        if (style !== "spotlight") outline(group, region, style === "contrast" ? "#fff044" : "#7b145e", 4);
+      });
+      if (style === "pointer") pointer(svg, regions[0]);
+    }
+  }
+  function selectCharacter() {
+    const character = characters.find(entry => entry.id === $("character").value);
+    const previous = $("word").value;
+    const ids = [...new Set([...Object.keys(character.regions), ...character.absentItems])];
+    if (ids.length !== 38 || ids.some(id => !vocabulary.has(id))) {
+      fail("נתוני המילים של הדמות אינם תקינים.");
+      return;
+    }
+    $("error").hidden = true;
+    $("word").replaceChildren(...ids.map(id => new Option(vocabulary.get(id).canonical, id)));
+    $("word").value = ids.includes(previous) ? previous : ids.includes("ring") ? "ring" : ids[0];
+    document.querySelectorAll("[data-example]").forEach(button => { button.disabled = !ids.includes(button.dataset.example); });
+    draw();
+  }
+  $("character").replaceChildren(...characters.map(character => new Option(character.name, character.id)));
+  $("character").addEventListener("change", selectCharacter);
+  $("word").addEventListener("change", draw);
+  $("baseline").addEventListener("change", draw);
+  $("replay").addEventListener("click", draw);
+  $("next").addEventListener("click", () => {
+    $("word").selectedIndex = ($("word").selectedIndex + 1) % $("word").options.length;
+    draw();
+  });
+  document.querySelectorAll("[data-example]").forEach(button => button.addEventListener("click", () => {
+    $("word").value = button.dataset.example;
+    draw();
+  }));
+  selectCharacter();
+})();
+</script>
+</body>
+</html>

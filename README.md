@@ -9,11 +9,13 @@ Every active page includes the approved refreshed design and a persistent five-t
 
 The root page (`index.html`) is a hub that links to every game.
 
-## Grade 5 English preview
+## Grade 5 English
 
-The [expanded Grade 5 preview](./sandbox/english-grade-5/index.html) is linked from
-the sandbox, not the production English hub. Vocabulary and reading remain on
-the Grade 5 hub; [Grammar](./sandbox/english-grade-5/grammar/index.html) has its
+The [Grade 5 English academy](./english/grade-5/index.html) is linked from
+the production English hub. The [sandbox preview](./sandbox/english-grade-5/index.html)
+is retained separately; production has its own pages and recordings with no sandbox
+runtime dependencies. Vocabulary and reading remain on
+the Grade 5 hub; [Grammar](./english/grade-5/grammar/index.html) has its
 own Grade 5 page with lessons and mixed practice. These areas retain 16 lessons
 and 1,022 practice questions:
 120 vocabulary words (40 per topic, with meaning, spelling and context formats),
@@ -34,18 +36,21 @@ and a partial round may finish a bank. Separate lesson buttons remain available,
 and in-game help follows the current question's topic. Previous grammar/topic
 hash links on the hub redirect to the dedicated grammar page. Learner pages
 display round progress, not question-bank inventory totals.
+Vocabulary advances automatically two seconds after a correct answer, including
+to the end-of-round summary. Both Next buttons remain available. Leaving or
+restarting the question, opening a lesson, or leaving the page cancels the timer;
+reading and grammar retain manual progression.
 
-The sandbox hub groups routes into foundations, communication, and missions/review.
+The Grade 5 hub groups routes into foundations, communication, and missions/review.
 All routes remain freely accessible; the filters do not impose prerequisites.
-The following extensions also stay in the sandbox, pending review and separate
-approval to publish or promote them:
+The following extensions are included in the approved production release:
 
 | Route | What it adds |
 | --- | --- |
-| [Connected Missions](./sandbox/english-grade-5/connected-missions/index.html) | Original scenarios that connect reading, listening, speaking and writing, with optional local-only speech recognition and manual alternatives. |
-| [Mixed Review](./sandbox/english-grade-5/mixed-review/index.html) | Structured vocabulary and grammar questions, followed by fresh examples for skills that needed support. |
-| [Listening Lab](./sandbox/english-grade-5/listening-lab/index.html) | A selectable longer-content route for sequencing, evidence-based inference and reasons. |
-| [Writing Workshop](./sandbox/english-grade-5/writing-workshop/index.html) | Guided revision of authored examples: capitals, punctuation, word order, whole-sentence paragraph order and connectors, separate from ungraded free writing. |
+| [Connected Missions](./english/grade-5/connected-missions/index.html) | Original scenarios that connect reading, listening, speaking and writing, with optional local-only speech recognition and manual alternatives. |
+| [Mixed Review](./english/grade-5/mixed-review/index.html) | Structured vocabulary and grammar questions, followed by fresh examples for skills that needed support. |
+| [Listening Lab](./english/grade-5/listening-lab/index.html) | A selectable longer-content route for sequencing, evidence-based inference and reasons. |
+| [Writing Workshop](./english/grade-5/writing-workshop/index.html) | Guided revision of authored examples: capitals, punctuation, word order, whole-sentence paragraph order and connectors, separate from ungraded free writing. |
 
 Review suggestions reflect activity in the current page visit, not a diagnosis
 or a cross-game learner profile. Help and retries remain visible as supported
@@ -56,12 +61,12 @@ do not require a private grammar service, account or model installation.
 
 The hub also links to two productive-skills activities:
 
-- [Sentence Builder](./sandbox/english-grade-5/sentence-builder/index.html):
+- [Sentence Builder](./english/grade-5/sentence-builder/index.html):
   tap-to-order tiles for ordinary sentences, questions, negatives and connectors,
   with lessons, guided examples, retries and step-by-step help. Identical tiles
   are interchangeable, and explicitly supported alternative orders are accepted.
   Topic practice and mixed rounds use unseen activities before repeats.
-- [Writing Workshop](./sandbox/english-grade-5/writing-workshop/index.html):
+- [Writing Workshop](./english/grade-5/writing-workshop/index.html):
   original illustrated scenes, routines, messages and paragraphs, with lessons,
   sentence frames, planning, word banks, models and self-review checklists.
   Support stages stay unlocked. Drafts remain available while switching stages
@@ -70,7 +75,7 @@ The hub also links to two productive-skills activities:
   Its separate guided-revision mode contains 30 editing tasks and five lessons;
   switching modes preserves the current free draft, plan and self-review.
 
-The [Listening Lab](./sandbox/english-grade-5/listening-lab/index.html) adds
+The [Listening Lab](./english/grade-5/listening-lab/index.html) adds
 original dialogues, instructions and short stories, with guided lessons,
 randomized comprehension questions, replay and slower playback. Transcripts
 and answer explanations are optional support; reading a transcript counts as
@@ -87,13 +92,13 @@ recordings or official assessment audio. If playback fails, the learner can
 use transcript support instead.
 
 To regenerate audio after changing a script in the page's `listening-data`
-JSON, run `sandbox\english-grade-5\listening-lab\generate-audio.ps1` with
+JSON, run `english\grade-5\listening-lab\generate-audio.ps1` with
 PowerShell 7 on Windows with the Microsoft David Desktop and Zira Desktop
 voices installed. The generator reads the page directly and produces the
 WAV files and a hash manifest under `audio/`. This is a maintenance step,
 not a requirement to play the game.
 
-The [Speaking Practice](./sandbox/english-grade-5/speaking-practice/index.html)
+The [Speaking Practice](./english/grade-5/speaking-practice/index.html)
 page connects listening to speaking: repeat a model, answer aloud, describe
 original illustrated scenes and practise a role in a short dialogue.
 The expanded set adds practice around bus tickets, shop opening times,
@@ -138,11 +143,11 @@ Reloading clears the adaptive history; no account or service is needed.
 
 Speaking models use the same offline WAV format. From the repository root,
 regenerate its audio with
-`.\sandbox\english-grade-5\listening-lab\generate-audio.ps1 -Page .\sandbox\english-grade-5\speaking-practice\index.html -DataId speaking-data`.
+`.\english\grade-5\listening-lab\generate-audio.ps1 -Page .\english\grade-5\speaking-practice\index.html -DataId speaking-data`.
 Its recordings and manifest stay in the Speaking Practice folder; the shared
 generator is needed only for maintenance, not at runtime.
 
-The separate [Speaking Town missions](./sandbox/english-grade-5/speaking-town/index.html)
+The separate [Speaking Town missions](./english/grade-5/speaking-town/index.html)
 include the original Lost Backpack adventure and everyday conversations for
 ordering a snack, borrowing a book and asking for directions. The page is linked
 from the Grade 5 speaking card and the existing speaking exercises.
@@ -193,7 +198,7 @@ still earn their clue; missing mission details invite a retry. These hints are
 not a general grammar assessment, and unrecognised answers are not labelled
 near-correct just because they contain a keyword.
 
-On both speaking pages, microphone mode requires a secure context, a browser implementing
+On all three speaking pages, microphone mode requires a secure context, a browser implementing
 `SpeechRecognition.processLocally` and `available()`, and a locally available
 English pack. An explicit download button may install a browser language pack;
 it does not start the microphone. `unavailable` means manual mode only, not a
@@ -203,15 +208,16 @@ there. No cloud fallback, speech uploads, saved recordings or transcript logs
 are implemented. Microphone behaviour may vary by browser and device.
 
 Generate its original NPC and model audio with
-`.\sandbox\english-grade-5\listening-lab\generate-audio.ps1 -Page .\sandbox\english-grade-5\speaking-town\index.html -DataId town-data`.
+`.\english\grade-5\listening-lab\generate-audio.ps1 -Page .\english\grade-5\speaking-town\index.html -DataId town-data`.
 
-The preview follows the existing five-theme design and works locally without a server.
+Grade 5 follows the existing five-theme design and works locally without a server.
 Each page keeps its curriculum and game logic in its own HTML. The site does not
 save or transmit child speech or answers; round progress lasts only until reload.
 Ministry guidance and
 historical assessments informed the level and exercise types; third-party
-worksheets and recordings are not copied into the game. Production promotion
-to `english/grade-5/` requires separate approval.
+worksheets and recordings are not copied into the game. The retained sandbox
+is a separate review snapshot, not a production dependency or an automatically
+synchronized copy.
 
 ## Body and Wearables picture games
 
@@ -275,6 +281,7 @@ The preview retains its demo-only Order of Operations answer-choice correction. 
 | [`english/body-and-wearables/`](./english/body-and-wearables/) | בונים דמות במילים | All-grades English spelling game: 40 illustrated characters, ten per style. Beginner has 38 words: 26 body parts and 12 clothing/accessory concepts. Typed levels retain their own word pools and five compatible accessories. Starts empty; correct words reveal independent pieces. |
 | [`english/grade-3/`](./english/grade-3/) | English Grade 3 | Learn English words via pictures and phonics with sound and Hebrew translations. |
 | [`english/grade-4/`](./english/grade-4/) | English Grade 4 | Six learning worlds containing all 28 vocabulary, grammar, reading, and guided-writing topics, with mixed practice, Hebrew lessons, English audio, and detailed bilingual answer explanations. |
+| [`english/grade-5/`](./english/grade-5/) | English Grade 5 | Vocabulary, reading, grammar, sentence building, writing, listening, speaking, connected missions and mixed review, with original bundled audio and optional on-device microphones. |
 | [`english/english-12plus/`](./english/english-12plus/) | English 12+ | English adventure games for ages 12 and up. |
 | [`kindergarten/`](./kindergarten/) | גַּן · Kindergarten | Picture Pairs and Number War for young learners. |
 
@@ -300,6 +307,9 @@ edu-games/
 │   │   └── index.html     # Grade 3 English games
 │   ├── grade-4/
 │   │   └── index.html     # Grade 4 English academy with 6 worlds and 28 topics
+│   ├── grade-5/
+│   │   ├── index.html     # Grade 5 vocabulary, reading and learning-route hub
+│   │   └── [8 game folders]/index.html
 │   └── english-12plus/
 │       ├── index.html
 │       └── secret-agent/index.html

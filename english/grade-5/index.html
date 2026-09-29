@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>English Academy · Grade 5 Preview</title>
+<title>English Academy · Grade 5</title>
 <script src="../../assets/theme-selector.js" defer></script>
 <link rel="stylesheet" href="../../assets/refresh.css">
 <style>
@@ -21,7 +21,7 @@
   header{text-align:center;margin:12px 0 20px}
   .logo{font-size:clamp(30px,6vw,48px);line-height:1.2;margin:10px 0;color:var(--accent)}
   .subtitle{margin:6px 0;font-size:18px;font-weight:700}
-  .preview{display:inline-block;padding:4px 12px;border:1px dashed var(--accent);border-radius:20px;font-size:14px}
+  .grade-label{display:inline-block;padding:4px 12px;border:1px dashed var(--accent);border-radius:20px;font-size:14px}
   .notice,.source-note{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:14px 18px;margin:16px 0}
   .notice p,.source-note p{margin:4px 0}
   .actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:16px 0}
@@ -106,9 +106,9 @@
 </head>
 <body id="edu-refresh">
 <main>
-  <a class="back" href="../sandbox.html">חזרה למרכז הבדיקות</a>
+  <a class="back" href="../index.html">חזרה למשחקי האנגלית</a>
   <header>
-    <span class="preview">תצוגת בדיקה מורחבת · כיתה ה׳</span>
+    <span class="grade-label">אנגלית לכיתה ה׳</span>
     <h1 class="logo">לומדים אנגלית, צעד אחר צעד</h1>
     <p class="subtitle" lang="en" dir="ltr">English Academy · Grade 5</p>
     <p>שיעור קצר, ניסיון משותף ומשחק לתרגול עצמאי</p>
@@ -129,7 +129,7 @@
     <div id="topics" class="topic-grid"></div>
     <p class="pending-note">אפשר לחזור לכאן ולבחור מסלול אחר בכל רגע. הסיכומים שייכים לביקור בעמוד שבו תרגלתם, ולא מצטברים בין המשחקים. אין ציון אוטומטי לכתיבה חופשית או להגייה.</p>
     <details class="source-note">
-      <summary>להורים: תוכן, מקורות ומטרת התצוגה</summary>
+      <summary>להורים: תוכן, מקורות ודרך הלמידה</summary>
       <p>התרגילים, הדוגמאות והסיפורים נכתבו במיוחד למשחק. אין כאן העתקה של דפי עבודה, תמונות או הקלטות מהמקורות.</p>
       <p>תוכנית משרד החינוך מנחה את רמת הלימוד; מבחני עבר ודפי תרגול עזרו לבחור סוגי פעילויות. זו אינה תוכנית לימודים מלאה או תוכן שאושר בידי משרד החינוך.</p>
       <p>הנושאים הבסיסיים משמשים חזרה, והקריאה והשימוש במילים בתוך משפטים מרחיבים אותה. כיתה ה׳ היא חלק מרצף למידה, ולא נקודת סיום לכל מיומנויות האנגלית היסודית.</p>
@@ -195,7 +195,7 @@
     </section>
   </section>
   <p id="audio-status" role="status" hidden></p>
-  <footer>תצוגה מקומית לבדיקה · האתר הראשי נשאר ללא שינוי</footer>
+  <footer>אנגלית לכיתה ה׳ · רענון העמוד מתחיל ביקור חדש.</footer>
 </main>
 <dialog id="lesson" aria-labelledby="lesson-title">
   <div class="lesson-head"><h2 id="lesson-title"></h2><button id="close-lesson" type="button" autofocus>סגירה</button></div>
@@ -1072,7 +1072,7 @@ function route() {
     showMenu();
     if (id) {
       $("audio-status").hidden=false;
-      $("audio-status").textContent="המשחק שבקישור אינו קיים בתצוגה הזו. בחרו משחק מהתפריט.";
+      $("audio-status").textContent="המשחק שבקישור אינו קיים. בחרו משחק מהתפריט.";
     }
   }
 }

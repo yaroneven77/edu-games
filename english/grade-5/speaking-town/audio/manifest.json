@@ -1,0 +1,362 @@
+[
+  {
+    "id": "school-welcome",
+    "file": "audio/school-welcome.wav",
+    "bytes": 335782,
+    "sha256": "587348cfb40af7f1aa68b1ddebb21ad19e879fae6cc28b308e471d9a8f9b61c5",
+    "sourceHash": "c741101a5c1b5d3c6dfe764d877d04ca8df647ce0ec74af40a113c4455bc0c91",
+    "scriptHash": "4e0363a2992d4e3fe36889e86c5ba70e78235df43137d97d31241a2b6e42e45f"
+  },
+  {
+    "id": "school-clue",
+    "file": "audio/school-clue.wav",
+    "bytes": 375034,
+    "sha256": "3d426d425482fad791c6ea714281b917b516bb6154592b85f20585fa4eb37655",
+    "sourceHash": "5c0ef03366d84edf61baad5c95a36defa1bfff5a90a40015522461487806da14",
+    "scriptHash": "d9f5d859726483d4fb225bc4478472f2b1c68c71a79667649ab5b39dd248b068"
+  },
+  {
+    "id": "library-welcome",
+    "file": "audio/library-welcome.wav",
+    "bytes": 222744,
+    "sha256": "531f858622fddc339fb31cc5c6ec6d1ee307eac0a9f8d2dedf9d6c036cc06d3c",
+    "sourceHash": "68265e3a8d2b27c3581aab3ed8907ee4aea03a2f4a2c4bb62424e3d746b785bd",
+    "scriptHash": "a42da662fa6a4d5582c61e9b4ccf18649ed99c7bf21f305e6a13616959de1fb7"
+  },
+  {
+    "id": "library-clue",
+    "file": "audio/library-clue.wav",
+    "bytes": 321866,
+    "sha256": "e11f3bc93b99a1694a234a1dd016cd8ec0191cc3d1d999661238d678d590a281",
+    "sourceHash": "0266d5c757f17756a212fa8709fae5b007cd6344a3d0466597c987b9f76c5a08",
+    "scriptHash": "37f1e07e297a1d9a90a9c35da2d35ce9b9b246658c716e820e3ab1e20c5f2db2"
+  },
+  {
+    "id": "cafe-welcome",
+    "file": "audio/cafe-welcome.wav",
+    "bytes": 307336,
+    "sha256": "9fa80a4b19a7da1439e26e62e7ac6a293903db6a21e02dbe10e5bdaec456cc7e",
+    "sourceHash": "60c43ff8b1ccd8e4e45fad99aced5b8891edec463dccb8302d20de89fbda302d",
+    "scriptHash": "a752e0a587e837ccdab71f73379ddcd1437477dc1a7b5391009a91a5109ff387"
+  },
+  {
+    "id": "cafe-clue",
+    "file": "audio/cafe-clue.wav",
+    "bytes": 339528,
+    "sha256": "8c52b946cd1ec24609c418b92a109bb70e54c2b0a79914f76dbe561074e87f8a",
+    "sourceHash": "ced8353f83c34b2b2b42ca958fbd19403a727b4936c082439e2720154b4a81bf",
+    "scriptHash": "2c7d89069e11d916a9e9d01dc52e10b413f6379bd93e1a9357b2dec658efe97a"
+  },
+  {
+    "id": "playground-welcome",
+    "file": "audio/playground-welcome.wav",
+    "bytes": 334950,
+    "sha256": "6709a39744e63f119aa10323599ba7e4cbf83f96ac461691a132b77894fcf05e",
+    "sourceHash": "4c00444bfaf7524bff0c0790e6520cf9450eab4e7049bcf477f136213ae2d17a",
+    "scriptHash": "efc080708d5604dc7422c74db2db9e06fcb0f37d5e75da58ea2f2a4c5d3925ba"
+  },
+  {
+    "id": "mission-complete",
+    "file": "audio/mission-complete.wav",
+    "bytes": 423084,
+    "sha256": "36d55cc26090d3b8edb5d650344cf51b87750e04126a42eee303aea6a44a7dfc",
+    "sourceHash": "e6f2785532dbb70609f7d812aa187b2ae26680830af5f1f9bf51ffc1bb8401e9",
+    "scriptHash": "1ad40427da6cfa2142a56663765249cee8ffb2aed0bcb170e18e2ea07a2b27a9"
+  },
+  {
+    "id": "explore-library",
+    "file": "audio/explore-library.wav",
+    "bytes": 343768,
+    "sha256": "a8b2715d7f4499461e52033e063621fd9e2c3e38820d786fdd067f768011c488",
+    "sourceHash": "66af0d72a31f572031950e5fd47d9ca33812f2b4e2bafe7f8cbef4e246cb62b5",
+    "scriptHash": "0a89d439625f7dd2a64bb73350f4ec60b5a3ca66f5e75177933aefe4ba3c4866"
+  },
+  {
+    "id": "explore-cafe",
+    "file": "audio/explore-cafe.wav",
+    "bytes": 296528,
+    "sha256": "239bcdba96ad3b60061ad66eea7db03012304e9d715fbb73bc73b3f377f2d036",
+    "sourceHash": "e84f892015888b1d0d6c2cbee416cd1c38691a0a57415170a6d54e8faa4c4031",
+    "scriptHash": "30d15cd4c661c2ecbddcd876f083516e78a2c86545eeafe74b499f85994201c8"
+  },
+  {
+    "id": "explore-playground",
+    "file": "audio/explore-playground.wav",
+    "bytes": 321836,
+    "sha256": "05687b58790126a08e885f218a1d397ed5ce60e5ed3d6023207f2ffd2426af37",
+    "sourceHash": "2497a24b72d6ca32fdbf33befe532ec0ec20c2c0ea2175a8c93a2a000d297e2c",
+    "scriptHash": "8fff0b1b52d5aaa2c43340336f18ffb2169ef543ea657c5c19d0f8f6ffc0094a"
+  },
+  {
+    "id": "model-description",
+    "file": "audio/model-description.wav",
+    "bytes": 114088,
+    "sha256": "8dfdb74e56587b0c27b0af42548e6e6478d491e78a95d83703a9266063e7fb0b",
+    "sourceHash": "2822a862be637cbe3c248a47ad39a73569458c1beaf94a684b04eb8284c1e9b1",
+    "scriptHash": "0071a49f7b147a11ed7df54be2fb91e2a4a12dcb191b483fd9e0e20ddbd9343d"
+  },
+  {
+    "id": "model-help",
+    "file": "audio/model-help.wav",
+    "bytes": 188550,
+    "sha256": "b9706f041ab59aad16c0b1f70f41e4fa374dda40511047f51d9c65191f233d6f",
+    "sourceHash": "b24727fb38b51ca1f86143f2a26b3c3b0b7741354f34ef096ec7a0d6410e18cb",
+    "scriptHash": "7fc359bf50b0d391dac9330277d0560d44293f7b513a8adc654d7d2e6d902219"
+  },
+  {
+    "id": "model-directions",
+    "file": "audio/model-directions.wav",
+    "bytes": 174190,
+    "sha256": "0d3c426eb406690399d9ce3a7d9c3ad64f6a48c3b2427646923a4a867db96f43",
+    "sourceHash": "c92fee50532245f6b7a6835657adff57835001895db26d7f87cb66c0e29dd557",
+    "scriptHash": "10da72b58c83833aa5db447a05de0248b44e6baa4752883ed8db2e77df8859bf"
+  },
+  {
+    "id": "lesson-dialogue",
+    "file": "audio/lesson-dialogue.wav",
+    "bytes": 575942,
+    "sha256": "8677158c686d31479e60b99f558e7a16c4c3d4e35e3228f404942f8c3da22e60",
+    "sourceHash": "3d844b7883c0ab8e5ff5048d135213384d64fc6050cc071896431aecfd715617",
+    "scriptHash": "69581cde5b2b78812aa29dcf187449e7021f909d83f754003d172b3c59449e15"
+  },
+  {
+    "id": "snack-apple-welcome",
+    "file": "audio/snack-apple-welcome.wav",
+    "bytes": 296750,
+    "sha256": "d2ba52bf9df8e556920ff88fb59d800a2a40abab0cac9c364153bdf2cb77562a",
+    "sourceHash": "f79842934028aceaf52af77518bc5ae5eade4a4c8dd9fb9b49b1316ea9c74ce4",
+    "scriptHash": "1fb166a075f9cd84a7f77ced7b7b73fad93a9773abefd47c1cc70bcb232fa327"
+  },
+  {
+    "id": "snack-apple-reply",
+    "file": "audio/snack-apple-reply.wav",
+    "bytes": 270738,
+    "sha256": "8c0930e5e9ecb4935754cb831a85601da4b84d7102d687bdcb8fa9d71ac74646",
+    "sourceHash": "7ac0d036d283af2447a34879469179a625efb528c298cf8eb8b60d1b48f951f2",
+    "scriptHash": "36133fae37d5a889ac2118adc47f70d5b2beb0883aacefb2810d92c6d60d0e1e"
+  },
+  {
+    "id": "snack-water-welcome",
+    "file": "audio/snack-water-welcome.wav",
+    "bytes": 227748,
+    "sha256": "2b21a8d6d6ab6632ea2ca48b79c2cfc39757e1b5ca599d689500ae440d7ca99a",
+    "sourceHash": "f39f86708730c45164959eebb60749f40451ced4f6ebb193df521d5e8b85a24f",
+    "scriptHash": "52b33d3978d219ddf3fb9bff466abffe1d04f62491361274dca4714869632ddb"
+  },
+  {
+    "id": "snack-water-reply",
+    "file": "audio/snack-water-reply.wav",
+    "bytes": 222454,
+    "sha256": "7b1cda0d2ca887886e4b3208b66e854d8a1e344ff3ea21fdbb0565c0e5ebecb4",
+    "sourceHash": "03fdee37704333f32f0092da551ff3ce2b40563c540af4aadabc107731656f27",
+    "scriptHash": "0bc1450218333c0f35c7bf2519a073cc94dab0d08d4c821c6df77a2155c5892e"
+  },
+  {
+    "id": "snack-price-welcome",
+    "file": "audio/snack-price-welcome.wav",
+    "bytes": 255084,
+    "sha256": "21ce3c986c27ee36e8fbd7df7081f10a4a8c80b81b18190bd66fc94b512e47b7",
+    "sourceHash": "16803e63e51e22bb1843ae69d0b1499731c785e576cd3311b9ddfc52c0fda90b",
+    "scriptHash": "a5f85b6105e649aeec6de14a8dda903ec4eff2ab7d33ade033d9a0872ecd0d0f"
+  },
+  {
+    "id": "snack-price-reply",
+    "file": "audio/snack-price-reply.wav",
+    "bytes": 283084,
+    "sha256": "2a92f17bbea4534385218f6a1b362307b34b1124c278e7d36b19b2cb3ac884dd",
+    "sourceHash": "9b0dfc8ef8e673ab94d7e2e105e9a8b21dc99d1e57767449d9e276aad176492c",
+    "scriptHash": "7017742feb53265b09feab89322e235f32768776b1beed03da722646b40fc25d"
+  },
+  {
+    "id": "snack-model-apple",
+    "file": "audio/snack-model-apple.wav",
+    "bytes": 146126,
+    "sha256": "35ba614c7c070e1a32a04b16d393639c85794bc8536ba65d701bb08f4878ba25",
+    "sourceHash": "647d34bc671aef4aed27270bb6a4df0c275ce4384a3be53263c52ef7364e914b",
+    "scriptHash": "0ee894aacc85dbe1d400fbe8cf6a771a09825be58dd214f32b0659c5974e7f0e"
+  },
+  {
+    "id": "snack-model-water",
+    "file": "audio/snack-model-water.wav",
+    "bytes": 156206,
+    "sha256": "070b7897096c2b9e9cf5bf818ea5bc44417b6213da51268ff903935b394e9465",
+    "sourceHash": "4abb0c124f2593183ac9841e5ffd96c30af7a92f122fc98579a4c63838b82a29",
+    "scriptHash": "a6bd817148a88f8a6f05f55ce62243ea8c3d1bb7103904b0bdbe7ee555f90d4f"
+  },
+  {
+    "id": "snack-model-price",
+    "file": "audio/snack-model-price.wav",
+    "bytes": 134606,
+    "sha256": "f70ff82daa2ce409fee4bf7f37d6c5f710db6f80ae54cddb8317588adf937c65",
+    "sourceHash": "76d95cb6a16f9bc95ebac8c62731f6f4e4ba2c32b59c2f1be1232aa07cf7f3b1",
+    "scriptHash": "083a67b674eaf0584526062e376602f75efb8bd0bd0b0475ac2f7fef07289238"
+  },
+  {
+    "id": "snack-dialogue",
+    "file": "audio/snack-dialogue.wav",
+    "bytes": 970454,
+    "sha256": "5d4fca0d5f5a2c52359880289dc5a2120393c1bc172359e8f140f914131b06fd",
+    "sourceHash": "1998e25ebb06e0f057233ba36ddcbd323261e306908f267e30d5325e2df51c5c",
+    "scriptHash": "be061daf65af59d84b3423b6b2656a52e972440b2e2e64d6027417568bb521da"
+  },
+  {
+    "id": "books-borrow-welcome",
+    "file": "audio/books-borrow-welcome.wav",
+    "bytes": 313558,
+    "sha256": "69fb46d383a9207918cd2def398b115c5f7806b91db856d0b7c6f00262dba09b",
+    "sourceHash": "20dc15af852e22ccf3d9cf8e57fd60a795f23b94125aa30ab4d578312544d6c2",
+    "scriptHash": "7d2b8151b68794fe9564e2d63ad79b2dfd8410efdc3ee6a661c2a098f2507cbc"
+  },
+  {
+    "id": "books-borrow-reply",
+    "file": "audio/books-borrow-reply.wav",
+    "bytes": 287658,
+    "sha256": "c64e513560333db69bbdaab2693b4c1338432e6b90d1ab336dd874f21e976799",
+    "sourceHash": "ef07e3b9d59aa925f55b59ef993d725fe37c8d92f5bd6da5270d064bccc5a40a",
+    "scriptHash": "7ff7b94a52d0700d378ed9b368580e95b1013b19fb326ff475125ebcc5c68725"
+  },
+  {
+    "id": "books-shelf-welcome",
+    "file": "audio/books-shelf-welcome.wav",
+    "bytes": 245200,
+    "sha256": "402bdfb01de6bb18531ab887354983f0fb8c919a3807175a0ff02e8a9b55a7e9",
+    "sourceHash": "1ca649de2fcca3901dc6962d78ef72294679de88301019cb049ab8930a240952",
+    "scriptHash": "3e59844acdd2dc45bc0a37f0082a0e098813de18ae83fff042028aee7ee3ebf2"
+  },
+  {
+    "id": "books-shelf-reply",
+    "file": "audio/books-shelf-reply.wav",
+    "bytes": 240222,
+    "sha256": "19c1009293dfee879b10564fe350decc88586cdf4342b55ab3b0e8e95bf02cb6",
+    "sourceHash": "50bc024d1ce83c7214ffc98f5a680630025f1bdfee7c5f88b85369dbc12857bd",
+    "scriptHash": "57ad71fedbc74e10654a5a1709b43534e1c242db1bf60f562dc860a7897cc69d"
+  },
+  {
+    "id": "books-return-welcome",
+    "file": "audio/books-return-welcome.wav",
+    "bytes": 260150,
+    "sha256": "ce5f8b6b077a56c7f8e9d4109af8e91be2cfee1fe90f33d3a9ebb3377ca060b3",
+    "sourceHash": "17432c618cbc48e61f7d4ac460e91609a31cb9aed84ecdf16510fe7b3168cb88",
+    "scriptHash": "8936db4c0bd28586319da754f7e99e590f9e62eadee69cdf0897bc3543f60840"
+  },
+  {
+    "id": "books-return-reply",
+    "file": "audio/books-return-reply.wav",
+    "bytes": 270440,
+    "sha256": "c628b05762370f414a76813fdc666c75e571cd213235d4a861c593170aeb55f6",
+    "sourceHash": "0f861f3c8ce2bc90ccc390b33643fdda423d5535f30f9073cbc7e79651c96965",
+    "scriptHash": "49703712d2ca2b1b88217cfafc8681c25edeeee961d3a832903d566e500c6a99"
+  },
+  {
+    "id": "books-model-borrow",
+    "file": "audio/books-model-borrow.wav",
+    "bytes": 190774,
+    "sha256": "0562b28ec3347246b78a51a610e6b86d1dd1cf11bc5ab956f439be643c806b7b",
+    "sourceHash": "4ff478cfcdb9653492db273c5b132e65198c004dda895b3f1a3a69097a7f7fdd",
+    "scriptHash": "0638bf038a658711a0ec440fef4980902a14e1598f10347c4f3e9137cdd0e712"
+  },
+  {
+    "id": "books-model-shelf",
+    "file": "audio/books-model-shelf.wav",
+    "bytes": 158204,
+    "sha256": "4e19451d3a65b6f93918d849a5298a5f462c07db4c327dabef56638529b55f26",
+    "sourceHash": "d41b56af9321e3e85f1ceb0a4a0a0de559e32b74b9a99aca352bf269be415338",
+    "scriptHash": "50c148ed13f7c342921beff9bbc6d4fa63292b564817b30245a1338a2862d9c2"
+  },
+  {
+    "id": "books-model-return",
+    "file": "audio/books-model-return.wav",
+    "bytes": 125412,
+    "sha256": "0f38ab0198c874e2105bfdd53c97daeb87d37acacad64f407a34f8086f9a4fef",
+    "sourceHash": "a5f3c32052d20f46411a4e8a581a88cd07101fad72fe97ae6040b31ef50edcd8",
+    "scriptHash": "0d0353ef670cf3b5fc733f00f2451e911bc1c040dc37d18b6244161732b13259"
+  },
+  {
+    "id": "books-dialogue",
+    "file": "audio/books-dialogue.wav",
+    "bytes": 1063448,
+    "sha256": "a47503d20f2dfafa2527a6c10e531d6e88e26b464c3fe9c691d56b5de0d41256",
+    "sourceHash": "84811f729dd3b3c06aa6b18e8f7298873b33bf8fc5f10adc0a70cb87a2ad7a3c",
+    "scriptHash": "6b05244fc61996b18732b607638988b139caa417ea17bd6b4fc84ed740b3db5d"
+  },
+  {
+    "id": "route-library-welcome",
+    "file": "audio/route-library-welcome.wav",
+    "bytes": 253584,
+    "sha256": "933c481da9797172a3d76176b476a4548bee041db0e778b97957bf9890bb5ef8",
+    "sourceHash": "149675e2d4c367a6ca39aa2db24aff568291444f38c32e15bbec210b09dece62",
+    "scriptHash": "38ebfeb803e509079699ba1806e3427de59f8ceb5458235108a1dbd4084f4f1e"
+  },
+  {
+    "id": "route-library-reply",
+    "file": "audio/route-library-reply.wav",
+    "bytes": 226000,
+    "sha256": "e705d5340d3dd12c62617fd42c1d227de1fdc3673362735d5800e57bc0b8bbc1",
+    "sourceHash": "4e5184a7a665a7cfa6eb607548a906a8dbe75373e36e6bde2a7c9404345a2f27",
+    "scriptHash": "49ffd1b33c402e4d3c05f4987c8e0265943c399177e3cfa1b758686884e38f98"
+  },
+  {
+    "id": "route-left-welcome",
+    "file": "audio/route-left-welcome.wav",
+    "bytes": 257610,
+    "sha256": "25d9a55dad2d06831193529f0d8bc96de9eb22d93fec71e5be93ea9f196965ef",
+    "sourceHash": "07d6995224523457271b7a044ca25725c67f672c822adc08c49795e5174b2b8c",
+    "scriptHash": "c8880910ababb52b7583ef483b6ec7263cd274621da85be034b81d636166db24"
+  },
+  {
+    "id": "route-left-reply",
+    "file": "audio/route-left-reply.wav",
+    "bytes": 250658,
+    "sha256": "00dc660aef8ba2f5e6ac5d5804a97ae3e8690f6b2f9cf826c2519a0e2a9cc12d",
+    "sourceHash": "54dd93764b5893f6d60e35b04ee4e36272ebc7b97fc1e9182178c0b16a643ec6",
+    "scriptHash": "9032b609d252bf0c346b45ef86694ac52b5e5a0043fad9056eb1a2b5ce37a249"
+  },
+  {
+    "id": "route-landmark-welcome",
+    "file": "audio/route-landmark-welcome.wav",
+    "bytes": 280702,
+    "sha256": "656311861d8bd0acbb75878ae01ffe3257127632e2fa0303fc29b980eaf561f8",
+    "sourceHash": "24495a7cfcc47e0d23f69cf15838a851706012a3fe2f95604239f9fe7e7e9555",
+    "scriptHash": "9fcc583e0fc1579587481d72893da8cedaa628b7a42a737a00b386d45af80b96"
+  },
+  {
+    "id": "route-landmark-reply",
+    "file": "audio/route-landmark-reply.wav",
+    "bytes": 348752,
+    "sha256": "427517e5485019eb7f3fe44f9f30072f6237aea1e1f8df523eff21c70fe64911",
+    "sourceHash": "8c59d2967c104fcf0783d2a9d6bc8d2e5e9f0375e246fc4ef17068e112885b29",
+    "scriptHash": "e786aa25bc071564322fa3285332cf9a4e2a2c6b6a8f35c0af9881d74318e68c"
+  },
+  {
+    "id": "route-model-library",
+    "file": "audio/route-model-library.wav",
+    "bytes": 146154,
+    "sha256": "c42b1cf6b5f4fe1c17a394d75ad0ce6b9630fe36827f86e7f1cf190d611f6b1e",
+    "sourceHash": "af24abcfa98b54aec4c6d800901d771a2960ea1ee5ab0f7ad88326f9526563f3",
+    "scriptHash": "bf7ab51a384c07fc2d34b25f2218ce7962297d018d6541e69dbdc15de6ec80ca"
+  },
+  {
+    "id": "route-model-left",
+    "file": "audio/route-model-left.wav",
+    "bytes": 138408,
+    "sha256": "45412c7b6a648e8ae7b3fac70957de1bdd1a754030ee4f897876a75f7c54a896",
+    "sourceHash": "6ef08f1acfa304d070fcf057fa03470db6aecfa38201d709c6fb6f0bd76ceb07",
+    "scriptHash": "23eb136903fca1f6ca4fb12484b8ab85d8eb528f4572c565aa3fe41d6aa5eca3"
+  },
+  {
+    "id": "route-model-landmark",
+    "file": "audio/route-model-landmark.wav",
+    "bytes": 146132,
+    "sha256": "1aa65b7707d5b10e26e89447497e8c5eb165d7eee416a63453e9254eba135521",
+    "sourceHash": "3eb0c2358cf3698efbb93d9ba1422fde21f32aade42f473b13fd469dec9bddbd",
+    "scriptHash": "fe8b56b5c750e6245172f5e5aa9a8db4ccbb73a16811d2f09dd9665d91194484"
+  },
+  {
+    "id": "route-dialogue",
+    "file": "audio/route-dialogue.wav",
+    "bytes": 1034478,
+    "sha256": "7a7b0c34f2fa2a16627136c6462555517b674c2bf78f15912b77ea11c0eabd7c",
+    "sourceHash": "3a9f2fea667f021fcbca93fe92bc3f59e66770127e7cba526040fe2161c9cc6c",
+    "scriptHash": "bd1341fd49ab06134d72980a6260de7b5b2f24c20694e399759690f44159289a"
+  }
+]

@@ -1,0 +1,50 @@
+[
+  {
+    "id": "picnic-update",
+    "file": "audio/picnic-update.wav",
+    "bytes": 726660,
+    "sha256": "0e10fabcaa1d6d989c2461be5d425d696b508dbdf4a036296cc706a665fc5c96",
+    "sourceHash": "41fe4caffd746c723dfba54217adcb1c6aa79ab6d97c0a4c30bb0c12eff1741d",
+    "scriptHash": "eab8e6209ac0cccb324d5cd55ac30c6defbbc25cf9c3064570e1cb1bed88f65d"
+  },
+  {
+    "id": "picnic-model",
+    "file": "audio/picnic-model.wav",
+    "bytes": 304740,
+    "sha256": "0483e28b330f68f327e96ef5dc228ae2fe1dd0b2c2876d927ac50758cf17d5e5",
+    "sourceHash": "f7b95e46a0e442963a880524c22610de33f0cb14dba37582b47244f14ee27276",
+    "scriptHash": "a763fc632b1c7c70e9beb298acd92da237445baf81856801a0d6ecfa74e5fe54"
+  },
+  {
+    "id": "library-update",
+    "file": "audio/library-update.wav",
+    "bytes": 703040,
+    "sha256": "c5c3839384503a9c7e9d032ff96e0959304d19a04b39f9d34ea126a888e127e6",
+    "sourceHash": "7f18709635efa1a919dc9cd598a929bcee1b3d301da0c493dd927a9aa49e680e",
+    "scriptHash": "6fb930a3b3da4f6c0f0074e0b40ef25638e403787e577f8989fc951560a2127e"
+  },
+  {
+    "id": "library-model",
+    "file": "audio/library-model.wav",
+    "bytes": 317718,
+    "sha256": "cd8ac86737bb655be9f1befb6f29e542e997bf4ed83542d545798543fc4f698e",
+    "sourceHash": "0236d1b031b07db326dc86fc3bcdeaaabfe67830c7af60198771ae357f8f1bf7",
+    "scriptHash": "d7304cd2355865efe86dd812f9b298340fab018743a3ae807c1569c0e96a3f4e"
+  },
+  {
+    "id": "garden-update",
+    "file": "audio/garden-update.wav",
+    "bytes": 713468,
+    "sha256": "20fc0716402b2464d4a739601f3d40986c1242da724bd2500fe6055b71cf855a",
+    "sourceHash": "f8c79a760d336480c92b09ba571f3ec0643d80917afb4ce58798049c4de6b7fc",
+    "scriptHash": "b74ff28e76ce703942f6fac8e0ed7d766bf63a575a301d006935e2cace0babd7"
+  },
+  {
+    "id": "garden-model",
+    "file": "audio/garden-model.wav",
+    "bytes": 326840,
+    "sha256": "c4f409fe58a95bc38bb1b9c9a79ba42e7954dcb3ae1327d362ad01162ee27f7e",
+    "sourceHash": "8beffeee5ee8ffe591c92ed6c4e754b1fc3275a62a72b4710fa20a271b2d47ca",
+    "scriptHash": "91db325ad262bc53c5d84130ed9674d979b8142823d2e2d0a3026c9b26751887"
+  }
+]

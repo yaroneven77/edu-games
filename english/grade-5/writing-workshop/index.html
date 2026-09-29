@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>סדנת כתיבה באנגלית · כיתה ה׳</title>
+<script src="../../../assets/theme-selector.js" defer></script>
+<link rel="stylesheet" href="../../../assets/refresh.css">
+<style>
+*{box-sizing:border-box} [hidden]{display:none!important}
+:root{--surface:var(--refresh-surface,#fff);--soft:var(--refresh-soft,#edf3fb);--text:var(--refresh-text,#243b53);--muted:var(--refresh-muted,#52677e);--accent:var(--refresh-accent,#285f9f);--border:var(--refresh-border,#d5dfec)}
+body{margin:0;padding-top:62px;background:#eef7fd;color:var(--text);font-family:"Segoe UI",Arial,sans-serif;line-height:1.65}
+main{max-width:980px;margin:auto;padding:16px 16px 40px}h1{font-size:clamp(27px,5vw,38px);margin:8px 0}h2{font-size:25px;margin:8px 0}h3{margin:8px 0}p{margin:8px 0}
+header{text-align:center;margin-bottom:20px}.en{direction:ltr;text-align:left;font-family:"Segoe UI",Arial,sans-serif;overflow-wrap:anywhere;white-space:pre-line}
+button,select,textarea{font:inherit}button,select,.back{min-height:46px;border:2px solid var(--border);border-radius:14px;padding:9px 14px;background:var(--soft);color:var(--text)}
+button{cursor:pointer;font-weight:700}button:disabled{opacity:.5;cursor:default}a{color:var(--accent)}.back{display:inline-block;text-decoration:none}
+button:focus-visible,a:focus-visible,summary:focus-visible,select:focus-visible,textarea:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:4px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:clamp(14px,3vw,24px);margin:16px 0}.soft{background:var(--soft);border:1px solid var(--border);border-radius:16px;padding:16px;margin:12px 0}
+.row{display:flex;flex-wrap:wrap;align-items:center;gap:12px}.row>*{max-width:100%}.spread{justify-content:space-between}.muted{color:var(--muted);font-size:15px}
+.stages{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.stages button{flex:1;min-width:160px}.stages button[aria-pressed="true"]{outline:3px solid var(--accent);outline-offset:1px;font-weight:900}
+textarea{display:block;width:100%;min-height:180px;resize:vertical;background:var(--surface);color:var(--text);border:2px solid var(--border);border-radius:14px!important;padding:14px;font-size:19px;line-height:1.65;scroll-margin-block:24px}
+#plan{min-height:110px}.writing-label{display:block;font-size:20px;font-weight:800;margin:12px 0 6px}summary{cursor:pointer;min-height:46px;padding:8px 0;font-weight:800}
+.words{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.word{border:1px solid var(--border);border-radius:12px;background:var(--surface);padding:7px 12px}.word span{display:block}
+.checklist{display:grid;gap:6px}.checklist label{display:flex;gap:10px;align-items:center;min-height:46px;cursor:pointer}.checklist input{width:23px;height:23px;flex-shrink:0;accent-color:var(--accent)}
+figure{margin:16px 0}figure svg{width:100%;height:auto;max-height:290px;display:block;border-radius:16px;background:#d9effa}figcaption{margin-top:8px}figcaption p{font-size:15px}
+.feedback{min-height:28px;font-weight:700}.model{font-size:19px}.steps{padding-inline-start:25px}.steps li{margin:8px 0}
+.revision-options{display:grid;gap:10px}.revision-options button{text-align:left;white-space:normal;overflow-wrap:anywhere}.revision-tiles{display:flex;flex-wrap:wrap;gap:8px;min-height:52px}.revision-tiles button{min-width:46px}.revision-heading{scroll-margin-top:80px}#revision-help,#revision-summary{overflow-wrap:anywhere}#revision-dialog button{white-space:normal}#writing-modes button[aria-pressed="true"]{outline:3px solid var(--accent);outline-offset:1px}
+.revision-tiles.sentence-tiles button{flex-basis:100%;min-width:0;max-width:100%;text-align:left;white-space:normal;overflow-wrap:anywhere}
+dialog{width:min(720px,calc(100% - 24px));max-height:calc(100dvh - 24px);overflow:auto;border:2px solid var(--border);border-radius:22px;padding:22px;background:var(--surface);color:var(--text)}
+dialog::backdrop{background:#102238b8}body.lesson-open{overflow:hidden}.lesson-section{border-top:1px solid var(--border);padding:14px 0}.guided-options{display:grid;gap:10px}.guided-options button{text-align:left;white-space:normal}
+footer{text-align:center;font-size:14px}.nav{margin-top:20px}.nav button{flex:1}
+@media(max-width:540px){main{padding-inline:12px}.stages button{min-width:100%;flex-basis:100%}.row select{width:100%}dialog{padding:16px}.card{padding:16px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body id="edu-refresh">
+<main>
+<a class="back" href="../index.html">חזרה לאנגלית לכיתה ה׳</a>
+<header><h1>סדנת הכתיבה שלי</h1><p lang="en" dir="ltr">Writing Workshop · Grade 5</p><p>רעיונות קטנים הופכים למשפטים ולפסקאות</p></header>
+<noscript><p class="card">כדי להשתמש בסדנה יש לאפשר הפעלת סקריפטים בדפדפן.</p></noscript>
+<div id="writing-modes" class="row" role="group" aria-label="בחירת סוג תרגול"><button id="mode-free" type="button" aria-pressed="true" aria-controls="free-intro workshop">כתיבה חופשית</button><button id="mode-revision" type="button" aria-pressed="false" aria-controls="revision">עריכה מודרכת</button></div>
+<section id="free-intro" class="card" aria-label="איך עובדים בסדנה">
+<p>בוחרים עזרה, כותבים באנגלית וקוראים שוב. אפשר לעבור בין כל השלבים בכל רגע — הטקסט נשאר.</p>
+<p class="muted">זו כתיבה חופשית: אין בדיקה אוטומטית של נכונות ואין ציון. הסימון בסוף מציין תרגול בלבד. אפשר להמציא דמויות ופרטים; אין צורך לכתוב שם מלא או פרטים אישיים.</p>
+<div class="row"><label for="lesson-select">שיעור קצר לבחירה</label><select id="lesson-select"></select><button id="open-lesson" type="button">פתיחת השיעור</button></div>
+</section>
+<article id="workshop" class="card" aria-labelledby="task-title">
+<div class="row spread"><span id="task-progress"></span><span id="kind-label"></span></div>
+<h2 id="task-title" tabindex="-1"></h2>
+<p id="task-instruction"></p>
+<p id="task-prompt" class="en" lang="en"></p>
+<figure id="picture" hidden><div id="scene"></div><figcaption><p id="scene-en" class="en" lang="en"></p><details><summary>תיאור התמונה בעברית</summary><p id="scene-he"></p></details></figcaption></figure>
+<div class="stages" role="group" aria-label="בחירת שלב כתיבה">
+<button type="button" data-stage="frames" aria-pressed="true">א. מסגרות למשפטים</button>
+<button type="button" data-stage="plan" aria-pressed="false">ב. תכנון רעיונות</button>
+<button type="button" data-stage="independent" aria-pressed="false">ג. כתיבה עצמאית</button>
+</div>
+<div id="frames-panel" class="soft"><h3>מתחילים עם מסגרת</h3><p>אפשר להשלים בעל פה ואז לכתוב למטה. מותר לשנות את המסגרת או לכתוב בדרך אחרת.</p><p id="frames" class="en" lang="en"></p></div>
+<div id="plan-panel" class="soft" hidden><h3>חושבים לפני שכותבים</h3><ul id="planning-prompts"></ul><label for="plan">מילות מפתח לתכנון באנגלית — לא חובה</label><textarea id="plan" class="en" lang="en" dir="ltr" autocomplete="off" spellcheck="false" aria-describedby="privacy-note"></textarea></div>
+<div id="independent-panel" class="soft" hidden><h3>הקול שלכם</h3><p>כתבו בלי מסגרת מוכנה, בסדר שמתאים לרעיון שלכם. אם נתקעים, מותר לחזור לעזרה בכל רגע. מאגר המילים והדוגמה עדיין זמינים.</p></div>
+<details id="word-bank" class="soft" open><summary>מילים שאפשר לבחור — לא חייבים להשתמש בכולן</summary><div id="words" class="words"></div></details>
+<label class="writing-label" for="draft">הכתיבה שלי באנגלית</label>
+<textarea id="draft" class="en" lang="en" dir="ltr" autocomplete="off" spellcheck="false" aria-describedby="word-count privacy-note"></textarea>
+<div class="row spread"><span id="word-count">מילים בטקסט: 0</span><span id="practice-state"></span></div>
+<p id="privacy-note" class="muted">הטיוטות נשארות רק בזיכרון העמוד במהלך הביקור. רענון או יציאה מהעמוד מוחקים אותן. שום טקסט אינו נשלח או נשמר באתר.</p>
+<details id="model-box" class="soft"><summary>דוגמה אפשרית — לא התשובה היחידה</summary><p>זו דרך אחת לכתוב. גם ניסוח אחר יכול להתאים; אין צורך להעתיק או להתאים בדיוק לדוגמה.</p><p id="model" class="en model" lang="en"></p><button id="speak-model" type="button">הקראת הדוגמה באנגלית</button></details>
+<section class="soft" aria-labelledby="review-title"><h3 id="review-title">קוראים שוב ומסמנים בעצמנו</h3><p>אין חובה לסמן הכול. אם משהו עוד לא מוכן, אפשר לחזור ולשפר.</p><div id="checklist" class="checklist"></div></section>
+<button id="mark-practised" type="button">סיימתי לתרגל את הפעילות</button>
+<p id="writing-feedback" class="feedback" role="status"></p>
+<div class="row nav"><button id="previous" type="button">לפעילות הקודמת</button><button id="next" type="button">לפעילות הבאה</button></div>
+<p class="muted">פעילות חדשה נבחרת בסדר אקראי, בלי חזרה עד שכל הפעילויות הוצגו. החצים מאפשרים גם לחזור לטיוטות שכבר פתחתם.</p>
+</article>
+<section id="revision" class="card" aria-labelledby="revision-title" hidden>
+<h2 id="revision-title" class="revision-heading" tabindex="-1">עורכים דוגמה יחד</h2>
+<p>כאן בודקים רק דוגמאות מוכנות, לפי ההוראה. הטיוטה שלכם נשארת כפי שהיא — בלי תיקון אוטומטי ובלי ציון לכתיבה.</p>
+<div class="row"><label for="revision-filter">מה מתרגלים?</label><select id="revision-filter"><option value="mixed">קצת מכל נושא</option><option value="capitals">אותיות גדולות</option><option value="punctuation">סימני פיסוק</option><option value="order">סדר מילים במשפט</option><option value="connectors">מילות חיבור</option><option value="paragraph-order">סדר משפטים בפסקה</option></select><button id="revision-lesson" type="button">שיעור קצר בנושא</button></div>
+<p id="revision-category" class="muted"></p>
+<h3 id="revision-prompt" class="revision-heading" tabindex="-1"></h3>
+<p id="revision-source" class="en model soft" lang="en" dir="ltr"></p>
+<div id="revision-options" class="revision-options en" lang="en" dir="ltr"></div>
+<div id="revision-order" hidden><p id="revision-order-instruction">לחצו על המילים לפי הסדר. להסרה, לחצו על מילה במשפט שבניתם.</p><p id="revision-bank-label">מילים לבחירה</p><div id="revision-bank" class="revision-tiles en" lang="en" dir="ltr" role="group" aria-labelledby="revision-bank-label"></div><p id="revision-answer-label">המשפט שבניתם</p><div id="revision-answer" class="revision-tiles en soft" lang="en" dir="ltr" role="group" aria-labelledby="revision-answer-label"></div><div class="row"><button id="revision-check" type="button">בדיקת הסדר</button><button id="revision-clear" type="button">בנייה מחדש</button></div></div>
+<p id="revision-feedback" class="feedback" role="status"></p>
+<div class="row"><button id="revision-help-button" type="button" aria-expanded="false" aria-controls="revision-help">🔍 איך פותרים?</button><button id="revision-next-top" type="button" hidden>לדוגמה הבאה</button></div>
+<div id="revision-help" class="soft" hidden><h3>מגלים צעד אחר צעד</h3><ol id="revision-help-steps" class="steps"></ol><p id="revision-help-rule" class="en" lang="en" dir="ltr"></p><p>תשובה לדוגמה לפי ההוראה:</p><p id="revision-help-answer" class="en model" lang="en" dir="ltr"></p><button id="revision-speak" type="button">הקראת התשובה לדוגמה</button></div>
+<button id="revision-next-bottom" type="button" hidden>לדוגמה הבאה</button>
+<div id="revision-transfer" class="soft" hidden><p id="revision-transfer-text"></p><button id="revision-return" type="button">חזרה לטיוטה שלי</button><p class="muted">קוראים ובוחרים בעצמנו מה לשנות. החזרה אינה מסמנת את הכתיבה כהושלמה.</p></div>
+<p id="revision-summary" role="status"></p>
+<button id="revision-restart" type="button">איפוס מוני העריכה ודוגמה חדשה</button>
+<p class="muted">המונים מתארים רק את התרגול המובנה בביקור הזה, לא את איכות הכתיבה. האיפוס לא מוחק טיוטות ולא מדלג על דוגמאות שטרם הוצגו. רענון העמוד מוחק את כל מצב הביקור.</p>
+</section>
+<p id="audio-status" class="feedback" role="status"></p>
+<footer>תוכן ואיורים מקוריים לתרגול. זו אינה בדיקת כתיבה מקצועית; אפשר לקרוא יחד עם מבוגר ולקבל משוב.</footer>
+</main>
+<dialog id="lesson-dialog" aria-labelledby="lesson-title">
+<div class="row spread"><h2 id="lesson-title"></h2><button id="close-lesson" type="button" autofocus>סגירה</button></div>
+<p id="lesson-goal"></p>
+<section class="lesson-section"><h3>איך כותבים?</h3><p id="lesson-rule"></p><ol id="lesson-steps" class="steps"></ol></section>
+<section class="lesson-section"><h3>דוגמה קבועה</h3><p id="lesson-example" class="en model" lang="en"></p><button id="speak-lesson" type="button">הקראת הדוגמה</button><p id="lesson-audio" role="status"></p></section>
+<section class="lesson-section"><h3>טעות שכדאי להכיר</h3><p id="lesson-mistake"></p><p id="mistake-before" class="en" lang="en"></p><p>כך אפשר לתקן:</p><p id="mistake-after" class="en" lang="en"></p></section>
+<section class="lesson-section"><h3>ניסיון משותף</h3><p id="trial-prompt"></p><p id="trial-context" class="en" lang="en"></p><div id="trial-options" class="guided-options en" lang="en"></div><p id="trial-feedback" class="feedback" role="status"></p><button id="trial-help-button" type="button" aria-expanded="false" aria-controls="trial-help">איך חושבים על זה?</button><div id="trial-help" class="soft" hidden><ol id="trial-help-steps" class="steps"></ol><p id="trial-help-en" class="en" lang="en"></p></div></section>
+</dialog>
+<dialog id="revision-dialog" aria-labelledby="revision-lesson-title">
+<div class="row spread"><h2 id="revision-lesson-title"></h2><button id="revision-close-lesson" type="button" autofocus>סגירה</button></div>
+<p id="revision-lesson-goal"></p><p id="revision-lesson-rule"></p><p id="revision-lesson-rule-en" class="en" lang="en" dir="ltr"></p>
+<section class="lesson-section"><h3>דוגמה קבועה</h3><p id="revision-lesson-example" class="en model" lang="en" dir="ltr"></p><button id="revision-lesson-speak" type="button">הקראת הדוגמה</button><p id="revision-lesson-audio" role="status"></p></section>
+<section class="lesson-section"><h3>טעות שכדאי להכיר</h3><p id="revision-lesson-mistake"></p><p id="revision-lesson-before" class="en" lang="en" dir="ltr"></p><p>כך מתקנים בדוגמה:</p><p id="revision-lesson-after" class="en" lang="en" dir="ltr"></p></section>
+<section class="lesson-section"><h3>מנסים יחד</h3><p id="revision-trial-prompt"></p><p id="revision-trial-context" class="en" lang="en" dir="ltr"></p><div id="revision-trial-options" class="revision-options en" lang="en" dir="ltr"></div><p id="revision-trial-feedback" class="feedback" role="status"></p><button id="revision-trial-help-button" type="button" aria-expanded="false" aria-controls="revision-trial-help">🔍 איך פותרים?</button><div id="revision-trial-help" class="soft" hidden><ol id="revision-trial-steps" class="steps"></ol><p id="revision-trial-rule" class="en" lang="en" dir="ltr"></p><p id="revision-trial-answer" class="en" lang="en" dir="ltr"></p></div></section>
+</dialog>
+<script>
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+const lessons = {
+ picture:{name:'מתארים תמונה',goal:'המטרה: לתאר מקום, פרטים ופעולה שאפשר לראות בתמונה.',rule:'מתחילים במבט כללי, ואז בוחרים שני פרטים. לתיאור דבר אחד משתמשים במבנה של יחיד, ולכמה דברים במבנה של רבים. לפעולה שמתרחשת עכשיו מוסיפים פועל עזר וסיומת מתאימה.',
+ steps:['שאלו: איפה הסצנה מתרחשת ומה רואים בה?','בחרו פרט אחד או שניים, והוסיפו צבע או מיקום.','אם מתארים פעולה עכשיו, בדקו שיש פועל עזר לפני הפועל.','קראו שוב: האם המשפטים מתאימים למה שבאמת רואים?'],
+ example:'There is a red bag under the desk. Two children are drawing. Their pictures are on the table.',
+ mistake:'בתיאור פעולה עכשיו לא משמיטים את פועל העזר. כשמדובר בילדה אחת נשתמש בצורה שמתאימה ליחיד.',
+ before:'The girl drawing a cat.',after:'The girl is drawing a cat.',
+ trial:'אילו מילים משלימות תיאור של שני ילדים שכותבים עכשיו?',context:'Two children ___ writing.',
+ choices:['are','is','am'],answer:0,retry:'עוד ניסיון: יש כאן שני ילדים, לא ילד אחד. נבחר פועל עזר שמתאים לרבים.',
+ help:['חפשו על מי המשפט מדבר: שני ילדים.','זו פעולה שמתרחשת עכשיו, ולכן צריך פועל עזר.','לכמה ילדים מתאים פועל העזר של רבים.','קראו את המשפט השלם ובדקו שיש בו גם נושא וגם פעולה.'],helpEn:'Two children are writing.'},
+ routine:{name:'כותבים על שגרה',goal:'המטרה: לתאר מה דמות עושה בדרך כלל, בסדר ברור.',rule:'בשגרה משתמשים בזמן הווה פשוט. כשכותבים על עצמנו הפועל בדרך כלל נשאר בצורתו הבסיסית. כשכותבים על ילד או ילדה בגוף שלישי, בדרך כלל מוסיפים סיומת לפועל. מילות זמן עוזרות לקורא לעקוב.',
+ steps:['בחרו דמות אמיתית או מומצאת. אין צורך בפרטים אישיים.','בחרו פעולות שחוזרות בדרך כלל, לא משהו שקורה רק עכשיו.','סדרו אותן בעזרת מילות זמן: תחילה, אחר כך ולבסוף.','בדקו אות גדולה בתחילת משפט ונקודה בסופו.'],
+ example:'I get up at seven. First, I eat breakfast. Then I walk to school. My friend walks with me.',
+ mistake:'כאשר הנושא הוא ילד יחיד ולא אני, מוסיפים בדרך כלל סיומת לפועל. הדוגמה כאן מתארת הרגל.',
+ before:'Ben walk to school every day.',after:'Ben walks to school every day.',
+ trial:'בחרו את הפועל שמתאים למשפט על הרגל שלי.',context:'Every afternoon, I ___ a book.',
+ choices:['reads','read','reading'],answer:1,retry:'כדאי לבדוק מי עושה את הפעולה. כשאני מספר על הרגל שלי, בוחרים את צורת הפועל הבסיסית.',
+ help:['שימו לב לביטוי הזמן: בכל אחר צהריים.','זה הרגל, ולכן נשתמש בהווה פשוט.','הנושא הוא אני, ולכן אין צורך בסיומת של גוף שלישי.','קראו ובדקו שיש פעולה שלמה, לא רק פועל עם סיומת של פעולה מתמשכת.'],helpEn:'Every afternoon, I read a book.'},
+ message:{name:'כותבים הודעה קצרה',goal:'המטרה: לכתוב הודעה עם מטרה ופרטים שהקורא צריך.',rule:'בהודעה קצרה מברכים את הנמען, אומרים למה כותבים ומוסיפים פרטים שימושיים. הזמנה צריכה למשל מקום וזמן. אפשר לסיים בבקשה נעימה או בחתימה של דמות מומצאת.',
+ steps:['חשבו למי כותבים ומה רוצים לספר או לבקש.','פתחו בברכה קצרה.','הוסיפו רק פרטים שיעזרו לקורא להבין או לפעול.','סיימו בנימוס וקראו: האם הקורא יודע מה לעשות?'],
+ example:'Hi Maya,\nPlease bring your pencils to our art club on Tuesday. We meet in room 4 at three.\nThank you!\nAlex',
+ mistake:'הזמנה שאומרת רק ״בוא למועדון שלי״ משאירה את הקורא בלי מקום וזמן. כאן הבעיה היא פרט חסר, לא רק דקדוק.',
+ before:'Come to my club.',after:'Please come to the art club in room 4 on Tuesday at three.',
+ trial:'חבר קיבל הזמנה, אבל לא יודע מתי להגיע. איזו תוספת נותנת זמן?',context:'Hi Leo, come to the library for our book club.',
+ choices:['I like stories.','The library is nice.','We meet on Monday at four.'],answer:2,retry:'שני המשפטים האחרים מוסיפים רעיון נחמד, אבל עדיין לא אומרים מתי להגיע.',
+ help:['חפשו איזה פרט חסר לקורא: הזמן.','בהזמנה צריך פרטים שאפשר לפעול לפיהם.','חפשו תשובה עם יום או שעה.','חברו להזמנה ובדקו שעכשיו ברור מתי נפגשים.'],helpEn:'We meet on Monday at four.'},
+ paragraph:{name:'מחברים פסקה',goal:'המטרה: לחבר כמה משפטים סביב רעיון אחד.',rule:'פסקה מתחילה ברעיון מרכזי. אחריו מוסיפים פרטים קשורים, ולבסוף משפט מסכם. מילות חיבור יכולות להוסיף פרט, להראות סדר או להסביר סיבה. לא כל משפט צריך מילת חיבור.',
+ steps:['בחרו דבר אחד שעליו כל הפסקה תדבר.','כתבו משפט פתיחה שמציג אותו.','הוסיפו שני פרטים או דוגמאות ושמרו על סדר הגיוני.','הוסיפו סיום, ובדקו שלא חזרתם על אותו רעיון בלי להוסיף דבר.'],
+ example:'Our school garden is a quiet place. We grow flowers and small trees there. I like the garden because I can watch birds. It is my favorite place at school.',
+ mistake:'כמה משפטים על נושאים לא קשורים אינם פסקה ברורה. בוחרים פרט שתומך ברעיון המרכזי.',
+ before:'Our library is quiet. My shoes are blue.',after:'Our library is quiet. I can read my favorite books there.',
+ trial:'הפסקה מסבירה למה אני אוהב לצייר. איזה משפט נותן סיבה קשורה?',context:'I enjoy drawing after school.',
+ choices:['Drawing helps me share my ideas.','My lunch is in a box.','The bus stops at eight.'],answer:0,retry:'נחפש משפט שמסביר את ההנאה מציור. משפט על ארוחה או על אוטובוס לא תומך ברעיון הזה.',
+ help:['זהו את הנושא: הנאה מציור.','משפט תומך מוסיף פרט או סיבה על אותו נושא.','חפשו מה הציור מאפשר לעשות.','קראו את שני המשפטים יחד: האם הם מספרים על אותו רעיון?'],helpEn:'I enjoy drawing after school. Drawing helps me share my ideas.'}
+};
+// Original SVG geometry: each scene shows the objects and actions used in its task.
+const scenes = {
+ park:{en:'In a park, a child in a red shirt is kicking a yellow ball. A brown dog is beside a tree. A blue bench is on the right.',he:'בפארק ילד בחולצה אדומה בועט בכדור צהוב. כלב חום נמצא ליד עץ. ספסל כחול נמצא מימין.',
+ art:'<rect y="178" width="600" height="102" fill="#a6d58c"/><circle cx="530" cy="45" r="24" fill="#ffe085"/><path d="M80 192V90" stroke="#875431" stroke-width="22"/><circle cx="80" cy="75" r="52" fill="#4c9860"/><rect x="418" y="151" width="138" height="18" rx="4" fill="#3c83ae"/><rect x="418" y="116" width="138" height="28" rx="4" fill="#3c83ae"/><path d="M435 169v43m105-43v43" stroke="#31566e" stroke-width="9"/><circle cx="245" cy="89" r="21" fill="#bd805e"/><path d="M223 112h43l8 60h-57z" fill="#d75054"/><path d="M226 132l-31 27m67-27 29 15" stroke="#bd805e" stroke-width="12" stroke-linecap="round"/><path d="M230 172l-8 49m34-49 39 26 30-12" fill="none" stroke="#344f84" stroke-width="13" stroke-linecap="round"/><circle cx="346" cy="191" r="22" fill="#f7ce4d" stroke="#926420" stroke-width="3"/><path d="M335 174l20 7-1 20-22 1z" fill="#fff0b1"/><ellipse cx="126" cy="206" rx="29" ry="17" fill="#9e633e"/><circle cx="150" cy="186" r="17" fill="#9e633e"/><path d="M140 176l-8 24 16-7" fill="#674331"/><path d="M108 215v21m31-22v22m-40-33-14-18" stroke="#805031" stroke-width="8" stroke-linecap="round"/><circle cx="156" cy="183" r="3" fill="#253446"/>'},
+ kitchen:{en:'In a kitchen, a child in a purple shirt is washing a red apple at the sink. Three carrots and a bowl are on the table. A clock is on the wall.',he:'במטבח ילדה בחולצה סגולה שוטפת תפוח אדום בכיור. שלושה גזרים וקערה נמצאים על השולחן. שעון תלוי על הקיר.',
+ art:'<rect width="600" height="280" fill="#fff1d5"/><rect x="30" y="146" width="265" height="112" fill="#80b7c0"/><rect x="25" y="139" width="280" height="15" fill="#6a7482"/><ellipse cx="174" cy="149" rx="63" ry="12" fill="#d8edf1"/><path d="M207 140v-47q0-25-24-25t-24 23" fill="none" stroke="#657c91" stroke-width="10"/><path d="M159 95v33m-8-28v24m16-22v25" stroke="#369bd2" stroke-width="3"/><circle cx="315" cy="81" r="23" fill="#d49a75"/><path d="M291 72q0-34 26-25 26 0 22 35l-10-21-34 10" fill="#4d3837"/><path d="M291 107h47l12 85h-71z" fill="#8d65b7"/><path d="M294 120l-43 16-64-10" fill="none" stroke="#d49a75" stroke-width="13" stroke-linecap="round"/><circle cx="174" cy="126" r="15" fill="#d94e4b"/><path d="M174 112l4-9" stroke="#5a8545" stroke-width="4"/><path d="M295 192v62m35-62v62" stroke="#405f82" stroke-width="16"/><rect x="365" y="184" width="209" height="17" fill="#ad7649"/><path d="M383 201v59m172-59v59" stroke="#926039" stroke-width="10"/><path d="M391 166h43l-32 16zM424 154h44l-32 16zM447 174h43l-32 9z" fill="#ee9136"/><path d="M391 166l-7-9m40-3-6-9m29 29-6-9" stroke="#48844c" stroke-width="5"/><path d="M498 160h59q-5 24-29 24t-30-24" fill="#567fb5"/><circle cx="499" cy="62" r="34" fill="#fff" stroke="#567d99" stroke-width="5"/><path d="M499 39v23l18 12" fill="none" stroke="#354d66" stroke-width="4"/>'},
+ library:{en:'In a library, a child in a green shirt is reading an open book at a table. Books are on two shelves. A black cat is sleeping under the table.',he:'בספרייה ילד בחולצה ירוקה קורא ספר פתוח ליד שולחן. ספרים מונחים על שני מדפים. חתול שחור ישן מתחת לשולחן.',
+ art:'<rect width="600" height="280" fill="#f9ecd8"/><rect y="245" width="600" height="35" fill="#c6ab8e"/><rect x="36" y="29" width="180" height="197" rx="5" fill="#bb885f"/><path d="M44 110h164M44 207h164" stroke="#77563e" stroke-width="10"/><path d="M62 103V51m25 52V40m26 63V58m29 45V45m30 58V37M62 200v-59m30 59v-66m30 66v-45m28 45v-58m30 58v-69" stroke="#496f9d" stroke-width="17"/><path d="M87 103V40m55 63V45m-50 155v-66m58 66v-58" stroke="#d56063" stroke-width="17"/><rect x="444" y="92" width="41" height="151" rx="6" fill="#aa7650"/><circle cx="399" cy="81" r="22" fill="#a96d50"/><path d="M381 105h41l17 67h-70z" fill="#549473"/><path d="M382 125l-31 29m70-28-4 31" stroke="#a96d50" stroke-width="12" stroke-linecap="round"/><rect x="289" y="169" width="220" height="16" fill="#c98e53"/><path d="M309 185v63m181-63v63" stroke="#876143" stroke-width="12"/><path d="M332 141l51 9 44-9v25l-44 6-51-8z" fill="#fffdf2" stroke="#47769f" stroke-width="3"/><path d="M383 150v22" stroke="#47769f" stroke-width="2"/><ellipse cx="400" cy="236" rx="32" ry="17" fill="#39414b"/><circle cx="427" cy="225" r="15" fill="#39414b"/><path d="M414 215l1-15 11 12m5 0 10-11-1 18" fill="#39414b"/><path d="M422 225l6 2m6-3 5 2" stroke="#fff" stroke-width="2"/><path d="M375 236q-28-29-5-29" fill="none" stroke="#39414b" stroke-width="8" stroke-linecap="round"/>'},
+ garden:{en:'In a garden, one child is watering three red flowers with a blue watering can. Another child is carrying a basket with two orange carrots. A butterfly is above the flowers.',he:'בגינה ילדה אחת משקה שלושה פרחים אדומים במשפך כחול. ילד אחר נושא סל ובו שני גזרים כתומים. פרפר נמצא מעל הפרחים.',
+ art:'<rect y="184" width="600" height="96" fill="#a4cf86"/><ellipse cx="187" cy="237" rx="110" ry="22" fill="#92714c"/><path d="M131 237v-50m48 50v-58m48 58v-46" stroke="#47894b" stroke-width="7"/><g fill="#e16a79"><circle cx="131" cy="182" r="16"/><circle cx="179" cy="174" r="16"/><circle cx="227" cy="187" r="16"/></g><g fill="#ffda70"><circle cx="131" cy="182" r="6"/><circle cx="179" cy="174" r="6"/><circle cx="227" cy="187" r="6"/></g><circle cx="296" cy="86" r="22" fill="#c48765"/><path d="M273 110h45l8 66h-62z" fill="#da9251"/><path d="M279 178v64m32-64v64" stroke="#455d8b" stroke-width="13"/><path d="M277 127l-39 30" stroke="#c48765" stroke-width="13" stroke-linecap="round"/><path d="M207 143h35v37h-35zM208 156l-34-12-4 9 37 22" fill="#4488b7"/><path d="M237 143q28-21 27 1l-23 22" fill="none" stroke="#4488b7" stroke-width="7"/><path d="M168 158l-13 15m20-11-9 16m1-24-15 10" stroke="#438dcd" stroke-width="3"/><circle cx="453" cy="93" r="22" fill="#946048"/><path d="M430 118h46l7 62h-60z" fill="#8b71b7"/><path d="M435 180v60m31-60v60" stroke="#42657b" stroke-width="13"/><path d="M432 136l-33 29m72-29 17 29" stroke="#946048" stroke-width="12" stroke-linecap="round"/><path d="M378 174h54l-8 37h-39z" fill="#bd8954" stroke="#805e39" stroke-width="3"/><path d="M386 175q18-43 39 0" fill="none" stroke="#805e39" stroke-width="5"/><path d="M393 177l5-30 11 30m1 0 8-29 8 29" fill="#ee9239"/><path d="M400 149l-5-13m23 14 8-12" stroke="#4c8a46" stroke-width="4"/><ellipse cx="135" cy="89" rx="12" ry="19" fill="#b980cf" transform="rotate(-35 135 89)"/><ellipse cx="158" cy="89" rx="12" ry="19" fill="#efb765" transform="rotate(35 158 89)"/><path d="M146 78v30" stroke="#554f69" stroke-width="4"/>'}
+};
+const tasks = [
+{id:'park',kind:'picture',title:'רגע בפארק',scene:'park',instruction:'כתבו שלושה משפטים על התמונה: דבר שרואים, פעולה ומיקום.',prompt:'Describe the park. What can you see? What is happening?',
+frames:'There is a ___ in the park.\nThe child is ___.\nThe dog is beside ___.',plan:['איזה מקום רואים?','מה הילד עושה?','איפה הכלב או הספסל?'],words:[['park','פארק'],['kicking','בועט'],['ball','כדור'],['beside','ליד'],['bench','ספסל']],
+model:'A child is playing with a yellow ball in the park. A dog stands near the tree. There is a blue bench on the right.',review:'תיארתי פרטים ופעולה שאפשר לראות בתמונה.'},
+{id:'kitchen',kind:'picture',title:'מכינים משהו טעים',scene:'kitchen',instruction:'כתבו שלושה משפטים: מה יש במטבח, מה הילדה עושה ועוד פרט מהתמונה.',prompt:'Describe the kitchen and the child. Add one detail about the table.',
+frames:'The child is washing ___.\nThere are ___ on the table.\nI can see ___.',plan:['איזו פעולה רואים ליד הכיור?','אילו ירקות יש על השולחן?','איזה פרט נוסף אפשר לתאר?'],words:[['kitchen','מטבח'],['washing','שוטפת'],['apple','תפוח'],['carrots','גזרים'],['bowl','קערה']],
+model:'In this kitchen, a child is washing a red apple. Three carrots are on the table beside a bowl. A clock is on the wall.',review:'כתבתי על הפעולה ועל חפצים שמופיעים במטבח.'},
+{id:'library',kind:'picture',title:'פינה שקטה',scene:'library',instruction:'כתבו שלושה משפטים על הספרייה. הוסיפו פעולה ומיקום של בעל חיים.',prompt:'Describe the library. What is the child doing? Where is the cat?',
+frames:'There are ___ on the shelves.\nThe child is ___.\nThe cat is under ___.',plan:['מה יש על המדפים?','מה הילד עושה?','איפה החתול ומה הוא עושה?'],words:[['library','ספרייה'],['reading','קורא'],['shelves','מדפים'],['sleeping','ישן'],['under','מתחת']],
+model:'The library has books on two shelves. A child reads an open book at the table. Under the table, a black cat is sleeping.',review:'תיארתי את הספרייה ואת מיקום החתול.'},
+{id:'garden',kind:'picture',title:'עוזרים בגינה',scene:'garden',instruction:'כתבו שלושה או ארבעה משפטים על הילדים, הצמחים ופרט נוסף.',prompt:'Describe the garden. What are the two children doing?',
+frames:'One child is ___.\nThe other child is carrying ___.\nThere are ___ flowers.\nA butterfly is ___.',plan:['מה כל אחד מהילדים עושה?','מה הצבע והמספר של הפרחים?','מה נמצא מעל הפרחים?'],words:[['watering','משקה'],['flowers','פרחים'],['carrying','נושא'],['basket','סל'],['butterfly','פרפר']],
+model:'Two children are working in the garden. One is giving water to three red flowers. The other has a basket with two carrots. A butterfly is above the flowers.',review:'כתבתי על שתי פעולות שונות ועל פרט בגינה.'},
+{id:'morning',kind:'routine',title:'בוקר של דמות מומצאת',instruction:'כתבו שלושה או ארבעה משפטים בגוף ראשון על בוקר רגיל של דמות שהמצאתם.',prompt:'Imagine you are a character. Write about your usual school morning.',
+frames:'I get up at ___.\nFirst, I ___.\nThen I ___.\nI go to school ___.',plan:['מתי הדמות קמה?','מה היא עושה לפני בית הספר?','איך היא מגיעה לבית הספר?'],words:[['get up','לקום'],['breakfast','ארוחת בוקר'],['first','תחילה'],['then','אחר כך'],['walk','ללכת ברגל']],
+model:'My day begins at seven. I wash my face and eat some bread. After breakfast, I put a book in my bag. I walk to school with a friend.',review:'תיארתי הרגלים בסדר ברור, בגוף ראשון.'},
+{id:'afternoon',kind:'routine',title:'אחרי הצלצול',instruction:'תארו אחר צהריים רגיל של ילד או ילדה מומצאים. כתבו שלוש פעולות בסדר ברור.',prompt:'What does your character usually do after school?',
+frames:'___ comes home at ___.\nFirst, he or she ___.\nThen he or she ___.',plan:['איך קוראים לדמות בשם פרטי מומצא?','מה קורה מיד כשמגיעים הביתה?','מה קורה אחר כך?'],words:[['comes home','חוזר הביתה'],['eats','אוכל'],['plays','משחק'],['homework','שיעורי בית'],['after','אחרי']],
+model:'Lina gets home at two. She eats lunch before she does her homework. Later, she plays outside with her brother.',review:'שמרתי על אותה דמות ובדקתי את צורות הפעלים.'},
+{id:'pet',kind:'routine',title:'מטפלים בחיית מחמד',instruction:'המציאו חיית מחמד וכתבו שלושה או ארבעה משפטים על הטיפול בה בכל יום.',prompt:'Describe how you look after an imaginary pet every day.',
+frames:'My pet is a ___.\nEvery morning, I ___.\nIn the afternoon, I ___.\nAt night, I ___.',plan:['איזו חיה בחרתם?','איך דואגים לאוכל ולמים שלה?','מה עוד עושים בשבילה?'],words:[['pet','חיית מחמד'],['feed','להאכיל'],['water','מים'],['clean','לנקות'],['every day','בכל יום']],
+model:'I have an imaginary rabbit called Cloud. I give it fresh water each morning. After school, I clean its home. In the evening, I feed it.',review:'הסברתי איך מטפלים בחיה בדרך כלל.'},
+{id:'weekend',kind:'routine',title:'שבת בבוקר',instruction:'כתבו שלושה או ארבעה משפטים על סוף שבוע רגיל, אמיתי או מומצא. הוסיפו דבר שאתם אוהבים.',prompt:'Write about your usual weekend morning and something you enjoy.',
+frames:'On Saturday, I usually ___.\nAfter that, I ___.\nI like ___ because ___.',plan:['מה עושים בתחילת הבוקר?','מה עושים לאחר מכן?','מה אוהבים ולמה?'],words:[['usually','בדרך כלל'],['together','ביחד'],['visit','לבקר'],['enjoy','ליהנות'],['because','כי']],
+model:'At the weekend, I usually have breakfast with my family. We often visit a small park. I enjoy walking there because I can see birds.',review:'כתבתי על שגרה והוספתי דבר שנהנים ממנו.'},
+{id:'invite',kind:'message',title:'הזמנה למועדון ציור',instruction:'כתבו הזמנה לחבר דמיוני למועדון ציור. המציאו יום, שעה וחדר בבית הספר; אל תכתבו כתובת אמיתית.',prompt:'Invite a friend to an art club. Include a day, a time and a school room.',
+frames:'Hi ___,\nPlease come to ___.\nWe meet on ___ at ___ in ___.\nSee you!',plan:['את מי מזמינים ולאיזו פעילות?','באיזה יום, שעה וחדר נפגשים?','איך מסיימים בנעימות?'],words:[['invite','להזמין'],['art club','מועדון ציור'],['meet','להיפגש'],['room','חדר'],['please','בבקשה']],
+model:'Hello Sam,\nWould you like to draw with us? Our art club is in room 2 on Wednesday at four. Bring a pencil!\nSee you,\nNoa',review:'הוספתי מטרה, יום, שעה ומקום להזמנה.'},
+{id:'thanks',kind:'message',title:'תודה על העזרה',instruction:'כתבו הודעת תודה לחברה דמיונית שעזרה לכם למצוא ספר. ציינו על מה התודה ואיך העזרה השפיעה.',prompt:'Thank a friend for helping you find a book. Explain why it helped.',
+frames:'Hi ___,\nThank you for ___.\nNow I can ___.\nYour friend,\n___',plan:['למי אומרים תודה?','במה בדיוק היא עזרה?','מה אפשר לעשות בזכות העזרה?'],words:[['thank you','תודה'],['helping','עוזרת'],['find','למצוא'],['book','ספר'],['kind','אדיב']],
+model:'Dear Ella,\nThanks for your help with the missing book. Now I can read the story for our class. You are a kind friend!\nMika',review:'התודה שלי מסבירה איזו עזרה קיבלתי.'},
+{id:'bring',kind:'message',title:'תזכורת לקבוצת מדע',instruction:'כתבו תזכורת לחבר להביא קופסה ריקה למפגש מדע מחר. הוסיפו למה צריך אותה ומקום מפגש מומצא בבית הספר.',prompt:'Remind a friend to bring an empty box tomorrow. Say why and where you will meet.',
+frames:'Hi ___,\nPlease bring ___ tomorrow.\nWe need it for ___.\nLet us meet in ___.',plan:['מה צריך להביא ומתי?','למה הקבוצה צריכה קופסה?','איפה בבית הספר נפגשים?'],words:[['bring','להביא'],['empty','ריק'],['box','קופסה'],['tomorrow','מחר'],['science','מדע']],
+model:'Hello Dan,\nDo not forget an empty box for tomorrow. We are making a model house in science club. Meet us in room 6.\nThanks,\nAri',review:'כתבתי מה להביא, מתי, למה ולאן.'},
+{id:'lost',kind:'message',title:'מודעה על קלמר',instruction:'כתבו מודעה קצרה על קלמר דמיוני שאבד. תארו אותו, ציינו איפה ראיתם אותו לאחרונה ובקשו למסור אותו למורה.',prompt:'Write a notice about a lost pencil case. Describe it and ask for help.',
+frames:'I cannot find my ___.\nIt is ___ and ___.\nI last saw it in ___.\nPlease give it to ___.',plan:['מה הצבע או הדוגמה על הקלמר?','איפה הוא היה לאחרונה?','מה מבקשים ממי שימצא אותו?'],words:[['lost','אבוד'],['pencil case','קלמר'],['striped','מפוספס'],['last saw','ראיתי לאחרונה'],['teacher','מורה']],
+model:'Lost pencil case!\nMy pencil case is green with white stars. It was in the music room. If you find it, please give it to our teacher. Thank you!',review:'נתתי תיאור שימושי ובקשה ברורה בלי פרטים אישיים.'},
+{id:'favorite-place',kind:'paragraph',title:'מקום שכיף להיות בו',instruction:'כתבו פסקה של כארבעה משפטים על מקום אהוב או מומצא: פתיחה, שני פרטים וסיום.',prompt:'Describe a place you like. Explain what you can do there and why you like it.',
+frames:'My favorite place is ___.\nI can ___ there.\nI like it because ___.\nIt makes me feel ___.',plan:['איזה מקום תציגו במשפט הראשון?','מה אפשר לעשות ולראות בו?','למה הוא מיוחד בעיניכם?'],words:[['favorite','אהוב ביותר'],['quiet','שקט'],['place','מקום'],['because','כי'],['feel','להרגיש']],
+model:'I love the small library near my school. It has a comfortable reading corner. I go there to discover stories about animals. This peaceful place always makes me smile.',review:'כל המשפטים קשורים לאותו מקום.'},
+{id:'new-club',kind:'paragraph',title:'המועדון שהמצאנו',instruction:'הציעו מועדון חדש לבית הספר בפסקה של כארבעה משפטים. הסבירו מה עושים בו ולמה כדאי להצטרף.',prompt:'Invent a school club. Describe its activities and explain why it is fun.',
+frames:'Our new club is a ___ club.\nWe can ___ and ___.\nIt is fun because ___.\nEveryone can ___.',plan:['מה הרעיון המרכזי של המועדון?','אילו שתי פעילויות יהיו בו?','למה ילדים עשויים ליהנות ממנו?'],words:[['club','מועדון'],['create','ליצור'],['learn','ללמוד'],['together','ביחד'],['join','להצטרף']],
+model:'Let us start a nature club at school. We can watch birds and draw trees. Working together will help us learn about our world. It is a great club for curious children.',review:'הצגתי מועדון, פרטים וסיבה להצטרף.'},
+{id:'picnic-plan',kind:'paragraph',title:'מתכננים פיקניק',instruction:'כתבו פסקה של כארבעה משפטים שמתכננת פיקניק כיתתי דמיוני. חברו את המשפטים בסדר ברור.',prompt:'Plan a class picnic. Where can you go, what can you bring and what can you do?',
+frames:'Our class can go to ___.\nFirst, we can ___.\nThen we can ___.\nWe should bring ___.',plan:['איפה אפשר לערוך פיקניק?','מה כדאי להביא?','מה נעשה קודם ואחר כך?'],words:[['picnic','פיקניק'],['bring','להביא'],['share','לחלוק'],['first','תחילה'],['then','אחר כך']],
+model:'Our class can have a picnic in the park. We should take water and sandwiches. First, we can eat together under a tree. After lunch, we can play a ball game.',review:'הוספתי מקום, ציוד וסדר פעילויות הגיוני.'},
+{id:'help-school',kind:'paragraph',title:'בית ספר נעים יותר',instruction:'כתבו פסקה של כארבעה משפטים עם רעיון לשיפור בית הספר. הוסיפו שתי פעולות וסיבה.',prompt:'Suggest one way to make school nicer. Give two actions and explain why they help.',
+frames:'We can make our school ___.\nOne idea is to ___.\nWe can also ___.\nThis helps because ___.',plan:['מה תרצו לשפר בבית הספר?','אילו שתי פעולות קשורות לרעיון?','איך הפעולות יעזרו?'],words:[['help','לעזור'],['clean','נקי'],['also','גם'],['together','ביחד'],['idea','רעיון']],
+model:'We can make our playground cleaner. Each class can pick up paper after lunch. We can also put a recycling box near the door. These small actions make our school a nicer place.',review:'הפעולות והסיבה תומכות באותו רעיון מרכזי.'}
+];
+const drafts = new Map();
+let unseen = [], history = [], position = -1, currentLesson = 'picture', returnFocus = null, audioTimer = null;
+let utterance = null;
+const current = () => tasks.find(t => t.id === history[position]);
+function state() {
+ const id = current().id;
+ if (!drafts.has(id)) drafts.set(id,{text:'',plan:'',stage:'frames',checks:[false,false,false,false],practised:false,model:false,bank:true});
+ return drafts.get(id);
+}
+function shuffle(values) {
+ for(let i=values.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[values[i],values[j]]=[values[j],values[i]];}
+ return values;
+}
+function draw() {
+ if(!unseen.length){
+  unseen=shuffle(tasks.map(t=>t.id));
+  if(unseen[unseen.length-1]===history[history.length-1]) [unseen[0],unseen[unseen.length-1]]=[unseen[unseen.length-1],unseen[0]];
+ }
+ return unseen.pop();
+}
+function fillList(id,items){$(id).replaceChildren(...items.map(text=>{const li=document.createElement('li');li.textContent=text;return li;}));}
+function countWords(){const matches=$('draft').value.match(/[A-Za-z]+(?:['’-][A-Za-z]+)*/g);$('word-count').textContent='מילים באנגלית בטקסט: '+(matches?matches.length:0);}
+function practiceLabel(){$('practice-state').textContent=state().practised?'סומן כמתורגל — לא ציון':'עדיין לא סומן כמתורגל';}
+function setStage(stage){
+ state().stage=stage;
+ document.querySelectorAll('[data-stage]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.stage===stage)));
+ ['frames','plan','independent'].forEach(s=>$(s+'-panel').hidden=s!==stage);
+}
+function stopAudio(){
+ clearTimeout(audioTimer);audioTimer=null;
+ if(utterance){utterance.onend=null;utterance.onerror=null;utterance.onstart=null;utterance=null;}
+ if('speechSynthesis' in window) window.speechSynthesis.cancel();
+}
+function speak(text,statusId){
+ stopAudio();$('audio-status').textContent='';$('lesson-audio').textContent='';
+ const status=$(statusId);
+ if(!('speechSynthesis' in window)||!('SpeechSynthesisUtterance' in window)){status.textContent='הקראה אינה זמינה בדפדפן הזה. אפשר לקרוא את הדוגמה שעל המסך.';return;}
+ const voice=window.speechSynthesis.getVoices().find(v=>v.localService&&/^en(?:-|_)/i.test(v.lang));
+ if(!voice){status.textContent='לא נמצא קול אנגלי מקומי זמין. אפשר להמשיך ללא הקראה או לנסות שוב כשהקולות ייטענו.';return;}
+ try{
+  utterance=new SpeechSynthesisUtterance(text);utterance.lang=voice.lang;utterance.voice=voice;utterance.rate=.85;
+  status.textContent='מכינים הקראה…';
+  utterance.onstart=()=>{clearTimeout(audioTimer);status.textContent='מקריאים את הדוגמה.';};
+  utterance.onend=()=>{clearTimeout(audioTimer);status.textContent='ההקראה הסתיימה.';utterance=null;};
+  utterance.onerror=()=>{clearTimeout(audioTimer);status.textContent='לא הצלחנו להשמיע. אפשר לקרוא את הדוגמה ולהמשיך.';utterance=null;};
+  window.speechSynthesis.speak(utterance);
+  audioTimer=setTimeout(()=>{stopAudio();status.textContent='ההקראה לא התחילה. אפשר להמשיך לקרוא ללא קול.';},7000);
+ }catch(error){stopAudio();status.textContent='ההקראה אינה זמינה כרגע. הטקסט נשאר לקריאה.';}
+}
+function render(focus=false){
+ stopAudio();$('audio-status').textContent='';
+ const t=current(),s=state();
+ $('task-progress').textContent='פעילות בביקור: '+(position+1);
+ $('kind-label').textContent=lessons[t.kind].name;
+ $('task-title').textContent=t.title;$('task-instruction').textContent=t.instruction;$('task-prompt').textContent=t.prompt;
+ $('lesson-select').value=t.kind;
+ $('picture').hidden=!t.scene;
+ if(t.scene){
+  const scene=scenes[t.scene];
+  $('scene').innerHTML='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 280" role="img" aria-labelledby="scene-title" lang="en"><title id="scene-title">'+scene.en+'</title>'+scene.art+'</svg>';
+  $('scene-en').textContent=scene.en;$('scene-he').textContent=scene.he;
+ }else{$('scene').replaceChildren();}
+ $('frames').textContent=t.frames;fillList('planning-prompts',t.plan);
+ $('plan').value=s.plan;$('draft').value=s.text;setStage(s.stage);
+ $('words').replaceChildren(...t.words.map(([en,he])=>{
+  const item=document.createElement('div');item.className='word';
+  const a=document.createElement('span');a.lang='en';a.className='en';a.textContent=en;
+  const b=document.createElement('span');b.textContent=he;item.append(a,b);return item;
+ }));
+ $('word-bank').open=s.bank;$('model').textContent=t.model;$('model-box').open=s.model;
+ const checks=[t.review,'קראתי את המשפטים ובדקתי שיש בהם רעיון ברור.','בדקתי אות גדולה בתחילת משפט וסימן פיסוק בסופו.','בחרתי דבר אחד לשפר, או החלטתי שהטיוטה מוכנה לשיתוף עם מבוגר.'];
+ $('checklist').replaceChildren(...checks.map((text,i)=>{
+  const label=document.createElement('label'),input=document.createElement('input'),span=document.createElement('span');
+  input.type='checkbox';input.checked=s.checks[i];input.addEventListener('change',()=>{s.checks[i]=input.checked;});
+  span.textContent=text;label.append(input,span);return label;
+ }));
+ countWords();practiceLabel();$('writing-feedback').textContent='';$('previous').disabled=position===0;
+ if(focus)$('task-title').focus();
+}
+function next(){if(position===history.length-1)history.push(draw());position++;render(true);}
+function toggleHelp(open){
+ $('trial-help').hidden=!open;$('trial-help-button').setAttribute('aria-expanded',String(open));
+ $('trial-help-button').textContent=open?'הסתרת ההסבר':'איך חושבים על זה?';
+}
+function openLesson(){
+ currentLesson=$('lesson-select').value;
+ const l=lessons[currentLesson];returnFocus=document.activeElement;
+ $('lesson-title').textContent=l.name;$('lesson-goal').textContent=l.goal;$('lesson-rule').textContent=l.rule;
+ fillList('lesson-steps',l.steps);$('lesson-example').textContent=l.example;$('lesson-mistake').textContent=l.mistake;
+ $('mistake-before').textContent=l.before;$('mistake-after').textContent=l.after;
+ $('trial-prompt').textContent=l.trial;$('trial-context').textContent=l.context;$('trial-feedback').textContent='';$('lesson-audio').textContent='';
+ fillList('trial-help-steps',l.help);$('trial-help-en').textContent=l.helpEn;toggleHelp(false);
+ $('trial-options').replaceChildren(...l.choices.map((text,i)=>{
+  const b=document.createElement('button');b.type='button';b.textContent=text;
+  b.addEventListener('click',()=>{
+   $('trial-feedback').textContent=i===l.answer?'מתאים! קראו את ההסבר כדי להבין למה.':l.retry;
+   toggleHelp(true);
+  });return b;
+ }));
+ stopAudio();document.body.classList.add('lesson-open');$('lesson-dialog').showModal();
+}
+Object.entries(lessons).forEach(([id,l])=>{const option=document.createElement('option');option.value=id;option.textContent=l.name;$('lesson-select').append(option);});
+document.querySelectorAll('[data-stage]').forEach(b=>b.addEventListener('click',()=>setStage(b.dataset.stage)));
+$('draft').addEventListener('input',()=>{state().text=$('draft').value;state().practised=false;countWords();practiceLabel();$('writing-feedback').textContent='';});
+$('plan').addEventListener('input',()=>{state().plan=$('plan').value;});
+$('model-box').addEventListener('toggle',()=>{if(current())state().model=$('model-box').open;});
+$('word-bank').addEventListener('toggle',()=>{if(current())state().bank=$('word-bank').open;});
+$('mark-practised').addEventListener('click',()=>{
+ if(!$('draft').value.trim()){$('writing-feedback').textContent='עוד אין כאן טקסט. אפשר לכתוב אפילו משפט ראשון, להיעזר במסגרת או לעבור לפעילות אחרת.';$('draft').focus();return;}
+ state().practised=true;practiceLabel();$('writing-feedback').textContent='סימנתם שהתאמנתם! זו הערכה עצמית, לא אישור שהטקסט נכון. אפשר להמשיך לשפר או לקרוא עם מבוגר.';
+});
+$('next').addEventListener('click',next);$('previous').addEventListener('click',()=>{if(position>0){position--;render(true);}});
+$('open-lesson').addEventListener('click',openLesson);
+$('close-lesson').addEventListener('click',()=>$('lesson-dialog').close());
+$('lesson-dialog').addEventListener('keydown',event=>{
+ if(event.key!=='Tab')return;
+ const controls=Array.from($('lesson-dialog').querySelectorAll('button:not(:disabled),select,textarea,input,a[href]')).filter(el=>el.getClientRects().length);
+ const first=controls[0],last=controls[controls.length-1];
+ if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}
+ else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}
+});
+$('lesson-dialog').addEventListener('close',()=>{stopAudio();document.body.classList.remove('lesson-open');if(returnFocus&&returnFocus.isConnected)returnFocus.focus();});
+$('trial-help-button').addEventListener('click',()=>toggleHelp($('trial-help').hidden));
+$('speak-model').addEventListener('click',()=>speak(current().model,'audio-status'));
+$('speak-lesson').addEventListener('click',()=>speak(lessons[currentLesson].example,'lesson-audio'));
+window.addEventListener('pagehide',stopAudio);
+// Guided revision checks authored examples only; it never reads drafts or plans.
+const revisionLessons = {
+ capitals:{
+  name:'אותיות גדולות',goal:'מזהים אילו אותיות צריכות להיות גדולות, בלי לשנות את המילים.',
+  rule:'מתחילים משפט באות גדולה. גם שמות, ימים, חודשים והמילה ״אני״ באנגלית מקבלים אות גדולה.',
+  ruleEn:'Capitalize sentence beginnings, names, days, months and the pronoun I.',
+  example:'On Friday, I visit Maya.',mistake:'שם של אדם נשאר עם אות גדולה גם באמצע משפט. אין צורך להפוך כל מילה לגדולה.',
+  before:'I visit maya.',after:'I visit Maya.',
+  trial:{prompt:'שנו רק אות גדולה בשם הילד.',source:'I help ben.',options:['I Help ben.','I help Ben.','i help Ben.'],accepted:['I help Ben.'],answer:'I help Ben.',cue:'חפשו את שם הילד באמצע המשפט.',apply:'השם של בן מתחיל באות גדולה. תחילת המשפט כבר נכונה.',verify:'בדקו שהשם תוקן ושהמילה שמציינת עזרה לא השתנתה.'},
+  transfer:'אפשר לחזור לטיוטה ולבדוק בעצמכם: האם תחילת כל משפט ושמות שבחרתם מתחילים באות גדולה?'
+ },
+ punctuation:{
+  name:'סימני פיסוק',goal:'מבדילים בין משפט שמספר משהו לבין שאלה ישירה.',
+  rule:'בתרגול הזה מסיימים משפט מידע רגוע בנקודה, ושאלה ישירה בסימן שאלה. משנים רק את הסימן האחרון.',
+  ruleEn:'End a neutral statement with a period. End a direct question with a question mark.',
+  example:'The bag is blue.\nIs the bag blue?',mistake:'מילה שמתארת שאלה אינה הופכת כל משפט לשאלה. בודקים אם המשפט עצמו שואל.',
+  before:'Where is my bag.',after:'Where is my bag?',
+  trial:{prompt:'זו שאלה ישירה על מקום התיק. בחרו רק את סימן הסיום.',source:'Where is the bag__',options:['.','?','!'],accepted:['?'],answer:'Where is the bag?',cue:'המשפט מבקש לדעת איפה התיק.',apply:'המילה הראשונה שואלת על מקום, והמשפט מצפה לתשובה.',verify:'קראו כשאלה ובחרו סימן שאלה, לא נקודה.'},
+  transfer:'אפשר לחזור לטיוטה ולקרוא משפט אחד: האם הוא שואל או מספר? בחרו בעצמכם סימן סיום מתאים.'
+ },
+ order:{
+  name:'סדר מילים במשפט',goal:'מסדרים מילים של דוגמה מוכנה לפי תפקידן וההוראה.',
+  rule:'במשפט מידע מחפשים מי עושה מה. בשאלה עם פועל עזר, הוא בא לפני הנושא. שומרים על סדר הפרטים שנדרש בתרגיל.',
+  ruleEn:'In a statement, put the subject before its verb. In these questions, put the helper before the subject.',
+  example:'The birds can fly.\nCan the birds fly?',mistake:'כאן רוצים משפט מידע, לא שאלה. לכן הנושא מופיע לפני פועל העזר.',
+  before:'Can the birds fly.',after:'The birds can fly.',
+  trial:{prompt:'בחרו שאלה ישירה שמתחילה בפועל העזר.',source:'the birds / can / fly',options:['The birds can fly.','Can the birds fly?','Can fly the birds?'],accepted:['Can the birds fly?'],answer:'Can the birds fly?',cue:'ההוראה מבקשת שאלה, לא משפט מידע.',apply:'מציבים את פועל העזר לפני הציפורים ואת פעולת התעופה אחריהן.',verify:'ודאו שהמשפט מתחיל בפועל העזר ומסתיים בסימן שאלה.'},
+  transfer:'אפשר לחזור לטיוטה ולבדוק משפט אחד: מי עושה את הפעולה, ומה הוא עושה? בשאלה בדקו גם את פועל העזר.'
+ },
+ connectors:{
+  name:'מילות חיבור',goal:'בוחרים קשר מדויק: תוספת, ניגוד, סיבה או סדר.',
+  rule:'בוחרים מילת חיבור לפי הקשר שהתבקש. תוספת אינה סיבה, וניגוד אינו רק האירוע הבא.',
+  ruleEn:'Use and for addition, but for contrast, because for a reason, and then for the next step.',
+  example:'I pack a book and a pencil.\nIt is cold, but I feel warm.\nI drink because I am thirsty.\nFirst, I wash. Then I eat.',
+  mistake:'כדי להסביר למה שתיתי, צריך מילת סיבה. מילת ניגוד משנה את הקשר בין הרעיונות.',
+  before:'I drink water but I am thirsty.',after:'I drink water because I am thirsty.',
+  trial:{prompt:'השלימו מילת סיבה: הצמא מסביר למה אני שותה.',source:'I drink water ___ I am thirsty.',options:['and','but','because','then'],accepted:['because'],answer:'I drink water because I am thirsty.',cue:'שאלו למה הדמות שותה מים.',apply:'החלק שאחרי הרווח נותן את הסיבה: הדמות צמאה.',verify:'בדקו שמילת החיבור עונה על ״למה״, ולא רק מוסיפה פרט.'},
+  transfer:'אפשר לחזור לטיוטה ולבחור שני רעיונות: האם רציתם להוסיף, להנגיד, להסביר סיבה או לתאר סדר? אין חובה להוסיף מילת חיבור.'
+ },
+ 'paragraph-order':{
+  name:'סדר משפטים בפסקה',goal:'מחברים משפטים שלמים לפסקה שהקורא יכול לעקוב אחריה.',
+  rule:'מתחילים בהצגת הדמות או הדבר. אחר כך עוקבים אחר זמן, בעיה ופתרון. כינוי כמו ״הוא״ או ״זה״ צריך להצביע על משהו שכבר הוצג. כשאין סדר מחייב בין פרטים, אפשר להחליף ביניהם.',
+  ruleEn:'Introduce a noun before referring to it with a pronoun. Follow time clues and put a problem before its solution. Independent details may change places.',
+  example:'Lina finds a box. It is empty. She puts her crayons inside.',
+  mistake:'אם מתחילים בכינוי בלי להציג את החפץ, הקורא עדיין לא יודע על מה מדברים. כאן מציגים קודם את הקופסה.',
+  before:'It is empty. Lina finds a box.',after:'Lina finds a box. It is empty.',
+  trial:{prompt:'בחרו סדר משפטים: קודם מציגים את הציפור, אחר כך את הצמא שלה, ולבסוף נותנים לה מים.',source:'A bird / thirsty / water',
+   options:['It is thirsty. A bird lands near Sam. Sam gives it water.','A bird lands near Sam. It is thirsty. Sam gives it water.','A bird lands near Sam. Sam gives it water. It is thirsty.'],
+   accepted:['A bird lands near Sam. It is thirsty. Sam gives it water.'],answer:'A bird lands near Sam. It is thirsty. Sam gives it water.',
+   cue:'חפשו את המשפט שמציג לראשונה את הציפור.',apply:'הכינוי במשפט על הצמא מצביע על הציפור שכבר הוצגה. נתינת המים פותרת את הבעיה.',verify:'בדקו את שלושת השלבים לפי ההוראה: ציפור, צמא, מים.'},
+  transfer:'אפשר לחזור לטיוטה ולקרוא את המשפטים לפי הסדר: האם ברור על מי מדברים ומה קרה קודם? אתם בוחרים אם לשנות משהו.'
+ }
+};
+const revisionTasks = [
+ {id:'cap-start',category:'capitals',prompt:'תקנו רק את האות הראשונה של משפט המידע.',source:'the kite is red.',options:['the Kite is red.','The kite is red.','The Kite Is Red.'],accepted:['The kite is red.'],answer:'The kite is red.',cue:'חפשו את המילה שפותחת את המשפט על העפיפון.',apply:'רק המילה הראשונה צריכה להתחיל באות גדולה; צבע וחפץ אינם שמות פרטיים.',verify:'בדקו שהמילים והנקודה נשארו ושרק תחילת המשפט השתנתה.'},
+ {id:'cap-i',category:'capitals',prompt:'תקנו את המילה ״אני״ בלבד. שאר המשפט כבר נכון.',source:'Maya and i read books.',options:['Maya And i read books.','Maya and I read books.','Maya and i Read books.'],accepted:['Maya and I read books.'],answer:'Maya and I read books.',cue:'חפשו את המילה בת אות אחת אחרי מילת החיבור.',apply:'המילה ״אני״ באנגלית נכתבת באות גדולה גם באמצע המשפט.',verify:'בדקו שהשם בתחילת המשפט נשאר כפי שהיה ושלא הגדלתם מילים אחרות.'},
+ {id:'cap-name',category:'capitals',prompt:'תקנו רק את תחילת השם הפרטי של החברה.',source:'We play with sara.',options:['We Play with sara.','We play With sara.','We play with Sara.'],accepted:['We play with Sara.'],answer:'We play with Sara.',cue:'המשפט מציין חברה בשם שרה.',apply:'שם החברה מתחיל באות גדולה; המילים האחרות כבר כתובות נכון.',verify:'השוו למקור: רק האות הראשונה בשם צריכה להשתנות.'},
+ {id:'cap-day',category:'capitals',prompt:'תקנו רק את שם היום.',source:'We swim on monday.',options:['We swim on Monday.','We Swim on monday.','We swim On monday.'],accepted:['We swim on Monday.'],answer:'We swim on Monday.',cue:'חפשו מילה שמציינת באיזה יום שוחים.',apply:'באנגלית שמות ימים מתחילים באות גדולה, גם בסוף משפט.',verify:'בדקו שמילת היום בלבד תוקנה ושפועל השחייה לא השתנה.'},
+ {id:'cap-month',category:'capitals',prompt:'תקנו רק את שם החודש.',source:'The trip is in april.',options:['The Trip is in april.','The trip is in April.','The trip Is in april.'],accepted:['The trip is in April.'],answer:'The trip is in April.',cue:'המשפט מספר באיזה חודש יוצאים לטיול.',apply:'שם החודש אפריל מקבל אות גדולה; המילה ״טיול״ אינה שם פרטי.',verify:'בדקו שרק שם החודש השתנה והמשפט עדיין מתחיל באות גדולה.'},
+ {id:'cap-two',category:'capitals',prompt:'תקנו את תחילת שני המשפטים. אל תשנו אותיות אחרות.',source:'we see a bird. it is small.',options:['We see a bird. it is small.','We see a bird. It is small.','We See a Bird. It Is Small.'],accepted:['We see a bird. It is small.'],answer:'We see a bird. It is small.',cue:'ספרו את המשפטים: יש נקודה באמצע ועוד נקודה בסוף.',apply:'אחרי הנקודה מתחיל משפט חדש, ולכן צריך אות גדולה בשתי ההתחלות.',verify:'חפשו שתי התחלות גדולות, בלי אותיות גדולות מיותרות באמצע.'},
+ {id:'punct-info',category:'punctuation',prompt:'זה משפט מידע רגוע על צבע הקופסה. בחרו סימן סיום בלבד.',source:'The box is green__',options:['?','!','.'],accepted:['.'],answer:'The box is green.',cue:'המשפט מוסר את צבע הקופסה, בלי לבקש תשובה.',apply:'זה מידע רגוע; בתרגיל הזה הוא מסתיים בנקודה, לא בקריאת התרגשות.',verify:'קראו כמשפט שמספר משהו ובדקו שבחרתם נקודה.'},
+ {id:'punct-where',category:'punctuation',prompt:'זו שאלה ישירה על מקום הספר. בחרו סימן סיום בלבד.',source:'Where is my book__',options:['.','?','!'],accepted:['?'],answer:'Where is my book?',cue:'הדמות מבקשת לדעת איפה הספר.',apply:'שאלת מקום ישירה מצפה לתשובה ולכן מסתיימת בסימן שאלה.',verify:'בדקו שהסימן מבקש תשובה ולא מציג עובדה.'},
+ {id:'punct-can',category:'punctuation',prompt:'זו שאלה ישירה על יכולת. בחרו סימן סיום בלבד.',source:'Can the rabbit jump__',options:['!','.','?'],accepted:['?'],answer:'Can the rabbit jump?',cue:'פועל העזר מופיע לפני הארנב ושואל אם הוא יכול לקפוץ.',apply:'סדר המילים הזה יוצר שאלה ישירה על יכולת.',verify:'אפשר לענות כן או לא, ולכן נבחר סימן שאלה.'},
+ {id:'punct-report',category:'punctuation',prompt:'הדמות מספרת ברוגע מה היא יודעת, ולא שואלת. בחרו סימן סיום.',source:'I know where the library is__',options:['?','.','!'],accepted:['.'],answer:'I know where the library is.',cue:'המשפט מתחיל בהצהרה: הדמות יודעת איפה הספרייה.',apply:'למרות מילת המקום באמצע, המשפט כולו מוסר מידע ואינו שאלה ישירה.',verify:'אל תבחרו לפי מילה אחת; קראו את כל המשפט ובחרו נקודה.'},
+ {id:'punct-do',category:'punctuation',prompt:'זו שאלה ישירה על הרגל. בחרו סימן סיום בלבד.',source:'Do you walk to school__',options:['.','!','?'],accepted:['?'],answer:'Do you walk to school?',cue:'הדמות שואלת את הקורא אם הוא הולך לבית הספר.',apply:'פועל העזר בתחילת המשפט מציג שאלה ישירה על הרגל.',verify:'המשפט דורש תשובה, ולכן מסתיים בסימן שאלה.'},
+ {id:'punct-routine',category:'punctuation',prompt:'זה משפט מידע רגוע על שגרה. בחרו סימן סיום בלבד.',source:'Every morning, we feed the fish__',options:['.','?','!'],accepted:['.'],answer:'Every morning, we feed the fish.',cue:'ביטוי הזמן מציג פעולה שעושים בכל בוקר.',apply:'המשפט מספר על האכלת הדגים ואינו שואל על הזמן.',verify:'קראו כהצהרה רגועה ובחרו נקודה לפי ההוראה.'},
+ {id:'order-dog',category:'order',prompt:'בנו משפט מידע: הכלב הקטן ישן. התחילו במילת היידוע וסיימו בפעולת השינה.',tokens:['The','small','dog','is','sleeping.'],accepted:['The small dog is sleeping.'],answer:'The small dog is sleeping.',cue:'חפשו קודם את הכלב ואת המילה שמתארת אותו.',apply:'מילת היידוע והתואר באים לפני הכלב, ואז פועל העזר ופעולת השינה.',verify:'בדקו שהתיאור ״קטן״ צמוד לכלב ושפועל העזר בא לפני הפעולה.'},
+ {id:'order-help',category:'order',prompt:'בנו שאלה: האם אתה יכול לעזור לי? התחילו בפועל העזר וסיימו במילה ״לי״.',tokens:['Can','you','help','me?'],accepted:['Can you help me?'],answer:'Can you help me?',cue:'זו בקשה בצורת שאלה על עזרה.',apply:'פועל העזר פותח, אחריו מי שיכול לעזור, הפעולה ולבסוף מקבל העזרה.',verify:'קראו כשאלה; סימן השאלה נשאר במילה האחרונה.'},
+ {id:'order-moon',category:'order',prompt:'בנו משפט מידע: אני יכול לראות את הירח. התחילו במילה ״אני״ וסיימו בירח.',tokens:['I','can','see','the','moon.'],accepted:['I can see the moon.'],answer:'I can see the moon.',cue:'הדובר הוא מי שרואה, והירח הוא מה שרואים.',apply:'הדובר בא ראשון, אחריו היכולת והראייה, ואז מילת היידוע והירח.',verify:'ודאו שמילת היידוע צמודה לירח ושהמשפט אינו שאלה.'},
+ {id:'order-repeat',category:'order',prompt:'בנו משפט מידע: אנחנו יכולים לשחות וגם לרוץ. ציינו שחייה לפני ריצה; בכל חלק כתבו מי יכול לפעול.',tokens:['We','can','swim','and','we','can','run.'],accepted:['We can swim and we can run.'],answer:'We can swim and we can run.',cue:'יש שתי פעולות ושתי מילים זהות שמציינות יכולת.',apply:'בונים חלק על שחייה וחלק על ריצה, וביניהם מילת תוספת. לכל חלק נושא ויכולת.',verify:'בדקו ששתי מילות היכולת בשימוש, שהשחייה ראשונה ושהריצה אחרונה.'},
+ {id:'order-first',category:'order',prompt:'בנו משפט: תחילה, אני שוטף את ידיי. התחילו במילת הסדר ושמרו על הפסיק שלה.',tokens:['First,','I','wash','my','hands.'],accepted:['First, I wash my hands.'],answer:'First, I wash my hands.',cue:'מילת הסדר כבר נושאת פסיק ומציינת מה עושים תחילה.',apply:'אחריה באים הדובר, פעולת הרחצה, השייכות והידיים.',verify:'בדקו שהשייכות צמודה לידיים ושהנקודה בסוף.'},
+ {id:'order-apples',category:'order',prompt:'בנו שאלה: האם אתה אוהב תפוחים אדומים? התחילו בפועל העזר וסיימו בתפוחים.',tokens:['Do','you','like','red','apples?'],accepted:['Do you like red apples?'],answer:'Do you like red apples?',cue:'זו שאלה על העדפה, ולא משפט שמספר על העדפה.',apply:'פועל העזר והנושא פותחים; אחריהם ההעדפה, הצבע והתפוחים.',verify:'בדקו שהצבע בא לפני התפוחים ושפועל העזר בא לפני הנושא.'},
+ {id:'connect-add',category:'connectors',prompt:'הוסיפו פריט נוסף לרשימה בלבד, בלי ניגוד או סיבה.',source:'I pack a pencil ___ a ruler.',options:['and','but','because','then'],accepted:['and'],answer:'I pack a pencil and a ruler.',cue:'הקלמר מקבל שני פריטים שמופיעים ברשימה.',apply:'סרגל מתווסף לעיפרון; הוא אינו הסיבה לעיפרון ואינו מנוגד לו.',verify:'בחרו מילת תוספת שמחברת שני שמות של חפצים.'},
+ {id:'connect-contrast',category:'connectors',prompt:'הדגישו ניגוד בין הקור בחוץ לחום שלי, לא רק תוספת.',source:'It is cold outside, ___ I am warm in my coat.',options:['because','then','but','and'],accepted:['but'],answer:'It is cold outside, but I am warm in my coat.',cue:'בחוץ קר, ובכל זאת הדמות חמה בתוך המעיל.',apply:'מילת ניגוד מבליטה את ההבדל בין שני המצבים.',verify:'מילת תוספת יכולה לחבר רעיונות, אבל אינה מדגישה את הניגוד שנדרש כאן.'},
+ {id:'connect-reason',category:'connectors',prompt:'הציגו את העייפות כסיבה לשינה מוקדמת.',source:'I go to bed early ___ I am tired.',options:['but','because','and','then'],accepted:['because'],answer:'I go to bed early because I am tired.',cue:'שאלו למה הדמות הולכת לישון מוקדם.',apply:'העייפות מסבירה את הפעולה, ולכן צריך קשר של סיבה.',verify:'ודאו שהחלק אחרי מילת החיבור עונה על ״למה״.'},
+ {id:'connect-next',category:'connectors',prompt:'בחרו מילת סדר שפותחת את הצעד הבא אחרי רחצת הידיים. האות הראשונה כבר גדולה באפשרויות.',source:'First, I wash my hands. ___ I eat my sandwich.',options:['Because','But','Then','And'],accepted:['Then'],answer:'First, I wash my hands. Then I eat my sandwich.',cue:'מופיעים שני צעדים: רחצה ואז אכילה.',apply:'המשפט השני צריך לסמן מה קורה אחר כך, לא למה קורה הצעד הראשון.',verify:'בחרו מילת סדר מפורשת; תוספת לבדה אינה מסמנת את הצעד הבא.'},
+ {id:'connect-actions',category:'connectors',prompt:'חברו שתי פעילויות כתוספת בלבד, בלי לטעון לסיבה, ניגוד או סדר.',source:'We draw pictures ___ sing songs.',options:['then','because','and','but'],accepted:['and'],answer:'We draw pictures and sing songs.',cue:'שתי הפעילויות שייכות לאותה קבוצה של ילדים.',apply:'הציור והשירה מוצגים כשתי פעילויות, ללא הסבר למה או מה קודם.',verify:'בחרו תוספת; מילת סדר הייתה מוסיפה מידע שלא התבקש.'},
+ {id:'connect-wet',category:'connectors',prompt:'הציגו את הגשם כסיבה להישארות בפנים, לא כניגוד.',source:'We stay inside ___ it is raining.',options:['and','then','but','because'],accepted:['because'],answer:'We stay inside because it is raining.',cue:'הדמויות נשארות בפנים בגלל מזג האוויר.',apply:'הגשם בחלק השני מסביר את ההחלטה שבחלק הראשון.',verify:'חברו באמצעות סיבה ובדקו שהמשפט עונה למה נשארים בפנים.'},
+ {id:'paragraph-pencil',category:'paragraph-order',prompt:'סדרו את המשפטים כסיפור בלי חזרה לאחור: פתיחת הקלמר, גילוי הבעיה ואז הפתרון.',
+  tokens:['Mia opens her pencil case.','Her pencil is missing.','She borrows a pencil from Ben.'],
+  accepted:['Mia opens her pencil case. Her pencil is missing. She borrows a pencil from Ben.'],answer:'Mia opens her pencil case. Her pencil is missing. She borrows a pencil from Ben.',
+  cue:'חפשו את המשפט שמציג את מיה ופותח את הסיפור.',apply:'אחרי פתיחת הקלמר מגלים שהעיפרון חסר. השאלת עיפרון היא הפתרון ולכן באה אחר כך.',verify:'קראו לפי ההוראה: פתיחה, בעיה, פתרון. הכינויים מתייחסים למיה שכבר הוצגה.'},
+ {id:'paragraph-seed',category:'paragraph-order',prompt:'סדרו את המשפטים לפי מילות הסדר: תחילה, אחר כך ולבסוף.',
+  tokens:['First, we put soil in a pot.','Then we plant a seed in the soil.','Finally, we water the seed.'],
+  accepted:['First, we put soil in a pot. Then we plant a seed in the soil. Finally, we water the seed.'],answer:'First, we put soil in a pot. Then we plant a seed in the soil. Finally, we water the seed.',
+  cue:'בתחילת כל משפט יש רמז שמסמן את מקומו ברצף.',apply:'מכניסים אדמה לפני שזורעים בה. משקים את הזרע בשלב שמסומן כאחרון.',verify:'בדקו שמילות הסדר מתקדמות מתחילה לסוף ושאדמה וזרע מוצגים לפני שמשתמשים בהם.'},
+ {id:'paragraph-kitten',category:'paragraph-order',prompt:'סדרו את המשפטים: הציגו קודם את החתלתול, אחר כך ספרו שהוא רעב, ולבסוף תארו את העזרה.',
+  tokens:['A kitten sits by our door.','It is hungry.','We give it some food.'],
+  accepted:['A kitten sits by our door. It is hungry. We give it some food.'],answer:'A kitten sits by our door. It is hungry. We give it some food.',
+  cue:'רק משפט אחד אומר במפורש איזו חיה נמצאת ליד הדלת.',apply:'מציגים את החתלתול לפני הכינוי שמתאר אותו כרעב. האוכל מגיע כעזרה אחרי תיאור הרעב.',verify:'בדקו שהקורא יודע למי הכינוי מתייחס לפני שהוא קורא על הרעב ועל האוכל.'},
+ {id:'paragraph-boat',category:'paragraph-order',prompt:'סדרו את המשפטים לפי הזמן, בלי חזרה לאחור: הכנת הסירה, הנחתה במים, הבעיה ואז ההוצאה מהמים.',
+  tokens:['First, I fold a paper boat.','Then I put it in a bowl of water.','A minute later, it starts to sink.','Finally, I take it out.'],
+  accepted:['First, I fold a paper boat. Then I put it in a bowl of water. A minute later, it starts to sink. Finally, I take it out.'],answer:'First, I fold a paper boat. Then I put it in a bowl of water. A minute later, it starts to sink. Finally, I take it out.',
+  cue:'חפשו מה צריך להיות מוכן לפני שמניחים אותו במים.',apply:'הסירה מוכנה לפני ההנחה במים. השקיעה מתרחשת דקה אחר כך, וההוצאה מסיימת את הסיפור.',verify:'עקבו אחר רמזי הזמן וודאו שהסירה מוצגת לפני הכינויים שמתייחסים אליה.'},
+ {id:'paragraph-library',category:'paragraph-order',prompt:'סדרו את המשפטים מהשעה המוקדמת למאוחרת באותו בוקר: תשע, עשר ואז שתים עשרה בצהריים.',
+  tokens:['At nine, our class arrives at the library.','At ten, we listen to a story.','At noon, we leave the library.'],
+  accepted:['At nine, our class arrives at the library. At ten, we listen to a story. At noon, we leave the library.'],answer:'At nine, our class arrives at the library. At ten, we listen to a story. At noon, we leave the library.',
+  cue:'כל משפט מתחיל בזמן אחר מאותו בוקר.',apply:'מגיעים בתשע, מקשיבים לסיפור בעשר ויוצאים בצהריים. הסדר המבוקש הוא סדר הזמן, לא חשיבות הפעולות.',verify:'בדקו שהשעות מתקדמות קדימה ושמשפט העזיבה בא אחרון.'},
+ {id:'paragraph-garden',category:'paragraph-order',prompt:'סדרו את המשפטים: פתחו בהצגת גינת בית הספר וסיימו במשפט על כולם. שני משפטי הפעילות באמצע יכולים להופיע בכל סדר.',
+  tokens:['Our school garden is a busy place.','Children water the flowers.','Teachers plant small trees.','Everyone helps the garden grow.'],
+  accepted:['Our school garden is a busy place. Children water the flowers. Teachers plant small trees. Everyone helps the garden grow.','Our school garden is a busy place. Teachers plant small trees. Children water the flowers. Everyone helps the garden grow.'],answer:'Our school garden is a busy place. Children water the flowers. Teachers plant small trees. Everyone helps the garden grow.',
+  cue:'חפשו משפט שמציג מקום ומשפט מסכם על כל מי שעוזר בו.',apply:'הגינה מוצגת ראשונה, אחריה שתי דוגמאות לעזרה, ולבסוף סיכום. אין רמז זמן שמחייב סדר בין שתי הפעילויות.',verify:'בדקו שהפתיחה והסיום במקומם. גם החלפת שני המשפטים האמצעיים מתאימה להוראה.'}
+];
+const revisionState = {task:null,filter:'mixed',seen:new Set(),last:null,attempts:0,assisted:false,solved:false,selected:[],tiles:[],completed:0,independent:0,supported:0,retries:0,lessonFocus:null};
+function revisionSummary(){
+ $('revision-summary').textContent='עריכת דוגמאות בביקור: '+revisionState.completed+' הושלמו · '+revisionState.independent+' בניסיון ראשון בלי עזרה · '+revisionState.supported+' עם עזרה או ניסיון נוסף · '+revisionState.retries+' ניסיונות לתיקון.';
+}
+function revisionHelpContent(prefix,t,category){
+ const lesson=revisionLessons[category];
+ fillList(prefix+'steps',[t.cue,lesson.rule,t.apply,t.verify]);
+ $(prefix+'rule').textContent=lesson.ruleEn;$(prefix+'answer').textContent=t.answer;
+}
+function revisionHelp(open){
+ if(open&&!revisionState.solved)revisionState.assisted=true;
+ $('revision-help').hidden=!open;$('revision-help-button').setAttribute('aria-expanded',String(open));
+ $('revision-help-button').textContent=open?'🙈 הסתר הסבר':'🔍 איך פותרים?';
+}
+function revisionTrialHelp(open){
+ $('revision-trial-help').hidden=!open;$('revision-trial-help-button').setAttribute('aria-expanded',String(open));
+ $('revision-trial-help-button').textContent=open?'🙈 הסתר הסבר':'🔍 איך פותרים?';
+}
+function revisionButton(text,action){
+ const button=document.createElement('button');button.type='button';button.textContent=text;button.addEventListener('click',action);return button;
+}
+function renderRevisionTiles(focusIndex=null){
+ const s=revisionState,t=s.task;
+ $('revision-bank').replaceChildren(...s.tiles.map(index=>{
+  const b=revisionButton(t.tokens[index],()=>{s.selected.push(index);renderRevisionTiles(index);});
+  b.dataset.tile=String(index);b.disabled=s.solved||s.selected.includes(index);return b;
+ }));
+ $('revision-answer').replaceChildren(...s.selected.map((index,place)=>{
+  const b=revisionButton(t.tokens[index],()=>{s.selected.splice(place,1);renderRevisionTiles();$('revision-bank').querySelector('[data-tile="'+index+'"]').focus();});
+  b.dataset.tile=String(index);b.disabled=s.solved;return b;
+ }));
+ $('revision-check').disabled=s.solved||s.selected.length!==t.tokens.length;
+ $('revision-clear').disabled=s.solved||!s.selected.length;
+ if(focusIndex!==null){
+  const nextTile=Array.from($('revision-bank').children).find(b=>!b.disabled);
+  (nextTile||$('revision-check')).focus();
+ }
+}
+function checkRevision(answer){
+ const s=revisionState;if(s.solved)return;
+ s.attempts++;
+ if(!s.task.accepted.includes(answer)){
+  s.retries++;revisionHelp(true);revisionSummary();
+  $('revision-feedback').textContent='עוד ניסיון קטן. נבדוק יחד את ההוראה וההסבר; אפשר לבחור שוב.';
+  return;
+ }
+ s.solved=true;s.completed++;
+ const independent=s.attempts===1&&!s.assisted;
+ if(independent)s.independent++;else s.supported++;
+ $('revision-feedback').textContent=independent?'מתאים להוראה! הצלחתם בניסיון ראשון בלי לפתוח עזרה.':'מתאים להוראה! תרגלתם בעזרת הסבר או ניסיון נוסף.';
+ if(s.task.tokens)renderRevisionTiles();
+ else Array.from($('revision-options').children).forEach(b=>{b.disabled=true;});
+ $('revision-next-top').hidden=false;$('revision-next-bottom').hidden=false;$('revision-transfer').hidden=false;
+ revisionSummary();$('revision-next-top').focus();
+}
+function nextRevision(focus=true){
+ stopAudio();$('audio-status').textContent='';
+ const s=revisionState,pool=revisionTasks.filter(t=>s.filter==='mixed'||t.category===s.filter);
+ let available=pool.filter(t=>!s.seen.has(t.id));
+ if(!available.length){pool.forEach(t=>s.seen.delete(t.id));available=pool.slice();}
+ const alternatives=available.filter(t=>t.id!==s.last);
+ if(alternatives.length)available=alternatives;
+ s.task=available[Math.floor(Math.random()*available.length)];s.last=s.task.id;s.seen.add(s.task.id);
+ s.attempts=0;s.assisted=false;s.solved=false;s.selected=[];
+ const t=s.task;$('revision').dataset.task=t.id;$('revision').dataset.category=t.category;
+ $('revision-category').textContent=revisionLessons[t.category].name;$('revision-prompt').textContent=t.prompt;
+ $('revision-source').textContent=t.source||'';$('revision-source').hidden=!t.source;
+ $('revision-order').hidden=!t.tokens;$('revision-options').hidden=!!t.tokens;
+ const sentences=t.category==='paragraph-order';
+ $('revision-order-instruction').textContent=sentences?'לחצו על המשפטים לפי הסדר. להסרה, לחצו על משפט בפסקה שבניתם.':'לחצו על המילים לפי הסדר. להסרה, לחצו על מילה במשפט שבניתם.';
+ $('revision-bank-label').textContent=sentences?'משפטים לבחירה':'מילים לבחירה';
+ $('revision-answer-label').textContent=sentences?'סדר המשפטים בפסקה שבניתם':'המשפט שבניתם';
+ ['revision-bank','revision-answer'].forEach(id=>$(id).classList.toggle('sentence-tiles',sentences));
+ $('revision-options').replaceChildren();
+ if(t.tokens){s.tiles=shuffle(t.tokens.map((_,i)=>i));renderRevisionTiles();}
+ else $('revision-options').replaceChildren(...shuffle(t.options.slice()).map(text=>revisionButton(text,()=>checkRevision(text))));
+ $('revision-feedback').textContent='';$('revision-next-top').hidden=true;$('revision-next-bottom').hidden=true;$('revision-transfer').hidden=true;
+ $('revision-transfer-text').textContent=revisionLessons[t.category].transfer;
+ revisionHelpContent('revision-help-',t,t.category);revisionHelp(false);revisionSummary();
+ if(focus)$('revision-prompt').focus();
+}
+function setWritingMode(revision){
+ stopAudio();$('audio-status').textContent='';
+ $('free-intro').hidden=revision;$('workshop').hidden=revision;$('revision').hidden=!revision;
+ $('mode-free').setAttribute('aria-pressed',String(!revision));$('mode-revision').setAttribute('aria-pressed',String(revision));
+ if(revision){if(!revisionState.task)nextRevision(false);$('revision-title').focus();}
+ else $('task-title').focus();
+}
+function openRevisionLesson(){
+ stopAudio();const s=revisionState,l=revisionLessons[s.task.category],t=l.trial;
+ if(!s.solved)s.assisted=true;
+ s.lessonFocus=document.activeElement;
+ $('revision-lesson-title').textContent=l.name;$('revision-lesson-goal').textContent=l.goal;$('revision-lesson-rule').textContent=l.rule;
+ $('revision-lesson-rule-en').textContent=l.ruleEn;$('revision-lesson-example').textContent=l.example;
+ $('revision-lesson-mistake').textContent=l.mistake;$('revision-lesson-before').textContent=l.before;$('revision-lesson-after').textContent=l.after;
+ $('revision-trial-prompt').textContent=t.prompt;$('revision-trial-context').textContent=t.source;
+ $('revision-trial-feedback').textContent='';$('revision-lesson-audio').textContent='';
+ revisionHelpContent('revision-trial-',t,s.task.category);revisionTrialHelp(false);
+ $('revision-trial-options').replaceChildren(...t.options.map(text=>revisionButton(text,()=>{
+  $('revision-trial-feedback').textContent=t.accepted.includes(text)?'מתאים! זו בדיקת הבנה של הדוגמה בלבד.':'ננסה שוב יחד. ההסבר עוזר לבחור לפי ההוראה.';
+  revisionTrialHelp(true);
+ })));
+ document.body.classList.add('lesson-open');$('revision-dialog').showModal();
+}
+$('mode-free').addEventListener('click',()=>setWritingMode(false));
+$('mode-revision').addEventListener('click',()=>setWritingMode(true));
+$('revision-return').addEventListener('click',()=>{setWritingMode(false);$('draft').focus();});
+$('revision-filter').addEventListener('change',()=>{revisionState.filter=$('revision-filter').value;nextRevision();});
+$('revision-help-button').addEventListener('click',()=>revisionHelp($('revision-help').hidden));
+['revision-next-top','revision-next-bottom'].forEach(id=>$(id).addEventListener('click',()=>{if(revisionState.solved)nextRevision();}));
+$('revision-check').addEventListener('click',()=>checkRevision(revisionState.selected.map(i=>revisionState.task.tokens[i]).join(' ')));
+$('revision-clear').addEventListener('click',()=>{revisionState.selected=[];renderRevisionTiles();$('revision-bank').querySelector('button').focus();});
+$('revision-restart').addEventListener('click',()=>{Object.assign(revisionState,{completed:0,independent:0,supported:0,retries:0});nextRevision();});
+$('revision-lesson').addEventListener('click',openRevisionLesson);
+$('revision-close-lesson').addEventListener('click',()=>$('revision-dialog').close());
+$('revision-dialog').addEventListener('close',()=>{
+ stopAudio();document.body.classList.remove('lesson-open');
+ if(revisionState.lessonFocus?.isConnected)revisionState.lessonFocus.focus();
+});
+$('revision-dialog').addEventListener('keydown',event=>{
+ if(event.key!=='Tab')return;
+ const controls=Array.from($('revision-dialog').querySelectorAll('button:not(:disabled)')).filter(el=>el.getClientRects().length);
+ const first=controls[0],last=controls[controls.length-1];
+ if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}
+ else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}
+});
+$('revision-trial-help-button').addEventListener('click',()=>revisionTrialHelp($('revision-trial-help').hidden));
+$('revision-speak').addEventListener('click',()=>speak(revisionState.task.answer,'audio-status'));
+$('revision-lesson-speak').addEventListener('click',()=>speak(revisionLessons[revisionState.task.category].example,'revision-lesson-audio'));
+history.push(draw());position=0;render();
+})();
+</script>
+</body>
+</html>

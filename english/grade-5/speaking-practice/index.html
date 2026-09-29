@@ -1,0 +1,946 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>מתרגלים דיבור · אנגלית לכיתה ה׳</title>
+<script src="../../../assets/theme-selector.js" defer></script>
+<link rel="stylesheet" href="../../../assets/refresh.css">
+<style>
+*{box-sizing:border-box}[hidden]{display:none!important}:root{--surface:var(--refresh-surface,#fff);--soft:var(--refresh-soft,#edf3fb);--text:var(--refresh-text,#243b53);--accent:var(--refresh-accent,#285f9f);--border:var(--refresh-border,#d5dfec)}
+body{margin:0;padding-top:62px;font:18px/1.65 "Segoe UI",Arial,sans-serif;color:var(--text);background:#eef7fd}main{max-width:980px;margin:auto;padding:16px 16px 40px}header{text-align:center}h1{font-size:clamp(28px,5vw,40px)}h2{font-size:26px}h3{font-size:21px}.en{direction:ltr;text-align:left;overflow-wrap:anywhere;white-space:pre-line}.card{background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:22px;margin:16px 0}.soft{background:var(--soft);border:1px solid var(--border);border-radius:16px;padding:16px;margin:12px 0}.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}.row>*{max-width:100%}.actions{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}.actions button{flex:1}button,select,a{font:inherit}button,select,.back{min-height:46px;padding:10px 14px;border:2px solid var(--border);border-radius:14px;background:var(--soft);color:var(--text)}button{font-weight:700;cursor:pointer;white-space:normal}button:disabled{opacity:.55;cursor:default}.back{display:inline-block;text-decoration:none}button:focus-visible,select:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:3px}.checklist label{display:flex;align-items:center;gap:12px;min-height:48px;cursor:pointer}.checklist input{width:24px;height:24px;flex-shrink:0;accent-color:var(--accent)}.feedback{min-height:30px;font-weight:700}.error{border:2px solid #b91c1c;padding:12px;border-radius:12px}figure{margin:16px 0}figure svg{display:block;width:100%;height:auto;max-height:300px;border-radius:16px}summary{min-height:46px;padding:8px;cursor:pointer}.choices{display:grid;gap:12px}.choices button{text-align:left}.lesson-head{display:flex;justify-content:space-between;gap:12px}dialog{width:min(740px,calc(100% - 24px));max-height:calc(100dvh - 24px);overflow:auto;padding:22px;border:2px solid var(--border);border-radius:22px;background:var(--surface);color:var(--text)}dialog::backdrop{background:#102238b8}body.lesson-open{overflow:hidden}.small,footer{font-size:15px}footer{text-align:center}#task-prompt,#model-text,#turn-text{font-size:21px}#dialogue-turn{border-inline-start:5px solid var(--accent)}@media(max-width:480px){main{padding-inline:10px}.card,dialog{padding:15px}.actions button{flex-basis:100%}.row select{width:100%}.soft{padding:12px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+.correction-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.correction-grid>div{min-width:0}.word-change{font-weight:800;padding:0 3px;border:1px solid currentColor;border-radius:4px;background:var(--soft);color:var(--text)}del.word-change{text-decoration:line-through;text-decoration-thickness:2px}ins.word-change{text-decoration:underline;text-decoration-style:double;text-underline-offset:4px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}#retry-guide{border-inline-start:5px solid var(--accent)}@media(max-width:600px){.correction-grid{grid-template-columns:1fr}}
+.mic-consent{display:flex;align-items:center;gap:12px;min-height:48px;cursor:pointer}.mic-consent input{width:24px;height:24px;flex:0 0 24px;accent-color:var(--accent)}
+.practice-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) auto;gap:12px;align-items:end;margin:14px 0}.practice-option{min-width:0}.practice-option label{display:block;margin-bottom:4px}.practice-option select{width:100%;min-width:0}.practice-options>#open-lesson{white-space:nowrap}@media(max-width:760px){.practice-options{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:480px){.practice-options{grid-template-columns:1fr}}
+</style>
+</head>
+<body id="edu-refresh"><main>
+<a class="back" href="../index.html">חזרה לאנגלית לכיתה ה׳</a>
+<header><h1>מתרגלים דיבור</h1><p lang="en" dir="ltr">Speaking Practice · Grade 5</p><p>מקשיבים לדוגמה, מנסים בקול, ובודקים בעצמנו</p></header>
+<section class="card" aria-labelledby="mission-title"><h2 id="mission-title">רוצים לתרגל שיחה בעיירה?</h2><p>מחפשים תיק אבוד, מזמינים נשנוש, שואלים ספר או מבקשים הכוונה. במשחק הנפרד קוראים משוב, מתרגלים שוב ובוחרים אם להמשיך. אפשר לבחור מיקרופון עם עיבוד מקומי בלבד בדפדפן תומך, או לשחק בלי מיקרופון.</p><a class="back" href="../speaking-town/index.html">לבחירת משימת דיבור</a></section>
+<section class="card" aria-label="כך מתרגלים"><p><strong>אפשר לתרגל בלי מיקרופון, או לבחור זיהוי מקומי בדפדפן תומך.</strong> אחרי אישור התמליל שלכם מקבלים טיפ מוגבל על המילים, לא בדיקת הגייה, בדיקת אנגלית מלאה או ציון. סימון סיום הוא דיווח שלכם בלבד.</p><p>הדוגמאות הן הקלטות סינתטיות מוכנות מראש, לא דוברים אנושיים. אין צורך בקול מותקן. אפשר להאזין, לקרוא ולתרגל גם בלי שמע. התמיכה תמיד לבחירתכם וללא קנס.</p><p class="small">אפשר להמציא דמות ותשובות. אין צורך לספר פרטים אישיים. הסימונים נשארים רק בזיכרון העמוד ונמחקים ברענון או ביציאה. העדפת העיצוב היא העדפת האתר בלבד.</p>
+<div class="practice-options">
+<div class="practice-option"><label for="mode">סוג התרגול</label><select id="mode"><option value="mixed">תרגול משולב</option><option value="repeat">מקשיבים וחוזרים</option><option value="answer">עונים בקול</option><option value="picture">מתארים תמונה</option><option value="dialogue">משתתפים בשיחה</option></select></div>
+<div class="practice-option"><label for="practice-level">אורך התשובה לתרגול</label><select id="practice-level"><option value="phrases">ביטויים קצרים</option><option value="sentences" selected>משפטים שלמים</option><option value="extended">תשובות ארוכות יותר</option></select></div>
+<div class="practice-option"><label for="lesson-select">שיעור קצר</label><select id="lesson-select"></select></div>
+<button id="open-lesson" type="button">פתיחת השיעור</button></div>
+<details id="consent-panel" open><summary id="consent-summary">הסכמה לזיהוי מקומי באנגלית</summary>
+<label class="mic-consent"><input id="consent" type="checkbox" aria-describedby="consent-note"><span>אני, או מבוגר/ת שמלווה אותי, בוחרים להפעיל זיהוי מקומי באנגלית.</span></label>
+<p id="consent-note" class="small">מסמנים פעם אחת לביקור בעמוד הזה — הבחירה נשארת במעבר בין פעילויות. התמיכה נבדקת מיד, בלי האזנה. אין מעבר לענן ואין שמירת אודיו או תמלילים. אפשר לבטל כאן בכל רגע.</p>
+</details></section>
+<noscript><p class="card">כדי להשתמש בתרגול יש לאפשר סקריפטים בדפדפן.</p></noscript>
+<article id="practice" class="card" aria-labelledby="task-title">
+<div class="row"><span id="kind-label"></span><span id="session-count"></span></div>
+<h2 id="task-title" tabindex="-1"></h2><p id="instruction"></p><p id="task-prompt" class="en" lang="en"></p>
+<figure id="picture" hidden><div id="scene"></div><figcaption><details id="scene-description"><summary>תיאור נגיש של התמונה</summary><p id="scene-description-text"></p></details></figcaption></figure>
+<section id="dialogue" hidden aria-label="משחק תפקידים"><div class="row"><label for="role">התפקיד שלי בשיחה</label><select id="role"><option value="a">תפקיד ראשון</option><option value="b">תפקיד שני</option></select></div><p id="role-description"></p>
+<div id="dialogue-turn" class="soft"><h3 id="turn-label"></h3><p id="turn-cue"></p><p id="turn-text" class="en" lang="en"></p><div class="actions"><button id="partner-play" type="button">האזנה לשותף</button><button id="turn-next" type="button">ממשיכים בתור</button></div><p id="dialogue-status" role="status"></p></div>
+<button id="restart-dialogue" type="button">מתחילים שוב את השיחה בתפקיד שלי</button></section>
+<section id="level-panel" class="soft" aria-labelledby="level-title"><h3 id="level-title">מטרה לפי האורך שבחרתם</h3><p id="level-guidance"></p><p id="level-prompt" class="en" lang="en" dir="ltr"></p><button id="level-example-toggle" type="button" aria-expanded="false" aria-controls="level-example-panel">מסגרת ודוגמה לאורך הזה</button><div id="level-example-panel" hidden><p id="level-frame" class="en" lang="en" dir="ltr"></p><p id="level-example" class="en" lang="en" dir="ltr"></p><p class="small">דוגמת טקסט אחת בלבד. ההקלטות והדוגמה המקורית נשארות ללא שינוי; אין הקלטה נפרדת לקטע או להרחבה.</p></div></section>
+<section class="soft" aria-label="נגן הדוגמאות"><audio id="practice-audio" preload="none"></audio><div class="actions"><button id="prompt-play" type="button">האזנה לשאלה</button><button id="play" type="button">המשך ההקלטה שנבחרה</button><button id="pause" type="button">השהיה</button><button id="replay" type="button">השמעה מההתחלה</button></div><label for="speed">מהירות <select id="speed"><option value="1">רגילה</option><option value="0.8">איטית</option></select></label><p id="audio-status" role="status">בחרו הקלטה להאזנה. שום שמע לא מתחיל לבד.</p><p id="audio-error" class="error" role="status" hidden>אי אפשר להשמיע את ההקלטה כרגע. אפשר לנסות שוב או לקרוא את הטקסט ולתרגל בקול. אין בדיקה של הגייה.</p></section>
+<div class="actions"><button id="frames-toggle" type="button" aria-controls="frames-panel" aria-expanded="false">מסגרות לבחירה</button><button id="hint-toggle" type="button" aria-controls="hint-panel" aria-expanded="false">רמז לבחירה</button><button id="model-toggle" type="button" aria-controls="model-panel" aria-expanded="false">דוגמה אפשרית</button><button id="independent" type="button">מנסים בלי תמיכה</button></div>
+<section id="frames-panel" class="soft" hidden><h3>אפשר להתחיל כך</h3><p id="frames-text" class="en" lang="en"></p></section>
+<section id="hint-panel" class="soft" hidden><h3>רמז קטן</h3><p id="hint-text"></p></section>
+<section id="model-panel" class="soft" hidden><h3>הדוגמה המקורית המלאה</h3><p id="model-note">זו אפשרות אחת, לא התשובה היחידה. אפשר לומר משהו אחר שמתאים למשימה.</p><p id="model-text" class="en" lang="en"></p><button id="model-play" type="button">האזנה לדוגמה המקורית המלאה</button></section>
+<p id="support-status" role="status"></p>
+<section class="soft" aria-labelledby="rule-practice-title"><h3 id="rule-practice-title">אותו כלל, דוגמה חדשה — לבחירה</h3><p>אפשר לבחור כלל גם בלי מיקרופון. זהו תרגיל טקסט קצר עם דמויות וחפצים מומצאים, לא מעבר בפעילות המקורית.</p><div class="row"><label for="rule-select">כלל לתרגול</label><select id="rule-select"></select><button id="start-transfer" type="button">דוגמה חדשה לכלל שבחרתי</button></div>
+<section id="transfer-panel" hidden aria-labelledby="transfer-title"><h3 id="transfer-title" tabindex="-1"></h3><p id="transfer-purpose"></p><p id="transfer-prompt" class="en" lang="en" dir="ltr"></p><p id="transfer-rule" class="en" lang="en" dir="ltr"></p><p id="transfer-support-status" role="status"></p><div class="actions"><button id="transfer-starter-toggle" type="button" aria-expanded="false" aria-controls="transfer-starter">פתיחה לעזרה</button><button id="transfer-model-toggle" type="button" aria-expanded="false" aria-controls="transfer-model-panel">דוגמה לעזרה</button></div><p id="transfer-starter" class="en" lang="en" dir="ltr" hidden></p><div id="transfer-model-panel" hidden><p>זו דוגמה אחת. הזיהוי המוגבל מכיר רק ניסוחים כתובים מראש; תשובה אחרת אינה בהכרח שגויה.</p><p id="transfer-model" class="en" lang="en" dir="ltr"></p></div><p>אפשר לומר בקול ואז להשתמש בכפתור הדיבור ובאישור שמתחת, או לתרגל בלי מיקרופון ולדווח בעצמכם. השמע והתמיכה של הפעילות המקורית מושבתים עד החזרה אליה.</p><div class="actions"><button id="transfer-manual" type="button">תרגלתי את הכלל בקול — דיווח עצמי בלבד</button><button id="transfer-next" type="button">עוד דוגמה לאותו כלל</button><button id="transfer-return" type="button">חזרה לפעילות המקורית</button></div><p id="transfer-outcome" role="status"></p></section></section>
+<section class="soft" aria-labelledby="microphone-title"><h3 id="microphone-title">תרגול עם מיקרופון — לבחירתכם</h3>
+<p id="mic-status" role="status">סמנו הסכמה בחלונית העליונה, אחרי בחירת השיעור הקצר, כדי להכין את המיקרופון. אין צורך לרדת להגדרות.</p>
+<div class="actions"><button id="speak" type="button" disabled><span lang="en" dir="ltr">Speak</span> · מדברים</button><button id="stop" type="button" hidden>סיום הדיבור</button><button id="cancel" type="button" hidden>ביטול המיקרופון</button><button id="quick-check" type="button" hidden>בדיקת תמיכה חוזרת</button><button id="quick-download" type="button" hidden>התקנת חבילת אנגלית</button><button id="quick-stop-setup" type="button" hidden>הפסקת המתנה</button></div>
+<p id="quick-pack-note" class="small" hidden>התקנת החבילה דורשת אינטרנט ולחיצה נפרדת. היא אינה מפעילה מיקרופון; הפסקת ההמתנה אינה מבטלת הורדה בדפדפן.</p>
+<p id="recognition-status" role="status">כשהמיקרופון מוכן, לוחצים על כפתור הדיבור. אפשר תמיד לתרגל גם בלעדיו.</p>
+<button id="mic-setup" type="button" aria-controls="mic-settings">הגדרות מתקדמות ופרטי תקלה</button>
+<section id="retry-guide" class="soft" hidden aria-labelledby="retry-guide-title"><h3 id="retry-guide-title">מטרה קטנה לניסיון הבא</h3><p id="retry-guide-label"></p><p id="retry-target" class="en" lang="en" dir="ltr"></p><p id="retry-rule" class="en" lang="en" dir="ltr"></p><p id="retry-guide-hint"></p><p class="small">קראו את המטרה, חשבו על המשפט ואז נסו בקול. המיקרופון מתחיל רק בלחיצה נפרדת על כפתור הדיבור.</p><button id="clear-retry-guide" type="button">מחיקת המטרה והמשוב</button></section>
+<section id="review" hidden aria-label="אישור התמליל"><p id="heard" class="en" lang="en" dir="ltr"></p><p>זה מה שהתכוונתם לומר? רק אישור שלכם מציג טיפ. שום אישור לא מסיים פעילות ולא מעביר תור.</p><div class="actions"><button id="confirm" type="button">כן, זה המשפט שלי</button><button id="retry" type="button">לנסות שוב</button><button id="discard" type="button">מחיקת המשפט</button></div></section>
+<section id="practice-result" hidden><h3>המילים שאישרתם</h3><p id="practice-original" class="en" lang="en" dir="ltr"></p><p id="practice-outcome" role="status"></p>
+<section id="correction-panel" class="soft" hidden aria-labelledby="correction-title"><h3 id="correction-title">השינוי המוצע במילים</h3><p>מילים להסרה מסומנות בקו חוצה; מילים להוספה מסומנות בקו תחתון כפול. אותיות גדולות וסימני פיסוק אינם שגיאות בדיבור. בדקו שההצעה שומרת על הכוונה שלכם.</p><div class="correction-grid"><div><h3 class="en" lang="en" dir="ltr">Before — removed words</h3><p id="correction-before" class="en" lang="en" dir="ltr"></p></div><div><h3 class="en" lang="en" dir="ltr">Suggested correction — added words</h3><p id="correction-after" class="en" lang="en" dir="ltr"></p></div></div></section>
+<section id="speech-feedback"><p id="speech-hint-text"></p><h3 class="en" lang="en" dir="ltr">English practice tip</h3><p id="grammar-rule" class="en" lang="en" dir="ltr"></p><p id="example-label"></p><p id="speech-hint-example" class="en" lang="en" dir="ltr"></p><p class="small">זהו טיפ מוגבל לתמליל שאישרתם, לא בדיקה מלאה של דקדוק, משמעות, עובדות או הגייה. בתשובות פתוחות ובשיחה ייתכנו תשובות מתאימות נוספות.</p></section>
+<div class="actions"><button id="practice-again" type="button">לתרגל שוב כשמוכנים</button><button id="new-rule-example" type="button" hidden>אותו כלל, דוגמה חדשה</button><button id="delete-transcript" type="button">מחיקת המילים והמשוב</button></div></section></section>
+<section class="soft" aria-labelledby="review-title"><h3 id="review-title">בודקים בעצמנו, לא במחשב</h3><p>אפשר לסמן רק מה שעשיתם. לא חייבים לסמן הכול כדי להמשיך.</p><div id="checklist" class="checklist"></div></section>
+<button id="complete" type="button">סיימתי לתרגל — לפי הדיווח שלי</button><p id="completion-status" class="feedback" role="status"></p>
+<div class="actions"><button id="previous" type="button">לפעילות הקודמת</button><button id="next" type="button">לפעילות הבאה</button></div>
+<p class="small">פעילויות חדשות נבחרות באקראי מתוך אלה שטרם הוצגו בסוג הנבחר. החצים חוזרים גם לפעילויות שכבר פתחתם, עם הסימונים שלכם. לאחר שכל האפשרויות הוצגו מתחיל סבב חדש.</p></article>
+<section class="card" aria-labelledby="visit-title"><h2 id="visit-title">סיכום התרגול בביקור הזה</h2><p>רק כללים ופעולות תרגול בזיכרון העמוד, בלי לשמור משפטים. אין ציון הגייה, דיוק או שליטה. רענון מוחק את הסיכום.</p><div class="actions"><button id="view-visit-summary" type="button" aria-controls="visit-summary" aria-expanded="false">סיום הניסיון וצפייה בסיכום</button><button id="reset-visit-summary" type="button">איפוס סיכום הכללים והעזרה בלבד</button></div><div id="visit-summary" hidden tabindex="-1"><p id="visit-empty"></p><ul id="visit-rules"></ul><p id="visit-next"></p></div><p id="visit-reset-status" role="status"></p></section>
+<details id="mic-settings" class="card"><summary>בדיקת מיקרופון והגדרות</summary>
+<p>ההסכמה נמצאת בחלונית העליונה, אחרי בחירת השיעור הקצר. כפתורי ההכנה נמצאים ליד כפתור הדיבור. אין צורך לחזור לכאן בין פעילויות. כאן אפשר לבדוק תמיכה שוב ולעיין בפרטי תקלה.</p>
+<p class="small">הזיהוי במכשיר בלבד; אין מעבר לענן. האפליקציה אינה שומרת אודיו או תמלילים. המילים מופיעות רק בזיכרון ובתצוגת העמוד עד מחיקה או מעבר. אין צורך לומר פרטים אישיים. נדרשים הקשר מאובטח ודפדפן תומך בחבילת אנגלית מקומית; אחרת ממשיכים בדיווח עצמי.</p>
+<div class="actions"><button id="check-support" type="button">בדיקת תמיכה במיקרופון</button><button id="download-pack" type="button" hidden>הורדת חבילת אנגלית</button></div>
+<div id="setup-wait" hidden><progress aria-label="ממתינים לתשובת הדפדפן"></progress><p>ממתינים לתשובת הדפדפן. אין האזנה.</p><button id="stop-setup" type="button">הפסקת המתנה</button><p>הפסקת ההמתנה אינה מבטלת הורדה שהדפדפן כבר התחיל.</p></div>
+<p id="pack-warning" hidden>ההורדה זקוקה לאינטרנט. גודלה וניהולה נקבעים בדפדפן. רק כפתור ההורדה מתחיל אותה, ללא הפעלת המיקרופון.</p>
+<section id="setup-issue" hidden><h3>פרטי תקלה בטוחים לשיתוף</h3><p>ללא דיבור או תמליל. בדקו דפדפן תומך, חיבור לאינטרנט להורדת החבילה ומדיניות הרשאות; לאחר מכן בדקו תמיכה שוב.</p><p id="setup-details" class="en small" lang="en" dir="ltr"></p></section></details>
+<footer>תוכן ואיורים מקוריים לתרגול בלבד. אפשר לתרגל יחד עם אדם נוסף ולקבל ממנו משוב.</footer>
+</main>
+<dialog id="lesson" aria-labelledby="lesson-title"><div class="lesson-head"><h2 id="lesson-title"></h2><button id="close-lesson" type="button" autofocus>סגירה</button></div><h3>המטרה</h3><p id="lesson-goal"></p><h3>כלל שימושי</h3><p id="lesson-rule"></p><h3>דוגמה קבועה</h3><p id="lesson-example" class="en" lang="en"></p>
+<div class="soft"><audio id="lesson-audio" preload="none"></audio><div class="actions"><button id="lesson-play" type="button">האזנה לדוגמה</button><button id="lesson-pause" type="button">השהיה</button><button id="lesson-replay" type="button">השמעה מההתחלה</button></div><label for="lesson-speed">מהירות <select id="lesson-speed"><option value="1">רגילה</option><option value="0.8">איטית</option></select></label><p id="lesson-audio-status" role="status">אפשר להאזין או לקרוא.</p><p id="lesson-audio-error" class="error" role="status" hidden>ההקלטה אינה זמינה. אפשר לקרוא את הדוגמה ולנסות שוב.</p></div>
+<h3>טעות שכדאי להכיר</h3><p id="lesson-mistake"></p><p id="lesson-before" class="en" lang="en"></p><p>אפשר לומר כך:</p><p id="lesson-after" class="en" lang="en"></p>
+<h3>שאלת הבנה מודרכת</h3><p>כאן בודקים בחירה כתובה בלבד, לא את הדיבור שלכם. התשובה לא מסיימת פעילות ולא משנה את הסימונים שלכם.</p><p id="lesson-question" class="en" lang="en"></p><div id="lesson-choices" class="choices en" lang="en"></div><p id="guided-feedback" class="feedback" role="status"></p>
+<button id="lesson-help" type="button" aria-controls="lesson-support" aria-expanded="false">איך חושבים על זה?</button><section id="lesson-support" class="soft" hidden><ol id="lesson-steps"></ol><p id="lesson-answer" class="en" lang="en"></p></section></dialog>
+<script id="speaking-data" type="application/json">
+{
+ "recordings":[
+  {"id":"repeat-pencil","lines":[{"speaker":"n","text":"May I borrow a pencil, please?"}]},
+  {"id":"repeat-help","lines":[{"speaker":"n","text":"Could you help me with this word, please?"}]},
+  {"id":"repeat-again","lines":[{"speaker":"n","text":"Please say that again. I am ready to listen."}]},
+  {"id":"repeat-lunch","lines":[{"speaker":"n","text":"I would like some rice and a glass of water, please."}]},
+  {"id":"repeat-friend","lines":[{"speaker":"n","text":"Would you like to sit with us?"}]},
+  {"id":"repeat-routine","lines":[{"speaker":"n","text":"First, I pack my bag. Then I walk to school."}]},
+  {"id":"repeat-library","lines":[{"speaker":"n","text":"Where can I find a book about animals?"}]},
+  {"id":"repeat-thanks","lines":[{"speaker":"n","text":"Thank you for your help. That was very kind."}]},
+  {"id":"answer-subject-prompt","lines":[{"speaker":"n","text":"What school subject do you like, and why?"}]},
+  {"id":"answer-subject-model","lines":[{"speaker":"n","text":"I like art because I can draw animals."}]},
+  {"id":"answer-bag-prompt","lines":[{"speaker":"n","text":"What do you put in your school bag?"}]},
+  {"id":"answer-bag-model","lines":[{"speaker":"n","text":"I put a book and a pencil case in my bag."}]},
+  {"id":"answer-break-prompt","lines":[{"speaker":"n","text":"What do you do at break time?"}]},
+  {"id":"answer-break-model","lines":[{"speaker":"n","text":"I play a ball game with my friends."}]},
+  {"id":"answer-breakfast-prompt","lines":[{"speaker":"n","text":"What would you like for breakfast?"}]},
+  {"id":"answer-breakfast-model","lines":[{"speaker":"n","text":"I would like some bread and an egg, please."}]},
+  {"id":"answer-fruit-prompt","lines":[{"speaker":"n","text":"Which fruit do you like, and what color is it?"}]},
+  {"id":"answer-fruit-model","lines":[{"speaker":"n","text":"I like bananas. They are yellow."}]},
+  {"id":"answer-snack-prompt","lines":[{"speaker":"n","text":"What snack can you bring to a picnic?"}]},
+  {"id":"answer-snack-model","lines":[{"speaker":"n","text":"I can bring some apples to the picnic."}]},
+  {"id":"answer-morning-prompt","lines":[{"speaker":"n","text":"What do you do after you get up?"}]},
+  {"id":"answer-morning-model","lines":[{"speaker":"n","text":"First, I wash my face. Then I eat breakfast."}]},
+  {"id":"answer-afternoon-prompt","lines":[{"speaker":"n","text":"What do you like to do after school?"}]},
+  {"id":"answer-afternoon-model","lines":[{"speaker":"n","text":"I like to read a story after school."}]},
+  {"id":"picture-classroom-objects-prompt","lines":[{"speaker":"n","text":"What is on the desk? Say two sentences."}]},
+  {"id":"picture-classroom-objects-model","lines":[{"speaker":"n","text":"There is a red book on the desk. There are two yellow pencils on the desk."}]},
+  {"id":"picture-classroom-place-prompt","lines":[{"speaker":"n","text":"Where is the bag? What color is it?"}]},
+  {"id":"picture-classroom-place-model","lines":[{"speaker":"n","text":"The bag is under the desk. It is blue."}]},
+  {"id":"picture-picnic-count-prompt","lines":[{"speaker":"n","text":"What fruit can you see? How many are there?"}]},
+  {"id":"picture-picnic-count-model","lines":[{"speaker":"n","text":"I can see red apples. There are three apples on the blanket."}]},
+  {"id":"picture-picnic-place-prompt","lines":[{"speaker":"n","text":"Describe the bottle and the basket."}]},
+  {"id":"picture-picnic-place-model","lines":[{"speaker":"n","text":"The green bottle is beside the basket. The basket is brown."}]},
+  {"id":"picture-park-action-prompt","lines":[{"speaker":"n","text":"What is the child doing? Where is the child sitting?"}]},
+  {"id":"picture-park-action-model","lines":[{"speaker":"n","text":"The child is reading a book. The child is sitting on a bench."}]},
+  {"id":"picture-park-place-prompt","lines":[{"speaker":"n","text":"Where is the dog? Describe the dog and the tree."}]},
+  {"id":"picture-park-place-model","lines":[{"speaker":"n","text":"The brown dog is beside the tree. The tree has green leaves."}]},
+  {"id":"picture-kitchen-action-prompt","lines":[{"speaker":"n","text":"What is the child doing? Describe the bowl."}]},
+  {"id":"picture-kitchen-action-model","lines":[{"speaker":"n","text":"The child is stirring food in a bowl. The bowl is purple."}]},
+  {"id":"picture-kitchen-count-prompt","lines":[{"speaker":"n","text":"What vegetables are on the table? How many are there?"}]},
+  {"id":"picture-kitchen-count-model","lines":[{"speaker":"n","text":"There are carrots on the table. I can see two carrots."}]},
+  {"id":"dialogue-pencil-one","lines":[{"speaker":"a","text":"May I borrow your pencil, please?"}]},
+  {"id":"dialogue-pencil-two","lines":[{"speaker":"b","text":"Of course. Here you are."}]},
+  {"id":"dialogue-pencil-three","lines":[{"speaker":"a","text":"Thank you. I will give it back after class."}]},
+  {"id":"dialogue-pencil-four","lines":[{"speaker":"b","text":"You're welcome."}]},
+  {"id":"dialogue-food-one","lines":[{"speaker":"a","text":"I would like a cheese sandwich, please."}]},
+  {"id":"dialogue-food-two","lines":[{"speaker":"b","text":"Would you like some water too?"}]},
+  {"id":"dialogue-food-three","lines":[{"speaker":"a","text":"Yes, please. Thank you."}]},
+  {"id":"dialogue-food-four","lines":[{"speaker":"b","text":"Here you are. Enjoy your lunch."}]},
+  {"id":"dialogue-library-one","lines":[{"speaker":"a","text":"Excuse me. Where are the animal books?"}]},
+  {"id":"dialogue-library-two","lines":[{"speaker":"b","text":"They are on the shelf by the window."}]},
+  {"id":"dialogue-library-three","lines":[{"speaker":"a","text":"May I borrow one today?"}]},
+  {"id":"dialogue-library-four","lines":[{"speaker":"b","text":"Yes. Please bring your library card."}]},
+  {"id":"dialogue-game-one","lines":[{"speaker":"a","text":"Would you like to play a game at break time?"}]},
+  {"id":"dialogue-game-two","lines":[{"speaker":"b","text":"Yes, please. What can we play?"}]},
+  {"id":"dialogue-game-three","lines":[{"speaker":"a","text":"Let's play a word game."}]},
+  {"id":"dialogue-game-four","lines":[{"speaker":"b","text":"Good idea. I like word games."}]},
+  {"id":"dialogue-repeat-one","lines":[{"speaker":"a","text":"Please open your book to page ten."}]},
+  {"id":"dialogue-repeat-two","lines":[{"speaker":"b","text":"Could you say that again, please?"}]},
+  {"id":"dialogue-repeat-three","lines":[{"speaker":"a","text":"Of course. Open your book to page ten."}]},
+  {"id":"dialogue-repeat-four","lines":[{"speaker":"b","text":"Page ten. Thank you."}]},
+  {"id":"dialogue-water-one","lines":[{"speaker":"a","text":"Excuse me. Where can I fill my water bottle?"}]},
+  {"id":"dialogue-water-two","lines":[{"speaker":"b","text":"There is a tap outside the classroom."}]},
+  {"id":"dialogue-water-three","lines":[{"speaker":"a","text":"Is it beside the blue door?"}]},
+  {"id":"dialogue-water-four","lines":[{"speaker":"b","text":"Yes, it is."}]},
+  {"id":"dialogue-club-one","lines":[{"speaker":"a","text":"When does the art club start?"}]},
+  {"id":"dialogue-club-two","lines":[{"speaker":"b","text":"It starts at three on Tuesday."}]},
+  {"id":"dialogue-club-three","lines":[{"speaker":"a","text":"What should I bring?"}]},
+  {"id":"dialogue-club-four","lines":[{"speaker":"b","text":"Please bring a pencil and some paper."}]},
+  {"id":"dialogue-seat-one","lines":[{"speaker":"a","text":"Excuse me. May I sit here?"}]},
+  {"id":"dialogue-seat-two","lines":[{"speaker":"b","text":"Yes, of course. This seat is free."}]},
+  {"id":"dialogue-seat-three","lines":[{"speaker":"a","text":"Thank you. I can move my bag."}]},
+  {"id":"dialogue-seat-four","lines":[{"speaker":"b","text":"That's kind. Now we have more space."}]},
+  {"id":"repeat-ticket","lines":[{"speaker":"n","text":"Could I have a ticket to the zoo, please?"}]},
+  {"id":"repeat-hours","lines":[{"speaker":"n","text":"What time does the shop open on Monday?"}]},
+  {"id":"repeat-meeting","lines":[{"speaker":"n","text":"Let's meet at the park gate at four."}]},
+  {"id":"repeat-meal","lines":[{"speaker":"n","text":"I would like some soup and a bread roll, please."}]},
+  {"id":"answer-ticket-prompt","lines":[{"speaker":"n","text":"Pretend you are taking a bus to the zoo. What ticket would you like?"}]},
+  {"id":"answer-ticket-model","lines":[{"speaker":"n","text":"I would like one ticket to the zoo, please."}]},
+  {"id":"answer-hours-prompt","lines":[{"speaker":"n","text":"Pretend a toy shop opens at ten. What time does it open?"}]},
+  {"id":"answer-hours-model","lines":[{"speaker":"n","text":"It opens at ten."}]},
+  {"id":"answer-meeting-prompt","lines":[{"speaker":"n","text":"Two story characters want to meet in a park. Suggest a place and a time."}]},
+  {"id":"answer-meeting-model","lines":[{"speaker":"n","text":"Let's meet by the big tree at three."}]},
+  {"id":"answer-meal-prompt","lines":[{"speaker":"n","text":"Pretend you are choosing a meal. Would you like soup or pasta?"}]},
+  {"id":"answer-meal-model","lines":[{"speaker":"n","text":"I would like pasta, please."}]},
+  {"id":"picture-classroom-colors-prompt","lines":[{"speaker":"n","text":"What color are the pencils? What color is the book?"}]},
+  {"id":"picture-classroom-colors-model","lines":[{"speaker":"n","text":"The pencils are yellow. The book is red."}]},
+  {"id":"picture-picnic-colors-prompt","lines":[{"speaker":"n","text":"Describe the colors of the apples and the bottle."}]},
+  {"id":"picture-picnic-colors-model","lines":[{"speaker":"n","text":"The apples are red. The bottle is green."}]},
+  {"id":"picture-park-reading-prompt","lines":[{"speaker":"n","text":"Is the child's book open or closed? What color are the leaves?"}]},
+  {"id":"picture-park-reading-model","lines":[{"speaker":"n","text":"The book is open. The leaves are green."}]},
+  {"id":"picture-kitchen-place-prompt","lines":[{"speaker":"n","text":"Where is the bowl? What color are the carrots?"}]},
+  {"id":"picture-kitchen-place-model","lines":[{"speaker":"n","text":"The bowl is on the table. The carrots are orange."}]},
+  {"id":"dialogue-ticket-one","lines":[{"speaker":"a","text":"One bus ticket to the zoo, please."}]},
+  {"id":"dialogue-ticket-two","lines":[{"speaker":"b","text":"Here you are. The bus leaves at ten."}]},
+  {"id":"dialogue-ticket-three","lines":[{"speaker":"a","text":"Thank you. Where is the bus stop?"}]},
+  {"id":"dialogue-ticket-four","lines":[{"speaker":"b","text":"It is beside the library."}]},
+  {"id":"dialogue-hours-one","lines":[{"speaker":"a","text":"Excuse me. What time does the shop open?"}]},
+  {"id":"dialogue-hours-two","lines":[{"speaker":"b","text":"It opens at nine on Monday."}]},
+  {"id":"dialogue-hours-three","lines":[{"speaker":"a","text":"Does it close at five?"}]},
+  {"id":"dialogue-hours-four","lines":[{"speaker":"b","text":"Yes, it does. Thank you for asking."}]},
+  {"id":"dialogue-meeting-one","lines":[{"speaker":"a","text":"Shall we meet in the park?"}]},
+  {"id":"dialogue-meeting-two","lines":[{"speaker":"b","text":"Yes. Let's meet by the big tree."}]},
+  {"id":"dialogue-meeting-three","lines":[{"speaker":"a","text":"Can we meet at four?"}]},
+  {"id":"dialogue-meeting-four","lines":[{"speaker":"b","text":"Yes, four is fine. See you there."}]},
+  {"id":"dialogue-meal-one","lines":[{"speaker":"a","text":"Could I have a bowl of soup, please?"}]},
+  {"id":"dialogue-meal-two","lines":[{"speaker":"b","text":"Of course. Would you like bread or rice?"}]},
+  {"id":"dialogue-meal-three","lines":[{"speaker":"a","text":"Some bread, please. Thank you."}]},
+  {"id":"dialogue-meal-four","lines":[{"speaker":"b","text":"Here is your soup and bread. Enjoy your meal."}]},
+  {"id":"lesson-repeat","lines":[{"speaker":"n","text":"Could you help me, please? Thank you for your help."}]},
+  {"id":"lesson-answer","lines":[{"speaker":"n","text":"What do you like for lunch? I like rice and carrots."}]},
+  {"id":"lesson-picture","lines":[{"speaker":"n","text":"There is a red book on the desk. There are two yellow pencils on the desk."}]},
+  {"id":"lesson-dialogue","lines":[{"speaker":"a","text":"May I borrow a ruler, please?"},{"speaker":"b","text":"Yes, here you are."},{"speaker":"a","text":"Thank you."},{"speaker":"b","text":"You're welcome."}]}
+ ],
+ "tasks":[
+  {"id":"repeat-pencil","mode":"repeat","title":"מבקשים כלי כתיבה","model":"repeat-pencil","frames":"May I borrow ... , please?","hint":"מקשיבים פעם אחת. אומרים את הבקשה ברצף נוח, ומשאירים מקום למילת הנימוס."},
+  {"id":"repeat-help","mode":"repeat","title":"מבקשים עזרה","model":"repeat-help","frames":"Could you help me with ... , please?","hint":"אפשר לעצור אחרי הבקשה לעזרה, ואז להוסיף במה צריך עזרה."},
+  {"id":"repeat-again","mode":"repeat","title":"מבקשים לשמוע שוב","model":"repeat-again","frames":"Please say ... .\nI am ready to ... .","hint":"נסו משפט אחד בכל פעם. מותר לבקש ממישהו לחזור על דבריו."},
+  {"id":"repeat-lunch","mode":"repeat","title":"מבקשים ארוחה","model":"repeat-lunch","frames":"I would like ... and ... , please.","hint":"חלקו את הבקשה לשני פריטים ואז חברו אותם במשפט אחד."},
+  {"id":"repeat-friend","mode":"repeat","title":"מזמינים להצטרף","model":"repeat-friend","frames":"Would you like to ... ?","hint":"מקשיבים לשאלה ומנסים לומר אותה בקצב שנוח לכם, לא במהירות ההקלטה."},
+  {"id":"repeat-routine","mode":"repeat","title":"מספרים לפי הסדר","model":"repeat-routine","frames":"First, I ... .\nThen I ... .","hint":"עצרו לרגע בין שתי הפעולות. מילת הסדר בתחילת כל משפט עוזרת למאזין."},
+  {"id":"repeat-library","mode":"repeat","title":"מחפשים ספר","model":"repeat-library","frames":"Where can I find ... ?","hint":"אפשר לתרגל תחילה את תחילת השאלה, ואז להוסיף את סוג הספר."},
+  {"id":"repeat-thanks","mode":"repeat","title":"אומרים תודה","model":"repeat-thanks","frames":"Thank you for ... .\nThat was ... .","hint":"קראו או האזינו לשני המשפטים. נסו לחזור עליהם בלי למהר."},
+  {"id":"answer-subject","mode":"answer","title":"מקצוע אהוב","prompt":"answer-subject-prompt","model":"answer-subject-model","frames":"I like ... because ... .","hint":"בחרו מקצוע וסיבה אחת. אפשר להיות דמות מומצאת שאוהבת ציור."},
+  {"id":"answer-bag","mode":"answer","title":"תיק לבית הספר","prompt":"answer-bag-prompt","model":"answer-bag-model","frames":"I put ... and ... in my bag.","hint":"בחרו שני דברים שתלמיד דמיוני יכול לקחת לבית הספר."},
+  {"id":"answer-break","mode":"answer","title":"בהפסקה","prompt":"answer-break-prompt","model":"answer-break-model","frames":"I ... with ... .","hint":"חשבו על משחק, קריאה או שיחה בהפסקה. אין צורך לתאר את ההפסקה שלכם."},
+  {"id":"answer-breakfast","mode":"answer","title":"ארוחת בוקר","prompt":"answer-breakfast-prompt","model":"answer-breakfast-model","frames":"I would like ... , please.","hint":"בחרו מאכל אחד או שניים שדמות בסיפור רוצה לאכול."},
+  {"id":"answer-fruit","mode":"answer","title":"פרי וצבע","prompt":"answer-fruit-prompt","model":"answer-fruit-model","frames":"I like ... .\nIt is ... . / They are ... .","hint":"אמרו שם של פרי ואז צבע. בחרו את המסגרת שמתאימה לפרי אחד או לכמה פירות."},
+  {"id":"answer-snack","mode":"answer","title":"יוצאים לפיקניק","prompt":"answer-snack-prompt","model":"answer-snack-model","frames":"I can bring ... to the picnic.","hint":"זו הצעה דמיונית לפיקניק. אפשר לבחור פרי או כריך."},
+  {"id":"answer-morning","mode":"answer","title":"בוקר של דמות","prompt":"answer-morning-prompt","model":"answer-morning-model","frames":"First, I ... .\nThen I ... .","hint":"בחרו שתי פעולות בוקר וסדרו אותן. אין צורך לומר שעה או מקום אמיתיים."},
+  {"id":"answer-afternoon","mode":"answer","title":"אחרי הלימודים","prompt":"answer-afternoon-prompt","model":"answer-afternoon-model","frames":"I like to ... after school.","hint":"אפשר להמציא ילד שאוהב ספרים, משחקים או ציור ולענות בשמו."},
+  {"id":"picture-classroom-objects","mode":"picture","title":"מה על השולחן?","scene":"classroom","prompt":"picture-classroom-objects-prompt","model":"picture-classroom-objects-model","frames":"There is a ... on the desk.\nThere are ... on the desk.","hint":"הביטו בספר ובעפרונות. בחרו מבנה של יחיד לספר ומבנה של רבים לעפרונות."},
+  {"id":"picture-classroom-place","mode":"picture","title":"איפה התיק?","scene":"classroom","prompt":"picture-classroom-place-prompt","model":"picture-classroom-place-model","frames":"The bag is ... the desk.\nIt is ... .","hint":"התיק נמצא מתחת למשטח השולחן. הוסיפו את צבעו."},
+  {"id":"picture-picnic-count","mode":"picture","title":"פירות על השמיכה","scene":"picnic","prompt":"picture-picnic-count-prompt","model":"picture-picnic-count-model","frames":"I can see ... .\nThere are ... apples.","hint":"ספרו את התפוחים האדומים על השמיכה. אמרו מה רואים ואז כמה."},
+  {"id":"picture-picnic-place","mode":"picture","title":"בקבוק וסל","scene":"picnic","prompt":"picture-picnic-place-prompt","model":"picture-picnic-place-model","frames":"The bottle is ... the basket.\nThe basket is ... .","hint":"הבקבוק נמצא לצד הסל. תארו מיקום וצבע אחד לפחות."},
+  {"id":"picture-park-action","mode":"picture","title":"קוראים בפארק","scene":"park","prompt":"picture-park-action-prompt","model":"picture-park-action-model","frames":"The child is ... a book.\nThe child is sitting on ... .","hint":"הילד מחזיק ספר פתוח ויושב על ספסל. תארו פעולה שקורית עכשיו."},
+  {"id":"picture-park-place","mode":"picture","title":"כלב ליד עץ","scene":"park","prompt":"picture-park-place-prompt","model":"picture-park-place-model","frames":"The ... dog is beside ... .\nThe tree has ... leaves.","hint":"התמקדו בכלב ובעץ, לא בילד. הוסיפו מיקום וצבעים שאפשר לראות."},
+  {"id":"picture-kitchen-action","mode":"picture","title":"מערבבים בקערה","scene":"kitchen","prompt":"picture-kitchen-action-prompt","model":"picture-kitchen-action-model","frames":"The child is ... food in a bowl.\nThe bowl is ... .","hint":"הכף בתוך הקערה. תארו את פעולת הערבוב ואת צבע הקערה."},
+  {"id":"picture-kitchen-count","mode":"picture","title":"ירקות במטבח","scene":"kitchen","prompt":"picture-kitchen-count-prompt","model":"picture-kitchen-count-model","frames":"There are ... on the table.\nI can see ... carrots.","hint":"הביטו בשני הירקות הכתומים על השולחן. אמרו את שמם ואת הכמות."},
+  {"id":"dialogue-pencil","mode":"dialogue","title":"משאילים עיפרון","roles":["תלמיד שמבקש עיפרון","חבר שמשאיל עיפרון"],"turns":["dialogue-pencil-one","dialogue-pencil-two","dialogue-pencil-three","dialogue-pencil-four"],"cues":["בקשו בנימוס לשאול עיפרון.","הסכימו והציעו את העיפרון.","הודו ואמרו שתחזירו אחרי השיעור.","ענו בנימוס לתודה."],"frames":"May I borrow ... , please?\nOf course. ...\nThank you. ...\nYou're welcome.","hint":"מתרגלים תור אחד בכל פעם. כשהתור שלכם, אפשר לענות בדרך אחרת עם אותה מטרה."},
+  {"id":"dialogue-food","mode":"dialogue","title":"מזמינים כריך","roles":["מי שמזמין ארוחה","מי שמגיש ארוחה"],"turns":["dialogue-food-one","dialogue-food-two","dialogue-food-three","dialogue-food-four"],"cues":["בקשו כריך גבינה בנימוס.","הציעו גם מים.","הסכימו והודו.","הגישו את האוכל ואחלו ארוחה נעימה."],"frames":"I would like ... , please.\nWould you like ... too?\nYes, please. ...\nHere you are. ...","hint":"הקשיבו למה שהשותף מציע. אין צורך להזמין אוכל אמיתי."},
+  {"id":"dialogue-library","mode":"dialogue","title":"בספרייה","roles":["קורא שמחפש ספר","ספרנית שעוזרת לקורא"],"turns":["dialogue-library-one","dialogue-library-two","dialogue-library-three","dialogue-library-four"],"cues":["שאלו בנימוס איפה ספרי החיות.","הסבירו שהם במדף ליד החלון.","שאלו אם אפשר לשאול ספר היום.","הסכימו ובקשו להביא כרטיס ספרייה."],"frames":"Excuse me. Where are ... ?\nThey are ... .\nMay I ... ?\nYes. Please ... .","hint":"בהתחלה מחפשים מיקום. בהמשך מבקשים רשות לשאול ספר."},
+  {"id":"dialogue-game","mode":"dialogue","title":"בוחרים משחק","roles":["חבר שמזמין לשחק","חבר שמצטרף למשחק"],"turns":["dialogue-game-one","dialogue-game-two","dialogue-game-three","dialogue-game-four"],"cues":["הזמינו לשחק בהפסקה.","הסכימו ושאלו מה אפשר לשחק.","הציעו משחק מילים.","הגיבו בחיוב והסבירו שאתם אוהבים משחקי מילים."],"frames":"Would you like to ... ?\nYes, please. What ... ?\nLet's ... .\nGood idea. ...","hint":"ההזמנה מובילה להצעה. הקשיבו לתור של השותף לפני התשובה."},
+  {"id":"dialogue-repeat","mode":"dialogue","title":"לא שמעתי, אפשר שוב?","roles":["מי שנותן הוראה","מי שמבקש הבהרה"],"turns":["dialogue-repeat-one","dialogue-repeat-two","dialogue-repeat-three","dialogue-repeat-four"],"cues":["בקשו לפתוח את הספר בעמוד עשר.","בקשו לחזור על ההוראה בנימוס.","חזרו על ההוראה.","חזרו על מספר העמוד והודו."],"frames":"Please open ... .\nCould you say ... , please?\nOf course. ...\nPage ... . Thank you.","hint":"כשלא מבינים מותר לבקש שוב. חזרה על הפרט החשוב עוזרת לוודא שהבנתם."},
+  {"id":"dialogue-water","mode":"dialogue","title":"ממלאים בקבוק","roles":["מי שמחפש ברז","מי שמסביר את הדרך"],"turns":["dialogue-water-one","dialogue-water-two","dialogue-water-three","dialogue-water-four"],"cues":["שאלו איפה אפשר למלא בקבוק.","ספרו שיש ברז מחוץ לכיתה.","שאלו אם הוא ליד הדלת הכחולה.","אשרו את המיקום."],"frames":"Excuse me. Where can I ... ?\nThere is ... .\nIs it beside ... ?\nYes, ... .","hint":"שאלת ההמשך בודקת מקום מסוים. התשובה הקצרה יכולה להתאים."},
+  {"id":"dialogue-club","mode":"dialogue","title":"חוג אמנות","roles":["תלמיד שמתעניין בחוג","מי שמוסר מידע על החוג"],"turns":["dialogue-club-one","dialogue-club-two","dialogue-club-three","dialogue-club-four"],"cues":["שאלו מתי מתחיל חוג האמנות.","אמרו שהוא מתחיל ביום שלישי בשלוש.","שאלו מה צריך להביא.","בקשו להביא עיפרון ונייר."],"frames":"When does ... start?\nIt starts at ... on ... .\nWhat should I ... ?\nPlease bring ... .","hint":"בתשובה הראשונה מוסרים יום ושעה. בתשובה השנייה מציינים ציוד."},
+  {"id":"dialogue-seat","mode":"dialogue","title":"מבקשים מקום","roles":["מי שמבקש לשבת","מי שכבר יושב"],"turns":["dialogue-seat-one","dialogue-seat-two","dialogue-seat-three","dialogue-seat-four"],"cues":["בקשו רשות לשבת.","אמרו שהמקום פנוי.","הודו והציעו להזיז את התיק שלכם.","הודו על ההתחשבות וציינו שיש יותר מקום."],"frames":"Excuse me. May I ... ?\nYes, of course. ...\nThank you. I can ... .\nThat's kind. ...","hint":"אפשר להתחיל בפנייה מנומסת ולסיים בהתחשבות בשותף."},
+  {"id":"repeat-ticket","mode":"repeat","title":"כרטיס לגן החיות","model":"repeat-ticket","frames":"Could I have a ticket to ... , please?","hint":"התחילו בבקשה מנומסת, הוסיפו את היעד וסיימו במילת נימוס. זו נסיעה דמיונית."},
+  {"id":"repeat-hours","mode":"repeat","title":"מתי החנות נפתחת?","model":"repeat-hours","frames":"What time does ... open on ... ?","hint":"חלקו את השאלה לשעת הפתיחה וליום. אחרי מילת העזר בשאלה הפועל נשאר בצורה הבסיסית."},
+  {"id":"repeat-meeting","mode":"repeat","title":"נפגשים ליד השער","model":"repeat-meeting","frames":"Let's meet at ... at ... .","hint":"אמרו הצעה משותפת, מקום ושעה. מתרגלים מפגש של דמויות, לא מוסרים תוכניות אמיתיות."},
+  {"id":"repeat-meal","mode":"repeat","title":"מרק ולחמנייה","model":"repeat-meal","frames":"I would like some ... and a ... , please.","hint":"למרק אין כאן מספר יחידות; הלחמנייה היא פריט אחד. חברו את שתי הבחירות בבקשה מנומסת."},
+  {"id":"answer-ticket","mode":"answer","title":"בוחרים כרטיס לדמות","prompt":"answer-ticket-prompt","model":"answer-ticket-model","frames":"I would like ... ticket to ... , please.","hint":"במשחק הדמות נוסעת לגן החיות. בקשו כרטיס וציינו יעד בלי למסור פרטי נסיעה אמיתיים."},
+  {"id":"answer-hours","mode":"answer","title":"שעת פתיחה בסיפור","prompt":"answer-hours-prompt","model":"answer-hours-model","frames":"It opens at ... .","hint":"החנות הדמיונית נפתחת בעשר. תנו את השעה במשפט קצר; בפועל המתאר חנות אחת יש סיומת."},
+  {"id":"answer-meeting","mode":"answer","title":"מציעים מפגש בסיפור","prompt":"answer-meeting-prompt","model":"answer-meeting-model","frames":"Let's meet ... at ... .","hint":"בחרו מקום בפארק ושעה לשתי דמויות מומצאות. אפשר להציע שער, ספסל או עץ, בלי פרטים אישיים."},
+  {"id":"answer-meal","mode":"answer","title":"מה הדמות מזמינה?","prompt":"answer-meal-prompt","model":"answer-meal-model","frames":"I would like ... , please.","hint":"בחרו מרק או פסטה עבור דמות. אמרו בקשה מנומסת; הבחירה בדוגמה אינה חובה."},
+  {"id":"picture-classroom-colors","mode":"picture","title":"צבעי כלי הלימוד","scene":"classroom","prompt":"picture-classroom-colors-prompt","model":"picture-classroom-colors-model","frames":"The pencils are ... .\nThe book is ... .","hint":"העפרונות צהובים והספר אדום. התאימו את מילת הקישור לכמה עפרונות ולספר אחד."},
+  {"id":"picture-picnic-colors","mode":"picture","title":"צבעים בפיקניק","scene":"picnic","prompt":"picture-picnic-colors-prompt","model":"picture-picnic-colors-model","frames":"The apples are ... .\nThe bottle is ... .","hint":"הביטו בתפוחים האדומים ובבקבוק הירוק. תארו רבים במשפט הראשון וחפץ אחד בשני."},
+  {"id":"picture-park-reading","mode":"picture","title":"ספר פתוח ועלים","scene":"park","prompt":"picture-park-reading-prompt","model":"picture-park-reading-model","frames":"The book is ... .\nThe leaves are ... .","hint":"שני דפי הספר גלויים והעלים ירוקים. תארו את מצב הספר ואת צבע העלים, לא רגשות שאי אפשר לראות."},
+  {"id":"picture-kitchen-place","mode":"picture","title":"קערה וגזרים","scene":"kitchen","prompt":"picture-kitchen-place-prompt","model":"picture-kitchen-place-model","frames":"The bowl is ... .\nThe carrots are ... .","hint":"הקערה מונחת על השולחן והגזרים כתומים. התחילו במיקום הקערה ואז תארו את צבע הירקות."},
+  {"id":"dialogue-ticket","mode":"dialogue","title":"קונים כרטיס לאוטובוס","roles":["נוסע דמיוני לגן החיות","מוכר כרטיסים בסיפור"],"turns":["dialogue-ticket-one","dialogue-ticket-two","dialogue-ticket-three","dialogue-ticket-four"],"cues":["בקשו כרטיס אחד לגן החיות בנימוס.","הציעו את הכרטיס ואמרו שהאוטובוס יוצא בעשר.","הודו ושאלו היכן תחנת האוטובוס.","אמרו שהתחנה ליד הספרייה."],"frames":"One bus ticket to ... , please.\nHere you are. The bus leaves at ... .\nThank you. Where is ... ?\nIt is beside ... .","hint":"היעד והשעה הם חלק מסיפור. מתרגלים קניית כרטיס ושאלת המשך בלי שם, כתובת או תשלום אמיתי."},
+  {"id":"dialogue-hours","mode":"dialogue","title":"שואלים על שעות החנות","roles":["מבקר בחנות דמיונית","מי שמוסר מידע בחנות"],"turns":["dialogue-hours-one","dialogue-hours-two","dialogue-hours-three","dialogue-hours-four"],"cues":["פנו בנימוס ושאלו באיזו שעה החנות נפתחת.","אמרו שהחנות נפתחת בתשע ביום שני.","שאלו אם היא נסגרת בחמש.","אשרו והודו על השאלה."],"frames":"Excuse me. What time does ... open?\nIt opens at ... on ... .\nDoes it close at ... ?\nYes, it does. Thank you for ... .","hint":"בשאלה עם מילת עזר משתמשים בפועל הבסיסי; בתשובה על חנות אחת הפועל מקבל סיומת. השעות מומצאות."},
+  {"id":"dialogue-meeting","mode":"dialogue","title":"קובעים מפגש בפארק","roles":["דמות שמציעה להיפגש","דמות שבוחרת מקום"],"turns":["dialogue-meeting-one","dialogue-meeting-two","dialogue-meeting-three","dialogue-meeting-four"],"cues":["הציעו לשתי הדמויות להיפגש בפארק.","הסכימו והציעו להיפגש ליד העץ הגדול.","שאלו אם אפשר להיפגש בארבע.","הסכימו לשעה וסיימו בפרידה קצרה."],"frames":"Shall we meet ... ?\nYes. Let's meet by ... .\nCan we meet at ... ?\nYes, ... is fine. See you there.","hint":"מתכננים מפגש בסיפור בלבד: תחילה מציעים מקום ואחר כך שעה. אין צורך לספר היכן אתם נפגשים באמת."},
+  {"id":"dialogue-meal","mode":"dialogue","title":"בוחרים תוספת לארוחה","roles":["דמות שמזמינה מרק","מי שמגיש ארוחה בסיפור"],"turns":["dialogue-meal-one","dialogue-meal-two","dialogue-meal-three","dialogue-meal-four"],"cues":["בקשו קערת מרק בנימוס.","הסכימו והציעו בחירה בין לחם לאורז.","בחרו לחם והודו.","הגישו את המרק והלחם ואחלו ארוחה נעימה."],"frames":"Could I have a bowl of ... , please?\nOf course. Would you like ... or ... ?\nSome ... , please. Thank you.\nHere is your ... . Enjoy your meal.","hint":"הקשיבו לשתי האפשרויות ובחרו אחת. בקשת אוכל קצרה יכולה להתאים לתור, ולא חייבים להעתיק משפט ארוך."}
+ ],
+ "lessons":[
+  {"id":"repeat","title":"מקשיבים ואז חוזרים","goal":"לתרגל משפט שימושי בקצב נוח, בלי לנסות לחקות קול של אדם אחר.","rule":"מקשיבים למשמעות, מחלקים לקטעים קצרים, ואז אומרים את המשפט בקול. אפשר להאזין שוב או לקרוא. העמוד אינו בודק איך נשמעתם.","recording":"lesson-repeat","mistake":"לא צריך להאיץ כדי להספיק עם ההקלטה. בבקשה מנומסת כדאי לכלול את מילת הנימוס ולסיים את המשפט.","before":"Help me!","after":"Could you help me, please?","question":"Which sentence is a polite request for help?","options":["Could you help me, please?","I have a blue bag.","It is lunchtime."],"answer":0,"steps":["מזהים את המטרה: בקשת עזרה.","מחפשים משפט שפונה למישהו ומבקש פעולה.","במשפט הראשון יש בקשה וגם מילת נימוס.","שני המשפטים האחרים מוסרים מידע ואינם מבקשים עזרה."]},
+  {"id":"answer","title":"עונים לשאלה בקול","goal":"לתת תשובה קצרה שמתאימה לשאלה על אוכל, לימודים או שגרה.","rule":"מקשיבים למילת השאלה, בוחרים רעיון ואומרים משפט. אפשר להמציא תשובה עבור דמות. הדוגמה היא אפשרות, לא חובה להעתיק אותה.","recording":"lesson-answer","mistake":"תשובה יכולה להיות משפט תקין אבל לא לענות לשאלה. כששואלים על אוכל לא עונים על מקום.","before":"I am in the classroom.","after":"I like rice and carrots.","question":"What do you like for lunch?","options":["At seven o'clock.","I like rice and carrots.","In the library."],"answer":1,"steps":["מזהים שהשאלה עוסקת בארוחת צהריים.","מחפשים תשובה שמציינת אוכל שאוהבים.","אורז וגזר הם פריטי אוכל ומתאימים לשאלה.","התשובות האחרות נותנות זמן ומקום, ולא אוכל."]},
+  {"id":"picture","title":"מתמונה למשפטים","goal":"לתאר פרטים אמיתיים בתמונה בעזרת מסגרת ואז לנסות בלעדיה.","rule":"בוחרים דבר אחד או כמה דברים. מתארים מה רואים, צבע או מיקום. לדבר אחד משתמשים במבנה של יחיד; לכמה דברים במבנה של רבים.","recording":"lesson-picture","mistake":"לא משתמשים במבנה של יחיד כשסופרים כמה חפצים. הדוגמה מתארת שני עפרונות.","before":"There is two yellow pencils.","after":"There are two yellow pencils.","question":"Which sentence describes two pencils?","options":["There is a pencil.","There are two yellow pencils.","There is a red book."],"answer":1,"steps":["מזהים שמתארים שני עפרונות.","שניים הם רבים, ולכן צריך מבנה של רבים.","בוחרים במשפט שמציין גם רבים וגם שני עפרונות.","המשפטים האחרים מתארים חפץ אחד בלבד."]},
+  {"id":"dialogue","title":"משוחחים לפי תורות","goal":"להקשיב לשותף ולהגיב בתור שלנו באופן מועיל ומנומס.","rule":"בוחרים תפקיד. בתור השותף מקשיבים או קוראים; בתור שלנו מדברים בקול ואז מתקדמים בעצמנו. אפשר לתרגל גם את התפקיד האחר.","recording":"lesson-dialogue","mistake":"לא כל תגובה מתאימה לכל תור. אחרי שהשותף נותן לנו משהו, כדאי להודות במקום לחזור על הבקשה.","before":"May I borrow a ruler, please?","after":"Thank you.","question":"Your partner gives you the ruler. What can you say next?","options":["Where is the park?","I like apples.","Thank you."],"answer":2,"steps":["מזהים מה קרה בתור הקודם: קיבלנו סרגל.","כעת המטרה היא להגיב לעזרה שכבר ניתנה.","בוחרים תגובת תודה מתאימה.","שאלה על פארק או אמירה על תפוחים אינן קשורות לתור הזה."]}
+ ]
+}
+</script>
+<!-- Original scenes: all depicted objects are authored here, not external images. -->
+<template id="scene-classroom"><svg viewBox="0 0 600 280" role="img" aria-labelledby="classroom-title classroom-desc"><title id="classroom-title">שולחן בכיתה</title><desc id="classroom-desc">ספר אדום ושני עפרונות צהובים על שולחן. תיק כחול מתחת לשולחן.</desc><rect width="600" height="280" fill="#e3f1f6"/><rect y="220" width="600" height="60" fill="#e5c9a6"/><rect x="100" y="120" width="400" height="22" rx="5" fill="#98643f"/><path d="M125 142v105m350-105v105" stroke="#6b4931" stroke-width="18"/><path d="M172 90h110v30H172z" fill="#bd3449" stroke="#75283a" stroke-width="3"/><path d="M180 112h93" stroke="#fff3dd" stroke-width="7"/><path d="M325 102h75m-75 12h75" stroke="#e9b528" stroke-width="7"/><path d="m400 98 12 4-12 4m0 4 12 4-12 4" fill="#80532e"/><rect x="254" y="174" width="80" height="76" rx="13" fill="#2869a9"/><path d="M270 174v-15h48v15" fill="none" stroke="#174875" stroke-width="7"/><rect x="267" y="206" width="53" height="31" rx="6" fill="#66a5d6"/></svg></template>
+<template id="scene-picnic"><svg viewBox="0 0 600 280" role="img" aria-labelledby="picnic-title picnic-desc"><title id="picnic-title">פיקניק על הדשא</title><desc id="picnic-desc">שלושה תפוחים אדומים על שמיכה. בקבוק ירוק ליד סל חום.</desc><rect width="600" height="280" fill="#d7efff"/><rect y="110" width="600" height="170" fill="#a0ce87"/><path d="M80 152h440l38 108H42z" fill="#f9e3b2" stroke="#a76a45" stroke-width="3"/><path d="M100 160h405M86 189h432M77 219h451" stroke="#de827a" stroke-width="6"/><path d="M290 150q0-95 95-7" fill="none" stroke="#845331" stroke-width="12"/><path d="M281 141h113l-13 77h-87z" fill="#b07a40" stroke="#704b29" stroke-width="4"/><path d="M289 165h99m-96 22h94" stroke="#e1b878" stroke-width="5"/><rect x="430" y="123" width="38" height="92" rx="8" fill="#3e8c62"/><rect x="440" y="107" width="18" height="22" rx="3" fill="#317149"/><rect x="430" y="161" width="38" height="28" fill="#e4efc7"/><g fill="#cd3e47" stroke="#93333b" stroke-width="2"><circle cx="125" cy="205" r="23"/><circle cx="184" cy="181" r="23"/><circle cx="236" cy="218" r="23"/></g><path d="m125 184 3-12m56-13 3-12m49 49 3-12" stroke="#634a2e" stroke-width="5"/></svg></template>
+<template id="scene-park"><svg viewBox="0 0 600 280" role="img" aria-labelledby="park-title park-desc"><title id="park-title">קריאה בפארק</title><desc id="park-desc">ילד יושב על ספסל וקורא ספר פתוח. כלב חום ליד עץ בעל עלים ירוקים.</desc><rect width="600" height="280" fill="#d8efff"/><rect y="210" width="600" height="70" fill="#a6d58c"/><path d="M105 218V70" stroke="#895d38" stroke-width="22"/><g fill="#4c985c"><circle cx="105" cy="66" r="49"/><circle cx="76" cy="106" r="37"/><circle cx="137" cy="106" r="37"/></g><rect x="321" y="128" width="218" height="35" rx="5" fill="#7097bc"/><rect x="321" y="188" width="218" height="15" fill="#7097bc"/><path d="M336 203v49m185-49v49" stroke="#3b607b" stroke-width="10"/><circle cx="425" cy="96" r="23" fill="#af7651"/><path d="M406 121h40l12 67h-65z" fill="#a658aa"/><path d="M408 188v39l-12 16m45-55v39l13 16" fill="none" stroke="#37587d" stroke-width="13"/><path d="m409 139-21 28m55-28 19 28" stroke="#af7651" stroke-width="12"/><path d="m380 145 44 13 44-13v38l-44 12-44-12z" fill="#fff5cc" stroke="#756244" stroke-width="3"/><path d="M424 158v37" stroke="#756244" stroke-width="2"/><ellipse cx="178" cy="223" rx="34" ry="20" fill="#9b643d"/><circle cx="209" cy="202" r="19" fill="#9b643d"/><path d="m196 188-8 27 19-6" fill="#62402b"/><path d="M157 233v24m39-24v24m-50-39-14-20" stroke="#795133" stroke-width="8"/><circle cx="217" cy="199" r="3" fill="#222"/></svg></template>
+<template id="scene-kitchen"><svg viewBox="0 0 600 280" role="img" aria-labelledby="kitchen-title kitchen-desc"><title id="kitchen-title">מכינים אוכל במטבח</title><desc id="kitchen-desc">ילדה מערבבת אוכל בכף בתוך קערה סגולה. שני גזרים מונחים על השולחן.</desc><rect width="600" height="280" fill="#fff1d5"/><rect x="38" y="30" width="127" height="108" fill="#a5d8f0" stroke="#739da9" stroke-width="9"/><path d="M101 30v108m-63-54h127" stroke="#fff" stroke-width="7"/><circle cx="338" cy="73" r="25" fill="#c7916a"/><path d="M312 64q25-49 52 0" fill="#68482f"/><path d="M314 101h46l19 88h-85z" fill="#458c83"/><path d="m315 117-30 28-36-21m109-7 31 48" fill="none" stroke="#c7916a" stroke-width="13" stroke-linecap="round"/><rect x="70" y="199" width="465" height="18" rx="4" fill="#a47147"/><path d="M99 217v63m409-63v63" stroke="#82542f" stroke-width="16"/><path d="M205 158h101q-7 40-50 40t-51-40" fill="#8f5daf"/><ellipse cx="256" cy="159" rx="49" ry="10" fill="#e9c777" stroke="#704689" stroke-width="4"/><path d="m244 119 17 45" stroke="#865c37" stroke-width="8" stroke-linecap="round"/><path d="m416 178 57 8-57 9zM409 157l58 8-58 9z" fill="#e48a32"/><path d="m414 186-12-9m12 9-13 8m6-29-11-9m11 9-13 7" stroke="#4a9955" stroke-width="5"/><path d="m280 137 13 1m-18-11 9-5" stroke="#704689" stroke-width="3"/></svg></template>
+<script>
+'use strict';
+const $=id=>document.getElementById(id);
+const curriculum=JSON.parse($('speaking-data').textContent);
+const recordingMap=new Map(curriculum.recordings.map(r=>[r.id,r]));
+const taskMap=new Map(curriculum.tasks.map(t=>[t.id,t]));
+const labels={repeat:'מקשיבים וחוזרים',answer:'עונים בקול',picture:'מתארים תמונה',dialogue:'משתתפים בשיחה'};
+const instructions={repeat:'האזינו למשפט או קראו אותו, ואז אמרו אותו בקול בקצב שלכם. נסו שוב בלי לקרוא אם תרצו.',answer:'האזינו לשאלה או קראו אותה. חשבו על תשובה קצרה ואמרו אותה בקול. מותר לענות בשם דמות מומצאת.',picture:'הביטו בתמונה וענו בקול. אפשר לפתוח מסגרת ודוגמה, ואז לסגור אותן ולנסות בעצמכם.',dialogue:'בחרו תפקיד. בתור השותף האזינו או קראו, ובתור שלכם אמרו תשובה בקול. כפתור ההמשך הוא דיווח שלכם, לא זיהוי דיבור.'};
+const reviews={repeat:['אמרתי את המשפט בקול.','ניסיתי לדבר בקצב נוח ולהשלים את המשפט.','ניסיתי שוב או בחרתי משהו לתרגל בפעם הבאה.'],answer:['אמרתי תשובה בקול.','בדקתי בעצמי שהתשובה קשורה לשאלה.','ניסיתי לומר רעיון במשפט שלם.'],picture:['תיארתי בקול פרטים מהתמונה.','בדקתי בעצמי שהפרטים אכן מופיעים בתמונה.','ניסיתי לומר משפט גם בלי מסגרת פתוחה.'],dialogue:['דיברתי בקול בתורות שלי.','הקשבתי לשותף או קראתי את התורות שלו.','ניסיתי לענות באופן שקשור לתור הקודם.']};
+const state={mode:'mixed',task:null,history:[],index:-1,seen:new Set(),saved:new Map(),lesson:null,returnFocus:null,epoch:0};
+const players={practice:{element:$('practice-audio'),id:null,token:0,status:$('audio-status'),error:$('audio-error'),speed:$('speed')},lesson:{element:$('lesson-audio'),id:null,token:0,status:$('lesson-audio-status'),error:$('lesson-audio-error'),speed:$('lesson-speed')}};
+const mic={Ctor:null,ready:false,availability:'unchecked',busy:false,op:0,setupTimer:null,run:0,rec:null,failed:null,failedInstances:new Set(),phase:'idle',deadline:null,grace:null,draft:''};
+const coaching={key:null,target:'',rule:'',ruleId:null,example:'',hint:'',label:'',canPraise:false};
+const levelLabels={phrases:'ביטויים קצרים',sentences:'משפטים שלמים',extended:'תשובות ארוכות יותר'};
+const adaptive={level:'sentences',active:null,offerRule:null,serial:0,visit:new Map()};
+const ruleCatalog={
+ 'color-order':{label:'צבע לפני שם החפץ',purpose:'מתרגלים סדר מילים בתיאור חפץ מומצא.',rule:'Put a color before the noun in a noun phrase.'},
+ 'be-agreement':{label:'התאמת מילת הקישור',purpose:'מתאימים את מילת הקישור לדבר אחד או לכמה דברים בסיפור.',rule:'Use I am; he, she or it is; you, we or they are.'},
+ 'there-is-are':{label:'יש אחד או יש כמה',purpose:'מתארים כמה חפצים יש בתמונה דמיונית.',rule:'Use there is for one thing and there are for several things.'},
+ 'articles':{label:'מילת ליווי לחפץ אחד',purpose:'בוחרים מילת ליווי לפי הצליל הראשון בתיאור חפץ דמיוני.',rule:'Use a before a consonant sound and an before a vowel sound.'},
+ 'present-progressive':{label:'פעולה שקורית עכשיו',purpose:'מתארים פעולה של דמות עכשיו, לא הרגל קבוע.',rule:'Use subject + am/is/are + verb-ing for an action happening now.'},
+ 'present-simple':{label:'הרגל או מידע קבוע',purpose:'מתרגלים משפט על העדפה או מידע קבוע בסיפור.',rule:'Use the base verb with I. With one shop, use opens or closes in a statement.'},
+ 'modal-base':{label:'פועל בסיסי אחרי פועל עזר',purpose:'מתרגלים בקשה או הצעה דמיונית בלי סיומת מיותרת בפועל.',rule:'After can, could, may, should or shall, use the base verb.'},
+ 'question-order':{label:'מבנה של שאלה',purpose:'שואלים על מקום או זמן בסיפור, בלי למסור פרטים אישיים.',rule:'Put the modal before the subject in a direct question. After does, use the base verb.'},
+ 'borrow-lend':{label:'לשאול או להשאיל',purpose:'מבחינים בין קבלה זמנית לנתינה זמנית של חפץ במשחק תפקידים.',rule:'Borrow means receive temporarily. Lend means give temporarily.'},
+ 'would-like':{label:'בקשה מנומסת למאכל',purpose:'מזמינים מאכל בשביל דמות מומצאת.',rule:'Use would like + food. Use would like to only before a base verb.'}
+};
+// Authored variants, not generated answers: [id, fictional prompt, short, sentence, extended, starter].
+const transferRows={
+ 'color-order':[
+  ['green-book','Imagine a green book on a shelf. Describe the book.','A green book.','There is a green book.','There is a green book on the shelf. It is open.','A ... book. / There is a ... book.'],
+  ['purple-bag','Imagine a purple bag beside a chair. Describe the bag.','A purple bag.','There is a purple bag.','There is a purple bag beside the chair. It is small.','A ... bag. / There is a ... bag.'],
+  ['yellow-bowl','Imagine a yellow bowl on a table. Describe the bowl.','A yellow bowl.','There is a yellow bowl.','There is a yellow bowl on the table. It is empty.','A ... bowl. / There is a ... bowl.']],
+ 'be-agreement':[
+  ['blue-books','In a story, two books are blue and open. Describe them.','They are blue.','The books are blue.','The books are blue. They are open.','They ... blue. / The books ... blue.'],
+  ['green-bag','In a story, a bag is green and small. Describe it.','It is green.','The bag is green.','The bag is green. It is small.','It ... green. / The bag ... green.'],
+  ['happy-children','In a story, the children are happy and ready for a game. Describe them.','They are happy.','The children are happy.','The children are happy. They are ready for a game.','They ... happy. / The children ... happy.']],
+ 'there-is-are':[
+  ['two-books','Imagine two books on a chair. Say how many books there are.','There are two books.','There are two books on the chair.','There are two books on the chair. They are open.','There ... two books ... .'],
+  ['one-basket','Imagine one basket under a table. Say what is there.','There is a basket.','There is a basket under the table.','There is a basket under the table. It is empty.','There ... a basket ... .'],
+  ['three-bags','Imagine three bags on a bench. Say how many bags there are.','There are three bags.','There are three bags on the bench.','There are three bags on the bench. They are small.','There ... three bags ... .']],
+ 'articles':[
+  ['orange','A story character sees one orange in a basket. Name or describe it.','An orange.','I can see an orange.','I can see an orange in the basket. It is small.','... orange. / I can see ... orange.'],
+  ['book','A story character sees one book on a chair. Name or describe it.','A book.','I can see a book.','I can see a book on the chair. It is open.','... book. / I can see ... book.'],
+  ['egg','A story character sees one egg in a bowl. Name or describe it.','An egg.','I can see an egg.','I can see an egg in the bowl. The bowl is blue.','... egg. / I can see ... egg.']],
+ 'present-progressive':[
+  ['story','Imagine a girl reading a story on a bus right now. Say what she is doing.','She is reading.','She is reading a story.','She is reading a story on the bus. The story is about a dog.','She ... reading ... .'],
+  ['walking','Imagine two children walking to school together right now. Say what they are doing.','They are walking.','They are walking to school.','They are walking to school. They are carrying books.','They ... walking ... .'],
+  ['lunch','Imagine a boy eating lunch in a park right now. Say what he is doing.','He is eating.','He is eating lunch.','He is eating lunch in the park. He is sitting on a bench.','He ... eating ... .']],
+ 'present-simple':[
+  ['music','Speak as a story character who likes music and can sing. Say what you like.','I like music.','I like music because I can sing.','I like music because I can sing. I sing after school.','I ... music ... .'],
+  ['shop-five','In a story, a shop opens at five every day and sells bread. Say when it opens.','It opens at five.','The shop opens at five.','The shop opens at five. It sells bread.','It ... at five. / The shop ... at five.'],
+  ['shop-close','In a story, a shop closes at nine every day and opens at five. Say when it closes.','It closes at nine.','The shop closes at nine.','The shop closes at nine. It opens at five.','It ... at nine. / The shop ... at nine.']],
+ 'modal-base':[
+  ['game','Two story characters want to play a game after lunch. Ask to play together.','Can we play?','Can we play a game?','Can we play a game after lunch? We can play together.','Can we ... ?'],
+  ['sit','A story character sees a free seat by a window. Ask permission to sit.','May I sit?','May I sit here, please?','May I sit here, please? I can put my bag under the seat.','May I ... ?'],
+  ['meet','Two story characters want to meet by a bench at two. Suggest meeting.','Shall we meet?','Shall we meet by the bench?','Shall we meet by the bench at two? We can read together.','Shall we ... ?']],
+ 'question-order':[
+  ['find-story','Two story characters are looking for a story. Ask where you can find one.','Where can we look?','Where can we find a story?','Where can we find a story? We would like to read together.','Where can we ... ?'],
+  ['shop-open','A story character wants bread from a shop. Ask about its opening time.','When does it open?','What time does the shop open?','What time does the shop open? I would like some bread.','When does it ... ? / What time does the shop ... ?'],
+  ['shop-close','A story character wants a book from a shop. Ask about its closing time.','When does it close?','What time does the shop close?','What time does the shop close? I would like a book.','When does it ... ? / What time does the shop ... ?']],
+ 'borrow-lend':[
+  ['ruler','A story character needs a ruler for a drawing. Ask to receive it for a short time.','May I borrow it?','May I borrow a ruler, please?','May I borrow a ruler, please? I will give it back after drawing.','May I ... ?'],
+  ['ball','A story character asks a friend to give a ball for a short time. Make the request.','Could you lend it?','Could you lend me a ball, please?','Could you lend me a ball, please? I will give it back after the game.','Could you ... ?'],
+  ['cup','A story character needs a cup for a picnic. Ask to receive it for a short time.','Can I borrow it?','Can I borrow a cup, please?','Can I borrow a cup, please? I will give it back after the picnic.','Can I ... ?']],
+ 'would-like':[
+  ['soup','Order soup for a story character who wants something warm.','I would like soup.','I would like some soup, please.','I would like some soup, please. I would like a warm meal.','I would like ... .'],
+  ['rice','Order rice for a story character who wants bread too.','I would like rice.','I would like some rice, please.','I would like some rice, please. I would like some bread too.','I would like ... .'],
+  ['bread','Order bread for a story character who wants water too.','I would like bread.','I would like some bread, please.','I would like some bread, please. I would like some water too.','I would like ... .']]
+};
+const transferBank=Object.entries(transferRows).flatMap(([ruleId,rows])=>rows.map(([id,prompt,phrases,sentences,extended,starter])=>({
+ id:ruleId+':'+id,ruleId,purpose:ruleCatalog[ruleId].purpose,rule:ruleCatalog[ruleId].rule,
+ variants:Object.fromEntries(Object.entries({phrases,sentences,extended}).map(([level,model])=>[level,{
+  prompt:prompt+' '+{phrases:'Use a short phrase or the shortest complete clause for this rule; one detail is enough.',sentences:'Use a complete sentence for the requested detail.',extended:'Give a longer answer with a second relevant detail. You may add a harmless detail to this imaginary story.'}[level],
+  starter,model,accepted:[model]
+ }]))
+})));
+const shortTargets={
+ 'repeat-pencil':['May I borrow a pencil','May I borrow ... ?','I will give it back.'],
+ 'repeat-help':['Could you help me','Could you help ... ?','I want to understand it.'],
+ 'repeat-again':['Please say that again.','Please say ... .','I want to understand it.'],
+ 'repeat-lunch':['a glass of water','a glass of ...','I would like a drink with my meal.'],
+ 'repeat-friend':['sit with us','... with us','There is room for a friend.'],
+ 'repeat-routine':['I pack my bag.','I ... my bag.','My bag is ready for school.'],
+ 'repeat-library':['a book about animals','a book about ...','I want to read about animals.'],
+ 'repeat-thanks':['Thank you for your help.','Thank you for ... .','I am glad you helped.'],
+ 'repeat-ticket':['a ticket to the zoo','a ticket to ...','I would like to see the animals.'],
+ 'repeat-hours':['on Monday','on ...','I would like to visit the shop.'],
+ 'repeat-meeting':['at the park gate','at ...','We can walk in the park.'],
+ 'repeat-meal':['some soup','some ...','I would like a warm meal.'],
+ 'answer-subject':['What subject does a story character like?','Art.','I like ... .','I like art because I can draw animals. I draw after school.'],
+ 'answer-bag':['Name one thing in a story character’s school bag.','A book.','A ... .','I put a book and a pencil case in my bag. I use the pencil to draw.'],
+ 'answer-break':['Name one activity at break time for a story character.','A ball game.','A ... game.','I play a ball game with my friends. We play together at break time.'],
+ 'answer-breakfast':['Name one food a story character would like for breakfast.','An egg.','An ... .','I would like some bread and an egg, please. I would like some water too.'],
+ 'answer-fruit':['Name one fruit a story character likes.','Bananas.','... .','I like bananas. They are yellow.'],
+ 'answer-snack':['Name one snack for the story picnic.','Some apples.','Some ... .','I can bring some apples to the picnic. We can share them.'],
+ 'answer-morning':['Name the first action after a story character gets up.','Wash my face.','Wash ... .','First, I wash my face. Then I eat breakfast.'],
+ 'answer-afternoon':['Name one activity a story character likes after school.','Read a story.','Read ... .','I like to read a story after school. I like stories about animals.'],
+ 'answer-ticket':['Name the ticket’s destination in the story.','The zoo.','The ... .','I would like one ticket to the zoo, please. I would like to see the animals.'],
+ 'answer-hours':['At what time does the story shop open?','At ten.','At ... .','It opens at ten. That is the opening time of the toy shop.'],
+ 'answer-meeting':['Suggest just a place in the park for the story characters.','By the big tree.','By ... .',"Let's meet by the big tree at three. We can read together."],
+ 'answer-meal':['Choose just one food for the story character: soup or pasta.','Pasta, please.','..., please.','I would like pasta, please. I like pasta.'],
+ 'picture-classroom-objects':['Name one thing on the desk.','A red book.','A ... book.'],
+ 'picture-classroom-place':['Where is the bag? Give just the place.','Under the desk.','Under ... .'],
+ 'picture-picnic-count':['Name the fruit you see.','Red apples.','... apples.'],
+ 'picture-picnic-place':['Where is the bottle? Give just the place.','Beside the basket.','Beside ... .'],
+ 'picture-park-action':['What is the child doing? Give just the action.','Reading a book.','Reading ... .'],
+ 'picture-park-place':['Where is the dog? Give just the place.','Beside the tree.','Beside ... .'],
+ 'picture-kitchen-action':['What is the child doing? Give just the action.','Stirring food.','Stirring ... .'],
+ 'picture-kitchen-count':['Name the vegetables on the table.','Carrots.','... .'],
+ 'picture-classroom-colors':['What color are the pencils?','Yellow.','... .'],
+ 'picture-picnic-colors':['What color are the apples?','Red.','... .'],
+ 'picture-park-reading':['Is the book open or closed?','Open.','... .'],
+ 'picture-kitchen-place':['Where is the bowl? Give just the place.','On the table.','On ... .']
+};
+function levelTarget(){
+ const t=state.task,original=transcript(modelId()),first=original.match(/[^.!?]+[.!?]?/)[0].trim(),row=shortTargets[t.id],level=adaptive.level;
+ if(t.mode==='repeat')return {prompt:level==='phrases'?'Practise only the quoted chunk from the original recording.':level==='extended'?'Say the original model, then add a sentence about its purpose.':'Say the complete original model.',frame:level==='phrases'?row[1]:t.frames,example:level==='phrases'?row[0]:level==='extended'?original+' '+row[2]:original};
+ if(t.mode==='dialogue'){
+  const short=first==='Excuse me.'?original.slice(first.length).trim():first;
+  return {prompt:level==='phrases'?'Give one brief reply for your turn.':level==='extended'?'Keep the same facts. You may add a polite opening or closing; a naturally short reply is still fine.':'Give a complete reply for your turn.',frame:t.frames.split('\n')[currentTurn()]+(level==='extended'?'\n[Optional polite opening or closing]':''),example:level==='phrases'?short:level==='extended'?(original==="You're welcome."?"You're welcome. I am happy to help.":original+(original.includes('Thank you')?'':' Thank you.')):original};
+ }
+ return {prompt:level==='phrases'?row[0]:level==='extended'?'Answer the original prompt with two relevant details. Use only visible facts for a picture; you may invent a story character.':row[0]+' Use a complete sentence.',frame:level==='phrases'?row[2]:t.frames,example:level==='phrases'?row[1]:level==='extended'?(row[3]||original):first};
+}
+function renderLevel(){
+ const target=levelTarget();$('practice-level').value=adaptive.level;
+ $('level-guidance').textContent='תוספת להוראות המקוריות: '+({phrases:'בוחרים רק את הפרט שבשאלה הקצרה, או קטע מהמודל. אין צורך להשלים עכשיו את כל ההוראות המקוריות.',sentences:'מנסים משפט שלם. תגובה קצרה וטבעית בשיחה עדיין מתאימה.',extended:'מוסיפים פרט רלוונטי או סיבה. בתמונה נשארים עם מה שרואים; בשיחה לא משנים עובדות או מוסיפים פרטים אישיים.'}[adaptive.level]);
+ $('level-prompt').textContent=target.prompt;$('level-frame').textContent=target.frame;$('level-example').textContent=target.example;
+ $('level-example-panel').hidden=true;$('level-example-toggle').setAttribute('aria-expanded','false');
+ $('level-panel').hidden=!!adaptive.active||(state.task.mode==='dialogue'&&(!isMyTurn()||saved().turns[saved().role]>=state.task.turns.length));
+}
+function visitRule(ruleId){
+ if(!adaptive.visit.has(ruleId))adaptive.visit.set(ruleId,{errors:0,corrections:0,confirmed:0,assisted:0,manual:0,manualAssisted:0,levels:{}});
+ return adaptive.visit.get(ruleId);
+}
+function visitLevel(ruleId,level){
+ const rule=visitRule(ruleId);return rule.levels[level]||(rule.levels[level]={seen:new Set(),practised:new Set(),lastId:null});
+}
+function adaptiveBoundary(){const stopped=speechBoundary();Object.keys(players).forEach(stopAudio);return stopped}
+function closeTransfer(){
+ if(!adaptive.active)return;
+ adaptive.active=null;$('transfer-panel').hidden=true;
+ for(const id of ['transfer-title','transfer-purpose','transfer-prompt','transfer-rule','transfer-starter','transfer-model','transfer-outcome','transfer-support-status'])$(id).textContent='';
+ syncTransferControls();renderSupport();renderLevel();
+}
+function syncTransferControls(){
+ const active=!!adaptive.active;
+ for(const id of ['prompt-play','play','pause','replay','speed','partner-play','model-play','frames-toggle','hint-toggle','model-toggle','independent','level-example-toggle'])$(id).disabled=active;
+ if(active){for(const key of ['frames','hint','model']){$(key+'-panel').hidden=true;$(key+'-toggle').setAttribute('aria-expanded','false')}$('level-panel').hidden=true}
+}
+function startTransfer(ruleId){
+ const previousTarget=coaching.target;
+ if(!ruleCatalog[ruleId]||!adaptiveBoundary())return;
+ const progress=visitLevel(ruleId,adaptive.level),avoid=new Set([previousTarget,normalize(transcript(modelId())),normalize(levelTarget().example)]);
+ const pool=transferBank.filter(e=>e.ruleId===ruleId&&Object.values(e.variants).every(v=>!avoid.has(normalize(v.model))));
+ let available=pool.filter(e=>!progress.seen.has(e.id));
+ if(!available.length){progress.seen.clear();available=pool.filter(e=>e.id!==progress.lastId)}
+ const exercise=available[0]||pool[0];if(!exercise)return;
+ progress.seen.add(exercise.id);progress.lastId=exercise.id;
+ const help=progress.practised.size;
+ adaptive.active={exercise,level:adaptive.level,attempt:++adaptive.serial,counted:false,assisted:help<2,starterOpen:help<2,modelOpen:help===0};
+ $('rule-select').value=ruleId;$('transfer-panel').hidden=false;$('transfer-outcome').textContent='';
+ $('transfer-title').textContent='דוגמה חדשה: '+ruleCatalog[ruleId].label+' — '+levelLabels[adaptive.level];
+ $('transfer-purpose').textContent=exercise.purpose;$('transfer-prompt').textContent=exercise.variants[adaptive.level].prompt;$('transfer-rule').textContent=exercise.rule;
+ syncTransferControls();renderTransferHelp();syncMic();$('transfer-title').focus();
+}
+function renderTransferHelp(){
+ const a=adaptive.active;if(!a)return;const v=a.exercise.variants[a.level];
+ $('transfer-starter').textContent=v.starter;$('transfer-model').textContent=v.model;
+ $('transfer-starter').hidden=!a.starterOpen;$('transfer-model-panel').hidden=!a.modelOpen;
+ $('transfer-starter-toggle').setAttribute('aria-expanded',String(a.starterOpen));$('transfer-model-toggle').setAttribute('aria-expanded',String(a.modelOpen));
+ $('transfer-manual').disabled=a.counted;
+ const n=visitLevel(a.exercise.ruleId,a.level).practised.size;
+ $('transfer-support-status').textContent=(n===0?'בתחילת התרגול מוצעות פתיחה ודוגמה.':n===1?'בדוגמה החדשה הבאה תוצע פחות עזרה: פתיחה בלבד.':'בדוגמאות הבאות תוצע פחות עזרה: השאלה בלבד.')+' תמיד אפשר לפתוח עזרה. זו התאמה לפי תרגול בדוגמאות שונות, כולל דיווח עצמי, ולא קביעה של שליטה.'+(a.assisted?' בניסיון הזה כבר הוצגה עזרה; סגירתה לא משנה זאת.':' עדיין לא נפתחו פתיחה או מודל בניסיון הזה.');
+}
+function toggleTransferHelp(key){
+ if(!adaptive.active||!adaptiveBoundary())return;
+ const a=adaptive.active;a[key]=!a[key];if(a[key])a.assisted=true;renderTransferHelp();
+}
+function recordTransfer(manual=false){
+ const a=adaptive.active;if(!a||a.counted)return false;
+ a.counted=true;const r=visitRule(a.exercise.ruleId);
+ if(manual){r.manual++;if(a.assisted)r.manualAssisted++}else{r.confirmed++;if(a.assisted)r.assisted++}
+ visitLevel(a.exercise.ruleId,a.level).practised.add(a.exercise.id);
+ $('transfer-outcome').textContent=manual?'נרשם תרגול לפי הדיווח שלכם בלבד — לא זיהוי או בדיקת אנגלית.':'נרשם תרגול אחרי אישור המילים והתאמה לניסוח כתוב מראש — לא ציון או בדיקת הגייה.';
+ renderTransferHelp();return true;
+}
+function transferFeedback(text){
+ const a=adaptive.active,v=a.exercise.variants[a.level],grammar=grammarFeedback(text),accepted=v.accepted.some(form=>normalize(form)===normalize(text));
+ return {kind:accepted?'transfer-match':grammar?'targeted-rule':'transfer-open',ruleId:grammar?.ruleId||a.exercise.ruleId,
+  grammarRule:grammar?.grammarRule||a.exercise.rule,example:grammar?.example||v.model,
+  hint:grammar?.hint||'זהו תרגיל מוגבל עם ניסוחים כתובים מראש. אם בחרתם דרך מתאימה אחרת, אפשר לדווח שתרגלתם בלי לקרוא לה שגויה.',
+  label:grammar?'הצעה לתיקון המבנה שאישרתם':'דוגמה אחת לכלל — לא התשובה האפשרית היחידה',
+  message:accepted?'המילים שאישרתם תואמות לדוגמה של התרגיל. זהו אירוע תרגול בלבד, לא הוכחה לשליטה.':grammar?'נתרגל מבנה אחד מהמילים שאישרתם; התיקון אינו בדיקה של התוכן כולו.':'הניסוח הזה אינו ברשימה המצומצמת של התרגיל. ייתכן שהוא מתאים. השוו לכלל ולדוגמה, או השתמשו בדיווח העצמי.'};
+}
+function renderVisitSummary(){
+ $('visit-rules').replaceChildren();const used=[...adaptive.visit].filter(([,r])=>r.errors+r.corrections+r.confirmed+r.manual>0);
+ $('visit-empty').textContent=used.length?'נספרו רק משובים על מילים שאושרו, התאמות בדוגמאות חדשות או דיווחי תרגול מפורשים. פתיחת תרגיל בלבד אינה תרגול.':'עדיין אין תרגול כללים מדווח בביקור הזה. אפשר לבחור כלל ולתרגל, גם בלי מיקרופון.';
+ for(const [id,r] of used){const li=document.createElement('li');li.textContent=ruleCatalog[id].label+': משובים ממוקדים '+r.errors+'; חזרות על תיקון מוצע '+r.corrections+'; תרגולי דוגמה שאושרו '+r.confirmed+' (עם עזרה '+r.assisted+', בלי פתיחת עזרה '+(r.confirmed-r.assisted)+'); דיווחים עצמיים '+r.manual+' (עם עזרה '+r.manualAssisted+').';$('visit-rules').append(li)}
+ const next=used.filter(([,r])=>r.errors>0).map(([id])=>ruleCatalog[id].label);
+ $('visit-next').textContent=next.length?'אפשר להמשיך בדוגמה אחרת של: '+next.join('، ')+'.':'להמשך אפשר לבחור כלל שמעניין אתכם. אין כאן אבחון או דירוג.';
+}
+function setLevel(level){
+ if(!Object.hasOwn(levelLabels,level))return;
+ stopAll();adaptive.level=level;renderLevel();syncMic();
+}
+function manualTransfer(){
+ if(!adaptive.active||adaptive.active.counted||!adaptiveBoundary())return;
+ recordTransfer(true);syncMic();
+}
+function showVisitSummary(){
+ stopAll();renderVisitSummary();$('visit-summary').hidden=false;$('view-visit-summary').setAttribute('aria-expanded','true');$('visit-summary').focus();
+}
+function resetVisitSummary(){
+ stopAll();adaptive.visit.clear();renderVisitSummary();
+ $('visit-reset-status').textContent='סיכום הכללים וסדר העזרה אופסו. ההסכמה למיקרופון וסימוני הפעילויות לא השתנו.';
+}
+function resetCoaching(){
+ coaching.key=null;coaching.ruleId=null;coaching.target=coaching.rule=coaching.example=coaching.hint=coaching.label='';coaching.canPraise=false;
+ adaptive.offerRule=null;$('new-rule-example').hidden=true;
+ $('retry-guide').hidden=true;for(const id of ['retry-target','retry-rule','retry-guide-hint','retry-guide-label'])$(id).textContent='';
+}
+function renderRetryGuide(){
+ const visible=coaching.key===speechKey()&&!!coaching.example;$('retry-guide').hidden=!visible;
+ if(visible){$('retry-target').textContent=coaching.example;$('retry-rule').textContent=coaching.rule;$('retry-guide-hint').textContent=coaching.hint;$('retry-guide-label').textContent=coaching.label}
+}
+function speechKey(){return adaptive.active?'transfer:'+adaptive.active.attempt+':'+adaptive.active.level:state.task.id+':'+adaptive.level+(state.task.mode==='dialogue'?':'+saved().role+':'+saved().turns[saved().role]:'')}
+function canSpeak(){return !!state.task&&!document.hidden&&!$('lesson').open&&(!!adaptive.active||state.task.mode!=='dialogue'||(saved().turns[saved().role]<state.task.turns.length&&isMyTurn()))}
+function syncMic(){
+ $('consent-summary').textContent=$('consent').checked?'ההסכמה פעילה — לפתיחת הפרטים או לביטול':'הסכמה לזיהוי מקומי באנגלית';
+ const usable=canSpeak();$('speak').hidden=!usable;$('speak').disabled=!usable||!mic.ready||!$('consent').checked||mic.busy||mic.phase!=='idle'||!!mic.draft||!!mic.failed;
+ const active=!!mic.rec||!!mic.failed;$('stop').hidden=!active;$('stop').disabled=mic.phase==='stopping'||!!mic.failed;$('cancel').hidden=!active;
+ $('check-support').disabled=mic.busy;$('setup-wait').hidden=!mic.busy;
+ $('download-pack').hidden=mic.availability!=='downloadable';$('download-pack').disabled=mic.busy||!$('consent').checked||!!mic.failed;
+ $('pack-warning').hidden=!['downloadable','downloading'].includes(mic.availability);
+ $('quick-check').hidden=!$('consent').checked||mic.ready||mic.busy;
+ $('quick-check').disabled=!!mic.failed;
+ $('quick-download').hidden=!$('consent').checked||mic.availability!=='downloadable'||mic.busy;
+ $('quick-download').disabled=!!mic.failed;
+ $('quick-stop-setup').hidden=!mic.busy;
+ $('quick-pack-note').hidden=!$('consent').checked||!['downloadable','downloading'].includes(mic.availability);
+}
+function focusMicrophone(){
+ const id=!$('consent').checked?'consent':mic.failed?'cancel':mic.busy?'quick-stop-setup':mic.ready?(canSpeak()?'speak':'consent'):mic.availability==='downloadable'?'quick-download':'quick-check';
+ if(id==='consent')$('consent-panel').open=true;
+ $(id).focus();
+}
+function clearDraft(){
+ mic.draft='';$('heard').textContent='';$('review').hidden=true;$('practice-result').hidden=true;
+ for(const id of ['practice-original','practice-outcome','speech-hint-text','grammar-rule','speech-hint-example','example-label'])$(id).textContent='';
+ $('correction-panel').hidden=true;$('correction-before').replaceChildren();$('correction-after').replaceChildren();
+}
+function abortInstance(rec){
+ try{rec.abort();mic.failedInstances.delete(rec);mic.failed=mic.failedInstances.values().next().value||null;return true}
+ catch{
+  mic.failedInstances.add(rec);mic.failed=mic.failedInstances.values().next().value;mic.ready=false;Object.keys(players).forEach(stopAudio);
+  const warning='הדפדפן לא הצליח לבטל את המיקרופון. לחצו ביטול שוב; אם סמל המיקרופון נשאר פעיל, סגרו את העמוד או בטלו הרשאה בדפדפן. זיהוי נוסף ושמע חסומים עד שהמיקרופון ייסגר.';
+  $('recognition-status').textContent=warning;$('mic-status').textContent=warning;return false;
+ }
+}
+function abortRecognition(message){
+ const instances=[...new Set([mic.rec,...mic.failedInstances].filter(Boolean))];++mic.run;mic.rec=null;mic.phase='idle';
+ clearTimeout(mic.deadline);clearTimeout(mic.grace);mic.deadline=mic.grace=null;
+ let stopped=true;for(const rec of instances)if(!abortInstance(rec))stopped=false;clearDraft();
+ if(stopped&&message)$('recognition-status').textContent=message;syncMic();return stopped;
+}
+function speechBoundary(){
+ resetCoaching();++state.epoch;++mic.op;
+ if(mic.busy)stopSetupWaiting('ההמתנה הופסקה במעבר. הורדה שכבר התחילה בדפדפן עשויה להימשך. בדקו תמיכה שוב כשמוכנים.');
+ return abortRecognition('המיקרופון כבוי. כל ניסיון חדש מתחיל רק בלחיצה על כפתור הדיבור.');
+}
+function clearSetupTimer(){clearTimeout(mic.setupTimer);mic.setupTimer=null}
+function stopSetupWaiting(message){
+ if(!mic.busy)return;
+ ++mic.op;clearSetupTimer();mic.busy=false;mic.ready=false;mic.availability='unchecked';mic.Ctor=null;
+ $('mic-status').textContent=message;syncMic();
+}
+function setupIssue(operation,detail){
+ $('setup-details').textContent='Operation: '+operation+'\nResult: '+detail+'\nPage protocol: '+location.protocol+'\nSecure context: '+window.isSecureContext;
+ $('setup-issue').hidden=false;
+}
+function safeError(error){return ['NotAllowedError','NotSupportedError','SecurityError','InvalidStateError','NetworkError','AbortError','TypeError'].includes(error?.name)?error.name:'Browser operation failed (no speech data included).'}
+function watchSetup(op,delay,operation){
+ clearSetupTimer();mic.setupTimer=setTimeout(()=>{
+  if(op!==mic.op||!mic.busy)return;
+  setupIssue(operation,'Timed out. A browser download may still be running; check support again.');
+  stopSetupWaiting('הדפדפן לא השיב בזמן. ההמתנה הסתיימה, אך ייתכן שהורדה עדיין נמשכת. בדקו תמיכה שוב. המיקרופון לא הופעל.');
+ },delay);
+}
+function localConstructor(){
+ if(!window.isSecureContext)throw new Error('secure');
+ for(const C of [window.SpeechRecognition,window.webkitSpeechRecognition]){
+  if(typeof C!=='function'||typeof C.available!=='function')continue;
+  const probe=new C();
+  // Check the native capability before assignment, never manufacture an expando.
+  if(!('processLocally' in probe))continue;
+  probe.processLocally=true;if(probe.processLocally===true)return C;
+ }
+ throw new Error('unsupported');
+}
+function availabilityMessage(value){
+ return {available:'הזיהוי המקומי באנגלית מוכן. אין האזנה. רק לחיצה על כפתור הדיבור תבקש מיקרופון.',downloadable:'חסרה חבילת אנגלית. אפשר לבחור בנפרד להוריד אותה.',downloading:'חבילת האנגלית בהורדה בדפדפן. בדקו תמיכה שוב לאחר סיום; אין האזנה.',unavailable:'זיהוי מקומי באנגלית אינו זמין כאן. אין מעבר לענן; אפשר להשלים הכול בדיווח עצמי.'}[value]||'מצב החבילה אינו מוכר. המיקרופון חסום; בדקו תמיכה שוב או המשיכו בדיווח עצמי.';
+}
+async function checkSupport(){
+ if(mic.busy)return;
+ if(!speechBoundary())return;
+ if(!$('consent').checked){$('mic-status').textContent='סמנו הסכמה לפני בדיקת התמיכה, או המשיכו בלי מיקרופון.';return}
+ if(document.hidden||$('lesson').open)return;
+ const op=++mic.op,epoch=state.epoch,current=()=>op===mic.op&&epoch===state.epoch&&$('consent').checked;
+ mic.busy=true;mic.ready=false;mic.availability='unchecked';$('setup-issue').hidden=true;$('setup-details').textContent='';syncMic();
+ $('mic-status').textContent='בודקים תמיכה מקומית בלבד, בלי לפתוח מיקרופון.';watchSetup(op,15000,'SpeechRecognition.available');
+ try{
+  const C=localConstructor();if(!current())return;mic.Ctor=C;
+  const value=await C.available({langs:['en-US'],processLocally:true});if(!current())return;
+  mic.availability=value;mic.ready=value==='available';$('mic-status').textContent=availabilityMessage(value);
+  if(!['available','downloadable','downloading','unavailable'].includes(value))setupIssue('SpeechRecognition.available','Unknown status; use manual practice or check again.');
+ }catch(error){
+  if(current()){mic.Ctor=null;mic.ready=false;mic.availability='unavailable';
+   $('mic-status').textContent=error.message==='secure'?'נדרש הקשר מאובטח. נסו עמוד מאובטח בדפדפן תומך, או המשיכו בלי מיקרופון.':error.message==='unsupported'?'הדפדפן אינו מספק זיהוי מקומי מאומת. נסו דפדפן תומך או המשיכו בדיווח עצמי; אין מעבר לענן.':'בדיקת התמיכה נחסמה או נכשלה. בדקו הרשאות ומדיניות בדפדפן ונסו שוב, או המשיכו בלי מיקרופון.';
+   setupIssue('SpeechRecognition.available',safeError(error));}
+ }finally{if(current()){clearSetupTimer();mic.busy=false;syncMic()}}
+}
+async function downloadPack(){
+ if(!$('consent').checked||mic.busy||mic.failed||mic.availability!=='downloadable'||document.hidden||$('lesson').open)return;
+ if(!speechBoundary())return;
+ const C=mic.Ctor,op=++mic.op,epoch=state.epoch,current=()=>op===mic.op&&epoch===state.epoch&&$('consent').checked;
+ mic.busy=true;mic.ready=false;$('setup-issue').hidden=true;$('setup-details').textContent='';syncMic();
+ $('mic-status').textContent='ממתינים להתקנת חבילת אנגלית. אין האזנה. אפשר להפסיק להמתין בלי לבטל את הורדת הדפדפן.';
+ let operation='SpeechRecognition.install';watchSetup(op,120000,operation);
+ try{
+  if(!C||typeof C.install!=='function')throw new Error('unsupported');
+  const installed=await C.install({langs:['en-US'],processLocally:true});if(!current())return;
+  if(installed!==true){mic.availability='unchecked';$('mic-status').textContent='הדפדפן לא אישר התקנה ולא מסר סיבה. זו אינה דחיית רשות למיקרופון. בדקו חיבור לאינטרנט ובדקו תמיכה שוב לפני ניסיון נוסף.';setupIssue(operation,'Installation was not confirmed. Check connection and support again.');return}
+  operation='SpeechRecognition.available after installation';watchSetup(op,15000,operation);
+  const value=await C.available({langs:['en-US'],processLocally:true});if(!current())return;
+  mic.availability=value;mic.ready=value==='available';$('mic-status').textContent=availabilityMessage(value);
+  if(!mic.ready)setupIssue(operation,'Local English is not ready. Wait for any browser download, then check support again.');
+ }catch(error){if(current()){mic.ready=false;mic.availability='unchecked';$('mic-status').textContent='ההתקנה או בדיקת המוכנות נכשלה. בדקו דפדפן תומך, חיבור ומדיניות הרשאות, ואז בדקו תמיכה שוב. אין מעבר לענן.';setupIssue(operation,safeError(error))}}
+ finally{if(current()){clearSetupTimer();mic.busy=false;syncMic()}}
+}
+function failRecognition(message){abortRecognition(message+' אפשר לנסות שוב בלחיצה, או להמשיך לפי הדיווח שלכם.')}
+function startSpeaking(){
+ if(!canSpeak()||!$('consent').checked||!window.isSecureContext||!mic.ready||mic.busy||mic.rec||mic.failed||mic.draft)return;
+ Object.keys(players).forEach(stopAudio);clearDraft();renderRetryGuide();
+ let rec;
+ try{
+  rec=new mic.Ctor();if(!('processLocally' in rec))throw new Error('local missing');
+  rec.processLocally=true;if(rec.processLocally!==true)throw new Error('local disabled');
+  rec.lang='en-US';rec.continuous=false;rec.interimResults=false;rec.maxAlternatives=1;
+ }catch{mic.ready=false;failRecognition('לא ניתן להבטיח זיהוי מקומי. המיקרופון לא הופעל.');return}
+ const run=++mic.run,epoch=state.epoch,current=()=>run===mic.run&&epoch===state.epoch&&mic.rec===rec;
+ const seconds=adaptive.level==='extended'?20:11;
+ mic.rec=rec;mic.phase='requesting';$('recognition-status').textContent='מבקשים רשות מהדפדפן. עדיין אין אישור שההאזנה התחילה. הניסיון מוגבל ל־'+seconds+' שניות.';syncMic();
+ mic.deadline=setTimeout(()=>{if(current())failRecognition('הזמן הקצר הסתיים והמיקרופון בוטל. אפשר לחשוב בנחת לפני ניסיון נוסף.');},seconds*1000);
+ rec.onstart=()=>{if(!current()){if(!abortInstance(rec))abortRecognition();syncMic();return}if(mic.phase==='stopping')return;mic.phase='listening';$('recognition-status').textContent='מקשיבים עכשיו, מקומית בלבד. אמרו משפט קצר. אפשר לסיים או לבטל בכל רגע.';syncMic()};
+ rec.onresult=event=>{
+  if(!current())return;
+  const result=event.results&&event.results[event.resultIndex||0];
+  if(!result||result.isFinal===false||typeof result[0]?.transcript!=='string')return;
+  const text=result[0].transcript.slice(0,600).replace(/[\u0000-\u001f\u007f\u202a-\u202e\u2066-\u2069]/g,' ').trim();
+  if(!text){failRecognition('לא התקבל משפט לאישור.');return}
+  if(!abortRecognition())return;
+  mic.draft=text;$('heard').textContent=text;$('review').hidden=false;
+  $('recognition-status').textContent='המיקרופון כבוי. אשרו את המילים, נסו שוב או מחקו. אין עדיין משוב או שינוי בהתקדמות.';syncMic();
+ };
+ rec.onerror=event=>{
+  if(!current())return;
+  const messages={'not-allowed':'לא ניתנה רשות למיקרופון. בדקו את הרשאות האתר.','service-not-allowed':'מדיניות הדפדפן חסמה זיהוי מקומי.','audio-capture':'לא ניתן לגשת למיקרופון. בדקו שהוא מחובר ופנוי.','no-speech':'לא נקלט דיבור הפעם.','network':'הזיהוי המקומי נכשל. אין מעבר לענן.','language-not-supported':'חבילת האנגלית אינה מוכנה. בדקו תמיכה שוב.','aborted':'הניסיון בוטל.'};
+  if(event.error==='language-not-supported')mic.ready=false;failRecognition(messages[event.error]||'הזיהוי המקומי לא הצליח הפעם.');
+ };
+ rec.onend=()=>{
+  if(mic.failedInstances.has(rec)){mic.failedInstances.delete(rec);mic.failed=mic.failedInstances.values().next().value||null;if(!mic.failed&&!mic.rec){const message='הדפדפן דיווח שהמיקרופון נסגר. בדקו תמיכה מחדש או המשיכו בלי מיקרופון.';$('recognition-status').textContent=message;$('mic-status').textContent=message}syncMic();return}
+  if(current())failRecognition('הניסיון הסתיים בלי משפט לאישור.');
+ };
+ try{if(rec.processLocally!==true)throw new Error('local disabled');rec.start()}catch{if(current())failRecognition('לא ניתן להתחיל זיהוי מקומי.')}
+}
+function stopSpeaking(){
+ if(!mic.rec||mic.phase==='stopping')return;
+ const rec=mic.rec,run=mic.run,epoch=state.epoch;mic.phase='stopping';$('recognition-status').textContent='מסיימים את הדיבור ומחכים רגע למשפט האחרון…';syncMic();
+ mic.grace=setTimeout(()=>{if(run===mic.run&&epoch===state.epoch&&mic.rec===rec)failRecognition('לא התקבל משפט בזמן. המיקרופון בוטל.');},1500);
+ try{rec.stop()}catch{if(run===mic.run)failRecognition('הדפדפן לא הצליח לסיים כרגיל.')}
+}
+function normalize(text){return text.toLowerCase().replace(/[’‘]/g,"'").replace(/[^\p{L}\p{N}'\s]/gu,' ').replace(/\s+/g,' ').trim()}
+function wordChanges(original,suggestion){
+ // Align words, not punctuation. Offsets preserve the exact original spelling and spacing.
+ const tokenize=text=>Array.from(text.matchAll(/[\p{L}\p{N}]+(?:['’‘][\p{L}\p{N}]+)*/gu),m=>({word:m[0],start:m.index,end:m.index+m[0].length,key:normalize(m[0]),changed:true}));
+ const before=original.slice(0,600),after=suggestion.slice(0,600),a=tokenize(before),b=tokenize(after);
+ const lcs=Array.from({length:a.length+1},()=>new Uint16Array(b.length+1));
+ for(let i=a.length-1;i>=0;i--)for(let j=b.length-1;j>=0;j--)lcs[i][j]=a[i].key===b[j].key?1+lcs[i+1][j+1]:Math.max(lcs[i+1][j],lcs[i][j+1]);
+ let i=0,j=0;
+ while(i<a.length&&j<b.length){if(a[i].key===b[j].key){a[i++].changed=false;b[j++].changed=false}else if(lcs[i+1][j]>=lcs[i][j+1])i++;else j++}
+ return {before:a,after:b,original:before,suggestion:after};
+}
+function renderWordChanges(element,text,tokens,tag){
+ element.replaceChildren();let cursor=0;
+ tokens.forEach(token=>{
+  element.append(document.createTextNode(text.slice(cursor,token.start)));
+  if(token.changed){
+   const start=document.createElement('span'),end=document.createElement('span'),mark=document.createElement(tag);
+   start.className=end.className='sr-only';start.textContent=tag==='del'?' [Removed word: ':' [Added word: ';end.textContent='] ';
+   mark.className='word-change';mark.textContent=token.word;element.append(start,mark,end);
+  }else element.append(document.createTextNode(token.word));
+  cursor=token.end;
+ });element.append(document.createTextNode(text.slice(cursor)));
+}
+function renderCorrection(original,suggestion){
+ const diff=wordChanges(original,suggestion);
+ renderWordChanges($('correction-before'),diff.original,diff.before,'del');
+ renderWordChanges($('correction-after'),diff.suggestion,diff.after,'ins');
+ $('correction-panel').hidden=![...diff.before,...diff.after].some(token=>token.changed);
+}
+function sentence(text,question=false){return (text.charAt(0).toUpperCase()+text.slice(1)).replace(/\bi\b/g,'I').replace(/\benglish\b/g,'English').replace(/\bmonday\b/g,'Monday')+(question?'?':'.')}
+function grammarFeedback(text){
+ const s=normalize(text),advice=(ruleId,grammarRule,example,hint)=>({ruleId,grammarRule,example,hint});let m;
+ const color='(?:red|blue|green|yellow|brown|purple|orange|black|white)';
+ const noun='(?:bag|backpack|book|bottle|basket|bowl|pencil|dog)';
+ const place='(?:on the (?:desk|table|blanket)|under the desk|beside the (?:tree|basket)|on a bench)';
+ if((m=s.match(new RegExp('^(?:a )?('+noun+') ('+color+')$'))))
+  return advice('color-order','In a noun phrase, put the color before the noun. Use an before a vowel sound, otherwise a.',(m[2]==='orange'?'an':'a')+' '+m[2]+' '+m[1],'בצירוף המתאר חפץ, הצבע בא לפני שם החפץ. אם התכוונתם למשפט מלא, אפשר להוסיף מילת קישור.');
+ if((m=s.match(new RegExp('^((?:the|my|your) '+noun+'|it) ('+color+')$'))))
+  return advice('be-agreement','For a full sentence about one object, use subject + is + color.',sentence(m[1]+' is '+m[2]),'למשפט מלא על חפץ אחד, הוסיפו מילת קישור בין החפץ לצבע.');
+ if((m=s.match(new RegExp('^there is ((?:two|three|four|five|2|3|4|5) (?:'+color+' )?(?:pencils|apples|carrots|books|bags)(?: '+place+')?)$'))))
+  return advice('there-is-are','Use there are with two or more things; use there is with one thing.',sentence('there are '+m[1]),'כשסופרים כמה חפצים, השתמשו במבנה של רבים. הכמות והחפצים נשארים כפי שאמרתם.');
+ if((m=s.match(new RegExp('^there are ((?:a|one) (?:'+color+' )?'+noun+'(?: '+place+')?)$'))))
+  return advice('there-is-are','Use there is when you describe one thing.',sentence('there is '+m[1]),'כאן מתואר חפץ אחד, ולכן נתרגל מבנה של יחיד.');
+ const action='(?:reading a (?:book|story)|sitting on a bench|stirring food in a bowl|playing (?:a (?:ball|word) game|football)|eating (?:breakfast|lunch)|walking to school)';
+ const subject='(i|you|we|they|he|she|it|the child|the children|the bag|the bags|the dog)';
+ const be=who=>who==='i'?'am':['you','we','they','the children','the bags'].includes(who)?'are':'is';
+ if((m=s.match(new RegExp('^'+subject+' ('+action+')$'))))
+  return advice('present-progressive','For an action happening now, use subject + am/is/are + verb-ing.',sentence(m[1]+' '+be(m[1])+' '+m[2]),'בתיאור פעולה שקורית עכשיו, הוסיפו את מילת הקישור המתאימה לפני הפעולה.');
+ if((m=s.match(new RegExp('^'+subject+' (am|is|are) ('+color+'|happy|ready|'+action+'|'+place+')$')))&&m[2]!==be(m[1]))
+  return advice('be-agreement','Match be to the subject: I am; he, she or it is; you, we or they are.',sentence(m[1]+' '+be(m[1])+' '+m[3]),'התאימו את מילת הקישור למי או למה שמתואר. התיאור עצמו נשאר כפי שאמרתם.');
+ if((m=s.match(/^(?:(i (?:would like|can see|have|want)|there is|it is) )?(a|an) (apple|egg|orange|banana|book|pencil|blue bag|cheese sandwich)( please)?$/))){
+  const article=/^(apple|egg|orange)$/.test(m[3])?'an':'a';
+  if(m[2]!==article)return advice('articles','Use an before a vowel sound, and a before a consonant sound.',sentence((m[1]?m[1]+' ':'')+article+' '+m[3]+(m[4]?', please':'')),'בחרו את מילת הליווי לפי הצליל הראשון של המילה שאחריה.');
+ }
+ if((m=s.match(/^i likes ((?:art|math|science|english|music|bananas|apples|rice|carrots|word games|reading)(?: because i can draw animals)?)$/)))
+  return advice('present-simple','With I in the present simple, use like, not likes.',sentence('I like '+m[1]),'כשמדברים על מה שאוהבים בגוף ראשון, הפועל אינו מקבל סיומת של גוף שלישי.');
+ const base={helps:'help',brings:'bring',borrows:'borrow',finds:'find',plays:'play',sits:'sit',moves:'move'};
+ const object='(?:me|us|a pencil|your pencil|a book|some apples|a game|here|my bag)';
+ const verbObjects={helps:['me','us'],brings:['a pencil','your pencil','a book','some apples','my bag'],borrows:['a pencil','your pencil','a book'],finds:['a pencil','your pencil','a book','my bag'],plays:['a game'],sits:['here'],moves:['my bag','here']};
+ if((m=s.match(new RegExp('^(?:(can|could|may|should|will) (i|you|we)|(i|you|we) (can|could|may|should|will)) (helps|brings|borrows|finds|plays|sits|moves) ('+object+')( please)?$')))&&verbObjects[m[5]].includes(m[6])){
+  const question=!!m[1],prefix=question?m[1]+' '+m[2]:m[3]+' '+m[4];
+  return advice('modal-base','After a modal such as can, could, may or should, use the base verb without -s.',sentence(prefix+' '+base[m[5]]+' '+m[6]+(m[7]?', please':''),question),'אחרי פועל עזר של יכולת או רשות, השתמשו בצורה הבסיסית של הפועל.');
+ }
+ if((m=s.match(/^(where|what) (i|we) (can|should) (find a book(?: about animals)?|fill my water bottle|bring)$/)))
+  return advice('question-order','In a direct question, use question word + modal + subject + base verb.',sentence(m[1]+' '+m[3]+' '+m[2]+' '+m[4],true),'לשאלה ישירה, מילת העזר באה לפני מי ששואל. זהו ניסוח לשאלה, לא תיקון של משפט עקיף.');
+ if((m=s.match(/^when does (the art club) starts$/)))
+  return advice('question-order','After does in a question, use the base verb: start, not starts.',sentence('when does '+m[1]+' start',true),'אחרי מילת העזר בשאלה, השתמשו בפועל הבסיסי ללא סיומת.');
+ if((m=s.match(/^where is (the (?:animal books|books|pencils|apples|carrots))$/)))
+  return advice('be-agreement','For several things, ask Where are + plural noun phrase?',sentence('where are '+m[1],true),'בשאלה על המיקום של כמה חפצים, השתמשו במבנה של רבים.');
+ if((m=s.match(/^where are (the (?:bag|bottle|basket|dog|library))$/)))
+  return advice('be-agreement','For one thing or place, ask Where is + singular noun phrase?',sentence('where is '+m[1],true),'בשאלה על המיקום של חפץ או מקום אחד, השתמשו במבנה של יחיד.');
+ if((m=s.match(/^(can|could) you borrow me (a pencil|your pencil|a book)( please)?$/)))
+  return advice('borrow-lend','Lend means give something temporarily. Borrow means receive something temporarily.',sentence(m[1]+' you lend me '+m[2]+(m[3]?', please':''),true),'אם מבקשים שמישהו ייתן לכם חפץ לזמן קצר, בחרו בפועל המתאר נתינה זמנית.');
+ if((m=s.match(/^(may|can|could) i lend (a pencil|a book) from you( please)?$/)))
+  return advice('borrow-lend','Use borrow from someone when you receive something temporarily.',sentence(m[1]+' I borrow '+m[2]+' from you'+(m[3]?', please':''),true),'כשמקבלים חפץ לזמן קצר מאדם אחר, בחרו בפועל המתאר קבלה זמנית.');
+ if((m=s.match(/^(the (?:pencils|apples|carrots|leaves)) (?:is )?(red|yellow|orange|green)$/)))
+  return advice('be-agreement','Use are to describe the color of several things.',sentence(m[1]+' are '+m[2]),'בתיאור צבע של כמה דברים, הוסיפו או בחרו את מילת הקישור של רבים. הצבע נשאר כפי שאמרתם.');
+ if((m=s.match(/^the book (?:are )?(open|closed)$/)))
+  return advice('be-agreement','Use is to describe the state of one book.',sentence('the book is '+m[1]),'כאן מתארים ספר אחד. הוסיפו או בחרו את מילת הקישור של יחיד, בלי לשנות את התיאור שבחרתם.');
+ if((m=s.match(/^(what time does (?:the shop|it)|does (?:the shop|it)) (opens|closes)( (?:at (?:nine|ten|five)|on monday))?$/)))
+  return advice('question-order','After does in a question, use the base verb: open or close.',sentence(m[1]+' '+(m[2]==='opens'?'open':'close')+(m[3]||''),true),'אחרי מילת העזר בשאלה, הסירו את הסיומת מהפועל. שמרו על אותה חנות ואותה שעה.');
+ if((m=s.match(/^(it|the shop) (open|close) at (nine|ten|five)( on monday)?$/)))
+  return advice('present-simple','For one shop in the present simple, use opens or closes in a statement.',sentence(m[1]+' '+m[2]+'s at '+m[3]+(m[4]||'')),'בתשובה על חנות אחת, הוסיפו לפועל את הסיומת המתאימה. זהו משפט מידע, לא שאלה.');
+ if((m=s.match(/^(can|shall) we meets (in the park|by the big tree|at the park gate|at (?:three|four))$/)))
+  return advice('modal-base','After can or shall, use the base verb meet, without -s.',sentence(m[1]+' we meet '+m[2],true),'בהצעה או בשאלה עם פועל עזר, פועל המפגש נשאר בצורה הבסיסית. המקום או השעה אינם משתנים.');
+ if((m=s.match(/^i would like to (some soup|some bread|pasta|rice)( please)?$/)))
+  return advice('would-like','Use would like + a food noun phrase. Use would like to only before a base verb.',sentence('I would like '+m[1]+(m[2]?', please':'')),'בבקשת מאכל אומרים את שם המאכל מיד אחרי הבקשה, בלי מילת קישור לפעולה. המאכל שבחרתם נשאר זהה.');
+ return null;
+}
+const taskTips={
+ 'repeat-pencil':'For a polite request to receive something temporarily, use May I borrow + object + please?',
+ 'repeat-help':'For a polite request, use Could you help me with + the thing you need help with?',
+ 'repeat-again':'Use Please + base verb for a polite instruction. Use I am ready to + base verb.',
+ 'repeat-lunch':'Use I would like to request food; join two items with and.',
+ 'repeat-friend':'Invite someone with Would you like to + base verb?',
+ 'repeat-routine':'Use First and Then to put two actions in order.',
+ 'repeat-library':'Ask about a place with Where + can + I + find + object?',
+ 'repeat-thanks':'Use Thank you for + noun phrase to say what the help was.',
+ 'answer-subject':'Name a school subject after I like, then add because + a reason.',
+ 'answer-bag':'Name two things after I put and join them with and. Add in my bag.',
+ 'answer-break':'Use I + an action to describe break time. You can add with + the people.',
+ 'answer-breakfast':'Use I would like + food for a polite breakfast request.',
+ 'answer-fruit':'Name a fruit, then describe its color. Use It is for one and They are for more than one.',
+ 'answer-snack':'Use I can bring + food + to the picnic to make a suggestion.',
+ 'answer-morning':'Give two morning actions in order: First, I ... . Then I ... .',
+ 'answer-afternoon':'Use I like to + base verb + after school to describe an activity you enjoy.',
+ 'picture-classroom-objects':'Use There is for one object and There are for two or more. Add on the desk.',
+ 'picture-classroom-place':'Describe the location with The bag is + place. Use It is + color for the second sentence.',
+ 'picture-picnic-count':'Name the fruit, then count it. Use There are + number + plural noun.',
+ 'picture-picnic-place':'Describe the bottle with is + place, and the basket with is + color.',
+ 'picture-park-action':'For an action happening now, use The child is + verb-ing. Add a place for sitting.',
+ 'picture-park-place':'Put the color before dog. Use beside for location and has for the leaves.',
+ 'picture-kitchen-action':'Use The child is + verb-ing for the action, and The bowl is + color.',
+ 'picture-kitchen-count':'Use a plural noun for several vegetables. Use I can see + number + plural noun.',
+ 'repeat-ticket':'Ask politely with Could I have + a ticket + to + destination + please?',
+ 'repeat-hours':'Ask What time does + the shop + open? Use on before a day.',
+ 'repeat-meeting':'Suggest a shared plan with Let’s meet. Use at for a meeting point and a clock time.',
+ 'repeat-meal':'Use some with soup and a with one bread roll. Join the foods with and.',
+ 'answer-ticket':'Request a ticket with I would like + number + ticket + to + destination.',
+ 'answer-hours':'For one shop, say It opens at + a clock time. Use opens in the statement.',
+ 'answer-meeting':'Suggest a shared plan with Let’s meet + place + at + time.',
+ 'answer-meal':'Choose one offered food and request it with I would like + food + please.',
+ 'picture-classroom-colors':'Use The pencils are + color for several pencils. Use The book is + color for one book.',
+ 'picture-picnic-colors':'Use are with several apples and is with one bottle when describing colors.',
+ 'picture-park-reading':'Use The book is + open or closed. Use The leaves are + color for several leaves.',
+ 'picture-kitchen-place':'Use The bowl is + place for its location. Use The carrots are + color for several carrots.'
+};
+const dialogueTips={
+ 'dialogue-pencil':['Use May I borrow + object + please? to receive something temporarily.','Agree with Of course and offer the object with Here you are.','Say thank you, then use I will + base verb to promise to return it.','Reply politely to thanks with a short phrase such as You are welcome.'],
+ 'dialogue-food':['Request food with I would like + food + please.','Offer something with Would you like + food or drink + too?','Accept politely and thank your partner. A short response is enough.','Offer the food, then wish your partner a good meal.'],
+ 'dialogue-library':['Ask where several books are: Where are + the books?','Use They are + place for several books.','Ask permission with May I + base verb?','Agree, then use Please + base verb to ask for the card.'],
+ 'dialogue-game':['Invite someone with Would you like to + base verb?','Agree, then ask What can we + base verb?','Suggest an activity with Let us or Let’s + base verb.','Respond to the suggestion and name a kind of game you like.'],
+ 'dialogue-repeat':['Use Please + base verb for a polite instruction.','Ask for repetition with Could you say that again, please?','Repeat the instruction clearly using Open + object + to + page.','Repeat the important detail and say thank you. A short response is enough.'],
+ 'dialogue-water':['Ask Where can I + base verb? to find a place for an action.','Use There is + a place to describe one tap.','Check a location with Is it + place?','Confirm a question beginning Is it with Yes, it is.'],
+ 'dialogue-club':['Ask about a start time with When does + subject + start?','Use at for the time and on for the day.','Ask What should I + base verb? to find out what to bring.','Use Please bring + the things needed. Join items with and.'],
+ 'dialogue-seat':['Ask permission with May I + base verb + here?','Agree and describe the seat with This seat is + adjective.','Say thank you and offer an action using I can + base verb.','Acknowledge the kind action, then describe the extra space.'],
+ 'dialogue-ticket':['A short polite request can use One ticket to + destination + please.','Offer the ticket with Here you are. Use leaves at + time for the bus schedule.','Thank the seller, then ask Where is + the bus stop? for one place.','Use It is beside + landmark to describe the location of one bus stop.'],
+ 'dialogue-hours':['Ask What time does + the shop + open? Use the base verb after does.','Use It opens at + time + on + day. Opens describes one shop.','Check a closing time with Does it close at + time? Use close after does.','Answer Does it ...? with Yes, it does. Use Thank you for + verb-ing.'],
+ 'dialogue-meeting':['Suggest a shared plan with Shall we + base verb + place?','Agree, then suggest a meeting point with Let’s meet by + landmark.','Ask about a possible time with Can we meet at + time?','Accept the time with the time + is fine. End with See you there.'],
+ 'dialogue-meal':['Request a serving with Could I have + a bowl of + food + please?','Offer a choice with Would you like + food + or + food?','A short answer using Some + food + please can select one offered food.','Present the meal with Here is your + meal. Use Enjoy your meal as a polite closing.']
+};
+function speakingFeedback(text){
+ if(adaptive.active)return transferFeedback(text);
+ const task=state.task,grammar=grammarFeedback(text),example=levelTarget().example;
+ const match=task.mode==='repeat'&&[example,transcript(modelId())].some(model=>normalize(text)===normalize(model));
+ return {
+  kind:grammar?'targeted-rule':match?'repeat-match':task.mode==='repeat'?'repeat-compare':'open-practice',
+  ruleId:grammar?.ruleId||null,
+  grammarRule:grammar?.grammarRule||(task.mode==='dialogue'?dialogueTips[task.id][currentTurn()]:taskTips[task.id]),
+  example:grammar?.example||example,
+  hint:(grammar?.hint||'')+(grammar?' ':'')+(adaptive.level==='phrases'?'בשלב הזה מספיק הפרט או הקטע שבמטרה הקצרה.':task.mode==='dialogue'?task.cues[currentTurn()]+' '+task.hint:task.hint),
+  label:grammar?'הצעה לתרגול המבנה — בדקו שהיא מבטאת את הכוונה שלכם':task.mode==='repeat'?'המודל לחזרה — משווים מילים, לא הגייה':'דוגמה אפשרית בלבד — אינה התשובה היחידה',
+  message:grammar?'נתרגל מבנה אחד מהמילים שאישרתם. אין כאן בדיקה של כל המשפט.':match?'המילים שאישרתם תואמות למודל לאחר התעלמות מאותיות גדולות וסימני פיסוק. יפה! זו אינה בדיקת הגייה.':task.mode==='repeat'?'המילים שאישרתם שונות מהמודל. השוו לדוגמה ובחרו קטע לחזרה; זיהוי דיבור עלול לטעות. אין בדיקת הגייה.':'המילים שלכם נשארות כפי שאישרתם. הנה הכוונה למשימה ודוגמה אפשרית, לא קביעה שהתשובה שגויה או שכל האנגלית נבדקה.'
+ };
+}
+function confirmTranscript(){
+ if(!mic.draft||mic.rec||mic.failed||!canSpeak())return;
+ const text=mic.draft,feedback=speakingFeedback(text),key=speechKey();
+ const applied=coaching.canPraise&&coaching.key===key&&coaching.target===normalize(text)&&feedback.kind!=='targeted-rule',previousRule=coaching.rule,previousRuleId=coaching.ruleId;
+ clearDraft();resetCoaching();
+ if(feedback.kind==='targeted-rule')visitRule(feedback.ruleId).errors++;
+ if(applied&&previousRuleId)visitRule(previousRuleId).corrections++;
+ if(feedback.kind==='transfer-match')recordTransfer();
+ $('practice-original').textContent=text;$('practice-outcome').textContent=applied?'כל הכבוד! השתמשתם בניסוח שהוצע בניסיון הקודם. זהו שיפור בתרגול המבנה, לא בדיקה מלאה של התשובה.':feedback.message;
+ $('speech-hint-text').textContent=feedback.hint;$('grammar-rule').textContent=applied?previousRule:feedback.grammarRule;
+ $('example-label').textContent=feedback.label;$('speech-hint-example').textContent=feedback.example;$('practice-result').hidden=false;
+ if(feedback.kind==='targeted-rule')renderCorrection(text,feedback.example);
+ coaching.key=key;coaching.target=normalize(feedback.example);coaching.rule=applied?previousRule:feedback.grammarRule;coaching.ruleId=feedback.kind==='targeted-rule'?feedback.ruleId:applied?previousRuleId:null;
+ coaching.example=feedback.example;coaching.hint=feedback.hint;coaching.label=feedback.label;
+ coaching.canPraise=['targeted-rule','repeat-compare'].includes(feedback.kind)&&normalize(text)!==coaching.target;
+ adaptive.offerRule=feedback.kind==='targeted-rule'?feedback.ruleId:applied?previousRuleId:adaptive.active?.exercise.ruleId||null;
+ $('new-rule-example').hidden=!adaptive.offerRule;
+ if(adaptive.active){adaptive.active.assisted=true;renderTransferHelp()}
+ $('recognition-status').textContent='המשוב מתייחס רק למילים שאישרתם. המיקרופון כבוי. הסימונים והמעבר בתורות נשארים בידיכם.';syncMic();
+}
+function practiceAgain(){
+ const remembered={...coaching};
+ if(!speechBoundary())return;
+ Object.assign(coaching,remembered);renderRetryGuide();
+ $('recognition-status').textContent='אפשר לחשוב ולנסות בקול. המיקרופון לא התחיל; לחצו על כפתור הדיבור רק כשתרצו.';
+ focusMicrophone();
+}
+function transcript(id){return recordingMap.get(id).lines.map(l=>l.text).join('\n')}
+function saved(){if(!state.saved.has(state.task.id))state.saved.set(state.task.id,{frames:false,hint:false,model:false,checks:[false,false,false],complete:false,role:'a',turns:{a:0,b:0},description:false});return state.saved.get(state.task.id)}
+function stopAudio(key){const p=players[key];p.token++;p.element.onended=null;p.element.onerror=null;p.element.pause();p.element.removeAttribute('src');p.element.load();p.id=null;p.error.hidden=true;p.status.textContent='השמע נעצר. בחרו הקלטה כדי להאזין.'}
+function stopAll(){const stopped=adaptiveBoundary();closeTransfer();syncMic();return stopped}
+function audioError(p,token){if(p.token!==token)return;p.error.hidden=false;p.status.textContent='השמע לא התחיל או לא הושלם. אפשר להמשיך בקריאה.'}
+async function playAudio(key,id,restart=false){
+ if(adaptive.active&&key==='practice')return;
+ if(!speechBoundary())return;
+ const p=players[key];if(!recordingMap.has(id)){stopAudio(key);audioError(p,p.token);return}
+ Object.keys(players).filter(k=>k!==key).forEach(k=>{if(players[k].id)stopAudio(k)});
+ p.token++;const token=p.token;const changed=p.id!==id;
+ p.element.onended=null;p.element.onerror=null;
+ if(changed){p.element.pause();p.id=id;p.element.src='audio/'+id+'.wav'}
+ if(restart||p.element.ended)p.element.currentTime=0;
+ p.element.playbackRate=Number(p.speed.value);p.error.hidden=true;p.status.textContent='מכינים את ההקלטה…';
+ p.element.onerror=()=>audioError(p,token);
+ p.element.onended=()=>{if(p.token===token)p.status.textContent='ההקלטה הסתיימה. עכשיו אפשר לנסות בקול, בלי מיקרופון או בלחיצה נפרדת על כפתור הדיבור.'};
+ try{await p.element.play();if(p.token===token)p.status.textContent='הדוגמה מתנגנת. אין האזנה לדיבור שלכם.'}catch{audioError(p,token)}
+}
+function pauseAudio(key){speechBoundary();const p=players[key];p.token++;p.element.onended=null;p.element.onerror=null;p.element.pause();p.status.textContent='ההקלטה מושהית.'}
+function currentTurn(){return Math.min(saved().turns[saved().role],state.task.turns.length-1)}
+function turnRecord(){return state.task.turns[currentTurn()]}
+function isMyTurn(){return recordingMap.get(turnRecord()).lines[0].speaker===saved().role}
+function modelId(){return state.task.mode==='dialogue'?turnRecord():state.task.model}
+function defaultAudio(){return state.task.mode==='dialogue'?turnRecord():(state.task.prompt||state.task.model)}
+function newTask(){
+ let pool=curriculum.tasks.filter(t=>state.mode==='mixed'||t.mode===state.mode),available=pool.filter(t=>!state.seen.has(t.id));
+ if(!available.length){pool.forEach(t=>state.seen.delete(t.id));available=pool}
+ const alternatives=available.filter(t=>t.id!==state.task?.id);if(alternatives.length)available=alternatives;
+ const task=available[Math.floor(Math.random()*available.length)];state.seen.add(task.id);state.history.push(task.id);state.index=state.history.length-1;state.task=task;renderTask(true);
+}
+function navigate(delta){stopAll();const next=state.index+delta;if(next<0)return;if(next<state.history.length){state.index=next;state.task=taskMap.get(state.history[next]);renderTask(true)}else newTask()}
+function setMode(mode){stopAll();state.mode=mode;$('mode').value=mode;state.history=[];state.index=-1;newTask()}
+function renderSupport(){
+ const s=saved();for(const key of ['frames','hint','model']){$(key+'-panel').hidden=!s[key];$(key+'-toggle').setAttribute('aria-expanded',String(s[key]))}
+ $('frames-text').textContent=state.task.mode==='dialogue'?state.task.frames.split('\n')[currentTurn()]:state.task.frames;
+ $('hint-text').textContent=state.task.hint;$('model-text').textContent=transcript(modelId());
+ $('model-note').textContent=state.task.mode==='repeat'?'זהו המודל המקורי המלא, גם כאשר מתרגלים קטע או הרחבה. ההקלטה תמיד של המודל המלא.':'זו הדוגמה המקורית המלאה, לא בהכרח האורך שבחרתם ולא התשובה היחידה. אפשר לומר משהו אחר שמתאים למשימה.';
+ const partner=state.task.mode==='dialogue'&&!isMyTurn();$('model-toggle').disabled=partner;$('model-panel').hidden=partner||!s.model;$('model-toggle').setAttribute('aria-expanded',String(!partner&&s.model));
+}
+function renderDialogue(){
+ speechBoundary();
+ const t=state.task,s=saved(),i=currentTurn(),finished=s.turns[s.role]>=t.turns.length,mine=isMyTurn();
+ $('role').value=s.role;[...$('role').options].forEach((o,j)=>o.textContent=t.roles[j]);
+ $('role-description').textContent='התפקיד שלי: '+t.roles[s.role==='a'?0:1]+'. התפקיד של השותף: '+t.roles[s.role==='a'?1:0]+'.';
+ $('turn-label').textContent=finished?'השיחה הסתיימה לפי ההתקדמות שלכם':mine?'התור שלכם — אומרים בקול':'התור של השותף — מקשיבים או קוראים';
+ $('turn-cue').textContent=finished?'אפשר לנסות שוב או לבחור בתפקיד האחר. סימון סיום הפעילות נשאר לבחירתכם.':t.cues[i];
+ $('turn-text').textContent=mine||finished?'':transcript(turnRecord());$('partner-play').hidden=mine||finished;
+ $('turn-next').disabled=finished;$('turn-next').textContent=mine?'אמרתי את התשובה שלי — ממשיכים':'הקשבתי או קראתי — התור הבא';
+ $('dialogue-status').textContent=finished?'הסיום מבוסס על הדיווח שלכם בלבד, לא על משוב התמליל.':'תור '+(i+1)+' בשיחה. המעבר ידני בלבד.';
+ $('prompt-play').hidden=true;renderSupport();renderLevel();syncMic();
+}
+function updateCompletion(){const s=saved();$('complete').textContent=s.complete?'ביטול סימון הסיום שלי':'סיימתי לתרגל — לפי הדיווח שלי';$('completion-status').textContent=s.complete?'סומן שתרגלתם, לפי הדיווח שלכם בלבד, לא על סמך התמליל. אין בדיקת הגייה.':'';$('session-count').textContent='פעילויות שסימנתי כמתורגלות בביקור הזה: '+[...state.saved.values()].filter(x=>x.complete).length}
+function renderTask(focus=false){
+ stopAll();const t=state.task,s=saved();$('task-title').textContent=t.title;$('kind-label').textContent=labels[t.mode];$('instruction').textContent=instructions[t.mode];
+ $('task-prompt').textContent=t.mode==='dialogue'?'':transcript(t.prompt||t.model);$('task-prompt').hidden=t.mode==='dialogue';
+ $('picture').hidden=t.mode!=='picture';$('scene').replaceChildren();if(t.scene){$('scene').append($('scene-'+t.scene).content.cloneNode(true));$('scene-description-text').textContent=$('scene').querySelector('desc').textContent;$('scene-description').open=s.description}
+ $('dialogue').hidden=t.mode!=='dialogue';$('prompt-play').hidden=t.mode==='dialogue';$('prompt-play').textContent=t.mode==='repeat'?'האזנה למודל המקורי המלא':'האזנה לשאלה המקורית';
+ if(t.mode==='dialogue')renderDialogue();else{renderSupport();renderLevel()}
+ $('checklist').replaceChildren();reviews[t.mode].forEach((text,i)=>{const label=document.createElement('label'),input=document.createElement('input');input.type='checkbox';input.checked=s.checks[i];input.dataset.check=i;input.onchange=()=>{s.checks[i]=input.checked};label.append(input,document.createTextNode(text));$('checklist').append(label)});
+ $('previous').disabled=state.index===0;$('support-status').textContent='';updateCompletion();syncMic();if(focus)$('task-title').focus();
+}
+function openLesson(id,trigger=$('open-lesson')){
+ stopAll();state.lesson=curriculum.lessons.find(l=>l.id===id);state.returnFocus=trigger;const l=state.lesson;
+ for(const key of ['title','goal','rule','mistake','before','after','question'])$('lesson-'+key).textContent=l[key];
+ $('lesson-example').textContent=transcript(l.recording);$('lesson-answer').textContent=l.options[l.answer];$('lesson-steps').replaceChildren();l.steps.forEach(text=>{const li=document.createElement('li');li.textContent=text;$('lesson-steps').append(li)});
+ $('lesson-support').hidden=true;$('lesson-help').setAttribute('aria-expanded','false');$('lesson-help').textContent='איך חושבים על זה?';$('guided-feedback').textContent='';$('lesson-choices').replaceChildren();
+ l.options.forEach((text,i)=>{const b=document.createElement('button');b.type='button';b.textContent=text;b.onclick=()=>{if(i===l.answer){$('guided-feedback').textContent='הבחירה הכתובה מתאימה לכלל. זו אינה בדיקה של דיבור או הגייה.'}else{$('guided-feedback').textContent='ננסה שוב. ההסבר נפתח כדי לעזור לבחור.';b.disabled=true;lessonHelp(true)}};$('lesson-choices').append(b)});
+ document.body.classList.add('lesson-open');$('lesson').showModal();syncMic();
+}
+function lessonHelp(open){$('lesson-support').hidden=!open;$('lesson-help').setAttribute('aria-expanded',String(open));$('lesson-help').textContent=open?'הסתר הסבר':'איך חושבים על זה?'}
+function closeLesson(){stopAll();$('lesson').close();document.body.classList.remove('lesson-open');syncMic();state.returnFocus?.focus()}
+$('lesson').addEventListener('cancel',event=>{event.preventDefault();closeLesson()});
+for(const l of curriculum.lessons){const o=document.createElement('option');o.value=l.id;o.textContent=l.title;$('lesson-select').append(o)}
+for(const [id,rule] of Object.entries(ruleCatalog)){const o=document.createElement('option');o.value=id;o.textContent=rule.label;$('rule-select').append(o)}
+$('practice-level').onchange=()=>setLevel($('practice-level').value);
+$('level-example-toggle').onclick=()=>{if(adaptive.active||!adaptiveBoundary())return;const open=$('level-example-panel').hidden;$('level-example-panel').hidden=!open;$('level-example-toggle').setAttribute('aria-expanded',String(open))};
+$('start-transfer').onclick=()=>startTransfer($('rule-select').value);
+$('rule-select').onchange=()=>{stopAll()};
+$('new-rule-example').onclick=()=>{const rule=adaptive.offerRule;if(rule)startTransfer(rule)};
+$('transfer-next').onclick=()=>{const rule=adaptive.active?.exercise.ruleId;if(rule)startTransfer(rule)};
+$('transfer-return').onclick=()=>{stopAll();$('task-title').focus()};
+$('transfer-starter-toggle').onclick=()=>toggleTransferHelp('starterOpen');
+$('transfer-model-toggle').onclick=()=>toggleTransferHelp('modelOpen');
+$('transfer-manual').onclick=manualTransfer;
+$('view-visit-summary').onclick=showVisitSummary;$('reset-visit-summary').onclick=resetVisitSummary;
+$('open-lesson').onclick=()=>openLesson($('lesson-select').value);$('close-lesson').onclick=closeLesson;$('lesson-help').onclick=()=>lessonHelp($('lesson-support').hidden);
+$('mode').onchange=()=>setMode($('mode').value);$('previous').onclick=()=>navigate(-1);$('next').onclick=()=>navigate(1);
+for(const key of ['frames','hint','model'])$(key+'-toggle').onclick=()=>{stopAll();saved()[key]=!saved()[key];renderSupport();$('support-status').textContent='אפשר להשתמש בתמיכה בכל שלב. אין קנס או ציון.'};
+$('independent').onclick=()=>{stopAll();const s=saved();s.frames=s.hint=s.model=false;renderSupport();$('support-status').textContent='התמיכה נסגרה. נסו לומר משפט בעצמכם; אפשר לפתוח עזרה בכל רגע.'};
+$('complete').onclick=()=>{stopAll();saved().complete=!saved().complete;updateCompletion()};
+$('scene-description').ontoggle=()=>{if(state.task?.scene){if(saved().description!==$('scene-description').open)stopAll();saved().description=$('scene-description').open}};
+$('role').onchange=()=>{stopAll();saved().role=$('role').value;renderDialogue()};
+$('turn-next').onclick=()=>{stopAll();const s=saved();if(s.turns[s.role]<state.task.turns.length)s.turns[s.role]++;renderDialogue()};
+$('restart-dialogue').onclick=()=>{stopAll();saved().turns[saved().role]=0;renderDialogue()};
+$('partner-play').onclick=()=>playAudio('practice',turnRecord(),true);$('model-play').onclick=()=>playAudio('practice',modelId(),true);$('prompt-play').onclick=()=>playAudio('practice',defaultAudio(),true);
+$('play').onclick=()=>playAudio('practice',players.practice.id||defaultAudio());$('replay').onclick=()=>playAudio('practice',players.practice.id||defaultAudio(),true);$('pause').onclick=()=>pauseAudio('practice');
+$('lesson-play').onclick=()=>playAudio('lesson',state.lesson.recording);$('lesson-replay').onclick=()=>playAudio('lesson',state.lesson.recording,true);$('lesson-pause').onclick=()=>pauseAudio('lesson');
+for(const key of Object.keys(players))players[key].speed.onchange=()=>{speechBoundary();players[key].element.playbackRate=Number(players[key].speed.value)};
+$('lesson-select').onchange=stopAll;
+$('mic-setup').onclick=()=>{stopAll();$('mic-settings').open=true;$('mic-settings').querySelector('summary').focus()};
+$('consent').onchange=async()=>{
+ if($('consent').checked)adaptiveBoundary();else stopAll();
+ if($('consent').checked){
+  $('consent-panel').open=false;$('consent-summary').focus();
+  await checkSupport();
+ }else{
+  $('consent-panel').open=true;mic.ready=false;mic.Ctor=null;mic.availability='unchecked';
+  if(!mic.failed)$('mic-status').textContent='ההסכמה בוטלה. אין האזנה. הורדה שכבר התחילה בדפדפן עשויה להימשך.';
+ }
+ syncMic();
+};
+$('check-support').onclick=checkSupport;$('download-pack').onclick=downloadPack;
+$('stop-setup').onclick=()=>{stopSetupWaiting('ההמתנה הופסקה בלבד; הורדה בדפדפן עשויה להימשך. אפשר לבדוק תמיכה שוב.');speechBoundary()};
+$('quick-check').onclick=checkSupport;$('quick-download').onclick=downloadPack;
+$('quick-stop-setup').onclick=$('stop-setup').onclick;
+$('speak').onclick=startSpeaking;$('stop').onclick=stopSpeaking;$('cancel').onclick=adaptiveBoundary;
+$('confirm').onclick=confirmTranscript;$('retry').onclick=()=>{adaptiveBoundary();focusMicrophone()};
+$('discard').onclick=adaptiveBoundary;$('delete-transcript').onclick=adaptiveBoundary;$('practice-again').onclick=practiceAgain;
+$('clear-retry-guide').onclick=adaptiveBoundary;
+document.addEventListener('visibilitychange',()=>{if(document.hidden)stopAll();else syncMic()});
+window.addEventListener('pagehide',stopAll);window.addEventListener('beforeunload',stopAll);
+document.querySelectorAll('a').forEach(link=>link.addEventListener('click',stopAll));
+newTask();
+</script>
+</body></html>

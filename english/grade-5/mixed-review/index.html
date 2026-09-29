@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>חזרה משולבת · אנגלית לכיתה ה׳</title>
+<script src="../../../assets/theme-selector.js" defer></script>
+<link rel="stylesheet" href="../../../assets/refresh.css">
+<style>
+*{box-sizing:border-box}
+:root{--surface:var(--refresh-surface,#fff);--soft:var(--refresh-soft,#edf3fb);--text:var(--refresh-text,#243b53);--muted:var(--refresh-muted,#52677e);--accent:var(--refresh-accent,#285f9f);--border:var(--refresh-border,#d5dfec)}
+body{margin:0;padding-top:62px;background:#eef7fd;color:var(--text);font:18px/1.6 "Segoe UI","Arial Hebrew",Arial,sans-serif}
+main{max-width:920px;margin:auto;padding:16px 16px 40px}
+[hidden]{display:none!important}
+h1{font-size:clamp(28px,6vw,40px);line-height:1.3}h2{font-size:25px}h3{font-size:21px}
+header{text-align:center}p{margin:10px 0}
+a{color:var(--accent)}button,select,a.back,summary{font:inherit;min-height:44px;min-width:44px}
+button,select{border:2px solid var(--border);border-radius:14px;padding:10px 14px;background:var(--soft);color:var(--text);max-width:100%}
+button,summary{cursor:pointer}button:disabled{cursor:default}
+a.back{display:inline-flex;align-items:center;padding:8px 12px;background:var(--surface);border-radius:14px}
+button:focus-visible,select:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:clamp(14px,3vw,24px);margin:18px 0}
+.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0}
+.actions>*{max-width:100%}.primary{font-weight:800}
+.en{direction:ltr;text-align:left;overflow-wrap:anywhere;font-family:"Segoe UI",Arial,sans-serif}
+.question{background:var(--soft);border:1px solid var(--border);border-radius:16px;padding:16px}
+#prompt,#lesson-prompt{font-size:clamp(21px,4vw,27px);line-height:1.7}
+.choices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;direction:ltr}
+.choices button{min-height:56px;font-size:20px;overflow-wrap:anywhere}
+#edu-refresh button.wrong{background:#ffe0dc!important;color:#8c2c28!important;border-color:#ac463b!important;text-decoration:line-through}
+#edu-refresh button.correct{background:#d9f6e3!important;color:#145c35!important;border-color:#237849!important}
+.feedback{font-weight:700;min-height:30px}.muted{color:var(--muted);font-size:16px}
+.help{padding:14px;border:2px solid var(--border);border-radius:16px;background:var(--soft);margin:12px 0}
+.help li{padding:8px 0}.help .en,.example{padding:12px;border-radius:12px;background:var(--surface)}
+ol{padding-inline-start:25px}.next-bottom{margin-top:14px}
+progress{width:100%;height:15px;accent-color:var(--accent)}
+summary{padding:8px 0;font-weight:700}
+dl{display:grid;grid-template-columns:1fr auto;gap:8px 16px}dt,dd{margin:0}
+.recommendation{border-top:1px solid var(--border);padding:12px 0}.recommendation button{margin:6px 0}
+dialog{width:min(740px,calc(100% - 24px));max-height:calc(100dvh - 24px);overflow:auto;border:2px solid var(--border);border-radius:22px;padding:20px;background:var(--surface);color:var(--text)}
+dialog::backdrop{background:#102238b8}body.lesson-open{overflow:hidden}
+.lesson-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px}.lesson-head h2{margin:0}.lesson-head button{flex-shrink:0}
+#edu-theme-select{min-height:44px!important}#edu-theme-control{max-width:calc(100% - 12px)}
+@media(max-width:540px){main{padding-inline:12px}.choices{grid-template-columns:1fr}.question{padding:12px}.actions button{flex:1 1 150px}.panel{padding:14px}dialog{padding:14px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body id="edu-refresh">
+<main>
+<a class="back" href="../index.html">חזרה לאנגלית לכיתה ה׳</a>
+<header><h1>חזרה משולבת</h1><p lang="en" dir="ltr">Words &amp; Grammar · Grade 5</p><p>בוחרים תשובה, מבינים את הכלל ומנסים דוגמה חדשה.</p></header>
+<noscript><p class="panel">כדי לתרגל צריך לאפשר הפעלת סקריפטים בדפדפן.</p></noscript>
+<section id="home" class="panel" aria-labelledby="home-title">
+<h2 id="home-title" tabindex="-1">איך נתרגל?</h2>
+<p>סבב קצר שמשלב מילים ודקדוק, או חזרה בנושא שבוחרים.</p>
+<button id="start-mixed" class="primary" type="button">מתחילים חזרה משולבת</button>
+<details id="target-path"><summary>רוצה להתמקד בנושא</summary>
+<label for="skill-select">נושא לחזרה</label><div class="actions"><select id="skill-select"></select><button id="start-target" type="button">תרגול בנושא שבחרתי</button><button id="home-lesson" type="button">שיעור קצר בנושא</button></div>
+</details>
+<p id="home-message" role="status" class="feedback"></p>
+</section>
+<section id="practice" class="panel" hidden aria-labelledby="round-title">
+<div class="actions"><button id="go-home" type="button">בחירת מסלול</button><button id="restart" type="button">סבב חדש באותו מסלול</button></div>
+<h2 id="round-title"></h2><p id="round-label"></p><progress id="progress" value="0" max="6" aria-label="שאלות שהושלמו בסבב"></progress>
+<div class="question"><p id="skill-label" class="muted"></p><p>בחרו את ההשלמה המתאימה להקשר.</p>
+<p id="prompt" class="en" lang="en" dir="ltr" tabindex="-1"></p>
+<div id="choices" class="choices" role="group" aria-label="אפשרויות להשלמת המשפט"></div></div>
+<p id="feedback" role="status" aria-live="polite" class="feedback"></p>
+<div class="actions"><button id="help-toggle" type="button" aria-expanded="false" aria-controls="help-panel">🔍 איך פותרים?</button><button id="open-lesson" type="button">📚 שיעור קצר</button><button id="next-top" type="button" class="next" hidden>לשאלה הבאה</button></div>
+<section id="help-panel" class="help" hidden aria-labelledby="help-title"><h3 id="help-title">נפתור יחד בארבעה צעדים</h3><ol id="help-steps"></ol><h4>הכלל באנגלית</h4><p id="help-rule" class="en" lang="en" dir="ltr"></p><h4>התשובה בהקשר</h4><p id="help-answer" class="en" lang="en" dir="ltr"></p></section>
+<button id="next-bottom" class="next next-bottom" type="button" hidden>לשאלה הבאה</button>
+<div id="fresh-panel" hidden><p>אפשר לנסות משפט אחר שמתאמן על אותו כלל. העזרה נשארת זמינה.</p><button id="fresh-target" type="button">תרגול חדש באותו כלל</button></div>
+</section>
+<section id="round-end" class="panel" hidden aria-labelledby="end-title"><h2 id="end-title" tabindex="-1">הסבב הושלם</h2><p id="end-text"></p><div class="actions"><button id="another-mixed" type="button">עוד סבב משולב</button><button id="end-home" type="button">בחירת מסלול</button></div></section>
+<section class="panel" aria-labelledby="recommend-title"><h2 id="recommend-title">מה כדאי לנסות עכשיו?</h2><div id="recommendations"></div></section>
+<details id="visit-summary" class="panel"><summary>סיכום הביקור שלי</summary>
+<p>רק בחירות בתרגילים מובנים בעמוד הזה נספרות. זה אינו ציון שליטה, אבחון, בדיקת הגייה או הערכה של דיבור וכתיבה חופשיים.</p>
+<div id="totals"></div><p class="muted">הספירה היא לפי שאלות שונות. עזרה, טעות וניסיון נוסף יכולים להופיע באותה שאלה. הצלחה עצמאית נספרת רק בבחירה הראשונה, לפני כל עזרה או שיעור באותה שאלה.</p>
+<p>הנתונים נשארים בזיכרון העמוד בלבד ונעלמים ברענון. לא נשמר או נשלח טקסט של ילדים. בחירת עיצוב האתר נשמרת בנפרד.</p>
+<button id="reset-visit" type="button">איפוס נתוני החזרה בביקור הזה</button><p id="reset-status" role="status"></p>
+</details>
+<footer class="muted">תרגילים מקוריים לתרגול בכיתה ה׳ · לא תוכנית לימודים מלאה.</footer>
+</main>
+<dialog id="lesson" aria-labelledby="lesson-title">
+<div class="lesson-head"><h2 id="lesson-title"></h2><button id="close-lesson" type="button">סגירת השיעור</button></div>
+<p id="lesson-goal"></p><p id="lesson-rule-he"></p><p id="lesson-rule-en" class="en" lang="en" dir="ltr"></p>
+<h3>דוגמה קבועה</h3><p id="lesson-example" class="en example" lang="en" dir="ltr"></p>
+<h3>טעות נפוצה ותיקון</h3><p class="en" lang="en" dir="ltr"><del id="lesson-mistake"></del></p><p id="lesson-correction" class="en" lang="en" dir="ltr"></p><p id="lesson-mistake-he"></p>
+<h3>ננסה יחד</h3><p id="lesson-prompt" class="en" lang="en" dir="ltr"></p><div id="lesson-choices" class="choices" role="group" aria-label="בחירה מודרכת בשיעור"></div>
+<p id="lesson-feedback" class="feedback" role="status"></p><button id="lesson-help-toggle" type="button" aria-expanded="false" aria-controls="lesson-help">🔍 איך פותרים?</button>
+<section id="lesson-help" class="help" hidden><ol id="lesson-steps"></ol><h4>הכלל באנגלית</h4><p id="lesson-help-rule" class="en" lang="en" dir="ltr"></p><h4>התשובה בהקשר</h4><p id="lesson-answer" class="en" lang="en" dir="ltr"></p></section>
+<p class="muted">הבחירה בשיעור היא תרגול מודרך בלבד ואינה מוסיפה תשובה נכונה לסיכום הביקור.</p>
+</dialog>
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const skills=[
+{id:"vocab-context",title:"מילים לפי ההקשר",ruleHe:"מחפשים רמז במשפט ובוחרים מילה שמתאימה למשמעות, לא רק לצליל.",ruleEn:"Use the clues in the sentence to choose a word that fits its meaning.",
+example:"It is raining. I take my umbrella.",mistake:"It is raining. I take my pillow.",mistakeHe:"כרית אינה מגינה מהגשם. הרמז של הגשם מכוון לחפץ מתאים.",
+guided:["We write with a ___.","pencil","plate","sock","object","מחפשים במה כותבים.","עיפרון הוא כלי כתיבה.","צלחת וגרב אינן כלי כתיבה."],
+rows:[
+["We borrow books from the ___.","library","bakery","pool","place","מחפשים מקום שבו שואלים ספרים.","ספרייה משאילה ספרים לקריאה.","מאפייה ובריכה אינן מקומות להשאלת ספרים."],
+["We buy fresh bread at the ___.","bakery","library","pool","place","מחפשים מקום שבו קונים לחם טרי.","במאפייה מכינים ומוכרים לחם.","ספרייה ובריכה אינן מוכרות לחם כחלק מתפקידן."],
+["Please ___ the door so the cold wind cannot come in.","close","paint","count","action","הרוח הקרה נכנסת דרך הדלת.","סגירת הדלת עוצרת את כניסת הרוח.","צביעה או ספירה אינן סוגרות את הפתח."],
+["Please ___ your hands with soap before lunch.","wash","draw","count","action","הסבון והארוחה מרמזים על ניקיון.","רוחצים ידיים בסבון לפני האוכל.","ציור וספירה אינם מנקים את הידיים."],
+["The box has nothing inside. It is ___.","empty","full","noisy","adjective","כתוב שאין דבר בתוך הקופסה.","קופסה בלי תוכן היא ריקה.","מלאה סותרת את הרמז; רועשת אינה מתארת את כמות התוכן."],
+["The soup just came off the stove. It is too ___ to eat safely.","hot","cold","empty","adjective","המרק ירד עכשיו מהכיריים וצריך להיזהר.","חום גבוה מסביר מדוע עדיין לא בטוח לאכול.","קור וריקנות אינם מתאימים לרמז על הכיריים החמות."],
+["It is raining. Open your ___ to stay dry.","umbrella","notebook","lunchbox","object","מחפשים חפץ שפתיחתו מגינה מהגשם.","מטרייה פתוחה מגינה מהגשם.","מחברת וקופסת אוכל אינן מיועדות להגן על הגוף מהגשם."],
+["Use a ___ to cut the paper, not to write on it.","pair of scissors","pencil","ruler","object","צריך לחתוך נייר ולא לכתוב עליו.","מספריים הם הכלי המתאים לחיתוך.","עיפרון כותב וסרגל מודד; הם אינם כלי החיתוך המבוקש."]
+]},
+{id:"articles",title:"מילת פתיחה לפני שם עצם",ruleHe:"לפני שם עצם יחיד שאינו מסוים בוחרים לפי הצליל הראשון: צליל תנועה או צליל עיצור.",ruleEn:"Use an before a vowel sound and a before a consonant sound with a singular countable noun.",
+example:"I have an orange.",mistake:"I have a orange.",mistakeHe:"המילה תפוז מתחילה בצליל תנועה, ולכן נדרשת צורת הפתיחה המתאימה.",
+guided:["We need ___ apron.","an","a","two","vowel","מסתכלים על הצליל הראשון במילה סינר.","המילה מתחילה בצליל תנועה ומתארת סינר אחד.","לא בוחרים בצורה שלפני עיצור או במספר שדורש רבים."],
+rows:[
+["I put ___ apple in my bag.","an","a","three","vowel","מסתכלים על הצליל הראשון במילה תפוח.","המילה תפוח באנגלית מתחילה בצליל תנועה.","השם ביחיד; מספר גדול מאחד דורש רבים."],
+["She has ___ egg for breakfast.","an","a","two","vowel","מקשיבים לתחילת המילה ביצה.","ביצה באנגלית מתחילה בצליל תנועה.","השם ביחיד; לא משתמשים במספר שתיים לפני הצורה הזאת."],
+["We see ___ elephant at the zoo.","an","a","four","vowel","מסתכלים על תחילת המילה פיל.","פיל באנגלית מתחיל בצליל תנועה.","מספר גדול מאחד היה דורש שם עצם ברבים."],
+["He carries ___ umbrella on rainy days.","an","a","two","vowel","מקשיבים לתחילת המילה מטרייה.","מטרייה באנגלית מתחילה בצליל תנועה.","המילה ביחיד, ולכן אפשרות המספר אינה מתאימה."],
+["I need ___ pencil for the lesson.","a","an","three","consonant","מחפשים את הצליל הראשון במילה עיפרון.","עיפרון באנגלית מתחיל בצליל עיצור.","לא בוחרים בפתיחה של צליל תנועה או במספר שדורש רבים."],
+["She rides ___ bike to school.","a","an","two","consonant","מסתכלים על תחילת המילה אופניים באנגלית.","המילה באנגלית מתחילה בצליל עיצור ובמשפט היא יחידה.","לא בוחרים לפי צורת הרבים של התרגום לעברית."],
+["We make ___ sandwich for lunch.","a","an","four","consonant","מקשיבים לתחילת המילה כריך.","כריך באנגלית מתחיל בצליל עיצור.","השם ביחיד; מספר גדול מאחד היה מחייב רבים."],
+["He reads ___ book before bed.","a","an","two","consonant","מזהים את הצליל הראשון במילה ספר.","ספר באנגלית מתחיל בצליל עיצור.","הפתיחה שלפני תנועה ומספר שתיים אינם מתאימים."]
+]},
+{id:"be",title:"התאמת פועל הקיום לנושא",ruleHe:"מזהים מי מתואר במשפט ומתאימים את פועל הקיום: אני, יחיד או רבים.",ruleEn:"Use am with I, is with he/she/it or one person, and are with you/we/they or plural nouns.",
+example:"The puppy is sleepy.",mistake:"The puppy are sleepy.",mistakeHe:"גור אחד הוא יחיד, ולכן אינו מקבל את צורת הרבים.",
+guided:["The teacher ___ kind.","is","am","are","singular","מחפשים מי מתואר במשפט.","מדובר במורה אחד או אחת, ולכן בוחרים צורת יחיד.","צורת אני וצורת רבים אינן מתאימות למורה יחיד."],
+rows:[
+["I ___ ready for the trip.","am","is","are","i","מזהים שהדובר מדבר על עצמו.","הנושא הוא אני, ולו צורה מיוחדת.","צורת יחיד של גוף שלישי וצורת רבים אינן מתאימות לאני."],
+["I ___ happy to help.","am","are","is","i","בודקים מי שמח לעזור.","הדובר אומר אני, ולכן נדרשת צורת אני.","לא בוחרים בצורה שמתאימה להוא או להם."],
+["The bird ___ small.","is","are","am","singular","סופרים כמה ציפורים מתוארות.","יש ציפור אחת, ולכן נדרשת צורת יחיד.","צורת רבים וצורת אני אינן מתאימות לציפור אחת."],
+["Maya ___ at school today.","is","am","are","singular","מזהים שם של ילדה אחת.","שם של אדם אחד מקבל צורת יחיד.","המשפט אינו על אני ואינו על כמה ילדים."],
+["My brother ___ hungry.","is","are","am","singular","בודקים אם מדובר באח אחד או בכמה אחים.","זה אח אחד, ולכן בוחרים צורת יחיד.","לא משתמשים בצורת אני או רבים לתיאור אח אחד."],
+["The shoes ___ wet.","are","is","am","plural","מזהים שם עצם ברבים.","מתוארות נעליים, ולכן נדרשת צורת רבים.","צורת יחיד וצורת אני אינן מתאימות לנעליים."],
+["We ___ in the classroom.","are","am","is","plural","מסתכלים על הכינוי אנחנו.","אנחנו מציין קבוצה ומקבל את צורת הרבים.","הצורות של אני ושל יחיד אינן מתאימות לקבוצה."],
+["They ___ excited about the game.","are","is","am","plural","מזהים שמדובר בהם.","הם הוא כינוי רבים, ולכן בוחרים צורת רבים.","המשפט אינו על דובר יחיד או על אדם אחד."]
+]},
+{id:"there-is-are",title:"יש אחד או יש כמה",ruleHe:"במשפט שמספר מה יש, בודקים את שם העצם שאחרי הרווח: יחיד או רבים.",ruleEn:"Use there is before a singular noun and there are before a plural noun.",
+example:"There are two windows in the room.",mistake:"There is two windows in the room.",mistakeHe:"שני חלונות הם רבים, ולכן צורת היחיד אינה מתאימה.",
+guided:["There ___ one lamp on the desk.","is","are","am","singular","סופרים את המנורות שמוזכרות.","יש מנורה אחת, ולכן נדרשת צורת יחיד.","צורת רבים וצורת אני אינן מתאימות להצגת מנורה אחת."],
+rows:[
+["There ___ a cat by the gate.","is","are","am","singular","מסתכלים על החתול שאחרי הרווח.","מוזכר חתול אחד, ולכן בוחרים יש ביחיד.","צורת רבים אינה מתאימה לחתול אחד."],
+["There ___ one clock on the wall.","is","are","am","singular","מזהים את המילה שמציינת שעון אחד.","אחרי הרווח מופיע שם עצם יחיד.","לא בוחרים בצורה שמשמשת להצגת כמה חפצים."],
+["There ___ a cup on the shelf.","is","are","am","singular","בודקים כמה ספלים מוזכרים.","מוזכר ספל אחד, ולכן נדרשת צורת יחיד.","רבים וצורת אני אינם מתאימים למבנה הזה."],
+["There ___ a bench in the garden.","is","are","am","singular","מסתכלים על שם העצם ספסל.","יש ספסל אחד בגינה, ולא כמה ספסלים.","בודקים שהפועל מתאים לדבר אחד."],
+["There ___ three ducks in the pond.","are","is","am","plural","מזהים מספר גדול מאחד.","שלושה ברווזים הם רבים.","צורת היחיד אינה מתאימה לשלושה ברווזים."],
+["There ___ two plates on the table.","are","is","am","plural","בודקים כמה צלחות יש.","שתי צלחות דורשות את צורת הרבים.","לא בוחרים בצורה שמתאימה לצלחת אחת."],
+["There ___ four trees near the house.","are","am","is","plural","מחפשים את המספר לפני עצים.","ארבעה עצים הם רבים ולכן מתאימים את הפועל לרבים.","צורת אני וצורת יחיד אינן מתאימות לארבעה עצים."],
+["There ___ five crayons in the box.","are","is","am","plural","סופרים את צבעי השעווה במשפט.","חמישה צבעים הם רבים.","צורת יחיד הייתה מתאימה רק לצבע אחד."]
+]},
+{id:"present-simple",title:"הרגל של אדם אחד",ruleHe:"כשמספרים על הרגל של הוא או היא, מוסיפים לפועל את סיומת הגוף השלישי המתאימה.",ruleEn:"For a present simple habit with he, she or one person, add -s or -es to the verb.",
+example:"Ella reads every evening.",mistake:"Ella read every evening.",mistakeHe:"זה הרגל של ילדה אחת. במשפט חיובי כזה הפועל צריך סיומת גוף שלישי.",
+guided:["Ben ___ his room every Friday.","cleans","clean","cleaning","third-person","מחפשים מי פועל ומתי.","בן הוא אדם אחד, וכל יום שישי מציין הרגל.","הפועל הבסיסי ולבדו פועל עם סיומת מתמשכת אינם מתאימים."],
+rows:[
+["Rina ___ to school every morning.","walks","walk","walking","third-person","מזהים ילדה אחת והרגל בכל בוקר.","רינה היא גוף שלישי יחיד, ולכן מוסיפים לפועל סיומת.","צורת הבסיס והצורה המתמשכת לבדה אינן מתאימות להרגל הזה."],
+["Tom ___ his teeth every night.","brushes","brush","brushing","third-person","מזהים ילד אחד ואת הרמז כל לילה.","בפועל הזה מוסיפים את הסיומת המורחבת לגוף שלישי.","קוראים שוב: ההרגל שייך לילד אחד, לא לקבוצה."],
+["My sister ___ the piano every Monday.","plays","play","playing","third-person","מחפשים את האחות ואת ההרגל השבועי.","אחות אחת היא גוף שלישי יחיד, ולכן הפועל מקבל סיומת.","אין כאן פועל עזר שיתאים לצורה המתמשכת."],
+["Dad ___ dinner every evening.","cooks","cook","cooking","third-person","מזהים אדם אחד ופעולה בכל ערב.","אבא הוא יחיד, וההרגל דורש פועל עם סיומת.","צורת בסיס אינה מתאימה כאן לגוף שלישי."],
+["Noa ___ her bag before school each day.","packs","pack","packing","third-person","הרמז בכל יום מציין הרגל של נועה.","אדם אחד מבצע את הפעולה, ולכן מוסיפים סיומת לפועל.","הצורה המתמשכת אינה יכולה לעמוד כאן לבדה."],
+["The bus ___ near our house every day.","stops","stop","stopping","third-person","מזהים אוטובוס אחד ופעולה קבועה.","גם אוטובוס אחד הוא גוף שלישי יחיד.","ההתאמה היא לאוטובוס, ולא לבתים או לנוסעים."],
+["Amir ___ his hands before every meal.","washes","wash","washing","third-person","מזהים הרגל שחוזר לפני כל ארוחה.","זה הרגל של אמיר; בפועל הזה מוסיפים סיומת מורחבת.","לא משאירים את הפועל בצורת הבסיס."],
+["Grandma ___ the plants every Saturday.","waters","water","watering","third-person","מסתכלים על סבתא ועל הזמן הקבוע.","סבתא היא אדם אחד, ולכן מוסיפים סיומת לפועל.","הצמחים הם מושא הפעולה; הם אינם קובעים את צורת הפועל."]
+]},
+{id:"present-progressive",title:"פעולה שקורית עכשיו",ruleHe:"לפעולה שמתרחשת עכשיו משתמשים בפועל עזר מתאים ואחריו פועל עם סיומת מתמשכת.",ruleEn:"For an action happening now, use am/is/are + a verb ending in -ing.",
+example:"The boys are running now.",mistake:"The boys are run now.",mistakeHe:"אחרי פועל העזר צריך את הצורה המתמשכת, ולא את צורת הבסיס.",
+guided:["Look! The baby is ___.","sleeping","sleeps","sleep","now","מזהים את הרמז להביט עכשיו ואת פועל העזר.","אחרי פועל העזר משלימים צורה מתמשכת.","צורת הרגל וצורת בסיס אינן מתאימות אחרי פועל העזר הזה."],
+rows:[
+["Look! The girl is ___ a kite.","flying","flies","fly","now","הרמז להביט ופועל העזר מצביעים על עכשיו.","אחרי פועל העזר משלימים את הפועל בצורה מתמשכת.","צורת הרגל או בסיס אינה מתאימה אחרי פועל העזר."],
+["Listen! The birds are ___.","singing","sing","sings","now","הרמז להקשיב מציין פעולה שמתרחשת עכשיו.","אחרי פועל העזר של רבים נדרשת צורה מתמשכת.","אין מוסיפים סיומת גוף שלישי לצורה שכבר באה אחרי פועל העזר."],
+["I am ___ my homework right now.","doing","do","does","now","מזהים את פועל העזר ואת הרמז ממש עכשיו.","משלימים צורה מתמשכת אחרי פועל העזר.","צורת בסיס וצורת גוף שלישי אינן מתאימות למבנה הזה."],
+["We are ___ lunch at the moment.","eating","eat","eats","now","הרמז כרגע מראה שהפעולה בעיצומה.","אחרי פועל העזר של אנחנו בוחרים צורה מתמשכת.","לא בוחרים בצורת הרגל של יחיד או בצורת בסיס."],
+["Dad is ___ a letter now.","writing","write","writes","now","מזהים את המילה עכשיו ואת פועל העזר.","נדרשת צורת הכתיבה המתמשכת.","בודקים שהסיומת המתמשכת קיימת ושאין צורת הרגל."],
+["The children are ___ in the pool now.","swimming","swim","swims","now","הילדים פועלים עכשיו ופועל העזר כבר מופיע.","משלימים את צורת השחייה המתמשכת.","צורת בסיס וצורת יחיד של הרגל אינן מתאימות כאן."],
+["She is ___ water right now.","drinking","drinks","drink","now","מחפשים את הרמז ממש עכשיו.","אחרי פועל העזר משלימים צורה מתמשכת של שתייה.","לא בוחרים בצורה שמתארת הרגל בלי פועל עזר."],
+["You are ___ a picture at the moment.","drawing","draw","draws","now","הפעולה מתרחשת כרגע ופועל העזר כבר קיים.","צריך להשלים את צורת הציור המתמשכת.","צורת בסיס או סיומת גוף שלישי אינה משלימה את המבנה."]
+]},
+{id:"questions-do",title:"פתיחת שאלה על הרגל",ruleHe:"בשאלה על הרגל מתאימים את מילת העזר לנושא. אחריה הפועל נשאר בצורת הבסיס.",ruleEn:"Use Does with he/she/it or one person, and Do with I/you/we/they. Keep the main verb in its base form.",
+example:"Does your uncle work here?",mistake:"Do your uncle work here?",mistakeHe:"דוד אחד דורש את מילת העזר של גוף שלישי יחיד.",
+guided:["___ your aunt cook on Fridays?","Does","Do","Is","singular","מזהים שאלה על הרגל של דודה אחת.","גוף שלישי יחיד דורש את מילת העזר המתאימה.","פועל הבישול נשאר בצורת הבסיס אחרי מילת העזר."],
+rows:[
+["___ Maya play tennis every week?","Does","Do","Is","singular","מזהים שם של ילדה אחת ושאלה על הרגל.","מילת העזר צריכה להתאים לגוף שלישי יחיד.","הפועל שאחרי מאיה נשאר בצורת הבסיס."],
+["___ your brother like apples?","Does","Do","Are","singular","מזהים אח אחד כנושא השאלה.","לאח יחיד נדרשת מילת העזר של גוף שלישי.","לא בוחרים בפועל קיום לפני פועל בצורת בסיס."],
+["___ the dog sleep in this basket?","Does","Do","Is","singular","בודקים מי ישן בסל.","הנושא הוא כלב אחד, ולכן צריך מילת עזר של יחיד.","פועל השינה בצורת בסיס מאשר שזה מבנה שאלה על הרגל."],
+["___ Ben read before bed?","Does","Do","Are","singular","השאלה היא על הרגל של בן.","בן הוא אדם אחד ולכן בוחרים מילת עזר של גוף שלישי.","בודקים שהפועל שאחריה נשאר בצורת הבסיס."],
+["___ you walk to school every day?","Do","Does","Are","other","מזהים שהשאלה פונה אליך.","הכינוי בגוף שני מקבל את מילת העזר הרגילה.","לא בוחרים במילת העזר של הוא או היא."],
+["___ the children eat lunch here every day?","Do","Does","Is","other","מסתכלים על הילדים כנושא השאלה.","ילדים הם רבים ולכן מקבלים את מילת העזר הרגילה.","לא בוחרים במילת העזר של יחיד."],
+["___ we need our books today?","Do","Does","Are","other","מזהים את הכינוי אנחנו.","אנחנו אינו גוף שלישי יחיד, ולכן בוחרים מילת עזר רגילה.","פועל הצורך נשאר בצורת הבסיס."],
+["___ they visit the park on Sundays?","Do","Does","Is","other","מזהים את הכינוי הם ואת ההרגל השבועי.","כינוי רבים מקבל את מילת העזר הרגילה.","מילת העזר של גוף שלישי יחיד אינה מתאימה להם."]
+]},
+{id:"questions-wh",title:"מילת שאלה לפי התשובה",ruleHe:"קוראים את התשובה: מקום, זמן, אדם או סיבה. בוחרים מילת שאלה שמבקשת מידע מהסוג הזה.",ruleEn:"Where asks about a place, when about a time, who about a person, and why about a reason.",
+example:"Where is the ball? Under the chair.",mistake:"When is the ball? Under the chair.",mistakeHe:"התשובה מציינת מקום ולא זמן, ולכן צריך לשאול על מקום.",
+guided:["___ is the concert? On Friday.","When","Where","Who","time","קוראים שהתשובה היא ביום שישי.","יום בשבוע הוא זמן, ולכן צריך לשאול מתי.","אין בתשובה מקום או שם של אדם."],
+rows:[
+["___ is your bag? On the chair.","Where","When","Who","place","התשובה מציינת שהילקוט על הכיסא.","על הכיסא הוא מקום, ולכן שואלים היכן.","מילת שאלה על זמן או אדם אינה מתאימה לתשובה."],
+["___ are the children? In the garden.","Where","When","Why","place","קוראים שהתשובה היא בגינה.","הגינה מציינת מקום, ולכן צריך לשאול היכן.","אין בתשובה זמן או סיבה."],
+["___ is the lesson? At nine o'clock.","When","Where","Who","time","מזהים שעה בתשובה.","שעה היא זמן, ולכן שואלים מתי.","השאלה אינה מבקשת מקום או אדם."],
+["___ is the trip? On Monday.","When","Who","Where","time","מזהים יום בשבוע בתשובה.","יום שני הוא זמן, ולכן שואלים מתי.","יום בשבוע אינו אדם או מקום."],
+["___ is at the door? Our teacher.","Who","When","Why","person","התשובה מציינת אדם שנמצא בדלת.","המורה הוא אדם, ולכן שואלים מי.","לא מבקשים זמן או סיבה."],
+["___ is helping you? My sister.","Who","Where","When","person","בודקים מה סוג המידע בתשובה.","אחות היא אדם, ולכן השאלה היא מי עוזר.","אחות אינה שם של מקום או זמן."],
+["___ are you wearing a coat? Because it is cold.","Why","Who","When","reason","התשובה מתחילה בהסבר בגלל הקור.","סיבה עונה על השאלה מדוע.","מילת שאלה על אדם או זמן אינה מבקשת סיבה."],
+["___ is the ground wet? Because it rained.","Why","Where","Who","reason","התשובה מסבירה שהגשם גרם לרטיבות.","זה הסבר לסיבה, ולכן שואלים מדוע.","השאלה אינה על מקום הקרקע או על אדם."]
+]},
+{id:"prepositions",title:"מיקום מתוך רמז ברור",ruleHe:"משתמשים ברמז למיקום: בתוך כלי, על משטח במגע איתו, או מתחת לחפץ.",ruleEn:"In means inside; on means touching the top surface; under means below something.",
+example:"The toy is inside the box. It is in the box.",mistake:"The toy is inside the box. It is on the box.",mistakeHe:"בתוך הקופסה אינו על המשטח העליון שלה.",
+guided:["The ball is below the desk. It is ___ the desk.","under","in","on","under","הרמז מציין שהכדור נמוך מהשולחן ונמצא תחתיו.","נדרשת מילת היחס שמתארת מתחת.","בתוך ועל מתארות יחסי מיקום אחרים."],
+rows:[
+["The keys are inside the bag. They are ___ the bag.","in","on","under","in","הרמז אומר שהמפתחות בתוך התיק.","בוחרים מילת יחס שפירושה בתוך.","על ומתחת סותרות את הרמז המפורש."],
+["The cookies are inside the jar. They are ___ the jar.","in","under","on","in","הרמז מציין שהעוגיות בפנים.","מילת היחס צריכה לתאר בתוך הצנצנת.","לא מדובר במשטח העליון או באזור שמתחת."],
+["The pencils are inside the drawer. They are ___ the drawer.","in","on","under","in","קוראים שהעפרונות נמצאים בפנים.","צריך מילת יחס שפירושה בתוך המגירה.","מיקום על המגירה או מתחת לה אינו הרמז שניתן."],
+["The book rests on top of the desk. It is ___ the desk.","on","in","under","on","הספר נוגע במשטח העליון של השולחן.","נדרשת מילת היחס שמתארת על משטח.","הספר אינו בתוך השולחן ואינו מתחתיו."],
+["The cup rests on top of the table. It is ___ the table.","on","under","in","on","הספל מונח במגע עם המשטח העליון.","בוחרים מילת יחס שפירושה על.","בתוך ומתחת אינן תואמות את המשטח העליון."],
+["The hat rests on top of the box. It is ___ the box.","on","in","under","on","הכובע מונח על הצד העליון של הקופסה.","צריך מילת יחס שמתארת מגע עם המשטח העליון.","הרמז אינו אומר שהכובע בתוך הקופסה."],
+["The cat is below the bench. It is ___ the bench.","under","on","in","under","הרמז מציין שהחתול נמצא מתחת לספסל.","בוחרים מילת יחס למקום נמוך יותר תחת החפץ.","על ובתוך מתארות מקומות אחרים."],
+["The shoes are below the bed. They are ___ the bed.","under","in","on","under","הרמז אומר שהנעליים נמצאות למטה מתחת למיטה.","צריך מילת יחס שפירושה מתחת.","המיקום אינו על המזרן ואינו בתוך המיטה."]
+]},
+{id:"possessives",title:"למי שייך החפץ",ruleHe:"מזהים את הבעלים ובוחרים מילת שייכות לפני שם העצם. מתאימים לבעלים, לא לחפץ.",ruleEn:"Use his for a male owner, her for a female owner, their for they, and our for we before a noun.",
+example:"This bag belongs to Ella. It is her bag.",mistake:"This bag belongs to Ella. It is his bag.",mistakeHe:"התיק שייך לאלה. מילת השייכות צריכה להתאים לבעלים ולא לחפץ.",
+guided:["We own these bikes. These are ___ bikes.","our","their","his","our","הדוברים אומרים שהאופניים שייכים להם כקבוצה.","כשהבעלים הם אנחנו בוחרים שייכות של אנחנו.","שייכות של הוא או הם אינה מתאימה לנקודת המבט."],
+rows:[
+["This coat belongs to my brother. It is ___ coat.","his","her","their","his","מזהים שהבעלים הוא האח.","לאח זכר יחיד מתאימה מילת שייכות של הוא.","ההתאמה היא לאח, לא למעיל."],
+["This hat belongs to Dad. It is ___ hat.","his","our","her","his","מזהים שאבא הוא בעל הכובע.","לבעלים זכר יחיד בוחרים שייכות של הוא.","הכובע אינו קובע את מילת השייכות; אבא קובע."],
+["This scarf belongs to my sister. It is ___ scarf.","her","his","our","her","מזהים שהצעיף שייך לאחות.","לבעלים נקבה יחידה מתאימה שייכות של היא.","לא בוחרים לפי החפץ אלא לפי האחות."],
+["This pen belongs to Mum. It is ___ pen.","her","their","his","her","מזהים שאמא היא בעלת העט.","לבעלים נקבה יחידה בוחרים שייכות של היא.","העט אינו קובע את השייכות; אמא קובעת."],
+["The children own these toys. These are ___ toys.","their","our","his","their","מזהים שהצעצועים שייכים לילדים.","הילדים הם קבוצה שמדברים עליה, ולכן השייכות היא שלהם.","הדובר אינו אומר שהצעצועים שייכים לנו."],
+["The girls own this tent. This is ___ tent.","their","her","his","their","מזהים כמה ילדות כבעלות האוהל.","רבים של בעלים דורשים שייכות של הם או הן.","אוהל אחד אינו הופך את הבעלים ליחיד."],
+["We own this garden. This is ___ garden.","our","their","her","our","הדוברים אומרים שהגינה שייכת להם.","הבעלים הם אנחנו, ולכן בוחרים שייכות של אנחנו.","לא מחליפים את נקודת המבט להיא או להם."],
+["We own these books. These are ___ books.","our","his","their","our","מזהים שהדוברים הם בעלי הספרים.","כשהבעלים הם אנחנו משתמשים בשייכות של אנחנו.","מספר הספרים אינו משנה את זהות הבעלים."]
+]}
+];
+const skillMap=new Map(skills.map(s=>[s.id,s]));
+function makeItem(skill,row,index){
+ const [prompt,answer,wrong1,wrong2,rule,look,apply,check]=row;
+ return {id:skill.id+"-"+index,skill:skill.id,rule:skill.id+":"+rule,prompt,answer,choices:[answer,wrong1,wrong2],steps:[look,skill.ruleHe,apply,check],ruleEn:skill.ruleEn,answerText:prompt.replace("___",answer)};
+}
+const bank=skills.flatMap(s=>s.rows.map((r,i)=>makeItem(s,r,i+1)));
+const itemMap=new Map(bank.map(q=>[q.id,q]));
+const state={seen:new Set(),records:new Map(),round:[],index:0,current:null,view:null,lastId:null,mode:"mixed",targetSkill:null,targetRule:null,exclude:null,lesson:null,lessonTrigger:null,lessonSolved:false};
+function shuffled(items){const a=[...items];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function record(q){return state.records.get(q.id)}
+function createRecord(q){if(!record(q))state.records.set(q.id,{id:q.id,skill:q.skill,rule:q.rule,attempts:0,wrong:0,help:false,lesson:false,solved:false,independent:false});return record(q)}
+function totals(){
+ const rs=[...state.records.values()];
+ return {shown:rs.length,unanswered:rs.filter(r=>!r.attempts).length,reserved:state.round.slice(state.index+1).filter(q=>!state.seen.has(q.id)).length,answered:rs.filter(r=>r.attempts).length,independent:rs.filter(r=>r.independent).length,wrong:rs.filter(r=>r.wrong).length,wrongAttempts:rs.reduce((n,r)=>n+r.wrong,0),help:rs.filter(r=>r.help).length,lesson:rs.filter(r=>r.lesson).length,retry:rs.filter(r=>r.attempts>1).length,solved:rs.filter(r=>r.solved).length};
+}
+function recommendations(){
+ const groups=new Map();
+ for(const r of state.records.values()){
+  if(!r.wrong&&!r.help)continue;
+  if(!groups.has(r.rule))groups.set(r.rule,{skill:r.skill,rule:r.rule,wrong:0,help:0,source:r.id});
+  const g=groups.get(r.rule);g.wrong+=r.wrong?1:0;g.help+=r.help?1:0;g.source=r.id;
+ }
+ return [...groups.values()].sort((a,b)=>(b.wrong+b.help)-(a.wrong+a.help));
+}
+function startRound(mode="mixed",skill=null,rule=null,exclude=null){
+ if($("lesson").open)return;
+ if(mode==="mixed"&&state.seen.size===bank.length)state.seen.clear();
+ const available=bank.filter(q=>!state.seen.has(q.id)&&q.id!==exclude&&q.id!==state.lastId&&(mode==="mixed"||q.skill===skill&&(!rule||q.rule===rule)));
+ const round=[];
+ if(mode==="mixed"){
+  const groups=shuffled(skills).sort((a,b)=>bank.filter(q=>q.skill===a.id&&state.seen.has(q.id)).length-bank.filter(q=>q.skill===b.id&&state.seen.has(q.id)).length);
+  const pools=new Map(groups.map(s=>[s.id,shuffled(available.filter(q=>q.skill===s.id))]));
+  while(round.length<6){let added=false;for(const s of groups){const q=pools.get(s.id).pop();if(q){round.push(q);added=true;if(round.length===6)break}}if(!added)break}
+ }else round.push(...shuffled(available).slice(0,6));
+ state.mode=mode;state.targetSkill=skill;state.targetRule=rule;state.exclude=exclude;state.round=round;state.index=0;
+ $("home-message").textContent="";
+ if(!round.length){showHome();$("home-message").textContent="אין כרגע דוגמה חדשה במסלול הזה. אפשר לבחור נושא אחר או להמשיך בסבב משולב.";return}
+ $("home").hidden=true;$("round-end").hidden=true;$("practice").hidden=false;
+ displayQuestion();
+}
+function displayQuestion(){
+ const q=state.round[state.index];state.current=q;state.lastId=q.id;
+ state.seen.add(q.id);createRecord(q);
+ state.view={attempts:0,wrong:new Set(),solved:false,helpOpen:false,choices:shuffled(q.choices)};
+ $("round-title").textContent=state.mode==="mixed"?"סבב משולב":"חזרה ממוקדת · "+skillMap.get(q.skill).title;
+ $("round-label").textContent="שאלה "+(state.index+1)+" מתוך "+state.round.length;
+ $("progress").max=state.round.length;$("progress").value=state.index;
+ $("skill-label").textContent=skillMap.get(q.skill).title;
+ $("prompt").textContent=q.prompt;$("feedback").textContent="";
+ renderChoices();fillHelp(q,"help-steps","help-rule","help-answer");
+ syncPractice();renderVisit();$("prompt").focus();
+}
+function renderChoices(){
+ $("choices").replaceChildren();
+ for(const text of state.view.choices){
+  const b=document.createElement("button");b.type="button";b.textContent=text;b.lang="en";b.dir="ltr";
+  b.onclick=()=>answer(text);$("choices").append(b);
+ }
+}
+function answer(text){
+ if(!state.current||!state.view||state.view.solved||state.view.wrong.has(text)||!state.current.choices.includes(text))return;
+ const q=state.current,r=record(q),v=state.view;r.attempts++;v.attempts++;
+ if(text===q.answer){
+  if(r.attempts===1&&!r.help)r.independent=true;
+  r.solved=true;v.solved=true;
+  $("feedback").textContent=r.attempts===1&&!r.help?"נכון! בחירה ראשונה ללא עזרה בשאלה הזאת.":"נכון! השלמת את המשפט. זהו תרגול עם עזרה או ניסיון נוסף.";
+ }else{
+  r.wrong++;v.wrong.add(text);markHelp(false);v.helpOpen=true;
+  $("feedback").textContent="עוד לא. ההסבר נפתח; נבדוק את הרמז וננסה שוב.";
+ }
+ syncPractice();renderVisit();
+}
+function markHelp(lesson){
+ if(!state.current||$("practice").hidden)return;
+ const r=record(state.current);r.help=true;if(lesson)r.lesson=true;
+}
+function toggleHelp(){
+ if(!state.current)return;
+ state.view.helpOpen=!state.view.helpOpen;if(state.view.helpOpen)markHelp(false);
+ syncPractice();renderVisit();
+}
+function syncPractice(){
+ const q=state.current,v=state.view;if(!q||!v)return;
+ for(const b of $("choices").children){
+  const wrong=v.wrong.has(b.textContent),correct=v.solved&&b.textContent===q.answer;
+  b.disabled=v.solved||wrong;b.classList.toggle("wrong",wrong);b.classList.toggle("correct",correct);
+  b.setAttribute("aria-label",b.textContent+(wrong?" — incorrect":correct?" — correct":""));
+ }
+ $("help-panel").hidden=!v.helpOpen;$("help-toggle").setAttribute("aria-expanded",String(v.helpOpen));
+ $("help-toggle").textContent=v.helpOpen?"🙈 הסתר הסבר":"🔍 איך פותרים?";
+ for(const id of ["next-top","next-bottom"]){$(id).hidden=!v.solved;$(id).textContent=state.index===state.round.length-1?"לסיכום הסבב":"לשאלה הבאה"}
+ $("fresh-panel").hidden=!(record(q).wrong||record(q).help);
+ $("progress").value=state.index+(v.solved?1:0);
+}
+function next(){
+ if(!state.view||!state.view.solved||$("practice").hidden)return;
+ if(state.index+1<state.round.length){state.index++;displayQuestion();return}
+ const ids=state.round.map(q=>q.id),independent=ids.filter(id=>state.records.get(id).independent).length;
+ $("end-text").textContent="השלמת "+ids.length+" שאלות בסבב. "+independent+" מהן נענו בבחירה הראשונה ללא עזרה בביקור הזה. אפשר להמשיך במגוון נושאים או לבחור חזרה מומלצת.";
+ $("practice").hidden=true;$("round-end").hidden=false;state.current=null;state.view=null;state.round=[];state.index=0;
+ renderVisit();$("end-title").focus();
+}
+function showHome(){
+ $("practice").hidden=true;$("round-end").hidden=true;$("home").hidden=false;
+ state.round=[];state.index=0;state.current=null;state.view=null;renderVisit();$("home-title").focus();
+}
+function fillHelp(q,stepsId,ruleId,answerId){
+ const list=$(stepsId);list.replaceChildren();
+ q.steps.forEach((text,i)=>{const li=document.createElement("li");const strong=document.createElement("strong");strong.textContent=["מה מחפשים? ","איזה כלל עוזר? ","איך זה מתאים כאן? ","איך בודקים? "][i];li.append(strong,document.createTextNode(text));list.append(li)});
+ $(ruleId).textContent=q.ruleEn;$(answerId).textContent=q.answerText;
+}
+function renderVisit(){
+ const t=totals(),dl=document.createElement("dl");
+ const labels={shown:"שאלות שונות שהוצגו",reserved:"ממתינות בסבב, טרם הוצגו ואינן ניסיון",unanswered:"הוצגו אך טרם נבחרה תשובה",answered:"נבחרה בהן תשובה",independent:"נכונות בבחירה הראשונה ללא עזרה",wrong:"שאלות שבהן הייתה טעות",wrongAttempts:"בחירות שגויות בסך הכול",help:"שאלות שנחשפו לעזרה או לשיעור",lesson:"מתוכן: נפתח שיעור בזמן השאלה",retry:"שאלות שבהן נבחרה תשובה יותר מפעם אחת",solved:"שאלות שהושלמו נכון, גם אחרי עזרה"};
+ for(const [key,label] of Object.entries(labels)){const dt=document.createElement("dt"),dd=document.createElement("dd");dt.textContent=label;dd.textContent=t[key];dl.append(dt,dd)}$("totals").replaceChildren(dl);
+ const container=$("recommendations");container.replaceChildren();
+ const recs=recommendations().slice(0,3);
+ if(!recs.length){const p=document.createElement("p");p.textContent="המלצות יופיעו רק בעקבות טעות או פתיחת עזרה במהלך תרגול. אפשר גם לבחור נושא בעצמך.";container.append(p);return}
+ for(const r of recs){
+  const div=document.createElement("div");div.className="recommendation";const p=document.createElement("p");
+  p.textContent=skillMap.get(r.skill).title+" — "+r.wrong+" שאלות עם טעות, "+r.help+" שאלות עם עזרה. מומלץ לנסות דוגמה חדשה באותו כלל.";
+  const b=document.createElement("button");b.type="button";b.textContent="חזרה ממוקדת: "+skillMap.get(r.skill).title;
+  b.onclick=()=>startRound("target",r.skill,r.rule,r.source);div.append(p,b);container.append(div);
+ }
+}
+function openLesson(skill,trigger){
+ if($("lesson").open)return;
+ const s=skillMap.get(skill);if(!s)return;
+ state.lesson=makeItem(s,s.guided,"guided");state.lessonTrigger=trigger;state.lessonSolved=false;
+ markHelp(true);syncPractice();renderVisit();
+ $("lesson-title").textContent="שיעור קצר · "+s.title;$("lesson-goal").textContent="המטרה: לזהות את הרמז ולהשלים משפט בנושא "+s.title+".";
+ $("lesson-rule-he").textContent=s.ruleHe;$("lesson-rule-en").textContent=s.ruleEn;
+ $("lesson-example").textContent=s.example;$("lesson-mistake").textContent=s.mistake;$("lesson-correction").textContent=s.example;$("lesson-mistake-he").textContent=s.mistakeHe;
+ $("lesson-prompt").textContent=state.lesson.prompt;$("lesson-feedback").textContent="";
+ $("lesson-choices").replaceChildren();
+ for(const text of shuffled(state.lesson.choices)){const b=document.createElement("button");b.type="button";b.textContent=text;b.lang="en";b.dir="ltr";b.onclick=()=>lessonAnswer(text,b);$("lesson-choices").append(b)}
+ fillHelp(state.lesson,"lesson-steps","lesson-help-rule","lesson-answer");lessonHelp(false);
+ document.body.classList.add("lesson-open");$("lesson").showModal();$("close-lesson").focus();
+}
+function lessonHelp(open){$("lesson-help").hidden=!open;$("lesson-help-toggle").setAttribute("aria-expanded",String(open));$("lesson-help-toggle").textContent=open?"🙈 הסתר הסבר":"🔍 איך פותרים?"}
+function lessonAnswer(text,b){
+ if(state.lessonSolved||b.disabled)return;
+ if(text===state.lesson.answer){state.lessonSolved=true;b.classList.add("correct");for(const button of $("lesson-choices").children)button.disabled=true;$("lesson-feedback").textContent="נכון! זו הבנת הכלל בתרגול מודרך.";lessonHelp(true)}
+ else{b.disabled=true;b.classList.add("wrong");$("lesson-feedback").textContent="עוד לא. נפתור יחד לפי הרמז.";lessonHelp(true)}
+}
+function resetVisit(){
+ state.seen.clear();state.records.clear();state.lastId=null;state.mode="mixed";state.targetSkill=null;state.targetRule=null;state.exclude=null;
+ $("home-message").textContent="";showHome();$("reset-status").textContent="נתוני החזרה אופסו. עיצוב האתר לא השתנה."; $("reset-visit").focus();
+}
+for(const s of skills){const o=document.createElement("option");o.value=s.id;o.textContent=s.title;$("skill-select").append(o)}
+$("start-mixed").onclick=()=>startRound();$("another-mixed").onclick=()=>startRound();
+$("start-target").onclick=()=>startRound("target",$("skill-select").value);
+$("home-lesson").onclick=()=>openLesson($("skill-select").value,$("home-lesson"));
+$("restart").onclick=()=>startRound(state.mode,state.targetSkill,state.targetRule,state.exclude);
+$("go-home").onclick=showHome;$("end-home").onclick=showHome;
+$("help-toggle").onclick=toggleHelp;$("next-top").onclick=next;$("next-bottom").onclick=next;
+$("fresh-target").onclick=()=>{const q=state.current;startRound("target",q.skill,q.rule,q.id)};
+$("open-lesson").onclick=()=>openLesson(state.current.skill,$("open-lesson"));
+$("lesson-help-toggle").onclick=()=>lessonHelp($("lesson-help").hidden);
+$("close-lesson").onclick=()=>$("lesson").close();
+$("lesson").addEventListener("close",()=>{document.body.classList.remove("lesson-open");const trigger=state.lessonTrigger;state.lesson=null;state.lessonTrigger=null;if(trigger&&trigger.isConnected)trigger.focus()});
+$("reset-visit").onclick=resetVisit;
+renderVisit();
+</script>
+</body>
+</html>

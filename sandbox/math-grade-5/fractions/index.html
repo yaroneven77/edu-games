@@ -1,0 +1,819 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>מתמטיקה לכיתה ה׳</title>
+<script src="../../../assets/theme-selector.js" defer></script>
+<link rel="stylesheet" href="../../../assets/refresh.css">
+<style>
+*{box-sizing:border-box}
+:root{--surface:var(--refresh-surface,#fff);--soft:var(--refresh-soft,#edf3fb);--text:var(--refresh-text,#243b53);--muted:var(--refresh-muted,#52677e);--accent:var(--refresh-accent,#285f9f);--border:var(--refresh-border,#d5dfec)}
+body{margin:0;padding-top:64px;background:#eef7fd;color:var(--text);font:18px/1.7 "Segoe UI","Arial Hebrew",Arial,sans-serif}
+main{max-width:1000px;margin:auto;padding:16px 16px 40px}[hidden]{display:none!important}
+header{text-align:center}h1{font-size:clamp(28px,6vw,40px);line-height:1.3}h2{font-size:25px}h3{font-size:21px}
+a{color:var(--accent)}button,input,select{font:inherit;max-width:100%;min-height:44px}
+button,select,input{border:2px solid var(--border);border-radius:14px;padding:9px 13px;background:var(--surface);color:var(--text)}
+button,a.back{min-height:44px;min-width:44px}button{cursor:pointer}button:disabled{cursor:default}
+button:focus-visible,input:focus-visible,a:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+a.back{display:inline-flex;align-items:center;padding:8px 12px;background:var(--surface);border-radius:14px}
+.panel,.skill-card{background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:clamp(14px,3vw,24px);margin:16px 0;min-width:0}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.skill-card{margin:0;border-top:5px solid var(--accent)}
+.actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:14px 0}.actions>*{max-width:100%}
+.primary{font-weight:800;background:var(--soft)}.muted{color:var(--muted);font-size:16px}.scope{font-weight:700}
+.math{direction:ltr;unicode-bidi:isolate;text-align:center;font:600 clamp(21px,5vw,29px)/1.8 "Segoe UI",Arial,sans-serif;overflow-wrap:anywhere;background:var(--soft);padding:10px;border-radius:12px;margin:10px 0;font-variant-numeric:tabular-nums}
+.visual{padding:12px;margin:12px 0;background:var(--soft);border-radius:14px;overflow:auto;text-align:center}.visual svg{width:100%;max-width:460px;height:auto;max-height:310px;display:block;margin:auto}
+.visual table{border-collapse:collapse;width:100%;max-width:600px;margin:auto}.visual th,.visual td{border:1px solid var(--border);padding:6px}
+.choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.choices button{min-height:60px;font-size:22px;overflow-wrap:anywhere}
+#edu-refresh button.correct{background:#d9f6e3!important;color:#145c35!important;border-color:#237849!important}
+#edu-refresh button.wrong{background:#ffe0dc!important;color:#8c2c28!important;border-color:#ac463b!important;text-decoration:line-through}
+.feedback{font-weight:700;min-height:30px}.help{border:2px solid var(--border);border-radius:16px;padding:16px;background:var(--soft)}
+.step{background:var(--surface);border-radius:12px;padding:12px;margin:12px 0}.step h4,.step p{margin:4px 0}.step .math{background:var(--soft)}
+.help ol,#example-steps{padding-inline-start:25px}.answer-form{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:16px 0}.answer-form input{width:220px;direction:ltr}
+progress{width:100%;height:16px;accent-color:var(--accent)}summary{cursor:pointer;min-height:44px;padding:8px 0;font-weight:700}
+dialog{width:min(780px,calc(100% - 24px));max-height:calc(100dvh - 24px);padding:22px;border:2px solid var(--border);border-radius:22px;background:var(--surface);color:var(--text)}
+dialog::backdrop{background:#102238b8}body.lesson-open{overflow:hidden}.lesson-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+#edu-theme-select{min-height:44px!important}#edu-theme-control{max-width:calc(100% - 12px)}
+footer{text-align:center;font-size:15px;margin:24px 0}
+@media(max-width:600px){.grid,.choices{grid-template-columns:1fr}main{padding-inline:12px}.panel,dialog{padding:14px}.actions button{flex:1 1 140px}.math{font-size:22px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body id="edu-refresh">
+<main>
+<a class="back" href="../index.html">חזרה לקורס מתמטיקה לכיתה ה׳</a>
+<header><p class="muted">קורס מתמטיקה לכיתה ה׳ · תצוגת בדיקה</p><h1 id="page-title"></h1><p id="intro"></p></header>
+<noscript><p class="panel">כדי ללמוד ולתרגל יש לאפשר הפעלת סקריפטים בדפדפן.</p></noscript>
+<section id="home" aria-labelledby="home-title">
+<div class="panel"><h2 id="home-title" tabindex="-1">לומדים, פותרים יחד ומנסים לבד</h2><p id="prerequisites"></p>
+<p>המסלול המומלץ מתחיל בהבנה ובדוגמה, ממשיך בניסיון מודרך ומסתיים בתרגול. אפשר לבחור כל שיעור בלי לנעול שלבים.</p>
+<!-- FRACTION_LAB_MARKUP_START -->
+<details id="fraction-lab" class="panel">
+<summary>מעבדת שברים: אותה כמות, יותר חלקים · ניסוי לבחירה</summary>
+<p>אפשר להתחיל בשני פסי נייר שווי גודל: לחלק ולצבוע בשניהם אותו שבר, ואז לחלק כל חלק בפס השני לחלקים קטנים ושווים. במעבדה נבדוק מה משתנה ומה נשאר קבוע.</p>
+<div class="actions">
+<label for="fraction-lab-denominator">לכמה חלקים מחלקים את השלם?
+<select id="fraction-lab-denominator"><option>2</option><option>3</option><option selected>4</option><option>5</option><option>6</option><option>8</option></select></label>
+<label for="fraction-lab-numerator">כמה חלקים צובעים?
+<select id="fraction-lab-numerator"><option>1</option><option>2</option><option selected>3</option></select></label>
+<label for="fraction-lab-factor">לכמה מחלקים כל חלק?
+<select id="fraction-lab-factor"><option selected>2</option><option>3</option><option>4</option></select></label>
+<button id="fraction-lab-reset" type="button">חזרה לדוגמת הפתיחה</button>
+</div>
+<h3>לפני החלוקה הנוספת</h3><div id="fraction-lab-before" class="visual"></div>
+<h3>אחרי החלוקה הנוספת</h3><div id="fraction-lab-after" class="visual"></div>
+<div role="status" aria-live="polite" aria-atomic="true">
+<p id="fraction-lab-equation" class="math" dir="ltr"></p><p id="fraction-lab-explanation"></p>
+</div>
+<p><strong>מה נשאר קבוע?</strong> אורך הפס שמייצג שלם אחד והכמות הכחולה. רק מספר החלקים וגודלו של כל חלק השתנו. זו הרחבת שבר, לא הגדלה של הכמות.</p>
+<p class="muted">זו התנסות חופשית, נפרדת מהתרגול: אין ניקוד ואין שמירה של הבחירות.</p>
+</details>
+<!-- FRACTION_LAB_MARKUP_END -->
+<div class="actions"><button id="course-start" class="primary" type="button">מתחילים ללמוד לפי הסדר</button><button id="mixed-start" type="button">תרגול משולב</button></div>
+<p id="route-message" role="status"></p></div><div id="skills" class="grid"></div>
+</section>
+<section id="practice" class="panel" hidden aria-labelledby="practice-title">
+<div class="actions"><button id="home-button" type="button">בחירת שיעור</button><button id="restart" type="button">סבב חדש</button></div>
+<h2 id="practice-title"></h2><p id="round-label"></p><progress id="progress" value="0" max="6" aria-label="שאלות שהושלמו"></progress>
+<p id="skill-label" class="scope"></p><h3 id="prompt" tabindex="-1"></h3><div id="expression" class="math" dir="ltr"></div><p id="unit" class="muted"></p><div id="visual" class="visual" hidden></div>
+<div id="choices" class="choices" role="group" aria-label="בחירת תשובה"></div>
+<form id="answer-form" class="answer-form" hidden><label for="typed-answer">או כתבו תשובה:</label><input id="typed-answer" autocomplete="off" maxlength="60" aria-describedby="input-note"><button type="submit">בדיקה</button></form>
+<p id="input-note" class="muted" hidden>אפשר לכתוב מספר, מספר עשרוני, שבר כמו 3/4 או מספר מעורב כמו 1 1/2. יחידות מופיעות בשאלה, אין צורך להקליד אותן.</p>
+<p id="feedback" class="feedback" role="status"></p>
+<div class="actions"><button id="help-toggle" type="button" aria-expanded="false" aria-controls="help-panel">🔍 איך פותרים?</button><button id="open-lesson" type="button">📚 שיעור קצר</button><button id="next-top" class="primary" type="button" hidden>לשאלה הבאה</button></div>
+<section id="help-panel" class="help" hidden aria-labelledby="help-title"><h3 id="help-title">מבינים את הדרך בארבעה צעדים</h3><ol id="help-steps"></ol><h4>התשובה</h4><p id="help-answer"></p></section>
+<button id="next-bottom" class="primary" type="button" hidden>לשאלה הבאה</button>
+</section>
+<section id="summary" class="panel" hidden aria-labelledby="summary-title"><h2 id="summary-title" tabindex="-1">סיימתם סבב של תרגול</h2><p id="summary-text"></p><p>עזרה היא חלק מהלמידה. תשובות עצמאיות הן בחירות נכונות בניסיון הראשון, ללא פתיחת הפתרון או השיעור באותה שאלה. זה אינו אבחון או ציון שליטה.</p><div id="recommendations"></div>
+<div class="actions"><button id="again" type="button">עוד תרגול באותו מסלול</button><button id="next-lesson" type="button">לשיעור הבא בקורס</button><button id="summary-home" type="button">בחירת שיעור</button></div></section>
+<footer>תרגילים ודוגמאות מקוריים · אין שמירת תשובות. רענון העמוד מתחיל ביקור חדש. את ההבנה כדאי לתרגל גם על דף ובשיחה.</footer>
+</main>
+<dialog id="lesson" aria-labelledby="lesson-title">
+<div class="lesson-head"><h2 id="lesson-title"></h2><button id="close-lesson" type="button">סגירת השיעור</button></div>
+<p id="lesson-goal"></p><h3>למה זה עובד?</h3><p id="lesson-why"></p><p id="lesson-rule" class="help"></p>
+<h3>דוגמה פתורה, צעד אחר צעד</h3><div id="lesson-visual" class="visual" hidden></div><ol id="example-steps"></ol>
+<h3>טעות שכדאי להכיר</h3><p id="mistake-text"></p><p id="mistake-math" class="math" dir="ltr"></p><p id="mistake-fix"></p>
+<h3>ננסה יחד</h3><p id="guided-prompt"></p><p id="guided-expression" class="math" dir="ltr"></p><div id="guided-visual" class="visual" hidden></div><p id="guided-unit"></p><div id="guided-choices" class="choices"></div>
+<p id="guided-feedback" class="feedback" role="status"></p><button id="guided-help" type="button" aria-expanded="false" aria-controls="guided-solution">🔍 איך פותרים?</button><div id="guided-solution" class="help" hidden><ol id="guided-steps"></ol></div>
+<p class="muted">זהו תרגול מודרך. הוא אינו מוסיף הצלחה עצמאית לסבב.</p>
+<div class="actions"><button id="lesson-practice" class="primary" type="button">מתרגלים את הנושא</button><button id="lesson-next" type="button">לשיעור הבא</button></div>
+</dialog>
+<script>
+"use strict";
+// COURSE_DATA_START
+function buildCourse() {
+  const gcd=(a,b)=>b?gcd(b,a%b):Math.abs(a);
+  const lcm=(a,b)=>a/gcd(a,b)*b;
+  const f=(n,d=1)=>{const g=gcd(n,d);return d/g===1?String(n/g):`${n/g}/${d/g}`;};
+  const mix=(n,d)=>{const w=Math.floor(n/d),r=n%d;return r?(w?`${w} ${f(r,d)}`:f(r,d)):String(w);};
+  const pair=value=>{
+    const parts=String(value).split(" ");
+    if(parts.length===2){const [n,d]=parts[1].split("/").map(Number);return [Number(parts[0])*d+n,d];}
+    const [n,d=1]=String(value).split("/").map(Number);return [n,d];
+  };
+  const choices=(answer,wrong)=>{
+    const result=[],seen=new Set();
+    const add=value=>{const [n,d]=pair(value),key=f(n,d);if(n>=0&&!seen.has(key)){seen.add(key);result.push(String(value));}};
+    add(answer);wrong.forEach(add);
+    const [n,d]=pair(answer);
+    for(let j=1;result.length<4;j++)add(f(n+j,d));
+    return result.slice(0,4);
+  };
+  const st=(text,math)=>math?{text,math}:{text};
+  const q=(prompt,expression,answer,wrong,steps,visual="",unit="",kind="fraction")=>({
+    prompt,expression,kind,answer:String(answer),
+    choices:kind==="text"?[String(answer),...wrong]:choices(String(answer),wrong),steps,visual,unit
+  });
+  const svg=(label,body,height=110)=>`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 ${height}" role="img" aria-label="${label}"><title>${label}</title>${body}</svg>`;
+  function strips(n,d,rows=Math.max(1,Math.ceil(n/d)),repeat=false) {
+    let body="";
+    for(let row=0;row<rows;row++)for(let col=0;col<d;col++){
+      const on=repeat?col<n:row*d+col<n;
+      body+=`<rect x="${20+col*400/d}" y="${16+row*48}" width="${400/d}" height="32" fill="${on?"#246db4":"#fff"}" stroke="#203549" stroke-width="1.5"/>`;
+    }
+    const label=repeat?`${rows} פסים שווי גודל; בכל פס ${d} חלקים שווים, מהם ${n} כחולים.`:`כל פס הוא שלם באותו גודל ומחולק ל־${d} חלקים שווים. בסך הכול ${n} חלקים כחולים מתוך ${rows*d} חלקים מוצגים.`;
+    return svg(label,body,rows*48+12);
+  }
+  function line(n,d,max=2,showMarker=true) {
+    const width=400/(d*max),body=[`<path d="M20 48H420" fill="none" stroke="#203549" stroke-width="3"/>`];
+    for(let i=0;i<=d*max;i++){
+      body.push(`<path d="M${20+i*width} ${i%d===0?36:42}V58" stroke="#203549" stroke-width="2"/>`);
+      if(i%d===0)body.push(`<text x="${20+i*width}" y="82" text-anchor="middle" fill="#203549" font-size="18">${i/d}</text>`);
+    }
+    if(showMarker)body.push(`<circle cx="${20+n*width}" cy="48" r="7" fill="#246db4"/><text x="${20+n*width}" y="22" text-anchor="middle" fill="#203549" font-size="18">A</text>`);
+    return svg(`ישר מספרים מאפס עד ${max}. בין כל שני שלמים ${d} מרווחים שווים.${showMarker?` הנקודה A נמצאת ${n} מרווחים מימין לאפס.`:""}`,body.join(""),94);
+  }
+  function groups(d,u,n) {
+    let body="";
+    for(let c=0;c<d;c++){
+      body+=`<rect x="${10+c*420/d}" y="8" width="${420/d-4}" height="${u*23+8}" rx="5" fill="none" stroke="#203549"/>`;
+      for(let r=0;r<u;r++)body+=`<circle cx="${10+(c+.5)*420/d-2}" cy="${23+r*23}" r="7" fill="${c<n?"#246db4":"#fff"}" stroke="#203549" stroke-width="1.5"/>`;
+    }
+    return svg(`${d*u} עיגולים ב־${d} קבוצות שוות. בכל קבוצה ${u} עיגולים; ${n} קבוצות כחולות והשאר לבנות.`,body,u*23+24);
+  }
+  const guidedQuestions={
+    "equal-parts":()=>q("כל הפס הוא שלם אחד. איזה שבר ממנו צבוע בכחול?","", "5/8",["3/8","5/9","6/8"],
+      [st("מזהים פס אחד שמחולק לשמונה חלקים שווים. מחפשים את החלק הכחול."),
+       st("כל חלק הוא שמינית מהשלם.","1 ÷ 8 = 1/8"),
+       st("באיור חמישה חלקים כחולים.","5 × 1/8 = 5/8"),
+       st("שלושת החלקים הלבנים משלימים את הפס.","5/8 + 3/8 = 1")],strips(5,8)),
+    "fraction-number-line":()=>q("איזה מספר מייצגת הנקודה A? ספרו את המרווחים החל מאפס.","","7/6",["6/7","1","5/6"],
+      [st("כל יחידה על הישר מחולקת לשישה מרווחים שווים. A נמצאת שבעה מרווחים מאפס."),
+       st("גודל כל מרווח הוא שישית, גם אחרי המספר אחד.","1 ÷ 6 = 1/6"),
+       st("שבעה מרווחים של שישית נותנים שבע שישיות.","7 × 1/6 = 7/6"),
+       st("שש שישיות מגיעות לאחד, ועוד מרווח אחד מגיע ל־A.","1 + 1/6 = 7/6")],line(7,6)),
+    "fraction-as-quotient":()=>q("מחלקים ארבע כיכרות שוות בגודלן בין שבעה ילדים. כמה כיכרות יקבל כל ילד?","4 ÷ 7","4/7",["7/4","1/7","4/11"],
+      [st("מחלקים ארבע כיכרות לשבע מנות שוות, ומחפשים מנה אחת."),
+       st("כל כיכר מחולקת לשבעה חלקים שווים. כל ילד מקבל שביעית מכל כיכר.","1 ÷ 7 = 1/7"),
+       st("לכל ילד ארבע שביעיות, אחת מכל כיכר.","4 ÷ 7 = 4/7"),
+       st("שבע המנות מחזירות את ארבע הכיכרות.","7 × 4/7 = 4")],"","כיכרות לכל ילד"),
+    "equivalent-fractions":()=>q("מרחיבים את השבר: איזה מונה חסר?","2/7 = ?/21","6",["2","5","14"],
+      [st("המכנה משתנה משבע לעשרים ואחת. מחפשים מונה שישמור על אותה כמות."),
+       st("נמצא את גורם ההרחבה בעזרת המכנים.","21 ÷ 7 = 3"),
+       st("כופלים גם את המונה בשלוש.","2 × 3 = 6"),
+       st("צמצום בחזרה בשלוש מחזיר את השבר המקורי.","6/21 = 2/7")],"","","number"),
+    "compare-fractions":()=>q("שני הפסים שווי גודל. איזה שבר מייצג את הכמות הכחולה הגדולה יותר?","3/5 , 2/3","2/3",["3/5","3/8","1/3"],
+      [st("מדובר באותו גודל של שלם, אבל בגדלים שונים של חלקים."),
+       st("נכתוב את שתי הכמויות ביחידות של חלקי חמש עשרה.","3/5 = 9/15"),
+       st("נרחיב גם את שני השלישים.","2/3 = 10/15"),
+       st("עשרה חלקים גדולים מתשעה חלקים באותו גודל.","10/15 > 9/15")],strips(3,5)+strips(2,3)),
+    "fraction-between":()=>q("בין חצי לשלושה רבעים יש שברים רבים. הפעם מצאו את השבר שבדיוק באמצע.","1/2 < ? < 3/4","5/8",["1/2","3/4","7/8"],
+      [st("מחפשים נקודה במרחק שווה משני השברים, ולא את אחד הקצוות.","1/2 < 3/4"),
+       st("כותבים בשמיניות: חצי הוא ארבע שמיניות ושלושה רבעים הם שש שמיניות.","1/2 = 4/8"),
+       st("המונה שבאמצע בין ארבע לשש הוא חמש.","(4 + 6) ÷ 2 = 5"),
+       st("חמש שמיניות רחוקות שמינית מכל קצה.","5/8 − 1/2 = 3/4 − 5/8")]),
+    "mixed-and-improper":()=>q("איזה מספר מעורב שווה לשבע עשרה חמישיות?","17/5","3 2/5",["2 3/5","3 1/5","4 2/5"],
+      [st("יש שבעה עשר חלקים. בכל שלם חמישה חלקים כאלה."),
+       st("נארוז שלוש קבוצות מלאות ונמצא מה נשאר.","17 = 3 × 5 + 2"),
+       st("נקבל שלושה שלמים ועוד שתי חמישיות.","17/5 = 3 2/5"),
+       st("נחשב בחזרה את מספר החמישיות.","(3 × 5 + 2)/5 = 17/5")]),
+    "add-unlike":()=>q("מחברים רבע ושישית של אותו שלם. מהו הסכום?","1/4 + 1/6","5/12",["2/10","1/12","7/12"],
+      [st("הרבע והשישית הם חלקים מאותו שלם. צריך למדוד אותם ביחידות שוות."),
+       st("נבחר חלקי שתים עשרה ונרחיב את שני השברים.","1/4 + 1/6 = 3/12 + 2/12"),
+       st("כעת סופרים יחד את החלקים באותו גודל.","3/12 + 2/12 = 5/12"),
+       st("נחסר את השישית ונקבל בחזרה רבע.","5/12 − 1/6 = 1/4")]),
+    "subtract-regroup":()=>q("חסרו בעזרת המרת שלם אחד לחמישיות.","4 1/5 − 2 3/5","1 3/5",["2 2/5","2 3/5","1 2/5"],
+      [st("מחסרים שתי יחידות ושלוש חמישיות מארבע יחידות וחמישית. חמישית אחת אינה מספיקה."),
+       st("ממירים שלם אחד לחמש חמישיות.","4 1/5 = 3 + 6/5"),
+       st("מחסרים שלמים וחמישיות, אחרי ההמרה.","(3 − 2) + (6/5 − 3/5) = 1 3/5"),
+       st("מחברים את התוצאה ואת הכמות שהסרנו.","1 3/5 + 2 3/5 = 4 1/5")]),
+    "whole-times-fraction":()=>q("כל פס הוא שלם. בכל אחד משלושה פסים צבוע רבע. כמה שלמים צבועים יחד?","3 × 1/4","3/4",["3/12","1/4","1"],
+      [st("יש שלוש מנות שוות, ובכל מנה רבע שלם."),
+       st("נכתוב את שלוש המנות כחיבור חוזר.","1/4 + 1/4 + 1/4"),
+       st("נספר שלושה חלקים. כל חלק נשאר רבע.","3 × 1/4 = 3/4"),
+       st("עוד רבע אחד היה משלים את הכמות לשלם.","3/4 + 1/4 = 1")],strips(1,4,3,true),"שלמים"),
+    "fraction-of-quantity":()=>q("בסל שמונה עשר פירות. שני שלישים מהם תפוחים. כמה תפוחים בסל?","","12",["6","9","16"],
+      [st("השלם הוא שמונה עשר פירות. בוחרים שתי קבוצות מתוך שלוש קבוצות שוות."),
+       st("נמצא את מספר הפירות בשליש אחד.","18 ÷ 3 = 6"),
+       st("לוקחים שתי קבוצות של שישה.","6 × 2 = 12"),
+       st("שנים עשר התפוחים וששת הפירות האחרים משלימים את הסל.","12 + 6 = 18")],"","תפוחים","number"),
+    "fraction-word-problems":()=>q("מסרט באורך שני מטרים גזרו שליש מטר ואז רבע מטר. כמה מטרים נשארו?","","1 5/12",["7/12","1 7/12","1 1/12"],
+      [st("השלם לחישובי השברים הוא מטר. מתחילים בשני מטרים ומחפשים את האורך שנותר."),
+       st("מחברים את האורכים שנגזרו בעזרת חלקי שתים עשרה.","1/3 + 1/4 = 4/12 + 3/12 = 7/12"),
+       st("מחסרים את האורך הכולל שנגזר משני המטרים.","2 − 7/12 = 1 5/12"),
+       st("מה שנותר יחד עם שני החלקים שנגזרו משחזר את האורך המקורי.","1 5/12 + 1/3 + 1/4 = 2")],"","מטרים"),
+    "recover-whole":()=>q("שלוש שביעיות מאוסף קלפים הן שמונה עשר קלפים. הפס מייצג את האוסף כולו. כמה קלפים באוסף?","","42",["6","18","126"],
+      [st("שמונת עשר הקלפים הם שלוש קבוצות שוות מתוך שבע. הכמות בכל קבוצה אינה ידועה."),
+       st("נחלק את הכמות הידועה במספר הקבוצות שהיא ממלאת.","18 ÷ 3 = 6"),
+       st("באוסף כולו שבע קבוצות, בכל אחת שישה קלפים.","6 × 7 = 42"),
+       st("נבדוק ששלוש מתוך שבע הקבוצות מחזירות את שמונת עשר הקלפים.","(42 ÷ 7) × 3 = 18")],strips(3,7),"קלפים","number")
+  };
+  const skills=[];
+  function lesson(id,title,scope,goal,why,rule,example,mistake,build,visual=""){
+    skills.push({id,title,scope,goal,why,rule,example,mistake,visual,count:24,guided:guidedQuestions[id],build});
+  }
+
+  lesson("equal-parts","חזרה: השלם וחלקים שווים","review",
+    "נזהה את השלם ונפרש מונה ומכנה בעזרת חלקים שווים.",
+    "המכנה מספר לכמה חלקים שווים מחולק שלם אחד, והמונה כמה חלקים כאלה נלקחו. בלי חלוקה שווה, ספירת חלקים בלבד אינה מספרת איזה חלק מהשלם נבחר.",
+    "סיכום הדרך: מזהים שלם אחד, מוודאים חלוקה שווה, ואז סופרים חלקים. בשני שלמים המחולקים לרבעים המכנה עדיין ארבע, לא שמונה.",
+    [st("כל הפס באיור הוא שלם אחד שמחולק לשמונה חלקים שווים.", "1 = 8/8"),
+     st("כל חלק הוא שמינית; שלושה חלקים כחולים.", "3 × 1/8 = 3/8"),
+     st("חמישה מתוך שמונת החלקים נשארו לבנים.", "8 − 3 = 5"),
+     st("בדיקה: שני הצבעים יחד מכסים את כל השלם.", "3/8 + 5/8 = 1")],
+    {text:"סופרים את כל החלקים בשני פסים וקובעים שהמכנה הוא שמונה.",fix:"המכנה שייך לשלם אחד. לפני שסופרים מסמנים מהו השלם; כל פס כאן הוא יחידה."},
+    seed=>{
+      const k=Math.floor(seed/3),type=seed%3,d=4+k,n=1+(2*k)%(d-1);
+      if(type===0)return q("כל פס הוא שלם אחד. איזה שבר מהשלם צבוע בכחול?","",f(n,d),[f(d-n,d),f(n,d+1),f(n+1,d)],
+        [st(`השלם מחולק ל־${d} חלקים שווים; מחפשים את החלק הכחול.`),
+         st(`כל חלק הוא אחד מתוך ${d}; נספור את החלקים הכחולים.`,`1 ÷ ${d} = 1/${d}`),
+         st(`נספרו ${n} חלקים כחולים.`,`${n} × 1/${d} = ${f(n,d)}`),
+         st(`הכחולים והלבנים משלימים שלם.`,`${n}/${d} + ${d-n}/${d} = 1`)],strips(n,d));
+      if(type===1)return q("איזה מכנה מתאר את החלוקה של שלם אחד באיור? ספרו גם חלקים כחולים וגם לבנים.","",String(d),[String(n),String(d-n),String(d+1)],
+        [st("כל הפס הוא שלם אחד. מחפשים לכמה חלקים שווים הוא מחולק."),
+         st("המכנה סופר את כל החלקים בשלם, ולא רק את החלקים הצבועים."),
+         st(`סופרים ${n} חלקים כחולים ועוד ${d-n} חלקים לבנים.`,`${n} + ${d-n} = ${d}`),
+         st("כל החלקים יחד חייבים לייצג שלם אחד.",`${d}/${d} = 1`)],strips(n,d),"","number");
+      return q("איזה שבר מהשלם נשאר לבן בפס?","",f(d-n,d),[f(n,d),f(d-n,d+1),f(d-n+1,d)],
+        [st(`בפס ${d} חלקים שווים, מהם ${n} כחולים. מחפשים את הלבנים.`),
+         st("נחסר את מספר החלקים הכחולים ממספר החלקים בשלם.",`${d} − ${n} = ${d-n}`),
+         st(`נשארו ${d-n} חלקים בגודל אחד חלקי ${d}.`,`${d-n} × 1/${d} = ${f(d-n,d)}`),
+         st("שני הצבעים יחד מכסים בדיוק שלם.",`${n}/${d} + ${d-n}/${d} = 1`)],strips(n,d));
+    },strips(3,8));
+
+  lesson("fraction-number-line","שברים על ישר המספרים","core",
+    "נפרש שבר כמרחק מאפס ונזהה מספרים לפני אחד וגם אחריו.",
+    "על ישר המספרים יחידה אחת היא המרחק בין אפס לאחד, וגם בין כל שני שלמים סמוכים. מחלקים כל יחידה לאותו מספר מרווחים שווים. המכנה מתאר כמה מרווחים יש ביחידה; המונה כמה מרווחים התקדמנו מאפס.",
+    "סיכום הדרך: מסמנים מהי יחידה, סופרים מרווחים ולא שנתות, ומתקדמים מהאפס. אחרי אחד גודל המרווח אינו משתנה.",
+    [st("בין אפס לאחד ארבעה מרווחים שווים, ולכן כל מרווח הוא רבע.", "1 ÷ 4 = 1/4"),
+     st("עד A סופרים שבעה מרווחים מאפס.", "7 × 1/4 = 7/4"),
+     st("ארבעת המרווחים הראשונים מגיעים לאחד; שלושה נוספים מגיעים ל־A.", "7/4 = 1 + 3/4"),
+     st("הנקודה אחרי אחד ולפני שניים, כמצופה.", "1 < 7/4 < 2")],
+    {text:"סופרים את סימוני השנתות, כולל אפס, במקום את המרווחים שביניהם.",fix:"אפס הוא נקודת ההתחלה, לא הצעד הראשון. מצביעים על הרווח שבין כל זוג שנתות וסופרים צעדים שווים."},
+    seed=>{
+      const k=Math.floor(seed/3),type=seed%3,d=type===1?4+k:3+k,n=type===1?d+1+k%(d-1):1+k%(d-1);
+      if(type===2)return q("מה גודלו של מרווח אחד בין שתי שנתות סמוכות? ספרו מרווחים, לא סימונים.","",f(1,d),[f(1,d+1),f(1,d-1),f(2,d)],
+        [st(`המרחק בין אפס לאחד הוא יחידה אחת, המחולקת ל־${d} מרווחים שווים.`),
+         st("כדי למצוא מרווח אחד מחלקים את אורך היחידה במספר המרווחים."),
+         st("נחשב את גודל הצעד היחיד.",`1 ÷ ${d} = 1/${d}`),
+         st("כל המרווחים יחד מחזירים אותנו לאורך יחידה אחת.",`${d} × 1/${d} = 1`)],line(0,d,1,false));
+      return q(type===0?"איזה מספר מייצגת A בין אפס לאחד?":"איזה מספר מייצגת A אחרי המספר אחד?","",f(n,d),[f(n,d+1),f(n-1,d),f(n+1,d)],
+        [st(`בכל יחידה ${d} מרווחים שווים. מחפשים את מרחק A מאפס.`),
+         st("כל מרווח הוא אותו חלק מהיחידה.",`1 ÷ ${d} = 1/${d}`),
+         st(`סופרים ${n} מרווחים עד A.`,`${n} × 1/${d} = ${f(n,d)}`),
+         st(type===0?"A נמצאת אחרי אפס ולפני אחד.":"A נמצאת אחרי אחד ולפני שניים.",type===0?`0 < ${f(n,d)} < 1`:`1 < ${f(n,d)} < 2`)],line(n,d,type===0?1:2));
+    },line(7,4));
+
+  lesson("fraction-as-quotient","שבר כתוצאה של חילוק","core",
+    "נבטא חלוקה שווה כשבר, גם כשאין מספר שלם של יחידות לכל משתתף.",
+    "כשמחלקים שתי כיכרות בין חמישה ילדים, אפשר לחלק כל כיכר לחמישה חלקים שווים. כל ילד מקבל חלק אחד מכל כיכר: שתי חמישיות. קו השבר מבטא חילוק.",
+    "סיכום הדרך: הכמות שמחלקים היא המונה; מספר המשתתפים הוא המכנה. בודקים באמצעות איסוף כל המנות חזרה לכמות המקורית.",
+    [st("מחלקים שתי כיכרות באופן שווה לחמישה ילדים.", "2 ÷ 5 = 2/5"),
+     st("כל ילד מקבל חמישית מכל אחת משתי הכיכרות.", "1/5 + 1/5 = 2/5"),
+     st("מנה של שתי חמישיות קטנה מכיכר אחת.", "2/5 < 1"),
+     st("חמש המנות יחד משחזרות את שתי הכיכרות.", "5 × 2/5 = 2")],
+    {text:"מחליפים בין מספר הכיכרות למספר הילדים.",math:"2 ÷ 5 ≠ 5/2",fix:"שואלים מה מחלקים ולכמה משתתפים. אם יש פחות כיכרות מילדים, כל מנה קטנה מכיכר שלמה."},
+    seed=>{
+      const k=Math.floor(seed/3),type=seed%3,n=3+k,d=4+k%4;
+      const steps=[st(type===1?`מחלקים אורך של ${n} מטרים ל־${d} קטעים שווים; מחפשים את אורכו של קטע אחד.`:`מחלקים ${n} כיכרות בשווה בין ${d} ילדים; מחפשים מנה אחת.`),
+        st(type===1?`נמדוד בחלקי מטר: מחלקים כל מטר ל־${d} חלקים שווים.`:`מחלקים כל כיכר ל־${d} חלקים שווים. כל ילד מקבל חלק מכל כיכר.`,`1 ÷ ${d} = 1/${d}`),
+        st(type===1?`בכל קטע ${n} חלקי מטר כאלה.`:`בכל מנה ${n} חלקים כאלה.`,`${n} ÷ ${d} = ${n}/${d} = ${f(n,d)}`),
+        st(type===1?"אורך קטע כפול מספר הקטעים מחזיר את אורך הסרט המקורי.":"מכפילים את המנה במספר הילדים ומקבלים את הכמות שחולקה.",`${d} × ${f(n,d)} = ${n}`)];
+      if(type===0)return q(`מחלקים ${n} כיכרות לחם שוות בגודלן בין ${d} ילדים, ללא שארית. כמה כיכרות יקבל כל ילד?`,`${n} ÷ ${d}`,f(n,d),[f(d,n),String(Math.floor(n/d)+1),f(n,d+1)],steps,"","כיכרות לכל ילד");
+      if(type===1)return q(`סרט באורך ${n} מטרים נחתך ל־${d} קטעים שווים. מה אורכו של קטע אחד?`,`${n} ÷ ${d}`,f(n,d),[f(d,n),f(n,d+1),f(n+1,d)],steps,"","מטרים");
+      return q(`בחילוק ${n} כיכרות בין ${d} ילדים, כל כיכר חולקה ל־${d} חלקים שווים. כמה חלקים קטנים יקבל כל ילד?`,`${n}/${d} = ? × 1/${d}`,String(n),[String(d),String(n*d),String(n+1)],
+        [st(`כל חלק קטן הוא אחד חלקי ${d} כיכר. מחפשים את מספר החלקים במנה, לא את מספר הכיכרות.`),
+         st(`כל ילד מקבל חלק אחד מכל אחת מ־${n} הכיכרות.`),
+         st(`לכן יש במנה ${n} חלקים קטנים.`,`${n}/${d} = ${n} × 1/${d}`),
+         st("מספר החלקים בכל המנות מתאים למספר החלקים בכל הכיכרות.",`${n} × ${d} = ${d} × ${n}`)],"","חלקים קטנים","number");
+    });
+
+  lesson("equivalent-fractions","שברים שווים: הרחבה וצמצום","core",
+    "נשנה את גודל החלקים ואת מספרם בלי לשנות את הכמות.",
+    "כשחוצים כל רבע לשניים, כל חלק נהיה קטן פי שניים ויש פי שניים חלקים. לכן שלושה רבעים ושש שמיניות מכסים אותו שטח. בצמצום מאחדים קבוצות שוות של חלקים קטנים.",
+    "סיכום הדרך: בהרחבה כופלים מונה ומכנה באותו מספר שלם חיובי; בצמצום מחלקים את שניהם באותו מחלק משותף. הערך נשמר. כדי לצמצם עד הסוף ממשיכים עד שאין מחלק משותף גדול מאחד.",
+    [st("מתחילים בשלושה מתוך ארבעה חלקים שווים.", "3/4"),
+     st("מחלקים כל רבע לשני חלקים שווים; גם המונה וגם המכנה מוכפלים.", "3/4 = (3 × 2)/(4 × 2)"),
+     st("מתקבלות שש שמיניות של אותו שלם.", "3/4 = 6/8"),
+     st("בכיוון ההפוך מאחדים כל זוג שמיניות לרבע.", "6/8 = (6 ÷ 2)/(8 ÷ 2) = 3/4")],
+    {text:"מוסיפים אותו מספר למונה ולמכנה וחושבים שהשבר לא השתנה.",math:"3/4 ≠ 4/5",fix:"שמירת הערך דורשת כפל או חילוק באותו גורם, לא חיבור. אפשר לבדוק על פסים שווי גודל."},
+    seed=>{
+      const k=Math.floor(seed/3),type=seed%3,n=1+k%3,d=5+k,t=2+k%3,N=n*t,D=d*t,g=gcd(N,D);
+      if(type===0)return q(`מחלקים כל אחד מ־${d} החלקים ל־${t} חלקים שווים. איזה מונה משלים את ההרחבה?`,`${n}/${d} = ?/${D}`,String(N),[String(n+t),String(n),String(D)],
+        [st(`השבר הנתון הוא ${n} חלקים מתוך ${d}; המכנה החדש הוא ${D}.`),
+         st("נבדוק פי כמה גדל המכנה ונשתמש באותו גורם במונה.",`${D} ÷ ${d} = ${t}`),
+         st("כל חלק צבוע הוחלף בכמה חלקים קטנים.",`${n} × ${t} = ${N}`),
+         st("מחלקים בחזרה באותו גורם ומקבלים את השבר המקורי.",`${N}/${D} = ${n}/${d}`)],"","","number");
+      if(type===1)return q("מה ערכו של השבר לאחר צמצום? אפשר לענות בכל כתיבה שוות ערך.",`${N}/${D}`,f(N,D),[f(N/g,D),f(N,D/g),f(N+1,D)],
+        [st(`מחפשים כתיבה פשוטה לאותה כמות: ${N} חלקים מתוך ${D}.`),
+         st(`למונה ולמכנה מחלק משותף ${g}; נחלק בו את שניהם.`,`${g} > 1`),
+         st("החלוקה משנה את מספר החלקים ואת גודלם יחד.",`${N}/${D} = (${N} ÷ ${g})/(${D} ÷ ${g}) = ${f(N,D)}`),
+         st("הרחבה באותו גורם משחזרת את המונה והמכנה המקוריים.",`(${N/g} × ${g})/(${D/g} × ${g}) = ${N}/${D}`)]);
+      const correct=`מחלקים גם את המונה וגם את המכנה ב־${g}`;
+      return q(`רוצים לצמצם את השבר ${N}/${D} בלי לשנות את ערכו. מהו הצעד התקין?`,`${N}/${D}`,correct,
+        [`מחלקים רק את המונה ב־${g}`,`מחלקים רק את המכנה ב־${g}`,`מחסרים ${g} גם מהמונה וגם מהמכנה`],
+        [st("צריך להחליף את הכתיבה אך לשמור על אותה כמות."),
+         st(`המספר ${g} מחלק גם את ${N} וגם את ${D}.`,`${N} ÷ ${g} = ${N/g}`),
+         st("מחלקים את המונה ואת המכנה באותו מספר.",`${N}/${D} = (${N} ÷ ${g})/(${D} ÷ ${g}) = ${f(N,D)}`),
+         st("בהרחבה חוזרת מתקבלת בדיוק אותה כמות.",`${f(N,D)} = ${N}/${D}`)],"","","text");
+    },strips(3,4)+strips(6,8));
+
+  lesson("compare-fractions","משווים חלקים של אותו שלם","core",
+    "נשווה שברים בעזרת גודל החלקים או בעזרת מכנה משותף, ונזהה מתי חסר מידע על השלם.",
+    "אפשר להשוות כמויות לפי השברים רק כשהשלמים שווי גודל. כשמספר החלקים הנבחרים שווה, חלקים גדולים יותר נותנים כמות גדולה יותר. כשגם המונים וגם המכנים שונים, מחלקים לאותן יחידות בעזרת מכנה משותף.",
+    "סיכום הדרך: תחילה מוודאים שמדובר באותו שלם. אחר כך כותבים בשברים שווי ערך עם מכנה משותף ומשווים מונים. מכנה גדול לבדו אינו מעיד שהשבר קטן יותר.",
+    [st("משווים שתי כמויות מאותו שלם: שני שלישים ושלושה רבעים.", "2/3"),
+     st("מחלקים את אותו שלם לשנים עשר חלקים שווים.", "2/3 = 8/12"),
+     st("גם שלושה רבעים נכתבים ביחידות של חלקי שתים עשרה.", "3/4 = 9/12"),
+     st("תשעה חלקים מאותה מידה גדולים משמונה.", "8/12 < 9/12")],
+    {text:"אומרים ששבר בעל מכנה גדול תמיד קטן יותר, בלי לבדוק את המונה ואת גודל השלם.",math:"3/4 > 1/2",fix:"באותו מונה ובאותו שלם, מכנה גדול יוצר חלקים קטנים יותר. במונים שונים משווים בעזרת יחידות משותפות."},
+    seed=>{
+      const k=Math.floor(seed/3),type=seed%3;
+      if(type===0){
+        const n=2+k%3,d=5+k,e=d+2,L=lcm(d,e);
+        return q("שני הפסים מייצגים שלמים שווי גודל. באיזה שבר הכמות הכחולה גדולה יותר?",`${n}/${d} , ${n}/${e}`,f(n,d),[f(n,e),f(n,d+1),f(n,d+3)],
+          [st(`נלקח אותו מספר חלקים, ${n}, משני שלמים שווי גודל.`),
+           st(`חלוקה ל־${d} יוצרת חלקים גדולים יותר מחלוקה ל־${e}.`,`${d} < ${e}`),
+           st("אפשר לוודא בעזרת מכנה משותף.",`${n}/${d} = ${n*(L/d)}/${L}`),
+           st("משווים מונים לאחר ששתי הכמויות נמדדות באותן יחידות.",`${n*(L/d)}/${L} > ${n*(L/e)}/${L}`)],strips(n,d)+strips(n,e));
+      }
+      if(type===1){
+        const a=k+1,b=k+4,c=k+2,d=k+5,L=lcm(b,d),A=a*(L/b),C=c*(L/d);
+        return q("שני מכלים זהים בגודלם. איזה חלק מלא גדול יותר?",`${a}/${b} , ${c}/${d}`,f(c,d),[f(a,b),f(c,d+1),f(a+1,b)],
+          [st("השלמים שווי גודל; המונים והמכנים שונים."),
+           st(`נבחר ${L} כמכנה משותף ונחלק את שני השלמים לאותן יחידות.`,`${a}/${b} = ${A}/${L}`),
+           st("נרחיב גם את השבר השני.",`${c}/${d} = ${C}/${L}`),
+           st("כעת אפשר להשוות מונים.",`${C}/${L} > ${A}/${L}`)]);
+      }
+      const n=1+k%3,d=4+k;
+      return q(`נעה קיבלה ${n}/${d} מעוגה אחת ותום קיבל ${n}/${d+1} מעוגה אחרת. לא ידוע גודל העוגות. מי קיבל כמות עוגה גדולה יותר?`,"","אי אפשר לקבוע בלי לדעת את גודל העוגות",
+        ["נעה בהכרח קיבלה יותר","תום בהכרח קיבל יותר","הם בהכרח קיבלו אותה כמות"],
+        [st("ידועים חלקים משתי עוגות, אבל גדלי העוגות אינם ידועים."),
+         st("השוואת השברים בלבד הייתה מספיקה אילו העוגות היו שוות בגודלן."),
+         st("בעוגות שוות החלק של נעה היה גדול יותר.",`${n}/${d} > ${n}/${d+1}`),
+         st("אבל עוגה גדולה מספיק אצל תום יכולה להפוך את השוואת הכמויות. לכן חסר מידע ולא ניתן לקבוע.")],"","","text");
+    });
+
+  const betweenPairs=[[1,4,1,2],[1,3,2,3],[2,5,3,5],[3,4,1,1],[4,3,5,3],[5,6,7,6],[7,4,2,1],[1,6,1,4]];
+  lesson("fraction-between","מוצאים שבר בין שני שברים","core",
+    "נמצא שבר שנמצא ממש בין שני שברים, ונבחר את נקודת האמצע כשהשאלה מבקשת תשובה יחידה.",
+    "גם אם במכנה הנתון אין מונה שלם בין שני המונים, אפשר לחלק את החלקים לחלקים קטנים יותר. בין חמישית לשתי חמישיות אין חמישית שלמה נוספת, אבל שלוש עשיריות נמצאות ביניהן. אפשר להמשיך לחלק ולמצוא עוד שברים.",
+    "סיכום הדרך: כותבים במכנה משותף, ואם צריך מרחיבים שוב. מחפשים מונה שנמצא ממש בין המונים. בתרגילים כאן בוחרים בדיוק את האמצע, כדי שתהיה תשובה יחידה; בודקים שהמרחק משני הקצוות שווה.",
+    [st("מחפשים שבר בין חמישית לשתי חמישיות; אסור לבחור באחד הקצוות.", "1/5 < 2/5"),
+     st("מחלקים כל חמישית לשניים. הקצוות הם שתי עשיריות וארבע עשיריות.", "1/5 = 2/10"),
+     st("שלוש נמצא בין שני המונים החדשים, ולכן שלוש עשיריות מתאימות.", "2/10 < 3/10 < 4/10"),
+     st("הנקודה שבחרנו רחוקה עשירית מכל קצה.", "3/10 − 1/5 = 2/5 − 3/10")],
+    {text:"חושבים שאין שבר בין שני שברים שהמונים שלהם עוקבים, או בוחרים באחד הקצוות.",fix:"אפשר להרחיב שוב וליצור חלקים קטנים יותר. ״ממש בין״ דורש שהשבר יהיה גדול מהקצה הקטן וקטן מהקצה הגדול."},
+    seed=>{
+      const k=Math.floor(seed/3),type=seed%3,[a,b,c,d]=betweenPairs[k],L=lcm(b,d),A=a*(L/b),C=c*(L/d),D=2*L,N=A+C,answer=f(N,D);
+      const steps=[st("יש שברים רבים בין שני הקצוות. כאן מחפשים דווקא את הנקודה שבמרחק שווה משניהם.",`${a}/${b} < ${c}/${d}`),
+        st(`נחלק לחלקי ${D}: המונה בקצה השמאלי הוא ${2*A}, ובקצה הימני ${2*C}.`,`${a}/${b} = ${2*A}/${D}`),
+        st("באותו מכנה, המונה שבדיוק באמצע הוא סכום מוני הקצוות חלקי שתיים.",`(${2*A} + ${2*C}) ÷ 2 = ${N}`),
+        st(`השבר ${N} חלקי ${D} נמצא ממש בין הקצוות ובמרחק שווה משניהם.`,`${answer} − ${a}/${b} = ${c}/${d} − ${answer}`)];
+      if(type===1)return q("הרחבנו כדי למצוא את השבר שבדיוק באמצע. איזה מונה ימקם אותו במרחק שווה משני הקצוות?",`${a}/${b} < ?/${D} < ${c}/${d}`,String(N),[String(2*A),String(2*C),String(2*C+1)],steps,"","","number");
+      return q(type===0?"יש שברים רבים בין שני המספרים. הפעם מצאו את השבר שבדיוק באמצע ביניהם.":`הנקודה A נמצאת בדיוק באמצע בין ${a}/${b} לבין ${c}/${d}. איזה שבר מייצגת A?`,`${a}/${b} < ? < ${c}/${d}`,answer,[f(a,b),f(c,d),f(c+d,d)],steps,type===2?line(N,D,Math.ceil(c/d)):"");
+    },line(3,10,1));
+
+  lesson("mixed-and-improper","שבר גדול מאחד ומספר מעורב","core",
+    "נעבור בין שבר למספר מעורב באמצעות קבוצות של שלם אחד.",
+    "בכל שלם יש מספר חלקים השווה למכנה. לכן באחד עשר רבעים אפשר לארוז שתי קבוצות של ארבעה רבעים, ונשארים עוד שלושה רבעים. לא משנים את הכמות אלא רק את צורת הכתיבה.",
+    "סיכום הדרך: משבר למעורב מחלקים את המונה במכנה; המנה השלמה היא מספר השלמים והשארית היא המונה. בכיוון ההפוך סופרים את כל החלקים: שלמים כפול מכנה ועוד המונה.",
+    [st("רוצים לארוז אחד עשר רבעים בשלמים.", "11/4"),
+     st("בכל שלם ארבעה רבעים; שתי קבוצות מלאות ועוד שלושה.", "11 = 2 × 4 + 3"),
+     st("נכתוב את השלמים ואת החלק שנותר יחד.", "11/4 = 2 3/4"),
+     st("המרה חוזרת סופרת שוב את כל הרבעים.", "(2 × 4 + 3)/4 = 11/4")],
+    {text:"קוראים את השארית כמספר שלם נוסף, או מחליפים את המכנה בשארית.",fix:"השארית סופרת חלקים מאותו גודל. המכנה נשאר זהה והשארית חייבת להיות קטנה ממנו."},
+    seed=>{
+      const k=Math.floor(seed/3),type=seed%3,d=3+k,w=1+k%3,r=1+k%(d-1),n=w*d+r;
+      const steps=[st(`יש ${n} חלקים בגודל אחד חלקי ${d}; מחפשים כמה שלמים ועוד חלק נשארו.`),
+        st(`מאגדים כל ${d} חלקים לשלם.`,`${n} = ${w} × ${d} + ${r}`),
+        st("השלמים והשארית מתארים את אותה כמות.",`${n}/${d} = ${mix(n,d)}`),
+        st("סופרים בחזרה את כל החלקים.",`(${w} × ${d} + ${r})/${d} = ${n}/${d}`)];
+      if(type===0)return q("איזה מספר מעורב שווה לשבר הנתון?",`${n}/${d}`,mix(n,d),[mix(n+1,d),f(n,d+1),String(w)],steps);
+      if(type===1)return q("כתבו את המספר המעורב כשבר. אפשר להקליד כל כתיבה שוות ערך.",mix(n,d),f(n,d),[f(w+r,d),f(n+1,d),f(n,d+1)],
+        [st(`במספר ${w} שלמים ועוד ${r} חלקים מתוך ${d}.`),
+         st("כל שלם מכיל מספר חלקים השווה למכנה.",`${w} × ${d} = ${w*d}`),
+         st("נוסיף את החלקים שאינם בשלמים.",`(${w*d} + ${r})/${d} = ${n}/${d}`),
+         st("בחילוק המונה חוזרים לשלמים ולשארית.",`${n} = ${w} × ${d} + ${r}`)]);
+      return q("הנקודה A נמצאת בין שני שלמים סמוכים. מהו השלם שמשמאלה?","",String(w),[String(w-1),String(w+1),String(d)],
+        [st(`כל יחידה על הישר מחולקת ל־${d} מרווחים שווים. הנקודה נמצאת ${n} מרווחים מאפס.`),
+         st("נספור כמה קבוצות מלאות של מרווחים יש לפני הנקודה.",`${n} = ${w} × ${d} + ${r}`),
+         st(`יש ${w} שלמים מלאים לפני A ועוד חלק משלם.`,`${n}/${d} = ${mix(n,d)}`),
+         st("המספר נמצא בין השלם שמצאנו לבא אחריו.",`${w} < ${n}/${d} < ${w+1}`)],line(n,d,w+1),"","number");
+    },strips(11,4));
+
+  const addPairs=[[2,3],[3,4],[4,6],[5,10],[6,8],[3,6],[4,8],[5,6]];
+  lesson("add-unlike","חיבור שברים במכנים שונים","core",
+    "נחבר כמויות מאותו שלם לאחר שנחלק אותן ליחידות באותו גודל.",
+    "אי אפשר לספור חצאים ושלישים כאילו הם חלקים באותו גודל. חלוקה לשישיות לא משנה את הכמויות: חצי הוא שלוש שישיות ושליש הוא שתי שישיות. כעת אפשר לספור חמש שישיות יחד.",
+    "סיכום הדרך: מוצאים מכנה משותף, מרחיבים כל שבר, מחברים מונים ומשאירים את המכנה. בסיום מצמצמים או כותבים כמספר מעורב לפי הצורך. סכום יכול להיות גדול מאחד.",
+    [st("מחברים חצי ושליש של אותה יחידה.", "1/2 + 1/3"),
+     st("כל חצי מחולק לשלושה חלקים וכל שליש לשניים.", "1/2 = 3/6"),
+     st("מחליפים גם את השליש ומחברים חלקים באותו גודל.", "3/6 + 2/6 = 5/6"),
+     st("בודקים בחיסור: הסכום פחות חצי מחזיר את השליש.", "5/6 − 1/2 = 1/3")],
+    {text:"מחברים גם מונים וגם מכנים.",math:"1/2 + 1/3 ≠ 2/5",fix:"המכנה מתאר את גודל החלקים; הוא אינו מספר פריטים שמוסיפים. תחילה מחלקים ליחידות משותפות."},
+    seed=>{
+      const k=Math.floor(seed/3),type=seed%3,[b,d]=addPairs[k],a=1+k%(b-1),c=1+(k+1)%(d-1),L=lcm(b,d),A=a*(L/b),C=c*(L/d),N=A+C;
+      const steps=[st("מחברים שתי כמויות של אותה יחידה, אך החלקים בגדלים שונים."),
+        st(`נשתמש בחלקי ${L} כדי לספור יחידות שוות.`,`${a}/${b} + ${c}/${d} = ${A}/${L} + ${C}/${L}`),
+        st("מחברים רק את המונים.",`${A}/${L} + ${C}/${L} = ${N}/${L} = ${f(N,L)}`),
+        st("החסרת המחובר השני מחזירה את הראשון.",`${f(N,L)} − ${c}/${d} = ${a}/${b}`)];
+      if(type===1)return q("כבר נבחר מכנה משותף. איזה מונה חסר בצעד ההרחבה הבא?",`${a}/${b} + ${c}/${d} = ?/${L} + ${C}/${L}`,String(A),[String(a),String(a+L-b),String(a*(L/d))],
+        [st(`רוצים לכתוב את השבר הראשון במכנה ${L}.`),
+         st("מוצאים את גורם ההרחבה בעזרת המכנים.",`${L} ÷ ${b} = ${L/b}`),
+         st("כופלים גם את המונה באותו גורם.",`${a} × ${L/b} = ${A}`),
+         st("בדיקה: השבר החדש שווה לשבר הראשון.",`${A}/${L} = ${a}/${b}`)],"","","number");
+      return q(type===0?"חשבו את הסכום.":`הפסים מייצגים את הסכום אחרי חלוקה לחלקי ${L}; כל פס הוא שלם. כמה יחידות צבועות יחד?`,`${a}/${b} + ${c}/${d}`,f(N,L),[f(a+c,b+d),f(Math.abs(A-C),L),f(N+1,L)],steps,type===2?strips(N,L):"");
+    },strips(3,6)+strips(2,6));
+
+  lesson("subtract-regroup","חיסור והמרת שלם לחלקים","core",
+    "נחסר יחידות שוות, ונפרק שלם כשאין מספיק חלקים במספר המעורב.",
+    "שלם אחד שווה למכנה חלקים. כדי לחסר שני שלישים משלם ושליש אפשר להמיר את השלם לשלושה שלישים. כך יש ארבעה שלישים, ומהם אפשר להוריד שני שלישים. הכמות לפני החיסור לא השתנתה.",
+    "סיכום הדרך: משווים מכנים. אם החלק השברי קטן מדי, ממירים שלם אחד למכנה חלקים ומוסיפים למונה. מחסרים ובודקים בחיבור התוצאה והכמות שהוסרה.",
+    [st("רוצים לחסר שני שלישים משלם ושליש.", "1 1/3 − 2/3"),
+     st("ממירים את השלם לשלושה שלישים.", "1 1/3 = 3/3 + 1/3 = 4/3"),
+     st("יש כעת מספיק שלישים לחיסור.", "4/3 − 2/3 = 2/3"),
+     st("חיבור התוצאה והחלק שהוסר מחזיר את ההתחלה.", "2/3 + 2/3 = 1 1/3")],
+    {text:"מוסיפים מכנה למונה, אבל שוכחים להוריד שלם אחד.",math:"2 1/4 ≠ 2 + 5/4",fix:"המרה אינה מוסיפה כמות: מורידים שלם אחד ובמקומו מוסיפים ארבעה רבעים, או את מספר החלקים המתאים למכנה."},
+    seed=>{
+      const k=Math.floor(seed/3),type=seed%3,b=3+k,w=2+k%3;
+      if(type===0){
+        const start=w*b+1,take=2*b-1,N=start-take;
+        return q("חסרו. בחלק השברי אין מספיק חלקים: כדאי להמיר שלם אחד.",`${mix(start,b)} − ${mix(take,b)}`,f(N,b),[f(N+1,b),f(N+b,b),f(Math.abs(1-(b-1)),b)],
+          [st(`מחסרים שלם ועוד ${b-1} חלקים מתוך ${b}, ממספר שיש בו רק חלק שברי אחד.`),
+           st("ממירים שלם אחד לחלקים, בלי לשנות את הכמות.",`${mix(start,b)} = ${w-1} + ${b+1}/${b}`),
+           st("מחסרים שלמים וחלקים בנפרד.",`(${w-1} − 1) + (${b+1}/${b} − ${b-1}/${b}) = ${f(N,b)}`),
+           st("מחברים בחזרה את הכמות שחיסרנו.",`${f(N,b)} + ${mix(take,b)} = ${mix(start,b)}`)]);
+      }
+      if(type===1){
+        const a=b-1,d=2*b,c=1+k%3,N=2*a-c;
+        return q("מה נשאר לאחר החיסור? כתבו קודם בחלקים שווים.",`${a}/${b} − ${c}/${d}`,f(N,d),[f(a-c,d),f(2*a+c,d),f(N+1,d)],
+          [st("שני השברים מתייחסים לאותה יחידה. מחפשים את ההפרש."),
+           st("מחלקים כל חלק בשבר הראשון לשניים.",`${a}/${b} = ${2*a}/${d}`),
+           st("מחסרים מונים לאחר שהמכנים שווים.",`${2*a}/${d} − ${c}/${d} = ${N}/${d} = ${f(N,d)}`),
+           st("ההפרש והכמות שהסרנו משלימים את השבר הראשון.",`${f(N,d)} + ${c}/${d} = ${a}/${b}`)]);
+      }
+      return q("ממירים שלם אחד לחלקים, כהכנה לחיסור. איזה מונה חסר?",`${mix(w*b+1,b)} = ${w-1} + ?/${b}`,String(b+1),[String(b),String(1),String(w*b+1)],
+        [st(`במספר ${w} שלמים ועוד חלק אחד מתוך ${b}. רוצים להמיר רק שלם אחד.`),
+         st("שלם אחד מכיל מכנה חלקים.",`1 = ${b}/${b}`),
+         st("מצרפים אותם לחלק השברי שכבר היה.",`${b} + 1 = ${b+1}`),
+         st("אחרי הפחתת שלם אחד הכמות המקורית נשמרת.",`${w-1} + ${b+1}/${b} = ${mix(w*b+1,b)}`)],"","","number");
+    });
+
+  lesson("whole-times-fraction","כפל של מספר שלם בשבר","core",
+    "נפרש כפל של מספר שלם בשבר כחיבור חוזר של אותה כמות.",
+    "ארבע מנות של שתי חמישיות מכילות שמונה חמישיות. מספר החלקים גדל פי ארבעה, אך כל חלק עדיין חמישית. לכן מכפילים את המונה במספר המנות ומשאירים את המכנה.",
+    "סיכום הדרך: מספר המנות כפול מספר החלקים בכל מנה נותן את המונה הכולל. המכנה מתאר את גודל החלק ולכן אינו משתנה. התוצאה יכולה להיות קטנה מאחד או גדולה ממנו.",
+    [st("בכל מנה שתי חמישיות; לוקחים ארבע מנות.", "4 × 2/5"),
+     st("אפשר לראות זאת כחיבור חוזר.", "2/5 + 2/5 + 2/5 + 2/5"),
+     st("סופרים שמונה חלקים, וכל אחד עדיין חמישית.", "4 × 2/5 = 8/5"),
+     st("חמישה מהחלקים יוצרים שלם, ועוד שלושה נותרו.", "8/5 = 1 3/5")],
+    {text:"מכפילים גם את המכנה במספר המנות.",math:"4 × 2/5 ≠ 8/20",fix:"כפל של הכמות אינו הרחבה של כתיבת אותו שבר. ארבע מנות צריכות להיות פי ארבעה ממנה אחת; גודל כל חמישית נשאר קבוע."},
+    seed=>{
+      const k=Math.floor(seed/3),type=seed%3,n=1+k%3,d=4+k,m=2+k%4,N=m*n;
+      const repeated=Array(m).fill(`${n}/${d}`).join(" + ");
+      if(type===2)return q("מהו המונה בצעד הבא? גודל החלקים נשאר קבוע.",`${m} × ${n}/${d} = ?/${d}`,String(N),[String(n+m),String(n),String(m*d)],
+        [st(`יש ${m} מנות, בכל אחת ${n} חלקים בגודל אחד חלקי ${d}.`),
+         st("כדי לספור את כל החלקים כופלים את מספר המנות בחלקים למנה."),
+         st("זה המונה החדש, לא המכנה.",`${m} × ${n} = ${N}`),
+         st("החיבור החוזר נותן בדיוק אותו שבר.",`${repeated} = ${N}/${d}`)],"","","number");
+      return q(type===0?`לכל קישוט דרושים ${n}/${d} מטרים של סרט. כמה מטרים דרושים ל־${m} קישוטים?`:"בכל שורה צבועה אותה כמות. כל פס הוא שלם באותו גודל. כמה שלמים צבועים בסך הכול?",`${m} × ${n}/${d}`,f(N,d),[f(N,m*d),f(m+n,d),f(N+1,d)],
+        [st(`מחפשים את הכמות הכוללת ב־${m} מנות של ${n} חלקים מתוך ${d}.`),
+         st("נפרש את הכפל כחיבור חוזר.",repeated),
+         st("מספר החלקים מוכפל, וגודל כל חלק נשמר.",`${m} × ${n}/${d} = ${N}/${d} = ${f(N,d)}`),
+         st("בבדיקה סופרים בנפרד את החלקים של כל המנות.",`${repeated} = ${f(N,d)}`)],type===1?strips(n,d,m,true):"",type===0?"מטרים":"שלמים");
+    },strips(2,5,4,true));
+
+  lesson("fraction-of-quantity","חזרה: שבר של כמות","review",
+    "נמצא חלק מכמות בעזרת חלוקה לקבוצות שוות ובחירה בכמה מהן.",
+    "כדי למצוא שלוש חמישיות מעשרים וחמש, מחלקים עשרים וחמש לחמש קבוצות שוות ואז לוקחים שלוש קבוצות. המכנה אומר לכמה קבוצות לחלק, והמונה כמה קבוצות לבחור.",
+    "סיכום הדרך: כמות כוללת חלקי המכנה נותנת את הכמות בחלק אחד; כופלים במונה לקבלת החלק המבוקש. תמיד מציינים ממה נלקח השבר ומהי יחידת התשובה.",
+    [st("מחפשים שלוש חמישיות מתוך עשרים וחמישה חרוזים.", "25"),
+     st("בחמישית אחת יש חמישה חרוזים.", "25 ÷ 5 = 5"),
+     st("לוקחים שלוש קבוצות כאלה.", "5 × 3 = 15"),
+     st("שתי הקבוצות שלא נלקחו משלימות לעשרים וחמישה.", "15 + 2 × 5 = 25")],
+    {text:"מחלקים במונה במקום במכנה, או עוצרים אחרי שמצאו רק חלק אחד.",fix:"המכנה קובע את מספר הקבוצות השוות. אחרי החלוקה מסמנים כמה קבוצות צריך לבחור לפי המונה."},
+    seed=>{
+      const k=Math.floor(seed/3),type=seed%3,d=3+k,n=1+k%(d-1),u=2+k,Q=d*u,N=n*u;
+      if(type===1)return q(`רוצים למצוא ${n}/${d} מתוך ${Q} מדבקות. מהו מספר המדבקות בקבוצה אחת, בצעד הראשון?`,`${Q} ÷ ${d}`,String(u),[String(n*u),String(d),String(Q-n)],
+        [st(`השלם הוא ${Q} מדבקות. כרגע מחפשים רק אחד חלקי ${d}, לא את החלק כולו.`),
+         st(`מחלקים את כל המדבקות ל־${d} קבוצות שוות.`),
+         st("נחשב כמה מדבקות יש בקבוצה אחת.",`${Q} ÷ ${d} = ${u}`),
+         st("מחזירים את כל הקבוצות כדי לבדוק.",`${u} × ${d} = ${Q}`)],"","מדבקות בקבוצה אחת","number");
+      return q(type===0?`בספרייה ${Q} ספרים על מדף. ${n}/${d} מהם ספרי הרפתקאות. כמה ספרי הרפתקאות יש?`:`העיגולים חולקו ל־${d} קבוצות שוות. ${n}/${d} מהקבוצות כחולות. כמה עיגולים כחולים באיור?`,"",String(N),[String(u),String(Q-n),String(Q-N)],
+        [st(`הכמות הכוללת היא ${Q}; בוחרים ${n} מתוך ${d} קבוצות שוות.`),
+         st("נמצא כמה פריטים יש בקבוצה אחת.",`${Q} ÷ ${d} = ${u}`),
+         st("כופלים את הכמות בקבוצה במספר הקבוצות שנבחרו.",`${u} × ${n} = ${N}`),
+         st("הפריטים שנבחרו והפריטים בקבוצות שנותרו משלימים לשלם.",`${N} + ${d-n} × ${u} = ${Q}`)],type===2?groups(d,u,n):"",type===0?"ספרים":"עיגולים","number");
+    },groups(5,5,3));
+
+  lesson("fraction-word-problems","בלשי השברים: בעיות בכמה צעדים","core",
+    "נתכנן סדר פעולות, נזהה בכל שלב מהו השלם ונבדוק את התוצאה בסיפור.",
+    "מילים כמו ״מהכמות המקורית״ ו״ממה שנותר״ אינן מתארות אותו שלם. לפני שמחשבים מבררים למה מתייחס כל שבר. אחר כך מתעדים מה נלקח ומה נשאר, ושומרים על אותן יחידות.",
+    "סיכום הדרך: מסמנים נתונים ומבוקש, מזהים את השלם של כל שבר, מחשבים תוצאות ביניים ואז את המבוקש. בדיקת שימור — מה שנלקח ועוד מה שנותר — מחזירה את הכמות ההתחלתית.",
+    [st("בקופסה עשרים עוגיות. נלקחו שתי חמישיות מהכמות המקורית ואחר כך חמישית מהכמות המקורית.", "20 ÷ 5 = 4"),
+     st("שני השברים מתייחסים לאותו שלם, ולכן אפשר לחבר אותם.", "2/5 + 1/5 = 3/5"),
+     st("נלקחו שתים עשרה עוגיות; נחסר אותן מההתחלה.", "20 − 3 × 4 = 8"),
+     st("העוגיות שנותרו והעוגיות שנלקחו משלימות לכמות המקורית.", "8 + 12 = 20")],
+    {text:"מחשבים את השבר השני ממה שנשאר, למרות שנאמר ״מהכמות המקורית״.",fix:"כותבים ליד כל שבר מהו השלם שלו. רק שברים של אותה יחידה או שלמים שווי גודל אפשר לחבר ישירות כדי לתאר את הכמות הכוללת."},
+    seed=>{
+      const k=Math.floor(seed/3),type=seed%3;
+      if(type===0){
+        const d=5+k,u=3+k,Q=d*u,n=1+k%2,m=1,taken=(n+m)*u,R=Q-taken;
+        return q(`בקופסה ${Q} כרטיסים. בבוקר נלקחו ${n}/${d} מהכמות המקורית ובערב עוד ${m}/${d} מהכמות המקורית. כמה כרטיסים נשארו?`,"",String(R),[String(taken),String(Q-n-m),String(Q-n*u)],
+          [st(`בשני השלבים השלם הוא אותה כמות מקורית: ${Q} כרטיסים. מחפשים כמה נשארו.`),
+           st("מחברים את החלקים שנלקחו, ומוצאים כמה יש בחלק אחד.",`${n}/${d} + ${m}/${d} = ${n+m}/${d}`),
+           st("מחסרים מהכמות המקורית את מספר הכרטיסים שנלקחו.",`${Q} − (${Q} ÷ ${d}) × ${n+m} = ${R}`),
+           st("מה שנותר ועוד מה שנלקח מחזיר את ההתחלה.",`${R} + ${taken} = ${Q}`)],"","כרטיסים","number");
+      }
+      if(type===1){
+        const b=3+k,d=b+1,w=2+k%3,L=lcm(b,d),A=L/b,C=2*(L/d),N=w*L-A-C;
+        return q(`סרט באורך ${w} מטרים. גזרו ממנו 1/${b} מטר לקישוט אחד ועוד 2/${d} מטר לקישוט אחר. כמה מטרים נשארו?`,"",f(N,L),[f(A+C,L),f(w*L-A,L),f(N+1,L)],
+          [st(`האורך ההתחלתי הוא ${w} מטרים; שני החלקים שנגזרו נתונים במטרים, לא כשברים מהסרט כולו.`),
+           st("מחברים את האורכים שנגזרו בעזרת מכנה משותף.",`1/${b} + 2/${d} = ${A+C}/${L}`),
+           st("ממירים גם את האורך ההתחלתי לאותם חלקי מטר ומחסרים.",`${w*L}/${L} − ${A+C}/${L} = ${f(N,L)}`),
+           st("חיבור הנותר ושני החלקים שנגזרו משחזר את האורך המקורי.",`${f(N,L)} + 1/${b} + 2/${d} = ${w}`)],"","מטרים");
+      }
+      const w=3+k%3,p=2+k%3,d=3+k,N=w*d-p;
+      return q(`במכל ${w} ליטרים. מילאו ${p} בקבוקים, בכל בקבוק 1/${d} ליטר. כמה ליטרים נשארו במכל?`,"",f(N,d),[f(p,d),f(w*d-1,d),f(N-1,d)],
+        [st(`מתחילים ב־${w} ליטרים ומוזגים ${p} מנות שוות. מחפשים את הכמות שלא נמזגה.`),
+         st("מחשבים תחילה את הכמות הכוללת בבקבוקים.",`${p} × 1/${d} = ${p}/${d}`),
+         st("מחסרים את הכמות שנמזגה מהכמות ההתחלתית.",`${w} − ${p}/${d} = ${f(N,d)}`),
+         st("הכמות שבמכל ובבקבוקים יחד שווה להתחלה.",`${f(N,d)} + ${p}/${d} = ${w}`)],"","ליטרים");
+    });
+  lesson("recover-whole","העשרה לבחירה: מחלק ידוע לשלם","enrichment",
+    "נשחזר כמות שלמה כאשר ידוע כמה פריטים נמצאים בכמה קבוצות שוות שלה.",
+    "אם שתי חמישיות מאוסף הן עשרה פריטים, עשרת הפריטים ממלאים שתי קבוצות שוות — לא את כל חמש הקבוצות. חלוקה בשתיים נותנת את מספר הפריטים בקבוצה אחת; מכאן אפשר להרכיב חמש קבוצות ולמצוא את האוסף כולו.",
+    "סיכום הדרך: מסמנים כמה קבוצות מייצגת הכמות הידועה. מחלקים במספר הקבוצות האלה כדי למצוא קבוצה אחת, ואז כופלים במספר הקבוצות בשלם. זו דרך של קבוצות שוות, לא כלל לחילוק בשבר.",
+    [st("שתי חמישיות מאוסף חרוזים הן עשרה חרוזים. מחפשים את מספר החרוזים באוסף כולו.", "2/5"),
+     st("הכמות הידועה מכילה שתי קבוצות; נחלק בשתיים כדי למצוא חמישית אחת.", "10 ÷ 2 = 5"),
+     st("השלם מכיל חמש קבוצות של חמישה חרוזים.", "5 × 5 = 25"),
+     st("בדיקה: שתי קבוצות מתוך חמש מחזירות את הכמות הידועה.", "(25 ÷ 5) × 2 = 10")],
+    {text:"מחלקים את הכמות הידועה במכנה, כאילו היא כבר הכמות הכוללת.",math:"10 ÷ 5 ≠ 5",fix:"עשרת החרוזים ממלאים רק שתי קבוצות, ולכן מחלקים בשתיים. המכנה אומר כמה קבוצות יהיו באוסף השלם, שעדיין אינו ידוע."},
+    seed=>{
+      const k=Math.floor(seed/3),type=seed%3,d=4+k,n=2+k%3,unit=3+k,known=n*unit,whole=d*unit;
+      if(type===1)return q(`ידוע ש־${n}/${d} מאוסף הם ${known} פריטים. מה מספר הפריטים בחלק אחד, כלומר באחד חלקי ${d} מהאוסף?`,`${known} ÷ ${n}`,String(unit),[String(known),String(known*n),String(d)],
+        [st(`הכמות הידועה, ${known} פריטים, ממלאת ${n} קבוצות שוות. מחפשים כרגע רק קבוצה אחת.`),
+         st(`נחלק ב־${n}, כי זה מספר הקבוצות שמספר הפריטים בהן ידוע.`),
+         st("נמצא כמה פריטים יש בכל קבוצה.",`${known} ÷ ${n} = ${unit}`),
+         st("מחברים בחזרה את הקבוצות הידועות כדי לבדוק.",`${unit} × ${n} = ${known}`)],"","פריטים בחלק אחד","number");
+      return q(type===0?`${n}/${d} מאוסף מדבקות הם ${known} מדבקות. כמה מדבקות באוסף כולו?`:`הפס מייצג את כל הכרטיסים ומחולק ל־${d} קבוצות שוות. ב־${n} הקבוצות הכחולות יחד יש ${known} כרטיסים. כמה כרטיסים יש בכל הפס?`,"",String(whole),[String(unit),String(known),String(known*d)],
+        [st(`ידועים ${known} פריטים ב־${n} מתוך ${d} קבוצות שוות. מחפשים את הכמות בכל הקבוצות.`),
+         st("נמצא תחילה את הכמות בקבוצה אחת בעזרת הקבוצות הידועות.",`${known} ÷ ${n} = ${unit}`),
+         st("כופלים את הכמות בקבוצה במספר הקבוצות בשלם.",`${unit} × ${d} = ${whole}`),
+         st("מחשבים שוב את החלק הידוע מתוך השלם שמצאנו.",`(${whole} ÷ ${d}) × ${n} = ${known}`)],type===2?strips(n,d):"",type===0?"מדבקות":"כרטיסים","number");
+    },strips(2,5));
+  return {
+    id:"fractions",title:"מסע השברים: מבינים את החלק ואת השלם",
+    intro:"שנים עשר שיעורי בסיס וליבה ועוד שיעור העשרה לבחירה, עם פסים, ישרי מספרים, קבוצות וסיפורים. בכל תחנה מבינים למה, רואים דרך פתרון, מנסים יחד ואז מתרגלים לבד.",
+    prerequisites:"לפני שמתחילים: כדאי להכיר כפל וחילוק במספרים שלמים, כפולות וחלוקה שווה. השיעור הראשון חוזר על משמעות השבר. כאן לומדים כפל של מספר שלם בשבר — לא כפל כללי או חילוק של שני שברים.",
+    skills
+  };
+}
+// COURSE_DATA_END
+const course=buildCourse();
+const $=id=>document.getElementById(id);
+const scopeLabels={core:"לימוד לכיתה ה׳",review:"חזרה ובסיס",enrichment:"העשרה לבחירה"};
+const skillMap=new Map(course.skills.map(skill=>[skill.id,skill]));
+function node(tag,text,className){const el=document.createElement(tag);if(text!==undefined)el.textContent=text;if(className)el.className=className;return el;}
+function control(text,action){const el=node("button",text);el.type="button";el.addEventListener("click",action);return el;}
+function shuffle(items){const result=[...items];for(let i=result.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[result[i],result[j]]=[result[j],result[i]];}return result;}
+function rational(text){
+  let value=String(text).trim().replace(/\u2212/g,"-");
+  if(/^-?\d{1,3}(?:,\d{3})+(?:\.\d{1,6})?$/.test(value))value=value.replace(/,/g,"");
+  let m=value.match(/^(-?\d+)\s+(\d+)\/([1-9]\d*)$/);
+  let n,d;
+  if(m){d=Number(m[3]);if(Number(m[2])>=d)return null;n=(Math.abs(Number(m[1]))*d+Number(m[2]))*(m[1].startsWith("-")?-1:1);}
+  else if((m=value.match(/^(-?\d+)\/([1-9]\d*)$/))){n=Number(m[1]);d=Number(m[2]);}
+  else if((m=value.match(/^(-?)(\d+)(?:\.(\d{1,6}))?$/))){d=10**(m[3]?.length||0);n=(Number(m[2])*d+Number(m[3]||0))*(m[1]?-1:1);}
+  else return null;
+  if(!Number.isSafeInteger(n)||!Number.isSafeInteger(d))return null;
+  let a=Math.abs(n),b=d;while(b){[a,b]=[b,a%b];}
+  return [n/(a||1),d/(a||1)];
+}
+function answerKey(value,kind){if(kind==="text")return String(value).trim();const pair=rational(value);return pair?pair.join("/"):"invalid:"+value;}
+function questionFor(skill,seed){
+  const q=skill.build(seed);
+  return {...q,id:skill.id+"-"+seed,skill:skill.id};
+}
+function validateQuestion(q){
+  if(!["number","fraction","text"].includes(q.kind)||q.steps.length!==4||q.choices.length<3||new Set(q.choices.map(x=>answerKey(x,q.kind))).size!==q.choices.length||q.choices.filter(x=>answerKey(x,q.kind)===answerKey(q.answer,q.kind)).length!==1)
+    throw new Error("Invalid authored question: "+q.id);
+  if(q.kind!=="text"&&q.choices.some(x=>!rational(x)))throw new Error("Invalid numeric option: "+q.id);
+}
+const bank=course.skills.flatMap(skill=>Array.from({length:skill.count},(_,i)=>questionFor(skill,i)));
+bank.forEach(validateQuestion);
+const decks=new Map(),supportHistory=new Set(),lastShown=new Map();
+let round=[],position=0,current=null,solved=false,assisted=false,independent=0,activeSkill=null,results=[];
+let lessonSkill=null,lessonTrigger=null,guided=null,guidedSolved=false;
+function deckFor(skill){
+  if(!decks.has(skill)||!decks.get(skill).length){
+    const fresh=shuffle(bank.filter(q=>q.skill===skill));
+    if(fresh.length>1&&fresh[0].id===lastShown.get(skill))[fresh[0],fresh[1]]=[fresh[1],fresh[0]];
+    decks.set(skill,fresh);
+  }
+  return decks.get(skill);
+}
+function planRound(id){
+  if(id)return deckFor(id).slice(0,6);
+  const ids=shuffle(course.skills.filter(s=>s.scope!=="enrichment").map(s=>s.id));
+  const selected=[],offsets=new Map();
+  while(selected.length<6){
+    let added=false;
+    for(const skill of ids){
+      const offset=offsets.get(skill)||0,q=deckFor(skill)[offset];
+      if(q){selected.push(q);offsets.set(skill,offset+1);added=true;}
+      if(selected.length===6)break;
+    }
+    if(!added)break;
+  }
+  return shuffle(selected);
+}
+function showHome(){
+  $("home").hidden=false;$("practice").hidden=true;$("summary").hidden=true;current=null;solved=false;
+  $("home-title").focus({preventScroll:true});window.scrollTo(0,0);
+}
+function startRound(id=null){
+  if(id&&!skillMap.has(id))throw new Error("Unknown skill: "+id);
+  if($("lesson").open)$("lesson").close();
+  activeSkill=id;round=planRound(id);position=0;independent=0;results=[];
+  $("home").hidden=true;$("practice").hidden=false;$("summary").hidden=true;
+  $("practice-title").textContent=id?skillMap.get(id).title:"תרגול משולב";
+  renderQuestion();$("practice").scrollIntoView({block:"start"});
+}
+function appendSteps(target,steps,numbered=false){
+  target.replaceChildren();
+  const headings=["מה ידוע ומה מחפשים?","באיזו דרך נפתור?","נחשב צעד אחר צעד","איך נבדוק?"];
+  steps.forEach((step,i)=>{const li=node("li",undefined,"step");if(numbered)li.append(node("h4",headings[i]));li.append(node("p",step.text));if(step.math)li.append(node("p",step.math,"math"));target.append(li);});
+}
+function setVisual(id,html){$(id).hidden=!html;$(id).innerHTML=html||"";}
+function renderQuestion(){
+  current=round[position];solved=false;assisted=supportHistory.has(current.id);
+  const deck=deckFor(current.skill),index=deck.findIndex(q=>q.id===current.id);if(index>=0)deck.splice(index,1);
+  lastShown.set(current.skill,current.id);
+  $("skill-label").textContent=scopeLabels[skillMap.get(current.skill).scope]+" · "+skillMap.get(current.skill).title;
+  $("prompt").textContent=current.prompt;$("expression").textContent=current.expression||"";$("expression").hidden=!current.expression;
+  $("unit").textContent=current.unit||"";setVisual("visual",current.visual);
+  $("round-label").textContent="שאלה "+(position+1)+" מתוך "+round.length;$("progress").max=round.length;$("progress").value=position;
+  $("choices").replaceChildren();
+  shuffle(current.choices).forEach(value=>{
+    const q=current,button=control(value,()=>answer(value,button,q.id));button.dir=q.kind==="text"?"rtl":"ltr";$("choices").append(button);
+  });
+  $("answer-form").hidden=current.kind==="text";$("input-note").hidden=current.kind==="text";$("typed-answer").value="";
+  [...$("answer-form").elements].forEach(el=>el.disabled=false);$("feedback").textContent="";
+  appendSteps($("help-steps"),current.steps,true);$("help-answer").textContent=current.answer;
+  $("help-answer").className=current.kind==="text"?"":"math";toggleHelp(false);
+  for(const id of ["next-top","next-bottom"]){$(id).hidden=true;$(id).textContent=position===round.length-1?"לסיכום הסבב":"לשאלה הבאה";}
+  $("prompt").focus({preventScroll:true});
+}
+function markSupport(){if(current&&!solved){assisted=true;supportHistory.add(current.id);}}
+function toggleHelp(open){
+  if(open)markSupport();
+  $("help-panel").hidden=!open;$("help-toggle").setAttribute("aria-expanded",String(open));$("help-toggle").textContent=open?"🙈 הסתר הסבר":"🔍 איך פותרים?";
+}
+function answer(value,button,id){
+  if(!current||solved||current.id!==id||button?.disabled||(button&&button.parentElement!==$("choices")))return;
+  if(current.kind!=="text"&&!rational(value)){$("feedback").textContent="כתבו מספר תקין או שבר עם מכנה שאינו אפס. למשל 0.5 או 1/2.";return;}
+  if(answerKey(value,current.kind)!==answerKey(current.answer,current.kind)){
+    markSupport();if(button){button.disabled=true;button.classList.add("wrong");button.setAttribute("aria-label",value+" — לא נכון");}
+    $("feedback").textContent="עוד ניסיון. נפתח את הדרך ונבדוק באיזה צעד צריך עזרה.";toggleHelp(true);return;
+  }
+  solved=true;if(!assisted)independent++;
+  results.push({skill:current.skill,assisted});
+  if(button){button.classList.add("correct");button.setAttribute("aria-label",value+" — נכון");}
+  $("choices").querySelectorAll("button").forEach(el=>el.disabled=true);[...$("answer-form").elements].forEach(el=>el.disabled=true);
+  $("feedback").textContent=assisted?"נכון! נעזרתם בדרך והגעתם לפתרון.":"נכון! פתרתם באופן עצמאי.";
+  $("progress").value=position+1;for(const id of ["next-top","next-bottom"])$(id).hidden=false;
+  $("next-top").focus({preventScroll:true});
+}
+function nextQuestion(){
+  if(!solved)return;
+  if(position<round.length-1){position++;renderQuestion();$("prompt").scrollIntoView({block:"start"});return;}
+  solved=false;current=null;$("practice").hidden=true;$("summary").hidden=false;
+  $("summary-text").textContent="השלמתם "+round.length+" שאלות: "+independent+" באופן עצמאי ו־"+(round.length-independent)+" בעזרת תמיכה.";
+  $("recommendations").replaceChildren();
+  for(const id of new Set(results.filter(r=>r.assisted).map(r=>r.skill))){const skill=skillMap.get(id);$("recommendations").append(control("נחזור על הדרך: "+skill.title,event=>openLesson(id,event.currentTarget)));}
+  $("next-lesson").hidden=!activeSkill||course.skills.findIndex(s=>s.id===activeSkill)===course.skills.length-1;
+  $("summary-title").focus({preventScroll:true});$("summary").scrollIntoView({block:"start"});
+}
+function guidedHelp(open){
+  $("guided-solution").hidden=!open;$("guided-help").setAttribute("aria-expanded",String(open));$("guided-help").textContent=open?"🙈 הסתר הסבר":"🔍 איך פותרים?";
+}
+function openLesson(id,trigger){
+  if(!skillMap.has(id))throw new Error("Unknown lesson: "+id);
+  markSupport();lessonSkill=skillMap.get(id);lessonTrigger=trigger||document.activeElement;guidedSolved=false;
+  $("lesson-title").textContent=lessonSkill.title;$("lesson-goal").textContent=lessonSkill.goal;
+  $("lesson-why").textContent=lessonSkill.why;$("lesson-rule").textContent=lessonSkill.rule;
+  appendSteps($("example-steps"),lessonSkill.example);setVisual("lesson-visual",lessonSkill.visual);
+  $("mistake-text").textContent=lessonSkill.mistake.text;$("mistake-math").textContent=lessonSkill.mistake.math||"";$("mistake-math").hidden=!lessonSkill.mistake.math;$("mistake-fix").textContent=lessonSkill.mistake.fix;
+  guided=lessonSkill.guided();validateQuestion(guided);$("guided-prompt").textContent=guided.prompt;
+  $("guided-expression").textContent=guided.expression||"";$("guided-expression").hidden=!guided.expression;
+  setVisual("guided-visual",guided.visual);$("guided-unit").textContent=guided.unit||"";
+  appendSteps($("guided-steps"),guided.steps,true);guidedHelp(false);$("guided-feedback").textContent="";$("guided-choices").replaceChildren();
+  shuffle(guided.choices).forEach(value=>{
+    const q=guided,button=control(value,()=>{
+      if(guidedSolved||button.disabled||guided!==q)return;
+      guidedHelp(true);
+      if(answerKey(value,q.kind)===answerKey(q.answer,q.kind)){
+        guidedSolved=true;button.classList.add("correct");$("guided-choices").querySelectorAll("button").forEach(el=>el.disabled=true);$("guided-feedback").textContent="נכון! קראו את בדיקת הפתרון ונסו תרגיל חדש.";
+      }else{button.disabled=true;button.classList.add("wrong");$("guided-feedback").textContent="נבדוק יחד את הדרך וננסה שוב.";}
+    });
+    button.dir=q.kind==="text"?"rtl":"ltr";$("guided-choices").append(button);
+  });
+  $("lesson-practice").textContent=current&&current.skill===id&&!$("practice").hidden?"חזרה לאותה שאלה":"מתרגלים את הנושא";
+  $("lesson-next").disabled=course.skills.indexOf(lessonSkill)===course.skills.length-1;
+  document.body.classList.add("lesson-open");if(!$("lesson").open)$("lesson").showModal();$("lesson").scrollTop=0;
+}
+function initialize(){
+  document.title=course.title+" · מתמטיקה לכיתה ה׳";$("page-title").textContent=course.title;$("intro").textContent=course.intro;$("prerequisites").textContent="מה כדאי להכיר קודם: "+course.prerequisites;
+  course.skills.forEach((skill,index)=>{
+    const card=node("article",undefined,"skill-card");card.append(node("p",scopeLabels[skill.scope],"scope"),node("h3",(index+1)+". "+skill.title),node("p",skill.goal));
+    const actions=node("div",undefined,"actions");actions.append(control("📚 לומדים את הדרך",event=>openLesson(skill.id,event.currentTarget)),control("מתרגלים",()=>startRound(skill.id)));card.append(actions);$("skills").append(card);
+  });
+  $("course-start").onclick=event=>openLesson(course.skills[0].id,event.currentTarget);$("mixed-start").onclick=()=>startRound();
+  for(const id of ["home-button","summary-home"])$(id).onclick=showHome;
+  for(const id of ["restart","again"])$(id).onclick=()=>startRound(activeSkill);
+  for(const id of ["next-top","next-bottom"])$(id).onclick=nextQuestion;
+  $("help-toggle").onclick=()=>toggleHelp($("help-panel").hidden);$("open-lesson").onclick=event=>openLesson(current.skill,event.currentTarget);
+  $("close-lesson").onclick=()=>$("lesson").close();
+  $("lesson").addEventListener("close",()=>{document.body.classList.remove("lesson-open");if(lessonTrigger?.isConnected)lessonTrigger.focus({preventScroll:true});});
+  $("lesson-practice").onclick=()=>{
+    const id=lessonSkill.id,resume=current&&current.skill===id&&!$("practice").hidden;
+    $("lesson").close();if(resume)$("prompt").focus({preventScroll:true});else startRound(id);
+  };
+  $("lesson-next").onclick=()=>{const next=course.skills[course.skills.indexOf(lessonSkill)+1];if(next)openLesson(next.id,lessonTrigger);};
+  $("next-lesson").onclick=event=>{const next=course.skills[course.skills.findIndex(s=>s.id===activeSkill)+1];if(next)openLesson(next.id,event.currentTarget);};
+  $("guided-help").onclick=()=>guidedHelp($("guided-solution").hidden);
+  $("answer-form").onsubmit=event=>{event.preventDefault();if(current)answer($("typed-answer").value,null,current.id);};
+  function route(){
+    if($("lesson").open)$("lesson").close();showHome();const id=location.hash.slice(1);
+    $("route-message").textContent="";
+    if(skillMap.has(id))openLesson(id);else if(id==="practice")startRound();else if(id)$("route-message").textContent="השיעור שבקישור לא נמצא. בחרו אחד מהשיעורים הזמינים.";
+  }
+  window.addEventListener("hashchange",route);route();
+}
+initialize();
+if(new URLSearchParams(location.search).get("selftest")==="1")window.__eduSelfTest={course,bank,questionFor,answerKey,rational};
+</script>
+<!-- FRACTION_LAB_SCRIPT_START -->
+<script>
+"use strict";
+// FRACTION_LAB_MODEL_START
+function fractionLabModel(numerator,denominator,factor) {
+  if(![numerator,denominator,factor].every(Number.isInteger)||![2,3,4,5,6,8].includes(denominator)||![2,3,4].includes(factor)||numerator<1||numerator>=denominator)
+    throw new RangeError("Choose a proper fraction and an available subdivision factor.");
+  const expandedNumerator=numerator*factor,expandedDenominator=denominator*factor;
+  const strip=(n,d)=>{
+    const label=`פס אחד באורך קבוע, מחולק ל־${d} חלקים שווים. ${n} חלקים כחולים והשאר לבנים.`;
+    let body="";
+    for(let i=0;i<d;i++)body+=`<rect x="${20+i*400/d}" y="14" width="${400/d}" height="42" fill="${i<n?"#246db4":"#fff"}" stroke="#203549" stroke-width="1.5"/>`;
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 72" role="img" aria-label="${label}"><title>${label}</title>${body}</svg>`;
+  };
+  return {
+    numerator,denominator,factor,expandedNumerator,expandedDenominator,
+    before:strip(numerator,denominator),after:strip(expandedNumerator,expandedDenominator),
+    equation:`${numerator}/${denominator} = (${numerator} × ${factor})/(${denominator} × ${factor}) = ${expandedNumerator}/${expandedDenominator}`,
+    explanation:`כל אחד מ־${denominator} החלקים חולק ל־${factor} חלקים שווים. מספר החלקים הכולל גדל ל־${expandedDenominator}, ומספר החלקים הכחולים גדל מ־${numerator} ל־${expandedNumerator}. כל חלק חדש קטן פי ${factor}, ולכן הכמות הכחולה לא השתנתה.`
+  };
+}
+// FRACTION_LAB_MODEL_END
+(()=>{
+  const denominator=document.getElementById("fraction-lab-denominator");
+  const numerator=document.getElementById("fraction-lab-numerator");
+  const factor=document.getElementById("fraction-lab-factor");
+  function updateNumerators(){
+    const previous=Number(numerator.value)||1;
+    const options=Array.from({length:Number(denominator.value)-1},(_,i)=>{
+      const option=document.createElement("option");option.value=String(i+1);option.textContent=String(i+1);return option;
+    });
+    numerator.replaceChildren(...options);numerator.value=String(Math.min(previous,Number(denominator.value)-1));
+  }
+  function render(){
+    const model=fractionLabModel(Number(numerator.value),Number(denominator.value),Number(factor.value));
+    document.getElementById("fraction-lab-before").innerHTML=model.before;
+    document.getElementById("fraction-lab-after").innerHTML=model.after;
+    document.getElementById("fraction-lab-equation").textContent=model.equation;
+    document.getElementById("fraction-lab-explanation").textContent=model.explanation;
+  }
+  denominator.addEventListener("change",()=>{updateNumerators();render();});
+  numerator.addEventListener("change",render);
+  factor.addEventListener("change",render);
+  document.getElementById("fraction-lab-reset").addEventListener("click",()=>{
+    denominator.value="4";updateNumerators();numerator.value="3";factor.value="2";render();
+  });
+  updateNumerators();render();
+})();
+</script>
+<!-- FRACTION_LAB_SCRIPT_END -->
+</body>
+</html>

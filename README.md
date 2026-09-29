@@ -9,6 +9,36 @@ Every active page includes the approved refreshed design and a persistent five-t
 
 The root page (`index.html`) is a hub that links to every game.
 
+## Grade 5 Math course preview
+
+The [Grade 5 math course](./sandbox/math-grade-5/index.html) is a separate
+sandbox preview, not a replacement for production math. Its
+[topic map and source review](./sandbox/math-grade-5/sources.html) distinguish
+official grade placement, prerequisite review, optional enrichment and
+inaccessible source material.
+
+The five routes teach whole-number calculations, fractions, decimals/percent meaning,
+geometry/measurement, and data/averages. Each has an ordered but freely
+accessible lesson sequence: the underlying idea, a worked solution, a common
+mistake, a fixed guided example and a short practice round. Original visual
+models and optional hands-on experiments connect concrete representations to
+symbols. Each exercise has a four-step explanation: identify the information,
+choose a method, calculate, and check.
+
+Practice uses finite, deterministic question families with shuffled unseen
+decks, optional exact numeric/fraction input, retries and manual Next controls.
+Only displayed questions consume novelty. Help, wrong answers and lessons mark
+the current exercise as supported for the visit; closing help or restarting
+cannot turn it into independent credit. Summaries describe practice, not mastery.
+Examples and guided tasks are separate from the independently scored bank.
+All progress stays in page memory; no child data, microphone, account, external
+math service or installed model is required.
+
+Source worksheets and commercial games are research references, not runtime
+assets or copied question banks. The source page records limitations; it does
+not claim that every paid, blocked or logged-in resource was reviewed.
+Production promotion requires separate approval.
+
 ## Grade 5 English
 
 The [Grade 5 English academy](./english/grade-5/index.html) is linked from

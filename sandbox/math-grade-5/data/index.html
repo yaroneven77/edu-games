@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>מתמטיקה לכיתה ה׳</title>
+<script src="../../../assets/theme-selector.js" defer></script>
+<link rel="stylesheet" href="../../../assets/refresh.css">
+<style>
+*{box-sizing:border-box}
+:root{--surface:var(--refresh-surface,#fff);--soft:var(--refresh-soft,#edf3fb);--text:var(--refresh-text,#243b53);--muted:var(--refresh-muted,#52677e);--accent:var(--refresh-accent,#285f9f);--border:var(--refresh-border,#d5dfec)}
+body{margin:0;padding-top:64px;background:#eef7fd;color:var(--text);font:18px/1.7 "Segoe UI","Arial Hebrew",Arial,sans-serif}
+main{max-width:1000px;margin:auto;padding:16px 16px 40px}[hidden]{display:none!important}
+header{text-align:center}h1{font-size:clamp(28px,6vw,40px);line-height:1.3}h2{font-size:25px}h3{font-size:21px}
+a{color:var(--accent)}button,input,select{font:inherit;max-width:100%;min-height:44px}
+button,select,input{border:2px solid var(--border);border-radius:14px;padding:9px 13px;background:var(--surface);color:var(--text)}
+button,a.back{min-height:44px;min-width:44px}button{cursor:pointer}button:disabled{cursor:default}
+button:focus-visible,input:focus-visible,a:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+a.back{display:inline-flex;align-items:center;padding:8px 12px;background:var(--surface);border-radius:14px}
+.panel,.skill-card{background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:clamp(14px,3vw,24px);margin:16px 0;min-width:0}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.skill-card{margin:0;border-top:5px solid var(--accent)}
+.actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:14px 0}.actions>*{max-width:100%}
+.primary{font-weight:800;background:var(--soft)}.muted{color:var(--muted);font-size:16px}.scope{font-weight:700}
+.math{direction:ltr;unicode-bidi:isolate;text-align:center;font:600 clamp(21px,5vw,29px)/1.8 "Segoe UI",Arial,sans-serif;overflow-wrap:anywhere;background:var(--soft);padding:10px;border-radius:12px;margin:10px 0;font-variant-numeric:tabular-nums}
+.visual{padding:12px;margin:12px 0;background:var(--soft);border-radius:14px;overflow:auto;text-align:center}.visual svg{width:100%;max-width:460px;height:auto;max-height:310px;display:block;margin:auto}
+.visual table{border-collapse:collapse;width:100%;max-width:600px;margin:auto}.visual th,.visual td{border:1px solid var(--border);padding:6px}
+.choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.choices button{min-height:60px;font-size:22px;overflow-wrap:anywhere}
+#edu-refresh button.correct{background:#d9f6e3!important;color:#145c35!important;border-color:#237849!important}
+#edu-refresh button.wrong{background:#ffe0dc!important;color:#8c2c28!important;border-color:#ac463b!important;text-decoration:line-through}
+.feedback{font-weight:700;min-height:30px}.help{border:2px solid var(--border);border-radius:16px;padding:16px;background:var(--soft)}
+.step{background:var(--surface);border-radius:12px;padding:12px;margin:12px 0}.step h4,.step p{margin:4px 0}.step .math{background:var(--soft)}
+.help ol,#example-steps{padding-inline-start:25px}.answer-form{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:16px 0}.answer-form input{width:220px;direction:ltr}
+progress{width:100%;height:16px;accent-color:var(--accent)}summary{cursor:pointer;min-height:44px;padding:8px 0;font-weight:700}
+dialog{width:min(780px,calc(100% - 24px));max-height:calc(100dvh - 24px);padding:22px;border:2px solid var(--border);border-radius:22px;background:var(--surface);color:var(--text)}
+dialog::backdrop{background:#102238b8}body.lesson-open{overflow:hidden}.lesson-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+#edu-theme-select{min-height:44px!important}#edu-theme-control{max-width:calc(100% - 12px)}
+footer{text-align:center;font-size:15px;margin:24px 0}
+@media(max-width:600px){.grid,.choices{grid-template-columns:1fr}main{padding-inline:12px}.panel,dialog{padding:14px}.actions button{flex:1 1 140px}.math{font-size:22px}}
+@media(max-width:480px){.visual svg text{font-size:26px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body id="edu-refresh">
+<main>
+<a class="back" href="../index.html">חזרה לקורס מתמטיקה לכיתה ה׳</a>
+<header><p class="muted">קורס מתמטיקה לכיתה ה׳ · תצוגת בדיקה</p><h1 id="page-title"></h1><p id="intro"></p></header>
+<noscript><p class="panel">כדי ללמוד ולתרגל יש לאפשר הפעלת סקריפטים בדפדפן.</p></noscript>
+<section id="home" aria-labelledby="home-title">
+<div class="panel"><h2 id="home-title" tabindex="-1">לומדים, פותרים יחד ומנסים לבד</h2><p id="prerequisites"></p>
+<p>המסלול המומלץ מתחיל בהבנה ובדוגמה, ממשיך בניסיון מודרך ומסתיים בתרגול. אפשר לבחור כל שיעור בלי לנעול שלבים.</p>
+<div class="actions"><button id="course-start" class="primary" type="button">מתחילים ללמוד לפי הסדר</button><button id="mixed-start" type="button">תרגול משולב</button></div>
+<p id="route-message" role="status"></p></div>
+<details id="fair-share-lab" class="panel"><summary>מעבדת חלוקה הוגנת — ניסוי לבחירה</summary><h2 id="lab-title">מעבירים בלי לשנות את הסכום</h2>
+<p>העבירו גולה אחת בכל פעם בין הקערות עד שבכולן תהיה כמות שווה. אין מוסיפים גולות ואין מאבדים גולות. מה נשאר קבוע ומה משתנה?</p>
+<div id="lab-bowls" class="grid"></div>
+<div class="actions"><label for="lab-from">מאיזו קערה?</label><select id="lab-from" aria-label="קערת המקור"><option value="0">קערה א׳</option><option value="1">קערה ב׳</option><option value="2">קערה ג׳</option><option value="3">קערה ד׳</option></select><label for="lab-to">לאיזו קערה?</label><select id="lab-to" aria-label="קערת היעד"><option value="0">קערה א׳</option><option value="1">קערה ב׳</option><option value="2">קערה ג׳</option><option value="3">קערה ד׳</option></select><button id="lab-move" type="button">מעבירים גולה אחת</button><button id="lab-reset" type="button">מתחילים את הניסוי מחדש</button></div>
+<p id="lab-message" role="status"></p><p class="muted">זהו ניסוי לבחירה, ללא ניקוד. ההעברות נשארות רק בעמוד הזה.</p></details>
+<details id="survey-lab" class="panel"><summary>מעבדת סקר — בונים טבלה ותרשים</summary><h2>איך בחירות הופכות לנתונים?</h2><p>זהו סקר דמיוני, לא איסוף מידע על ילדים. הוסיפו בחירה אחת בכל לחיצה וראו איך אותה כמות מופיעה בטבלה ובתרשים. אפשר לבנות סקר עם עד שלושים בחירות ולמחוק בחירה כדי לתקן.</p><div id="survey-controls" class="actions"></div><div id="survey-table" class="visual"></div><div id="survey-chart" class="visual"></div><p id="survey-message" role="status"></p><button id="survey-reset" type="button">איפוס הסקר הדמיוני</button></details>
+<details class="panel"><summary>פרויקט חקר מחוץ למסך — לאורך כמה ימים</summary><p>בחרו שתי ערוגות או שני עציצים וספרו פעם ביום כמה פרחים פתוחים יש בכל אחד. הגדירו מראש מתי סופרים, מה נחשב פרח פתוח ואיך מסמנים יום שלא נמדד.</p><ol><li>הכינו על דף טבלה עם יום, עציץ ראשון ועציץ שני. אל תכתבו שמות או פרטים אישיים.</li><li>אספו לפחות חמש מדידות לכל עציץ, באותה שעה. יום ללא מדידה אינו תוצאה אפס.</li><li>ציירו תרשים עמודות כפולות עם אותו קנה מידה לשני העציצים ומקרא ברור.</li><li>חשבו ממוצע לכל עציץ לפי מספר המדידות שבוצעו. השוו ימים ואת הממוצעים.</li><li>כתבו מה אפשר להסיק מהמדידות שלכם, ומה אי אפשר לדעת על כל הצמחים בעולם מהניסוי הזה.</li></ol><p class="muted">הדף נשאר אצלכם. האתר אינו אוסף את המדידות או שומר פרויקט בין ביקורים.</p></details>
+<div id="skills" class="grid"></div>
+</section>
+<section id="practice" class="panel" hidden aria-labelledby="practice-title">
+<div class="actions"><button id="home-button" type="button">בחירת שיעור</button><button id="restart" type="button">סבב חדש</button></div>
+<h2 id="practice-title"></h2><p id="round-label"></p><progress id="progress" value="0" max="6" aria-label="שאלות שהושלמו"></progress>
+<p id="skill-label" class="scope"></p><h3 id="prompt" tabindex="-1"></h3><div id="expression" class="math" dir="ltr"></div><p id="unit" class="muted"></p><div id="visual" class="visual" hidden></div>
+<div id="choices" class="choices" role="group" aria-label="בחירת תשובה"></div>
+<form id="answer-form" class="answer-form" hidden><label for="typed-answer">או כתבו תשובה:</label><input id="typed-answer" autocomplete="off" maxlength="60" aria-describedby="input-note"><button type="submit">בדיקה</button></form>
+<p id="input-note" class="muted" hidden>אפשר לכתוב מספר, מספר עשרוני, שבר כמו 3/4 או מספר מעורב כמו 1 1/2. יחידות מופיעות בשאלה, אין צורך להקליד אותן.</p>
+<p id="feedback" class="feedback" role="status"></p>
+<div class="actions"><button id="help-toggle" type="button" aria-expanded="false" aria-controls="help-panel">🔍 איך פותרים?</button><button id="open-lesson" type="button">📚 שיעור קצר</button><button id="next-top" class="primary" type="button" hidden>לשאלה הבאה</button></div>
+<section id="help-panel" class="help" hidden aria-labelledby="help-title"><h3 id="help-title">מבינים את הדרך בארבעה צעדים</h3><ol id="help-steps"></ol><h4>התשובה</h4><p id="help-answer"></p></section>
+<button id="next-bottom" class="primary" type="button" hidden>לשאלה הבאה</button>
+</section>
+<section id="summary" class="panel" hidden aria-labelledby="summary-title"><h2 id="summary-title" tabindex="-1">סיימתם סבב של תרגול</h2><p id="summary-text"></p><p>עזרה היא חלק מהלמידה. תשובות עצמאיות הן בחירות נכונות בניסיון הראשון, ללא פתיחת הפתרון או השיעור באותה שאלה. זה אינו אבחון או ציון שליטה.</p><div id="recommendations"></div>
+<div class="actions"><button id="again" type="button">עוד תרגול באותו מסלול</button><button id="next-lesson" type="button">לשיעור הבא בקורס</button><button id="summary-home" type="button">בחירת שיעור</button></div></section>
+<footer>תרגילים ודוגמאות מקוריים · אין שמירת תשובות. רענון העמוד מתחיל ביקור חדש. את ההבנה כדאי לתרגל גם על דף ובשיחה.</footer>
+</main>
+<dialog id="lesson" aria-labelledby="lesson-title">
+<div class="lesson-head"><h2 id="lesson-title"></h2><button id="close-lesson" type="button">סגירת השיעור</button></div>
+<p id="lesson-goal"></p><h3>למה זה עובד?</h3><p id="lesson-why"></p><p id="lesson-rule" class="help"></p>
+<h3>דוגמה פתורה, צעד אחר צעד</h3><div id="lesson-visual" class="visual" hidden></div><ol id="example-steps"></ol>
+<h3>טעות שכדאי להכיר</h3><p id="mistake-text"></p><p id="mistake-math" class="math" dir="ltr"></p><p id="mistake-fix"></p>
+<h3>ננסה יחד</h3><p id="guided-prompt"></p><p id="guided-expression" class="math" dir="ltr"></p><div id="guided-visual" class="visual" hidden></div><p id="guided-unit"></p><div id="guided-choices" class="choices"></div>
+<p id="guided-feedback" class="feedback" role="status"></p><button id="guided-help" type="button" aria-expanded="false" aria-controls="guided-solution">🔍 איך פותרים?</button><div id="guided-solution" class="help" hidden><ol id="guided-steps"></ol></div>
+<p class="muted">זהו תרגול מודרך. הוא אינו מוסיף הצלחה עצמאית לסבב.</p>
+<div class="actions"><button id="lesson-practice" class="primary" type="button">מתרגלים את הנושא</button><button id="lesson-next" type="button">לשיעור הבא</button></div>
+</dialog>
+<script>
+"use strict";
+// COURSE_DATA_START
+function buildCourse() {
+  const sum=values=>values.reduce((a,b)=>a+b,0);
+  const options=(answer,others)=>[...new Set([String(answer),...others.map(String)])].slice(0,4);
+  const numeric=(prompt,expression,answer,steps,visual,unit="")=>({
+    prompt,expression,answer:String(answer),kind:"number",unit,visual,
+    choices:options(answer,[Number(answer)+1,Number(answer)+2,Math.max(0,Number(answer)-1),Number(answer)+4]),steps
+  });
+  const table=(labels,values,caption)=>'<table><caption>'+caption+'</caption><thead><tr><th scope="col">קבוצה</th><th scope="col">כמות</th></tr></thead><tbody>'+labels.map((label,i)=>'<tr><th scope="row">'+label+'</th><td>'+values[i]+'</td></tr>').join("")+'</tbody></table>';
+  const names=["קבוצה א׳","קבוצה ב׳","קבוצה ג׳","קבוצה ד׳"];
+  const counts=seed=>[seed+3,2*(seed%5)+6,seed%7+4,seed+9];
+  const steps=(a,b,c,d)=>[a,b,c,d];
+  const meanValues=seed=>{const center=seed+11;return [seed%6===0?0:center-3,center+1,center-1,center+3+seed%4];};
+  const scenarios=[
+    ["איך מגיעים תלמידי הכיתה לבית הספר?","אמצעי ההגעה של כל תלמיד","מספר הדפים במחברת","גובה השולחנות","סופרים כמה תלמידים מגיעים בכל דרך."],
+    ["כמה ספרים קראו תלמידי הכיתה החודש?","מספר הספרים שקרא כל תלמיד בחודש הזה","הספר האהוב של תלמיד אחד","צבע העט של כל תלמיד","מגדירים אותו פרק זמן ומספרים לכל תלמיד."],
+    ["איזו פרי יעדיפו ילדי הכיתה לארוחה?","בחירת פרי אחת מכל ילד בכיתה","הפרי האהוב של המורה בלבד","מחירו של פרי בחנות אחרת","כדי לתאר את העדפת הכיתה שואלים את כל ילדי הכיתה."],
+    ["באיזה יום השבוע היו הכי הרבה מבקרים בספרייה?","מספר המבקרים בכל יום השבוע","מספר המדפים בספרייה","שם הספר הישן ביותר","אותה יחידת ספירה ואותו שבוע מאפשרים להשוות בין הימים."],
+    ["כמה גדלו שתילי השעועית במשך שבוע?","גובה כל שתיל בתחילת השבוע ובסופו","צבע העציצים בלבד","גובה של שתיל אחר בחודש שעבר","שינוי בגובה מחייב שתי מדידות של אותם שתילים."],
+    ["מה משך ההליכה לבית הספר של תלמידי הכיתה?","מספר דקות ההליכה של כל תלמיד שהולך","מספר הנעליים בכיתה","מרחק הנסיעה של ההורים","זמן נמדד ביחידות זמן; אוספים דקות ולא רק מרחק."],
+    ["כמה בקבוקים נאספו בכל כיתה השבוע?","מספר הבקבוקים שאספה כל כיתה באותו שבוע","מספר תלמידי בית הספר בשנה שעברה","צבע הבקבוקים שנאספו בכיתה אחת","מתעדים כמות לכל כיתה באותו פרק זמן."],
+    ["מה הטמפרטורה בכל יום בשעה שמונה בבוקר?","מדידה באותו מקום ובאותה שעה בכל יום","מדידות במקומות שונים ובשעות שונות","מספר המעילים בארון","שומרים על מקום ושעה קבועים כדי שההשוואה תהיה משמעותית."],
+    ["איזה משחק בחרו משתתפי החוג להפסקה?","בחירה אחת מכל משתתף בחוג","הבחירה של מי שהגיע ראשון בלבד","המשחק הנמכר ביותר בארץ","השאלה מתייחסת למשתתפי החוג ולכן אוספים את בחירותיהם."],
+    ["באיזה קו אוטובוס נסעו ילדי הכיתה בטיול?","מספר התלמידים בכל אחד מהקווים","מספר התחנות בעיר אחרת","צבע תיקי הטיול בלבד","טבלת שכיחויות מתארת כמה פעמים הופיע כל קו."],
+    ["מה אורך הקפיצה של כל משתתף בתחרות?","מדידת הקפיצות של כולם בסנטימטרים","שמות המשתתפים בלבד","גובה המורה במטרים","משווים את אותה תכונה ביחידה משותפת."],
+    ["האם סקר בכיתה אחת מוכיח מה מעדיפים כל ילדי העיר?","לא; הסקר מתאר רק את המשתתפים שנשאלו","כן; כל ילדי העיר מעדיפים אותו דבר","כן; מספר קטן תמיד מספיק","אין להסיק על אוכלוסייה רחבה בלי בסיס מתאים לדגימה."]
+  ];
+  function investigation(seed){
+    const [question,answer,wrong1,wrong2,reason]=scenarios[seed];
+    return {prompt:question+" איזה מידע מתאים או איזו מסקנה מוצדקת?",kind:"text",answer,choices:[answer,wrong1,wrong2],
+      steps:steps({text:"נזהה את הקבוצה שעליה שואלים ואת הדבר שרוצים לדעת."},{text:"נבחר נתון שעונה לשאלה, ונאסוף אותו באופן עקבי."},{text:reason},{text:"נבדוק שהמידע אינו מתייחס לקבוצה אחרת או לתכונה אחרת. הספירה לבדה אינה הופכת השערה לעובדה."})};
+  }
+  function frequency(seed){
+    const values=counts(seed),total=sum(values);
+    return {...numeric("כל משתתף נרשם פעם אחת. כמה משתתפים יש בסך הכול בטבלה?","",total,
+      steps({text:"בכל שורה מופיע מספר המשתתפים בקבוצה אחת."},{text:"כיוון שהקבוצות נפרדות וכל משתתף נספר פעם אחת, מחברים את כל השכיחויות."},
+        {text:"נסכום את ארבע הקבוצות.",math:values.join(" + ")+" = "+total},{text:"נחסר מהסכום את שלוש הקבוצות הראשונות ונקבל את הרביעית.",math:total+" − "+sum(values.slice(0,3))+" = "+values[3]}),
+      table(names,values,"מספר משתתפים בקבוצות יצירה"),"התשובה במספר משתתפים."),audit:{type:"sum",values}};
+  }
+  function chart(seed){
+    const scale=2+(seed%3),blocks=[2+Math.floor(seed/3),3+seed%4,4+seed%3],selected=seed%3,values=blocks.map(n=>n*scale);
+    const labels=["יום ראשון","יום שני","יום שלישי"],answer=values[selected];
+    const visual='<p>כל ריבוע מייצג '+scale+' ספרים.</p>'+labels.map((label,i)=>'<div style="margin:12px 0"><strong>'+label+'</strong><div role="img" aria-label="'+blocks[i]+' ריבועים, כל ריבוע מייצג '+scale+' ספרים" style="display:flex;flex-wrap:wrap;gap:3px;justify-content:center;margin:6px">'+Array.from({length:blocks[i]},()=>'<span aria-hidden="true" style="width:20px;height:20px;background:var(--accent);border:1px solid currentColor"></span>').join("")+'</div></div>').join("");
+    return {...numeric("קראו את המקרא: כמה ספרים הושאלו ביום "+["ראשון","שני","שלישי"][selected]+"?","",answer,
+      steps({text:"מזהים את היום שנשאל ואת ערכו של כל ריבוע."},{text:"סופרים את הריבועים בשורה המתאימה ומכפילים בערך של ריבוע אחד."},
+        {text:"בשורה יש "+blocks[selected]+" ריבועים.",math:blocks[selected]+" × "+scale+" = "+answer},{text:"מחלקים את מספר הספרים בערך של ריבוע ומקבלים את מספר הריבועים.",math:answer+" ÷ "+scale+" = "+blocks[selected]}),
+      visual,"התשובה במספר ספרים."),audit:{type:"product",values:[blocks[selected],scale]}};
+  }
+  function comparison(seed){
+    const low=seed+5,high=low+3+(seed%7),other=seed%4+2,answer=high-low;
+    return {...numeric("כמה בקבוקים יותר אספה קבוצה ב׳ מקבוצה א׳?","",answer,
+      steps({text:"קוראים את הכמויות של קבוצה ב׳ ושל קבוצה א׳, ולא את השורה השלישית."},{text:"המילה יותר מבקשת את ההפרש בין שתי הכמויות."},
+        {text:"מחסרים את הכמות הקטנה מן הגדולה.",math:high+" − "+low+" = "+answer},{text:"מוסיפים את ההפרש לכמות הקטנה.",math:low+" + "+answer+" = "+high}),
+      table(names.slice(0,3),[low,high,other],"איסוף בקבוקים במשך יום אחד"),"התשובה במספר בקבוקים."),audit:{type:"difference",values:[high,low]}};
+  }
+  function bars(seed){
+    const scale=2+seed%3,heights=[2+Math.floor(seed/3),4+seed%5,3+seed%4],selected=seed%3,values=heights.map(n=>n*scale),answer=values[selected];
+    const maximum=Math.ceil(Math.max(12,...heights)/2)*2,y=value=>225-value/scale*180/maximum;
+    const grid=Array.from({length:maximum/2+1},(_,i)=>{const value=i*2*scale;return '<line x1="55" x2="350" y1="'+y(value)+'" y2="'+y(value)+'" stroke="currentColor" opacity=".25"/><text x="45" y="'+(y(value)+5)+'" font-size="17" text-anchor="end" fill="currentColor">'+value+'</text>';}).join("");
+    const columns=values.map((value,i)=>'<rect x="'+(85+i*90)+'" y="'+y(value)+'" width="45" height="'+(225-y(value))+'" fill="var(--accent)"/><text x="'+(107.5+i*90)+'" y="251" font-size="20" text-anchor="middle" fill="currentColor">'+["א׳","ב׳","ג׳"][i]+'</text>').join("");
+    const visual='<p>הציר האנכי מציין מספר מחברות. העמודות מייצגות את הקבוצות.</p><svg viewBox="0 0 380 270" role="img" aria-label="מחברות בקבוצה א: '+values[0]+', בקבוצה ב: '+values[1]+', בקבוצה ג: '+values[2]+'"><title>תרשים עמודות של מחברות בשלוש קבוצות</title>'+grid+'<path d="M55 35V225H350" fill="none" stroke="currentColor" stroke-width="2"/>'+columns+'</svg>';
+    return {...numeric("לפי תרשים העמודות, כמה מחברות יש בקבוצה "+["א׳","ב׳","ג׳"][selected]+"?","",answer,
+      steps({text:"מאתרים את העמודה של הקבוצה שנשאלה ואת המספרים על הציר האנכי."},{text:"עוקבים מראש העמודה אופקית אל הציר, ומתחשבים ברווח בין קווי הסריג: "+(scale*2)+" מחברות."},
+        {text:"גובה העמודה הוא "+heights[selected]+" יחידות, ובכל יחידה "+scale+" מחברות.",math:heights[selected]+" × "+scale+" = "+answer},
+        {text:"נבדוק שהגובה נמצא במקום המתאים בין קווי הסריג. לא סופרים את מספר העמודות כתשובה."}),
+      visual,"התשובה במספר מחברות."),audit:{type:"product",values:[heights[selected],scale]}};
+  }
+  function mean(seed){
+    const values=meanValues(seed),total=sum(values),answer=total/values.length;
+    return {...numeric("ארבע קבוצות קראו את מספר העמודים שבטבלה. מה ממוצע מספר העמודים לקבוצה?","",answer,
+      steps({text:"יש ארבע קבוצות. צריך למצוא כמה עמודים היו לכל קבוצה בחלוקה שווה של הסכום."},{text:values.includes(0)?"גם קבוצה שקראה אפס עמודים היא נתון שנמדד. מוסיפים אפס לסכום, אבל הקבוצה עדיין נספרת בארבע הקבוצות.":"מחברים את הכמויות ומחלקים במספר הקבוצות, ולא במספר הגדול בטבלה."},
+        {text:"מוצאים סכום ואז ממוצע.",math:values.join(" + ")+" = "+total+"; "+total+" ÷ 4 = "+answer},{text:"הממוצע נמצא בין הערך הקטן לגדול, וכפל בארבע מחזיר את הסכום.",math:answer+" × 4 = "+total}),
+      table(names,values,"עמודים שנקראו"),"התשובה בעמודים לקבוצה."),audit:{type:"mean",values}};
+  }
+  function missing(seed){
+    const average=seed+6,values=[average-3,average+1+seed%3,average-2],total=average*4,answer=total-sum(values);
+    return {...numeric("ממוצע הנקודות של ארבע קבוצות הוא "+average+". כמה נקודות קיבלה קבוצה ד׳?","",answer,
+      steps({text:"יודעים את הממוצע, את מספר הקבוצות ואת שלוש התוצאות הידועות."},{text:"הממוצע כפול מספר הקבוצות נותן את הסכום הכולל. ממנו מחסרים את סכום התוצאות הידועות."},
+        {text:"נחשב את הסכום הכולל ואת החסר.",math:average+" × 4 = "+total+"; "+total+" − "+sum(values)+" = "+answer},{text:"נוסיף את התוצאה החסרה ונחלק בארבע.",math:"("+values.join(" + ")+" + "+answer+") ÷ 4 = "+average}),
+      table(names,[...values,"?"],"נקודות במשחק קבוצתי"),"התשובה בנקודות."),audit:{type:"missing-mean",values,average,count:4}};
+  }
+  function meanChange(seed){
+    const values=meanValues(seed),change=1+seed%5,old=sum(values)/4,answer=old+change;
+    return {...numeric("לכל אחת מארבע הקבוצות נוספו "+change+" נקודות. מה הממוצע החדש?","",answer,
+      steps({text:"קודם מוצאים את הממוצע של התוצאות המקוריות."},{text:"אותה תוספת לכל קבוצה מגדילה את הממוצע באותה תוספת, ולא פי מספר הקבוצות."},
+        {text:"הממוצע המקורי הוא "+old+". נוסיף לו את התוספת המשותפת.",math:old+" + "+change+" = "+answer},{text:"גם סכום התוצאות גדל בתוספת כפול ארבע.",math:"("+sum(values)+" + 4 × "+change+") ÷ 4 = "+answer}),
+      table(names,values,"התוצאות לפני התוספת"),"התשובה בנקודות בממוצע."),audit:{type:"mean-change",values,change}};
+  }
+  function doubleBars(seed){
+    const first=[3+seed%5,5+Math.floor(seed/3),4+seed%4],second=first.map((v,i)=>v+2+(seed+i)%5),selected=seed%3,answer=second[selected]-first[selected],labels=["ציור","מוזיקה","ספורט"];
+    const y=value=>235-value*9,grid=Array.from({length:5},(_,i)=>{const v=i*5;return '<line x1="45" x2="390" y1="'+y(v)+'" y2="'+y(v)+'" stroke="currentColor" opacity=".25"/><text x="35" y="'+(y(v)+5)+'" text-anchor="end" fill="currentColor" font-size="16">'+v+'</text>';}).join("");
+    const bars=first.map((v,i)=>{
+      const x=75+i*110;
+      return '<rect x="'+x+'" y="'+y(v)+'" width="30" height="'+(235-y(v))+'" fill="var(--accent)"/><rect x="'+(x+34)+'" y="'+y(second[i])+'" width="30" height="'+(235-y(second[i]))+'" fill="var(--soft)" stroke="currentColor" stroke-width="2"/><text x="'+(x+15)+'" y="'+(y(v)-6)+'" fill="currentColor" text-anchor="middle" font-size="15">'+v+'</text><text x="'+(x+49)+'" y="'+(y(second[i])-6)+'" fill="currentColor" text-anchor="middle" font-size="15">'+second[i]+'</text><text x="'+(x+32)+'" y="261" fill="currentColor" text-anchor="middle" font-size="17">'+labels[i]+'</text>';
+    }).join("");
+    const visual='<p>בכל זוג: העמודה המלאה משמאל היא כיתה א׳, והעמודה בעלת המסגרת מימין היא כיתה ב׳. הציר מציין משתתפים.</p><svg viewBox="0 0 425 280" role="img" aria-label="'+labels.map((label,i)=>label+': כיתה א '+first[i]+', כיתה ב '+second[i]).join('; ')+'"><title>שני מערכי נתונים על אותו ציר</title>'+grid+bars+'</svg>';
+    return {...numeric("כמה משתתפים יותר בחרו ב"+labels[selected]+" בכיתה ב׳ לעומת כיתה א׳?","",answer,
+      steps({text:"מזהים במקרא איזו עמודה שייכת לכל כיתה ובוחרים את זוג העמודות של "+labels[selected]+"."},{text:"משווים את אותה פעילות בין הכיתות על אותו קנה מידה. השאלה מבקשת הפרש."},
+        {text:"מחסרים את הכמות בכיתה א׳ מן הכמות בכיתה ב׳.",math:second[selected]+" − "+first[selected]+" = "+answer},{text:"נוסיף את ההפרש לכמות בכיתה א׳ ונקבל את הכמות בכיתה ב׳.",math:first[selected]+" + "+answer+" = "+second[selected]}),
+      visual,"התשובה במספר משתתפים."),audit:{type:"difference",values:[second[selected],first[selected]]}};
+  }
+  function addedObservation(seed){
+    const old=seed+30,values=[old-3,old+1,old-1,old+3],change=([1,-1,0][seed%3])*(Math.floor(seed/3)%5+1),added=old+5*change,answer=old+change,total=sum(values)+added;
+    return {...numeric("נוספה קבוצה חמישית שקיבלה "+added+" נקודות. מה ממוצע הנקודות החדש של כל חמש הקבוצות?","",answer,
+      steps({text:"בטבלה ארבע תוצאות, ונוספה תוצאה חמישית. מספר הנתונים השתנה."},{text:"מוסיפים את התוצאה החדשה לסכום ומחלקים בחמש, לא בארבע."},
+        {text:"נחשב את הסכום החדש ואת הממוצע.",math:sum(values)+" + "+added+" = "+total+"; "+total+" ÷ 5 = "+answer},
+        {text:change>0?"התוצאה החדשה גדולה מהממוצע הישן, לכן הממוצע עולה אך לא מגיע עד לתוצאה החדשה.":change<0?"התוצאה החדשה קטנה מהממוצע הישן, לכן הממוצע יורד אך נשאר גדול מהתוצאה החדשה.":"התוצאה החדשה שווה לממוצע הישן, ולכן הממוצע אינו משתנה.",math:change>0?old+" < "+answer+" < "+added:change<0?added+" < "+answer+" < "+old:old+" = "+answer}),
+      table(names,values,"ארבע הקבוצות לפני ההצטרפות"),"התשובה בנקודות בממוצע."),audit:{type:"mean",values:[...values,added]}};
+  }
+  function representative(seed){
+    const base=seed+12,values=[base,base+1,base+2,base+3,base+26],average=sum(values)/5;
+    const answer="התוצאה החריגה מעלה את הממוצע; רוב התוצאות נמוכות ממנו";
+    return {prompt:"הטבלה מציגה מספר פריטים שנאספו בחמש קבוצות. הממוצע הוא "+average+". איזו אמירה מתארת נכון את הנתונים?",kind:"text",answer,
+      choices:[answer,"כל הקבוצות אספו בדיוק את הממוצע","אי אפשר לחשב ממוצע כשיש תוצאה גדולה"],
+      visual:table([...names,"קבוצה ה׳"],values,"מספר פריטים שנאספו"),
+      steps:steps({text:"קוראים את כל התוצאות ולא רק את הממוצע."},{text:"ממוצע מחלק את הסכום שווה בשווה, אבל אינו מבטיח שכל קבוצה קרובה אליו."},
+        {text:"יש תוצאה אחת גדולה במיוחד. היא מגדילה את הסכום ואת הממוצע.",math:values.join(" + ")+" = "+sum(values)+"; "+sum(values)+" ÷ 5 = "+average},
+        {text:"ארבע התוצאות הקטנות נמוכות מהממוצע. אפשר לחשב אותו, אך צריך לפרש אותו בזהירות."})};
+  }
+  function relative(seed){
+    const target=seed+2,other=seed%5+3,total=target+other;
+    return {prompt:"איזה חלק מכל המשתתפים בחר בציור? אפשר לבחור או לכתוב שבר שקול.",kind:"fraction",answer:target+"/"+total,
+      choices:[target+"/"+total,other+"/"+(total+1),target+"/"+(total+2)],
+      visual:'<table><caption>משלימים טבלת שכיחות יחסית: כל משתתף בחר פעם אחת</caption><thead><tr><th scope="col">פעילות</th><th scope="col">שכיחות</th><th scope="col">חלק מכל המשתתפים</th></tr></thead><tbody><tr><th scope="row">ציור</th><td>'+target+'</td><td>?</td></tr><tr><th scope="row">פיסול</th><td>'+other+'</td><td><bdi dir="ltr">'+other+'/'+total+'</bdi></td></tr><tr><th scope="row">סך הכול</th><td>'+total+'</td><td>1</td></tr></tbody></table>',
+      steps:steps({text:"השלם הוא כל המשתתפים. החלק הוא המשתתפים שבחרו בציור."},{text:"מחברים את שתי הכמויות למכנה. במונה רושמים את מספר בוחרי הציור."},
+        {text:"נמצא את השלם ואת השבר.",math:target+" + "+other+" = "+total+"; "+target+"/"+total},{text:"חלק הציור וחלק הפיסול משלימים יחד לשלם.",math:target+"/"+total+" + "+other+"/"+total+" = 1"}),
+      audit:{type:"relative",target,total}};
+  }
+  function pie(seed){
+    const total=8+seed,values=[1+seed%4,2+seed%3];values.push(total-sum(values));
+    const selected=seed%3,answer=values[selected],colors=["var(--accent)","#c57520","#168779"];
+    let start=-Math.PI/2;
+    const segments=values.map((value,i)=>{
+      const end=start+2*Math.PI*value/total,x1=150+90*Math.cos(start),y1=105+90*Math.sin(start),x2=150+90*Math.cos(end),y2=105+90*Math.sin(end);
+      const path='<path d="M150 105L'+x1+' '+y1+'A90 90 0 '+(value>total/2?1:0)+' 1 '+x2+' '+y2+'Z" fill="'+colors[i]+'" stroke="var(--surface)" stroke-width="2"/>';
+      start=end;return path;
+    }).join("");
+    const visual='<p>העיגול מייצג '+total+' משתתפים. במקרא מצוין השבר של כל פעילות.</p><svg viewBox="0 0 300 210" role="img" aria-label="ציור '+values[0]+' מתוך '+total+', מוזיקה '+values[1]+' מתוך '+total+', ספורט '+values[2]+' מתוך '+total+'"><title>התפלגות בחירות בפעילות</title>'+segments+'</svg>'+table(["ציור","מוזיקה","ספורט"],values.map(n=>n+"/"+total),"החלק מכל המשתתפים בכל פעילות");
+    return {...numeric("כמה משתתפים בחרו ב"+["ציור","מוזיקה","ספורט"][selected]+" לפי הדיאגרמה והמקרא?","",answer,
+      steps({text:"השלם הוא "+total+" משתתפים, והחלק של הפעילות הוא "+values[selected]+" מתוך "+total+"."},{text:"כדי למצוא שבר מכמות, מחלקים את השלם למספר החלקים השווים ומכפילים במספר החלקים שנבחרו."},
+        {text:"נחשב את מספר המשתתפים.",math:total+" ÷ "+total+" × "+values[selected]+" = "+answer},{text:"סכום המשתתפים בכל הפעילויות שווה לשלם, והעיגול כולו מייצג את כולם.",math:values.join(" + ")+" = "+total}),
+      visual,"התשובה במספר משתתפים."),audit:{type:"pie",counts:values,selected,total}};
+  }
+  function median(seed){
+    const center=seed+5,values=[center+4,center-3,center+1,center,center-1],sorted=[...values].sort((a,b)=>a-b);
+    return {...numeric("העשרה: מה החציון של חמש התוצאות? החציון הוא הערך האמצעי אחרי מיון.","",center,
+      steps({text:"יש חמש תוצאות, ולכן לאחר מיון תהיה תוצאה אחת באמצע."},{text:"מסדרים מהקטנה לגדולה; לא בוחרים את האמצע של הרשימה לפני המיון."},
+        {text:"המקום השלישי הוא האמצעי.",math:sorted.join(" < ")},{text:"יש שני ערכים לפני "+center+" ושני ערכים אחריו. חציון אינו בהכרח הממוצע."}),
+      table(["סבב א׳","סבב ב׳","סבב ג׳","סבב ד׳","סבב ה׳"],values,"נקודות בחמישה סבבים"),"התשובה בנקודות."),audit:{type:"median",values}};
+  }
+  const skill=(id,title,scope,goal,why,rule,example,mistake,build,count=24)=>({id,title,scope,goal,why,rule,example,mistake,count,build,guided:()=>count!==12?build(count+10):{
+    prompt:"רוצים לדעת כמה גשם ירד בחצר בכל יום השבוע. איזה מידע צריך לאסוף?",
+    kind:"text",answer:"כמות הגשם בכל יום, באותו כלי ובאותה יחידה",
+    choices:["כמות הגשם בכל יום, באותו כלי ובאותה יחידה","צבע העננים ביום אחד בלבד","מספר המטריות בכיתה אחרת"],
+    steps:steps({text:"השאלה עוסקת בכמות הגשם ובשינוי בין הימים."},{text:"מודדים את אותה תכונה באותה יחידה ובתנאי איסוף עקביים."},{text:"מתעדים לכל יום את כמות הגשם שנאספה בכלי המדידה."},{text:"בודקים שכל יום נמדד ושלא החלפנו כמויות גשם בצבע עננים או במספר מטריות."})
+  }});
+  return {id:"data",title:"בלשי הנתונים ומעבדת הממוצע",intro:"אוספים מידע, מציגים אותו, בודקים מסקנות ומבינים ממוצע כחלוקה שווה.",prerequisites:"חיבור, חיסור וחילוק; קריאת טבלה ושבר כחלק משלם.",skills:[
+    skill("investigation","שואלים שאלה ואוספים מידע","core","לבחור נתונים שיכולים לענות לשאלה, ולהבחין בין עובדה למסקנה לא מבוססת.","נתונים שימושיים רק כאשר ברור את מי בדקנו, מה מדדנו ובאיזה אופן.","מגדירים שאלה, קבוצה, יחידה וזמן; אוספים בעקביות ולא מכלילים מעבר למה שנבדק.",
+      [{text:"נרצה לדעת באיזה אמצעי מגיעים ילדי החוג למפגש."},{text:"נשאל כל משתתף פעם אחת איך הגיע היום, ונרשום קטגוריה אחת."},{text:"נספור בכל קטגוריה ונבדוק שהסכום שווה למספר המשיבים."},{text:"נוכל להסיק על המשיבים היום, לא על כל ילדי העיר."}],
+      {text:"שאלנו שני חברים ואז טענו שכל בית הספר מעדיף את אותו משחק.",fix:"מציינים מי נשאל. כדי לבדוק את בית הספר צריך תכנון איסוף מתאים, ולא להכליל משני חברים."},investigation,12),
+    skill("frequency","טבלת שכיחויות והסכום הכולל","core","לקרוא קטגוריות ושכיחויות ולחשב כמה נתונים נאספו.","שכיחות היא מספר הפעמים שערך או קטגוריה מופיעים. אם הקבוצות נפרדות, סכום השכיחויות הוא מספר התצפיות.","קוראים את הכותרות ואת היחידות לפני החישוב.",
+      [{text:"בסקר נבחרו שלוש פעילויות: ציור, פיסול ומוזיקה."},{text:"השכיחויות הן שש, שמונה ועשר. כל משתתף בחר רק פעילות אחת.",math:"6, 8, 10"},{text:"מחברים את שלוש השכיחויות.",math:"6 + 8 + 10 = 24"},{text:"היו עשרים וארבעה משיבים, לא שלושה. שלוש הוא מספר הקטגוריות."}],
+      {text:"מבלבלים בין מספר השורות למספר המשתתפים.",fix:"השורות הן קטגוריות; מוסיפים את השכיחויות כדי למצוא את מספר המשתתפים."},frequency),
+    skill("chart-scale","קוראים תרשים ומקרא","core","לתרגם סימנים בתרשים לכמויות לפי המקרא.","סימן אחד בתרשים יכול לייצג יותר מפריט אחד. המקרא קובע את קנה המידה.","מזהים שורה או עמודה, סופרים סימנים ומכפילים בערך של כל סימן.",
+      [{text:"בתרשים ספרייה כל ריבוע מייצג שלושה ספרים."},{text:"בשורת יום שני יש חמישה ריבועים."},{text:"מכפילים את מספר הריבועים בערך של ריבוע אחד.",math:"5 × 3 = 15"},{text:"חמישה עשר ספרים מחולקים לשלושה לכל ריבוע נותנים חמישה ריבועים.",math:"15 ÷ 3 = 5"}],
+      {text:"סופרים חמישה ריבועים ועונים חמישה ספרים.",fix:"בודקים את המקרא: כאשר כל ריבוע מייצג שלושה ספרים, חמשת הריבועים מייצגים חמישה עשר ספרים."},chart),
+    skill("bar-chart","תרשים עמודות וקנה המידה","core","לקרוא ערך מתוך גובה עמודה ולהשתמש בסימוני הציר.","הגובה של כל עמודה מציג כמות על אותו קנה מידה, ולכן אפשר להשוות בין הקבוצות.","קוראים את התווית שמתחת לעמודה ואת המספר שמול הגובה שלה בציר האנכי.",
+      [{text:"הציר האנכי בתרשים מסומן באפס, ארבע, שמונה ושתים עשרה."},{text:"עמודה שמגיעה לקו שמונה מייצגת שמונה פריטים, ולא שני פריטים."},{text:"עמודה באמצע הדרך בין שמונה לשתים עשרה מייצגת עשרה פריטים.",math:"8 + (12 − 8) ÷ 2 = 10"},{text:"שומרים על אותו קנה מידה לכל העמודות ולא משווים גבהים מתרשימים עם צירים שונים."}],
+      {text:"מניחים שכל קו סריג מייצג פריט אחד בלי לקרוא את הציר.",fix:"ההפרש בין סימוני הציר קובע את הכמות בין הקווים. תמיד קוראים את המספרים ואת היחידות."},bars),
+    skill("data-difference","משווים כמויות מתוך נתונים","core","להבחין בין סכום, כמות בודדת והפרש ולבחור את הנתונים הנכונים.","טבלה יכולה להכיל יותר מידע ממה שצריך. השאלה קובעת אילו שורות לבחור ואיזו פעולה לעשות.","בשאלה כמה יותר מחסרים; בשאלה כמה יחד מחברים.",
+      [{text:"קבוצה אחת אספה ארבעה עשר בקבוקים וקבוצה שנייה עשרים ואחד."},{text:"מבקשים כמה יותר אספה השנייה, ולכן מחפשים הפרש."},{text:"מחסרים את הכמות הקטנה מן הגדולה.",math:"21 − 14 = 7"},{text:"בודקים בחיבור.",math:"14 + 7 = 21"}],
+      {text:"מחברים את שתי הקבוצות למרות שנשאל כמה יותר.",fix:"הסכום עונה כמה יחד. ההפרש מתאר את הפער בין הכמויות."},comparison),
+    skill("double-bars","עמודות כפולות והשוואת קבוצות","core","לקרוא שני מערכי נתונים על אותו תרשים ולהשוות קטגוריות מתאימות.","שני צבעים או סימונים מאפשרים לייצג שתי קבוצות באותה קטגוריה ובאותו קנה מידה.","קוראים את המקרא, בוחרים אותה קטגוריה בשתי הקבוצות ורק אז משווים.",
+      [{text:"בתרשים של שתי כיתות, לציור יש שמונה משתתפים בכיתה אחת ואחד עשר בשנייה."},{text:"מזהים לפי המקרא איזו עמודה מייצגת כל כיתה."},{text:"הפער בקטגוריית הציור הוא שלושה.",math:"11 − 8 = 3"},{text:"לא משווים בטעות ציור בכיתה אחת לספורט בכיתה אחרת; זו שאלה אחרת."}],
+      {text:"משווים שתי עמודות סמוכות בלי לבדוק אם הן אותה קטגוריה.",fix:"קוראים את התוויות והמקרא. לזוג השוואה צריכה להיות אותה משמעות בשתי הקבוצות."},doubleBars),
+    skill("mean","ממוצע כחלוקה שווה","core","להבין ממוצע ולחשב אותו בעזרת סכום ומספר נתונים.","ממוצע הוא הכמות שהייתה בכל קבוצה אילו חילקנו את הסכום הכולל באופן שווה. הוא לא חייב להופיע ברשימה, ואפשר לקבל ממוצע שאינו מספר שלם גם כשהתוצאות שלמות.","ממוצע = סכום הערכים חלקי מספר הערכים.",
+      [{text:"ארבע קערות מכילות שתי גולות, שש, ארבע ושמונה."},{text:"נסכום את כולן; בהעברה בין הקערות מספר הגולות הכולל לא משתנה.",math:"2 + 6 + 4 + 8 = 20"},{text:"נחלק שווה בשווה בין ארבע הקערות.",math:"20 ÷ 4 = 5"},{text:"הממוצע חמש, אף שבתחילה לא היו חמש גולות באף קערה.",math:"5 × 4 = 20"}],
+      {text:"מחלקים במספר הגדול ביותר במקום במספר הנתונים.",fix:"המכנה הוא מספר הקבוצות או הערכים. ארבע קערות מחייבות חלוקה בארבע."},mean),
+    skill("missing-mean","מוצאים נתון חסר בעזרת ממוצע","core","לעבור מממוצע לסכום ולמצוא תוצאה חסרה.","אם יודעים כמה קבוצות יש ומה הממוצע, אפשר לשחזר את הסכום הכולל.","מכפילים ממוצע במספר הנתונים, ואז מחסרים את סכום הנתונים הידועים.",
+      [{text:"ממוצע ארבע תוצאות הוא שמונה. שלוש תוצאות הן שש, תשע ושבע."},{text:"משחזרים את הסכום הכולל.",math:"8 × 4 = 32"},{text:"מחסרים את סכום התוצאות הידועות.",math:"32 − (6 + 9 + 7) = 10"},{text:"מציבים ובודקים את הממוצע.",math:"(6 + 9 + 7 + 10) ÷ 4 = 8"}],
+      {text:"מחסרים את שלושת הנתונים מהממוצע עצמו.",fix:"הממוצע אינו הסכום. קודם מכפילים אותו במספר הנתונים."},missing),
+    skill("mean-change","איך שינוי בנתונים משפיע על הממוצע?","core","להסביר תוספת שווה לכל הנתונים בלי להתחיל כל פעם מחדש.","כשמוסיפים אותה כמות לכל קבוצה, גם החלק בחלוקה השווה גדל באותה כמות.","תוספת זהה לכל ערך מגדילה את הממוצע בדיוק בתוספת הזאת.",
+      [{text:"התוצאות הן ארבע, שש ושמונה.",math:"(4 + 6 + 8) ÷ 3 = 6"},{text:"מוסיפים שתי נקודות לכל תוצאה. התוצאות החדשות הן שש, שמונה ועשר."},{text:"הממוצע גדל בשתיים.",math:"6 + 2 = 8"},{text:"אפשר לבדוק ישירות.",math:"(6 + 8 + 10) ÷ 3 = 8"}],
+      {text:"מוסיפים לממוצע את התוספת לכל הקבוצות יחד.",fix:"הסכום גדל פי מספר הקבוצות, אבל בחלוקה למספר הקבוצות חוזרים לתוספת אחת."},meanChange),
+    skill("added-observation","מה קורה כשמצטרף נתון חדש?","core","לעדכן גם את הסכום וגם את מספר הנתונים כשמחשבים ממוצע חדש.","ממוצע של קבוצה חדשה תלוי בכל הנתונים שלה. הוספת תוצאה מעל הממוצע מעלה אותו; הוספת תוצאה מתחתיו מורידה אותו.","מחברים את הנתון החדש לסכום ומחלקים במספר הנתונים החדש.",
+      [{text:"לארבע קבוצות יש ממוצע שש, ולכן סכומן עשרים וארבע.",math:"6 × 4 = 24"},{text:"מצטרפת קבוצה עם אחת עשרה נקודות."},{text:"כעת יש חמש קבוצות.",math:"(24 + 11) ÷ 5 = 7"},{text:"הממוצע עלה משש לשבע, ונשאר בין הממוצע הקודם לנתון שנוסף.",math:"6 < 7 < 11"}],
+      {text:"מוסיפים תוצאה לסכום אבל מחלקים במספר הקבוצות הישן.",fix:"כשמצטרפת קבוצה, גם המכנה משתנה. סופרים מחדש כמה תוצאות יש."},addedObservation),
+    skill("mean-interpretation","מתי הממוצע מייצג את הקבוצה?","core","להבחין בין חישוב ממוצע נכון לבין תיאור מדויק של רוב הנתונים.","תוצאה חריגה יכולה להשפיע מאוד על הממוצע. כדאי לקרוא גם את התוצאות עצמן ולבדוק את הפיזור.","ממוצע הוא כלי לתיאור נתונים, לא טענה שכל הנתונים שווים לו או קרובים אליו.",
+      [{text:"בחמש קערות יש ארבע, חמש, שש, שבע ושלושים גולות."},{text:"הסכום הוא חמישים ושתיים.",math:"4 + 5 + 6 + 7 + 30 = 52"},{text:"הממוצע עשר וארבע עשיריות.",math:"52 ÷ 5 = 10.4"},{text:"ברוב הקערות יש פחות מהממוצע. המספר הגדול בקערה האחרונה משפיע עליו."}],
+      {text:"טוענים שלכל קבוצה יש בערך הממוצע רק מפני שחישבנו אותו.",fix:"מסתכלים גם על הערכים המקוריים. תוצאה חריגה עשויה להפוך את הממוצע לתיאור חלקי בלבד."},representative),
+    skill("relative-frequency","מתארים חלק מכל הנתונים","core","לקשר בין שכיחות, מספר תצפיות ושבר מהשלם.","אותה כמות יכולה להיות חלק שונה מקבוצות בגדלים שונים, ולכן חשוב לדעת מהו השלם.","במונה השכיחות המבוקשת ובמכנה מספר התצפיות הכולל.",
+      [{text:"שישה ילדים בחרו ציור וארבעה בחרו פיסול."},{text:"מספר המשתתפים הכולל הוא עשרה.",math:"6 + 4 = 10"},{text:"חלקם של בוחרי הציור הוא שש עשיריות, ששווה לשלוש חמישיות.",math:"6/10 = 3/5"},{text:"שני החלקים יחד נותנים שלם.",math:"6/10 + 4/10 = 1"}],
+      {text:"מחלקים את מספר בוחרי הציור רק במספר בוחרי הפיסול.",fix:"כדי למצוא חלק מהשלם מחלקים במספר המשתתפים הכולל, כולל שתי הקבוצות."},relative),
+    skill("pie-chart","דיאגרמת עיגול: חלקים מאותו שלם","enrichment","לקרוא מקרא של דיאגרמת עיגול ולקשר שבר לכמות.","כל העיגול מייצג קבוצה אחת שלמה. גודל כל גזרה מתאר איזה חלק מהקבוצה בחר באותה קטגוריה.","בודקים קודם מהו השלם, ואז משתמשים בשבר שמופיע במקרא. צבע לבדו אינו מספר.",
+      [{text:"עיגול מייצג שנים עשר משתתפים. שליש מהם בחרו ציור."},{text:"מחלקים את הקבוצה לשלוש קבוצות שוות.",math:"12 ÷ 3 = 4"},{text:"לכן ארבעה משתתפים בחרו ציור. יתר המשתתפים הם שני שלישים."},{text:"מחברים את שלושת החלקים ובודקים שהם מכסים את העיגול כולו.",math:"4 + 4 + 4 = 12"}],
+      {text:"חושבים ששליש עיגול תמיד פירושו ילד אחד.",fix:"שליש הוא חלק יחסי. הכמות תלויה במספר הילדים שהעיגול כולו מייצג."},pie),
+    skill("median-extension","העשרה: חציון לעומת ממוצע","enrichment","למצוא את הנתון האמצעי ברשימה אי־זוגית אחרי מיון.","חציון מתאר מיקום ברשימה מסודרת, בעוד ממוצע מתאר חלוקה שווה של הסכום.","מסדרים מהקטן לגדול ואז מוצאים את הערך האמצעי. כאן מתרגלים רשימות עם חמישה ערכים בלבד.",
+      [{text:"קיבלנו תוצאות לא מסודרות.",math:"9, 3, 6, 5, 4"},{text:"מסדרים מהקטנה לגדולה.",math:"3 < 4 < 5 < 6 < 9"},{text:"הנתון השלישי הוא חמש. יש שני נתונים מכל צד."},{text:"הממוצע שונה, ולכן חשוב לקרוא מה נשאל.",math:"(3 + 4 + 5 + 6 + 9) ÷ 5 = 5.4"}],
+      {text:"בוחרים את הפריט האמצעי לפני שמסדרים את הרשימה.",fix:"המיון הוא חלק מהגדרת החציון. לא מספיק להסתכל על המקום שבו המספר הוצג לראשונה."},median)
+  ]};
+}
+// COURSE_DATA_END
+const course=buildCourse();
+const $=id=>document.getElementById(id);
+const scopeLabels={core:"לימוד לכיתה ה׳",review:"חזרה ובסיס",enrichment:"העשרה לבחירה"};
+const skillMap=new Map(course.skills.map(skill=>[skill.id,skill]));
+function node(tag,text,className){const el=document.createElement(tag);if(text!==undefined)el.textContent=text;if(className)el.className=className;return el;}
+function control(text,action){const el=node("button",text);el.type="button";el.addEventListener("click",action);return el;}
+function shuffle(items){const result=[...items];for(let i=result.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[result[i],result[j]]=[result[j],result[i]];}return result;}
+function rational(text){
+  let value=String(text).trim().replace(/\u2212/g,"-");
+  if(/^-?\d{1,3}(?:,\d{3})+(?:\.\d{1,6})?$/.test(value))value=value.replace(/,/g,"");
+  let m=value.match(/^(-?\d+)\s+(\d+)\/([1-9]\d*)$/);
+  let n,d;
+  if(m){d=Number(m[3]);if(Number(m[2])>=d)return null;n=(Math.abs(Number(m[1]))*d+Number(m[2]))*(m[1].startsWith("-")?-1:1);}
+  else if((m=value.match(/^(-?\d+)\/([1-9]\d*)$/))){n=Number(m[1]);d=Number(m[2]);}
+  else if((m=value.match(/^(-?)(\d+)(?:\.(\d{1,6}))?$/))){d=10**(m[3]?.length||0);n=(Number(m[2])*d+Number(m[3]||0))*(m[1]?-1:1);}
+  else return null;
+  if(!Number.isSafeInteger(n)||!Number.isSafeInteger(d))return null;
+  let a=Math.abs(n),b=d;while(b){[a,b]=[b,a%b];}
+  return [n/(a||1),d/(a||1)];
+}
+function answerKey(value,kind){if(kind==="text")return String(value).trim();const pair=rational(value);return pair?pair.join("/"):"invalid:"+value;}
+function questionFor(skill,seed){
+  const q=skill.build(seed);
+  return {...q,id:skill.id+"-"+seed,skill:skill.id};
+}
+function validateQuestion(q){
+  if(!["number","fraction","text"].includes(q.kind)||q.steps.length!==4||q.choices.length<3||new Set(q.choices.map(x=>answerKey(x,q.kind))).size!==q.choices.length||q.choices.filter(x=>answerKey(x,q.kind)===answerKey(q.answer,q.kind)).length!==1)
+    throw new Error("Invalid authored question: "+q.id);
+  if(q.kind!=="text"&&q.choices.some(x=>!rational(x)))throw new Error("Invalid numeric option: "+q.id);
+}
+const bank=course.skills.flatMap(skill=>Array.from({length:skill.count},(_,i)=>questionFor(skill,i)));
+bank.forEach(validateQuestion);
+const decks=new Map(),supportHistory=new Set(),lastShown=new Map();
+let round=[],position=0,current=null,solved=false,assisted=false,independent=0,activeSkill=null,results=[];
+let lessonSkill=null,lessonTrigger=null,guided=null,guidedSolved=false;
+function deckFor(skill){
+  if(!decks.has(skill)||!decks.get(skill).length){
+    const fresh=shuffle(bank.filter(q=>q.skill===skill));
+    if(fresh.length>1&&fresh[0].id===lastShown.get(skill))[fresh[0],fresh[1]]=[fresh[1],fresh[0]];
+    decks.set(skill,fresh);
+  }
+  return decks.get(skill);
+}
+function planRound(id){
+  if(id)return deckFor(id).slice(0,6);
+  const ids=shuffle(course.skills.filter(s=>s.scope!=="enrichment").map(s=>s.id));
+  const selected=[],offsets=new Map();
+  while(selected.length<6){
+    let added=false;
+    for(const skill of ids){
+      const offset=offsets.get(skill)||0,q=deckFor(skill)[offset];
+      if(q){selected.push(q);offsets.set(skill,offset+1);added=true;}
+      if(selected.length===6)break;
+    }
+    if(!added)break;
+  }
+  return shuffle(selected);
+}
+function showHome(){
+  $("home").hidden=false;$("practice").hidden=true;$("summary").hidden=true;current=null;solved=false;
+  $("home-title").focus({preventScroll:true});window.scrollTo(0,0);
+}
+function startRound(id=null){
+  if(id&&!skillMap.has(id))throw new Error("Unknown skill: "+id);
+  if($("lesson").open)$("lesson").close();
+  activeSkill=id;round=planRound(id);position=0;independent=0;results=[];
+  $("home").hidden=true;$("practice").hidden=false;$("summary").hidden=true;
+  $("practice-title").textContent=id?skillMap.get(id).title:"תרגול משולב";
+  renderQuestion();$("practice").scrollIntoView({block:"start"});
+}
+function appendSteps(target,steps,numbered=false){
+  target.replaceChildren();
+  const headings=["מה ידוע ומה מחפשים?","באיזו דרך נפתור?","נחשב צעד אחר צעד","איך נבדוק?"];
+  steps.forEach((step,i)=>{const li=node("li",undefined,"step");if(numbered)li.append(node("h4",headings[i]));li.append(node("p",step.text));if(step.math)li.append(node("p",step.math,"math"));target.append(li);});
+}
+function setVisual(id,html){$(id).hidden=!html;$(id).innerHTML=html||"";}
+function renderQuestion(){
+  current=round[position];solved=false;assisted=supportHistory.has(current.id);
+  const deck=deckFor(current.skill),index=deck.findIndex(q=>q.id===current.id);if(index>=0)deck.splice(index,1);
+  lastShown.set(current.skill,current.id);
+  $("skill-label").textContent=scopeLabels[skillMap.get(current.skill).scope]+" · "+skillMap.get(current.skill).title;
+  $("prompt").textContent=current.prompt;$("expression").textContent=current.expression||"";$("expression").hidden=!current.expression;
+  $("unit").textContent=current.unit||"";setVisual("visual",current.visual);
+  $("round-label").textContent="שאלה "+(position+1)+" מתוך "+round.length;$("progress").max=round.length;$("progress").value=position;
+  $("choices").replaceChildren();
+  shuffle(current.choices).forEach(value=>{
+    const q=current,button=control(value,()=>answer(value,button,q.id));button.dir=q.kind==="text"?"rtl":"ltr";$("choices").append(button);
+  });
+  $("answer-form").hidden=current.kind==="text";$("input-note").hidden=current.kind==="text";$("typed-answer").value="";
+  [...$("answer-form").elements].forEach(el=>el.disabled=false);$("feedback").textContent="";
+  appendSteps($("help-steps"),current.steps,true);$("help-answer").textContent=current.answer;
+  $("help-answer").className=current.kind==="text"?"":"math";toggleHelp(false);
+  for(const id of ["next-top","next-bottom"]){$(id).hidden=true;$(id).textContent=position===round.length-1?"לסיכום הסבב":"לשאלה הבאה";}
+  $("prompt").focus({preventScroll:true});
+}
+function markSupport(){if(current&&!solved){assisted=true;supportHistory.add(current.id);}}
+function toggleHelp(open){
+  if(open)markSupport();
+  $("help-panel").hidden=!open;$("help-toggle").setAttribute("aria-expanded",String(open));$("help-toggle").textContent=open?"🙈 הסתר הסבר":"🔍 איך פותרים?";
+}
+function answer(value,button,id){
+  if(!current||solved||current.id!==id||button?.disabled||(button&&button.parentElement!==$("choices")))return;
+  if(current.kind!=="text"&&!rational(value)){$("feedback").textContent="כתבו מספר תקין או שבר עם מכנה שאינו אפס. למשל 0.5 או 1/2.";return;}
+  if(answerKey(value,current.kind)!==answerKey(current.answer,current.kind)){
+    markSupport();if(button){button.disabled=true;button.classList.add("wrong");button.setAttribute("aria-label",value+" — לא נכון");}
+    $("feedback").textContent="עוד ניסיון. נפתח את הדרך ונבדוק באיזה צעד צריך עזרה.";toggleHelp(true);return;
+  }
+  solved=true;if(!assisted)independent++;
+  results.push({skill:current.skill,assisted});
+  if(button){button.classList.add("correct");button.setAttribute("aria-label",value+" — נכון");}
+  $("choices").querySelectorAll("button").forEach(el=>el.disabled=true);[...$("answer-form").elements].forEach(el=>el.disabled=true);
+  $("feedback").textContent=assisted?"נכון! נעזרתם בדרך והגעתם לפתרון.":"נכון! פתרתם באופן עצמאי.";
+  $("progress").value=position+1;for(const id of ["next-top","next-bottom"])$(id).hidden=false;
+  $("next-top").focus({preventScroll:true});
+}
+function nextQuestion(){
+  if(!solved)return;
+  if(position<round.length-1){position++;renderQuestion();$("prompt").scrollIntoView({block:"start"});return;}
+  solved=false;current=null;$("practice").hidden=true;$("summary").hidden=false;
+  $("summary-text").textContent="השלמתם "+round.length+" שאלות: "+independent+" באופן עצמאי ו־"+(round.length-independent)+" בעזרת תמיכה.";
+  $("recommendations").replaceChildren();
+  for(const id of new Set(results.filter(r=>r.assisted).map(r=>r.skill))){const skill=skillMap.get(id);$("recommendations").append(control("נחזור על הדרך: "+skill.title,event=>openLesson(id,event.currentTarget)));}
+  $("next-lesson").hidden=!activeSkill||course.skills.findIndex(s=>s.id===activeSkill)===course.skills.length-1;
+  $("summary-title").focus({preventScroll:true});$("summary").scrollIntoView({block:"start"});
+}
+function guidedHelp(open){
+  $("guided-solution").hidden=!open;$("guided-help").setAttribute("aria-expanded",String(open));$("guided-help").textContent=open?"🙈 הסתר הסבר":"🔍 איך פותרים?";
+}
+function openLesson(id,trigger){
+  if(!skillMap.has(id))throw new Error("Unknown lesson: "+id);
+  markSupport();lessonSkill=skillMap.get(id);lessonTrigger=trigger||document.activeElement;guidedSolved=false;
+  $("lesson-title").textContent=lessonSkill.title;$("lesson-goal").textContent=lessonSkill.goal;
+  $("lesson-why").textContent=lessonSkill.why;$("lesson-rule").textContent=lessonSkill.rule;
+  appendSteps($("example-steps"),lessonSkill.example);setVisual("lesson-visual",lessonSkill.visual);
+  $("mistake-text").textContent=lessonSkill.mistake.text;$("mistake-math").textContent=lessonSkill.mistake.math||"";$("mistake-math").hidden=!lessonSkill.mistake.math;$("mistake-fix").textContent=lessonSkill.mistake.fix;
+  guided=lessonSkill.guided();validateQuestion(guided);$("guided-prompt").textContent=guided.prompt;
+  $("guided-expression").textContent=guided.expression||"";$("guided-expression").hidden=!guided.expression;
+  setVisual("guided-visual",guided.visual);$("guided-unit").textContent=guided.unit||"";
+  appendSteps($("guided-steps"),guided.steps,true);guidedHelp(false);$("guided-feedback").textContent="";$("guided-choices").replaceChildren();
+  shuffle(guided.choices).forEach(value=>{
+    const q=guided,button=control(value,()=>{
+      if(guidedSolved||button.disabled||guided!==q)return;
+      guidedHelp(true);
+      if(answerKey(value,q.kind)===answerKey(q.answer,q.kind)){
+        guidedSolved=true;button.classList.add("correct");$("guided-choices").querySelectorAll("button").forEach(el=>el.disabled=true);$("guided-feedback").textContent="נכון! קראו את בדיקת הפתרון ונסו תרגיל חדש.";
+      }else{button.disabled=true;button.classList.add("wrong");$("guided-feedback").textContent="נבדוק יחד את הדרך וננסה שוב.";}
+    });
+    button.dir=q.kind==="text"?"rtl":"ltr";$("guided-choices").append(button);
+  });
+  $("lesson-practice").textContent=current&&current.skill===id&&!$("practice").hidden?"חזרה לאותה שאלה":"מתרגלים את הנושא";
+  $("lesson-next").disabled=course.skills.indexOf(lessonSkill)===course.skills.length-1;
+  document.body.classList.add("lesson-open");if(!$("lesson").open)$("lesson").showModal();$("lesson").scrollTop=0;
+}
+function initialize(){
+  document.title=course.title+" · מתמטיקה לכיתה ה׳";$("page-title").textContent=course.title;$("intro").textContent=course.intro;$("prerequisites").textContent="מה כדאי להכיר קודם: "+course.prerequisites;
+  course.skills.forEach((skill,index)=>{
+    const card=node("article",undefined,"skill-card");card.append(node("p",scopeLabels[skill.scope],"scope"),node("h3",(index+1)+". "+skill.title),node("p",skill.goal));
+    const actions=node("div",undefined,"actions");actions.append(control("📚 לומדים את הדרך",event=>openLesson(skill.id,event.currentTarget)),control("מתרגלים",()=>startRound(skill.id)));card.append(actions);$("skills").append(card);
+  });
+  $("course-start").onclick=event=>openLesson(course.skills[0].id,event.currentTarget);$("mixed-start").onclick=()=>startRound();
+  for(const id of ["home-button","summary-home"])$(id).onclick=showHome;
+  for(const id of ["restart","again"])$(id).onclick=()=>startRound(activeSkill);
+  for(const id of ["next-top","next-bottom"])$(id).onclick=nextQuestion;
+  $("help-toggle").onclick=()=>toggleHelp($("help-panel").hidden);$("open-lesson").onclick=event=>openLesson(current.skill,event.currentTarget);
+  $("close-lesson").onclick=()=>$("lesson").close();
+  $("lesson").addEventListener("close",()=>{document.body.classList.remove("lesson-open");if(lessonTrigger?.isConnected)lessonTrigger.focus({preventScroll:true});});
+  $("lesson-practice").onclick=()=>{
+    const id=lessonSkill.id,resume=current&&current.skill===id&&!$("practice").hidden;
+    $("lesson").close();if(resume)$("prompt").focus({preventScroll:true});else startRound(id);
+  };
+  $("lesson-next").onclick=()=>{const next=course.skills[course.skills.indexOf(lessonSkill)+1];if(next)openLesson(next.id,lessonTrigger);};
+  $("next-lesson").onclick=event=>{const next=course.skills[course.skills.findIndex(s=>s.id===activeSkill)+1];if(next)openLesson(next.id,event.currentTarget);};
+  $("guided-help").onclick=()=>guidedHelp($("guided-solution").hidden);
+  $("answer-form").onsubmit=event=>{event.preventDefault();if(current)answer($("typed-answer").value,null,current.id);};
+  function route(){
+    if($("lesson").open)$("lesson").close();showHome();const id=location.hash.slice(1);
+    $("route-message").textContent="";
+    if(skillMap.has(id))openLesson(id);else if(id==="practice")startRound();else if(id)$("route-message").textContent="השיעור שבקישור לא נמצא. בחרו אחד מהשיעורים הזמינים.";
+  }
+  window.addEventListener("hashchange",route);route();
+}
+initialize();
+const labBowls=[2,6,4,8];
+function renderLab(){
+  $("lab-bowls").replaceChildren();
+  labBowls.forEach((count,index)=>{
+    const card=node("div",undefined,"step");card.append(node("h3",["קערה א׳","קערה ב׳","קערה ג׳","קערה ד׳"][index]),node("p",count+" גולות"));
+    const tokens=node("div");tokens.style.cssText="display:flex;flex-wrap:wrap;gap:5px";tokens.setAttribute("aria-hidden","true");
+    for(let i=0;i<count;i++){const token=node("span","●");token.style.color="var(--accent)";tokens.append(token);}
+    card.append(tokens);$("lab-bowls").append(card);
+  });
+}
+$("lab-move").onclick=()=>{
+  const from=Number($("lab-from").value),to=Number($("lab-to").value);
+  if(from===to){$("lab-message").textContent="בחרו שתי קערות שונות כדי לבצע העברה.";return;}
+  if(labBowls[from]===0){$("lab-message").textContent="הקערה שבחרתם ריקה. בחרו קערה שיש בה גולות.";return;}
+  labBowls[from]--;labBowls[to]++;renderLab();
+  $("lab-message").textContent=labBowls.every(n=>n===5)?"הגעתם לחלוקה שווה: חמש גולות בכל קערה. הסכום נשאר עשרים והממוצע הוא חמש.":"הסכום נשאר עשרים גולות. המשיכו עד שבכל קערה תהיה אותה כמות.";
+};
+$("lab-reset").onclick=()=>{labBowls.splice(0,4,2,6,4,8);renderLab();$("lab-message").textContent="הניסוי התחיל מחדש: עשרים גולות בארבע קערות.";};
+$("lab-to").value="1";renderLab();
+const surveyCounts=[0,0,0],surveyLabels=["ציור","מוזיקה","ספורט"];
+function renderSurvey(){
+  const total=surveyCounts.reduce((a,b)=>a+b,0);
+  $("survey-controls").replaceChildren();$("survey-table").replaceChildren();$("survey-chart").replaceChildren();
+  surveyLabels.forEach((label,index)=>{
+    const add=control("הוספת בחירה: "+label,()=>{surveyCounts[index]++;renderSurvey();}),remove=control("הסרת בחירה: "+label,()=>{surveyCounts[index]--;renderSurvey();});
+    add.disabled=total===30;remove.disabled=surveyCounts[index]===0;add.dataset.category=String(index);add.dataset.action="add";remove.dataset.category=String(index);remove.dataset.action="remove";$("survey-controls").append(add,remove);
+  });
+  const table=node("table");table.append(node("caption","אותו סקר בטבלת שכיחויות"));
+  const header=node("tr");for(const label of ["פעילות","מספר בחירות"]){const cell=node("th",label);cell.scope="col";header.append(cell);}const head=node("thead");head.append(header);table.append(head);
+  const body=node("tbody");
+  surveyLabels.forEach((label,i)=>{const row=node("tr"),title=node("th",label);title.scope="row";row.append(title,node("td",surveyCounts[i]));body.append(row);});
+  table.append(body);$("survey-table").append(table);
+  $("survey-chart").append(node("p","אורך הפס מתאר את מספר הבחירות, על אותו סולם: אפס עד שלושים."));
+  surveyLabels.forEach((label,i)=>{const row=node("div");row.append(node("p",label+": "+surveyCounts[i]));const bar=node("div");bar.style.cssText="height:22px;background:var(--accent);width:"+(surveyCounts[i]/30*100)+"%;border-radius:5px";bar.setAttribute("aria-hidden","true");row.append(bar);$("survey-chart").append(row);});
+  $("survey-message").textContent=total===0?"עדיין אין בחירות. הוסיפו בחירה וראו איך שני הייצוגים משתנים.":total===30?"הגעתם לשלושים בחירות. אפשר להסיר בחירה או לאפס את הניסוי.":"בסקר יש "+total+" בחירות. סכום השכיחויות בטבלה שווה למספר הבחירות הכולל.";
+}
+$("survey-reset").onclick=()=>{surveyCounts.fill(0);renderSurvey();};renderSurvey();
+if(new URLSearchParams(location.search).get("selftest")==="1")window.__eduSelfTest={course,bank,questionFor,answerKey,rational};
+</script>
+</body>
+</html>

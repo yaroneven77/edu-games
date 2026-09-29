@@ -1,0 +1,654 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>מתמטיקה לכיתה ה׳</title>
+<script src="../../../assets/theme-selector.js" defer></script>
+<link rel="stylesheet" href="../../../assets/refresh.css">
+<style>
+*{box-sizing:border-box}
+:root{--surface:var(--refresh-surface,#fff);--soft:var(--refresh-soft,#edf3fb);--text:var(--refresh-text,#243b53);--muted:var(--refresh-muted,#52677e);--accent:var(--refresh-accent,#285f9f);--border:var(--refresh-border,#d5dfec)}
+body{margin:0;padding-top:64px;background:#eef7fd;color:var(--text);font:18px/1.7 "Segoe UI","Arial Hebrew",Arial,sans-serif}
+main{max-width:1000px;margin:auto;padding:16px 16px 40px}[hidden]{display:none!important}
+header{text-align:center}h1{font-size:clamp(28px,6vw,40px);line-height:1.3}h2{font-size:25px}h3{font-size:21px}
+a{color:var(--accent)}button,input,select{font:inherit;max-width:100%;min-height:44px}
+button,select,input{border:2px solid var(--border);border-radius:14px;padding:9px 13px;background:var(--surface);color:var(--text)}
+button,a.back{min-height:44px;min-width:44px}button{cursor:pointer}button:disabled{cursor:default}
+button:focus-visible,input:focus-visible,a:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+a.back{display:inline-flex;align-items:center;padding:8px 12px;background:var(--surface);border-radius:14px}
+.panel,.skill-card{background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:clamp(14px,3vw,24px);margin:16px 0;min-width:0}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.skill-card{margin:0;border-top:5px solid var(--accent)}
+.actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:14px 0}.actions>*{max-width:100%}
+.primary{font-weight:800;background:var(--soft)}.muted{color:var(--muted);font-size:16px}.scope{font-weight:700}
+.math{direction:ltr;unicode-bidi:isolate;text-align:center;font:600 clamp(21px,5vw,29px)/1.8 "Segoe UI",Arial,sans-serif;overflow-wrap:anywhere;background:var(--soft);padding:10px;border-radius:12px;margin:10px 0;font-variant-numeric:tabular-nums}
+.visual{padding:12px;margin:12px 0;background:var(--soft);border-radius:14px;overflow:auto;text-align:center}.visual svg{width:100%;max-width:460px;height:auto;max-height:310px;display:block;margin:auto}
+.visual table{border-collapse:collapse;width:100%;max-width:600px;margin:auto}.visual th,.visual td{border:1px solid var(--border);padding:6px}
+.choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.choices button{min-height:60px;font-size:22px;overflow-wrap:anywhere}
+#edu-refresh button.correct{background:#d9f6e3!important;color:#145c35!important;border-color:#237849!important}
+#edu-refresh button.wrong{background:#ffe0dc!important;color:#8c2c28!important;border-color:#ac463b!important;text-decoration:line-through}
+.feedback{font-weight:700;min-height:30px}.help{border:2px solid var(--border);border-radius:16px;padding:16px;background:var(--soft)}
+.step{background:var(--surface);border-radius:12px;padding:12px;margin:12px 0}.step h4,.step p{margin:4px 0}.step .math{background:var(--soft)}
+.help ol,#example-steps{padding-inline-start:25px}.answer-form{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:16px 0}.answer-form input{width:220px;direction:ltr}
+progress{width:100%;height:16px;accent-color:var(--accent)}summary{cursor:pointer;min-height:44px;padding:8px 0;font-weight:700}
+dialog{width:min(780px,calc(100% - 24px));max-height:calc(100dvh - 24px);padding:22px;border:2px solid var(--border);border-radius:22px;background:var(--surface);color:var(--text)}
+dialog::backdrop{background:#102238b8}body.lesson-open{overflow:hidden}.lesson-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+#edu-theme-select{min-height:44px!important}#edu-theme-control{max-width:calc(100% - 12px)}
+footer{text-align:center;font-size:15px;margin:24px 0}
+@media(max-width:600px){.grid,.choices{grid-template-columns:1fr}main{padding-inline:12px}.panel,dialog{padding:14px}.actions button{flex:1 1 140px}.math{font-size:22px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body id="edu-refresh">
+<main>
+<a class="back" href="../index.html">חזרה לקורס מתמטיקה לכיתה ה׳</a>
+<header><p class="muted">קורס מתמטיקה לכיתה ה׳ · תצוגת בדיקה</p><h1 id="page-title"></h1><p id="intro"></p></header>
+<noscript><p class="panel">כדי ללמוד ולתרגל יש לאפשר הפעלת סקריפטים בדפדפן.</p></noscript>
+<section id="home" aria-labelledby="home-title">
+<div class="panel"><h2 id="home-title" tabindex="-1">לומדים, פותרים יחד ומנסים לבד</h2><p id="prerequisites"></p>
+<p>המסלול המומלץ מתחיל בהבנה ובדוגמה, ממשיך בניסיון מודרך ומסתיים בתרגול. אפשר לבחור כל שיעור בלי לנעול שלבים.</p>
+<div class="actions"><button id="course-start" class="primary" type="button">מתחילים ללמוד לפי הסדר</button><button id="mixed-start" type="button">תרגול משולב</button></div>
+<p id="route-message" role="status"></p></div><div id="skills" class="grid"></div>
+</section>
+<section id="practice" class="panel" hidden aria-labelledby="practice-title">
+<div class="actions"><button id="home-button" type="button">בחירת שיעור</button><button id="restart" type="button">סבב חדש</button></div>
+<h2 id="practice-title"></h2><p id="round-label"></p><progress id="progress" value="0" max="6" aria-label="שאלות שהושלמו"></progress>
+<p id="skill-label" class="scope"></p><h3 id="prompt" tabindex="-1"></h3><div id="expression" class="math" dir="ltr"></div><p id="unit" class="muted"></p><div id="visual" class="visual" hidden></div>
+<div id="choices" class="choices" role="group" aria-label="בחירת תשובה"></div>
+<form id="answer-form" class="answer-form" hidden><label for="typed-answer">או כתבו תשובה:</label><input id="typed-answer" autocomplete="off" maxlength="60" aria-describedby="input-note"><button type="submit">בדיקה</button></form>
+<p id="input-note" class="muted" hidden>אפשר לכתוב מספר, מספר עשרוני, שבר כמו 3/4 או מספר מעורב כמו 1 1/2. יחידות מופיעות בשאלה, אין צורך להקליד אותן.</p>
+<p id="feedback" class="feedback" role="status"></p>
+<div class="actions"><button id="help-toggle" type="button" aria-expanded="false" aria-controls="help-panel">🔍 איך פותרים?</button><button id="open-lesson" type="button">📚 שיעור קצר</button><button id="next-top" class="primary" type="button" hidden>לשאלה הבאה</button></div>
+<section id="help-panel" class="help" hidden aria-labelledby="help-title"><h3 id="help-title">מבינים את הדרך בארבעה צעדים</h3><ol id="help-steps"></ol><h4>התשובה</h4><p id="help-answer"></p></section>
+<button id="next-bottom" class="primary" type="button" hidden>לשאלה הבאה</button>
+</section>
+<section id="summary" class="panel" hidden aria-labelledby="summary-title"><h2 id="summary-title" tabindex="-1">סיימתם סבב של תרגול</h2><p id="summary-text"></p><p>עזרה היא חלק מהלמידה. תשובות עצמאיות הן בחירות נכונות בניסיון הראשון, ללא פתיחת הפתרון או השיעור באותה שאלה. זה אינו אבחון או ציון שליטה.</p><div id="recommendations"></div>
+<div class="actions"><button id="again" type="button">עוד תרגול באותו מסלול</button><button id="next-lesson" type="button">לשיעור הבא בקורס</button><button id="summary-home" type="button">בחירת שיעור</button></div></section>
+<footer>תרגילים ודוגמאות מקוריים · אין שמירת תשובות. רענון העמוד מתחיל ביקור חדש. את ההבנה כדאי לתרגל גם על דף ובשיחה.</footer>
+</main>
+<dialog id="lesson" aria-labelledby="lesson-title">
+<div class="lesson-head"><h2 id="lesson-title"></h2><button id="close-lesson" type="button">סגירת השיעור</button></div>
+<p id="lesson-goal"></p><h3>למה זה עובד?</h3><p id="lesson-why"></p><p id="lesson-rule" class="help"></p>
+<h3>דוגמה פתורה, צעד אחר צעד</h3><div id="lesson-visual" class="visual" hidden></div><ol id="example-steps"></ol>
+<h3>טעות שכדאי להכיר</h3><p id="mistake-text"></p><p id="mistake-math" class="math" dir="ltr"></p><p id="mistake-fix"></p>
+<h3>ננסה יחד</h3><p id="guided-prompt"></p><p id="guided-expression" class="math" dir="ltr"></p><div id="guided-visual" class="visual" hidden></div><p id="guided-unit"></p><div id="guided-choices" class="choices"></div>
+<p id="guided-feedback" class="feedback" role="status"></p><button id="guided-help" type="button" aria-expanded="false" aria-controls="guided-solution">🔍 איך פותרים?</button><div id="guided-solution" class="help" hidden><ol id="guided-steps"></ol></div>
+<p class="muted">זהו תרגול מודרך. הוא אינו מוסיף הצלחה עצמאית לסבב.</p>
+<div class="actions"><button id="lesson-practice" class="primary" type="button">מתרגלים את הנושא</button><button id="lesson-next" type="button">לשיעור הבא</button></div>
+</dialog>
+<script>
+"use strict";
+// COURSE_DATA_START
+function buildCourse() {
+  const fmt=(n,p=3)=>{
+    if(!Number.isSafeInteger(n))throw new Error("Expected scaled integer");
+    const sign=n<0?"-":"",digits=String(Math.abs(n)).padStart(p+1,"0");
+    if(!p)return sign+digits;
+    return sign+(digits.slice(0,-p)+"."+digits.slice(-p)).replace(/\.?0+$/,"");
+  };
+  const fixed=(n,p)=>{const digits=String(n).padStart(p+1,"0");return digits.slice(0,-p)+"."+digits.slice(-p);};
+  const step=(text,math)=>math?{text,math}:{text};
+  const rounded=(n,quantum)=>Math.floor((n+quantum/2)/quantum)*quantum;
+  function numberQ(prompt,expression,n,p,steps,wrong=[],visual="",unit=""){
+    const values=[...new Set([n,...wrong,n+1,n+10,n+100].filter(x=>Number.isSafeInteger(x)&&x>=0))].slice(0,4);
+    return {prompt,expression,kind:"number",answer:fmt(n,p),choices:values.map(v=>fmt(v,p)),steps,visual,unit};
+  }
+  function grid(n){
+    let cells="";
+    for(let i=0;i<100;i++)cells+=`<rect x="${12+(i%10)*22}" y="${12+Math.floor(i/10)*22}" width="20" height="20" fill="${i<n?"#245c92":"#fff"}" stroke="#5d7285"/>`;
+    return `<svg viewBox="0 0 244 244" role="img" aria-label="רשת של מאה משבצות שוות, ${n} מהן צבועות"><title>שלם אחד מחולק למאה חלקים שווים</title>${cells}</svg><p>כל הרשת היא שלם אחד; כל משבצת היא מאית.</p>`;
+  }
+  function decimalModel(n){
+    if(!Number.isSafeInteger(n)||n<0||n>100)throw new Error("Model needs 0–100 hundredths");
+    const fraction=`${n}/100`,decimal=fmt(n,2),hundredths=fixed(n,2),thousandths=fixed(n*10,3);
+    return {count:n,unshaded:100-n,fraction,decimal,hundredths,thousandths,
+      math:[...new Set([fraction,decimal,hundredths])].join(" = "),visual:grid(n)};
+  }
+  function moveHundredths(n,delta){
+    if(!Number.isSafeInteger(n)||!Number.isSafeInteger(delta))throw new Error("Model steps must be integers");
+    return Math.max(0,Math.min(100,n+delta));
+  }
+  function installDecimalModel(){
+    if(typeof document==="undefined")return;
+    const home=document.getElementById("home");
+    if(!home||document.getElementById("decimal-model"))return;
+    const panel=document.createElement("details");
+    panel.id="decimal-model";panel.className="panel";panel.setAttribute("aria-labelledby","decimal-model-title");
+    panel.innerHTML='<summary id="decimal-model-title">מעבדת מאיות: ניסוי לבחירה</summary><p>כל הרשת נשארת תמיד אותו שלם. משנים כמה ממאה המשבצות השוות צבועות, לא את גודל השלם או המשבצת. כל עשר מאיות הן עשירית אחת.</p><p>אפשר לנוע בין 0 ל־100 מאיות, כולל שני הקצוות. צעד שחורג מהטווח נעצר בקצה. הכפתורים פועלים גם במקלדת; אין ניקוד או שמירת פעולה.</p><div id="decimal-model-controls" class="actions" role="group" aria-label="שינוי מספר המאיות"></div><div id="decimal-model-status" role="status" aria-live="polite" aria-atomic="true"></div><div id="decimal-model-grid" class="visual"></div><p>השבר, המספר העשרוני והכתיבה עם אפס נוסף מתארים אותה כמות ביחס לאותו שלם. אפס בסוף החלק העשרוני אינו מוסיף שטח.</p>';
+    home.insertBefore(panel,document.getElementById("skills"));
+    const support=document.createElement("details");
+    support.id="decimal-support";support.className="panel";
+    support.innerHTML='<summary>מסלול תמיכה לבחירה: עד שתי ספרות אחרי הנקודה</summary><p>אפשר לבנות ביטחון במאיות לפני שממשיכים לאלפיות. התחילו במעבדת המאיות, ואז בחרו את השיעורים הבאים לפי הסדר המוצע. בשיעורים האלה הדוגמאות והתרגול מגיעים עד מאיות בלבד.</p><div id="decimal-support-actions" class="actions"></div><p class="muted">אלה קיצורי דרך לשיעורים נפרדים, לא מסנן של המסלול המלא. חזרו לכאן כדי לבחור את השיעור הבא ברשימה. התרגול המשולב וכפתור ״לשיעור הבא״ שייכים למסלול המלא, שבו האלפיות נשארות חלק מתוכנית הלימוד.</p>';
+    home.insertBefore(support,panel);
+    const supportActions=support.querySelector("#decimal-support-actions");
+    for(const [id,label] of [[null,"1. בונים מאיות ברשת"],["percent-meaning","2. אחוז הוא שם נוסף למאית"],["equal-groups","3. מחברים מחירים בקבוצות שוות"],["money","4. מחשבים קנייה ועודף"]]){
+      const button=document.createElement("button");
+      button.type="button";button.textContent=label;
+      button.addEventListener("click",()=>{
+        if(id)openLesson(id,button);
+        else{panel.open=true;panel.querySelector("summary").focus();panel.scrollIntoView({block:"start"});}
+      });
+      supportActions.append(button);
+    }
+    let count=0;
+    const controls=panel.querySelector("#decimal-model-controls"),status=panel.querySelector("#decimal-model-status"),drawing=panel.querySelector("#decimal-model-grid");
+    const buttons=[];
+    function render(){
+      const model=decimalModel(count);
+      status.innerHTML=`<p>צבועות ${model.count} מתוך 100 משבצות; ${model.unshaded} משבצות אינן צבועות.</p><p class="math" dir="ltr">${model.math}</p>`;
+      drawing.innerHTML=model.visual;
+      buttons.forEach(({button,delta,target})=>{
+        button.disabled=target!==undefined?count===target:delta<0?count===0:count===100;
+      });
+    }
+    for(const [label,delta,target] of [
+      ["פחות עשר מאיות", -10],["פחות מאית אחת",-1],["עוד מאית אחת",1],["עוד עשר מאיות",10],
+      ["שלם ריק: 0 מאיות",0,0],["שלם מלא: 100 מאיות",0,100]
+    ]){
+      const button=document.createElement("button");
+      button.type="button";button.textContent=label;button.setAttribute("aria-controls","decimal-model-status decimal-model-grid");
+      button.addEventListener("click",()=>{count=target===undefined?moveHundredths(count,delta):target;render();});
+      controls.append(button);buttons.push({button,delta,target});
+    }
+    render();
+  }
+  function line(start,jump,mark){
+    let ticks="";
+    for(let i=0;i<=10;i++)ticks+=`<path d="M ${30+i*38} 55 v 15" stroke="currentColor"/>`;
+    return `<svg viewBox="0 0 440 115" role="img" aria-label="ישר עם עשרה רווחים שווים, מ־${fmt(start)} עד ${fmt(start+10*jump)}. נקודה מעל שנתה מספר ${mark} אחרי הקצה השמאלי"><title>קוראים רווחים ולא סופרים את נקודת ההתחלה</title><path d="M30 63 H410" stroke="currentColor" stroke-width="2"/>${ticks}<circle cx="${30+mark*38}" cy="43" r="7" fill="#245c92"/><text x="30" y="98" text-anchor="middle" direction="ltr" fill="currentColor">${fmt(start)}</text><text x="410" y="98" text-anchor="middle" direction="ltr" fill="currentColor">${fmt(start+10*jump)}</text></svg>`;
+  }
+  const placeNames=["עשיריות","מאיות","אלפיות"],placeFactors=[100,10,1];
+  function place(seed){
+    const n=2407+137*seed,index=seed%3,factor=placeFactors[index],digit=Math.floor(n/factor)%10,value=digit*factor;
+    return numberQ(`במספר ${fmt(n)}, מהו הערך של הספרה במקום ה${placeNames[index]}?`,fmt(n),value,3,[
+      step(`מחפשים את תרומת הספרה במקום ה${placeNames[index]}, ולא את כל המספר.`),
+      step("כל מקום קטן פי עשרה מהמקום שלשמאלו. נבודד את הספרה לפי מקומה."),
+      step(`במקום הזה כתובה הספרה ${digit}. ערכה הוא ${digit} חלקים מהסוג שבחרנו.`,`${digit} × ${fmt(factor)} = ${fmt(value)}`),
+      step("נחבר בחזרה את יתר ערכי המקומות. אם קיבלנו את המספר הנתון, הבידוד מתאים.",`${fmt(n-value)} + ${fmt(value)} = ${fmt(n)}`)
+    ],[digit*1000,digit*100,digit*10,digit]);
+  }
+  function representation(seed){
+    const p=seed%2?3:2,n=seed%2?41+37*seed:3+4*seed,den=10**p;
+    return numberQ(seed%2?"כתבו את השבר כמספר עשרוני.":"איזה מספר עשרוני מתאר את החלק הצבוע של השלם?",`${n}/${den}`,n,p,[
+      step(`השלם חולק ל־${den} חלקים שווים; נבחרו ${n} מהם.`),
+      step(`המכנה ${den} מורה על ${p===2?"מאיות":"אלפיות"}. לכן נכתוב ${p} מקומות אחרי הנקודה, כולל אפסים כשצריך.`),
+      step("כותבים את מספר החלקים במקומות המתאימים.",`${n}/${den} = ${fmt(n,p)}`),
+      step("בדיקה בכיוון ההפוך: נקרא את הספרות אחרי הנקודה כמספר החלקים מתוך המכנה.",`${fmt(n,p)} = ${n}/${den}`)
+    ],[n*10,Math.floor(n/10),n+den],seed%2?"":grid(n));
+  }
+  function equivalence(seed){
+    const n=12+3*seed,toThousand=seed%2===0,multiplier=toThousand?10:100,den=toThousand?1000:100,sourceDen=toThousand?100:1;
+    const answer=n*multiplier,shown=toThousand?fmt(n,2):String(n);
+    return numberQ("איזה מונה חסר כדי ששני הייצוגים יתארו בדיוק אותה כמות?",`${shown} = ?/${den}`,answer,0,[
+      step(`מתחילים ב־${n} חלקים מתוך ${sourceDen}, ומחפשים כמה חלקים קטנים יותר מתארים אותה כמות.`),
+      step(`מחלקים כל חלק ל־${multiplier} חלקים שווים. מספר החלקים גדל, אך גודל הכמות אינו משתנה.`),
+      step("מכפילים את המונה ואת המכנה באותו מספר.",`${n}/${sourceDen} = ${answer}/${den}`),
+      step("נכתוב בחזרה מספר עשרוני. אפסים בסוף החלק העשרוני לא משנים ערך.",`${shown} = ${fixed(answer,toThousand?3:2)}`)
+    ],[n,n*10,n*100,n+multiplier]);
+  }
+  function fractionConversion(seed){
+    const denominator=[2,4,5,8,20,25][seed%6],numerator=1+Math.floor(seed/6);
+    const target=100%denominator===0?100:1000,factor=target/denominator,expanded=numerator*factor,p=target===100?2:3;
+    return numberQ("כתבו את השבר כמספר עשרוני. אפשר להרחיב למכנה מאה או אלף.",`${numerator}/${denominator}`,expanded,p,[
+      step(`נתונים ${numerator} חלקים בגודל אחד חלקי ${denominator}. מחפשים ייצוג עשרוני של אותה כמות.`),
+      step(`נחלק כל חלק ל־${factor} חלקים קטנים ושווים. מכפילים מונה ומכנה באותו גורם, ולכן הכמות נשמרת.`,`${numerator}/${denominator} = ${expanded}/${target}`),
+      step(`המכנה החדש מתאר ${p===2?"מאיות":"אלפיות"}, שאפשר לכתוב בעזרת ערכי המקום.`,`${expanded}/${target} = ${fmt(expanded,p)}`),
+      step("נבדוק לאחור: הכתיב העשרוני חוזר לשבר העשרוני, וצמצום מחזיר את השבר המקורי.",`${fmt(expanded,p)} = ${expanded}/${target} = ${numerator}/${denominator}`)
+    ],[numerator,expanded*10,expanded+target]);
+  }
+  const percentParts=[0,1,2,5,12,15,20,24,30,35,40,45,55,60,65,70,75,80,85,90,95,98,99,100,8];
+  function percentMeaning(seed){
+    const n=percentParts[seed],toDecimal=seed%2===0;
+    if(toDecimal)return numberQ(`הסימון ${n}% מתאר ${n} מאיות של אותו שלם. מהו הכתיב העשרוני של הכמות?`,`${n}%`,n,2,[
+      step("אחוז הוא שם נוסף למאית: חלק אחד מתוך מאה חלקים שווים של אותו שלם."),
+      step("מחליפים את סימן האחוז בכתיבה של שבר שמכנהו מאה.",`${n}% = ${n}/100`),
+      step("כותבים את המונה במקומות העשרוניים המתאימים: מאיות הן שני מקומות אחרי הנקודה.",`${n}/100 = ${fmt(n,2)}`),
+      step("קוראים בחזרה את המספר העשרוני במאיות. אותה כמות חייבת לחזור לאותו אחוז.",`${fmt(n,2)} = ${n}/100 = ${n}%`)
+    ],[n*10,n+100,Math.floor(n/10)]);
+    return numberQ("איזה אחוז של אותו שלם צבוע? כל הרשת מחולקת למאה משבצות שוות.",`${n}/100`,n,0,[
+      step(`הרשת כולה היא השלם. צבועות ${n} מתוך מאה משבצות שוות; מחפשים שם אחר לאותה כמות.`),
+      step("כל משבצת היא מאית של השלם, כלומר אחוז אחד. לא משנים את השלם ולא מחשבים אחוז מתוך סכום כסף."),
+      step("מספר המאיות הוא גם מספר האחוזים.",`${n}/100 = ${n}%`),
+      step("בודקים בכתיב עשרוני; גם הוא מתאר בדיוק את אותו החלק.",`${n}% = ${fmt(n,2)} = ${n}/100`)
+    ],[Math.floor(n/10),n*10,n+1],grid(n),"התשובה באחוזים; בוחרים או מקלידים מספר בלבד, בלי הסימן %.");
+  }
+  function comparison(seed){
+    const a=1000+seed*(seed%3===0?130:137),b=seed%3===0?a:seed%3===1?a+9:a-37;
+    const left=fmt(a),right=seed%3===0?fixed(b,3):fmt(b);
+    const answer=a===b?"=":a<b?"<":">";
+    return {prompt:"איזה סימן מתאים בין שני המספרים? קראו משמאל לימין.",expression:`${left} □ ${right}`,kind:"text",answer,choices:["<","=",">"],steps:[
+      step("בודקים את הערך של שני המספרים. מספר הספרות לבדו אינו קובע מי גדול יותר."),
+      step("משווים שלמים, ואז עשיריות, מאיות ואלפיות. אפשר להשלים אפסים מימין בלי לשנות ערך.",`${fixed(a,3)} □ ${fixed(b,3)}`),
+      step(a===b?"כל המקומות שווים, ולכן גם הערכים שווים.":"המקום הראשון שבו הספרות שונות מכריע.",`${left} ${answer} ${right}`),
+      step("אפשר לבדוק גם באלפיות: אותו מכנה מאפשר להשוות את המונים.",`${a}/1000 ${answer} ${b}/1000`)
+    ]};
+  }
+  function numberLine(seed){
+    const jump=[100,10,1][seed%3],start=(seed+1)*1000,mark=1+seed%9,n=start+jump*mark;
+    return numberQ("איזה מספר מסמנת הנקודה הכחולה? בין הקצוות יש עשרה רווחים שווים.","",n,3,[
+      step(`הקצה השמאלי הוא ${fmt(start)} והימני ${fmt(start+10*jump)}. מחפשים את ערך הנקודה.`),
+      step("מוצאים את אורך כל רווח: הפרש הקצוות מחולק לעשרה.",`(${fmt(start+10*jump)} − ${fmt(start)}) ÷ 10 = ${fmt(jump)}`),
+      step(`הנקודה נמצאת ${mark} רווחים ימינה מהקצה השמאלי.`,`${fmt(start)} + ${mark} × ${fmt(jump)} = ${fmt(n)}`),
+      step("נבדוק את המרחק שנשאר עד הקצה הימני; שני המרחקים יחד משלימים את כל הקטע.",`${fmt(n)} + ${10-mark} × ${fmt(jump)} = ${fmt(start+10*jump)}`)
+    ],[n+jump,n-jump,start+mark*10*jump],line(start,jump,mark));
+  }
+  function decimalSteps(seed){
+    if(seed%2){
+      const low=(seed+1)*1000+460,gap=[1,10,100][seed%3],high=low+2*gap,middle=low+gap;
+      return numberQ("מהו המספר שנמצא בדיוק באמצע בין שני הקצוות, במרחק שווה משניהם?",`${fmt(low)} < ? < ${fmt(high)}`,middle,3,[
+        step("מחפשים את האמצע המדויק. יש מספרים רבים בתוך הקטע, אבל רק לאמצע מרחק שווה משני הקצוות."),
+        step("נמצא את אורך הקטע ונחלק אותו לשני מרחקים שווים. כל אחד מהם הוא המרחק מהאמצע לקצה.",`${fmt(high)} − ${fmt(low)} = ${fmt(2*gap)}; ${fmt(2*gap)} ÷ 2 = ${fmt(gap)}`),
+        step("נוסיף לקצה השמאלי חצי מאורך הקטע כדי להגיע בדיוק לאמצע.",`${fmt(low)} + ${fmt(gap)} = ${fmt(middle)}`),
+        step("נבדוק שהמרחק לשמאל שווה למרחק לימין. עצם הימצאות המספר בין הקצוות אינה מספיקה.",`${fmt(middle)} − ${fmt(low)} = ${fmt(high)} − ${fmt(middle)} = ${fmt(gap)}`)
+      ],[low,high,high+gap]);
+    }
+    const start=(seed+3)*1000+120,jump=(1+seed%3)*[10,1][Math.floor(seed/2)%2],direction=seed%4===0?1:-1;
+    const b=start+direction*jump,c=b+direction*jump,next=c+direction*jump,sign=direction===1?"+":"−",inverse=direction===1?"−":"+";
+    return numberQ("בסדרה הזאת גודל הצעד וכיוונו קבועים. מהו המספר הבא? קראו משמאל לימין.",`${fmt(start)}, ${fmt(b)}, ${fmt(c)}, ?`,next,3,[
+      step("נתונים שלושה איברים. נאמר במפורש שמתקדמים בכל פעם באותו צעד ובאותו כיוון."),
+      step("מוצאים את המרחק בין שני האיברים הראשונים, ושמים לב אם הסדרה עולה או יורדת.",`${fmt(Math.max(start,b))} − ${fmt(Math.min(start,b))} = ${fmt(jump)}`),
+      step("ממשיכים מהאיבר האחרון באותו גודל צעד ובאותו כיוון.",`${fmt(c)} ${sign} ${fmt(jump)} = ${fmt(next)}`),
+      step("בודקים על ידי צעד אחד בכיוון ההפוך: חוזרים לאיבר הקודם.",`${fmt(next)} ${inverse} ${fmt(jump)} = ${fmt(c)}`)
+    ],[c,c-direction*jump,next+direction*jump]);
+  }
+  const roundingInputs=[1499,1495,1494,1500,1499,1495,9499,9950,9994,9500,9951,9995,20499,20449,20444,20500,20450,20445,37499,37499,37494,37500,37500,37495,42678];
+  function rounding(seed){
+    const p=seed%3,q=[1000,100,10][p],n=roundingInputs[seed],answer=rounded(n,q),low=Math.floor(n/q)*q,high=low+q;
+    return numberQ(`עגלו את ${fmt(n)} ל${["מספר השלם הקרוב","עשירית הקרובה","מאית הקרובה"][p]}.`,fmt(n),answer,3,[
+      step(`מחפשים ערך מקורב, לא ערך שווה בדיוק. השכנים המתאימים הם ${fmt(low)} ו־${fmt(high)}.`),
+      step("משווים מרחקים לשני השכנים. אם המרחקים שווים, בשיעור שלנו בוחרים בשכן הגדול."),
+      step(`המרחק למטה הוא ${fmt(n-low)}, והמרחק למעלה הוא ${fmt(high-n)}.`,`${fmt(n)} ≈ ${fmt(answer)}`),
+      step("בדיקה: מרחק העיגול אינו גדול מחצי הרווח בין השכנים.",`${fmt(Math.abs(n-answer))} ≤ ${fmt(q/2)}`)
+    ],[answer===low?high:low,n,answer+q*2]);
+  }
+  function estimate(seed){
+    const subtract=seed%2===1,a=(subtract?4149:1149)+seed*293,b=(subtract?1370:2370)+seed*117;
+    const ra=rounded(a,1000),rb=rounded(b,1000),answer=subtract?ra-rb:ra+rb,exact=subtract?a-b:a+b,sign=subtract?"−":"+";
+    return numberQ(`אמדו את ${subtract?"ההפרש":"הסכום"}: עגלו תחילה כל מספר לשלם הקרוב, ואז ${subtract?"חסרו":"חברו"} את המספרים המעוגלים.`,`${fmt(a)} ${sign} ${fmt(b)}`,answer,3,[
+      step("מבקשים אומדן לפי דרך מסוימת, ולא את התוצאה המדויקת."),
+      step("מעגלים כל מספר בנפרד. עיגול התוצאה בסוף הוא פעולה אחרת.",`${fmt(a)} ≈ ${fmt(ra)}; ${fmt(b)} ≈ ${fmt(rb)}`),
+      step(`${subtract?"מחסרים":"מחברים"} את הערכים המעוגלים, באותו סדר כמו בתרגיל המקורי.`,`${fmt(ra)} ${sign} ${fmt(rb)} = ${fmt(answer)}`),
+      step(`לבדיקה בלבד, התוצאה המדויקת היא ${fmt(exact)}. האומדן רחוק ממנה לכל היותר בשלם אחד, כי כל מספר השתנה לכל היותר בחצי.`,`${fmt(Math.abs(exact-answer))} ≤ 1`)
+    ],[answer+1000,answer-1000,exact]);
+  }
+  function addition(seed){
+    const a=1275+seed*173,b=680+seed*90,sum=a+b;
+    return numberQ("חברו. אפשר להשלים אפסים מימין כדי לראות את אותם ערכי המקום.",`${fmt(a)} + ${fmt(b)}`,sum,3,[
+      step("מחברים כמויות מאותו סוג: שלמים עם שלמים, עשיריות עם עשיריות, וכן הלאה."),
+      step("מיישרים את הנקודות כי כך כל עמודה מתארת אותה יחידה. נכתוב את שני המספרים באלפיות.",`${fixed(a,3)} + ${fixed(b,3)}`),
+      step("מחברים אלפיות. בכל עמודה, עשרה חלקים מוחלפים בחלק אחד מהסוג שמשמאל.",`${a}/1000 + ${b}/1000 = ${sum}/1000 = ${fmt(sum)}`),
+      step("בודקים בחיסור: מהסכום נחסר מחובר אחד ונקבל את השני.",`${fmt(sum)} − ${fmt(b)} = ${fmt(a)}`)
+    ],[sum+100,sum-100,a+Math.floor(b/10)]);
+  }
+  function equalGroups(seed){
+    const price=135+seed*17,groups=2+seed%4,total=price*groups;
+    const repeated=Array(groups).fill(fmt(price,2)).join(" + ");
+    const undo=Array(groups-1).fill(fmt(price,2)).join(" − ");
+    return numberQ(`בחנות דמיונית כל כרטיס עולה ${fmt(price,2)} שקלים. קונים ${groups} כרטיסים באותו מחיר. כמה משלמים בסך הכול?`,`${groups} × ${fmt(price,2)}`,total,2,[
+      step(`יש ${groups} קבוצות שוות: מחיר של כרטיס אחד בכל קבוצה. מחפשים את סכום כל המחירים.`),
+      step("כפל במספר שלם של קבוצות הוא דרך קצרה לכתוב חיבור חוזר. בכל פעם מוסיפים את אותו מספר שקלים ואגורות.",repeated),
+      step("מחברים את המחירים תוך יישור שקלים ומאיות שקל. אין צורך בכלל לכפל כללי של שני עשרוניים.",`${repeated} = ${fmt(total,2)}`),
+      step(`בודקים לאחור: אחרי שמסירים ${groups-1} מחירים, נשאר בדיוק מחירו של כרטיס אחד.`,`${fmt(total,2)} − ${undo} = ${fmt(price,2)}`)
+    ],[total+price,total-price,price+groups*100],"","התשובה בשקלים. המחירים דמיוניים; מספר הקבוצות הוא מספר שלם.");
+  }
+  function subtraction(seed){
+    const a=(seed+4)*1000+(seed%2)*100,b=685+seed*37,difference=a-b;
+    return numberQ("חסרו. שימו לב לאפסים ולפריטה בין ערכי המקום.",`${fmt(a)} − ${fmt(b)}`,difference,3,[
+      step("מחפשים מה נשאר. שני המספרים מתארים את אותה יחידת שלם."),
+      step("מיישרים מקומות ומשלימים אפסים. אפשר לפרוט שלם לעשר עשיריות, עשירית לעשר מאיות ומאית לעשר אלפיות.",`${fixed(a,3)} − ${fixed(b,3)}`),
+      step("הפריטה משנה את הייצוג, לא את הכמות. לאחר הפריטה מחסרים אלפיות מאלפיות.",`${a}/1000 − ${b}/1000 = ${difference}/1000 = ${fmt(difference)}`),
+      step("בודקים בפעולה ההפוכה: השארית ועוד הכמות שהוחסרה מחזירות את ההתחלה.",`${fmt(difference)} + ${fmt(b)} = ${fmt(a)}`)
+    ],[difference+100,difference+10,a+b]);
+  }
+  function diagnose(seed){
+    const a=125+seed*13,b=7+seed,correct=`${fixed(a,2)} + ${fixed(b*10,2)}`,bad=`${fixed(a,2)} + ${fixed(b,2)}`;
+    return {prompt:"נועה רוצה לחשב את החיבור הנתון, אבל כתבה את השורה השגויה שבתיבה. איזו שורה מתקנת את יישור המקומות בלי לשנות את המספרים?",expression:`${fmt(a,2)} + ${fmt(b,1)}`,kind:"text",choiceDirection:"ltr",answer:correct,choices:[correct,bad,`${fixed(a*10,2)} + ${fixed(b,2)}`,`${fixed(a,2)} + ${fixed(b*100,2)}`],visual:`<p>השורה השגויה שנועה כתבה:</p><p class="math" dir="ltr">${bad}</p>`,steps:[
+      step("השאלה אינה מבקשת עדיין סכום. מחפשים כתיבה שקולה של שני המחוברים במאיות."),
+      step("כל עשירית היא עשר מאיות. אפס מותר להוסיף בסוף החלק העשרוני, ולא מיד אחרי הנקודה.",`${fmt(b,1)} = ${fixed(b*10,2)}`),
+      step("כותבים את שני המחוברים בשתי ספרות אחרי הנקודה; עכשיו העמודות מתאימות.",correct),
+      step("אפשר לבדוק בחיבור במאיות. המחובר השני נשאר אותו מספר, ולא קטן פי עשרה.",`${a}/100 + ${b*10}/100 = ${fmt(a+b*10,2)}`)
+    ]};
+  }
+  function money(seed){
+    const first=725+seed*35,second=460+seed*20,paid=2000+Math.floor(seed/8)*1000,total=first+second,change=paid-total;
+    return numberQ(`בחנות דמיונית מחברת עולה ${fmt(first,2)} שקלים וקופסה עולה ${fmt(second,2)} שקלים. שילמו ${fmt(paid,2)} שקלים. כמה עודף צריך לקבל?`,`${fmt(paid,2)} − (${fmt(first,2)} + ${fmt(second,2)})`,change,2,[
+      step("יש שתי הוצאות ותשלום אחד. מחפשים עודף, ולכן קודם צריך לדעת את ההוצאה הכוללת."),
+      step("נחשב באגורות: בכל שקל מאה אגורות. יישור המאיות מצמיד אגורות לאגורות, בלי לשנות מחיר."),
+      step("מחברים את המחירים ואז מחסרים מהתשלום.",`${fmt(first,2)} + ${fmt(second,2)} = ${fmt(total,2)}; ${fmt(paid,2)} − ${fmt(total,2)} = ${fmt(change,2)}`),
+      step("בודקים שכל הכסף מוסבר: ההוצאה ועוד העודף שווים לתשלום.",`${fmt(total,2)} + ${fmt(change,2)} = ${fmt(paid,2)}`)
+    ],[total,paid-first,change+100],"","התשובה בשקלים. כל המחירים בתרגיל דמיוניים.");
+  }
+  function metric(seed){
+    const mass=seed%2===1,unit=mass?"קילוגרמים":"מטרים",small=mass?"גרם":"סנטימטרים",den=mass?1000:100;
+    const initial=(3+Math.floor(seed/2))*den,removed=mass?375+seed*11:35+seed*2,added=mass?125+seed*7:15+seed,answer=initial-removed+added;
+    return numberQ(mass?`בקופסה ${fmt(initial,3)} קילוגרמים של חומר. הוציאו ${removed} גרם והוסיפו ${added} גרם. מה המסה כעת בקילוגרמים?`:`סרט באורך ${fmt(initial,2)} מטרים קוצר ב־${removed} סנטימטרים. חיברו אליו קטע באורך ${added} סנטימטרים. מה האורך כעת במטרים?`,"",answer,mass?3:2,[
+      step(`מתחילים בכמות אחת, גורעים ומוסיפים. לפני החישוב צריך שכל הכמויות יהיו באותה יחידה.`),
+      step(`בכל ${mass?"קילוגרם":"מטר"} יש ${den} ${small}; לכן ${mass?"גרם אחד הוא אלפית קילוגרם":"סנטימטר אחד הוא מאית מטר"}.`,`${removed}/${den} = ${fmt(removed,mass?3:2)}; ${added}/${den} = ${fmt(added,mass?3:2)}`),
+      step("מחסרים את מה שהוצא או קוצר, ואז מחברים את התוספת.",`${fmt(initial,mass?3:2)} − ${fmt(removed,mass?3:2)} + ${fmt(added,mass?3:2)} = ${fmt(answer,mass?3:2)}`),
+      step("בודקים בכיוון ההפוך: מסירים את התוספת ומחזירים את מה שנגרע.",`${fmt(answer,mass?3:2)} − ${fmt(added,mass?3:2)} + ${fmt(removed,mass?3:2)} = ${fmt(initial,mass?3:2)}`)
+    ],[initial-removed-added,initial+removed+added,initial-removed],"",`התשובה ב${unit}; כל הכמויות הן לצורכי תרגול.`);
+  }
+  const skills=[];
+  function skill(id,title,goal,why,rule,example,mistake,build,visual=""){
+    skills.push({id,title,scope:"core",goal,why,rule,example,mistake,visual,count:24,build,guided:()=>build(24)});
+  }
+  skill("place-value","מה שווה כל ספרה?","נזהה שלמים, עשיריות, מאיות ואלפיות ונפרק מספר לערכי מקום.",
+    "השלם הוא יחידת הייחוס. חלוקה לעשרה חלקים שווים נותנת עשיריות; חלוקה של עשירית לעשרה נותנת מאיות, ושל מאית לעשרה נותנת אלפיות.",
+    "הספרה אומרת כמה חלקים יש, והמקום אומר מה גודל כל חלק. האפס שומר מקום גם כשאין בו חלקים.",
+    [step("במספר 4.207 יש ארבעה שלמים. אחרי הנקודה קוראים משמאל לימין: עשיריות, מאיות, אלפיות."),
+     step("הספרה 2 נמצאת בעשיריות, לכן תרומתה שתי עשיריות.", "2 × 0.1 = 0.2"),
+     step("אין מאיות, ויש שבע אלפיות. האפס אינו מאפשר ל־7 לעבור למקום המאיות.","7 × 0.001 = 0.007"),
+     step("מחברים את ערכי המקומות ומקבלים את המספר המקורי.","4 + 0.2 + 0 + 0.007 = 4.207")],
+    {text:"קוראים את 7 כאילו היא במאיות.",math:"4.207 ≠ 4.27",fix:"סופרים מקומות מהנקודה: עשיריות, מאיות, אלפיות. גם מקום שיש בו אפס נספר."},place,
+    '<table dir="ltr"><caption>אותו שלם, ארבעה ערכי מקום</caption><tr><th>שלמים</th><th>עשיריות</th><th>מאיות</th><th>אלפיות</th></tr><tr><td>4</td><td>2</td><td>0</td><td>7</td></tr><tr><td>4</td><td>0.2</td><td>0</td><td>0.007</td></tr></table>');
+  skill("representations","מרשת ומשבר למספר עשרוני","נקשר חלקים שווים של שלם, שבר עשרוני וכתיב עשרוני.",
+    "שבר עשרוני ומספר עשרוני הם שתי דרכים לתאר אותה כמות. המכנה קובע אם החלקים עשיריות, מאיות או אלפיות.",
+    "מכנה 10 מתאים למקום אחד, 100 לשניים ו־1000 לשלושה. משלימים אפסים משמאל למונה בתוך החלק העשרוני כשצריך.",
+    [step("שלם אחד הוא כל הרשת. שלושים וארבע משבצות מתוך מאה צבועות.","34/100 = 0.34"),
+     step("שלושים מאיות הן שלוש עשיריות, ונשארו ארבע מאיות.","30/100 + 4/100 = 0.3 + 0.04 = 0.34"),
+     step("בשבע אלפיות אין עשיריות או מאיות. לכן שומרים שני מקומות בעזרת אפסים.","7/1000 = 0.007"),
+     step("בודקים שהשבר והכתיב העשרוני מתארים אותו מספר חלקים שווים.","0.34 = 34/100")],
+    {text:"כותבים שבע אלפיות כאילו היו שבע עשיריות.",math:"7/1000 ≠ 0.7",fix:"המכנה 1000 מחייב שלושה מקומות אחרי הנקודה: 0.007."},representation,grid(34));
+  skill("equivalent-zeros","אותה כמות, יותר חלקים","נבין מדוע אפסים בסוף החלק העשרוני אינם משנים ערך.",
+    "אם כל מאית מחולקת לעשר אלפיות, מקבלים פי עשרה חלקים שכל אחד מהם קטן פי עשרה. השטח הכולל אינו משתנה.",
+    "מרחיבים מונה ומכנה באותו גורם. מותר להוסיף אפסים רק בסוף החלק העשרוני בלי לשנות את המספר.",
+    [step("מתחילים בארבעים ושש מאיות.","46/100 = 0.46"),
+     step("כל מאית הופכת לעשר אלפיות, לכן מונים ארבע מאות ושישים אלפיות.","46/100 = 460/1000"),
+     step("קוראים את שני הייצוגים: שניהם מציינים אותה כמות.","0.46 = 0.460"),
+     step("גם שלם ניתן לתיאור במאיות, כי בכל שלם יש מאה מאיות.","3 = 300/100 = 3.00")],
+    {text:"מכניסים אפס מיד אחרי הנקודה במקום בסוף.",math:"0.46 ≠ 0.046",fix:"0.046 מתאר 46 אלפיות ולא 46 מאיות. האפס שינה את מקומות הספרות."},equivalence);
+  skill("fraction-conversion","משבר פשוט לעשרוני מסתיים","נרחיב שבר פשוט למכנה מאה או אלף כדי לכתוב מספר עשרוני מסתיים.",
+    "חלוקה של כל חלק למספר זהה של חלקים קטנים מגדילה באותו גורם את המונה ואת המכנה. הכמות המקורית נשמרת.",
+    "מחפשים הרחבה למכנה 10, 100 או 1000. בשיעור הזה נבחרו רק שברים שאפשר להמיר כך; אין צורך בחילוק עשרוני או בכתיב מחזורי.",
+    [step("נרצה לכתוב שבע שמיניות כמספר עשרוני. מאה אינה מתחלקת בשמונה, אבל אלף כן.","1000 ÷ 8 = 125"),
+     step("כל שמינית נחלקת ל־125 אלפיות. לכן נכפיל גם את מספר החלקים ב־125.","7/8 = 875/1000"),
+     step("שמונה מאות שבעים וחמש אלפיות נכתבות בשלושה מקומות אחרי הנקודה.","875/1000 = 0.875"),
+     step("נבדוק בכיוון ההפוך: הצמצום מחזיר את אותה כמות של שמיניות.","0.875 = 875/1000 = 7/8")],
+    {text:"מחברים את המונה והמכנה לרצף ספרות אחרי הנקודה.",math:"7/8 ≠ 0.78",fix:"המכנה אומר מה גודל החלק, לא איזו ספרה לכתוב. מרחיבים ל־875/1000 ורק אז כותבים 0.875."},fractionConversion);
+  skill("percent-meaning","אחוז הוא שם נוסף למאית","נכיר אחוזים כדרך נוספת לתאר חלקים מתוך מאה, בלי חישובי אחוז מתוך כמות.",
+    "אחוז אחד הוא מאית של אותו שלם. לכן שבר שמכנהו מאה, כתיב עשרוני ואחוזים יכולים להיות שלושה שמות לאותה כמות.",
+    "הסימן % נקרא אחוז: מתוך מאה. קודם מזהים את השלם המשותף. כאן עוסקים במשמעות ובייצוג בלבד, לא בהנחות או בחישובי אחוזים כלליים.",
+    [step("כל הרשת היא שלם אחד. חמישים משבצות מתוך מאה הן חצי מהשלם.","50% = 50/100 = 0.5 = 1/2"),
+     step("רבע מהשלם הוא עשרים וחמש מאיות. זו אותה כמות גם בשפת האחוזים.","25% = 25/100 = 0.25 = 1/4"),
+     step("עשירית אחת מורכבת מעשר מאיות, ולכן שווה לעשרה אחוזים.","10% = 10/100 = 0.1 = 1/10"),
+     step("נבדוק שהחלקים מתאימים לאותו שלם: שני חצאים משלימים אותו.","1/2 + 1/2 = 1")],
+    {text:"חושבים ש־25% הם 25 שלמים.",math:"25% = 0.25",fix:"סימן האחוז אומר שהחלקים הם מאיות. 25% הם 25 מאיות של אותו שלם, לא 25 שלמים."},percentMeaning,grid(50));
+  skill("comparison","מי גדול יותר, ומדוע?","נשווה עשרוניים לפי ערכי מקום ולא לפי אורך הכתיבה.",
+    "מספרים עם אותו מספר שלמים נבדלים קודם בעשיריות. רק אם העשיריות שוות עוברים למאיות, ואז לאלפיות.",
+    "משלימים אפסים מימין בעת הצורך, ומשווים מהערך הגדול ביותר לקטן ביותר. הסימן פתוח כלפי המספר הגדול.",
+    [step("רוצים להשוות שמונה עשיריות ושבעים וחמש מאיות.","0.8 □ 0.75"),
+     step("כותבים את שני המספרים במאיות בלי לשנות ערך.","0.8 = 0.80"),
+     step("שמונים מאיות גדולות משבעים וחמש מאיות.","80/100 > 75/100"),
+     step("לכן גם המספר העשרוני הראשון גדול יותר; מספר ספרות קטן יותר אינו אומר ערך קטן יותר.","0.8 > 0.75")],
+    {text:"מחליטים ש־0.75 גדול כי 75 גדול מ־8.",math:"0.75 < 0.8",fix:"אלה לא אותם סוגי חלקים. משווים 75 מאיות ל־80 מאיות."},comparison);
+  skill("number-line","מפה של עשיריות ואלפיות","נקרא מספר עשרוני על ישר מחולק לרווחים שווים.",
+    "המרחק בין שנתות תלוי בערכי הקצוות ובמספר הרווחים. אותה תמונה יכולה לייצג עשיריות, מאיות או אלפיות.",
+    "הפרש הקצוות חלקי מספר הרווחים הוא גודל הצעד. מוסיפים לקצה השמאלי את מספר הצעדים עד הנקודה.",
+    [step("בין 2 ל־2.1 יש עשרה רווחים שווים. הנקודה אחרי שלושה רווחים."),
+     step("מחשבים את כל המרחק ואז את גודל כל רווח.","(2.1 − 2) ÷ 10 = 0.01"),
+     step("מתקדמים שלוש מאיות מהקצה השמאלי.","2 + 3 × 0.01 = 2.03"),
+     step("שבע מאיות נוספות יביאו אותנו לקצה הימני.","2.03 + 7 × 0.01 = 2.1")],
+    {text:"סופרים את שנתת ההתחלה בתור הצעד הראשון.",fix:"ההתחלה היא אפס צעדים. סופרים את הרווחים שעוברים, לא את כל הקווים שרואים."},numberLine,line(2000,10,3));
+  skill("decimal-steps","צעדים קבועים ומספרים ביניהם","נמשיך סדרה בעלת הפרש קבוע ונמצא את האמצע המדויק בין שני עשרוניים.",
+    "ערכי המקום יוצרים צעדים שווים על הישר. אפשר לחלק מרווח לעשרה חלקים קטנים יותר, ולכן שני מספרים שנראים סמוכים במאיות אינם בהכרח ללא מספר ביניהם.",
+    "בסדרה בודקים את גודל הצעד ואת כיוונו. במשימת האמצע מחלקים את המרווח לשני חלקים שווים ומוסיפים חצי ממנו לקצה השמאלי. לא כל מספר שנמצא בין הקצוות הוא האמצע.",
+    [step("בסדרה 1.2, 1.35, 1.5 נאמר שההפרש קבוע. המרחק בין שני האיברים הראשונים הוא 0.15.","1.35 − 1.2 = 0.15"),
+     step("בודקים שהצעד השני זהה, כדי לא לנחש על סמך מעבר יחיד.","1.5 − 1.35 = 0.15"),
+     step("הסדרה עולה. מוסיפים עוד צעד ובודקים בחיסור.","1.5 + 0.15 = 1.65; 1.65 − 0.15 = 1.5"),
+     step("בבעיה אחרת נרצה את האמצע המדויק בין 5.12 ל־5.14. המרווח הוא שתי מאיות; חצי ממנו מאית אחת. לכן האמצע הוא 5.13, שמרחקו משני הקצוות שווה.","5.14 − 5.12 = 0.02; 0.02 ÷ 2 = 0.01; 5.12 + 0.01 = 5.13; 5.13 − 5.12 = 5.14 − 5.13")],
+    {text:"בוחרים מספר שנמצא בין הקצוות, בלי לבדוק שהוא בדיוק באמצע.",math:"0.121 − 0.12 ≠ 0.13 − 0.121",fix:"0.121 נמצא בין 0.12 ל־0.13, אבל המרחקים לקצוות אינם שווים. האמצע הוא 0.125: מרחקו מכל קצה חמש אלפיות."},decimalSteps);
+  skill("rounding","עיגול: בוחרים שכן קרוב","נעגל לשלם, לעשירית או למאית, כולל מצבי אמצע ונשיאה.",
+    "עיגול מחליף מספר בערך קרוב ברמת דיוק שנבחרה. בחירת השכן הקרוב מצמצמת את השינוי.",
+    "מוצאים שני שכנים ברמת הדיוק המבוקשת. בוחרים קרוב יותר; בדיוק באמצע מעגלים כלפי מעלה. משתמשים בסימן ≈ כשכותבים קירוב.",
+    [step("נרצה לעגל 2.995 למאית. שתי המאיות השכנות הן 2.99 ו־3.00."),
+     step("בודקים את המרחק לכל אחד מהשכנים.","2.995 − 2.99 = 0.005; 3 − 2.995 = 0.005"),
+     step("המרחקים שווים, לכן בוחרים בשכן הגבוה. תשע מאיות ותשע עשיריות עשויות לגרום לנשיאה עד השלם.","2.995 ≈ 3.00"),
+     step("בדיקה: ההפרש הוא חצי מאית, בדיוק הגבול המותר בעיגול למאיות.","3 − 2.995 = 0.005")],
+    {text:"מחליפים ספרה בלי להעביר נשיאה למקום הבא.",fix:"כשמעגלים 2.995 למאית, השכן הגבוה הוא 3.00. אין ספרה עשר במקום המאיות."},rounding);
+  skill("estimation","אומדן לפני חישוב","נאמוד סכומים והפרשים בעזרת עיגול כל מספר ונבדוק סבירות.",
+    "מספרים שלמים נוחים לחישוב בראש. האומדן נותן סדר גודל, אבל אינו מחליף תשובה מדויקת כשזו נדרשת.",
+    "קוראים את הוראת האומדן: כאן מעגלים כל מספר לשלם, ורק אז מחברים או מחסרים לפי התרגיל. לא מעגלים רק את התוצאה הסופית.",
+    [step("נאמוד את הסכום של 3.48 ושל 2.47.","3.48 + 2.47"),
+     step("כל מחובר קרוב יותר לשלם הנמוך ממנו.","3.48 ≈ 3; 2.47 ≈ 2"),
+     step("מחברים את השלמים: האומדן לפי השיטה שהתבקשה הוא 5.","3 + 2 = 5"),
+     step("הסכום המדויק הוא 5.95, וההפרש מהאומדן קטן מ־1. עיגול הסכום עצמו היה נותן 6, ולכן חשוב סדר הפעולות.","3.48 + 2.47 = 5.95; 5.95 − 5 = 0.95"),
+     step("גם בהפרש מעגלים כל מספר ושומרים על סדר החיסור: 8.21 פחות 3.74 נאמד בעזרת 8 פחות 4.","8.21 ≈ 8; 3.74 ≈ 4; 8 − 4 = 4")],
+    {text:"מחשבים במדויק ורק אז מעגלים, גם כשהתבקש עיגול של כל מספר.",fix:"אומדנים בשיטות שונות עשויים להיות שונים. כאן מצייתים לשיטה: מעגלים את שני המספרים לפני החיבור או החיסור."},estimate);
+  skill("addition","חיבור עם בתים מתאימים","נחבר עשרוניים תוך יישור מקומות והמרת עשרה חלקים בחלק גדול יותר.",
+    "אפשר לחבר רק חלקים מאותו סוג ישירות. הנקודה מסמנת היכן השלמים נגמרים, ולכן יישור נקודות מיישר את כל יחידות המקום.",
+    "משלימים אפסים מימין, מחברים מהחלק הקטן לגדול, ומעבירים כל עשרה חלקים למקום שמשמאל.",
+    [step("נחבר 1.386 ו־0.57. אפס נוסף מימין מאפשר לראות אלפיות בשני המחוברים.","0.57 = 0.570"),
+     step("באלפיות: שש ועוד אפס הן שש. במאיות: שמונה ועוד שבע הן חמש עשרה, כלומר עשירית אחת וחמש מאיות.","0.08 + 0.07 = 0.15"),
+     step("בעשיריות: שלוש ועוד חמש ועוד אחת שהועברה הן תשע. בשלמים נשאר אחד.","1.386 + 0.570 = 1.956"),
+     step("בודקים בסכום החלקים וגם בפעולה ההפוכה.","1.956 − 0.57 = 1.386")],
+    {text:"מיישרים את הספרה הימנית במקום את ערכי המקום.",fix:"לאלפיות מותר לצרף רק אלפיות. כתבו 0.570 מתחת ל־1.386 כך שהנקודות נמצאות באותה עמודה."},addition);
+  skill("equal-groups","מחיר חוזר: קבוצות שוות","נפרש מספר שלם כפול מחיר עשרוני כחיבור חוזר של קבוצות שוות.",
+    "כשקונים כמה פריטים באותו מחיר, כל פריט מוסיף אותה כמות. סימן הכפל מתאר כמה פעמים מחברים את המחיר, ולא מצריך כאן אלגוריתם של עשרוני כפול עשרוני.",
+    "מספר הקבוצות חייב להיות שלם בתרגול הזה. נכתוב את המחיר פעם אחת לכל קבוצה, ונחבר שקלים לשקלים ואגורות לאגורות.",
+    [step("כל כרטיס דמיוני עולה 2.45 שקלים. קונים שלושה כרטיסים, לכן יש שלוש קבוצות שוות."),
+     step("מחליפים את כתיבת הכפל בחיבור חוזר של אותו מחיר.","3 × 2.45 = 2.45 + 2.45 + 2.45"),
+     step("ששת השקלים מצטרפים ל־135 אגורות, שהן שקל אחד ו־35 אגורות. הסכום הכולל הוא 7.35 שקלים.","2.45 + 2.45 + 2.45 = 7.35"),
+     step("בודקים בחיסור שני מחירים: נשאר המחיר של הכרטיס השלישי.","7.35 − 2.45 − 2.45 = 2.45")],
+    {text:"מחברים את מספר הפריטים למחיר במקום לחבר את המחיר שוב ושוב.",math:"3 × 2.45 ≠ 3 + 2.45",fix:"שלושה כרטיסים הם שלושה מחירים שווים, לא תוספת של שלושה שקלים. כותבים 2.45 שלוש פעמים."},equalGroups);
+  skill("subtraction","חיסור דרך אפסים","נחסר עשרוניים ונפרוט שלם, עשירית ומאית כשצריך.",
+    "פריטה מחליפה חלק גדול בעשרה חלקים קטנים בלי לשנות את הכמות. לכן אפשר להעביר דרך מקומות שיש בהם אפס.",
+    "מיישרים נקודות ומשלימים אפסים. אם אין די חלקים בעמודה, פורטים מהמקום הראשון משמאל שיש בו חלקים.",
+    [step("נרצה לחסר 0.796 מתוך 5. כותבים את 5 עם שלושה מקומות אחרי הנקודה.","5 = 5.000"),
+     step("פורטים שלם אחד, ואז עשירית ומאית. עכשיו אפשר לראות ארבעה שלמים, תשע עשיריות, תשע מאיות ועשר אלפיות.","5 = 4 + 0.9 + 0.09 + 0.010"),
+     step("מחסרים בכל מקום: עשר פחות שש אלפיות, תשע פחות תשע מאיות, ותשע פחות שבע עשיריות.","5.000 − 0.796 = 4.204"),
+     step("מחברים בחזרה כדי לבדוק שהכמות נשמרה.","4.204 + 0.796 = 5")],
+    {text:"מחסרים בכל עמודה את הספרה הקטנה מהגדולה, בלי לשמור על כיוון החיסור.",fix:"בכל העמודות מחסרים את המספר התחתון מהעליון. אם חסר, פורטים; לא הופכים את התרגיל."},subtraction);
+  skill("repair-alignment","בלשי עשרוניים: מתקנים צעד","נזהה שינוי שגוי בערך ונבחר את צעד הכתיבה הבא לפני חיבור.",
+    "כתיבה ארוכה יותר אינה חייבת לשנות מספר. אבל הכנסת אפס במקום שגוי משנה את היחידה של כל ספרה שאחריו.",
+    "לפני החישוב בודקים שהמספרים נשארו שווים למקור. רק אפסים בקצה הימני של החלק העשרוני הם השלמה בטוחה.",
+    [step("רוצים לחבר 1.36 ו־0.8. מישהו כתב את 0.8 בתור 0.08."),
+     step("שמונה עשיריות הן שמונים מאיות, לא שמונה מאיות.","8/10 = 80/100 = 0.80"),
+     step("מתקנים את הכתיבה, ורק אז מחברים.","1.36 + 0.80 = 2.16"),
+     step("בודקים שהמחובר השני נשמר בעזרת חיסור.","2.16 − 1.36 = 0.8")],
+    {text:"חושבים שכל אפס נוסף מותר.",math:"0.8 ≠ 0.08",fix:"נשאל: האם הספרה עדיין מייצגת עשיריות? ב־0.80 כן; ב־0.08 היא כבר מייצגת מאיות."},diagnose);
+  skill("money","חנות דמיונית: קנייה ועודף","נפתור בעיית כסף בשני שלבים ונבדוק שהעודף מתאים.",
+    "אגורות הן מאיות של שקל. חיבור מחירים וחיסור עודף נשענים על אותם ערכי מקום כמו כל חישוב עשרוני.",
+    "מוצאים את סכום הקנייה, ואז מחסרים אותו מהתשלום. מפרידים בין התשובה לשאלת העלות ובין התשובה לשאלת העודף.",
+    [step("מחברת דמיונית עולה 8.35 שקלים, קופסה 5.40 שקלים, והתשלום 25 שקלים."),
+     step("מחברים מחירים בשקלים ובמאיות שקל, כלומר אגורות.","8.35 + 5.40 = 13.75"),
+     step("מחסרים את ההוצאה מהתשלום. העודף הוא 11.25 שקלים.","25 − 13.75 = 11.25"),
+     step("בודקים שהקנייה והעודף משלימים את התשלום.","13.75 + 11.25 = 25")],
+    {text:"מחזירים בתשובה את מחיר הקנייה במקום את העודף.",fix:"בסוף קראו שוב מה התבקש. עודף הוא מה שנשאר מהתשלום לאחר הקנייה."},money);
+  skill("metric","אותה כמות, יחידות מתאימות","נקשר מטרים לסנטימטרים וקילוגרמים לגרמים בתוך בעיות רב־שלביות.",
+    "החלפת יחידה אינה שינוי בכמות: סנטימטר הוא מאית מטר וגרם הוא אלפית קילוגרם. הכתיב העשרוני מספר כמה חלקים של היחידה הגדולה יש.",
+    "לפני חיבור או חיסור, כותבים את כל הכמויות באותה יחידה. מקפידים לציין את היחידה בתשובה.",
+    [step("יש סרט באורך 4 מטרים. גוזרים 42 סנטימטרים ומחברים קטע באורך 18 סנטימטרים."),
+     step("מייצגים כל אורך כחלקי מטר, כי במטר יש מאה סנטימטרים.","42/100 = 0.42; 18/100 = 0.18"),
+     step("מחסרים את החלק שנגזר ומוסיפים את התוספת. האורך כעת 3.76 מטרים.","4 − 0.42 + 0.18 = 3.76"),
+     step("בודקים לאחור: מסירים את התוספת ומחזירים את החלק שנגזר.","3.76 − 0.18 + 0.42 = 4")],
+    {text:"מחסרים 42 מ־4 אף שהמספרים נתונים ביחידות שונות.",fix:"42 סנטימטרים הם 0.42 מטר. מחסרים מטרים ממטרים, לא סנטימטרים ממטרים."},metric);
+  installDecimalModel();
+  return {id:"decimals",title:"מסע העשרוניים: כל ספרה במקום שלה",intro:"בונים משמעות בעזרת חלקי שלם, ישרים וערכי מקום; לומדים יחד, מתקנים טעויות ומתרגלים חיבור וחיסור בסיפורים מקוריים. סכומי כסף ונתוני מדידה כאן דמיוניים.",prerequisites:"כדאי להכיר: ערכי מקום במספרים שלמים, חיבור וחיסור עם המרה, והרעיון של שבר כחלקים שווים של אותו שלם. אין צורך לדעת כפל או חילוק כלליים של מספרים עשרוניים. לתמיכה עד מאיות פתחו את המסלול לבחירה שמתחת להנחיות; המסלול המלא כולל גם אלפיות כחלק מהליבה.",skills};
+}
+// COURSE_DATA_END
+const course=buildCourse();
+const $=id=>document.getElementById(id);
+const scopeLabels={core:"לימוד לכיתה ה׳",review:"חזרה ובסיס",enrichment:"העשרה לבחירה"};
+const skillMap=new Map(course.skills.map(skill=>[skill.id,skill]));
+function node(tag,text,className){const el=document.createElement(tag);if(text!==undefined)el.textContent=text;if(className)el.className=className;return el;}
+function control(text,action){const el=node("button",text);el.type="button";el.addEventListener("click",action);return el;}
+function shuffle(items){const result=[...items];for(let i=result.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[result[i],result[j]]=[result[j],result[i]];}return result;}
+function rational(text){
+  let value=String(text).trim().replace(/\u2212/g,"-");
+  if(/^-?\d{1,3}(?:,\d{3})+(?:\.\d{1,6})?$/.test(value))value=value.replace(/,/g,"");
+  let m=value.match(/^(-?\d+)\s+(\d+)\/([1-9]\d*)$/);
+  let n,d;
+  if(m){d=Number(m[3]);if(Number(m[2])>=d)return null;n=(Math.abs(Number(m[1]))*d+Number(m[2]))*(m[1].startsWith("-")?-1:1);}
+  else if((m=value.match(/^(-?\d+)\/([1-9]\d*)$/))){n=Number(m[1]);d=Number(m[2]);}
+  else if((m=value.match(/^(-?)(\d+)(?:\.(\d{1,6}))?$/))){d=10**(m[3]?.length||0);n=(Number(m[2])*d+Number(m[3]||0))*(m[1]?-1:1);}
+  else return null;
+  if(!Number.isSafeInteger(n)||!Number.isSafeInteger(d))return null;
+  let a=Math.abs(n),b=d;while(b){[a,b]=[b,a%b];}
+  return [n/(a||1),d/(a||1)];
+}
+function answerKey(value,kind){if(kind==="text")return String(value).trim();const pair=rational(value);return pair?pair.join("/"):"invalid:"+value;}
+function questionFor(skill,seed){
+  const q=skill.build(seed);
+  return {...q,id:skill.id+"-"+seed,skill:skill.id};
+}
+function validateQuestion(q){
+  if(!["number","fraction","text"].includes(q.kind)||q.steps.length!==4||q.choices.length<3||new Set(q.choices.map(x=>answerKey(x,q.kind))).size!==q.choices.length||q.choices.filter(x=>answerKey(x,q.kind)===answerKey(q.answer,q.kind)).length!==1)
+    throw new Error("Invalid authored question: "+q.id);
+  if(q.kind!=="text"&&q.choices.some(x=>!rational(x)))throw new Error("Invalid numeric option: "+q.id);
+}
+const bank=course.skills.flatMap(skill=>Array.from({length:skill.count},(_,i)=>questionFor(skill,i)));
+bank.forEach(validateQuestion);
+const decks=new Map(),supportHistory=new Set(),lastShown=new Map();
+let round=[],position=0,current=null,solved=false,assisted=false,independent=0,activeSkill=null,results=[];
+let lessonSkill=null,lessonTrigger=null,guided=null,guidedSolved=false;
+function deckFor(skill){
+  if(!decks.has(skill)||!decks.get(skill).length){
+    const fresh=shuffle(bank.filter(q=>q.skill===skill));
+    if(fresh.length>1&&fresh[0].id===lastShown.get(skill))[fresh[0],fresh[1]]=[fresh[1],fresh[0]];
+    decks.set(skill,fresh);
+  }
+  return decks.get(skill);
+}
+function planRound(id){
+  if(id)return deckFor(id).slice(0,6);
+  const ids=shuffle(course.skills.filter(s=>s.scope!=="enrichment").map(s=>s.id));
+  const selected=[],offsets=new Map();
+  while(selected.length<6){
+    let added=false;
+    for(const skill of ids){
+      const offset=offsets.get(skill)||0,q=deckFor(skill)[offset];
+      if(q){selected.push(q);offsets.set(skill,offset+1);added=true;}
+      if(selected.length===6)break;
+    }
+    if(!added)break;
+  }
+  return shuffle(selected);
+}
+function showHome(){
+  $("home").hidden=false;$("practice").hidden=true;$("summary").hidden=true;current=null;solved=false;
+  $("home-title").focus({preventScroll:true});window.scrollTo(0,0);
+}
+function startRound(id=null){
+  if(id&&!skillMap.has(id))throw new Error("Unknown skill: "+id);
+  if($("lesson").open)$("lesson").close();
+  activeSkill=id;round=planRound(id);position=0;independent=0;results=[];
+  $("home").hidden=true;$("practice").hidden=false;$("summary").hidden=true;
+  $("practice-title").textContent=id?skillMap.get(id).title:"תרגול משולב";
+  renderQuestion();$("practice").scrollIntoView({block:"start"});
+}
+function appendSteps(target,steps,numbered=false){
+  target.replaceChildren();
+  const headings=["מה ידוע ומה מחפשים?","באיזו דרך נפתור?","נחשב צעד אחר צעד","איך נבדוק?"];
+  steps.forEach((step,i)=>{const li=node("li",undefined,"step");if(numbered)li.append(node("h4",headings[i]));li.append(node("p",step.text));if(step.math)li.append(node("p",step.math,"math"));target.append(li);});
+}
+function setVisual(id,html){$(id).hidden=!html;$(id).innerHTML=html||"";}
+function renderQuestion(){
+  current=round[position];solved=false;assisted=supportHistory.has(current.id);
+  const deck=deckFor(current.skill),index=deck.findIndex(q=>q.id===current.id);if(index>=0)deck.splice(index,1);
+  lastShown.set(current.skill,current.id);
+  $("skill-label").textContent=scopeLabels[skillMap.get(current.skill).scope]+" · "+skillMap.get(current.skill).title;
+  $("prompt").textContent=current.prompt;$("expression").textContent=current.expression||"";$("expression").hidden=!current.expression;
+  $("unit").textContent=current.unit||"";setVisual("visual",current.visual);
+  $("round-label").textContent="שאלה "+(position+1)+" מתוך "+round.length;$("progress").max=round.length;$("progress").value=position;
+  $("choices").replaceChildren();
+  shuffle(current.choices).forEach(value=>{
+    const q=current,button=control(value,()=>answer(value,button,q.id));button.dir=q.choiceDirection||(q.kind==="text"?"rtl":"ltr");$("choices").append(button);
+  });
+  $("answer-form").hidden=current.kind==="text";$("input-note").hidden=current.kind==="text";$("typed-answer").value="";
+  [...$("answer-form").elements].forEach(el=>el.disabled=false);$("feedback").textContent="";
+  appendSteps($("help-steps"),current.steps,true);$("help-answer").textContent=current.answer;
+  $("help-answer").className=current.kind==="text"?"":"math";toggleHelp(false);
+  for(const id of ["next-top","next-bottom"]){$(id).hidden=true;$(id).textContent=position===round.length-1?"לסיכום הסבב":"לשאלה הבאה";}
+  $("prompt").focus({preventScroll:true});
+}
+function markSupport(){if(current&&!solved){assisted=true;supportHistory.add(current.id);}}
+function toggleHelp(open){
+  if(open)markSupport();
+  $("help-panel").hidden=!open;$("help-toggle").setAttribute("aria-expanded",String(open));$("help-toggle").textContent=open?"🙈 הסתר הסבר":"🔍 איך פותרים?";
+}
+function answer(value,button,id){
+  if(!current||solved||current.id!==id||button?.disabled||(button&&button.parentElement!==$("choices")))return;
+  if(current.kind!=="text"&&!rational(value)){$("feedback").textContent="כתבו מספר תקין או שבר עם מכנה שאינו אפס. למשל 0.5 או 1/2.";return;}
+  if(answerKey(value,current.kind)!==answerKey(current.answer,current.kind)){
+    markSupport();if(button){button.disabled=true;button.classList.add("wrong");button.setAttribute("aria-label",value+" — לא נכון");}
+    $("feedback").textContent="עוד ניסיון. נפתח את הדרך ונבדוק באיזה צעד צריך עזרה.";toggleHelp(true);return;
+  }
+  solved=true;if(!assisted)independent++;
+  results.push({skill:current.skill,assisted});
+  if(button){button.classList.add("correct");button.setAttribute("aria-label",value+" — נכון");}
+  $("choices").querySelectorAll("button").forEach(el=>el.disabled=true);[...$("answer-form").elements].forEach(el=>el.disabled=true);
+  $("feedback").textContent=assisted?"נכון! נעזרתם בדרך והגעתם לפתרון.":"נכון! פתרתם באופן עצמאי.";
+  $("progress").value=position+1;for(const id of ["next-top","next-bottom"])$(id).hidden=false;
+  $("next-top").focus({preventScroll:true});
+}
+function nextQuestion(){
+  if(!solved)return;
+  if(position<round.length-1){position++;renderQuestion();$("prompt").scrollIntoView({block:"start"});return;}
+  solved=false;current=null;$("practice").hidden=true;$("summary").hidden=false;
+  $("summary-text").textContent="השלמתם "+round.length+" שאלות: "+independent+" באופן עצמאי ו־"+(round.length-independent)+" בעזרת תמיכה.";
+  $("recommendations").replaceChildren();
+  for(const id of new Set(results.filter(r=>r.assisted).map(r=>r.skill))){const skill=skillMap.get(id);$("recommendations").append(control("נחזור על הדרך: "+skill.title,event=>openLesson(id,event.currentTarget)));}
+  $("next-lesson").hidden=!activeSkill||course.skills.findIndex(s=>s.id===activeSkill)===course.skills.length-1;
+  $("summary-title").focus({preventScroll:true});$("summary").scrollIntoView({block:"start"});
+}
+function guidedHelp(open){
+  $("guided-solution").hidden=!open;$("guided-help").setAttribute("aria-expanded",String(open));$("guided-help").textContent=open?"🙈 הסתר הסבר":"🔍 איך פותרים?";
+}
+function openLesson(id,trigger){
+  if(!skillMap.has(id))throw new Error("Unknown lesson: "+id);
+  markSupport();lessonSkill=skillMap.get(id);lessonTrigger=trigger||document.activeElement;guidedSolved=false;
+  $("lesson-title").textContent=lessonSkill.title;$("lesson-goal").textContent=lessonSkill.goal;
+  $("lesson-why").textContent=lessonSkill.why;$("lesson-rule").textContent=lessonSkill.rule;
+  appendSteps($("example-steps"),lessonSkill.example);setVisual("lesson-visual",lessonSkill.visual);
+  $("mistake-text").textContent=lessonSkill.mistake.text;$("mistake-math").textContent=lessonSkill.mistake.math||"";$("mistake-math").hidden=!lessonSkill.mistake.math;$("mistake-fix").textContent=lessonSkill.mistake.fix;
+  guided=lessonSkill.guided();validateQuestion(guided);$("guided-prompt").textContent=guided.prompt;
+  $("guided-expression").textContent=guided.expression||"";$("guided-expression").hidden=!guided.expression;
+  setVisual("guided-visual",guided.visual);$("guided-unit").textContent=guided.unit||"";
+  appendSteps($("guided-steps"),guided.steps,true);guidedHelp(false);$("guided-feedback").textContent="";$("guided-choices").replaceChildren();
+  shuffle(guided.choices).forEach(value=>{
+    const q=guided,button=control(value,()=>{
+      if(guidedSolved||button.disabled||guided!==q)return;
+      guidedHelp(true);
+      if(answerKey(value,q.kind)===answerKey(q.answer,q.kind)){
+        guidedSolved=true;button.classList.add("correct");$("guided-choices").querySelectorAll("button").forEach(el=>el.disabled=true);$("guided-feedback").textContent="נכון! קראו את בדיקת הפתרון ונסו תרגיל חדש.";
+      }else{button.disabled=true;button.classList.add("wrong");$("guided-feedback").textContent="נבדוק יחד את הדרך וננסה שוב.";}
+    });
+    button.dir=q.choiceDirection||(q.kind==="text"?"rtl":"ltr");$("guided-choices").append(button);
+  });
+  $("lesson-practice").textContent=current&&current.skill===id&&!$("practice").hidden?"חזרה לאותה שאלה":"מתרגלים את הנושא";
+  $("lesson-next").disabled=course.skills.indexOf(lessonSkill)===course.skills.length-1;
+  document.body.classList.add("lesson-open");if(!$("lesson").open)$("lesson").showModal();$("lesson").scrollTop=0;
+}
+function initialize(){
+  document.title=course.title+" · מתמטיקה לכיתה ה׳";$("page-title").textContent=course.title;$("intro").textContent=course.intro;$("prerequisites").textContent="מה כדאי להכיר קודם: "+course.prerequisites;
+  course.skills.forEach((skill,index)=>{
+    const card=node("article",undefined,"skill-card");card.append(node("p",scopeLabels[skill.scope],"scope"),node("h3",(index+1)+". "+skill.title),node("p",skill.goal));
+    const actions=node("div",undefined,"actions");actions.append(control("📚 לומדים את הדרך",event=>openLesson(skill.id,event.currentTarget)),control("מתרגלים",()=>startRound(skill.id)));card.append(actions);$("skills").append(card);
+  });
+  $("course-start").onclick=event=>openLesson(course.skills[0].id,event.currentTarget);$("mixed-start").onclick=()=>startRound();
+  for(const id of ["home-button","summary-home"])$(id).onclick=showHome;
+  for(const id of ["restart","again"])$(id).onclick=()=>startRound(activeSkill);
+  for(const id of ["next-top","next-bottom"])$(id).onclick=nextQuestion;
+  $("help-toggle").onclick=()=>toggleHelp($("help-panel").hidden);$("open-lesson").onclick=event=>openLesson(current.skill,event.currentTarget);
+  $("close-lesson").onclick=()=>$("lesson").close();
+  $("lesson").addEventListener("close",()=>{document.body.classList.remove("lesson-open");if(lessonTrigger?.isConnected)lessonTrigger.focus({preventScroll:true});});
+  $("lesson-practice").onclick=()=>{
+    const id=lessonSkill.id,resume=current&&current.skill===id&&!$("practice").hidden;
+    $("lesson").close();if(resume)$("prompt").focus({preventScroll:true});else startRound(id);
+  };
+  $("lesson-next").onclick=()=>{const next=course.skills[course.skills.indexOf(lessonSkill)+1];if(next)openLesson(next.id,lessonTrigger);};
+  $("next-lesson").onclick=event=>{const next=course.skills[course.skills.findIndex(s=>s.id===activeSkill)+1];if(next)openLesson(next.id,event.currentTarget);};
+  $("guided-help").onclick=()=>guidedHelp($("guided-solution").hidden);
+  $("answer-form").onsubmit=event=>{event.preventDefault();if(current)answer($("typed-answer").value,null,current.id);};
+  function route(){
+    if($("lesson").open)$("lesson").close();showHome();const id=location.hash.slice(1);
+    $("route-message").textContent="";
+    if(skillMap.has(id))openLesson(id);else if(id==="practice")startRound();else if(id)$("route-message").textContent="השיעור שבקישור לא נמצא. בחרו אחד מהשיעורים הזמינים.";
+  }
+  window.addEventListener("hashchange",route);route();
+}
+initialize();
+if(new URLSearchParams(location.search).get("selftest")==="1")window.__eduSelfTest={course,bank,questionFor,answerKey,rational};
+</script>
+</body>
+</html>

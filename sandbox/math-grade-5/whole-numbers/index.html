@@ -1,0 +1,757 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>מתמטיקה לכיתה ה׳</title>
+<script src="../../../assets/theme-selector.js" defer></script>
+<link rel="stylesheet" href="../../../assets/refresh.css">
+<style>
+*{box-sizing:border-box}
+:root{--surface:var(--refresh-surface,#fff);--soft:var(--refresh-soft,#edf3fb);--text:var(--refresh-text,#243b53);--muted:var(--refresh-muted,#52677e);--accent:var(--refresh-accent,#285f9f);--border:var(--refresh-border,#d5dfec)}
+body{margin:0;padding-top:64px;background:#eef7fd;color:var(--text);font:18px/1.7 "Segoe UI","Arial Hebrew",Arial,sans-serif}
+main{max-width:1000px;margin:auto;padding:16px 16px 40px}[hidden]{display:none!important}
+header{text-align:center}h1{font-size:clamp(28px,6vw,40px);line-height:1.3}h2{font-size:25px}h3{font-size:21px}
+a{color:var(--accent)}button,input,select{font:inherit;max-width:100%;min-height:44px}
+button,select,input{border:2px solid var(--border);border-radius:14px;padding:9px 13px;background:var(--surface);color:var(--text)}
+button,a.back{min-height:44px;min-width:44px}button{cursor:pointer}button:disabled{cursor:default}
+button:focus-visible,input:focus-visible,a:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+a.back{display:inline-flex;align-items:center;padding:8px 12px;background:var(--surface);border-radius:14px}
+.panel,.skill-card{background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:clamp(14px,3vw,24px);margin:16px 0;min-width:0}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.skill-card{margin:0;border-top:5px solid var(--accent)}
+.actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:14px 0}.actions>*{max-width:100%}
+.primary{font-weight:800;background:var(--soft)}.muted{color:var(--muted);font-size:16px}.scope{font-weight:700}
+.math{direction:ltr;unicode-bidi:isolate;text-align:center;font:600 clamp(21px,5vw,29px)/1.8 "Segoe UI",Arial,sans-serif;white-space:pre-line;overflow-wrap:anywhere;background:var(--soft);padding:10px;border-radius:12px;margin:10px 0;font-variant-numeric:tabular-nums}
+.visual{padding:12px;margin:12px 0;background:var(--soft);border-radius:14px;overflow:auto;text-align:center}.visual svg{width:100%;max-width:460px;height:auto;max-height:310px;display:block;margin:auto}
+.visual table{border-collapse:collapse;width:100%;max-width:600px;margin:auto}.visual th,.visual td{border:1px solid var(--border);padding:6px}
+.choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.choices button{min-height:60px;font-size:22px;overflow-wrap:anywhere}
+#edu-refresh button.correct{background:#d9f6e3!important;color:#145c35!important;border-color:#237849!important}
+#edu-refresh button.wrong{background:#ffe0dc!important;color:#8c2c28!important;border-color:#ac463b!important;text-decoration:line-through}
+.feedback{font-weight:700;min-height:30px}.help{border:2px solid var(--border);border-radius:16px;padding:16px;background:var(--soft)}
+.step{background:var(--surface);border-radius:12px;padding:12px;margin:12px 0}.step h4,.step p{margin:4px 0}.step .math{background:var(--soft)}
+.help ol,#example-steps{padding-inline-start:25px}.answer-form{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:16px 0}.answer-form input{width:220px;direction:ltr}
+progress{width:100%;height:16px;accent-color:var(--accent)}summary{cursor:pointer;min-height:44px;padding:8px 0;font-weight:700}
+dialog{width:min(780px,calc(100% - 24px));max-height:calc(100dvh - 24px);padding:22px;border:2px solid var(--border);border-radius:22px;background:var(--surface);color:var(--text)}
+dialog::backdrop{background:#102238b8}body.lesson-open{overflow:hidden}.lesson-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+#edu-theme-select{min-height:44px!important}#edu-theme-control{max-width:calc(100% - 12px)}
+footer{text-align:center;font-size:15px;margin:24px 0}
+@media(max-width:600px){.grid,.choices{grid-template-columns:1fr}main{padding-inline:12px}.panel,dialog{padding:14px}.actions button{flex:1 1 140px}.math{font-size:22px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body id="edu-refresh">
+<main>
+<a class="back" href="../index.html">חזרה לקורס מתמטיקה לכיתה ה׳</a>
+<header><p class="muted">קורס מתמטיקה לכיתה ה׳ · תצוגת בדיקה</p><h1 id="page-title"></h1><p id="intro"></p></header>
+<noscript><p class="panel">כדי ללמוד ולתרגל יש לאפשר הפעלת סקריפטים בדפדפן.</p></noscript>
+<section id="home" aria-labelledby="home-title">
+<div class="panel"><h2 id="home-title" tabindex="-1">לומדים, פותרים יחד ומנסים לבד</h2><p id="prerequisites"></p>
+<p>המסלול המומלץ מתחיל בהבנה ובדוגמה, ממשיך בניסיון מודרך ומסתיים בתרגול. אפשר לבחור כל שיעור בלי לנעול שלבים.</p>
+<div class="actions"><button id="course-start" class="primary" type="button">מתחילים ללמוד לפי הסדר</button><button id="mixed-start" type="button">תרגול משולב</button></div>
+<p id="route-message" role="status"></p></div>
+<details class="panel" id="multiplication-lab"><summary>מעבדה לבחירה: בונים מכפלה מעשרות ומיחידות</summary>
+<p>שנו אחד המספרים וגלו מה משתנה בכל מכפלת ביניים. זוהי חקירה חופשית: אין שאלות לציון ואין שמירה.</p>
+<div class="actions"><label for="lab-first">המספר הראשון:</label><input id="lab-first" type="number" min="10" max="99" step="1" value="37" inputmode="numeric" aria-describedby="lab-instructions" style="width:120px">
+<label for="lab-second">הכופל:</label><input id="lab-second" type="number" min="10" max="99" step="1" value="24" inputmode="numeric" aria-describedby="lab-instructions" style="width:120px"></div>
+<p id="lab-instructions" class="muted">בחרו מספרים שלמים בין 10 ל־99. הגבולות כאן נועדו לשמור על ייצוג קטן וקריא, ולא להגדיר גבול לתוכנית הלימודים.</p>
+<p id="lab-status" role="status"></p><p id="lab-expression" class="math" dir="ltr"></p>
+<h3>אותו מספר מוכפל בכל חלק</h3><div id="lab-parts" class="visual"></div>
+<h3>מחברים את מכפלות הביניים לפי ערכי המקום</h3><div id="lab-columns" class="visual"></div>
+<p id="lab-explanation"></p><p id="lab-total" class="math" dir="ltr"></p>
+<p>נסו להגדיל רק את ספרת היחידות של הכופל באחת: איזו שורה משתנה, ובכמה גדל הסכום? אחר כך נסו כופל שמסתיים באפס. האם עדיין צריך את שתי השורות?</p>
+</details><div id="skills" class="grid"></div>
+</section>
+<section id="practice" class="panel" hidden aria-labelledby="practice-title">
+<div class="actions"><button id="home-button" type="button">בחירת שיעור</button><button id="restart" type="button">סבב חדש</button></div>
+<h2 id="practice-title"></h2><p id="round-label"></p><progress id="progress" value="0" max="6" aria-label="שאלות שהושלמו"></progress>
+<p id="skill-label" class="scope"></p><h3 id="prompt" tabindex="-1"></h3><div id="expression" class="math" dir="ltr"></div><p id="unit" class="muted"></p><div id="visual" class="visual" hidden></div>
+<div id="choices" class="choices" role="group" aria-label="בחירת תשובה"></div>
+<form id="answer-form" class="answer-form" hidden><label for="typed-answer">או כתבו תשובה:</label><input id="typed-answer" autocomplete="off" maxlength="60" aria-describedby="input-note"><button type="submit">בדיקה</button></form>
+<p id="input-note" class="muted" hidden>אפשר לכתוב מספר, מספר עשרוני, שבר כמו 3/4 או מספר מעורב כמו 1 1/2. יחידות מופיעות בשאלה, אין צורך להקליד אותן.</p>
+<p id="feedback" class="feedback" role="status"></p>
+<div class="actions"><button id="help-toggle" type="button" aria-expanded="false" aria-controls="help-panel">🔍 איך פותרים?</button><button id="open-lesson" type="button">📚 שיעור קצר</button><button id="next-top" class="primary" type="button" hidden>לשאלה הבאה</button></div>
+<section id="help-panel" class="help" hidden aria-labelledby="help-title"><h3 id="help-title">מבינים את הדרך בארבעה צעדים</h3><ol id="help-steps"></ol><h4>התשובה</h4><p id="help-answer"></p></section>
+<button id="next-bottom" class="primary" type="button" hidden>לשאלה הבאה</button>
+</section>
+<section id="summary" class="panel" hidden aria-labelledby="summary-title"><h2 id="summary-title" tabindex="-1">סיימתם סבב של תרגול</h2><p id="summary-text"></p><p>עזרה היא חלק מהלמידה. תשובות עצמאיות הן בחירות נכונות בניסיון הראשון, ללא פתיחת הפתרון או השיעור באותה שאלה. זה אינו אבחון או ציון שליטה.</p><div id="recommendations"></div>
+<div class="actions"><button id="again" type="button">עוד תרגול באותו מסלול</button><button id="next-lesson" type="button">לשיעור הבא בקורס</button><button id="summary-home" type="button">בחירת שיעור</button></div></section>
+<footer>תרגילים ודוגמאות מקוריים · אין שמירת תשובות. רענון העמוד מתחיל ביקור חדש. את ההבנה כדאי לתרגל גם על דף ובשיחה.</footer>
+</main>
+<dialog id="lesson" aria-labelledby="lesson-title">
+<div class="lesson-head"><h2 id="lesson-title"></h2><button id="close-lesson" type="button">סגירת השיעור</button></div>
+<p id="lesson-goal"></p><h3>למה זה עובד?</h3><p id="lesson-why"></p><p id="lesson-rule" class="help"></p>
+<h3>דוגמה פתורה, צעד אחר צעד</h3><div id="lesson-visual" class="visual" hidden></div><ol id="example-steps"></ol>
+<h3>טעות שכדאי להכיר</h3><p id="mistake-text"></p><p id="mistake-math" class="math" dir="ltr"></p><p id="mistake-fix"></p>
+<h3>ננסה יחד</h3><p id="guided-prompt"></p><p id="guided-expression" class="math" dir="ltr"></p><div id="guided-visual" class="visual" hidden></div><p id="guided-unit"></p><div id="guided-choices" class="choices"></div>
+<p id="guided-feedback" class="feedback" role="status"></p><button id="guided-help" type="button" aria-expanded="false" aria-controls="guided-solution">🔍 איך פותרים?</button><div id="guided-solution" class="help" hidden><ol id="guided-steps"></ol></div>
+<p class="muted">זהו תרגול מודרך. הוא אינו מוסיף הצלחה עצמאית לסבב.</p>
+<div class="actions"><button id="lesson-practice" class="primary" type="button">מתרגלים את הנושא</button><button id="lesson-next" type="button">לשיעור הבא</button></div>
+</dialog>
+<script>
+"use strict";
+// COURSE_DATA_START
+function wnStep(text,math){return math?{text,math}:{text};}
+function wnQuestion({prompt,expression,answer,wrong=[],steps,visual,unit,audit,divisionTrace,kind="number"}){
+  const choices=[...new Set([String(answer),...wrong.map(String)])];
+  if(kind!=="text")for(const offset of [1,10,100,2]){if(choices.length>=4)break;const value=String(Number(answer)+offset);if(!choices.includes(value))choices.push(value);}
+  return {prompt,expression,answer:String(answer),choices:choices.slice(0,4),steps,visual,unit,audit,divisionTrace,kind};
+}
+function wnPlaceTable(n){
+  const labels=["מיליונים","מאות אלפים","עשרות אלפים","אלפים","מאות","עשרות","יחידות"],digits=String(n).padStart(7,"0").split("");
+  return '<table dir="ltr" aria-label="טבלת ערכי מקום"><thead><tr>'+labels.map(x=>'<th scope="col" dir="rtl">'+x+"</th>").join("")+"</tr></thead><tbody><tr>"+digits.map(x=>"<td>"+x+"</td>").join("")+"</tr></tbody></table>";
+}
+function wnColumns(values,sign,result){
+  const width=Math.max(...values.map(n=>String(n).length),result===undefined?0:String(result).length),row=(n,op)=>"<tr><th scope=\"row\">"+op+"</th>"+String(n).padStart(width," ").split("").map(x=>"<td>"+(x===" "?"":x)+"</td>").join("")+"</tr>";
+  return '<table dir="ltr" aria-label="תרגיל מאונך, יחידות מתחת ליחידות"><tbody>'+values.map((n,i)=>row(n,i?sign:"")).join("")+(result===undefined?"":row(result,"="))+"</tbody></table>";
+}
+function wnColumn(a,b,sign,result){return wnColumns([a,b],sign,result);}
+function wnPartial(a,b,solved=false){
+  const tens=Math.floor(b/10)*10,ones=b%10;
+  return '<table dir="ltr" aria-label="פירוק מכפלה לעשרות וליחידות"><thead><tr><th scope="col">×</th><th scope="col">'+tens+'</th><th scope="col">'+ones+'</th></tr></thead><tbody><tr><th scope="row">'+a+"</th><td>"+(solved?a*tens:"?")+"</td><td>"+(solved?a*ones:"?")+"</td></tr></tbody></table>";
+}
+function wnLabState(a,b){
+  if(![a,b].every(n=>Number.isInteger(n)&&n>=10&&n<=99))return null;
+  const tens=Math.floor(b/10)*10,ones=b%10;
+  return {a,b,tens,ones,unitsProduct:a*ones,tensProduct:a*tens,total:a*b,parts:wnPartial(a,b,true),columns:wnColumn(a*ones,a*tens,"+",a*b)};
+}
+function wnPlace(n,p,compose=false){
+  const factor=10**p,digit=Math.floor(n/factor)%10,value=digit*factor,rest=n-value;
+  return wnQuestion({
+    prompt:compose?"השלימו את החלק החסר בפירוק המספר שבטבלה.":"מה הערך של הספרה בעמודת "+["היחידות","העשרות","המאות","האלפים","עשרות האלפים","מאות האלפים","המיליונים"][p]+" במספר שבטבלה?",
+    expression:compose?`${rest} + □ = ${n}`:String(n),answer:value,wrong:[digit,value/10,value*10],visual:wnPlaceTable(n),
+    steps:[wnStep(`המספר הוא ${n}. מחפשים ${compose?"את החלק החסר בפירוק":"את ערך הספרה, לא את הספרה לבדה"}.`),
+      wnStep(`בעמודה המבוקשת נמצאת הספרה ${digit}; כל יחידה בעמודה שווה ${factor}.`,`${digit} × ${factor}`),
+      wnStep("מכפילים את הספרה בערך המקום שלה.",`${digit} × ${factor} = ${value}`),
+      wnStep("מחזירים את החלק לפירוק ובודקים שמתקבל המספר המקורי.",`${rest} + ${value} = ${n}`)],
+    audit:{op:"place",n,p,compose}});
+}
+function wnCompare(a,b){
+  const answer=a>b?"הראשון גדול יותר":a<b?"השני גדול יותר":"המספרים שווים",sa=String(a),sb=String(b);
+  let first=0;while(first<sa.length&&sa[first]===sb[first])first++;
+  const reasoning=a===b?"כל הספרות באותם מקומות שוות.":sa.length!==sb.length?"לשני המספרים מספר שונה של ספרות; למספר החיובי הארוך יותר ערך גדול יותר.":`משמאל, הספרות הראשונות השונות הן ${sa[first]} ו־${sb[first]}. ההכרעה היא במקום שערכו ${10**(sa.length-first-1)}.`;
+  return wnQuestion({prompt:"משווים לפי ערכי המקום: מה נכון לגבי המספר הראשון והשני?",expression:`${a} ; ${b}`,answer,
+    wrong:["הראשון גדול יותר","השני גדול יותר","המספרים שווים"],kind:"text",
+    steps:[wnStep("המספר הראשון מופיע משמאל, והשני מימין בביטוי המתמטי.",`${a} ; ${b}`),
+      wnStep("משווים מספר ספרות, ואז עוברים משמאל לימין עד למקום הראשון ששונה."),
+      wnStep(reasoning,`${a} ${a>b?">":a<b?"<":"="} ${b}`),
+      wnStep(a===b?"הפרש אפס מאשר שוויון.":"בודקים שהגדול פחות הקטן נותן הפרש חיובי.",`${Math.max(a,b)} − ${Math.min(a,b)} = ${Math.abs(a-b)}`)],
+    audit:{op:"compare",a,b}});
+}
+function wnRound(n,base){
+  const low=Math.floor(n/base)*base,high=low+base,mid=low+base/2,answer=n<mid?low:high;
+  return wnQuestion({prompt:`עגלו את ${n} ל${base===10?"עשרות":base===100?"מאות":base===1000?"אלפים":"עשרות אלפים"} הקרובים. לפי המוסכמה בקורס זה, בחצי הדרך מעגלים כלפי מעלה.`,
+    expression:String(n),answer,wrong:[answer===low?high:low,answer+base*2,Math.max(0,answer-base*2)],
+    steps:[wnStep("מוצאים את שתי הכפולות שביניהן נמצא המספר.",`${low} ≤ ${n} < ${high}`),
+      wnStep("נקודת האמצע מחלקת את המרווח לשניים.",`${low} + ${base/2} = ${mid}`),
+      wnStep(n<mid?"המספר לפני האמצע: בוחרים את הכפולה התחתונה.":n===mid?"המספר בדיוק באמצע: לפי הכלל בוחרים את הכפולה העליונה.":"המספר אחרי האמצע: בוחרים את הכפולה העליונה.",`${n} ≈ ${answer}`),
+      wnStep("בודקים את המרחק לתוצאה: אינו עולה על חצי גודל העיגול.",`${Math.abs(n-answer)} ≤ ${base/2}`)],
+    audit:{op:"round",n,base}});
+}
+function wnEstimate(a,b,base,multiply=false){
+  const ra=Math.round(a/base)*base,rb=Math.round(b/base)*base,answer=multiply?ra*rb:ra+rb,exact=multiply?a*b:a+b,sign=multiply?"×":"+";
+  return wnQuestion({prompt:`אומדן לתכנון: עגלו תחילה כל אחד משני המספרים ל${base===10?"עשרות":"מאות"} הקרובים, ואז ${multiply?"כפלו":"חברו"}. לפי המוסכמה בקורס זה, בחצי הדרך מעגלים כלפי מעלה. מה האומדן לפי דרך זו?`,
+    expression:`${a} ${sign} ${b}`,answer,wrong:[exact,answer+base,Math.max(0,answer-base)],
+    steps:[wnStep("מבקשים אומדן לפי שיטת העיגול שנקבעה, ולא את התוצאה המדויקת.",`${a} ${sign} ${b}`),
+      wnStep("מעגלים כל מספר בנפרד לפני הפעולה.",`${a} ≈ ${ra}\n${b} ≈ ${rb}`),
+      wnStep("מחשבים במספרים הנוחים.",`${ra} ${sign} ${rb} = ${answer}`),
+      wnStep("משווים גם לחישוב המדויק: ההפרש מוסבר בעיגול, לכן האומדן אינו תחליף לתשלום מדויק.",`${a} ${sign} ${b} = ${exact}\n${Math.max(exact,answer)} − ${Math.min(exact,answer)} = ${Math.abs(exact-answer)}`)],
+    audit:{op:"estimate",a,b,base,multiply}});
+}
+function wnAdd(a,b,carryTask=false){
+  const answer=carryTask?Math.floor((a%10+b%10)/10):a+b;
+  let carry=0;const pieces=[];
+  for(let p=0;p<Math.max(String(a).length,String(b).length);p++){
+    const x=Math.floor(a/10**p)%10,y=Math.floor(b/10**p)%10,total=x+y+carry;
+    pieces.push(`${x} + ${y} + ${carry} = ${total}`);carry=Math.floor(total/10);
+  }
+  return wnQuestion({prompt:carryTask?"בודקים צעד ראשון בחיבור מאונך: כמה עשרות מעבירים מסכום היחידות לעמודת העשרות?":"חברו במאונך. שמרו על ערכי המקום והעבירו עשרת כשצריך.",
+    expression:`${a} + ${b}`,answer,wrong:carryTask?[0,2,3]:[a+b-10,a+b+100,a+b-100],visual:wnColumn(a,b,"+"),
+    steps:[wnStep(`מחברים ${a} ו־${b}. ${carryTask?"מחפשים רק את ההעברה מהיחידות.":"מחפשים את הסכום."}`),
+      wnStep("מתחילים ביחידות. כל עשר יחידות מוחלפות בעשרת אחת; את ספרת היחידות כותבים למטה."),
+      wnStep(carryTask?`סכום היחידות הוא ${a%10+b%10}; נרשום ${((a+b)%10)} ביחידות ונעביר ${answer} לעשרות.`:"בכל שורה: שתי הספרות ועוד ההעברה מהעמודה הקודמת. ממשיכים מימין לשמאל; העברה אחרונה יוצרת מקום נוסף.",carryTask?`${a%10} + ${b%10} = ${a%10+b%10}`:pieces.join("\n")+`\n${a} + ${b} = ${a+b}`),
+      wnStep(carryTask?"בודקים שהפירוק לעשרות ויחידות שומר על אותו סכום.":"מחסרים אחד המחוברים מהסכום ומקבלים את האחר.",carryTask?`${answer} × 10 + ${(a+b)%10} = ${a%10+b%10}`:`${a+b} − ${b} = ${a}`)],
+    audit:{op:carryTask?"carry":"add",a,b}});
+}
+function wnAddThree(a,b,c){
+  const values=[a,b,c],answer=a+b+c,lines=[];let carry=0;
+  for(let p=0;p<Math.max(...values.map(n=>String(n).length));p++){
+    const digits=values.map(n=>Math.floor(n/10**p)%10),total=digits.reduce((sum,n)=>sum+n,carry);
+    lines.push(`${digits.join(" + ")} + ${carry} = ${total}`);carry=Math.floor(total/10);
+  }
+  return wnQuestion({prompt:"חברו את שלושת המחוברים במאונך. האם מעמודה אחת אפשר להעביר יותר מעשרת אחת?",expression:`${a} + ${b} + ${c}`,answer,wrong:[answer+10,answer-c,answer+100],visual:wnColumns(values,"+"),
+    steps:[wnStep(`שלושת המחוברים הם ${a}, ${b} ו־${c}; מבקשים את סכומם, בלי להשמיט אף שורה.`),
+      wnStep("מיישרים מקומות ומחברים בכל עמודה שלוש ספרות וגם את ההעברה. כל קבוצה של עשר מועברת שמאלה; ייתכן שנעביר שתיים ולא רק אחת."),
+      wnStep("בכל שורת חישוב נכללות שלוש הספרות וההעברה שהגיעה מהעמודה הקודמת. כותבים את ספרת היחידות ומעבירים את השאר לעמודה הבאה.",lines.join("\n")+`\n${a} + ${b} + ${c} = ${answer}`),
+      wnStep("מחסרים מהסכום שני מחוברים. אם הכול תקין, נשאר המחובר השלישי.",`${answer} − ${c} − ${b} = ${a}`)],
+    audit:{op:"add-three",a,b,c}});
+}
+function wnBorrow(a,b){
+  const digits=String(a).split("").reverse().map(Number),sub=String(b).padStart(digits.length,"0").split("").reverse().map(Number),lines=[];
+  const names=["יחידות","עשרות","מאות","אלפים","עשרות אלפים","מאות אלפים"];
+  for(let p=0;p<digits.length;p++){
+    if(digits[p]<sub[p]){
+      let k=p+1;while(digits[k]===0)k++;
+      const from=names[k];digits[k]--;
+      for(let j=k-1;j>p;j--)digits[j]=9;
+      digits[p]+=10;
+      lines.push(`בעמודת ${names[p]} אין מספיק. פורטים אחת מעמודת ${from}${k>p+1?"; בכל עמודת אפס שבדרך נשארות תשע לאחר העברה הלאה":""}.`);
+    }
+    lines.push(`${names[p]}: ${digits[p]} פחות ${sub[p]} הם ${digits[p]-sub[p]}.`);
+  }
+  return lines.join(" ");
+}
+function wnSubtract(a,b,findError=false){
+  const answer=findError?"צריך לפרוט לפני החיסור":a-b;
+  return wnQuestion({prompt:findError?"תלמיד החליט בכל עמודה לחסר את הספרה הקטנה מהגדולה, גם כשהקטנה שייכת למספר העליון. מה יש לתקן?":"חסרו במאונך. כשאין מספיק במקום מסוים, פרטו מהמקום שלשמאלו.",
+    expression:`${a} − ${b}`,answer,kind:findError?"text":"number",wrong:findError?["מותר להחליף את סדר הספרות בכל עמודה","צריך לחבר את המספרים"]:[a-b+10,a-b-100,a-b+100],visual:wnColumn(a,b,"−"),
+    steps:[wnStep(`מתחילים ב־${a} ומסירים ${b}; הסדר נשמר בכל העמודות.`),
+      wnStep("מותר להחליף עשרת בעשר יחידות בלי לשנות את המספר; אסור להפוך חיסור בכל עמודה בנפרד."),
+      wnStep(wnBorrow(a,b),`${a} − ${b} = ${a-b}`),
+      wnStep("מחברים את ההפרש למספר שהסרנו וחוזרים למספר ההתחלתי.",`${a-b} + ${b} = ${a}`)],
+    audit:{op:findError?"borrow-error":"subtract",a,b}});
+}
+function wnMultiply(a,b,partial=false){
+  const tens=Math.floor(b/10)*10,ones=b%10,answer=partial?a*tens:a*b;
+  return wnQuestion({prompt:partial?"בחרו את מכפלת הביניים השנייה: מכפילים את המספר שבעמודה השמאלית בחלק העשרות של הכופל.":"כפלו בעזרת שתי מכפלות ביניים: יחידות ועשרות, ואז חברו.",
+    expression:`${a} × ${b}`,answer,wrong:[a*Math.floor(b/10),a*ones,a*b+10],visual:wnPartial(a,b),
+    steps:[wnStep(`הכופל ${b} מורכב מ־${tens} ועוד ${ones}.`,`${b} = ${tens} + ${ones}`),
+      wnStep("מכפילים בנפרד ביחידות ובעשרות. ספרת העשרות מייצגת עשרות, לא יחידות.",`${a} × ${ones} = ${a*ones}\n${a} × ${tens} = ${a*tens}`),
+      wnStep(partial?"מכפלת הביניים המבוקשת היא המכפלה בעשרות.":"מחברים את שתי מכפלות הביניים.",partial?`${a} × ${tens} = ${answer}`:`${a*ones} + ${a*tens} = ${answer}`),
+      wnStep(partial?"בודקים בעזרת חילוק בחלק העשרות.":"חילוק המכפלה בכופל מחזיר את המספר הראשון.",`${answer} ÷ ${partial?tens:b} = ${a}`)],
+    audit:{op:partial?"partial":"multiply",a,b}});
+}
+function wnThreeProducts(a,b,solved=false){
+  const parts=[Math.floor(b/100)*100,Math.floor(b/10)%10*10,b%10];
+  return '<table dir="ltr" aria-label="פירוק מכפלה למאות, עשרות ויחידות"><thead><tr><th scope="col">×</th>'+parts.map(p=>'<th scope="col">'+p+"</th>").join("")+'</tr></thead><tbody><tr><th scope="row">'+a+"</th>"+parts.map(p=>"<td>"+(solved?a*p:"?")+"</td>").join("")+"</tr></tbody></table>";
+}
+function wnMultiplyThree(a,b,hundredsTask=false){
+  const hundreds=Math.floor(b/100)*100,tens=Math.floor(b/10)%10*10,ones=b%10,answer=hundredsTask?a*hundreds:a*b;
+  return wnQuestion({prompt:hundredsTask?"בכפל בתלת־ספרתי יש מכפלת ביניים לכל מקום. מה מכפלת הביניים של המאות?":"כפלו תלת־ספרתי בתלת־ספרתי: חשבו מכפלות יחידות, עשרות ומאות וחברו אותן.",
+    expression:`${a} × ${b}`,answer,wrong:[a*Math.floor(b/100),a*(tens+ones),a*b+100],visual:wnThreeProducts(a,b),
+    steps:[wnStep(`מפרקים את הכופל ${b} לפי שלושת ערכי המקום שלו.`,`${b} = ${hundreds} + ${tens} + ${ones}`),
+      wnStep("מכפילים בכל חלק בערכו המלא. ספרת אפס פירושה מכפלת ביניים אפס, לא הזזה של המקומות האחרים.",`${a} × ${ones} = ${a*ones}\n${a} × ${tens} = ${a*tens}\n${a} × ${hundreds} = ${a*hundreds}`),
+      wnStep(hundredsTask?"החלק המבוקש הוא המכפלה במאות, ולכן שומרים על שני מקומות האפס שלה.":"מיישרים את שלוש מכפלות הביניים לפי ערכי המקום ומחברים.",hundredsTask?`${a} × ${hundreds} = ${answer}`:`${a*ones} + ${a*tens} + ${a*hundreds} = ${answer}`),
+      wnStep(hundredsTask?"בודקים שהקטנת חלק המאות פי מאה מקטינה גם את מכפלת הביניים פי מאה.":"בודקים בסדר אחר: מכפילים את הכופל בחלקים של המספר הראשון ומחברים.",hundredsTask?`${answer} ÷ 100 = ${a} × ${hundreds/100}`:`${b} × ${Math.floor(a/100)*100} + ${b} × ${Math.floor(a/10)%10*10} + ${b} × ${a%10} = ${answer}`)],
+    audit:{op:hundredsTask?"partial-three":"multiply-three",a,b}});
+}
+function wnDivisionWork(n,d){
+  const chars=String(n);let value=0,started=false;const chunks=[];
+  for(let i=0;i<chars.length;i++){
+    value=value*10+Number(chars[i]);
+    if(!started&&value<d&&i<chars.length-1)continue;
+    started=true;const digit=Math.floor(value/d),product=digit*d,remainder=value-product;
+    chunks.push(wnStep(`המספר הזמני הוא ${value}. ${digit===0?`הוא קטן מ־${d}, לכן חייבים לכתוב אפס במקום הזה במנה; לא מדלגים על המקום.`:`הספרה הגדולה ביותר המתאימה היא ${digit}: המכפלה שלה אינה עולה על ${value}, והמכפלה הבאה גדולה מדי.`} מחסרים${i<chars.length-1?` ומורידים את הספרה ${chars[i+1]}.`:"; זו השארית הסופית."}`,
+      `${d} × ${digit} = ${product}\n${product} ≤ ${value} < ${d*(digit+1)}\n${value} − ${product} = ${remainder}`));
+    value=remainder;
+  }
+  return chunks;
+}
+function wnDivision(n,d,mode="quotient"){
+  if(mode==="digits"){
+    const digits=String(Math.floor(n/d)).length,lower=10**(digits-1),upper=lower*10;
+    return wnQuestion({prompt:"לפני שמבצעים חילוק ארוך, אומדים: כמה ספרות יהיו במנה השלמה?",expression:`${n} ÷ ${d}`,answer:digits,wrong:[digits-1,digits+1,digits+2],
+      steps:[wnStep(`מחפשים את מספר הספרות במנה של ${n} בחלוקה ל־${d}, ולא את המנה המדויקת.`),
+        wnStep("משווים למכפלות של המחלק בעשר, במאה, באלף וכן הלאה. שתי מכפלות סמוכות קובעות באיזה תחום נמצאת המנה."),
+        wnStep(`המנה היא לפחות ${lower} וקטנה מ־${upper}, ולכן יש בה ${digits} ספרות.`,`${d} × ${lower} = ${d*lower}\n${d} × ${upper} = ${d*upper}\n${d*lower} ≤ ${n} < ${d*upper}`),
+        wnStep("בודקים אחרי החילוק שהמנה בתחום שחזינו; השארית אינה משנה את מספר הספרות במנה השלמה.",`${lower} ≤ ${Math.floor(n/d)} < ${upper}\n${d} × ${Math.floor(n/d)} + ${n%d} = ${n}`)],
+      audit:{op:"division-digits",n,d}});
+  }
+  const quotient=Math.floor(n/d),remainder=n%d,zero=mode==="zero",answer=mode==="remainder"?remainder:zero?0:quotient;
+  const work=wnDivisionWork(n,d);
+  return wnQuestion({prompt:zero?"בחילוק הארוך מופיע שלב שבו המספר הזמני קטן מהמחלק, אחרי שכבר התחלנו לכתוב את המנה. איזו ספרה חייבים לכתוב במקום הזה במנה?":mode==="remainder"?"חלקו במחלק דו־ספרתי. מה השארית בסוף החילוק?":"חלקו בחילוק ארוך במחלק דו־ספרתי. מה המנה השלמה, בלי השארית?",
+    expression:`${n} ÷ ${d}`,answer,wrong:zero?[1,5,9]:mode==="remainder"?[remainder+d,Math.max(0,remainder-1),remainder+1]:[quotient+1,quotient-1,Math.floor(quotient/10)],
+    steps:[wnStep(`מחלקים ${n} לקבוצות של ${d}. מחפשים ${mode==="remainder"?"מה נשאר":zero?"ספרה ששומרת על ערך המקום":"כמה קבוצות שלמות אפשר לקבל"}.`),
+      wnStep("מתחילים בקידומת משמאל שמספיקה לחלוקה. בכל שלב: בוחרים ספרת מנה, כופלים, מחסרים, ומורידים ספרה. אחרי תחילת המנה כותבים גם ספרת אפס."),
+      wnStep(work.map(s=>s.text).join(" "),work.map(s=>s.math).join("\n")),
+      wnStep(`מחלק כפול מנה ועוד שארית מחזירים את המחולק. השארית ${remainder} אינה שלילית וקטנה מ־${d}.`,`${d} × ${quotient} + ${remainder} = ${n}\n0 ≤ ${remainder} < ${d}`)],
+    audit:{op:"division",n,d,mode},divisionTrace:work});
+}
+function wnMissing(a,b,type){
+  let expression,answer,calc,check,method;
+  if(type===0){expression=`□ + ${b} = ${a+b}`;answer=a;method="כדי למצוא מחובר חסר, מחסרים את המחובר הידוע מהסכום.";calc=`${a+b} − ${b} = ${a}`;check=`${a} + ${b} = ${a+b}`;}
+  else if(type===1){expression=`${a+b} − □ = ${a}`;answer=b;method="כשחסר המספר שמחסרים, מחסרים את ההפרש מהמספר ההתחלתי.";calc=`${a+b} − ${a} = ${b}`;check=`${a+b} − ${b} = ${a}`;}
+  else if(type===2){expression=`□ × ${b} = ${a*b}`;answer=a;method="כדי למצוא גורם חסר, מחלקים את המכפלה בגורם הידוע.";calc=`${a*b} ÷ ${b} = ${a}`;check=`${a} × ${b} = ${a*b}`;}
+  else{expression=`${a*b} ÷ □ = ${a}`;answer=b;method="כשהמחלק חסר, מחלקים את המחולק במנה.";calc=`${a*b} ÷ ${a} = ${b}`;check=`${a*b} ÷ ${b} = ${a}`;}
+  return wnQuestion({prompt:"איזה מספר מתאים לריבוע? בחרו פעולה הפוכה לפי המקום של המספר החסר.",expression,answer,wrong:[answer+b,Math.max(0,answer-b),answer*2],
+    steps:[wnStep("הריבוע מייצג מספר אחד, ולא סימן פעולה.",expression),wnStep(method),wnStep("מחשבים את המספר החסר.",calc),wnStep("מציבים במשוואה המקורית ובודקים שוויון.",check)],
+    audit:{op:"missing",a,b,type}});
+}
+function wnOrder(a,b,c,type){
+  let expression,answer,method,calc,check,wrong;
+  if(type===0){expression=`${a} + ${b} × ${c}`;answer=a+b*c;method="כפל קודם לחיבור, גם אם החיבור מופיע משמאל.";calc=`${b} × ${c} = ${b*c}\n${a} + ${b*c} = ${answer}`;check=`${answer} − ${a} = ${b*c}`;wrong=[(a+b)*c,a+b+c];}
+  else if(type===1){expression=`(${a} + ${b}) × ${c}`;answer=(a+b)*c;method="סוגריים קודמים: מחשבים את כל הסכום, ורק אחר כך מכפילים.";calc=`${a} + ${b} = ${a+b}\n${a+b} × ${c} = ${answer}`;check=`${answer} ÷ ${c} = ${a+b}`;wrong=[a+b*c,a+b+c];}
+  else if(type===2){expression=`${a*b} ÷ ${b} × ${c}`;answer=a*c;method="לכפל ולחילוק אותה קדימות. בלי סוגריים מחשבים משמאל לימין.";calc=`${a*b} ÷ ${b} = ${a}\n${a} × ${c} = ${answer}`;check=`${answer} ÷ ${c} × ${b} = ${a*b}`;wrong=[a,a*b*c];}
+  else{expression=`${a+b+c} − ${b} + ${c}`;answer=a+2*c;method="לחיבור ולחיסור אותה קדימות. בלי סוגריים מחשבים משמאל לימין.";calc=`${a+b+c} − ${b} = ${a+c}\n${a+c} + ${c} = ${answer}`;check=`${answer} − ${c} + ${b} = ${a+b+c}`;wrong=[a,a+b+2*c];}
+  return wnQuestion({prompt:"חשבו לפי סדר הפעולות. שימו לב לסוגריים ולפעולות בעלות אותה קדימות.",expression,answer,wrong,
+    steps:[wnStep("מזהים את הפעולות ואת הסוגריים, אם ישנם.",expression),wnStep(method),wnStep("מחליפים תחילה את החלק שמותר לחשב בתוצאתו.",calc),wnStep("הופכים את סדר צעדי החישוב ובודקים.",check)],audit:{op:"order",a,b,c,type}});
+}
+function wnDistribute(a,b,c,type){
+  const subtract=type===1,group=subtract?b-c:b+c,answer=type===2?a*c:a*group,sign=subtract?"−":"+";
+  return wnQuestion({prompt:type===2?"מצאו את הטעות: תלמיד כפל רק את האיבר הראשון שבסוגריים. איזו מכפלה נוספת צריך לחבר כדי לתקן?":"חשבו בעזרת חוק הפילוג: מכפילים כל אחד מהאיברים שבסוגריים.",
+    expression:`${a} × (${b} ${sign} ${c})`,answer,wrong:[a*b+c,a*b,a*c+1],
+    steps:[wnStep(`יש ${a} קבוצות, ובכל קבוצה ${subtract?"הפרש":"סכום"} של שני חלקים.`),
+      wnStep("אותו גורם חיצוני מכפיל את שני האיברים. שומרים על סימן החיבור או החיסור.",`${a} × (${b} ${sign} ${c}) = ${a} × ${b} ${sign} ${a} × ${c}`),
+      wnStep(type===2?"המכפלה שנשכחה היא הגורם החיצוני כפול האיבר השני.":"מחשבים כל מכפלה ואחר כך את הסכום או ההפרש.",type===2?`${a} × ${c} = ${answer}`:`${a*b} ${sign} ${a*c} = ${answer}`),
+      wnStep("בודקים בדרך אחרת: מחשבים תחילה את הסוגריים.",`${b} ${sign} ${c} = ${group}\n${a} × ${group} = ${a*group}`)],
+    audit:{op:"distribute",a,b,c,type}});
+}
+function wnStory(price,groups,extra,type){
+  let prompt,answer,expression,method,calc,check,unit,audit;
+  if(type===0){
+    const leftover=150+(price*3+groups*11)%217,budget=price*groups+extra+leftover;
+    prompt=`למועדון יש ${budget} שקלים. קונים ${groups} ערכות יצירה, כל אחת ב־${price} שקלים, ומשלמים עוד ${extra} שקלים למשלוח. כמה כסף יישאר?`;
+    answer=leftover;expression=`${budget} − (${groups} × ${price} + ${extra})`;method="מחשבים את מחיר כל הערכות, מוסיפים משלוח, ולבסוף מחסרים מהתקציב.";
+    calc=`${groups} × ${price} = ${groups*price}\n${groups*price} + ${extra} = ${groups*price+extra}\n${budget} − ${groups*price+extra} = ${answer}`;
+    check=`${answer} + ${groups*price+extra} = ${budget}`;unit="שקלים";audit={op:"purchase",budget,price,groups,extra};
+  }else if(type===1){
+    const people=groups,total=people*price+extra;
+    prompt=`להכנת ערכות מחלקים ${total} חרוזים. שומרים ${extra} חרוזים לתיקונים ואת השאר מחלקים שווה בשווה ל־${people} ילדים. כמה חרוזים יקבל כל ילד?`;
+    answer=price;expression=`(${total} − ${extra}) ÷ ${people}`;method="מסירים תחילה את החרוזים ששומרים, ורק את השאר מחלקים.";
+    calc=`${total} − ${extra} = ${people*price}\n${people*price} ÷ ${people} = ${answer}`;
+    check=`${answer} × ${people} + ${extra} = ${total}`;unit="חרוזים לכל ילד";audit={op:"share",total,extra,people};
+  }else{
+    const sold=groups*price-extra,unitPrice=3+groups%5;
+    prompt=`בדוכן הכינו ${groups} מגשים, בכל מגש ${price} עוגיות. נשארו ${extra} עוגיות שלא נמכרו. כל עוגייה שנמכרה עלתה ${unitPrice} שקלים. מה ההכנסה מהמכירה?`;
+    answer=sold*unitPrice;expression=`(${groups} × ${price} − ${extra}) × ${unitPrice}`;method="מוצאים כמה עוגיות הוכנו, מחסרים את מה שנשאר, ורק את מספר העוגיות שנמכרו מכפילים במחיר.";
+    calc=`${groups} × ${price} = ${groups*price}\n${groups*price} − ${extra} = ${sold}\n${sold} × ${unitPrice} = ${answer}`;
+    check=`${answer} ÷ ${unitPrice} + ${extra} = ${groups*price}`;unit="שקלים";audit={op:"sales",price,groups,extra,unitPrice};
+  }
+  return wnQuestion({prompt,answer,wrong:[answer+extra,answer+groups,Math.max(0,answer-extra)],unit,
+    steps:[wnStep("מסמנים מה ידוע ומה מבקשים; לא מחברים מספרים רק מפני שהם מופיעים בסיפור."),wnStep(method,expression),wnStep("מחשבים שלב אחר שלב, עם משמעות לכל תוצאה.",calc),wnStep("משחזרים את הכמות ההתחלתית בעזרת הפעולות ההפוכות.",check)],audit});
+}
+function wnRemainder(n,d,type){
+  const q=Math.floor(n/d),r=n%d;
+  let prompt,answer,method,unit;
+  if(type===0){prompt=`${n} מטיילים יוצאים לסיור. בכל מיניבוס מקום ל־${d} מטיילים. מה המספר הקטן ביותר של מיניבוסים שצריך להזמין כדי שכולם ייסעו?`;answer=q+(r>0?1:0);method=r?"השארית מייצגת מטיילים שעדיין צריכים מקום, לכן מזמינים עוד מיניבוס.":"אין שארית: כל המטיילים נכנסים למיניבוסים המלאים.";unit="מיניבוסים";}
+  else if(type===1){prompt=`יש ${n} מדבקות. בכל חבילת פרס חייבות להיות בדיוק ${d} מדבקות. כמה חבילות מלאות אפשר להכין?`;answer=q;method="חבילה חלקית אינה נחשבת חבילה מלאה, ולכן התשובה היא המנה השלמה.";unit="חבילות מלאות";}
+  else{prompt=`אורזים ${n} תפוזים בארגזים של ${d} תפוזים. כמה תפוזים יישארו אחרי מילוי כל הארגזים המלאים?`;answer=r;method="מבקשים מה לא נארז בארגז מלא, לכן התשובה היא השארית ולא המנה.";unit="תפוזים";}
+  const capacity=answer*d;
+  return wnQuestion({prompt,answer,wrong:[q,q+1,r,r+d],unit,
+    steps:[wnStep(`מחלקים את הכמות ${n} לקבוצות בגודל ${d}. צריך להחליט מה משמעות השארית בסיפור.`,`${n} ÷ ${d}`),
+      wnStep(method),
+      wnStep(`מקבלים ${q} קבוצות מלאות ושארית ${r}.`,`${n} = ${d} × ${q} + ${r}`),
+      wnStep(type===0?"בודקים שמספיק מקום ושמיניבוס אחד פחות אינו מספיק.":"בודקים שהקבוצות המלאות והשארית מחזירות את הכמות המקורית, והשארית קטנה מקבוצה.",type===0?`${capacity} ≥ ${n}\n${(answer-1)*d} < ${n}`:`${d} × ${q} + ${r} = ${n}\n0 ≤ ${r} < ${d}`)],
+    audit:{op:"remainder-story",n,d,type}});
+}
+function wnSequence(a,d,type){
+  let prompt,expression,answer,method,calculation,check,wrong;
+  if(type===0){
+    prompt=`בכל שלב של בניית דגם מוסיפים ${d} קוביות. לפי כלל זה, כמה קוביות יהיו בשלב הרביעי?`;
+    expression=`${a} ; ${a+d} ; ${a+2*d} ; □`;answer=a+3*d;
+    method=`התוספת קבועה: בכל מעבר מוסיפים ${d}. אל השלב הרביעי מגיעים אחרי שלוש תוספות, לא ארבע.`;
+    calculation=`${a} + ${d} = ${a+d}\n${a+d} + ${d} = ${a+2*d}\n${a+2*d} + ${d} = ${answer}`;
+    check=`${answer} − ${a} = ${3*d}\n${3*d} ÷ ${d} = 3`;wrong=[a+2*d,a+4*d,3*d];
+  }else if(type===1){
+    prompt="הכלל בבניית הדגם הוא להכפיל את מספר הקוביות פי שניים בכל שלב. כמה קוביות יהיו בשלב החמישי?";
+    expression=`${a} ; ${a*2} ; ${a*4} ; ${a*8} ; □`;answer=a*16;
+    method="מכפילים את הכמות הקודמת פי שניים; לא מוסיפים בכל פעם את הכמות של השלב הראשון.";
+    calculation=`${a} × 2 = ${a*2}\n${a*2} × 2 = ${a*4}\n${a*4} × 2 = ${a*8}\n${a*8} × 2 = ${answer}`;
+    check=`${answer} ÷ 2 = ${a*8}`;wrong=[a*8+a,a*10,a*32];
+  }else if(type===2){
+    const b=a+d,c=b+d+2,last=c+d+4;answer=last+d+6;
+    prompt=`ברצף הזה התוספת הראשונה היא ${d}, וכל תוספת חדשה גדולה בשתיים מהקודמת. מה האיבר הבא לפי הכלל הזה?`;
+    expression=`${a} ; ${b} ; ${c} ; ${last} ; □`;
+    method=`התוספות שכבר נעשו הן ${d}, ${d+2} ו־${d+4}. עכשיו מוסיפים ${d+6}. אין כאן תוספת קבועה.`;
+    calculation=`${b} − ${a} = ${d}\n${c} − ${b} = ${d+2}\n${last} − ${c} = ${d+4}\n${last} + ${d+6} = ${answer}`;
+    check=`${answer} − ${last} = ${d+6}\n${d+6} − ${d+4} = 2`;wrong=[last+d,last+d+4,last*2];
+  }else{
+    prompt="הכלל הוא הכפלה פי שניים בכל מעבר, אבל האיבר השלישי הוקלד בטעות. איזה מספר צריך להופיע במקומו?";
+    expression=`${a} ; ${a*2} ; ${a*4+1} ; ${a*8}`;answer=a*4;
+    method="מגיעים למקום השלישי מן האיבר השני על ידי הכפלה פי שניים. אחר כך בודקים שהאיבר הרביעי מתאים.";
+    calculation=`${a*2} × 2 = ${answer}`;
+    check=`${answer} × 2 = ${a*8}\n${a*8} ÷ 2 = ${answer}`;wrong=[a*4+1,a*2+2,a*8];
+  }
+  return wnQuestion({prompt,expression,answer,wrong,
+    steps:[wnStep("קוראים את הכלל שניתן ואת המקום המבוקש. מספרים בודדים לבדם יכולים להתאים ליותר מכלל אחד.",expression),
+      wnStep(method),wnStep("מפעילים את הכלל בדיוק במקום הנחוץ.",calculation),
+      wnStep("בודקים את ההפרש או הופכים את פעולת המעבר, ובודקים התאמה למקום הקודם או הבא.",check)],
+    audit:{op:"sequence",a,d,type}});
+}
+function buildCourse(){
+  const skills=[
+    {id:"place-value",title:"ערכי מקום ופירוק מספרים",scope:"review",
+      goal:"קוראים מספרים, מפרקים אותם ומבדילים בין ספרה לערכה.",
+      why:"במבנה העשרוני כל מקום גדול פי עשרה מהמקום שמימינו. אפס שומר מקום גם כשאין בו יחידות.",
+      rule:"כדי למצוא ערך של ספרה, מכפילים אותה בערך המקום. בפירוק המספר סכום כל החלקים נשאר המספר השלם.",
+      example:[wnStep("קוראים את המספר משמאל לימין, אך שמות העמודות נקבעים מן היחידות.", "4073052"),
+        wnStep("הספרה שבע נמצאת בעשרות האלפים, ולכן ערכה אינו שבע.", "7 × 10000 = 70000"),
+        wnStep("מפרקים לפי המקומות שאינם ריקים; האפסים שומרים את מאות האלפים ואת המאות ריקים.", "4073052 = 4000000 + 70000 + 3000 + 50 + 2"),
+        wnStep("מחברים את החלקים ובודקים שהספרות חוזרות לעמודות הנכונות.", "4000000 + 70000 + 3000 + 50 + 2 = 4073052")],
+      visual:wnPlaceTable(4073052),mistake:{text:"מבלבלים בין הספרה שבע לבין הערך שלה.",math:"7 ≠ 70000",fix:"שם העמודה קובע בכמה יש להכפיל את הספרה."},
+      guided:()=>wnPlace(6052048,4,true),count:24,
+      build:seed=>wnPlace(2304051+seed*27139,[1,2,3,4,5,6][seed%6],seed%2===1)},
+    {id:"compare",title:"השוואה: המקום הראשון ששונה",scope:"review",
+      goal:"מסבירים איזה מספר גדול יותר בעזרת ערכי המקום, ולא לפי הספרה האחרונה.",
+      why:"מקום גבוה אחד שווה יותר מכל מה שאפשר לקבל במקומות הנמוכים ממנו יחד.",
+      rule:"במספרים טבעיים בכתיבה הרגילה משווים תחילה את מספר הספרות. כשמספר הספרות שווה, מחפשים משמאל את הספרה הראשונה ששונה.",
+      example:[wnStep("לשני המספרים שש ספרות.", "582094 ; 579999"),
+        wnStep("ספרת מאות האלפים זהה. בעשרות האלפים שמונה גדולה משבע.", "80000 > 70000"),
+        wnStep("אין צורך להשוות עוד את היחידות: המקום הגבוה כבר הכריע.", "582094 > 579999"),
+        wnStep("בדיקת הפרש מאשרת שהראשון גדול יותר.", "582094 − 579999 = 2095")],
+      mistake:{text:"רואים הרבה תשיעיות במספר השני ומחליטים שהוא גדול יותר.",fix:"מתחילים תמיד במקום הגבוה ביותר, לא בספירת הספרות הגדולות."},
+      guided:()=>wnCompare(700008,699998),count:24,
+      build:seed=>{const a=410203+seed*17231;return wnCompare(a,seed%4===0?a:seed%4===1?a+1000:seed%4===2?a-99:a+7);}},
+    {id:"rounding",title:"עיגול על ישר המספרים",scope:"review",
+      goal:"מוצאים שתי כפולות שכנות ובוחרים את הקרובה, כולל מקרה אמצע.",
+      why:"עיגול מחליף מספר במספר סמוך ונוח. בדיוק באמצע שתי הכפולות קרובות באותה מידה, ולכן דרוש כלל מוסכם לבחירה.",
+      rule:"מוצאים את הכפולה שמתחת ואת הכפולה שמעל ובוחרים את הקרובה. בקורס זה בוחרים מוסכמה: כששני המרחקים שווים, מעגלים כלפי מעלה.",
+      example:[wnStep("מעגלים את המספר למאות.", "34750"),
+        wnStep("מאתרים שתי מאות שכנות ואת האמצע שלהן.", "34700 < 34750 < 34800\n34700 + 50 = 34750"),
+        wnStep("המספר בדיוק באמצע; כלל האמצע מפנה כלפי מעלה.", "34750 ≈ 34800"),
+        wnStep("התוצאה מרוחקת חמישים בלבד והיא כפולה של מאה.", "34800 − 34750 = 50")],
+      mistake:{text:"מוחקים את הספרות הימניות תמיד, גם כשהמספר קרוב יותר לכפולה העליונה.",fix:"מחיקה לבדה מעגלת רק למטה. משווים לאמצע לפני שבוחרים."},
+      guided:()=>wnRound(68540,1000),count:24,
+      build:seed=>{const base=[10,100,1000,10000][seed%4],low=(13+seed)*base;return wnRound(low+[base/2-1,base/2,base/2+1][Math.floor(seed/4)%3],base);}},
+    {id:"estimation",title:"אומדן: מתכננים ובודקים סבירות",scope:"core",
+      goal:"מבצעים אומדן לפי עיגול מוסכם ומבחינים בינו לבין תשובה מדויקת.",
+      why:"מספרים מעוגלים מאפשרים לחשב במהירות ולגלות תוצאה לא סבירה, אך אינם שומרים תמיד על הסכום או על המכפלה המדויקים.",
+      rule:"אומרים לאיזה מקום מעגלים כל מספר. בחצי הדרך שתי האפשרויות קרובות באותה מידה; בקורס זה בוחרים לעגל למעלה. מעגלים תחילה, מחשבים אחר כך, ומשתמשים בסימן קירוב ולא בסימן שוויון.",
+      example:[wnStep("רוצים לאמוד סכום עלויות בעזרת עיגול כל מחיר למאות.", "247 + 368"),
+        wnStep("מעגלים כל מחיר בנפרד.", "247 ≈ 200\n368 ≈ 400"),
+        wnStep("מחברים את המספרים הנוחים.", "200 + 400 = 600"),
+        wnStep("הסכום המדויק קרוב לאומדן, אבל לתשלום נשתמש בו ולא באומדן.", "247 + 368 = 615\n615 − 600 = 15")],
+      mistake:{text:"כותבים שהאומדן שווה בדיוק לתרגיל המקורי.",fix:"אומדן הוא קירוב. בשאלה על אומדן לפי שיטה מסוימת לא מחליפים אותו בתוצאה המדויקת."},
+      guided:()=>wnEstimate(63,28,10,true),count:24,
+      build:seed=>seed%2?wnEstimate(32+seed*3,24+seed,10,true):wnEstimate(243+seed*37,368+seed*21,100)},
+    {id:"written-addition",title:"חיבור מאונך עם העברה",scope:"core",
+      goal:"מיישרים מקומות, מחברים שניים או שלושה מחוברים ומעבירים עשרות בלי לאבד אותן.",
+      why:"עשר יחידות הן עשרת, ועשר עשרות הן מאה. ההעברה משנה את הייצוג, לא את הסכום.",
+      rule:"כותבים יחידות מתחת ליחידות. מחברים את כל הספרות בעמודה וגם את ההעברה. בשלושה מחוברים ייתכן שנעביר שתי עשרות, ולא רק אחת.",
+      example:[wnStep("מיישרים את שני המספרים לפי היחידות.", "2687 + 1756"),
+        wnStep("ביחידות מקבלים שלוש עשרה: כותבים שלוש ומעבירים עשרת.", "7 + 6 = 13"),
+        wnStep("בעשרות כוללים את ההעברה; כך גם במאות.", "8 + 5 + 1 = 14\n6 + 7 + 1 = 14"),
+        wnStep("באלפים כוללים את ההעברה האחרונה ומקבלים את הסכום.", "2 + 1 + 1 = 4\n2687 + 1756 = 4443"),
+        wnStep("בודקים בפעולה ההפוכה.", "4443 − 1756 = 2687"),
+        wnStep("כעת מוסיפים מחובר שלישי: שמונה מאות חמישים ותשע. ביחידות מקבלים עשרים ושתיים ומעבירים שתיים; גם בעמודות הבאות כוללים את כל שלוש הספרות.", "7 + 6 + 9 = 22\n8 + 5 + 5 + 2 = 20\n6 + 7 + 8 + 2 = 23\n2 + 1 + 0 + 2 = 5"),
+        wnStep("מרכיבים את הסכום של שלושת המחוברים ובודקים על ידי הסרת שניים מהם.", "2687 + 1756 + 859 = 5302\n5302 − 859 − 1756 = 2687")],
+      visual:wnColumn(2687,1756,"+",4443)+wnColumns([2687,1756,859],"+",5302),mistake:{text:"כותבים את ספרת היחידות של הסכום בכל עמודה, ושוכחים את ההעברה.",fix:"מסמנים את ההעברה מעל העמודה הבאה ומצרפים אותה לכל הספרות."},
+      guided:()=>wnAdd(4857,2678),count:24,
+      build:seed=>{const a=2387+seed*137+(seed>=20?120000:0),b=1658+seed*89+(seed>=20?280000:0);return seed%6===4?wnAddThree(a,b,928+seed*73):wnAdd(a,b,seed%4===3);}},
+    {id:"written-subtraction",title:"חיסור מאונך ופריטה דרך אפסים",scope:"core",
+      goal:"פורטים ערכי מקום, גם כשצריך לעבור דרך עמודות אפס.",
+      why:"אלף אחד הוא עשר מאות. אפשר לפרוט מאה לעשר עשרות ועשרת לעשר יחידות, בלי לשנות את המספר ההתחלתי.",
+      rule:"כשאין מספיק יחידות בעמודה, פורטים מהמקום הראשון משמאל שבו יש משהו לפרוט. מעדכנים כל עמודה בדרך ושומרים על סדר החיסור.",
+      example:[wnStep("מחסרים מהמספר הראשון, לא מהספרה הגדולה בכל עמודה.", "5002 − 1786"),
+        wnStep("פורטים אלף דרך מאות ועשרות. נשארים ארבעה אלפים, תשע מאות, תשע עשרות ושתים עשרה יחידות.", "5002 = 4000 + 900 + 90 + 12"),
+        wnStep("כעת בכל מקום יש מספיק כדי להסיר את הספרה התחתונה.", "12 − 6 = 6\n9 − 8 = 1\n9 − 7 = 2\n4 − 1 = 3"),
+        wnStep("מרכיבים את ההפרש ובודקים בחיבור.", "5002 − 1786 = 3216\n3216 + 1786 = 5002")],
+      visual:wnColumn(5002,1786,"−",3216),mistake:{text:"ביחידות מחשבים שש פחות שתיים במקום שתיים פחות שש.",fix:"אין להחליף את סדר המספרים. פורטים ואז מחסרים."},
+      guided:()=>wnSubtract(7004,2867),count:24,
+      build:seed=>wnSubtract(6002+seed*1000,1786+seed*127,seed%4===3)},
+    {id:"two-digit-multiplication",title:"כפל בדו־ספרתי: שתי מכפלות ביניים",scope:"core",
+      goal:"מחברים מכפלה ביחידות ומכפלה בעשרות, ומבינים את תפקיד האפס בשורה השנייה.",
+      why:"אפשר לפרק את מספר הקבוצות לעשרות וליחידות, לחשב כל חלק בנפרד, ולחבר את התוצאות.",
+      rule:"בכפל בעשרות מכפילים בערך המלא של ספרת העשרות. למשל שתי עשרות הן עשרים, לא שתיים.",
+      example:[wnStep("מפרקים את הכופל לעשרים וארבע.", "326 × 24 = 326 × (20 + 4)"),
+        wnStep("מחשבים את מכפלת היחידות ואת מכפלת העשרות בנפרד.", "326 × 4 = 1304\n326 × 20 = 6520"),
+        wnStep("מסדרים את מכפלות הביניים לפי ערכי המקום ומחברים.", "1304 + 6520 = 7824"),
+        wnStep("חילוק בכופל מחזיר את הגורם הראשון.", "7824 ÷ 24 = 326")],
+      visual:wnPartial(326,24,true),mistake:{text:"בשורה השנייה מכפילים בשתיים במקום בעשרים.",math:"326 × 2 = 652",fix:"זוהי מכפלה נכונה בשתיים, אבל בשאלה יש שתי עשרות; לכן מכפלת הביניים היא 6520."},
+      guided:()=>wnMultiply(247,36),count:24,
+      build:seed=>wnMultiply(123+seed*29+(seed>=20?1000:0),12+(seed*7)%87,seed%4===3)},
+    {id:"three-digit-multiplication",title:"כפל בתלת־ספרתי: גם למאות יש שורה",scope:"core",
+      goal:"מרחיבים את הכפל לשלוש מכפלות ביניים, כולל כופל שיש בו ספרת אפס.",
+      why:"אותו חוק פילוג שפעל בעשרות וביחידות פועל גם במאות. אין אלגוריתם חדש: מוסיפים את החלק של המאות וממשיכים לשמור על ערכי המקום.",
+      rule:"מומלץ להגיע לכאן אחרי הכפל בדו־ספרתי. מפרקים את הכופל למאות, לעשרות וליחידות; מכפילים בכל חלק בערכו המלא, מיישרים ומחברים.",
+      example:[wnStep("מפרקים את הכופל לשלושה חלקים.", "237 × 124 = 237 × (100 + 20 + 4)"),
+        wnStep("מכפלת היחידות נשארת במקומה; מכפלת העשרות היא כפל בעשרים, לא בשתיים.", "237 × 4 = 948\n237 × 20 = 4740"),
+        wnStep("מכפלת המאות היא כפל במאה. שני אפסים שומרים על המקומות.", "237 × 100 = 23700"),
+        wnStep("מחברים את שלוש מכפלות הביניים במקומות המתאימים.", "948 + 4740 + 23700 = 29388"),
+        wnStep("בודקים בפירוק המספר הראשון במקום השני.", "124 × 200 + 124 × 30 + 124 × 7 = 24800 + 3720 + 868 = 29388")],
+      visual:wnThreeProducts(237,124,true),
+      mistake:{text:"ספרת מאות אחת בכופל נחשבת בטעות ליחידה אחת.",math:"237 × 1 = 237",fix:"כאן הספרה אחת נמצאת במאות, ולכן מכפלת הביניים היא 23700. מיקום הספרה קובע את ערכה."},
+      guided:()=>wnMultiplyThree(248,306),count:24,
+      build:seed=>wnMultiplyThree(134+seed*17,203+seed*23,seed%4===3)},
+    {id:"long-division",title:"חילוק ארוך במחלק דו־ספרתי",scope:"core",
+      goal:"אומדים כמה ספרות יהיו במנה, ואז בוחרים ספרות בעזרת מכפלות, מחסרים ומורידים.",
+      why:"בכל שלב מחלקים כמות זמנית. השארית נשארת קטנה מהמחלק, והורדת הספרה הבאה מחליפה אותה בכמות בערך מקום נמוך יותר.",
+      rule:"בוחרים את הספרה הגדולה ביותר שמכפלתה במחלק אינה עולה על הכמות הזמנית. בכל מקום כותבים ספרה אחת בלבד.",
+      example:[wnStep("המחלק הוא עשרים וארבע. חמש קטן ממנו, לכן מתחילים בחמישים ושבע.", "576 ÷ 24"),
+        wnStep("לפני החישוב אומדים: המנה לפחות עשר וקטנה ממאה, ולכן יהיו בה שתי ספרות.", "24 × 10 = 240\n24 × 100 = 2400\n240 ≤ 576 < 2400"),
+        wnStep("שתי קבוצות מתאימות לקידומת; שלוש גדולות מדי. כותבים שתיים במקום העשרות במנה.", "24 × 2 = 48\n48 ≤ 57 < 72\n57 − 48 = 9"),
+        wnStep("מורידים את הספרה שש, ומקבלים תשעים ושש. כותבים ארבע במקום היחידות.", "9 × 10 + 6 = 96\n24 × 4 = 96\n96 − 96 = 0"),
+        wnStep("המנה מורכבת משתי עשרות וארבע יחידות. בודקים בכפל.", "576 ÷ 24 = 24\n24 × 24 = 576")],
+      mistake:{text:"בוחרים ספרת מנה לפי ניחוש בלי לבדוק שהמכפלה אינה גדולה מהכמות הזמנית.",fix:"בודקים שתי מכפלות סמוכות: הנבחרת מתאימה, והבאה כבר גדולה מדי."},
+      guided:()=>wnDivision(936,24),count:24,
+      build:seed=>{const d=12+(seed*7)%77,q=23+seed*13;return wnDivision(d*q,d,seed%4===3?"digits":"quotient");}},
+    {id:"division-zero-remainder",title:"אפס במנה ושארית קטנה מהמחלק",scope:"core",
+      goal:"שומרים מקום בעזרת אפס במנה ובודקים את השארית בסוף החילוק.",
+      why:"אם אחרי תחילת המנה כמות זמנית קטנה מהמחלק, יש אפס קבוצות בערך המקום הזה. דילוג על האפס משנה את המנה כולה.",
+      rule:"אין מדלגים על ספרת מנה פנימית או אחרונה. בסוף חייבים לקבל: מחלק כפול מנה ועוד שארית שווה למחולק, והשארית קטנה מהמחלק.",
+      example:[wnStep("מחלקים ומתחילים בקידומת שלושים ושבע.", "3707 ÷ 18"),
+        wnStep("כותבים שתיים במאות המנה, מחסרים שלושים ושש ומורידים את הספרה אפס.", "18 × 2 = 36\n37 − 36 = 1\n1 × 10 + 0 = 10"),
+        wnStep("עשר קטן משמונה עשרה: כותבים אפס בעשרות המנה! מחסרים אפס ומורידים שבע.", "10 < 18\n18 × 0 = 0\n10 × 10 + 7 = 107"),
+        wnStep("חמש קבוצות מתאימות; שש גדולות מדי. כותבים חמש ביחידות ונשארות שבע עשרה.", "18 × 5 = 90\n90 ≤ 107 < 108\n107 − 90 = 17"),
+        wnStep("המנה היא מאתיים וחמש, לא עשרים וחמש. השארית שבע עשרה תקינה.", "18 × 205 + 17 = 3707\n0 ≤ 17 < 18")],
+      mistake:{text:"משמיטים את האפס במנה ומקבלים עשרים וחמש במקום מאתיים וחמש.",fix:"האפס אומר שאין עשרות במנה. כתיבתו חיונית כדי לשמור על מאות ועל יחידות במקומות הנכונים."},
+      guided:()=>wnDivision(4897,24,"remainder"),count:24,
+      build:seed=>{const d=12+(seed*5)%77,q=(2+Math.floor(seed/8))*100+(seed%8),r=(seed*3+1)%d;return wnDivision(d*q+r,d,["quotient","remainder","zero"][seed%3]);}},
+    {id:"missing-operand",title:"פעולות הפוכות ומספר חסר",scope:"core",
+      goal:"משלימים מחובר, מחסר, גורם או מחלק חסר בעזרת הקשר בין פעולות.",
+      why:"חיבור וחיסור מבטלים זה את זה. כפל וחילוק במספר שאינו אפס מבטלים זה את זה, אבל מקום המספר החסר משנה את הדרך.",
+      rule:"קוראים מהו תפקיד הריבוע, בוחרים פעולה הפוכה ואז מציבים חזרה. לא מחליפים אוטומטית כל סימן בסימן אחר.",
+      example:[wnStep("מחפשים כמה הוסר כדי לעבור מהכמות ההתחלתית להפרש הנתון.", "840 − □ = 275"),
+        wnStep("הכמות שהוסרה היא המרחק בין שני המספרים.", "840 − 275 = 565"),
+        wnStep("מציבים את התוצאה במקום הריבוע.", "840 − 565 = 275"),
+        wnStep("גם חיבור הכמות שהוסרה והכמות שנותרה מחזיר את ההתחלה.", "565 + 275 = 840")],
+      mistake:{text:"בתרגיל עם מחסר חסר מחברים את שני המספרים הנתונים.",fix:"המחסר הוא רק החלק שהוסר, לא סכום ההתחלה והשארית. מציבים במשוואה כדי לגלות את הטעות."},
+      guided:()=>wnMissing(42,18,3),count:24,
+      build:seed=>wnMissing(125+seed*17,12+(seed*3)%57,seed%4)},
+    {id:"order-operations",title:"סדר פעולות וסוגריים",scope:"core",
+      goal:"מחשבים ביטויים בכמה פעולות ומסבירים מתי לסדר משמאל לימין יש חשיבות.",
+      why:"כללי סדר הפעולות מאפשרים לכולם לקרוא ביטוי באותה משמעות. הסוגריים מאפשרים לקבוע שקבוצה של פעולות תיעשה קודם.",
+      rule:"סוגריים תחילה; כפל וחילוק אחר כך משמאל לימין; חיבור וחיסור בסוף משמאל לימין. לכפל אין קדימות על חילוק.",
+      example:[wnStep("בשורה הראשונה הכפל קודם; בשנייה הסוגריים קודמים.", "18 + 6 × 4\n(18 + 6) × 4"),
+        wnStep("ללא סוגריים מחשבים רק את המכפלה תחילה.", "6 × 4 = 24\n18 + 24 = 42"),
+        wnStep("עם סוגריים מחשבים את הסכום כולו תחילה.", "18 + 6 = 24\n24 × 4 = 96"),
+        wnStep("בכפל ובחילוק פועלים משמאל לימין.", "48 ÷ 6 × 2 = 8 × 2 = 16"),
+        wnStep("הבדיקה הופכת את צעדי החישוב.", "16 ÷ 2 × 6 = 48")],
+      mistake:{text:"מכפילים תמיד לפני חילוק, גם כשהחילוק מופיע ראשון.",fix:"לכפל ולחילוק קדימות שווה. בלי סוגריים מחשבים אותם לפי הסדר משמאל לימין."},
+      guided:()=>wnOrder(36,12,5,2),count:24,
+      build:seed=>wnOrder(21+seed*3,4+seed%9,2+seed%7,seed%4)},
+    {id:"distribution",title:"חוק הפילוג: פירוק ותיקון טעות",scope:"core",
+      goal:"מפרקים כפל על סכום או על הפרש ומוודאים שכל איבר מוכפל.",
+      why:"כשבכל קבוצה יש שני חלקים, מספר הקבוצות מכפיל כל חלק. מחברים או מחסרים את סך החלקים כדי לקבל את השלם.",
+      rule:"הגורם שמחוץ לסוגריים מכפיל כל איבר בתוכם. סימן הפעולה שבין האיברים נשאר.",
+      example:[wnStep("מפרקים עשרים ושמונה לשלושים פחות שתיים כדי לחשב בנוחות.", "16 × 28 = 16 × (30 − 2)"),
+        wnStep("כופלים גם בשלושים וגם בשתיים; שומרים על סימן החיסור.", "16 × (30 − 2) = 16 × 30 − 16 × 2"),
+        wnStep("מחסרים את המכפלה הקטנה מן הגדולה.", "480 − 32 = 448"),
+        wnStep("בודקים באמצעות פירוק אחר.", "16 × 20 + 16 × 8 = 320 + 128 = 448")],
+      mistake:{text:"כופלים רק באיבר הראשון ומשאירים את השני בלי כפל.",math:"16 × 30 − 2 = 478",fix:"הביטוי הזה אינו שקול לתרגיל. צריך להסיר שש עשרה קבוצות של שתיים, ולא רק שתיים."},
+      guided:()=>wnDistribute(14,20,7,2),count:24,
+      build:seed=>wnDistribute(12+seed,30+seed*2,2+seed%8,seed%3)},
+    {id:"multi-step-stories",title:"בעיות מילוליות בשניים ובשלושה שלבים",scope:"core",
+      goal:"מתרגמים סיפור לרצף פעולות, מסבירים תוצאות ביניים ובודקים את ההקשר.",
+      why:"כל שלב עונה על שאלה קטנה שנחוצה לשלב הבא. בחירת הפעולות נקבעת לפי הקשר, לא לפי מילה בודדת.",
+      rule:"שואלים מה צריך לדעת קודם. רושמים מה מייצגת כל תוצאת ביניים ומוודאים שהתשובה עונה על השאלה הסופית.",
+      example:[wnStep("יש תקציב של אלף שקלים. קונים שמונה ערכות במחיר שבעים וחמישה שקלים ומשלמים ארבעים למשלוח. מחפשים כסף שנשאר.", "1000 ; 8 ; 75 ; 40"),
+        wnStep("תחילה מחשבים את עלות כל הערכות.", "8 × 75 = 600"),
+        wnStep("מצרפים את עלות המשלוח ואז מסירים את ההוצאה מהתקציב.", "600 + 40 = 640\n1000 − 640 = 360"),
+        wnStep("נשארו שלוש מאות ושישים שקלים. ההוצאה והיתרה יחד מחזירות את התקציב.", "640 + 360 = 1000")],
+      mistake:{text:"מכפילים גם את מחיר המשלוח במספר הערכות.",fix:"בסיפור המשלוח משולם פעם אחת על הקנייה כולה. מוסיפים אותו רק אחרי שמחשבים את עלות הערכות."},
+      guided:()=>wnStory(37,14,28,2),count:24,
+      build:seed=>wnStory(21+seed*3,12+seed%13,17+seed*2,seed%3)},
+    {id:"meaning-of-remainder",title:"מה עושים בשארית? תלוי בסיפור",scope:"core",
+      goal:"מבחינים בין מספר קבוצות מלאות, הכמות שנשארה ומספר הכלים הדרוש לכולם.",
+      why:"אותו חילוק יכול לענות על שאלות שונות: קבוצה מלאה אינה חצי קבוצה, אבל גם אדם יחיד שנשאר צריך מקום לנסוע.",
+      rule:"לא מעגלים אוטומטית. קוראים אם מבקשים מנה, שארית, או עוד כלי כדי להכיל גם את מה שנשאר.",
+      example:[wnStep("מחלקים מאה חמישים ושבעה פריטים לקבוצות של עשרים וארבעה.", "157 ÷ 24"),
+        wnStep("יש שש קבוצות מלאות ועוד שלושה עשר פריטים.", "24 × 6 = 144\n157 − 144 = 13"),
+        wnStep("לאריזות מלאות התשובה היא שש; לשאלה מה נשאר התשובה שלוש עשרה. להסעת כל המטיילים צריך שבעה כלי רכב.", "6 + 1 = 7"),
+        wnStep("שבעה כלי רכב מספיקים ושישה אינם מספיקים.", "24 × 7 = 168\n144 < 157 ≤ 168"),
+        wnStep("השארית קטנה מהמחלק והחילוק משחזר את הכמות.", "24 × 6 + 13 = 157\n13 < 24")],
+      mistake:{text:"תמיד מוסיפים אחד למנה בכל פעם שיש שארית.",fix:"מוסיפים כלי רק כשצריך להכיל את כולם. כשמבקשים קבוצות מלאות, השארית אינה יוצרת עוד קבוצה מלאה."},
+      guided:()=>wnRemainder(269,32,0),count:24,
+      build:seed=>{const d=12+(seed*7)%67,q=8+seed,r=seed%4===0?0:1+(seed*5)%(d-1);return wnRemainder(d*q+r,d,seed%3);}},
+    {id:"sequence-inquiry",title:"ניסוי לבחירה: חוקיות, הכפלה ותיקון רצף",scope:"enrichment",
+      goal:"חוקרים כלל שניתן לרצף, מבחינים בין תוספת קבועה להכפלה חוזרת ומתקנים איבר שגוי.",
+      why:"רצף מתאר שינוי משלב לשלב. הכפלה חוזרת משנה גם את גודל התוספת, ואינה כמו הוספה חוזרת של הכמות הראשונה.",
+      rule:"פועלים לפי הכלל שנכתב בשאלה, סופרים מעברים ולא רק איברים, ובודקים גם לאחור. רשימת מספרים קצרה אינה קובעת כלל יחיד בהכרח.",
+      example:[wnStep("בדגם הראשון יש שבע קוביות. הכלל שנבחר הוא הכפלה פי שניים בכל שלב.", "7 ; 14 ; 28 ; 56 ; □"),
+        wnStep("בודקים כל מעבר: הכמות מוכפלת ולא גדלה בשבע קבועות.", "7 × 2 = 14\n14 × 2 = 28\n28 × 2 = 56"),
+        wnStep("כדי להגיע לשלב החמישי מבצעים עוד הכפלה אחת.", "56 × 2 = 112"),
+        wnStep("מחלקים בשתיים וחוזרים אל השלב הרביעי. בסך הכול היו ארבעה מעברים מהשלב הראשון לחמישי.", "112 ÷ 2 = 56")],
+      mistake:{text:"אחרי שבע וארבע עשרה מוסיפים שוב שבע, אף שהכלל שניתן הוא הכפלה פי שניים.",math:"14 + 7 = 21\n14 × 2 = 28",fix:"שתי הדרכים נתנו אותו איבר שני, אבל לא אותו איבר שלישי. הכלל המפורש בשאלה הוא שמכריע."},
+      guided:()=>wnSequence(11,5,2),count:24,
+      build:seed=>wnSequence(7+seed*3,3+seed%7,seed%4)}
+  ];
+  return {id:"whole-numbers",title:"מספרים טבעיים: מבינים את הדרך",intro:"מסע של ערכי מקום, אלגוריתמים ובלשות חשבונית. בכל תחנה לומדים דרך, מנסים יחד, ואז פותרים שאלות מקוריות עם בדיקה עצמית.",prerequisites:"קריאת מספרים טבעיים, לוח הכפל, משמעות ארבע פעולות החשבון וכתיבה לפי ערכי מקום. שיעורי החזרה הראשונים זמינים לאורך כל הדרך.",skills};
+}
+// COURSE_DATA_END
+const course=buildCourse();
+const $=id=>document.getElementById(id);
+const scopeLabels={core:"לימוד לכיתה ה׳",review:"חזרה ובסיס",enrichment:"העשרה לבחירה"};
+const skillMap=new Map(course.skills.map(skill=>[skill.id,skill]));
+function node(tag,text,className){const el=document.createElement(tag);if(text!==undefined)el.textContent=text;if(className)el.className=className;return el;}
+function control(text,action){const el=node("button",text);el.type="button";el.addEventListener("click",action);return el;}
+function shuffle(items){const result=[...items];for(let i=result.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[result[i],result[j]]=[result[j],result[i]];}return result;}
+function rational(text){
+  let value=String(text).trim().replace(/\u2212/g,"-");
+  if(/^-?\d{1,3}(?:,\d{3})+(?:\.\d{1,6})?$/.test(value))value=value.replace(/,/g,"");
+  let m=value.match(/^(-?\d+)\s+(\d+)\/([1-9]\d*)$/);
+  let n,d;
+  if(m){d=Number(m[3]);if(Number(m[2])>=d)return null;n=(Math.abs(Number(m[1]))*d+Number(m[2]))*(m[1].startsWith("-")?-1:1);}
+  else if((m=value.match(/^(-?\d+)\/([1-9]\d*)$/))){n=Number(m[1]);d=Number(m[2]);}
+  else if((m=value.match(/^(-?)(\d+)(?:\.(\d{1,6}))?$/))){d=10**(m[3]?.length||0);n=(Number(m[2])*d+Number(m[3]||0))*(m[1]?-1:1);}
+  else return null;
+  if(!Number.isSafeInteger(n)||!Number.isSafeInteger(d))return null;
+  let a=Math.abs(n),b=d;while(b){[a,b]=[b,a%b];}
+  return [n/(a||1),d/(a||1)];
+}
+function answerKey(value,kind){if(kind==="text")return String(value).trim();const pair=rational(value);return pair?pair.join("/"):"invalid:"+value;}
+function questionFor(skill,seed){
+  const q=skill.build(seed);
+  return {...q,id:skill.id+"-"+seed,skill:skill.id};
+}
+function validateQuestion(q){
+  if(!["number","fraction","text"].includes(q.kind)||q.steps.length!==4||q.choices.length<3||new Set(q.choices.map(x=>answerKey(x,q.kind))).size!==q.choices.length||q.choices.filter(x=>answerKey(x,q.kind)===answerKey(q.answer,q.kind)).length!==1)
+    throw new Error("Invalid authored question: "+q.id);
+  if(q.kind!=="text"&&q.choices.some(x=>!rational(x)))throw new Error("Invalid numeric option: "+q.id);
+}
+const bank=course.skills.flatMap(skill=>Array.from({length:skill.count},(_,i)=>questionFor(skill,i)));
+bank.forEach(validateQuestion);
+const decks=new Map(),supportHistory=new Set(),lastShown=new Map();
+let round=[],position=0,current=null,solved=false,assisted=false,independent=0,activeSkill=null,results=[];
+let lessonSkill=null,lessonTrigger=null,guided=null,guidedSolved=false;
+function deckFor(skill){
+  if(!decks.has(skill)||!decks.get(skill).length){
+    const fresh=shuffle(bank.filter(q=>q.skill===skill));
+    if(fresh.length>1&&fresh[0].id===lastShown.get(skill))[fresh[0],fresh[1]]=[fresh[1],fresh[0]];
+    decks.set(skill,fresh);
+  }
+  return decks.get(skill);
+}
+function planRound(id){
+  if(id)return deckFor(id).slice(0,6);
+  const ids=shuffle(course.skills.filter(s=>s.scope!=="enrichment").map(s=>s.id));
+  const selected=[],offsets=new Map();
+  while(selected.length<6){
+    let added=false;
+    for(const skill of ids){
+      const offset=offsets.get(skill)||0,q=deckFor(skill)[offset];
+      if(q){selected.push(q);offsets.set(skill,offset+1);added=true;}
+      if(selected.length===6)break;
+    }
+    if(!added)break;
+  }
+  return shuffle(selected);
+}
+function showHome(){
+  $("home").hidden=false;$("practice").hidden=true;$("summary").hidden=true;current=null;solved=false;
+  $("home-title").focus({preventScroll:true});window.scrollTo(0,0);
+}
+function startRound(id=null){
+  if(id&&!skillMap.has(id))throw new Error("Unknown skill: "+id);
+  if($("lesson").open)$("lesson").close();
+  activeSkill=id;round=planRound(id);position=0;independent=0;results=[];
+  $("home").hidden=true;$("practice").hidden=false;$("summary").hidden=true;
+  $("practice-title").textContent=id?skillMap.get(id).title:"תרגול משולב";
+  renderQuestion();$("practice").scrollIntoView({block:"start"});
+}
+function appendSteps(target,steps,numbered=false){
+  target.replaceChildren();
+  const headings=["מה ידוע ומה מחפשים?","באיזו דרך נפתור?","נחשב צעד אחר צעד","איך נבדוק?"];
+  steps.forEach((step,i)=>{const li=node("li",undefined,"step");if(numbered)li.append(node("h4",headings[i]));li.append(node("p",step.text));if(step.math)li.append(node("p",step.math,"math"));target.append(li);});
+}
+function setVisual(id,html){$(id).hidden=!html;$(id).innerHTML=html||"";}
+function renderQuestion(){
+  current=round[position];solved=false;assisted=supportHistory.has(current.id);
+  const deck=deckFor(current.skill),index=deck.findIndex(q=>q.id===current.id);if(index>=0)deck.splice(index,1);
+  lastShown.set(current.skill,current.id);
+  $("skill-label").textContent=scopeLabels[skillMap.get(current.skill).scope]+" · "+skillMap.get(current.skill).title;
+  $("prompt").textContent=current.prompt;$("expression").textContent=current.expression||"";$("expression").hidden=!current.expression;
+  $("unit").textContent=current.unit||"";setVisual("visual",current.visual);
+  $("round-label").textContent="שאלה "+(position+1)+" מתוך "+round.length;$("progress").max=round.length;$("progress").value=position;
+  $("choices").replaceChildren();
+  shuffle(current.choices).forEach(value=>{
+    const q=current,button=control(value,()=>answer(value,button,q.id));button.dir=q.kind==="text"?"rtl":"ltr";$("choices").append(button);
+  });
+  $("answer-form").hidden=current.kind==="text";$("input-note").hidden=current.kind==="text";$("typed-answer").value="";
+  [...$("answer-form").elements].forEach(el=>el.disabled=false);$("feedback").textContent="";
+  appendSteps($("help-steps"),current.steps,true);$("help-answer").textContent=current.answer;
+  $("help-answer").className=current.kind==="text"?"":"math";toggleHelp(false);
+  for(const id of ["next-top","next-bottom"]){$(id).hidden=true;$(id).textContent=position===round.length-1?"לסיכום הסבב":"לשאלה הבאה";}
+  $("prompt").focus({preventScroll:true});
+}
+function markSupport(){if(current&&!solved){assisted=true;supportHistory.add(current.id);}}
+function toggleHelp(open){
+  if(open)markSupport();
+  $("help-panel").hidden=!open;$("help-toggle").setAttribute("aria-expanded",String(open));$("help-toggle").textContent=open?"🙈 הסתר הסבר":"🔍 איך פותרים?";
+}
+function answer(value,button,id){
+  if(!current||solved||current.id!==id||button?.disabled||(button&&button.parentElement!==$("choices")))return;
+  if(current.kind!=="text"&&!rational(value)){$("feedback").textContent="כתבו מספר תקין או שבר עם מכנה שאינו אפס. למשל 0.5 או 1/2.";return;}
+  if(answerKey(value,current.kind)!==answerKey(current.answer,current.kind)){
+    markSupport();if(button){button.disabled=true;button.classList.add("wrong");button.setAttribute("aria-label",value+" — לא נכון");}
+    $("feedback").textContent="עוד ניסיון. נפתח את הדרך ונבדוק באיזה צעד צריך עזרה.";toggleHelp(true);return;
+  }
+  solved=true;if(!assisted)independent++;
+  results.push({skill:current.skill,assisted});
+  if(button){button.classList.add("correct");button.setAttribute("aria-label",value+" — נכון");}
+  $("choices").querySelectorAll("button").forEach(el=>el.disabled=true);[...$("answer-form").elements].forEach(el=>el.disabled=true);
+  $("feedback").textContent=assisted?"נכון! נעזרתם בדרך והגעתם לפתרון.":"נכון! פתרתם באופן עצמאי.";
+  $("progress").value=position+1;for(const id of ["next-top","next-bottom"])$(id).hidden=false;
+  $("next-top").focus({preventScroll:true});
+}
+function nextQuestion(){
+  if(!solved)return;
+  if(position<round.length-1){position++;renderQuestion();$("prompt").scrollIntoView({block:"start"});return;}
+  solved=false;current=null;$("practice").hidden=true;$("summary").hidden=false;
+  $("summary-text").textContent="השלמתם "+round.length+" שאלות: "+independent+" באופן עצמאי ו־"+(round.length-independent)+" בעזרת תמיכה.";
+  $("recommendations").replaceChildren();
+  for(const id of new Set(results.filter(r=>r.assisted).map(r=>r.skill))){const skill=skillMap.get(id);$("recommendations").append(control("נחזור על הדרך: "+skill.title,event=>openLesson(id,event.currentTarget)));}
+  $("next-lesson").hidden=!activeSkill||course.skills.findIndex(s=>s.id===activeSkill)===course.skills.length-1;
+  $("summary-title").focus({preventScroll:true});$("summary").scrollIntoView({block:"start"});
+}
+function guidedHelp(open){
+  $("guided-solution").hidden=!open;$("guided-help").setAttribute("aria-expanded",String(open));$("guided-help").textContent=open?"🙈 הסתר הסבר":"🔍 איך פותרים?";
+}
+function openLesson(id,trigger){
+  if(!skillMap.has(id))throw new Error("Unknown lesson: "+id);
+  markSupport();lessonSkill=skillMap.get(id);lessonTrigger=trigger||document.activeElement;guidedSolved=false;
+  $("lesson-title").textContent=lessonSkill.title;$("lesson-goal").textContent=lessonSkill.goal;
+  $("lesson-why").textContent=lessonSkill.why;$("lesson-rule").textContent=lessonSkill.rule;
+  appendSteps($("example-steps"),lessonSkill.example);setVisual("lesson-visual",lessonSkill.visual);
+  $("mistake-text").textContent=lessonSkill.mistake.text;$("mistake-math").textContent=lessonSkill.mistake.math||"";$("mistake-math").hidden=!lessonSkill.mistake.math;$("mistake-fix").textContent=lessonSkill.mistake.fix;
+  guided=lessonSkill.guided();validateQuestion(guided);$("guided-prompt").textContent=guided.prompt;
+  $("guided-expression").textContent=guided.expression||"";$("guided-expression").hidden=!guided.expression;
+  setVisual("guided-visual",guided.visual);$("guided-unit").textContent=guided.unit||"";
+  appendSteps($("guided-steps"),guided.steps,true);guidedHelp(false);$("guided-feedback").textContent="";$("guided-choices").replaceChildren();
+  shuffle(guided.choices).forEach(value=>{
+    const q=guided,button=control(value,()=>{
+      if(guidedSolved||button.disabled||guided!==q)return;
+      guidedHelp(true);
+      if(answerKey(value,q.kind)===answerKey(q.answer,q.kind)){
+        guidedSolved=true;button.classList.add("correct");$("guided-choices").querySelectorAll("button").forEach(el=>el.disabled=true);$("guided-feedback").textContent="נכון! קראו את בדיקת הפתרון ונסו תרגיל חדש.";
+      }else{button.disabled=true;button.classList.add("wrong");$("guided-feedback").textContent="נבדוק יחד את הדרך וננסה שוב.";}
+    });
+    button.dir=q.kind==="text"?"rtl":"ltr";$("guided-choices").append(button);
+  });
+  $("lesson-practice").textContent=current&&current.skill===id&&!$("practice").hidden?"חזרה לאותה שאלה":"מתרגלים את הנושא";
+  $("lesson-next").disabled=course.skills.indexOf(lessonSkill)===course.skills.length-1;
+  document.body.classList.add("lesson-open");if(!$("lesson").open)$("lesson").showModal();$("lesson").scrollTop=0;
+}
+function initialize(){
+  document.title=course.title+" · מתמטיקה לכיתה ה׳";$("page-title").textContent=course.title;$("intro").textContent=course.intro;$("prerequisites").textContent="מה כדאי להכיר קודם: "+course.prerequisites;
+  function updateMultiplicationLab(){
+    const first=$("lab-first"),second=$("lab-second"),state=wnLabState(Number(first.value),Number(second.value));
+    for(const input of [first,second])input.setAttribute("aria-invalid",String(!input.value||!Number.isInteger(Number(input.value))||Number(input.value)<10||Number(input.value)>99));
+    if(!state){$("lab-status").textContent="בחרו שני מספרים שלמים בין 10 ל־99. הייצוג שמתחת עדיין מציג את הבחירה התקינה האחרונה.";return;}
+    $("lab-expression").textContent=`${state.a} × ${state.b} = ${state.a} × (${state.tens} + ${state.ones})`;
+    $("lab-parts").innerHTML=state.parts;$("lab-columns").innerHTML=state.columns;
+    $("lab-explanation").textContent=`חלק היחידות נותן ${state.unitsProduct}. חלק העשרות הוא ${state.tens}, לא ${state.tens/10}, ולכן מכפלתו היא ${state.tensProduct}. בכפל בעשרות האפס שומר מקום ליחידות; בכתיבה מאונכת שורת העשרות מתחילה בעמודת העשרות. ${state.ones===0?"כאן ספרת היחידות של הכופל היא אפס, ולכן מכפלת היחידות היא אפס ואינה משנה את הסכום.":"שתי מכפלות הביניים יחד נותנות את המכפלה השלמה."}`;
+    $("lab-total").textContent=`${state.unitsProduct} + ${state.tensProduct} = ${state.total}`;
+    $("lab-status").textContent=`כעת מוצגת המכפלה של ${state.a} ב־${state.b}. התוצאה היא ${state.total}.`;
+  }
+  $("lab-first").addEventListener("input",updateMultiplicationLab);$("lab-second").addEventListener("input",updateMultiplicationLab);updateMultiplicationLab();
+  course.skills.forEach((skill,index)=>{
+    const card=node("article",undefined,"skill-card");card.append(node("p",scopeLabels[skill.scope],"scope"),node("h3",(index+1)+". "+skill.title),node("p",skill.goal));
+    const actions=node("div",undefined,"actions");actions.append(control("📚 לומדים את הדרך",event=>openLesson(skill.id,event.currentTarget)),control("מתרגלים",()=>startRound(skill.id)));card.append(actions);$("skills").append(card);
+  });
+  $("course-start").onclick=event=>openLesson(course.skills[0].id,event.currentTarget);$("mixed-start").onclick=()=>startRound();
+  for(const id of ["home-button","summary-home"])$(id).onclick=showHome;
+  for(const id of ["restart","again"])$(id).onclick=()=>startRound(activeSkill);
+  for(const id of ["next-top","next-bottom"])$(id).onclick=nextQuestion;
+  $("help-toggle").onclick=()=>toggleHelp($("help-panel").hidden);$("open-lesson").onclick=event=>openLesson(current.skill,event.currentTarget);
+  $("close-lesson").onclick=()=>$("lesson").close();
+  $("lesson").addEventListener("close",()=>{document.body.classList.remove("lesson-open");if(lessonTrigger?.isConnected)lessonTrigger.focus({preventScroll:true});});
+  $("lesson-practice").onclick=()=>{
+    const id=lessonSkill.id,resume=current&&current.skill===id&&!$("practice").hidden;
+    $("lesson").close();if(resume)$("prompt").focus({preventScroll:true});else startRound(id);
+  };
+  $("lesson-next").onclick=()=>{const next=course.skills[course.skills.indexOf(lessonSkill)+1];if(next)openLesson(next.id,lessonTrigger);};
+  $("next-lesson").onclick=event=>{const next=course.skills[course.skills.findIndex(s=>s.id===activeSkill)+1];if(next)openLesson(next.id,event.currentTarget);};
+  $("guided-help").onclick=()=>guidedHelp($("guided-solution").hidden);
+  $("answer-form").onsubmit=event=>{event.preventDefault();if(current)answer($("typed-answer").value,null,current.id);};
+  function route(){
+    if($("lesson").open)$("lesson").close();showHome();const id=location.hash.slice(1);
+    $("route-message").textContent="";
+    if(skillMap.has(id))openLesson(id);else if(id==="practice")startRound();else if(id)$("route-message").textContent="השיעור שבקישור לא נמצא. בחרו אחד מהשיעורים הזמינים.";
+  }
+  window.addEventListener("hashchange",route);route();
+}
+initialize();
+if(new URLSearchParams(location.search).get("selftest")==="1")window.__eduSelfTest={course,bank,questionFor,answerKey,rational};
+</script>
+</body>
+</html>

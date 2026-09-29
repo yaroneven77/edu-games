@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>מתמטיקה לכיתה ה׳</title>
+<script src="../../../assets/theme-selector.js" defer></script>
+<link rel="stylesheet" href="../../../assets/refresh.css">
+<style>
+*{box-sizing:border-box}
+:root{--surface:var(--refresh-surface,#fff);--soft:var(--refresh-soft,#edf3fb);--text:var(--refresh-text,#243b53);--muted:var(--refresh-muted,#52677e);--accent:var(--refresh-accent,#285f9f);--border:var(--refresh-border,#d5dfec)}
+body{margin:0;padding-top:64px;background:#eef7fd;color:var(--text);font:18px/1.7 "Segoe UI","Arial Hebrew",Arial,sans-serif}
+main{max-width:1000px;margin:auto;padding:16px 16px 40px}[hidden]{display:none!important}
+header{text-align:center}h1{font-size:clamp(28px,6vw,40px);line-height:1.3}h2{font-size:25px}h3{font-size:21px}
+a{color:var(--accent)}button,input,select{font:inherit;max-width:100%;min-height:44px}
+button,select,input{border:2px solid var(--border);border-radius:14px;padding:9px 13px;background:var(--surface);color:var(--text)}
+button,a.back{min-height:44px;min-width:44px}button{cursor:pointer}button:disabled{cursor:default}
+button:focus-visible,input:focus-visible,a:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+a.back{display:inline-flex;align-items:center;padding:8px 12px;background:var(--surface);border-radius:14px}
+.panel,.skill-card{background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:clamp(14px,3vw,24px);margin:16px 0;min-width:0}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.skill-card{margin:0;border-top:5px solid var(--accent)}
+.actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:14px 0}.actions>*{max-width:100%}
+.primary{font-weight:800;background:var(--soft)}.muted{color:var(--muted);font-size:16px}.scope{font-weight:700}
+.math{direction:ltr;unicode-bidi:isolate;text-align:center;font:600 clamp(21px,5vw,29px)/1.8 "Segoe UI",Arial,sans-serif;overflow-wrap:anywhere;background:var(--soft);padding:10px;border-radius:12px;margin:10px 0;font-variant-numeric:tabular-nums}
+.visual{padding:12px;margin:12px 0;background:var(--soft);border-radius:14px;overflow:auto;text-align:center}.visual svg{width:100%;max-width:460px;height:auto;max-height:310px;display:block;margin:auto}
+.visual table{border-collapse:collapse;width:100%;max-width:600px;margin:auto}.visual th,.visual td{border:1px solid var(--border);padding:6px}
+.choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.choices button{min-height:60px;font-size:22px;overflow-wrap:anywhere}
+#edu-refresh button.correct{background:#d9f6e3!important;color:#145c35!important;border-color:#237849!important}
+#edu-refresh button.wrong{background:#ffe0dc!important;color:#8c2c28!important;border-color:#ac463b!important;text-decoration:line-through}
+.feedback{font-weight:700;min-height:30px}.help{border:2px solid var(--border);border-radius:16px;padding:16px;background:var(--soft)}
+.step{background:var(--surface);border-radius:12px;padding:12px;margin:12px 0}.step h4,.step p{margin:4px 0}.step .math{background:var(--soft)}
+.help ol,#example-steps{padding-inline-start:25px}.answer-form{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:16px 0}.answer-form input{width:220px;direction:ltr}
+progress{width:100%;height:16px;accent-color:var(--accent)}summary{cursor:pointer;min-height:44px;padding:8px 0;font-weight:700}
+dialog{width:min(780px,calc(100% - 24px));max-height:calc(100dvh - 24px);padding:22px;border:2px solid var(--border);border-radius:22px;background:var(--surface);color:var(--text)}
+dialog::backdrop{background:#102238b8}body.lesson-open{overflow:hidden}.lesson-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+#edu-theme-select{min-height:44px!important}#edu-theme-control{max-width:calc(100% - 12px)}
+footer{text-align:center;font-size:15px;margin:24px 0}
+@media(max-width:600px){.grid,.choices{grid-template-columns:1fr}main{padding-inline:12px}.panel,dialog{padding:14px}.actions button{flex:1 1 140px}.math{font-size:22px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body id="edu-refresh">
+<main>
+<a class="back" href="../index.html">חזרה לקורס מתמטיקה לכיתה ה׳</a>
+<header><p class="muted">קורס מתמטיקה לכיתה ה׳ · תצוגת בדיקה</p><h1 id="page-title"></h1><p id="intro"></p></header>
+<noscript><p class="panel">כדי ללמוד ולתרגל יש לאפשר הפעלת סקריפטים בדפדפן.</p></noscript>
+<section id="home" aria-labelledby="home-title">
+<div class="panel"><h2 id="home-title" tabindex="-1">לומדים, פותרים יחד ומנסים לבד</h2><p id="prerequisites"></p>
+<p>המסלול המומלץ מתחיל בהבנה ובדוגמה, ממשיך בניסיון מודרך ומסתיים בתרגול. אפשר לבחור כל שיעור בלי לנעול שלבים.</p>
+<div class="actions"><button id="course-start" class="primary" type="button">מתחילים ללמוד לפי הסדר</button><button id="mixed-start" type="button">תרגול משולב</button></div>
+<p id="route-message" role="status"></p></div><div id="skills" class="grid"></div>
+</section>
+<section id="practice" class="panel" hidden aria-labelledby="practice-title">
+<div class="actions"><button id="home-button" type="button">בחירת שיעור</button><button id="restart" type="button">סבב חדש</button></div>
+<h2 id="practice-title"></h2><p id="round-label"></p><progress id="progress" value="0" max="6" aria-label="שאלות שהושלמו"></progress>
+<p id="skill-label" class="scope"></p><h3 id="prompt" tabindex="-1"></h3><div id="expression" class="math" dir="ltr"></div><p id="unit" class="muted"></p><div id="visual" class="visual" hidden></div>
+<div id="choices" class="choices" role="group" aria-label="בחירת תשובה"></div>
+<form id="answer-form" class="answer-form" hidden><label for="typed-answer">או כתבו תשובה:</label><input id="typed-answer" autocomplete="off" maxlength="60" aria-describedby="input-note"><button type="submit">בדיקה</button></form>
+<p id="input-note" class="muted" hidden>אפשר לכתוב מספר, מספר עשרוני, שבר כמו 3/4 או מספר מעורב כמו 1 1/2. יחידות מופיעות בשאלה, אין צורך להקליד אותן.</p>
+<p id="feedback" class="feedback" role="status"></p>
+<div class="actions"><button id="help-toggle" type="button" aria-expanded="false" aria-controls="help-panel">🔍 איך פותרים?</button><button id="open-lesson" type="button">📚 שיעור קצר</button><button id="next-top" class="primary" type="button" hidden>לשאלה הבאה</button></div>
+<section id="help-panel" class="help" hidden aria-labelledby="help-title"><h3 id="help-title">מבינים את הדרך בארבעה צעדים</h3><ol id="help-steps"></ol><h4>התשובה</h4><p id="help-answer"></p></section>
+<button id="next-bottom" class="primary" type="button" hidden>לשאלה הבאה</button>
+</section>
+<section id="summary" class="panel" hidden aria-labelledby="summary-title"><h2 id="summary-title" tabindex="-1">סיימתם סבב של תרגול</h2><p id="summary-text"></p><p>עזרה היא חלק מהלמידה. תשובות עצמאיות הן בחירות נכונות בניסיון הראשון, ללא פתיחת הפתרון או השיעור באותה שאלה. זה אינו אבחון או ציון שליטה.</p><div id="recommendations"></div>
+<div class="actions"><button id="again" type="button">עוד תרגול באותו מסלול</button><button id="next-lesson" type="button">לשיעור הבא בקורס</button><button id="summary-home" type="button">בחירת שיעור</button></div></section>
+<footer>תרגילים ודוגמאות מקוריים · אין שמירת תשובות. רענון העמוד מתחיל ביקור חדש. את ההבנה כדאי לתרגל גם על דף ובשיחה.</footer>
+</main>
+<dialog id="lesson" aria-labelledby="lesson-title">
+<div class="lesson-head"><h2 id="lesson-title"></h2><button id="close-lesson" type="button">סגירת השיעור</button></div>
+<p id="lesson-goal"></p><h3>למה זה עובד?</h3><p id="lesson-why"></p><p id="lesson-rule" class="help"></p>
+<h3>דוגמה פתורה, צעד אחר צעד</h3><div id="lesson-visual" class="visual" hidden></div><ol id="example-steps"></ol>
+<h3>טעות שכדאי להכיר</h3><p id="mistake-text"></p><p id="mistake-math" class="math" dir="ltr"></p><p id="mistake-fix"></p>
+<h3>ננסה יחד</h3><p id="guided-prompt"></p><p id="guided-expression" class="math" dir="ltr"></p><div id="guided-visual" class="visual" hidden></div><p id="guided-unit"></p><div id="guided-choices" class="choices"></div>
+<p id="guided-feedback" class="feedback" role="status"></p><button id="guided-help" type="button" aria-expanded="false" aria-controls="guided-solution">🔍 איך פותרים?</button><div id="guided-solution" class="help" hidden><ol id="guided-steps"></ol></div>
+<p class="muted">זהו תרגול מודרך. הוא אינו מוסיף הצלחה עצמאית לסבב.</p>
+<div class="actions"><button id="lesson-practice" class="primary" type="button">מתרגלים את הנושא</button><button id="lesson-next" type="button">לשיעור הבא</button></div>
+</dialog>
+<script>
+"use strict";
+// COURSE_DATA_START
+function buildCourse() {
+  const blue="#185b9d",gold="#a55a00",green="#23734c";
+  const S=(text,math)=>math?{text,math}:{text};
+  const number=(prompt,answer,steps,visual,unit="סנטימטרים",wrong=[])=>{
+    const a=String(answer),choices=[a,...wrong.map(String),String(Number(answer)+1),String(Number(answer)+2),String(Number(answer)+3)];
+    return {prompt,answer:a,kind:"number",unit,choices:[...new Set(choices)].slice(0,4),steps,visual};
+  };
+  const text=(prompt,answer,choices,steps,visual)=>({prompt,answer,kind:"text",choices,steps,visual});
+  const svg=(description,body)=>`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 240" role="img" aria-label="${description}" style="background:#fff;border-radius:8px"><title>${description}</title>${body}</svg><p class="muted">${description}. התרשימים להמחשה; אין למדוד על המסך.</p>`;
+  const line=(a,b,color=blue,dash=false)=>`<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="${color}" stroke-width="3"${dash?' stroke-dasharray="6 5"':""}/>`;
+  const label=(x,y,value,color=blue)=>`<text x="${x}" y="${y}" text-anchor="middle" fill="${color}" font-family="Arial,sans-serif" font-size="18" direction="ltr">${value}</text>`;
+  const poly=(points,color=blue)=>`<polygon points="${points.map(p=>p.join(",")).join(" ")}" fill="${color}" fill-opacity=".13" stroke="${color}" stroke-width="3"/>`;
+  const rightCorners=points=>points.map((p,i)=>{
+    const a=points[(i+points.length-1)%points.length],b=points[(i+1)%points.length],u=[a[0]-p[0],a[1]-p[1]],v=[b[0]-p[0],b[1]-p[1]];
+    if(Math.abs(u[0]*v[0]+u[1]*v[1])>1e-7)return "";
+    const ul=Math.hypot(...u),vl=Math.hypot(...v),size=Math.min(9,ul/4,vl/4);
+    const A=[p[0]+size*u[0]/ul,p[1]+size*u[1]/ul],B=[p[0]+size*v[0]/vl,p[1]+size*v[1]/vl],M=[A[0]+B[0]-p[0],A[1]+B[1]-p[1]];
+    return `<polyline points="${[A,M,B].map(x=>x.join(",")).join(" ")}" fill="none" stroke="${gold}" stroke-width="2"/>`;
+  }).join("");
+  const rotate=(p,angle,c=[180,120])=>{const r=angle*Math.PI/180;return [c[0]+(p[0]-c[0])*Math.cos(r)-(p[1]-c[1])*Math.sin(r),c[1]+(p[0]-c[0])*Math.sin(r)+(p[1]-c[1])*Math.cos(r)];};
+  function fitShape(points,angle=0){
+    const turned=points.map(p=>rotate(p,angle)),xs=turned.map(p=>p[0]),ys=turned.map(p=>p[1]);
+    const minX=Math.min(...xs),maxX=Math.max(...xs),minY=Math.min(...ys),maxY=Math.max(...ys);
+    const scale=Math.min(1,260/(maxX-minX),175/(maxY-minY));
+    return turned.map(p=>[180+(p[0]-(minX+maxX)/2)*scale,120+(p[1]-(minY+maxY)/2)*scale]);
+  }
+  function shapeView(points,description,angle=0){
+    const fitted=fitShape(points,angle);
+    return svg(description,poly(fitted)+rightCorners(fitted));
+  }
+  function altitude(b,h,offset,triangle=false,angle=0,unknown=""){
+    const k=Math.min(230/(Math.max(b,offset)-Math.min(0,offset)),130/h);
+    const left=65-Math.min(0,offset)*k,y=175;
+    const A=[left,y],B=[left+b*k,y],H=[left+offset*k,y],C=[H[0],y-h*k],D=[C[0]+b*k,C[1]];
+    // Fit parallelograms including their horizontal shear into the same viewBox.
+    if(!triangle){const all=[A,B,C,D];const width=Math.max(...all.map(p=>p[0]))-Math.min(...all.map(p=>p[0]));const f=Math.min(1,240/width);all.concat([H]).forEach(p=>{p[0]=60+(p[0]-left)*f;p[1]=175+(p[1]-175)*f;});}
+    const points=triangle?[A,B,C]:[A,B,D,C];
+    const marker=[H,[H[0]+10,H[1]],[H[0]+10,H[1]-10],[H[0],H[1]-10]];
+    const baseLabel=[(A[0]+B[0])/2,A[1]+24],heightLabel=[H[0]-26,(C[1]+H[1])/2];
+    const frame=[...points,...marker,baseLabel,heightLabel].map(p=>rotate(p,angle)),xs=frame.map(p=>p[0]),ys=frame.map(p=>p[1]);
+    const minX=Math.min(...xs),maxX=Math.max(...xs),minY=Math.min(...ys),maxY=Math.max(...ys),fit=Math.min(1,275/(maxX-minX),170/(maxY-minY));
+    const R=p=>{const r=rotate(p,angle);return [180+(r[0]-(minX+maxX)/2)*fit,120+(r[1]-(minY+maxY)/2)*fit];};
+    const body=poly(points.map(R))+line(R(A),R(H),gold,true)+line(R(C),R(H),gold,true)+`<polyline points="${marker.map(R).map(p=>p.join(",")).join(" ")}" fill="none" stroke="${gold}" stroke-width="2"/>`+
+      label(...R(baseLabel),`b = ${unknown==="base"?"?":b}`)+label(...R(heightLabel),`h = ${unknown==="height"?"?":h}`,gold);
+    return svg(`${triangle?"משולש":"מקבילית"}: בסיס ${unknown==="base"?"לא ידוע":b+" ס״מ"}, גובה מאונך ${unknown==="height"?"לא ידוע":h+" ס״מ"}. ${offset<0||offset>b?"רגל הגובה על המשך הבסיס":"רגל הגובה על הבסיס"}`,body);
+  }
+  const threeHeights=(()=>{
+    const points=[[65,180],[245,180],[115,65]],colors=[blue,green,gold];
+    let body=poly(points);
+    points.forEach((vertex,i)=>{
+      const a=points[(i+1)%3],b=points[(i+2)%3],u=[b[0]-a[0],b[1]-a[1]],t=((vertex[0]-a[0])*u[0]+(vertex[1]-a[1])*u[1])/(u[0]*u[0]+u[1]*u[1]);
+      const foot=[a[0]+t*u[0],a[1]+t*u[1]],v=[vertex[0]-foot[0],vertex[1]-foot[1]],ul=Math.hypot(...u),vl=Math.hypot(...v);
+      const U=[foot[0]+8*u[0]/ul,foot[1]+8*u[1]/ul],V=[foot[0]+8*v[0]/vl,foot[1]+8*v[1]/vl],M=[U[0]+V[0]-foot[0],U[1]+V[1]-foot[1]];
+      body+=line(vertex,foot,colors[i],true)+`<polyline points="${[U,M,V].map(p=>p.join(",")).join(" ")}" fill="none" stroke="${colors[i]}" stroke-width="2"/>`;
+    });
+    return svg("שלושת גובהי המשולש: מ־A אל ישר BC בכחול; מ־B אל ישר AC בירוק; מ־C אל ישר AB בכתום. כל גובה מאונך לבסיס המתאים",body+label(52,204,"A")+label(257,204,"B")+label(115,48,"C"));
+  })();
+  const areaProof=svg("גוזרים משולש בקצה המקבילית ומעבירים אותו לצד האחר: מתקבל מלבן באותו בסיס ובאותו גובה",
+    poly([[35,105],[155,105],[185,45],[65,45]])+poly([[35,105],[65,105],[65,45]],gold)+line([65,45],[65,105],gold,true)+label(110,132,"b")+label(40,73,"h")+
+    label(207,80,"→")+poly([[235,105],[325,105],[355,45],[235,45]])+poly([[325,105],[355,105],[355,45]],green)+
+    line([325,105],[355,45],gold,true)+label(290,132,"b")+label(225,73,"h")+
+    `<path d="M 65 95 L 75 95 L 75 105 M 235 95 L 245 95 L 245 105" fill="none" stroke="${gold}" stroke-width="2"/>`+
+    label(180,187,"A = b × h"));
+  const triangleProof=svg("שני משולשים חופפים מרכיבים מקבילית: האלכסון מחלק את המקבילית לשני חלקים שווי שטח",
+    poly([[55,165],[245,165],[295,65]],blue)+poly([[55,165],[295,65],[105,65]],green)+
+    line([105,65],[105,165],gold,true)+`<path d="M105 155 H115 V165" fill="none" stroke="${gold}" stroke-width="2"/>`+label(155,196,"b")+label(88,122,"h")+label(180,225,"A = b × h ÷ 2"));
+  function explorerDiagram(b,h,shift,mode){
+    const k=16,A=[36,180],B=[36+b*k,180],C=[36+shift*k,180-h*k],D=[36+(b+shift)*k,180-h*k],H=[D[0],180];
+    let grid="";
+    for(let x=36;x<=308;x+=k)grid+=`<line x1="${x}" y1="36" x2="${x}" y2="180" stroke="#a9bdcd" stroke-width=".6"/>`;
+    for(let y=36;y<=180;y+=k)grid+=`<line x1="36" y1="${y}" x2="308" y2="${y}" stroke="#a9bdcd" stroke-width=".6"/>`;
+    const rect=[A,B,[B[0],C[1]],[A[0],C[1]]],para=[A,B,D,C],tri=[A,B,D];
+    const marker=[H,[H[0]-8,H[1]],[H[0]-8,H[1]-8],[H[0],H[1]-8]];
+    const body=mode==="rectangle"?poly(rect,green)+rightCorners(rect):
+      poly(para,blue)+poly(tri,gold)+line(D,H,blue,true)+line(B,H,blue,true)+`<polyline points="${marker.map(p=>p.join(",")).join(" ")}" fill="none" stroke="${blue}" stroke-width="2"/>`;
+    return svg(`כל משבצת היא יחידת שטח אחת. בסיס ${b}, גובה ${h}, הזזה אופקית ${shift}. ${mode==="rectangle"?"מלבן":"מקבילית ומשולש כתום שהוא מחציתה"}`,
+      grid+body+label(36+b*k/2,207,`b = ${b}`)+label(180,232,`h = ${h}`));
+  }
+  function explorerReadout(b,h,shift){
+    return `בסיס: ${b} יחידות אורך; גובה מאונך: ${h}; הזזה: ${shift}. שטח המלבן ושטח המקבילית: ${b*h} יחידות שטח. שטח המשולש: ${b*h/2} יחידות שטח. ההזזה לבדה אינה משנה את השטח.`;
+  }
+  const explorer=`<details class="panel" data-geo-explorer style="text-align:right"><summary>מעבדת שטח חיה — ניסוי לבחירה, בלי ניקוד</summary>
+    <p>כל משבצת מייצגת יחידת שטח אחת. שנו את ההזזה בלי לשנות בסיס וגובה: מה נשמר? עברו לתצוגת מלבן כדי להשוות. אחר כך הכפילו את הגובה מ־3 ל־6 וחקרו מה קורה לשטחים.</p>
+    <fieldset style="min-width:0"><legend>שינוי הצורה במקלדת או בעכבר</legend>
+      <label style="display:block">בסיס, ביחידות אורך (4–12): <input data-geo-base type="range" min="4" max="12" step="1" value="8"></label>
+      <label style="display:block">גובה מאונך (2–8): <input data-geo-height type="range" min="2" max="8" step="1" value="4"></label>
+      <label style="display:block">הזזה אופקית של הצלע העליונה (0–4): <input data-geo-shift type="range" min="0" max="4" step="1" value="2"></label>
+      <label style="display:block">תצוגה: <select data-geo-mode><option value="pair">מקבילית והמשולש שבתוכה</option><option value="rectangle">מלבן באותו בסיס ובאותו גובה</option></select></label>
+      <p class="muted">במקלדת: עברו לבקר בעזרת Tab ושנו בעזרת מקשי החצים. אין צורך בגרירה.</p>
+    </fieldset>
+    <p data-geo-readout role="status" aria-live="polite">${explorerReadout(8,4,2)}</p>
+    <div data-geo-canvas>${explorerDiagram(8,4,2,"pair")}</div>
+    <p>מדוע זה עובד? ההזזה משנה את זוויות המקבילית ואת אורך הצלע המשופעת, אך לא את הבסיס ואת הגובה. גזירה וסידור משמרים כיסוי. האלכסון מחלק לשני משולשים חופפים, לכן הכתום תמיד מחצית.</p>
+    </details>`;
+  if(typeof document!=="undefined"){
+    const updateExplorer=event=>{
+      const root=event.target.closest("[data-geo-explorer]");
+      if(!root)return;
+      const b=Number(root.querySelector("[data-geo-base]").value),h=Number(root.querySelector("[data-geo-height]").value),shift=Number(root.querySelector("[data-geo-shift]").value),mode=root.querySelector("[data-geo-mode]").value;
+      root.querySelector("[data-geo-readout]").textContent=explorerReadout(b,h,shift);
+      root.querySelector("[data-geo-canvas]").innerHTML=explorerDiagram(b,h,shift,mode);
+    };
+    document.addEventListener("input",updateExplorer);
+    document.addEventListener("change",updateExplorer);
+  }
+  function relation(seed){
+    if(seed<12){
+      const mode=seed%3,turn=Math.floor(seed/3)*17;
+      let a=[80,90],b=[270,90],c=mode===0?[80,145]:[170,35],d=mode===0?[270,145]:mode===1?[170,190]:[245,185];
+      [a,b,c,d]=[a,b,c,d].map(p=>rotate(p,turn));
+      const answer=["מקבילים","מאונכים","לא מקבילים ולא מאונכים"][mode];
+      let body=line(a,b)+line(c,d,green);
+      if(mode===1)body+=`<polyline points="${[[170,90],[180,90],[180,100],[170,100]].map(p=>rotate(p,turn)).map(p=>p.join(",")).join(" ")}" fill="none" stroke="${gold}" stroke-width="2"/>`;
+      const info=mode===0?"שני ישרים בכיוונים זהים ובמרחק קבוע":mode===1?"שני ישרים היוצרים זווית ישרה מסומנת":"ישר אחד חותך את האחר בזווית שאינה ישרה";
+      return text("מהו הקשר בין שני הישרים? דמיינו שממשיכים אותם לשני הכיוונים.",answer,["מקבילים","מאונכים","לא מקבילים ולא מאונכים"],[
+        S("מחפשים קשר בין הישרים, לא בין מיקומם במסגרת."),S("מקבילים אינם נפגשים; מאונכים נפגשים בזווית ישרה."),S(info+"; לכן התשובה: "+answer+"."),S("סיבוב הדף אינו משנה את הזוויות או את המקבילות.")
+      ],svg(info,body));
+    }
+    const values=[25,40,65,80,90,110,125,140,155,170,180,55],a=values[seed-12],r=a*Math.PI/180,turn=(seed%4)*22;
+    const center=[180,145],p=[280,145],q=[180+100*Math.cos(r),145-100*Math.sin(r)];
+    const ans=a<90?"זווית חדה":a===90?"זווית ישרה":a<180?"זווית קהה":"זווית שטוחה";
+    return text(`זווית בגודל ${a} מעלות מסומנת בתרשים. מהו סוג הזווית?`,ans,["זווית חדה","זווית ישרה","זווית קהה","זווית שטוחה"],[
+      S("נתון גודל הזווית במעלות."),S("משווים לזווית ישרה ולזווית שטוחה."),S("מסווגים לפי הפתיחה בין הקרניים: "+ans+".",`${a}°`),S("אורך הקרניים וכיוון הציור אינם משנים את גודל הזווית.")
+    ],svg(`פתיחת הזווית היא ${a} מעלות`,line(rotate(center,turn),rotate(p,turn))+line(rotate(center,turn),rotate(q,turn))+(a===90?rightCorners([rotate(center,turn),rotate(p,turn),rotate(q,turn)]):"")+label(180,215,`${a}°`)));
+  }
+  function angleRuler(degrees){
+    const O=[180,190],point=(d,r)=>[O[0]+r*Math.cos(d*Math.PI/180),O[1]-r*Math.sin(d*Math.PI/180)];
+    let body=`<path d="M50 190 A130 130 0 0 1 310 190" fill="none" stroke="${green}" stroke-width="2"/>`;
+    for(let d=0;d<=180;d+=5){
+      body+=line(point(d,d%15===0?116:123),point(d,130),green);
+      if(d%30===0){const p=point(d,146);body+=label(p[0],p[1]+6,String(d),green);}
+    }
+    body+=line(O,point(0,112),blue)+line(O,point(degrees,112),gold);
+    return svg(`מד־זווית: קודקוד במרכז, הקרן הכחולה מכוונת לשנתת 0 בצד ימין. הקרן הכתומה פוגעת בשנתת ${degrees} בסולם שמתחיל שם; השנתות בהפרשים של 5 מעלות`,body);
+  }
+  function measurementReview(seed){
+    if(seed<8){
+      const a=[15,30,45,60,75,105,120,150][seed];
+      return number("מה גודל הזווית בין הקרן הכחולה לקרן הכתומה לפי מד־הזווית? מתחילים בשנתת 0 שעל הקרן הכחולה.",a,[
+        S("הקודקוד נמצא במרכז מד־הזווית וקרן אחת מכוונת לשנתת 0."),S("קוראים בסולם שמתחיל ב־0 הזה; כל שנתה קטנה מוסיפה 5°."),S("הקרן הכתומה פוגעת בשנתה המתאימה.",`${a}°`),S(a<90?"הקריאה קטנה מ־90°, ומתאימה לפתיחה חדה בתרשים.":"הקריאה גדולה מ־90°, ומתאימה לפתיחה קהה בתרשים.")
+      ],angleRuler(a),"מעלות",[180-a,a+5,a+10]);
+    }
+    if(seed<16){
+      const index=seed-8,item=quadTypes[index%6],p=fitShape(item.p,index*19),first=index%2?1:0,last=first+2,answer=first===0?"AC":"BD";
+      const center=p.reduce((a,b)=>[a[0]+b[0]/4,a[1]+b[1]/4],[0,0]);
+      let body=poly(p)+line(p[first],p[last],gold,true);
+      p.forEach((point,i)=>{const dx=point[0]-center[0],dy=point[1]-center[1],r=Math.hypot(dx,dy);body+=label(point[0]+16*dx/r,point[1]+16*dy/r+4,"ABCD"[i]);});
+      return text("איזה מהקטעים הבאים הוא אלכסון במרובע ABCD? בדקו את הקודקודים שבקצות הקטע הכתום.",answer,[answer,"AB","BC","CD"],[
+        S("מחפשים קטע המחבר שני קודקודים שאינם סמוכים."),S("צלע מחברת קודקודים סמוכים; אלכסון מדלג על קודקוד בדרך סביב הגבול."),S("הקטע הכתום מחבר קודקודים שאינם סמוכים ולכן הוא האלכסון "+answer+"."),S("סיבוב הצורה אינו משנה את סדר הקודקודים סביב הגבול או את היות הקטע אלכסון.")
+      ],svg(`קודקודי המרובע A, B, C, D לפי סדרם סביב הגבול; הקטע הכתום מחבר את ${answer[0]} עם ${answer[1]}`,body));
+    }
+    const names=["צפון","מזרח","דרום","מערב"],start=(seed-16)%4,turns=1+Math.floor((seed-16)/4),end=(start+turns)%4,O=[180,120],ends=[[180,55],[245,120],[180,185],[115,120]];
+    let body=line([180,45],[180,195],green)+line([105,120],[255,120],green)+label(180,29,"N")+label(279,126,"E")+label(180,221,"S")+label(81,126,"W")+line(O,ends[start],gold);
+    const E=ends[start],d=[(E[0]-O[0])/65,(E[1]-O[1])/65],left=[E[0]-12*d[0]+6*d[1],E[1]-12*d[1]-6*d[0]],right=[E[0]-12*d[0]-6*d[1],E[1]-12*d[1]+6*d[0]];
+    body+=poly([E,left,right],gold);
+    return text(`פניכם לכיוון ${names[start]}. הסתובבתם ${turns*90}° ימינה, עם כיוון השעון. לאיזה כיוון פונים כעת?`,names[end],names,[
+      S("מזהים במצפן את כיוון ההתחלה."),S("כל רבע סיבוב ימינה הוא 90°: צפון, מזרח, דרום, מערב וחזרה לצפון."),S(`מתקדמים ${turns} רבעי סיבוב מ${names[start]} ומגיעים ל${names[end]}.`),S("אפשר לבדוק על דף: מצביעים לכיוון ההתחלה ומסובבים את היד בכיוון השעון.")
+    ],svg(`מצפן: N צפון למעלה, E מזרח מימין, S דרום למטה, W מערב משמאל. החץ הכתום מציג את כיוון ההתחלה: ${names[start]}`,body));
+  }
+  const triangleNames=["שווה־צלעות","שווה־שוקיים שאינו שווה־צלעות","שונה־צלעות"];
+  function triangles(seed){
+    if(seed<12){
+      const type=seed%3,turn=Math.floor(seed/3)*35;
+      const lengths=type===0?[6+Math.floor(seed/3),6+Math.floor(seed/3),6+Math.floor(seed/3)]:type===1?[10,10,12+Math.floor(seed/3)]:[5+Math.floor(seed/3),8+Math.floor(seed/3),10+Math.floor(seed/3)];
+      // Coordinates, rather than a generic icon, carry the same side-length ratios as the givens.
+      const [ab,ac,bc]=lengths,x=(ab*ab+ac*ac-bc*bc)/(2*ab),y=Math.sqrt(ac*ac-x*x),k=150/Math.max(ab,y);
+      const actual=[[95,175],[95+ab*k,175],[95+x*k,175-y*k]];
+      const info=`אורכי שלוש הצלעות בס״מ: ${lengths.join(", ")}`;
+      return text(`למשולש צלעות באורכים ${lengths.join(", ")} ס״מ. מהו הסיווג המדויק ביותר לפי צלעות?`,triangleNames[type],triangleNames,[
+        S("בודקים את שלושת אורכי הצלעות הנתונים."),S("שלוש שוות: שווה־צלעות; בדיוק שתיים שוות: שווה־שוקיים שאינו שווה־צלעות."),S("כאן הסיווג המדויק הוא "+triangleNames[type]+"."),S("כאן שווה־שוקיים פירושו לפחות שתי צלעות שוות; האפשרות המפורשת מוציאה שווה־צלעות.")
+      ],shapeView(actual,info,turn));
+    }
+    const a=30+(seed-12)*5,b=45,c=180-a-b,maxAngle=Math.max(a,b,c);
+    const angleType=maxAngle>90?"קהה־זווית":maxAngle===90?"ישר־זווית":"חד־זוויות";
+    const radians=d=>d*Math.PI/180,base=150,x=base*Math.sin(radians(b))*Math.cos(radians(a))/Math.sin(radians(c)),y=base*Math.sin(radians(b))*Math.sin(radians(a))/Math.sin(radians(c));
+    return number(`במשולש שתי זוויות הן ${a}° ו־${b}°. כמה מעלות בזווית השלישית?`,c,[
+      S("נתונות שתי זוויות; מחפשים את השלישית."),S("שלוש זוויות המשולש משלימות לזווית שטוחה.", "180°"),S("מחסרים את שתי הזוויות הידועות.",`180 − ${a} − ${b} = ${c}`),S("מחברים בחזרה את שלוש הזוויות. הזווית הגדולה היא "+maxAngle+"° ולכן המשולש "+angleType+".",`${a} + ${b} + ${c} = 180`)
+    ],svg(`משולש: זווית שמאלית ${a} מעלות, ימנית ${b} מעלות, עליונה לא ידועה`,poly([[80,180],[230,180],[80+x,180-y]])+rightCorners([[80,180],[230,180],[80+x,180-y]])+label(95,210,`${a}°`)+label(225,210,`${b}°`)+label(80+x,160-y,"?")),"מעלות",[a+b,180-c,c+10]);
+  }
+  function heights(seed){
+    const t=1+Math.floor(seed/3),b=6*t,h=4*t,offset=[seed%2?0:3*t,-3*t,9*t][seed%3],turn=seed%2?25:0;
+    return number(`בסיס המשולש המסומן b הוא ${b} ס״מ. הקטע המקווקו h יוצר זווית ישרה עם ישר הבסיס ואורכו ${h} ס״מ. מהו הגובה לבסיס הזה?`,h,[
+      S("מחפשים את המרחק המאונך מהקודקוד שמול הבסיס אל ישר הבסיס."),S("בודקים סימון זווית ישרה, גם אם צריך להמשיך את הבסיס."),S("הקטע המסומן h מאונך לישר הבסיס ולכן הוא הגובה.",`h = ${h}`),S(offset<0||offset>b?"במשולש זה רגל הגובה מחוץ למשולש; זה עדיין גובה תקין.":"אין לבחור צלע משופעת רק מפני שהיא יוצאת מהקודקוד.")
+    ],altitude(b,h,offset,true,turn),"סנטימטרים",[b,5*t,b+h]);
+  }
+  const quadTypes=[
+    {name:"ריבוע",p:[[100,50],[220,50],[220,170],[100,170]],why:"ארבע צלעות שוות וארבע זוויות ישרות"},
+    {name:"מלבן שאינו ריבוע",p:[[70,75],[270,75],[270,165],[70,165]],why:"ארבע זוויות ישרות, אך לא כל הצלעות שוות"},
+    {name:"מעוין שאינו ריבוע",p:[[80,120],[180,60],[280,120],[180,180]],why:"ארבע צלעות שוות וללא זוויות ישרות"},
+    {name:"מקבילית שאינה מלבן או מעוין",p:[[70,165],[240,165],[290,70],[120,70]],why:"שני זוגות צלעות נגדיות מקבילות, בלי זוויות ישרות ובלי ארבע צלעות שוות"},
+    {name:"טרפז",p:[[65,175],[290,175],[235,75],[120,75]],why:"בדיוק זוג אחד של צלעות נגדיות מקבילות ושתי השוקיים שוות"},
+    {name:"דלתון שאינו מעוין",p:[[180,35],[240,110],[180,195],[120,110]],why:"שני זוגות נפרדים של צלעות סמוכות שוות, אך לא ארבע צלעות שוות"}
+  ];
+  function quadrilaterals(seed){
+    const item=quadTypes[seed%6],turn=Math.floor(seed/6)*30,choices=[item.name,...quadTypes.filter(x=>x.name!==item.name).slice(0,3).map(x=>x.name)];
+    if(seed>=12){
+      const counts=[4,2,2,0,1,1],axes=["שני האלכסונים ושני הישרים המחברים אמצעי צלעות נגדיות","שני הישרים המחברים אמצעי צלעות נגדיות","שני האלכסונים","אין ישר קיפול שמכסה את הצורה על עצמה","הישר המחבר את אמצעי הבסיסים","האלכסון שבין שני הקודקודים שבהם נפגשות צלעות שוות"],count=counts[seed%6];
+      return number(`למרובע הנתון ${item.why}. כמה צירי סימטריה יש לו? ציר סימטריה הוא ישר שקיפול לאורכו מכסה את הצורה על עצמה בדיוק.`,count,[
+        S("מחפשים קווי קיפול של הצורה כולה, ולא רק צלעות שוות."),S("מדמיינים קיפול ובודקים ששני החלקים חופפים."),S(axes[seed%6]+"; מספר הצירים הוא "+count+"."),S("סיבוב הדף משנה את כיוון הצירים, אך אינו משנה את מספרם.")
+      ],shapeView(item.p,item.why,turn),"צירי סימטריה",[0,1,2,4]);
+    }
+    return text(`נתון מרובע שבו ${item.why}. מהו שמו המדויק ביותר מבין האפשרויות? כאן טרפז מוגדר כבעל בדיוק זוג אחד של צלעות נגדיות מקבילות.`,item.name,choices,[
+      S("אוספים את הנתונים על צלעות ועל זוויות, ולא מסתמכים על כיוון הצורה."),S("בודקים את ההגדרה המלאה של כל משפחה."),S("הנתונים מתאימים ל־"+item.name+"."),S(item.name==="ריבוע"?"ריבוע הוא גם מלבן, מעוין ומקבילית. כאן ביקשנו את השם המדויק ביותר.":"סיבוב המרובע אינו משנה אורכים, מקבילות או זוויות.")
+    ],shapeView(item.p,item.why,turn));
+  }
+  function rectangles(seed){
+    const a=4+Math.floor(seed/2),b=seed%6<2?a:2+(Math.floor(seed/4)%4),area=seed%2===1,answer=area?a*b:2*(a+b),k=Math.min(220/a,120/b);
+    const form=a===b?"ריבועית":"מלבנית";
+    const prompt=area?`רצפה ${form} באורך ${a} ס״מ וברוחב ${b} ס״מ. כמה ריבועי יחידה של סמ״ר אחד מכסים אותה בלי רווחים?`:`מסגרת ${form} באורך ${a} ס״מ וברוחב ${b} ס״מ. מה אורך הסרט המקיף אותה פעם אחת?`;
+    return number(prompt,answer,[
+      S(area?"מחפשים כיסוי של פנים המלבן, כלומר שטח.":"מחפשים את אורך הגבול של המלבן, כלומר היקף."),
+      S(area?"בכל שורה יש אורך יחידות, ומספר השורות הוא הרוחב.":"מחברים ארבע צלעות; במלבן צלעות נגדיות שוות."),
+      S("מציבים את המידות הנתונות.",area?`${a} × ${b} = ${answer}`:`${a} + ${b} + ${a} + ${b} = ${answer}`),
+      S(area?"התוצאה נמדדת בסמ״ר: ריבועים, לא אורך מסגרת.":"התוצאה נמדדת בס״מ: אורך, לא כיסוי.")
+    ],svg(`${a===b?"ריבוע":"מלבן"}: אורך ${a} ס״מ ורוחב ${b} ס״מ`,poly([[65,60],[65+a*k,60],[65+a*k,60+b*k],[65,60+b*k]])+rightCorners([[65,60],[65+a*k,60],[65+a*k,60+b*k],[65,60+b*k]])+label(65+a*k/2,45,String(a))+label(40,65+b*k/2,String(b))),area?"סנטימטרים רבועים (סמ״ר)":"סנטימטרים",[area?2*(a+b):a*b,answer+4,answer+6]);
+  }
+  function parallelograms(seed){
+    const b=7+seed,h=3+seed%6,offset=seed%2?3:0.75*h;
+    return number(`למקבילית בסיס ${b} ס״מ וגובה מאונך אליו ${h} ס״מ. מה שטחה?`,b*h,[
+      S("מחפשים שטח, ונתונים בסיס והגובה המתאים לו."),S("אפשר לגזור משולש בקצה ולהעבירו לצד השני. הכיסוי נשמר ונוצר מלבן."),S("מכפילים את הבסיס בגובה המאונך.",`${b} × ${h} = ${b*h}`),S("שיפוע הצלע אינו משנה את הכיסוי אם הבסיס והגובה נשארים קבועים. היחידה סמ״ר.")
+    ],altitude(b,h,offset,false,seed%3===0?12:0),"סנטימטרים רבועים (סמ״ר)",[b+h,2*(b+h),b*h+6]);
+  }
+  function triangleArea(seed){
+    const b=6+2*Math.floor(seed/3),h=3+seed%6,offset=[seed%2?0:b/3,-b/3,4*b/3][seed%3],answer=b*h/2;
+    return number(`בסיס משולש ${b} ס״מ והגובה המאונך המתאים ${h} ס״מ. מה השטח?`,answer,[
+      S("הגובה חייב להתאים לבסיס שבחרנו; מותר שהוא יהיה מחוץ למשולש."),S("מצרפים עותק חופף ומקבלים מקבילית בעלת אותו בסיס וגובה. המשולש הוא מחציתה."),S("מחשבים שטח מקבילית ומחלקים לשניים.",`${b} × ${h} ÷ 2 = ${answer}`),S("כפל התשובה בשתיים מחזיר את שטח המקבילית.",`${answer} × 2 = ${b*h}`)
+    ],altitude(b,h,offset,true,seed%2?12:0),"סנטימטרים רבועים (סמ״ר)",[b*h,b+h,answer+3]);
+  }
+  function composites(seed){
+    const w=7+Math.floor(seed/3),h=5+seed%3,cutW=2+seed%3,cutH=2+Math.floor(seed/8),k=Math.min(220/w,140/h),perimeter=seed%2===1;
+    const P=(x,y)=>[65+x*k,40+y*k],answer=perimeter?2*(w+h):w*h-cutW*cutH,bottom=h-cutH,left=w-cutW;
+    const points=[P(0,0),P(left,0),P(left,cutH),P(w,cutH),P(w,h),P(0,h)];
+    const body=poly(points)+line(P(0,cutH),P(left,cutH),gold,true)+label(65+w*k/2,65+h*k,String(w))+label(38,40+h*k/2,String(h))+label(65+(left+cutW/2)*k,32,String(cutW))+label(65+w*k+18,40+cutH*k/2,String(cutH));
+    return number(`ממלבן ${w} על ${h} ס״מ הוציאו בפינה הימנית העליונה מלבן ${cutW} על ${cutH} ס״מ. מה ${perimeter?"היקף":"שטח"} הצורה שנותרה?`,answer,perimeter?[
+      S("מחפשים את אורך כל הגבול של הצורה, כולל המדרגה."),S("משלימים את שתי הצלעות החסרות בהפרש ומחברים את שש צלעות הגבול."),S("מקיפים את הצורה פעם אחת.",`${left} + ${cutH} + ${cutW} + ${bottom} + ${w} + ${h} = ${answer}`),S("בפינה שהוצאנו, שני אורכי הגבול הוחלפו באורכים שווים. לכן כאן ההיקף נשאר כמו במלבן החיצוני.",`2 × (${w} + ${h}) = ${answer}`)
+    ]:[
+      S("הצורה מורכבת משני מלבנים שאינם חופפים. נתונות גם מידות המלבן החסר."),S("מחלקים בקו המקווקו: מלבן תחתון מלא ומלבן שמאלי עליון."),S("מחשבים כל חלק ומחברים.",`${w} × (${h} − ${cutH}) + (${w} − ${cutW}) × ${cutH} = ${answer}`),S("בודקים בדרך אחרת: שטח שלם פחות החלק שהוצא.",`${w} × ${h} − ${cutW} × ${cutH} = ${answer}`)
+    ],svg(`צורת ר׳: מלבן חיצוני ${w} על ${h}, חסר בפינה ${cutW} על ${cutH}; כל המידות בס״מ`,body),perimeter?"סנטימטרים":"סנטימטרים רבועים (סמ״ר)",[w*h,answer-cutW*cutH,answer+cutH]);
+  }
+  function inverseArea(seed){
+    const triangle=seed%2===0,b=(5+Math.floor(seed/4))*(triangle?2:1),h=3+seed%4,area=b*h/(triangle?2:1),missingBase=Math.floor(seed/2)%2===0,answer=missingBase?b:h,name=triangle?"משולש":"מקבילית";
+    return number(`שטח ${name} הוא ${area} סמ״ר. ${missingBase?"הגובה לבסיס המבוקש":"הבסיס המתאים לגובה המבוקש"} הוא ${missingBase?h:b} ס״מ. מה אורך ${missingBase?"הבסיס":"הגובה"}?`,answer,[
+      S("נתון שטח ונתונה אחת המידות מתוך זוג מתאים של בסיס וגובה."),S(triangle?"מכפילים את השטח בשתיים כדי לקבל את מכפלת הבסיס והגובה.":"שטח המקבילית הוא מכפלת הבסיס והגובה; נחלק במידה הידועה."),
+      S("מוצאים את הגורם החסר בכפל.",`${area}${triangle?" × 2":""} ÷ ${missingBase?h:b} = ${answer}`),
+      S("מציבים בחזרה בנוסחת השטח כדי לבדוק שנבחרו בסיס וגובה מתאימים.",`${b} × ${h}${triangle?" ÷ 2":""} = ${area}`)
+    ],altitude(b,h,seed%3===0?-2:2,triangle,seed%2?12:0,missingBase?"base":"height"),"סנטימטרים",[answer+2,answer*2,answer+3]);
+  }
+  const tileInfo=[
+    {name:"משולשים שווי־צלעות",angle:60,n:6,sides:3,side:70},
+    {name:"ריבועים",angle:90,n:4,sides:4,side:55},
+    {name:"משושים משוכללים",angle:120,n:3,sides:6,side:43}
+  ];
+  function tilingDiagram(type,count){
+    const tile=tileInfo[type],origin=[180,120];let body="";
+    for(let j=0;j<count;j++){
+      const points=[origin];let p=origin;
+      for(let i=0;i<tile.sides-1;i++){
+        const r=(j*tile.angle+i*360/tile.sides)*Math.PI/180;
+        p=[p[0]+tile.side*Math.cos(r),p[1]+tile.side*Math.sin(r)];points.push(p);
+      }
+      body+=poly(points,[blue,green,gold][j%3]);
+    }
+    return svg(`${count} ${tile.name} חופפים נפגשים בקודקוד המסומן; כל זווית פנימית שם היא ${tile.angle} מעלות`,body+`<circle cx="180" cy="120" r="4" fill="#243b53"/>`);
+  }
+  function tessellations(seed){
+    const type=seed%3,mode=Math.floor(seed/3),tile=tileInfo[type],count=mode===0?1:mode===1?tile.n-1:mode===2?tile.n-2:2;
+    const answer=mode===0?tile.n:mode===3?360-count*tile.angle:tile.n-count;
+    const prompt=mode===0?`מרצפים רק ב${tile.name} חופפים. כל זווית פנימית היא ${tile.angle}°. כמה מצולעים ייפגשו סביב קודקוד פנימי ללא פער או חפיפה?`:
+      mode===3?`סביב קודקוד הונחו ${count} ${tile.name} חופפים; כל זווית היא ${tile.angle}°. כמה מעלות נותרו להשלמת סיבוב שלם?`:
+      `סביב קודקוד כבר הונחו ${count} ${tile.name} חופפים, כל זווית ${tile.angle}°. כמה מצולעים נוספים מאותו סוג ישלימו את הריצוף סביבו?`;
+    return number(prompt,answer,[
+      S("חוקרים את הזוויות סביב נקודה אחת בתוך הריצוף."),S("כדי שלא יישאר פער ושלא תהיה חפיפה, הזוויות סביב הנקודה צריכות להסתכם ב־360°."),
+      S(mode===0?"מחלקים סיבוב שלם בזווית של מצולע אחד.":mode===3?"מחסרים את הזוויות שכבר הונחו.":"מוצאים את מספר המצולעים המלא ומחסרים את אלה שכבר הונחו.",mode===0?`360 ÷ ${tile.angle} = ${answer}`:mode===3?`360 − ${count} × ${tile.angle} = ${answer}`:`360 ÷ ${tile.angle} − ${count} = ${answer}`),
+      S("בודקים שהריצוף המלא סוגר סיבוב שלם. משלושת הסוגים האלה אפשר להמשיך ריצוף מחזורי של המישור.",`${tile.n} × ${tile.angle} = 360`)
+    ],tilingDiagram(type,count),mode===3?"מעלות":"מצולעים",[answer+1,answer+2,answer+3]);
+  }
+  function units(seed){
+    const mode=seed%3,n=1+Math.floor(seed/3);
+    if(mode===0)return number(`ריבוע שאורך כל צלע שלו ${n} מטר. מה שטחו בסמ״ר?`,n*n*10000,[
+      S("תחילה מוצאים את שטח הריבוע במ״ר."),S("בכל מטר יש 100 ס״מ; בריבוע של מטר על מטר יש 100 שורות של 100 סמ״ר.", "100 × 100 = 10000"),S("מחשבים שטח וממירים יחידות שטח.",`${n} × ${n} × 10000 = ${n*n*10000}`),S("סמ״ר קטן ממ״ר ולכן מספר יחידות הכיסוי גדול יותר.")
+    ],undefined,"סנטימטרים רבועים (סמ״ר)",[n*n*100,n*10000,n*n]);
+    if(mode===1)return number(`שטיח מלבני ששטחו ${n*10000} סמ״ר. מה שטחו במ״ר?`,n,[
+      S("השטח אינו משתנה; רק יחידת המדידה משתנה."),S("כל 10,000 סמ״ר הם מ״ר אחד."),S("מחלקים בגודל קבוצת היחידות.",`${n*10000} ÷ 10000 = ${n}`),S("מ״ר הוא יחידה גדולה, ולכן צריך פחות יחידות ממספר הסמ״ר.")
+    ],undefined,"מטרים רבועים (מ״ר)",[n*100,n*1000,n+10]);
+    return number(`שטח מדבקה הוא ${n} סמ״ר. מה שטחה בממ״ר?`,n*100,[
+      S("ממירים בין שתי יחידות של שטח, לא של אורך."),S("בס״מ יש 10 מ״מ. ריבוע של סמ״ר מכיל 10 שורות ובכל אחת 10 ממ״ר.", "10 × 10 = 100"),S("מכפילים את מספר הסמ״ר במאה.",`${n} × 100 = ${n*100}`),S("מספר יחידות השטח הקטנות גדל; לא די להכפיל בעשר.")
+    ],undefined,"מילימטרים רבועים (ממ״ר)",[n*10,n*1000,n]);
+  }
+  function cuboidNet(a,b,c){
+    const k=Math.min(270/(2*(a+b)),156/(2*b+c)),P=(x,y)=>[45+x*k,30+y*k],rect=(x,y,w,h,color)=>poly([P(x,y),P(x+w,y),P(x+w,y+h),P(x,y+h)],color);
+    let body=rect(0,0,a,b,blue)+rect(0,b+c,a,b,blue),x=0;
+    [a,b,a,b].forEach((w,i)=>{body+=rect(x,b,w,c,i%2?green:gold);x+=w;});
+    body+=label(45+a*k/2,21,`a = ${a}`)+label(23,30+b*k/2,`b=${b}`)+label(23,30+(b+c/2)*k+6,`c=${c}`);
+    return svg(`פריסה של שש פאות תיבה, ללא חפיפה: שתי פאות ${a} על ${b}, שתי פאות ${a} על ${c}, ושתי פאות ${b} על ${c}; כל האורכים בס״מ`,body);
+  }
+  function surfaceArea(seed){
+    const a=3+Math.floor(seed/3),b=2+seed%3,c=1+Math.floor(seed/6),answer=2*(a*b+a*c+b*c);
+    return number(`קופסה סגורה בצורת תיבה שמידותיה ${a}, ${b}, ${c} ס״מ. כמה סמ״ר נייר דרושים לכיסוי כל שש הפאות, בלי חפיפה ובלי לשוניות?`,answer,[
+      S("מחפשים את כיסוי המעטפת כולה, כולל המכסה והתחתית, ולא את המקום שבתוך הקופסה."),S("בפריסה שלושה זוגות מלבנים: לכל מלבן פאה נגדית באותו שטח."),S("מחשבים כל סוג פאה ומכפילים בשתיים.",`2 × (${a} × ${b} + ${a} × ${c} + ${b} × ${c}) = ${answer}`),S("בודקים שספרנו שש פאות ושהיחידות הן סמ״ר. חיבור של שלוש פאות בלבד נותן רק מחצית.",`${a*b} + ${a*b} + ${a*c} + ${a*c} + ${b*c} + ${b*c} = ${answer}`)
+    ],cuboidNet(a,b,c),"סנטימטרים רבועים (סמ״ר)",[a*b+a*c+b*c,2*(a+b+c),answer+a*b]);
+  }
+  function skill(id,title,scope,goal,why,rule,example,mistake,build,visual,guided,count=24){
+    return {id,title,scope,goal,why,rule,example,mistake,count,build,visual,guided:guided||(()=>guidedQuestion(id,build))};
+  }
+  function guidedQuestion(id,build){
+    if(id==="lines-angles")return text("מיה סובבה דף ועליו זווית של 135°. האם הזווית הפכה לחדה?","לא, היא נשארה קהה",["לא, היא נשארה קהה","כן, עכשיו היא חדה","עכשיו היא ישרה"],[
+      S("נתון גודל הזווית לפני סיבוב הדף."),S("סיבוב אינו משנה את הפתיחה בין הקרניים."),S("135° גדול מ־90° וקטן מ־180°, לכן הזווית קהה.","90 < 135 < 180"),S("גם אחרי הסיבוב אותה פתיחה ואותו גודל: 135°.")
+    ]);
+    if(id==="triangles")return number("במשולש שתי זוויות הן 40° ו־70°. תלמיד אמר שהשלישית היא 110°. מה גודלה הנכון?",70,[
+      S("110° הוא סכום שתי הזוויות הידועות, לא הזווית שנותרה."),S("כל שלוש זוויות המשולש מסתכמות ב־180°."),S("מחסרים את הסכום הידוע.","180 − (40 + 70) = 70"),S("בודקים את הסכום של שלושתן.","40 + 70 + 70 = 180")
+    ],undefined,"מעלות",[110,40,140]);
+    if(id==="quadrilaterals")return text("ילד טוען שריבוע אינו מלבן כי כל צלעותיו שוות. איזה משפט מתקן את הטעות?","כל ריבוע הוא גם מלבן",["כל ריבוע הוא גם מלבן","כל מלבן הוא גם ריבוע","שום ריבוע אינו מלבן"],[
+      S("בודקים האם ריבוע מקיים את הגדרת המלבן."),S("מלבן צריך ארבע זוויות ישרות; אין דרישה לצלעות סמוכות שונות."),S("לריבוע ארבע זוויות ישרות, לכן הוא גם מלבן."),S("הכיוון ההפוך אינו תמיד נכון: מלבן של 2 על 5 אינו ריבוע.")
+    ]);
+    // These parameterized builders support this reserved seed, outside the scored bank 0–23.
+    return build(25);
+  }
+  const skills=[
+    skill("lines-angles","ישרים וזוויות — מסתכלים גם בסיבוב","review",
+      "נזהה מקבילות, מאונכות וזוויות חדה, ישרה, קהה ושטוחה.",
+      "זווית מודדת פתיחה בין שני כיוונים. היא לא נמדדת לפי אורך הקווים או לפי כיוון הדף.",
+      "חדה: פחות מ־90°; ישרה: 90°; קהה: יותר מ־90° ופחות מ־180°; שטוחה: 180°. מאונכים יוצרים זווית ישרה.",
+      [S("קפלו דף כך ששפתו תפגוש את עצמה, וקפלו שוב כשקו הקיפול מונח על עצמו. פינת שני הקיפולים היא זווית ישרה."),S("השוו לפינה זווית מצוירת של 120°: היא פתוחה יותר מזווית ישרה ופחות משטוחה."),S("סובבו את הדף. הזווית עדיין קהה כי הפתיחה לא השתנתה.", "90 < 120 < 180")],
+      {text:"״הישרים אינם נפגשים בתוך הציור, לכן הם מקבילים״.",fix:"יש לדמיין את המשך הישרים. ישרים שאינם מקבילים עשויים להיפגש מחוץ למסגרת."},relation),
+    skill("measure-diagonals","מד־זווית, אלכסונים וכיווני המצפן","review",
+      "נקרא מד־זווית, נזהה אלכסונים לפי קודקודים ונקשר רבעי סיבוב לכיווני המצפן.",
+      "מד־זווית מודד פתיחה החל מקרן הבסיס. אלכסון מוגדר לפי קודקודים שאינם סמוכים, לא לפי שיפוע. סיבוב של 90° הוא רבע סיבוב.",
+      "במד־זווית מניחים את המרכז על הקודקוד ומתחילים ב־0 שעל אחת הקרניים. אלכסון מחבר קודקודים שאינם סמוכים. בכיוון השעון: צפון, מזרח, דרום, מערב.",
+      [S("על דף שרטטו קרן בסרגל וסמנו את קודקודה. הניחו את מרכז מד־הזווית על הקודקוד ואת שנתת 0 על הקרן."),S("כדי לבנות זווית של 50°, סמנו נקודה מול שנתת 50 בסולם שמתחיל ב־0 הזה. הסירו את המד וחברו את הנקודה לקודקוד בסרגל. בדקו שהפתיחה קטנה מזווית ישרה."),S("שרטטו מרובע וסמנו את קודקודיו A,B,C,D לפי הסדר. חברו A ל־C וגם B ל־D: אלה האלכסונים. הקטע AB הוא צלע."),S("ציירו מצפן: צפון למעלה ומזרח מימין. מעבר מצפון למזרח הוא 90° עם כיוון השעון; מצפון לדרום הוא 180°.")],
+      {text:"״מתחילים תמיד בשנתת 0 שבצד שמאל של מד־הזווית״.",fix:"מתחילים בשנתת 0 שעל הקרן הנתונה, לא בצד קבוע. בדקו שהקריאה מתאימה גם לאומדן: חדה או קהה."},measurementReview,angleRuler(50),
+      ()=>number("תלמיד התחיל בצד הלא נכון וקרא 155°. מה הקריאה הנכונה במד־הזווית המוצג?",25,[S("הקרן הכחולה נמצאת על שנתת 0 בצד ימין."),S("קוראים את הסולם שמתחיל שם, ולא את הסולם ההפוך."),S("הקרן הכתומה מכוונת ל־25°.","180 − 155 = 25"),S("25° היא זווית חדה, וכך נראית הפתיחה. 155° הייתה זווית קהה.")],angleRuler(25),"מעלות",[155,65,115])),
+    skill("triangles","משולשים: צלעות וזוויות","review",
+      "נסווג משולשים לפי צלעות ונשלים זווית חסרה.",
+      "סיווג לפי צלעות וסיווג לפי זוויות הם שני תיאורים נפרדים. סיבוב אינו משנה אף אחד מהם.",
+      "שווה־שוקיים כולל לפחות שתי צלעות שוות; שווה־צלעות הוא מקרה מיוחד. לפי זוויות: חד־זוויות — כולן חדות; ישר־זווית — אחת ישרה; קהה־זווית — אחת קהה. סכום הזוויות במשולש 180°.",
+      [S("ציירו על דף משולש, גזרו את שלוש הפינות והניחו אותן זו לצד זו כשקודקודיהן נוגעים: מתקבלת זווית שטוחה."),S("במשולש זוויות 50° ו־60°. מחברים את שתי הזוויות הידועות.", "50 + 60 = 110"),S("הזווית שנותרה משלימה ל־180°.", "180 − 110 = 70"),S("בדיקה: שלוש הזוויות יחד 180°. משולש זה חד־זוויות כי כל זוויותיו קטנות מ־90°.", "50 + 60 + 70 = 180")],
+      {text:"״יש צלע שנראית ארוכה יותר בציור, לכן המשולש שונה־צלעות״.",fix:"לסיווג משתמשים במידות הנתונות או במדידה של השרטוט האישי, לא באומדן על המסך."},triangles),
+    skill("heights","בוחרים בסיס ובונים גובה","core",
+      "נזהה ונשרטט גובה מאונך לבסיס נבחר, גם במשולש קהה־זווית.",
+      "גובה הוא המרחק הקצר ביותר מהקודקוד שמול הבסיס אל הישר המכיל את הבסיס. המרחק הזה נמדד במאונך.",
+      "מכל קודקוד מורידים אנך לישר של הצלע שמולו. אם מחליפים בסיס צריך לבחור גם את הגובה המתאים לו.",
+      [S("על דף סמנו בסיס AB באורך 7 ס״מ. סמנו נקודה H במרחק 2 ס״מ משמאל ל־A על המשך הבסיס."),S("הניחו פינה ישרה של דף מקופל על H: שפה אחת על ישר AB. לאורך השפה המאונכת מדדו 3 ס״מ וסמנו C. חברו C ל־A ול־B."),S("CH הוא גובה לבסיס AB: הוא מאונך לישר הבסיס, אף שרגלו מחוץ למשולש.", "b = 7, h = 3"),S("סובבו את הדף ובדקו שהפינה הישרה עדיין מתאימה. אין למדוד את תרשים המסך."),S("במשולש ישר־זווית שתי הצלעות הניצבות מאונכות זו לזו: כל אחת יכולה להיות גובה לבסיס שהוא הצלע הניצבת האחרת. גם לצלע השלישית יש גובה מתאים.")],
+      {text:"״הגובה חייב להיות צלע או להימצא בתוך המשולש״.",fix:"גובה עשוי להיות בתוך המשולש, על צלע במשולש ישר־זווית, או מחוץ למשולש. התנאי הוא מאונכות לבסיס."},heights,altitude(7,3,-2,true),
+      ()=>text("תלמיד בחר בצלע המשופעת כגובה כי היא מגיעה לקודקוד. איזה תנאי חסר בבדיקה שלו?","מאונכות לישר הבסיס",["מאונכות לישר הבסיס","מיקום אנכי על המסך","אורך שווה לבסיס"],[S("צריך גובה לבסיס שנבחר."),S("לא כל קטע אל הקודקוד הוא גובה."),S("בודקים שהקטע מאונך לישר הבסיס."),S("הסימון של זווית ישרה מאשר את הבחירה גם כשהגובה חיצוני.")],altitude(7,3,-2,true))),
+    skill("quadrilaterals","משפחות המרובעים וצירי סימטריה","core",
+      "נזהה צורות לפי תכונות, נבין שייכות לכמה משפחות ונחקור צירי סימטריה בקיפול.",
+      "הגדרה מציינת תנאים, לא תנוחת ציור. ריבוע מקיים גם את תנאי המלבן, המעוין והמקבילית.",
+      "מקבילית: שני זוגות צלעות נגדיות מקבילות. מלבן: ארבע זוויות ישרות. מעוין: ארבע צלעות שוות. ריבוע: שניהם. בקורס זה טרפז: בדיוק זוג אחד של צלעות נגדיות מקבילות.",
+      [S("ציירו ריבוע על דף משובץ, ובדקו בסרגל שכל צלעותיו שוות ובפינת דף שכל זוויותיו ישרות."),S("הוא מלבן בגלל ארבע הזוויות הישרות; הוא מעוין בגלל ארבע הצלעות השוות."),S("לכן הוא גם מקבילית. כשמבקשים את השם המדויק ביותר נבחר ריבוע."),S("גזרו את הריבוע וקפלו אותו בשני האלכסונים ובשני הקווים המחברים אמצעי צלעות נגדיות. בכל קיפול החלקים חופפים: לריבוע ארבעה צירי סימטריה."),S("סובבו את הדף: ריבוע המונח על קודקוד נשאר ריבוע. דלתון כאן כולל שני זוגות נפרדים של צלעות סמוכות שוות.")],
+      {text:"״ריבוע מסובב הוא מעוין אבל כבר אינו ריבוע״.",fix:"הסיבוב לא משנה תכונות. כל ריבוע הוא מעוין, גם לפני הסיבוב וגם אחריו."},quadrilaterals),
+    skill("regular-tessellations","ריצופים במצולעים משוכללים חופפים","core",
+      "נבנה ריצופים חוזרים במשולשים שווי־צלעות, ריבועים ומשושים משוכללים, בלי רווחים ובלי חפיפה.",
+      "בריצוף כל האריחים מכסים את המישור. סביב קודקוד פנימי הם סוגרים סיבוב שלם, ולכן הזוויות שם מסתכמות ב־360°.",
+      "במצולע משוכלל כל הצלעות וכל הזוויות שוות. חופפים פירושו אותו סוג ואותו גודל: 6 משולשים שווי־צלעות, 4 ריבועים או 3 משושים משוכללים נפגשים סביב קודקוד.",
+      [S("בנו משולש שווה־צלעות על דף: סמנו קטע 4 ס״מ; במחוגה שרטטו משני קצותיו קשתות ברדיוס 4 ס״מ. חברו נקודת חיתוך לשני הקצוות והעתיקו שש פעמים."),S("גזרו את ששת העותקים והצמידו קודקודים. הזוויות סוגרות סיבוב שלם בלי רווח או חפיפה.", "6 × 60 = 360"),S("נסו גם ארבעה ריבועים חופפים, ואחר כך שלושה משושים משוכללים חופפים. המשיכו את התבנית מעבר לקודקוד אחד.", "4 × 90 = 360"),S("במשושה משוכלל זווית פנימית היא 120°. שלושה עותקים מתאימים בדיוק סביב הנקודה.", "3 × 120 = 360")],
+      {text:"״האריחים מאותו סוג, אז מותר להשאיר ביניהם חורים קטנים״.",fix:"בריצוף אין רווחים ואין חפיפות. בקורס הזה משתמשים בעותקים חופפים של אותו מצולע משוכלל."},tessellations,tilingDiagram(0,6)+tilingDiagram(1,4)+tilingDiagram(2,3),
+      ()=>text("תלמיד הניח ארבעה ריבועים חופפים סביב קודקוד, אך השאיר רווח בין שתי צלעות סמוכות. האם זה כבר ריצוף תקין?","לא, אסור להשאיר רווחים",["לא, אסור להשאיר רווחים","כן, כי יש ארבעה ריבועים","כן, כי הריבועים חופפים"],[S("בודקים כיסוי, לא רק את מספר האריחים."),S("ריצוף דורש שאין פערים ואין חפיפות."),S("הרווח מראה שהאריחים עדיין אינם מונחים במקומם."),S("מצמידים את הצלעות ואת הקודקודים ובודקים שוב שהאזור מכוסה בדיוק.")]),12),
+    skill("rectangle-measure","היקף ושטח של מלבן וריבוע","review",
+      "נבדיל בין אורך הגבול לכיסוי הפנים ונבחר יחידה מתאימה.",
+      "סרט מקיף את הגבול ונמדד ביחידות אורך. ריבועי יחידה מרצפים את הפנים ונמדדים ביחידות שטח.",
+      "היקף מלבן: פעמיים סכום האורך והרוחב. שטח מלבן: אורך כפול רוחב. בריבוע שתי המידות שוות.",
+      [S("שרטטו בעזרת סרגל מלבן 6 על 4 ס״מ. סמנו מרווחי ס״מ וצרו רשת."),S("ספרו 4 שורות של 6 ריבועים: זהו השטח בסמ״ר.", "6 × 4 = 24"),S("עברו עם חוט סביב ארבע הצלעות: זהו ההיקף בס״מ.", "6 + 4 + 6 + 4 = 20"),S("לריבוע שצלעו 5 ס״מ היקף 20 ס״מ ושטח 25 סמ״ר. היקף שווה אינו מבטיח שטח שווה.")],
+      {text:"״כדי למצוא שטח אחבר את כל הצלעות״.",fix:"סכום הצלעות הוא היקף. שאלו אם מבקשים גבול או כיסוי, ורק אז בחרו חיבור או כפל."},rectangles),
+    skill("cuboid-surface","יישום לבחירה: שטח הפנים של תיבה","enrichment",
+      "ניישם שטחי מלבנים כדי למצוא כיסוי של קופסה סגורה. זהו תרגול מומלץ לבחירה, לא לימוד נפח.",
+      "כשפורשים את התיבה מתקבלים שישה מלבנים בשלושה זוגות שווים. הפריסה שומרת את השטח של כל פאה.",
+      "מחשבים את שטח כל שש הפאות ומחברים. אין לשכוח את המכסה והתחתית, ואין לספור לשוניות הדבקה כחלק מהפאות.",
+      [S("קחו קופסה מלבנית קטנה, מדדו בסרגל אורך, רוחב וגובה והעתיקו את שש הפאות לדף. הפריסה בתרשים מראה כיצד ארבע פאות יוצרות רצועה ושתי פאות נוספות סוגרות אותה."),S("בדוגמה אורך 7 ס״מ, רוחב 5 ס״מ וגובה 2 ס״מ. שתי הפאות הגדולות יחד הן 70 סמ״ר.", "2 × 7 × 5 = 70"),S("שתי פאות נוספות הן 28 סמ״ר, ושתי הנותרות הן 20 סמ״ר.", "2 × 7 × 2 + 2 × 5 × 2 = 48"),S("מחברים את כל הזוגות. היחידה היא סמ״ר כי מחפשים כיסוי, לא אורך ולא נפח.", "70 + 48 = 118")],
+      {text:"״מספיק לחשב את שלוש הפאות שרואים בתמונה של הקופסה״.",fix:"גם מאחור, בצד הנגדי ובתחתית יש פאות. השתמשו בפריסה וספרו שש פאות, בשלושה זוגות."},surfaceArea,cuboidNet(7,5,2),()=>surfaceArea(14),12),
+    skill("parallelogram-area","שטח מקבילית: גוזרים ומסדרים","core",
+      "נחשב שטח מקבילית ונבין מדוע משתמשים בגובה ולא בצלע המשופעת. בשיעור מחכה מעבדת שטח חיה עם בקרי בסיס, גובה והזזה.",
+      "גזירה של המשולש שבקצה והעברתו לצד האחר יוצרת מלבן בעל אותו כיסוי, אותו בסיס ואותו גובה.",
+      "שטח מקבילית שווה לבסיס כפול הגובה המאונך המתאים לו. הצלע המשופעת אינה הגובה.",
+      [S("בתרשים המקורי גוזרים לאורך הקטע המאונך המקווקו בקצה השמאלי. מעבירים את המשולש ימינה; אין מתיחה ואין חפיפה."),S("נוצר מלבן. אפשר לנסות על דף משובץ עם בסיס 8 ס״מ, גובה 3 ס״מ והזזה אופקית של 2 ס״מ."),S("למלבן ולמקבילית אותו שטח כי השתמשנו בדיוק באותם חלקים.", "8 × 3 = 24"),S("אם מטים עוד את המקבילית בלי לשנות בסיס וגובה, השטח נשאר 24 סמ״ר.")],
+      {text:"״הבסיס 8 והצלע המשופעת 5, לכן השטח 40״.",math:"8 × 5 = 40",fix:"זה אינו חישוב שטח תקין. אם הגובה המאונך הוא 3 ס״מ, השטח הוא 8 כפול 3, כלומר 24 סמ״ר."},parallelograms,areaProof+explorer),
+    skill("triangle-area","שטח משולש: מחצית מקבילית","core",
+      "נחשב שטח משולש חד, ישר או קהה־זווית בעזרת בסיס וגובה מתאים.",
+      "שני עותקים חופפים של המשולש יוצרים מקבילית. האלכסון מפריד אותה לשני משולשים שווי שטח.",
+      "שטח משולש הוא בסיס כפול הגובה המאונך המתאים, לחלק לשניים.",
+      [S("ציירו משולש על דף משובץ והעתיקו אותו לנייר נוסף. גזרו את שני העותקים."),S("סובבו עותק אחד והצמידו לאורך צלע כך שיתקבלו צלעות נגדיות מקבילות, בלי רווחים או חפיפה."),S("אם הבסיס 9 ס״מ והגובה 6 ס״מ, שטח המקבילית 54 סמ״ר.", "9 × 6 = 54"),S("כל עותק מכסה מחצית. גם גובה חיצוני במשולש קהה תקין.", "54 ÷ 2 = 27")],
+      {text:"״כפלתי בסיס בגובה וסיימתי״.",fix:"כך מצאתם שטח מקבילית של שני עותקים. למשולש אחד יש לחלק לשניים."},triangleArea,triangleProof,
+      ()=>number("תלמיד חישב למשולש בסיס 7 ס״מ וגובה 6 ס״מ שטח של 42 סמ״ר. מה השטח המתוקן?",21,[S("42 הוא שטח המקבילית המתאימה."),S("המשולש מכסה מחצית ממנה."),S("מחלקים בשניים.","42 ÷ 2 = 21"),S("שני משולשים יחד מכסים 42 סמ״ר.","21 + 21 = 42")],altitude(7,6,-2,true),"סנטימטרים רבועים (סמ״ר)",[42,13,26])),
+    skill("base-height-area","בסיס וגובה מתאימים — גם בדרך ההפוכה","core",
+      "נזהה את שלושת גובהי המשולש ונמצא בסיס או גובה חסרים מתוך שטח.",
+      "אפשר לבחור כל צלע כבסיס, אך יש להתאים לה את הגובה המאונך אליה. השטח של אותה צורה אינו תלוי בבחירת הבסיס.",
+      "במקבילית מכפלת בסיס וגובה היא השטח; במשולש היא פעמיים השטח. מוצאים מידה חסרה באמצעות חילוק בגורם הידוע.",
+      [S("בתרשים ABC בחרו תחילה AB כבסיס: הגובה יוצא מ־C. לבסיס BC הגובה יוצא מ־A, ולבסיס AC הוא יוצא מ־B. בכל פעם חפשו את סימון הזווית הישרה."),S("על דף שרטטו משולש ובנו מכל קודקוד אנך בעזרת פינת דף. ייתכן שצריך להמשיך את הבסיס. כך מקבלים שלושה גבהים, אחד לכל בסיס."),S("למשולש שטח 63 סמ״ר וגובה מתאים 9 ס״מ. מכפלת הבסיס והגובה היא פעמיים השטח.", "63 × 2 = 126"),S("מחלקים בגובה ומוצאים בסיס 14 ס״מ.", "126 ÷ 9 = 14"),S("בודקים בחזרה.", "14 × 9 ÷ 2 = 63")],
+      {text:"״אבחר כל גובה שמופיע בציור, גם אם אינו מאונך לבסיס שבחרתי״.",fix:"בסיס וגובה הם זוג מתאים. מחליפים את הבסיס? חייבים לזהות מחדש את הגובה המאונך לו."},inverseArea,threeHeights),
+    skill("composite-area","שטח והיקף של צורות מורכבות","core",
+      "נחשב שטח צורת ר׳ בחיבור מלבנים ונמדוד בנפרד את כל גבולה.",
+      "חיבור שטחים עובד כאשר החלקים מכסים בדיוק את הצורה, בלי לספור אזור פעמיים ובלי להשאיר חורים.",
+      "בחרו חלוקה למלבנים שאינם חופפים. השלימו מידות חסרות בהפרש, חשבו כל שטח וחברו.",
+      [S("ציירו מלבן 10 על 8 ס״מ והוציאו מהפינה הימנית העליונה מלבן 3 על 2 ס״מ."),S("המלבן התחתון הוא 10 על 6, והשמאלי העליון הוא 7 על 2. הם נפגשים רק לאורך שפה."),S("מחברים את שני השטחים.", "10 × 6 + 7 × 2 = 74"),S("בדיקה בלתי תלויה: המלבן הגדול פחות החלק שהוצא.", "10 × 8 − 3 × 2 = 74"),S("ההיקף הוא חישוב אחר: מחברים את שש צלעות הגבול, כולל המדרגה. התוצאה בס״מ.", "7 + 2 + 3 + 6 + 10 + 8 = 36")],
+      {text:"״אחבר מלבן אנכי שלם ומלבן אופקי שלם״.",fix:"אם הם חופפים בפינה, ספרתם אותה פעמיים. חלקו בקו אחד למלבנים נפרדים או החסירו את החפיפה."},composites),
+    skill("square-units","יחידות שטח — מדוע ממירים בריבוע?","core",
+      "נקשר בין סמ״ר, מ״ר וממ״ר ונמיר שטחים שלמים בהקשרים מציאותיים.",
+      "כשמחליפים יחידת אורך ברשת, גם מספר השורות וגם מספר העמודות משתנים. לכן מקדם ההמרה של שטח הוא ריבוע מקדם האורך.",
+      "מ״ר אחד הוא 10,000 סמ״ר; סמ״ר אחד הוא 100 ממ״ר. שטח חדר נוח לתאר במ״ר, ושטח מדבקה בסמ״ר. דונם הוא יחידת שטח של 1,000 מ״ר, שימושית למדידת קרקע.",
+      [S("שרטטו על דף ריבוע של 1 ס״מ על 1 ס״מ. בסרגל חלקו כל צלע לעשרה מילימטרים וציירו רשת."),S("יש 10 שורות ובכל אחת 10 ריבועי ממ״ר.", "10 × 10 = 100"),S("בדומה, בריבוע של מטר על מטר יש 100 שורות של 100 סמ״ר.", "100 × 100 = 10000"),S("לכן שטח של 12 מ״ר שווה ל־120,000 סמ״ר. זה אותו כיסוי ביחידות קטנות יותר.", "12 × 10000 = 120000")],
+      {text:"״מטר הוא 100 ס״מ, אז מ״ר הוא 100 סמ״ר״.",fix:"צריך לשנות את שתי המידות: 100 כפול 100. אל תשתמשו בהמרת אורך להמרת שטח."},units)
+  ];
+  return {id:"geometry",title:"גאומטריה ומדידה — מעבדת הצורות",intro:"חוקרים צורות, סימטריה וריצופים, משרטטים על דף ומגלים מדוע נוסחאות השטח עובדות. בכל שיעור: הסבר, דוגמה ובדיקת טעות; 24 תרגילים ברוב הנושאים ו־12 בריצופים וביישום שטח הפנים לבחירה.",prerequisites:"כדאי להכיר כפל וחילוק, מדידה בסרגל, סנטימטר ומטר. הביאו דף, סרגל, מד־זווית ופינת דף ישרה; מחוגה מועילה לבניית משולש שווה־צלעות. משתמשים במידות הנתונות ולא מודדים על המסך.",skills};
+}
+// COURSE_DATA_END
+const course=buildCourse();
+const $=id=>document.getElementById(id);
+const scopeLabels={core:"לימוד לכיתה ה׳",review:"חזרה ובסיס",enrichment:"העשרה לבחירה"};
+const skillMap=new Map(course.skills.map(skill=>[skill.id,skill]));
+function node(tag,text,className){const el=document.createElement(tag);if(text!==undefined)el.textContent=text;if(className)el.className=className;return el;}
+function control(text,action){const el=node("button",text);el.type="button";el.addEventListener("click",action);return el;}
+function shuffle(items){const result=[...items];for(let i=result.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[result[i],result[j]]=[result[j],result[i]];}return result;}
+function rational(text){
+  let value=String(text).trim().replace(/\u2212/g,"-");
+  if(/^-?\d{1,3}(?:,\d{3})+(?:\.\d{1,6})?$/.test(value))value=value.replace(/,/g,"");
+  let m=value.match(/^(-?\d+)\s+(\d+)\/([1-9]\d*)$/);
+  let n,d;
+  if(m){d=Number(m[3]);if(Number(m[2])>=d)return null;n=(Math.abs(Number(m[1]))*d+Number(m[2]))*(m[1].startsWith("-")?-1:1);}
+  else if((m=value.match(/^(-?\d+)\/([1-9]\d*)$/))){n=Number(m[1]);d=Number(m[2]);}
+  else if((m=value.match(/^(-?)(\d+)(?:\.(\d{1,6}))?$/))){d=10**(m[3]?.length||0);n=(Number(m[2])*d+Number(m[3]||0))*(m[1]?-1:1);}
+  else return null;
+  if(!Number.isSafeInteger(n)||!Number.isSafeInteger(d))return null;
+  let a=Math.abs(n),b=d;while(b){[a,b]=[b,a%b];}
+  return [n/(a||1),d/(a||1)];
+}
+function answerKey(value,kind){if(kind==="text")return String(value).trim();const pair=rational(value);return pair?pair.join("/"):"invalid:"+value;}
+function questionFor(skill,seed){
+  const q=skill.build(seed);
+  return {...q,id:skill.id+"-"+seed,skill:skill.id};
+}
+function validateQuestion(q){
+  if(!["number","fraction","text"].includes(q.kind)||q.steps.length!==4||q.choices.length<3||new Set(q.choices.map(x=>answerKey(x,q.kind))).size!==q.choices.length||q.choices.filter(x=>answerKey(x,q.kind)===answerKey(q.answer,q.kind)).length!==1)
+    throw new Error("Invalid authored question: "+q.id);
+  if(q.kind!=="text"&&q.choices.some(x=>!rational(x)))throw new Error("Invalid numeric option: "+q.id);
+}
+const bank=course.skills.flatMap(skill=>Array.from({length:skill.count},(_,i)=>questionFor(skill,i)));
+bank.forEach(validateQuestion);
+const decks=new Map(),supportHistory=new Set(),lastShown=new Map();
+let round=[],position=0,current=null,solved=false,assisted=false,independent=0,activeSkill=null,results=[];
+let lessonSkill=null,lessonTrigger=null,guided=null,guidedSolved=false;
+function deckFor(skill){
+  if(!decks.has(skill)||!decks.get(skill).length){
+    const fresh=shuffle(bank.filter(q=>q.skill===skill));
+    if(fresh.length>1&&fresh[0].id===lastShown.get(skill))[fresh[0],fresh[1]]=[fresh[1],fresh[0]];
+    decks.set(skill,fresh);
+  }
+  return decks.get(skill);
+}
+function planRound(id){
+  if(id)return deckFor(id).slice(0,6);
+  const ids=shuffle(course.skills.filter(s=>s.scope!=="enrichment").map(s=>s.id));
+  const selected=[],offsets=new Map();
+  while(selected.length<6){
+    let added=false;
+    for(const skill of ids){
+      const offset=offsets.get(skill)||0,q=deckFor(skill)[offset];
+      if(q){selected.push(q);offsets.set(skill,offset+1);added=true;}
+      if(selected.length===6)break;
+    }
+    if(!added)break;
+  }
+  return shuffle(selected);
+}
+function showHome(){
+  $("home").hidden=false;$("practice").hidden=true;$("summary").hidden=true;current=null;solved=false;
+  $("home-title").focus({preventScroll:true});window.scrollTo(0,0);
+}
+function startRound(id=null){
+  if(id&&!skillMap.has(id))throw new Error("Unknown skill: "+id);
+  if($("lesson").open)$("lesson").close();
+  activeSkill=id;round=planRound(id);position=0;independent=0;results=[];
+  $("home").hidden=true;$("practice").hidden=false;$("summary").hidden=true;
+  $("practice-title").textContent=id?skillMap.get(id).title:"תרגול משולב";
+  renderQuestion();$("practice").scrollIntoView({block:"start"});
+}
+function appendSteps(target,steps,numbered=false){
+  target.replaceChildren();
+  const headings=["מה ידוע ומה מחפשים?","באיזו דרך נפתור?","נחשב צעד אחר צעד","איך נבדוק?"];
+  steps.forEach((step,i)=>{const li=node("li",undefined,"step");if(numbered)li.append(node("h4",headings[i]));li.append(node("p",step.text));if(step.math)li.append(node("p",step.math,"math"));target.append(li);});
+}
+function setVisual(id,html){$(id).hidden=!html;$(id).innerHTML=html||"";}
+function renderQuestion(){
+  current=round[position];solved=false;assisted=supportHistory.has(current.id);
+  const deck=deckFor(current.skill),index=deck.findIndex(q=>q.id===current.id);if(index>=0)deck.splice(index,1);
+  lastShown.set(current.skill,current.id);
+  $("skill-label").textContent=scopeLabels[skillMap.get(current.skill).scope]+" · "+skillMap.get(current.skill).title;
+  $("prompt").textContent=current.prompt;$("expression").textContent=current.expression||"";$("expression").hidden=!current.expression;
+  $("unit").textContent=current.unit||"";setVisual("visual",current.visual);
+  $("round-label").textContent="שאלה "+(position+1)+" מתוך "+round.length;$("progress").max=round.length;$("progress").value=position;
+  $("choices").replaceChildren();
+  shuffle(current.choices).forEach(value=>{
+    const q=current,button=control(value,()=>answer(value,button,q.id));button.dir=q.kind==="text"?"rtl":"ltr";$("choices").append(button);
+  });
+  $("answer-form").hidden=current.kind==="text";$("input-note").hidden=current.kind==="text";$("typed-answer").value="";
+  [...$("answer-form").elements].forEach(el=>el.disabled=false);$("feedback").textContent="";
+  appendSteps($("help-steps"),current.steps,true);$("help-answer").textContent=current.answer;
+  $("help-answer").className=current.kind==="text"?"":"math";toggleHelp(false);
+  for(const id of ["next-top","next-bottom"]){$(id).hidden=true;$(id).textContent=position===round.length-1?"לסיכום הסבב":"לשאלה הבאה";}
+  $("prompt").focus({preventScroll:true});
+}
+function markSupport(){if(current&&!solved){assisted=true;supportHistory.add(current.id);}}
+function toggleHelp(open){
+  if(open)markSupport();
+  $("help-panel").hidden=!open;$("help-toggle").setAttribute("aria-expanded",String(open));$("help-toggle").textContent=open?"🙈 הסתר הסבר":"🔍 איך פותרים?";
+}
+function answer(value,button,id){
+  if(!current||solved||current.id!==id||button?.disabled||(button&&button.parentElement!==$("choices")))return;
+  if(current.kind!=="text"&&!rational(value)){$("feedback").textContent="כתבו מספר תקין או שבר עם מכנה שאינו אפס. למשל 0.5 או 1/2.";return;}
+  if(answerKey(value,current.kind)!==answerKey(current.answer,current.kind)){
+    markSupport();if(button){button.disabled=true;button.classList.add("wrong");button.setAttribute("aria-label",value+" — לא נכון");}
+    $("feedback").textContent="עוד ניסיון. נפתח את הדרך ונבדוק באיזה צעד צריך עזרה.";toggleHelp(true);return;
+  }
+  solved=true;if(!assisted)independent++;
+  results.push({skill:current.skill,assisted});
+  if(button){button.classList.add("correct");button.setAttribute("aria-label",value+" — נכון");}
+  $("choices").querySelectorAll("button").forEach(el=>el.disabled=true);[...$("answer-form").elements].forEach(el=>el.disabled=true);
+  $("feedback").textContent=assisted?"נכון! נעזרתם בדרך והגעתם לפתרון.":"נכון! פתרתם באופן עצמאי.";
+  $("progress").value=position+1;for(const id of ["next-top","next-bottom"])$(id).hidden=false;
+  $("next-top").focus({preventScroll:true});
+}
+function nextQuestion(){
+  if(!solved)return;
+  if(position<round.length-1){position++;renderQuestion();$("prompt").scrollIntoView({block:"start"});return;}
+  solved=false;current=null;$("practice").hidden=true;$("summary").hidden=false;
+  $("summary-text").textContent="השלמתם "+round.length+" שאלות: "+independent+" באופן עצמאי ו־"+(round.length-independent)+" בעזרת תמיכה.";
+  $("recommendations").replaceChildren();
+  for(const id of new Set(results.filter(r=>r.assisted).map(r=>r.skill))){const skill=skillMap.get(id);$("recommendations").append(control("נחזור על הדרך: "+skill.title,event=>openLesson(id,event.currentTarget)));}
+  $("next-lesson").hidden=!activeSkill||course.skills.findIndex(s=>s.id===activeSkill)===course.skills.length-1;
+  $("summary-title").focus({preventScroll:true});$("summary").scrollIntoView({block:"start"});
+}
+function guidedHelp(open){
+  $("guided-solution").hidden=!open;$("guided-help").setAttribute("aria-expanded",String(open));$("guided-help").textContent=open?"🙈 הסתר הסבר":"🔍 איך פותרים?";
+}
+function openLesson(id,trigger){
+  if(!skillMap.has(id))throw new Error("Unknown lesson: "+id);
+  markSupport();lessonSkill=skillMap.get(id);lessonTrigger=trigger||document.activeElement;guidedSolved=false;
+  $("lesson-title").textContent=lessonSkill.title;$("lesson-goal").textContent=lessonSkill.goal;
+  $("lesson-why").textContent=lessonSkill.why;$("lesson-rule").textContent=lessonSkill.rule;
+  appendSteps($("example-steps"),lessonSkill.example);setVisual("lesson-visual",lessonSkill.visual);
+  $("mistake-text").textContent=lessonSkill.mistake.text;$("mistake-math").textContent=lessonSkill.mistake.math||"";$("mistake-math").hidden=!lessonSkill.mistake.math;$("mistake-fix").textContent=lessonSkill.mistake.fix;
+  guided=lessonSkill.guided();validateQuestion(guided);$("guided-prompt").textContent=guided.prompt;
+  $("guided-expression").textContent=guided.expression||"";$("guided-expression").hidden=!guided.expression;
+  setVisual("guided-visual",guided.visual);$("guided-unit").textContent=guided.unit||"";
+  appendSteps($("guided-steps"),guided.steps,true);guidedHelp(false);$("guided-feedback").textContent="";$("guided-choices").replaceChildren();
+  shuffle(guided.choices).forEach(value=>{
+    const q=guided,button=control(value,()=>{
+      if(guidedSolved||button.disabled||guided!==q)return;
+      guidedHelp(true);
+      if(answerKey(value,q.kind)===answerKey(q.answer,q.kind)){
+        guidedSolved=true;button.classList.add("correct");$("guided-choices").querySelectorAll("button").forEach(el=>el.disabled=true);$("guided-feedback").textContent="נכון! קראו את בדיקת הפתרון ונסו תרגיל חדש.";
+      }else{button.disabled=true;button.classList.add("wrong");$("guided-feedback").textContent="נבדוק יחד את הדרך וננסה שוב.";}
+    });
+    button.dir=q.kind==="text"?"rtl":"ltr";$("guided-choices").append(button);
+  });
+  $("lesson-practice").textContent=current&&current.skill===id&&!$("practice").hidden?"חזרה לאותה שאלה":"מתרגלים את הנושא";
+  $("lesson-next").disabled=course.skills.indexOf(lessonSkill)===course.skills.length-1;
+  document.body.classList.add("lesson-open");if(!$("lesson").open)$("lesson").showModal();$("lesson").scrollTop=0;
+}
+function initialize(){
+  document.title=course.title+" · מתמטיקה לכיתה ה׳";$("page-title").textContent=course.title;$("intro").textContent=course.intro;$("prerequisites").textContent="מה כדאי להכיר קודם: "+course.prerequisites;
+  course.skills.forEach((skill,index)=>{
+    const card=node("article",undefined,"skill-card");card.append(node("p",scopeLabels[skill.scope],"scope"),node("h3",(index+1)+". "+skill.title),node("p",skill.goal));
+    const actions=node("div",undefined,"actions");actions.append(control("📚 לומדים את הדרך",event=>openLesson(skill.id,event.currentTarget)),control("מתרגלים",()=>startRound(skill.id)));card.append(actions);$("skills").append(card);
+  });
+  $("course-start").onclick=event=>openLesson(course.skills[0].id,event.currentTarget);$("mixed-start").onclick=()=>startRound();
+  for(const id of ["home-button","summary-home"])$(id).onclick=showHome;
+  for(const id of ["restart","again"])$(id).onclick=()=>startRound(activeSkill);
+  for(const id of ["next-top","next-bottom"])$(id).onclick=nextQuestion;
+  $("help-toggle").onclick=()=>toggleHelp($("help-panel").hidden);$("open-lesson").onclick=event=>openLesson(current.skill,event.currentTarget);
+  $("close-lesson").onclick=()=>$("lesson").close();
+  $("lesson").addEventListener("close",()=>{document.body.classList.remove("lesson-open");if(lessonTrigger?.isConnected)lessonTrigger.focus({preventScroll:true});});
+  $("lesson-practice").onclick=()=>{
+    const id=lessonSkill.id,resume=current&&current.skill===id&&!$("practice").hidden;
+    $("lesson").close();if(resume)$("prompt").focus({preventScroll:true});else startRound(id);
+  };
+  $("lesson-next").onclick=()=>{const next=course.skills[course.skills.indexOf(lessonSkill)+1];if(next)openLesson(next.id,lessonTrigger);};
+  $("next-lesson").onclick=event=>{const next=course.skills[course.skills.findIndex(s=>s.id===activeSkill)+1];if(next)openLesson(next.id,event.currentTarget);};
+  $("guided-help").onclick=()=>guidedHelp($("guided-solution").hidden);
+  $("answer-form").onsubmit=event=>{event.preventDefault();if(current)answer($("typed-answer").value,null,current.id);};
+  function route(){
+    if($("lesson").open)$("lesson").close();showHome();const id=location.hash.slice(1);
+    $("route-message").textContent="";
+    if(skillMap.has(id))openLesson(id);else if(id==="practice")startRound();else if(id)$("route-message").textContent="השיעור שבקישור לא נמצא. בחרו אחד מהשיעורים הזמינים.";
+  }
+  window.addEventListener("hashchange",route);route();
+}
+initialize();
+if(new URLSearchParams(location.search).get("selftest")==="1")window.__eduSelfTest={course,bank,questionFor,answerKey,rational};
+</script>
+</body>
+</html>

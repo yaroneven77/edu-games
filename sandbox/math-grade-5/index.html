@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>מתמטיקה לכיתה ה׳ · לומדים איך פותרים</title>
+<script src="../../assets/theme-selector.js" defer></script>
+<link rel="stylesheet" href="../../assets/refresh.css">
+<style>
+*{box-sizing:border-box}
+:root{--surface:var(--refresh-surface,#fff);--soft:var(--refresh-soft,#edf3fb);--text:var(--refresh-text,#243b53);--muted:var(--refresh-muted,#52677e);--accent:var(--refresh-accent,#285f9f);--border:var(--refresh-border,#d5dfec)}
+body{margin:0;padding-top:64px;background:#eef7fd;color:var(--text);font:18px/1.7 "Segoe UI","Arial Hebrew",Arial,sans-serif}
+main{max-width:1080px;margin:auto;padding:16px 16px 40px}header{text-align:center}
+h1{font-size:clamp(28px,6vw,42px);line-height:1.3}h2{font-size:26px}h3{font-size:22px}
+a{color:var(--accent)}button,a.button,a.back{font:inherit;min-height:44px;min-width:44px;display:inline-flex;align-items:center;padding:10px 14px;border:2px solid var(--border);border-radius:14px;background:var(--soft);color:var(--text)}
+a.button,a.back{text-decoration:none}button{cursor:pointer}a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.panel,.route{background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:clamp(16px,3vw,24px);margin:18px 0}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.route{margin:0;border-top:5px solid var(--accent);min-width:0}
+.route h3{margin:8px 0}.actions{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}.muted{font-size:16px;color:var(--muted)}
+.steps{padding-inline-start:26px}.steps li{margin:12px 0}.math{direction:ltr;unicode-bidi:isolate;text-align:center;font:600 23px/1.8 "Segoe UI",Arial,sans-serif;background:var(--soft);border-radius:12px;padding:12px;overflow-wrap:anywhere}
+details summary{cursor:pointer;min-height:44px;font-weight:700;padding:8px 0}.route li{margin:8px 0}.tag{font-weight:700;color:var(--accent)}
+footer{text-align:center;font-size:15px;margin:24px 0}#edu-theme-select{min-height:44px!important}
+@media(max-width:650px){.grid{grid-template-columns:1fr}main{padding-inline:12px}.actions>*{flex:1 1 140px}}
+</style>
+</head>
+<body id="edu-refresh">
+<main>
+<a class="back" href="../sandbox.html">חזרה למרכז הבדיקות</a>
+<header><p class="tag">קורס חדש לבדיקה · כיתה ה׳</p><h1>מתמטיקה — מבינים איך פותרים</h1><p>לא רק לבחור תשובה: מבינים את הרעיון, רואים דרך פתרון, מתנסים יחד ואז פותרים בעצמנו.</p></header>
+<section class="panel" aria-labelledby="start-title">
+<h2 id="start-title">איך לומדים בקורס?</h2>
+<ol class="steps"><li><strong>נזכרים בבסיס:</strong> בוחרים מסלול ומתחילים בשיעור הראשון, או בנושא שרוצים לחזק.</li><li><strong>לומדים את הדרך:</strong> קוראים למה הכלל עובד, מתבוננים בדוגמה פתורה ובטעות שכדאי להכיר.</li><li><strong>מנסים יחד:</strong> פותרים שאלה מודרכת עם הסבר שאפשר לפתוח בכל רגע.</li><li><strong>מתרגלים עצמאית:</strong> בוחרים או מקלידים תשובה, בודקים את הדרך ומנסים שאלות חדשות.</li></ol>
+<p>כל השיעורים פתוחים. סדר המסלולים הוא המלצה, לא תנאי מעבר. אפשר ללמוד מעט בכל יום ולעצור אחרי סבב קצר.</p>
+<div class="actions"><a class="button" href="./whole-numbers/index.html">מתחילים במספרים ובחישובים</a><a class="button" href="./sources.html">להורים: רשימת הנושאים והמקורות</a></div>
+<p class="muted">הסיכום בכל משחק מתייחס לביקור באותו עמוד בלבד. מעבר בין משחקים אינו מעביר תשובות או ציונים, ורענון מתחיל ביקור חדש.</p>
+</section>
+<section aria-labelledby="routes-title"><h2 id="routes-title">מסלולי הלמידה</h2><div class="grid">
+<article class="route"><p class="tag">מסלול ראשון</p><h3>מספרים טבעיים ודרכי חישוב</h3><p>מבינים ערך מקום, בוחרים דרך חישוב ובודקים אם התוצאה הגיונית.</p><div class="actions"><a class="button" href="./whole-numbers/index.html">לשיעורים ולמשחקי החישוב</a></div></article>
+<article class="route"><p class="tag">מסלול שני</p><h3>שברים פשוטים</h3><p>מחברים בין ציור, כמות ומספר. לומדים שקילות, השוואה ופעולות דרך חלקים שווים.</p><div class="actions"><a class="button" href="./fractions/index.html">לשיעורים ולמשחקי השברים</a></div></article>
+<article class="route"><p class="tag">מסלול שלישי</p><h3>מספרים עשרוניים ואחוזים</h3><p>מבינים עשיריות, מאיות ואלפיות, לומדים להשוות ולחשב ומכירים את האחוז כחלק ממאה.</p><div class="actions"><a class="button" href="./decimals/index.html">לשיעורים ולמשחקי העשרוניים</a></div></article>
+<article class="route"><p class="tag">מסלול רביעי</p><h3>גאומטריה ומדידות</h3><p>חוקרים צורות, מזהים תכונות ומבדילים בין אורך מסביב לשטח שבפנים.</p><div class="actions"><a class="button" href="./geometry/index.html">לשיעורים ולמשחקי הצורות</a></div></article>
+<article class="route"><p class="tag">מסלול חמישי</p><h3>נתונים וחקירה</h3><p>קוראים מידע מטבלאות ותרשימים, מסבירים מה הנתונים מראים ובודקים מסקנות.</p><div class="actions"><a class="button" href="./data/index.html">לשיעורים ולמשחקי הנתונים</a></div></article>
+</div></section>
+<section class="panel" aria-labelledby="method-title"><h2 id="method-title">ארבע שאלות שעוזרות לפתור</h2>
+<ol class="steps"><li><strong>מה ידוע ומה מחפשים?</strong> אומרים במילים שלנו מה הנתונים ומה השאלה. מציינים יחידות.</li><li><strong>באיזו דרך נפתור?</strong> בוחרים ציור, טבלה, פירוק, תרגיל או סדר של פעולות ומסבירים למה.</li><li><strong>מה עושים בכל צעד?</strong> מחשבים לפי התוכנית. כותבים תוצאת ביניים ומה היא מייצגת.</li><li><strong>איך נבדוק?</strong> משתמשים באומדן, בפעולה הפוכה או בציור, ובודקים שהתשובה מתאימה לשאלה.</li></ol>
+<details><summary>דוגמה: מתכננים קנייה לכיתה</summary><p>לכיתה תקציב של 120 שקלים. קונים 4 מארזי צבעים, וכל מארז עולה 18 שקלים. כמה כסף נשאר?</p><p>תחילה מחשבים את מחיר כל המארזים.</p><p class="math" dir="ltr">4 × 18 = 72</p><p>אחר כך מפחיתים את ההוצאה מהתקציב.</p><p class="math" dir="ltr">120 − 72 = 48</p><p>נשארו 48 שקלים. בבדיקה מחברים את ההוצאה ואת הכסף שנותר ומקבלים את התקציב המקורי.</p><p class="math" dir="ltr">72 + 48 = 120</p></details>
+</section>
+<section class="panel" aria-labelledby="parent-title"><h2 id="parent-title">להורים ולמלווים</h2><p>שילוב של דף, קוביות, רצועות נייר, סרגל ושיחה משלים את המסך. בקשו מהילדים להסביר את הדרך, לא רק להראות תשובה. אם נעזרו ברמז, הציעו אחר כך תרגיל חדש בלי הרמז.</p><p>תגיות השיעורים מבחינות בין חזרה, לימוד לכיתה ה׳ והעשרה לבחירה. העשרה אינה נכללת אוטומטית בסבבים המשולבים.</p><p>הדוגמאות והתרגילים נכתבו למשחק. חומרי האתרים שימשו ללימוד נושאים ודרכי הוראה, ולא הועתקו לכאן דפי עבודה, משחקים או איורים מסחריים.</p><p class="muted">הקורס אינו תוכן מאושר מטעם משרד החינוך, אינו תחליף להוראה ואינו מבטיח שליטה בעקבות סבב שאלות.</p></section>
+<footer>תצוגת בדיקה נפרדת · האתר הראשי נשאר ללא שינוי.</footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>בונים משפטים · אנגלית לכיתה ה׳</title>
+<script src="../../../assets/theme-selector.js" defer></script>
+<link rel="stylesheet" href="../../../assets/refresh.css">
+<style>
+*{box-sizing:border-box}
+:root{--surface:var(--refresh-surface,#fff);--soft:var(--refresh-soft,#edf3fb);--text:var(--refresh-text,#243b53);--muted:var(--refresh-muted,#52677e);--accent:var(--refresh-accent,#285f9f);--border:var(--refresh-border,#d5dfec)}
+body{margin:0;padding-top:62px;background:#eef7fd;color:var(--text);font-family:"Segoe UI",Arial,sans-serif;line-height:1.6}
+main{max-width:1000px;margin:auto;padding:14px 16px 40px}
+[hidden]{display:none!important}button,a{font:inherit}button,.back{min-height:46px;padding:10px 16px;border:2px solid var(--border);border-radius:14px;background:var(--soft);color:var(--text);font-weight:700;cursor:pointer}
+button:disabled{cursor:default;opacity:.6}button:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+a{color:var(--accent)}.back{display:inline-flex;text-decoration:none;align-items:center;background:var(--surface)}
+header{text-align:center;margin:18px 0}h1{font-size:clamp(28px,5vw,42px);line-height:1.25;color:var(--accent)}h2{font-size:25px}h3{font-size:20px}
+.en{direction:ltr;text-align:left;font-family:"Segoe UI",Arial,sans-serif;overflow-wrap:anywhere}
+.subtitle{text-align:center}.muted{color:var(--muted)}.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.card,.practice-card{padding:22px;background:var(--surface);border:1px solid var(--border);border-radius:22px}
+.card{display:flex;flex-direction:column;border-top:5px solid var(--accent)}.card .actions{margin-top:auto}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0}.actions button{flex:1}.notice,.rule,.example,.help-panel{padding:16px;background:var(--soft);border:1px solid var(--border);border-radius:16px;margin:14px 0}
+.practice-top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}progress{width:100%;height:14px;accent-color:var(--accent)}
+.tiles{display:flex;flex-wrap:wrap;gap:9px;direction:ltr;align-content:flex-start;min-height:64px;margin:12px 0}
+.tiles button{font-size:21px;background:var(--surface);overflow-wrap:anywhere;max-width:100%;text-align:left}
+.answer-zone{padding:10px;border:2px dashed var(--accent);border-radius:16px;background:var(--soft);min-height:90px}
+.answer-zone .tiles{margin:0}.answer-line{font-size:21px;min-height:34px}.feedback{min-height:30px;font-weight:700}
+.help-panel li{padding:12px 8px;border-bottom:1px solid var(--border)}.help-panel ol{padding-inline-start:25px}
+.help-panel .en{padding:12px;background:var(--surface);border-radius:12px}.next-bottom{display:block;margin:18px auto}
+dialog{width:min(760px,calc(100% - 24px));max-height:calc(100dvh - 24px);padding:22px;border:2px solid var(--border);border-radius:22px;background:var(--surface);color:var(--text)}
+dialog::backdrop{background:#102238b8}body.lesson-opened{overflow:hidden}.lesson-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.lesson-head h2{margin:0}
+.lesson-section{padding:12px 0;border-bottom:1px solid var(--border)}.lesson-section h3{margin-bottom:6px}.example p{margin:6px 0}
+#summary{text-align:center}footer{margin-top:24px;text-align:center;font-size:14px}
+@media(max-width:720px){.cards{grid-template-columns:1fr}.card{padding:18px}}
+@media(max-width:420px){main{padding-inline:10px}.practice-card,dialog{padding:15px}.tiles button{font-size:19px;padding:9px 12px}.actions button{flex-basis:42%}}
+</style>
+</head>
+<body id="edu-refresh">
+<main>
+<a class="back" href="../index.html">חזרה לאנגלית לכיתה ה׳</a>
+<header><h1>בונים משפטים</h1><p class="en subtitle" lang="en">Sentence Builder · Grade 5</p><p>מילים קטנות, רעיונות שלמים</p></header>
+<noscript><p class="notice">כדי לשחק צריך לאפשר סקריפטים בדפדפן.</p></noscript>
+<section id="home" aria-labelledby="home-title">
+<h2 id="home-title">מה נרצה לבנות?</h2>
+<p>בוחרים מילים או חלקי משפט לפי הסדר באנגלית. אפשר ללמוד קודם או להתחיל לתרגל.</p>
+<div class="cards" id="topic-cards"></div>
+<div class="actions"><button id="mixed" type="button">תרגול משולב</button></div>
+<p class="notice">זהו תרגול מונחה של סדר מילים, לא בדיקה של כתיבה חופשית. ההוראה בכל שאלה מגדירה איזה משפט לבנות.</p>
+</section>
+<section id="game" class="practice-card" aria-labelledby="topic-title" hidden>
+<div class="practice-top"><span id="progress-text"></span><span id="score"></span></div>
+<progress id="progress" max="6" value="0" aria-label="התקדמות בסבב"></progress>
+<h2 id="topic-title" tabindex="-1"></h2>
+<p id="prompt"></p><p id="constraint" class="en rule" lang="en"></p>
+<p id="tile-instruction">לחצו על האריחים לפי הסדר, משמאל לימין. להסרת אריח מהמשפט לחצו עליו שוב. אפשר גם לעבור עם מקש הטאב ולבחור עם רווח או אנטר.</p>
+<h3 id="answer-title">המשפט שבניתם</h3>
+<div class="answer-zone"><div id="chosen" class="tiles" lang="en" dir="ltr" role="group" aria-labelledby="answer-title"></div><p id="answer-line" class="en answer-line" lang="en" aria-live="polite"></p></div>
+<h3 id="available-title">אריחים לבחירה</h3>
+<div id="available" class="tiles" lang="en" dir="ltr" role="group" aria-labelledby="available-title" aria-describedby="tile-instruction"></div>
+<div class="actions"><button id="check" type="button">בדיקת המשפט</button><button id="clear" type="button">ניקוי המשפט</button></div>
+<p id="feedback" class="feedback" role="status"></p>
+<div class="actions"><button id="help" type="button" aria-expanded="false" aria-controls="help-panel">🔍 איך פותרים?</button><button id="next-top" type="button" hidden>לשאלה הבאה</button></div>
+<section id="help-panel" class="help-panel" aria-labelledby="help-title" hidden><h3 id="help-title">בונים צעד אחר צעד</h3><ol id="help-steps"></ol><p id="help-rule" class="en" lang="en"></p><h3>משפט אפשרי לפי ההוראה</h3><div id="help-answers"></div><p>עכשיו נסו לבנות בעצמכם ולבדוק שוב. ההסבר אינו משלים את השאלה במקומכם.</p></section>
+<button id="next-bottom" type="button" class="next-bottom" hidden>לשאלה הבאה</button>
+<div class="actions"><button id="lesson-button" type="button">📚 שיעור לשאלה הזאת</button><button id="restart" type="button">סבב חדש</button><button id="home-button" type="button">בחירת נושא</button></div>
+<p class="muted">פתיחת שיעור או הסבר בזמן שאלה מסמנת אותה כתרגול בעזרת הסבר. הצלחה עצמאית נרשמת רק בבדיקה ראשונה נכונה ללא עזרה.</p>
+</section>
+<section id="summary" class="practice-card" hidden aria-labelledby="summary-title"><h2 id="summary-title" tabindex="-1">כל הכבוד על התרגול!</h2><p id="summary-text"></p><p>גם תיקון אחרי הסבר הוא דרך טובה ללמוד.</p><div class="actions"><button id="replay" type="button">עוד סבב</button><button id="summary-home" type="button">בחירת נושא</button></div></section>
+<footer>תצוגת בדיקה · אין שמירת תשובות או פרטים אישיים. רענון הדף מתחיל ביקור חדש.</footer>
+</main>
+<dialog id="lesson" aria-labelledby="lesson-title">
+<div class="lesson-head"><h2 id="lesson-title"></h2><button id="close-lesson" type="button" autofocus>סגירה</button></div>
+<p id="lesson-en" class="en" lang="en"></p>
+<section class="lesson-section"><h3>מה נלמד?</h3><p id="lesson-goal"></p><p id="lesson-intro"></p><p id="lesson-rule" class="rule"></p></section>
+<section class="lesson-section"><h3>דוגמאות קבועות</h3><div id="lesson-examples"></div></section>
+<section class="lesson-section"><h3>טעות שכדאי להכיר</h3><p class="en" lang="en"><del id="mistake-wrong"></del></p><p class="en" lang="en" id="mistake-right"></p><p id="mistake-why"></p></section>
+<section class="lesson-section"><h3>ננסה יחד</h3><p id="trial-prompt"></p><p id="trial-hint" class="rule"></p><div id="trial-choices" class="actions" dir="ltr" lang="en"></div><p id="trial-feedback" role="status"></p><p id="trial-answer" class="en" lang="en" hidden></p></section>
+<div class="actions"><button id="lesson-return" type="button">מתחילים לתרגל</button></div>
+</dialog>
+<script>
+"use strict";
+const $ = id => document.getElementById(id);
+const TOPICS = [
+  {id:"ordinary",title:"סדר מילים במשפט",en:"Everyday sentences",description:"מי עושה מה? בונים משפט ברור על פעולות יומיומיות.",
+   goal:"נבנה משפט שמספר מי עושה פעולה ומה קשור אליה.",
+   intro:"באנגלית מתחילים בדרך כלל במי או במה שהמשפט עוסק בו, ממשיכים בפועל ואז מוסיפים את הדבר שמקבל את הפעולה. במשימות שלנו תיאור מקום או זמן יבוא במקום שההוראה מבקשת.",
+   rule:"קודם מי, אחר כך הפעולה, ואז מה. אריח עם כמה מילים הוא חלק אחד שנשאר יחד. לפעמים יש יותר מסדר נכון אחד; שימו לב להוראה.",
+   examples:[["The girl opens a window.","הילדה היא הנושא, פתיחה היא הפעולה והחלון הוא הדבר שהיא פותחת."],["We read books in the library.","מתחילים במי שקוראים, מוסיפים את הפעולה והספרים, ומסיימים במקום."],["Amit and Roni paint pictures.","כשיש שני שמות, אפשר להחליף ביניהם אם ההוראה מאפשרת זאת."]],
+   mistake:["Reads the boy a story.","The boy reads a story.","במשפט רגיל שמספר על פעולה, הנושא בא לפני הפועל. הסדר הראשון אינו הסדר של משפט חיווי רגיל."],
+   trial:["בחרו את המשפט הרגיל שמספר שהילדים פותחים את הדלת.","חפשו קודם את הילדים, אחר כך את פעולת הפתיחה ואז את הדלת.",["The children open the door.","Open the children the door."],0,"הילדים מופיעים לפני הפועל, ואחרי הפעולה מופיעה הדלת."]},
+  {id:"questions",title:"שאלות ושלילה",en:"Questions and negatives",description:"שואלים על הרגלים ויכולת, ומספרים מה לא קורה.",
+   goal:"נסדר משפטי שאלה ושלילה בעזרת מילת העזר המתאימה.",
+   intro:"בשאלה על הרגל משתמשים במילת עזר לפני הנושא. עם הוא או היא בוחרים מילת עזר ליחיד, והפועל העיקרי נשאר בצורה הבסיסית. מילת שאלה, אם יש, פותחת את השאלה.",
+   rule:"בשלילה מציבים את הנושא, מילת העזר, מילת השלילה והפועל הבסיסי. בשאלה על מצב הופכים את סדר הנושא ופועל המצב. בשאלת יכולת מילת היכולת באה ראשונה. לא מערבבים את התבניות.",
+   examples:[["Does she ride a bike?","שאלה על הרגל: מילת העזר ליחיד לפני הנושא, והפועל בלי תוספת."],["He does not eat rice.","בשלילה הנושא קודם, ואחריו מילת העזר, השלילה והפועל הבסיסי."],["Where do they play?","מילת המקום פותחת את השאלה, אחריה מילת העזר והנושא."],["Are you ready?","בשאלה על מצב, פועל המצב קודם לנושא."],["Can you swim?","בשאלה על יכולת, מילת היכולת פותחת את השאלה."]],
+   mistake:["Does he likes apples?","Does he like apples?","מילת העזר כבר מותאמת ליחיד. לכן הפועל העיקרי נשאר בסיסי, בלי סיומת נוספת."],
+   trial:["בחרו שאלה תקינה על הרגלי הציור של ילדה.","אחרי מילת העזר ליחיד בא הנושא ואז הפועל הבסיסי.",["Does she draws flowers?","Does she draw flowers?"],1,"מילת העזר מסמנת את היחיד, ולכן הפועל העיקרי נשאר ללא תוספת."]},
+  {id:"connect",title:"מחברים רעיונות",en:"And, but, because",description:"מוסיפים רעיון, מראים ניגוד או מסבירים סיבה.",
+   goal:"נחבר שני רעיונות ונבחין בין תוספת, ניגוד וסיבה.",
+   intro:"מילת חיבור עוזרת לקורא להבין את הקשר בין החלקים. כאן חלקי המשפט נשארים באריחים שלמים, כדי להתמקד בקשר ובסדר.",
+   rule:"לתוספת משתמשים במילת חיבור של ״וגם״; לניגוד במילה שמשמעותה ״אבל״; ולסיבה במילה שמשמעותה ״מפני ש־״. בתרגול הזה מתחילים בחלק שההוראה מציינת. במשפט סיבה מתארים קודם מה קורה ואז מדוע.",
+   examples:[["I draw and my sister sings.","שני דברים קורים: הציור והשירה. החיבור מוסיף רעיון."],["The bag is small but it is heavy.","יש ניגוד בין התיק הקטן לבין המשקל שלו."],["We stay inside because it is cold.","קודם מציינים שנשארים בפנים, ואחר כך מסבירים שהקור הוא הסיבה."]],
+   mistake:["I wear a coat because cold.","I wear a coat because it is cold.","אחרי מילת הסיבה צריך כאן חלק שלם: משהו שעליו מדברים ופועל, ולא רק תיאור יחיד."],
+   trial:["בחרו משפט שמתחיל בכך שהחלון נפתח ואז מסביר את הסיבה.","קודם הפעולה, אחר כך מילת הסיבה, ובסוף הסיבה המלאה.",["I open the window because it is hot.","Because I open the window it is hot."],0,"החום הוא הסיבה לפתיחת החלון, ולא תוצאה של פתיחת החלון."]}
+];
+const topicMap = new Map(TOPICS.map(topic => [topic.id,topic]));
+// Pipes delimit indivisible tiles. Alternative orders use the same tile indices.
+const BANK = [];
+function add(topic,id,tiles,prompt,start,clue,rule,apply,verify,ruleEn,alternatives=[],punctuation=".") {
+  const words=tiles.split("|");
+  BANK.push({topic,id,words,prompt,start,steps:[clue,rule,apply,verify],ruleEn,orders:[words.map((_,i)=>i),...alternatives],punctuation});
+}
+const ordinaryRule="במשפט חיווי רגיל הנושא בא לפני הפועל. אחריו מוסיפים את מה שקשור לפעולה, לפי ההוראה.";
+function ordinary(id,tiles,prompt,start,clue,apply,verify,alternatives=[]) {
+  add("ordinary",id,tiles,prompt,start,clue,ordinaryRule,apply,verify,"Subject → verb → object or other information. Follow the requested order.",alternatives);
+}
+ordinary("ord-01","The|rabbit|eats|a|carrot","בנו משפט על הארנב שאוכל גזר. התחילו בארנב.","The rabbit","מי אוכל? הארנב. מה הוא אוכל? גזר.","מצמידים את מילת היידוע לארנב, אחר כך מוסיפים את פעולת האכילה ואת הגזר עם מילת הפתיחה שלו.","בדקו שהארנב הוא האוכל, ולא הגזר, ושמילת הפתיחה של הגזר צמודה אליו.");
+ordinary("ord-02","My|sister|opens|the|door","בנו משפט על אחותי שפותחת את הדלת. התחילו באחותי.","My sister","מי פותחת? אחותי. הדבר שנפתח הוא הדלת.","מילת השייכות צמודה לאחות. אחר כך בא הפועל, ובסוף הדלת עם מילת היידוע.","בדקו שהדלת היא הדבר שנפתח ושלא הפרדתם את מילת השייכות מהאחות.");
+ordinary("ord-03","We|drink|water|after lunch","ספרו שאנחנו שותים מים אחרי ארוחת הצהריים. סיימו בזמן.","We","אנחנו שותים; המים הם המשקה; החלק האחרון מתאר מתי.","מתחילים בכינוי הגוף אנחנו, מוסיפים שתייה ומים ומסיימים באריח הזמן השלם.","בדקו שהמים באים מיד אחרי הפועל ושתיאור הזמן נמצא בסוף.");
+ordinary("ord-04","The children|play|football|in the park","ספרו שהילדים משחקים כדורגל בפארק. סיימו במקום.","The children","הילדים משחקים; כדורגל הוא המשחק; הפארק הוא המקום.","שומרים את אריח הילדים יחד, אחריו הפועל וכדורגל, ולבסוף אריח המקום.","קראו מי משחקים, במה הם משחקים ואיפה, לפי הסדר הזה.");
+ordinary("ord-05","I|put|my book|on the desk","ספרו שאני מניח או מניחה את הספר שלי על השולחן. סיימו במקום.","I","חפשו את מי שמניח, את הספר ששייך לו ואת מקום ההנחה.","כינוי הגוף בא ראשון, אחריו פועל ההנחה, הספר השלם ומקום ההנחה.","פועל ההנחה צריך כאן גם דבר שמניחים וגם מקום. בדקו ששניהם מופיעים.");
+ordinary("ord-06","Our|teacher|reads|a|story","בנו משפט על המורה שלנו שקורא או קוראת סיפור.","Our teacher","מי קורא? המורה שלנו. מה נקרא? סיפור.","מצמידים את מילת השייכות למורה, מוסיפים את פועל הקריאה ואז סיפור עם מילת הפתיחה.","בדקו שהמורה לפני פעולת הקריאה וששתי המילים של הסיפור צמודות.");
+ordinary("ord-07","The|bus|stops|near our school","ספרו שהאוטובוס עוצר ליד בית הספר שלנו. סיימו במקום.","The bus","האוטובוס הוא שעוצר; אריח המקום מספר היכן.","מילת היידוע והאוטובוס פותחים, הפועל בא אחריהם ואריח המקום סוגר.","בדקו שהמקום של העצירה בא אחרי הפועל, כפי שהתבקשתם.");
+ordinary("ord-08","They|wash|their hands|before dinner","ספרו שהם שוטפים את הידיים שלהם לפני ארוחת הערב. סיימו בזמן.","They","הם עושים את הפעולה, הידיים נשטפות, והזמן הוא לפני ארוחת הערב.","אחרי כינוי הגוף והפועל מניחים את אריח הידיים, ואחריו את אריח הזמן.","אל תחליפו בין מי ששוטפים לבין מה שנשטף. הזמן צריך להיות בסוף.");
+ordinary("ord-09","My friends|are|making|a kite","ספרו שהחברים שלי מכינים עפיפון עכשיו.","My friends","מדובר בפעולה שקורית עכשיו ובכמה חברים.","מתחילים בחברים, מוסיפים את מילת העזר לרבים ואז את פועל ההכנה המתמשך ואת העפיפון.","בדקו שמילת העזר נמצאת לפני הפועל המתמשך ושלא חסר העפיפון.");
+ordinary("ord-10","The|blue|bag|is|under the chair","ספרו שהתיק הכחול נמצא מתחת לכיסא. התחילו בתיק הכחול.","The blue bag","חפשו את התיק, את הצבע שלו ואת המקום שבו הוא נמצא.","באנגלית התיאור כחול בא לפני התיק. אחרי קבוצת הנושא בא פועל המצב ואז המקום.","בדקו שמילת היידוע פותחת, שהצבע לפני שם העצם ושהמקום אחרון.");
+ordinary("ord-11","Dad|cooks|rice|every Friday","ספרו שאבא מבשל אורז בכל יום שישי. סיימו בזמן.","Dad","אבא הוא המבשל, אורז הוא האוכל ויום שישי מציין זמן חוזר.","הנושא אבא פותח, אחריו הבישול והאורז, ולבסוף אריח הזמן.","בדקו שהאורז בא אחרי הפעולה ושיום שישי נמצא בסוף.");
+ordinary("ord-12","You|have|a|green|pencil","ספרו למישהו שיש לו עיפרון ירוק. התחילו בכינוי הגוף המתאים.","You","פונים למישהו ומספרים שיש לו עיפרון בצבע ירוק.","אחרי כינוי הגוף ופועל השייכות, מניחים את מילת הפתיחה, הצבע ואז העיפרון.","באנגלית הצבע לפני שם העצם. בדקו שמילת הפתיחה באה לפני הצבע.");
+ordinary("ord-13","Mia|and|Noa|draw|stars","ספרו שמיה ונועה מציירות כוכבים. שני השמות חייבים לפתוח; כל סדר בין השמות מתקבל.","Mia and Noa / Noa and Mia","יש שתי מציירות, מיה ונועה; הכוכבים הם מה שהן מציירות.","מחברים קודם את שני השמות, אחר כך מוסיפים את פעולת הציור והכוכבים.","בדקו שמילת החיבור נמצאת בין השמות. אפשר להחליף בין שני השמות.",[[2,1,0,3,4]]);
+ordinary("ord-14","We|share|a|book|and|a|pencil","ספרו שאנחנו חולקים ספר ועיפרון. התחילו בנו ובפעולה; שני החפצים יכולים להופיע בכל סדר.","We share","אנחנו חולקים שני דברים: ספר ועיפרון. לכל אחד דרושה מילת פתיחה.","מתחילים בכינוי הגוף ובפועל. אחריהם מחברים את שני החפצים, עם מילת פתיחה לכל אחד.","יש שני אריחים זהים של מילת הפתיחה. השתמשו בשניהם, אחד לפני כל חפץ.",[[0,1,5,6,4,2,3]]);
+const questionRule="בשאלה מילת העזר או פועל המצב באים לפני הנושא; מילת שאלה, אם יש, באה בתחילה.";
+const negativeRule="בשלילה מתחילים בנושא, ממשיכים במילת העזר ובשלילה ואז בפועל הבסיסי. עם פועל מצב, השלילה באה אחריו.";
+function question(id,tiles,prompt,start,clue,apply,verify,ruleEn,negative=false) {
+  add("questions",id,tiles,prompt,start,clue,negative?negativeRule:questionRule,apply,verify,ruleEn,[],negative?".":"?");
+}
+question("qn-01","Do|you|like|apples","שאלו מישהו אם הוא אוהב תפוחים. התחילו במילת העזר.","Do","זו שאלה על העדפה של מי שפונים אליו.","מילת העזר פותחת, אחריה כינוי הגוף, פועל האהבה ואז התפוחים.","בדקו שכינוי הגוף נמצא בין מילת העזר לבין הפועל.","Do → you → base verb → object.");
+question("qn-02","Does|she|walk|to school","שאלו אם היא הולכת לבית הספר. התחילו במילת העזר.","Does","שואלים על הרגל של ילדה אחת ועל היעד שלה.","מילת העזר ליחיד באה ראשונה, אחריה היא, פועל ההליכה הבסיסי והיעד.","פועל ההליכה לא מקבל סיומת נוספת אחרי מילת העזר.","Does → she → base verb → destination.");
+question("qn-03","Where|do|they|play","שאלו איפה הם משחקים. התחילו במילת המקום.","Where","המידע החסר הוא מקום המשחק, לא זמן המשחק.","מילת המקום פותחת, אחריה מילת העזר, כינוי הגוף הם ולבסוף פועל המשחק.","בדקו שמילת העזר בין מילת השאלה לבין הנושא.","Where → do → they → base verb.");
+question("qn-04","What|does|he|eat|for breakfast","שאלו מה הוא אוכל לארוחת הבוקר. סיימו באריח הארוחה.","What","שואלים על האוכל של ילד אחד בזמן ארוחת הבוקר.","מילת השאלה פותחת, אחריה מילת העזר ליחיד, הוא, פועל האכילה ואריח הארוחה.","בדקו שפועל האכילה בסיסי ושהארוחה נמצאת בסוף.","What → does → he → eat → meal phrase.");
+question("qn-05","When|do|we|start","שאלו מתי אנחנו מתחילים. התחילו במילת הזמן.","When","חסר לנו זמן ההתחלה של הקבוצה שלנו.","מילת הזמן באה ראשונה, אחריה מילת העזר, אנחנו ופועל ההתחלה.","בדקו שהנושא אנחנו נמצא לפני הפועל אבל אחרי מילת העזר.","When → do → we → base verb.");
+question("qn-06","Can|you|swim","שאלו מישהו אם הוא יכול לשחות.","Can","שואלים על יכולת, ולא על הרגל או מקום.","פותחים במילת היכולת, אחריה כינוי הגוף ולבסוף השחייה.","בשאלת יכולת אין צורך במילת עזר נוספת. השתמשו בדיוק באריחים הנתונים.","Can → subject → base verb.");
+question("qn-07","Is|the|cat|sleeping","שאלו אם החתול ישן עכשיו. התחילו במילת העזר.","Is","זו שאלה על פעולה שקורית עכשיו לחתול אחד.","מילת העזר ליחיד פותחת, אחריה החתול עם מילת היידוע ולבסוף הפועל המתמשך.","בדקו שמילת היידוע צמודה לחתול ושהפועל המתמשך אחרון.","Is → the cat → sleeping.");
+question("qn-08","Are|your|friends|ready","שאלו אם החברים של מי שפונים אליו מוכנים.","Are","הנושא הוא כמה חברים, והשאלה עוסקת במצב שלהם.","פועל המצב לרבים פותח, אחריו מילת השייכות והחברים, ואז התיאור מוכנים.","בדקו שמילת השייכות לפני החברים ושהתיאור אחריהם.","Are → your friends → ready.");
+question("qn-09","I|do|not|drink|coffee","ספרו שאתם לא שותים קפה. התחילו בכינוי הגוף אני.","I","מספרים על הרגל שאינו קורה: שתיית קפה.","אחרי אני באות מילת העזר והשלילה, אחריהן פעולת השתייה והקפה.","השלילה באה בין מילת העזר לפועל, ולא אחרי הקפה.","I → do not → base verb → object.",true);
+question("qn-10","He|does|not|play|tennis","ספרו שהוא לא משחק טניס. התחילו בכינוי הגוף הוא.","He","הנושא הוא ילד אחד, והפעולה שאינה קורה היא משחק טניס.","אחרי הוא מציבים מילת עזר ליחיד, שלילה, פועל משחק בסיסי וטניס.","בדקו שמילת השלילה אחרי מילת העזר ושפועל המשחק נשאר בסיסי.","He → does not → base verb → sport.",true);
+question("qn-11","We|are|not|late","ספרו שאנחנו לא מאחרים. התחילו בכינוי הגוף אנחנו.","We","זהו תיאור מצב שלנו, ולא פעולה עם פועל נוסף.","אחרי אנחנו בא פועל המצב לרבים, אחריו השלילה ובסוף התיאור מאחרים.","בדקו שהשלילה לפני התיאור, ושלא הפכתם את המשפט לשאלה.","We → are not → description.",true);
+question("qn-12","The|bird|is|not|in the cage","ספרו שהציפור אינה בכלוב. התחילו בציפור וסיימו במקום.","The bird","הנושא הוא ציפור אחת; שוללים את הימצאותה בכלוב.","מצמידים את מילת היידוע לציפור, מוסיפים פועל מצב ליחיד, שלילה ואז מקום.","בדקו שהציפור פותחת ושהשלילה לפני אריח המקום.","The bird → is not → place.",true);
+question("qn-13","They|do|not|have|a|dog","ספרו שאין להם כלב. התחילו בכינוי הגוף הם.","They","מדובר בכמה אנשים שאין להם כלב.","אחרי הם מוסיפים מילת עזר לרבים ושלילה. אחר כך פועל השייכות וכלב עם מילת הפתיחה שלו.","בדקו שמילת הפתיחה של הכלב נשארת צמודה לכלב.","They → do not → have → a dog.",true);
+question("qn-14","Why|does|the|baby|cry","שאלו למה התינוק בוכה. התחילו במילת הסיבה.","Why","מחפשים את הסיבה לבכי של תינוק אחד.","מילת הסיבה פותחת, אחריה מילת העזר ליחיד, התינוק עם מילת היידוע ופועל הבכי הבסיסי.","בדקו שמילת היידוע צמודה לתינוק ושהפועל האחרון ללא סיומת נוספת.","Why → does → the baby → base verb.");
+function connect(id,first,join,last,prompt,clue,apply,verify) {
+  const meanings={and:["מילת החיבור מוסיפה עוד רעיון. שומרים את שני החלקים שלמים ומחברים ביניהם.","First idea → and → additional idea."],but:["מילת החיבור מראה ניגוד בין שני רעיונות. שומרים את סדר החלקים לפי ההוראה.","First idea → but → contrasting idea."],because:["קודם מציינים מה קורה, אחר כך מילת הסיבה, ובסוף הסיבה המלאה.","Result or action → because → reason."]};
+  add("connect",id,[first,join,last].join("|"),prompt+" התחילו בחלק שמופיע במסגרת.",first,clue,meanings[join][0],apply,verify,meanings[join][1]);
+}
+connect("link-01","I pack my bag","and","my brother fills his bottle","חברו שתי פעולות של התארגנות.","אחד אורז תיק ואחיו ממלא בקבוק. אלו שתי פעולות שמתווספות זו לזו.","אריזת התיק פותחת, אחריה מילת התוספת ולבסוף מילוי הבקבוק.","בדקו ששתי הפעולות נשארו שלמות ושאריזת התיק ראשונה.");
+connect("link-02","We grow tomatoes","and","our neighbours grow carrots","חברו שני דברים שגדלים בגינות.","אנחנו מגדלים עגבניות והשכנים גזר. אין כאן סיבה או ניגוד.","מניחים את העגבניות שלנו תחילה, את מילת התוספת באמצע ואת הגזר של השכנים בסוף.","בדקו שמתחילים בגידולים שלנו, כפי שהתבקשתם.");
+connect("link-03","The boy reads","and","the girl draws","חברו את פעולת הילד ואת פעולת הילדה.","הילד קורא והילדה מציירת. מתארים שתי פעולות.","הקריאה של הילד תחילה, מילת התוספת באמצע והציור של הילדה בסוף.","בדקו שמילת החיבור בין שני חלקי המשפט ולא בתחילת המשפט.");
+connect("link-04","I have a ruler","and","you have an eraser","ספרו על כלי הכתיבה של שני אנשים.","לי יש סרגל ולך יש מחק. מוסיפים מידע על אדם נוסף.","החלק על הסרגל פותח, מילת התוספת מחברת והחלק על המחק מסיים.","בדקו שהסרגל שלי מופיע לפני המחק שלך.");
+connect("link-05","The sun is shining","and","the birds are singing","חברו שני תיאורים של הבוקר.","השמש זורחת והציפורים שרות. מציגים את שני הדברים יחד.","תחילה תיאור השמש, אחריו מילת התוספת ואז שירת הציפורים.","בדקו שהמשפט מתחיל בשמש ושאף חלק לא נשאר מחוץ למשפט.");
+connect("link-06","I like oranges","but","I do not like orange juice","הראו ניגוד בין פרי לבין המיץ שלו.","אני אוהב או אוהבת תפוזים, אבל לא את המיץ שלהם. אלו העדפות מנוגדות.","האהבה לפרי פותחת, מילת הניגוד באמצע ואי־האהבה למיץ בסוף.","בדקו שהחלק השלילי נשאר שלם ושאינו משנה את ההעדפה הראשונה.");
+connect("link-07","The box is small","but","it is heavy","חברו שני תיאורים מנוגדים של קופסה.","הקופסה קטנה, ובכל זאת כבדה. זהו ניגוד לציפייה.","תחילה גודל הקופסה, אחר כך מילת הניגוד ולבסוף המשקל שלה.","בדקו שהגודל בא ראשון, כפי שהתבקשתם, ולא המשקל.");
+connect("link-08","Lina can swim","but","she cannot dive","הראו מה לינה יכולה לעשות ומה עדיין לא.","לינה יודעת לשחות אבל אינה יכולה לצלול. מחברים יכולת וחוסר יכולת.","חלק השחייה פותח, אחריו מילת הניגוד ולבסוף חוסר היכולת לצלול.","בדקו שלא החלפתם בין מה שלינה יכולה לעשות לבין מה שאינה יכולה.");
+connect("link-09","We want to play outside","but","it is raining","חברו רצון עם מזג אוויר שמפריע לו.","הרצון הוא לשחק בחוץ; הגשם מפריע לרצון הזה.","הרצון לשחק פותח, אחריו מילת הניגוד ולבסוף תיאור הגשם.","בדקו שפותחים ברצון, ושלא מציגים את הגשם כסיבה לרצון.");
+connect("link-10","I drink water","because","I am thirsty","ספרו מה עושים ואז מדוע.","הפעולה היא שתיית מים. הצמא מסביר מדוע שותים.","תחילה השתייה, אחריה מילת הסיבה ובסוף הצמא.","שאלו למה שותים מים. החלק שאחרי מילת הסיבה צריך לענות: בגלל הצמא.");
+connect("link-11","We take an umbrella","because","it is raining","ספרו מה לוקחים ואז מדוע.","לוקחים מטרייה; הגשם הוא הסיבה לכך.","לקיחת המטרייה פותחת, מילת הסיבה מחברת והגשם מופיע בסוף.","בדקו שהגשם הוא הסיבה ללקיחת המטרייה, ולא להפך.");
+connect("link-12","The girl is happy","because","her friend is visiting","ספרו איך הילדה מרגישה ואז מדוע.","הילדה שמחה, והביקור של החברה או החבר הוא הסיבה.","השמחה פותחת, אחריה מילת הסיבה ואז הביקור.","שאלו למה הילדה שמחה ובדקו שהחלק האחרון נותן את התשובה.");
+connect("link-13","We speak quietly","because","the baby is sleeping","ספרו איך מדברים ואז מדוע.","הדיבור השקט הוא הפעולה. שנת התינוק מסבירה אותה.","תחילה הדיבור השקט, אחריו מילת הסיבה ולבסוף שנת התינוק.","בדקו שמתחילים בדרך שבה מדברים ומסיימים בסיבה.");
+connect("link-14","I wear a hat","because","the sun is strong","ספרו מה לובשים ואז מדוע.","הכובע מגן מהשמש החזקה. השמש היא הסיבה לחבישתו.","חבישת הכובע פותחת, מילת הסיבה באמצע ועוצמת השמש בסוף.","שאלו למה חובשים כובע. ודאו שהמשפט עונה בעזרת הסיבה שבסוף.");
+
+function el(tag,text,className) {
+  const node=document.createElement(tag);
+  if(text!==undefined)node.textContent=text;
+  if(className)node.className=className;
+  return node;
+}
+function english(text) {
+  const node=el("p",text,"en");node.lang="en";node.dir="ltr";return node;
+}
+function button(text,handler) {
+  const node=el("button",text);node.type="button";node.addEventListener("click",handler);return node;
+}
+function shuffled(values) {
+  const result=[...values];
+  for(let i=result.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[result[i],result[j]]=[result[j],result[i]];}
+  return result;
+}
+let selection="all",round=null,lastId=null,lessonTopic=null,lessonTrigger=null;
+const seen=new Set();
+function candidates() {return BANK.filter(q=>selection==="all"||q.topic===selection);}
+function remaining() {return candidates().filter(q=>!seen.has(q.id));}
+function start(id=selection) {
+  selection=id;
+  if(!remaining().length)candidates().forEach(q=>seen.delete(q.id));
+  round={total:Math.min(6,remaining().length),index:0,independent:0,supported:0,topicCounts:{},q:null};
+  $("home").hidden=true;$("summary").hidden=true;$("game").hidden=false;
+  nextQuestion();
+}
+function nextQuestion() {
+  if(round.index===round.total){finish();return;}
+  const available=remaining();
+  const min=Math.min(...available.map(q=>round.topicCounts[q.topic]||0));
+  let pool=available.filter(q=>(round.topicCounts[q.topic]||0)===min);
+  if(pool.length>1)pool=pool.filter(q=>q.id!==lastId);
+  const q=shuffled(pool)[0];
+  seen.add(q.id);lastId=q.id;
+  round.index++;round.topicCounts[q.topic]=(round.topicCounts[q.topic]||0)+1;
+  showQuestion(q);
+}
+function showQuestion(q) {
+  Object.assign(round,{q,chosen:[],tileOrder:shuffled(q.words.map((_,i)=>i)),correct:false,assisted:false,attempts:0});
+  $("topic-title").textContent=topicMap.get(q.topic).title;
+  $("prompt").textContent=q.prompt;
+  $("constraint").textContent="Start with: "+q.start;
+  $("feedback").textContent="";
+  $("help-steps").replaceChildren(...q.steps.map(text=>el("li",text)));
+  $("help-rule").textContent=q.ruleEn;
+  $("help-answers").replaceChildren(...q.orders.map(order=>english(sentence(q,order))));
+  setHelp(false);
+  updateProgress();renderTiles();
+  $("topic-title").focus({preventScroll:true});
+}
+function sentence(q,order) {return order.map(index=>q.words[index]).join(" ")+q.punctuation;}
+function renderTiles(focusTarget) {
+  const {q,chosen,tileOrder,correct}=round;
+  $("chosen").replaceChildren();
+  $("available").replaceChildren();
+  chosen.forEach((index,position)=>{
+    const node=button(q.words[index],()=>{
+      round.chosen.splice(position,1);renderTiles({area:"available",index});
+    });
+    node.dataset.index=index;node.disabled=correct;
+    node.setAttribute("aria-label","Remove "+q.words[index]+", position "+(position+1));
+    $("chosen").append(node);
+  });
+  tileOrder.forEach(index=>{
+    const node=button(q.words[index],()=>{
+      round.chosen.push(index);
+      const next=round.tileOrder.find(value=>!round.chosen.includes(value));
+      renderTiles(next===undefined?{area:"check"}:{area:"available",index:next});
+    });
+    node.dataset.index=index;node.disabled=correct||chosen.includes(index);
+    node.setAttribute("aria-label","Add "+q.words[index]);
+    $("available").append(node);
+  });
+  $("answer-line").textContent=chosen.length?chosen.map(index=>q.words[index]).join(" ")+(chosen.length===q.words.length?q.punctuation:""):"";
+  $("check").disabled=correct;
+  $("clear").disabled=correct||!chosen.length;
+  ["next-top","next-bottom"].forEach(id=>{
+    $(id).hidden=!correct;
+    $(id).textContent=round.index===round.total?"לסיכום הסבב":"לשאלה הבאה";
+  });
+  if(focusTarget) {
+    const target=focusTarget.area==="check"?$("check"):$(focusTarget.area).querySelector('[data-index="'+focusTarget.index+'"]');
+    target?.focus({preventScroll:true});
+  }
+}
+function setHelp(open) {
+  $("help-panel").hidden=!open;
+  $("help").setAttribute("aria-expanded",String(open));
+  $("help").textContent=open?"🙈 הסתר הסבר":"🔍 איך פותרים?";
+  if(open&&!round.correct)round.assisted=true;
+}
+function check() {
+  if(!round||round.correct)return;
+  if(round.chosen.length!==round.q.words.length) {
+    $("feedback").textContent="נשארו אריחים לבחירה. השלימו את המשפט ואז נבדוק יחד.";return;
+  }
+  round.attempts++;
+  // Compare words, not tile identities: identical occurrences are interchangeable.
+  const built=sentence(round.q,round.chosen);
+  if(round.q.orders.some(order=>sentence(round.q,order)===built)) {
+    round.correct=true;
+    const independent=round.attempts===1&&!round.assisted;
+    round[independent?"independent":"supported"]++;
+    $("feedback").textContent=independent?"יפה מאוד! בניתם משפט נכון בעצמכם.":"יפה מאוד! בניתם מחדש והצלחתם בעזרת הלמידה.";
+    updateProgress();renderTiles();$("next-top").focus({preventScroll:true});
+  } else {
+    $("feedback").textContent="כמעט! הסדר עדיין לא מתאים להוראה. פתחנו הסבר שיעזור; אפשר להסיר אריחים או לנקות ולנסות שוב.";
+    setHelp(true);
+  }
+}
+function updateProgress() {
+  $("progress-text").textContent="שאלה "+round.index+" מתוך "+round.total;
+  $("score").textContent="בעצמי: "+round.independent+" · בעזרת הסבר: "+round.supported;
+  $("progress").max=round.total;$("progress").value=round.index-(round.correct?0:1);
+}
+function advance() {if(round?.correct)nextQuestion();}
+function finish() {
+  $("game").hidden=true;$("summary").hidden=false;
+  $("summary-text").textContent="השלמתם "+round.total+" משפטים. הצלחות עצמאיות: "+round.independent+". הצלחות בעזרת הסבר או תיקון: "+round.supported+".";
+  $("summary-title").focus({preventScroll:true});
+}
+function home() {
+  round=null;$("game").hidden=true;$("summary").hidden=true;$("home").hidden=false;$("mixed").focus({preventScroll:true});
+}
+function openLesson(id,trigger) {
+  lessonTopic=topicMap.get(id);lessonTrigger=trigger;
+  if(round&&!$("game").hidden&&!round.correct)round.assisted=true;
+  const topic=lessonTopic;
+  $("lesson-title").textContent=topic.title;$("lesson-en").textContent=topic.en;
+  $("lesson-goal").textContent=topic.goal;$("lesson-intro").textContent=topic.intro;$("lesson-rule").textContent=topic.rule;
+  $("lesson-examples").replaceChildren(...topic.examples.map(([en,he])=>{
+    const node=el("div",undefined,"example");node.append(english(en),el("p",he));return node;
+  }));
+  $("mistake-wrong").textContent=topic.mistake[0];$("mistake-right").textContent=topic.mistake[1];$("mistake-why").textContent=topic.mistake[2];
+  const [prompt,hint,choices,answer,why]=topic.trial;
+  $("trial-prompt").textContent=prompt;$("trial-hint").textContent=hint;$("trial-feedback").textContent="";$("trial-answer").hidden=true;
+  $("trial-choices").replaceChildren(...choices.map((text,index)=>{
+    const node=button(text,()=>{
+      $("trial-answer").textContent=choices[answer];$("trial-answer").hidden=false;
+      $("trial-feedback").textContent=(index===answer?"נכון! ":"ננסה להבין יחד. ")+why;
+      if(index===answer)Array.from($("trial-choices").children).forEach(choice=>choice.disabled=true);
+    });
+    node.className="en";return node;
+  }));
+  $("lesson-return").textContent=round&&!$("game").hidden?"חוזרים לאותה שאלה":"מתחילים לתרגל";
+  document.body.classList.add("lesson-opened");$("lesson").showModal();$("lesson").scrollTop=0;
+}
+TOPICS.forEach(topic=>{
+  const card=el("article",undefined,"card");card.append(el("h3",topic.title),english(topic.en),el("p",topic.description));
+  const actions=el("div",undefined,"actions");
+  const learn=button("📚 שיעור קצר",()=>openLesson(topic.id,learn));
+  learn.setAttribute("aria-label","שיעור קצר: "+topic.title);
+  actions.append(learn,button("מתחילים לתרגל",()=>start(topic.id)));card.append(actions);$("topic-cards").append(card);
+});
+$("mixed").addEventListener("click",()=>start("all"));
+$("check").addEventListener("click",check);
+$("clear").addEventListener("click",()=>{if(!round.correct){round.chosen=[];$("feedback").textContent="המשפט נוקה. נסו סדר חדש.";renderTiles({area:"available",index:round.tileOrder[0]});}});
+$("help").addEventListener("click",()=>setHelp($("help-panel").hidden));
+$("next-top").addEventListener("click",advance);$("next-bottom").addEventListener("click",advance);
+$("restart").addEventListener("click",()=>start());$("replay").addEventListener("click",()=>start());
+$("home-button").addEventListener("click",home);$("summary-home").addEventListener("click",home);
+$("lesson-button").addEventListener("click",()=>openLesson(round.q.topic,$("lesson-button")));
+$("close-lesson").addEventListener("click",()=>$("lesson").close());
+$("lesson").addEventListener("close",()=>{document.body.classList.remove("lesson-opened");if(lessonTrigger?.isConnected)lessonTrigger.focus({preventScroll:true});});
+$("lesson-return").addEventListener("click",()=>{
+  const resume=round&&!$("game").hidden,id=lessonTopic.id;
+  $("lesson").close();if(!resume)start(id);
+});
+if(new URLSearchParams(location.search).has("selftest")) {
+  window.__eduSelfTest={bank:BANK,topics:TOPICS,start,check,advance,home,openLesson,showQuestion,sentence,shuffled,get round(){return round;},get seen(){return [...seen];}};
+}
+</script>
+</body>
+</html>

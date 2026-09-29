@@ -9,6 +9,210 @@ Every active page includes the approved refreshed design and a persistent five-t
 
 The root page (`index.html`) is a hub that links to every game.
 
+## Grade 5 English preview
+
+The [expanded Grade 5 preview](./sandbox/english-grade-5/index.html) is linked from
+the sandbox, not the production English hub. Vocabulary and reading remain on
+the Grade 5 hub; [Grammar](./sandbox/english-grade-5/grammar/index.html) has its
+own Grade 5 page with lessons and mixed practice. These areas retain 16 lessons
+and 1,022 practice questions:
+120 vocabulary words (40 per topic, with meaning, spelling and context formats),
+500 grammar questions (50 per topic), and 27 original passages with six questions
+each. Grammar includes be, pronouns, possessives, articles, plurals, prepositions,
+questions, have/has, there is/are, and routines versus actions now.
+Lessons include worked examples, common mistakes, an interactive guided question
+and vocabulary word banks. Practice includes retries, question-specific
+four-step help, optional speech and reading support, and round summaries.
+Question order is randomized on each new round in all three areas, including
+reading; answer choices are shuffled too. Passage text and lesson examples stay
+in their authored order.
+Vocabulary and grammar mix up to six unseen questions per round, spreading them
+across available topics. Reading rotates passages and keeps their questions
+together. Questions are removed from the visit's shuffled deck only when displayed;
+restarting retains unshown questions. Each bank is exhausted before reshuffling,
+and a partial round may finish a bank. Separate lesson buttons remain available,
+and in-game help follows the current question's topic. Previous grammar/topic
+hash links on the hub redirect to the dedicated grammar page. Learner pages
+display round progress, not question-bank inventory totals.
+
+The sandbox hub groups routes into foundations, communication, and missions/review.
+All routes remain freely accessible; the filters do not impose prerequisites.
+The following extensions also stay in the sandbox, pending review and separate
+approval to publish or promote them:
+
+| Route | What it adds |
+| --- | --- |
+| [Connected Missions](./sandbox/english-grade-5/connected-missions/index.html) | Original scenarios that connect reading, listening, speaking and writing, with optional local-only speech recognition and manual alternatives. |
+| [Mixed Review](./sandbox/english-grade-5/mixed-review/index.html) | Structured vocabulary and grammar questions, followed by fresh examples for skills that needed support. |
+| [Listening Lab](./sandbox/english-grade-5/listening-lab/index.html) | A selectable longer-content route for sequencing, evidence-based inference and reasons. |
+| [Writing Workshop](./sandbox/english-grade-5/writing-workshop/index.html) | Guided revision of authored examples: capitals, punctuation, word order, whole-sentence paragraph order and connectors, separate from ungraded free writing. |
+
+Review suggestions reflect activity in the current page visit, not a diagnosis
+or a cross-game learner profile. Help and retries remain visible as supported
+practice, not independent success. Writing and spoken self-review remain
+explicitly ungraded. No learner text or speech is sent to a service or persisted;
+refreshing resets visit progress. Bundled audio and local microphone support
+do not require a private grammar service, account or model installation.
+
+The hub also links to two productive-skills activities:
+
+- [Sentence Builder](./sandbox/english-grade-5/sentence-builder/index.html):
+  tap-to-order tiles for ordinary sentences, questions, negatives and connectors,
+  with lessons, guided examples, retries and step-by-step help. Identical tiles
+  are interchangeable, and explicitly supported alternative orders are accepted.
+  Topic practice and mixed rounds use unseen activities before repeats.
+- [Writing Workshop](./sandbox/english-grade-5/writing-workshop/index.html):
+  original illustrated scenes, routines, messages and paragraphs, with lessons,
+  sentence frames, planning, word banks, models and self-review checklists.
+  Support stages stay unlocked. Drafts remain available while switching stages
+  and revisiting tasks within the page, but are not stored or sent anywhere.
+  Free writing receives no automatic correctness grade.
+  Its separate guided-revision mode contains 30 editing tasks and five lessons;
+  switching modes preserves the current free draft, plan and self-review.
+
+The [Listening Lab](./sandbox/english-grade-5/listening-lab/index.html) adds
+original dialogues, instructions and short stories, with guided lessons,
+randomized comprehension questions, replay and slower playback. Transcripts
+and answer explanations are optional support; reading a transcript counts as
+assisted practice, not independent listening.
+The longer-content selector provides three longer stories and three longer
+conversations, with sequencing, inference and reason questions. Optional
+retelling frames/models support quiet planning and self-review, not an
+automatically graded spoken response. The original tracks remain available.
+
+Audio is bundled as local PCM WAV files, synthesized in advance with offline
+English voices. It does not depend on installed browser voices or a network
+service during play. These are synthetic practice recordings, not human
+recordings or official assessment audio. If playback fails, the learner can
+use transcript support instead.
+
+To regenerate audio after changing a script in the page's `listening-data`
+JSON, run `sandbox\english-grade-5\listening-lab\generate-audio.ps1` with
+PowerShell 7 on Windows with the Microsoft David Desktop and Zira Desktop
+voices installed. The generator reads the page directly and produces the
+WAV files and a hash manifest under `audio/`. This is a maintenance step,
+not a requirement to play the game.
+
+The [Speaking Practice](./sandbox/english-grade-5/speaking-practice/index.html)
+page connects listening to speaking: repeat a model, answer aloud, describe
+original illustrated scenes and practise a role in a short dialogue.
+The expanded set adds practice around bus tickets, shop opening times,
+fictional park meetings and meal choices, including four new role-based
+dialogues. Additional picture prompts reuse the original classroom, picnic,
+park and kitchen illustrations and ask only about visible details.
+Lessons, optional frames and models support self-review. All four spoken
+activity types offer optional, explicitly consented on-device microphone
+recognition; dialogue listening turns do not. Consent is in the top panel,
+immediately after the short-lesson selector, and
+automatically checks local support without listening or downloading. The choice
+and readiness survive activity changes within the current page visit; reload
+requires a fresh opt-in. Inline retry/install controls avoid trips to the
+collapsed advanced settings panel. Children confirm the transcript,
+read a useful English rule and example, and can practise again without
+automatic listening. Repeat activities compare words with the model, not
+pronunciation. Open answers and picture descriptions may differ from the
+example: limited local coaching is not a correctness grade or a general
+grammar assessment. Confirmation never completes a task, checks self-review
+boxes or advances a dialogue; those actions remain the learner's own report.
+Tasks remain fully usable without microphone support. Child text and retry
+targets are not saved in activity history and are cleared on activity, role,
+turn or lesson transitions and when consent is revoked.
+Targeted grammar tips highlight the words to replace with strikethrough and
+the suggested additions with underlining. Open-answer models stay labelled as
+examples, not corrections of the child's meaning. A retry keeps the suggested
+wording and its English rule visible while the child prepares and speaks;
+only an explicit press starts the microphone.
+
+Speaking Practice also offers short-phrase, full-sentence and extended-response
+levels, plus optional fresh examples for the specific grammar rule being
+practised. The same local microphone and transcript-confirmation flow is used;
+extended responses allow up to 20 seconds instead of the usual 11 seconds,
+including the browser permission wait. Manual practice remains available.
+Hints gradually become less prominent as
+different examples are practised, but the child can always reopen help.
+This changes the amount of support, not a claimed ability or pronunciation
+grade. A visit summary lists the rules practised and distinguishes transcript
+practice from self-report. Only rule identifiers and aggregate practice
+information are retained in page memory, never a history of child answers.
+Reloading clears the adaptive history; no account or service is needed.
+
+Speaking models use the same offline WAV format. From the repository root,
+regenerate its audio with
+`.\sandbox\english-grade-5\listening-lab\generate-audio.ps1 -Page .\sandbox\english-grade-5\speaking-practice\index.html -DataId speaking-data`.
+Its recordings and manifest stay in the Speaking Practice folder; the shared
+generator is needed only for maintenance, not at runtime.
+
+The separate [Speaking Town missions](./sandbox/english-grade-5/speaking-town/index.html)
+include the original Lost Backpack adventure and everyday conversations for
+ordering a snack, borrowing a book and asking for directions. The page is linked
+from the Grade 5 speaking card and the existing speaking exercises.
+Each conversation uses original NPC dialogue, vocabulary,
+sentence starters and short model exchanges, with bundled synthetic recordings.
+The new scenarios reuse the same browser-only speech, manual-play and coaching
+engine rather than requiring a separate service or AI model. Switching scenarios
+starts a new mission and clears the previous conversation; nothing starts listening
+or playing automatically.
+The mission supports optional push-to-talk **on-device recognition only**:
+explicit opt-in, browser permission, a visible listening state, Stop/Cancel,
+a short time limit, and confirmation of the recognised text before acting.
+All three speaking pages use the same collapsible consent panel in their top
+controls. Speaking Practice places it after the short-lesson controls, Speaking
+Town after the conversation selector, and Connected Missions after the mission
+and stage controls.
+Approval closes it and checks support without listening; consent and readiness
+remain available during that page visit. Connected Missions can prepare local
+support from any stage without starting capture; preparation and cancellation
+stay accessible even when the speaking stage is hidden. Only optional technical
+details remain collapsed at the bottom.
+It matches mission information, not pronunciation quality. Manual self-report
+play is always available and is never described as recognised speech.
+After transcript confirmation, rule-based feedback identifies common missing
+details in each conversation and shows encouragement with an actionable hint.
+An example can be revealed separately; reversed descriptions such as "bag blue"
+immediately show the corrected English phrase and a full-sentence alternative.
+Grammar coaching explains matched patterns in simple English alongside Hebrew
+guidance and a visible correction: color order, articles, singular `is`, verbs
+after modals, object pronouns, `help ... find`, and common location questions.
+Short request fragments such as "bag help Maya" are coached into a complete
+question with an English word-order rule; the retry may address Maya by name.
+The browser-only say/improve/retry loop shows the confirmed words and one
+grammar tip before progression. Clear intent with a grammar tip offers either
+practice or explicit continuation; unmatched answers retain manual fallback.
+Retry preparation never opens the microphone. Applying a suggested wording
+gets encouragement distinct from mission credit; plural agreement corrections
+preserve the plural meaning instead of changing it to fit a singular-bag task.
+Confirmed words and practice targets are memory-only and cleared on navigation,
+restart, consent revocation or deletion.
+The town also highlights exact word changes for matched grammar patterns,
+ignoring capitalization and punctuation differences. Its retry guide keeps
+the suggestion and rule beside the speaking controls until confirmation or a
+conversation boundary; multiple alternatives remain visible as examples.
+It checks the confirmed transcript locally, without a remote grammar service.
+Clear short answers
+still earn their clue; missing mission details invite a retry. These hints are
+not a general grammar assessment, and unrecognised answers are not labelled
+near-correct just because they contain a keyword.
+
+On both speaking pages, microphone mode requires a secure context, a browser implementing
+`SpeechRecognition.processLocally` and `available()`, and a locally available
+English pack. An explicit download button may install a browser language pack;
+it does not start the microphone. `unavailable` means manual mode only, not a
+reason to switch to cloud recognition. The test environment's Edge installation
+reported local English unavailable; real microphone recognition was not verified
+there. No cloud fallback, speech uploads, saved recordings or transcript logs
+are implemented. Microphone behaviour may vary by browser and device.
+
+Generate its original NPC and model audio with
+`.\sandbox\english-grade-5\listening-lab\generate-audio.ps1 -Page .\sandbox\english-grade-5\speaking-town\index.html -DataId town-data`.
+
+The preview follows the existing five-theme design and works locally without a server.
+Each page keeps its curriculum and game logic in its own HTML. The site does not
+save or transmit child speech or answers; round progress lasts only until reload.
+Ministry guidance and
+historical assessments informed the level and exercise types; third-party
+worksheets and recordings are not copied into the game. Production promotion
+to `english/grade-5/` requires separate approval.
+
 ## Body and Wearables picture games
 
 The production [Body and Wearables game](./english/body-and-wearables/index.html)

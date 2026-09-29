@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>English Academy · Grade 5 Preview</title>
+<script src="../../assets/theme-selector.js" defer></script>
+<link rel="stylesheet" href="../../assets/refresh.css">
+<style>
+  *{box-sizing:border-box}
+  :root{--surface:var(--refresh-surface,#fff);--soft:var(--refresh-soft,#edf3fb);--text:var(--refresh-text,#243b53);--muted:var(--refresh-muted,#52677e);--accent:var(--refresh-accent,#285f9f);--border:var(--refresh-border,#d5dfec)}
+  body{margin:0;padding-top:62px;background:#eef7fd;color:var(--text);font-family:"Segoe UI","Arial Hebrew",Arial,sans-serif;line-height:1.6}
+  main{width:min(1060px,100%);margin:auto;padding:12px 16px 40px}
+  [hidden]{display:none!important}
+  button,a,select{font:inherit}
+  button,a.button{min-height:44px;border:2px solid var(--border);border-radius:14px;padding:10px 16px;background:var(--soft);color:var(--text);font-weight:800;cursor:pointer}
+  button:disabled{cursor:default}
+  button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid #b97a19;outline-offset:3px}
+  a{color:var(--accent);text-underline-offset:3px}
+  .back{display:inline-flex;align-items:center;text-decoration:none;min-height:44px;padding:8px 14px;border-radius:14px;background:var(--surface)}
+  header{text-align:center;margin:12px 0 20px}
+  .logo{font-size:clamp(30px,6vw,48px);line-height:1.2;margin:10px 0;color:var(--accent)}
+  .subtitle{margin:6px 0;font-size:18px;font-weight:700}
+  .preview{display:inline-block;padding:4px 12px;border:1px dashed var(--accent);border-radius:20px;font-size:14px}
+  .notice,.source-note{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:14px 18px;margin:16px 0}
+  .notice p,.source-note p{margin:4px 0}
+  .actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:16px 0}
+  .hub-filters{justify-content:flex-start}
+  .hub-filters button[aria-pressed="true"]{outline:3px solid var(--accent);outline-offset:1px}
+  .hub-filters button{flex:1 1 180px}
+  .topic-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+  .topic-card{border:1px solid var(--border);border-top:6px solid var(--accent);border-radius:22px;padding:20px;background:var(--surface);display:flex;flex-direction:column}
+  .topic-card .icon{font-size:38px}
+  .topic-card h3{font-size:21px;margin:8px 0 2px}
+  .topic-card p{margin:10px 0}
+  .topic-card .actions{margin-top:auto;padding-top:12px;justify-content:flex-start}
+  .topic-card .actions button{flex:1;padding-inline:9px}
+  .topic-card .actions a{display:block;flex:1;text-align:center;text-decoration:none}
+  .lesson-list{border-top:1px solid var(--border);margin-top:12px;padding-top:8px}
+  .lesson-list summary{cursor:pointer;min-height:44px;padding:8px 0;font-weight:800}
+  .lesson-list button{display:block;width:100%;text-align:right;margin:8px 0}
+  .word-bank{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0}
+  .word-bank button{min-width:0;text-align:start}
+  .word-bank span{display:block}
+  .word-bank .en{font-size:18px}
+  .word-bank .translation{font-size:14px;color:var(--muted)}
+  .en{direction:ltr;text-align:left;font-family:"Segoe UI",Arial,sans-serif;overflow-wrap:break-word}
+  .topic-card .en{color:var(--muted)}
+  .count,.tag{font-size:14px;color:var(--muted);font-weight:700}
+  .topic-head{text-align:center;margin:14px 0}
+  .topic-head h2{margin:5px 0;font-size:clamp(26px,5vw,36px)}
+  .topic-head .en{text-align:center}
+  .practice-card{background:var(--surface);padding:clamp(16px,4vw,28px);border:1px solid var(--border);border-radius:24px;max-width:850px;margin:16px auto}
+  .practice-top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-weight:800}
+  progress{width:100%;height:14px;accent-color:var(--accent);margin:12px 0}
+  .question-box{background:var(--soft);border:2px solid var(--border);border-radius:18px;padding:18px}
+  .instruction{font-weight:800;margin:0 0 12px}
+  #prompt{font-size:clamp(21px,4vw,27px);line-height:1.65;margin:12px 0}
+  .choices{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px;direction:ltr}
+  .choice{font-size:19px;min-height:60px;background:var(--surface);overflow-wrap:break-word}
+  .choice.correct,.guided-choice.correct{background:#d9f6e3!important;color:#145c35!important;border-color:#237849!important}
+  .choice.wrong,.guided-choice.wrong{background:#ffe0dc!important;color:#8c2c28!important;border-color:#ac463b!important;text-decoration:line-through}
+  .feedback{font-weight:800;min-height:30px;margin:12px 0}
+  .passage{background:var(--soft);border:1px solid var(--border);border-radius:18px;padding:18px;margin:12px 0}
+  .passage h3{margin:0 0 12px;font-size:22px}
+  .passage p{font-size:19px;line-height:1.85;margin:10px 0}
+  .passage mark{color:#263b47;background:#ffdf81;border-radius:3px}
+  .reading-tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .glossary{margin:12px 0}
+  .glossary summary,details.source-note summary{cursor:pointer;min-height:44px;padding:8px 0;font-weight:800}
+  .glossary dl{display:grid;grid-template-columns:1fr 1fr;gap:8px 18px;margin:8px 0}
+  .glossary dt,.glossary dd{margin:0}
+  .help-panel{padding:16px;border:2px solid var(--border);border-radius:18px;background:var(--soft)}
+  .help-step{background:var(--surface);padding:12px 16px;border-radius:12px;margin-bottom:10px;border-inline-start:4px solid var(--accent)}
+  .help-step h4{margin:0 0 5px;font-size:16px}
+  .help-step p{margin:0}
+  .help-panel .en{background:var(--surface);padding:12px 16px;border-radius:12px}
+  .help-panel h3{margin:4px 0 12px}
+  .next-bottom{display:block;margin:16px auto 0}
+  .summary{text-align:center;padding:20px}
+  .summary .icon{font-size:54px}
+  .summary h2{font-size:30px}
+  dialog{width:min(760px,calc(100% - 24px));max-height:calc(100dvh - 24px);padding:22px;border:2px solid var(--border);border-radius:24px;background:var(--surface);color:var(--text)}
+  dialog::backdrop{background:#102238b8}
+  body.lesson-opened{overflow:hidden}
+  .lesson-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+  .lesson-head h2{margin:0;font-size:25px}
+  .lesson-section{padding:16px 0;border-bottom:1px solid var(--border)}
+  .lesson-section h3{margin:0 0 8px}
+  .lesson-section p{margin:6px 0}
+  .rule{padding:14px;border:2px dashed var(--accent);border-radius:14px;background:var(--soft)}
+  .example{background:var(--soft);padding:12px 16px;border-radius:14px;margin:12px 0}
+  .example .en{font-size:19px}
+  .example button{margin-top:8px}
+  .mistake .en{font-size:18px}
+  .mistake del{text-decoration-thickness:2px}
+  .guided-choices{display:flex;gap:10px;flex-wrap:wrap;direction:ltr;margin:12px 0}
+  .guided-choice{flex:1}
+  #audio-status{max-width:850px;margin:12px auto}
+  .pending-note{color:var(--muted);font-size:15px}
+  footer{text-align:center;font-size:14px;margin-top:22px}
+  @media(max-width:820px){.topic-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media(max-width:540px){.topic-grid{grid-template-columns:1fr}.choices{grid-template-columns:1fr}main{padding-inline:12px}.practice-card{padding:16px}.question-box{padding:13px}.topic-card .actions button{flex:1}.lesson-head h2{font-size:22px}.hub-filters button{flex-basis:120px;padding:8px}}
+  @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body id="edu-refresh">
+<main>
+  <a class="back" href="../sandbox.html">חזרה למרכז הבדיקות</a>
+  <header>
+    <span class="preview">תצוגת בדיקה מורחבת · כיתה ה׳</span>
+    <h1 class="logo">לומדים אנגלית, צעד אחר צעד</h1>
+    <p class="subtitle" lang="en" dir="ltr">English Academy · Grade 5</p>
+    <p>שיעור קצר, ניסיון משותף ומשחק לתרגול עצמאי</p>
+  </header>
+  <noscript><p class="notice">כדי לפתוח את השיעורים והמשחקים צריך לאפשר הפעלת סקריפטים בדפדפן.</p></noscript>
+  <section id="hub" aria-labelledby="hub-title">
+    <div class="notice">
+      <h2 id="hub-title">מה נלמד היום?</h2>
+      <p>אפשר להתחיל במשימה שמחברת כמה מיומנויות, לחזור על מה שצריך לתרגל או לבחור מיומנות אחת. כל המסלולים פתוחים לבחירה.</p>
+    </div>
+    <nav class="actions hub-filters" aria-label="סינון מסלולי הלמידה">
+      <button type="button" data-hub-filter="all" aria-pressed="true" aria-controls="topics">כל המסלולים</button>
+      <button type="button" data-hub-filter="missions" aria-pressed="false" aria-controls="topics">משימות וחזרה</button>
+      <button type="button" data-hub-filter="foundations" aria-pressed="false" aria-controls="topics">מילים, דקדוק וקריאה</button>
+      <button type="button" data-hub-filter="communication" aria-pressed="false" aria-controls="topics">האזנה, דיבור וכתיבה</button>
+    </nav>
+    <p id="hub-filter-note" class="pending-note" role="status">כל מסלולי הלמידה מוצגים.</p>
+    <div id="topics" class="topic-grid"></div>
+    <p class="pending-note">אפשר לחזור לכאן ולבחור מסלול אחר בכל רגע. הסיכומים שייכים לביקור בעמוד שבו תרגלתם, ולא מצטברים בין המשחקים. אין ציון אוטומטי לכתיבה חופשית או להגייה.</p>
+    <details class="source-note">
+      <summary>להורים: תוכן, מקורות ומטרת התצוגה</summary>
+      <p>התרגילים, הדוגמאות והסיפורים נכתבו במיוחד למשחק. אין כאן העתקה של דפי עבודה, תמונות או הקלטות מהמקורות.</p>
+      <p>תוכנית משרד החינוך מנחה את רמת הלימוד; מבחני עבר ודפי תרגול עזרו לבחור סוגי פעילויות. זו אינה תוכנית לימודים מלאה או תוכן שאושר בידי משרד החינוך.</p>
+      <p>הנושאים הבסיסיים משמשים חזרה, והקריאה והשימוש במילים בתוך משפטים מרחיבים אותה. כיתה ה׳ היא חלק מרצף למידה, ולא נקודת סיום לכל מיומנויות האנגלית היסודית.</p>
+      <p>התרגול אינו תחליף לשיחה, האזנה וכתיבה חופשית. ההקראה היא עזרה אופציונלית של הדפדפן, לא הקלטה מתוך מבחן. במהלך הביקור מוצגות שאלות שלא נראו לפני שחוזרים על שאלות. רענון העמוד מאפס את הסדר ואת ההתקדמות.</p>
+      <ul>
+        <li><a href="https://meyda.education.gov.il/files/Mazkirut_Pedagogit/English/Curriculum2020.pdf" target="_blank" rel="noopener">תוכנית משרד החינוך</a></li>
+        <li><a href="https://rama.gov.il/assessments/meitzav-eng-heb-5-2020" target="_blank" rel="noopener">דוגמת הערכה היסטורית של ראמ״ה</a></li>
+        <li><a href="https://matic.co.il/מבחנים-באנגלית-לכיתה-ה/" target="_blank" rel="noopener">מקורות תרגול באתר מתיק</a></li>
+        <li><a href="https://www.kidsplus.co.il/worksheets-eng/fifth-eng/" target="_blank" rel="noopener">מקורות תרגול באתר קידס פלוס</a></li>
+      </ul>
+    </details>
+  </section>
+  <section id="game" hidden aria-labelledby="topic-title">
+    <button id="back-topics" type="button" class="secondary">חזרה למשחקים</button>
+    <div class="topic-head">
+      <h2 id="topic-title" tabindex="-1"></h2>
+      <p id="topic-en" class="en" lang="en"></p>
+      <p id="topic-goal"></p>
+    </div>
+    <div class="actions">
+      <button id="open-lesson" type="button" class="secondary">📚 שיעור לשאלה הזאת</button>
+      <button id="restart" type="button" class="secondary">סבב חדש</button>
+    </div>
+    <div id="round" class="practice-card">
+      <div class="practice-top"><span id="round-label"></span><span id="round-score"></span></div>
+      <progress id="progress" value="0" max="6" aria-label="התקדמות בסבב"></progress>
+      <article id="passage-box" class="passage" hidden aria-labelledby="passage-title">
+        <h3 id="passage-title" class="en" lang="en"></h3>
+        <div id="passage-text" class="en" lang="en"></div>
+        <div class="reading-tools"><button id="read-passage" type="button" class="secondary">🔊 הקראת הקטע</button></div>
+        <details class="glossary"><summary>מילון קטן לעזרה</summary><dl id="glossary"></dl></details>
+      </article>
+      <div class="question-box">
+        <p id="question-topic" class="tag"></p>
+        <p id="instruction" class="instruction"></p>
+        <p id="prompt" class="en" lang="en" tabindex="-1"></p>
+        <p id="vocab-meaning" hidden></p>
+        <div id="question-support" hidden>
+          <button id="translate-question" type="button" class="secondary" aria-expanded="false" aria-controls="question-he">עזרה בהבנת השאלה</button>
+          <p id="question-he" hidden></p>
+        </div>
+        <div id="choices" class="choices" role="group" aria-label="בחירת תשובה"></div>
+      </div>
+      <p id="feedback" class="feedback" role="status" aria-live="polite"></p>
+      <div class="actions">
+        <button id="help-toggle" type="button" class="secondary" aria-expanded="false" aria-controls="help-panel">🔍 איך פותרים?</button>
+        <button id="next-top" type="button" class="next" hidden>לשאלה הבאה</button>
+      </div>
+      <section id="help-panel" class="help-panel" hidden aria-labelledby="help-title">
+        <h3 id="help-title">נפתור יחד, צעד אחר צעד</h3>
+        <div id="help-steps"></div>
+        <h4>הסבר באנגלית</h4><p id="help-rule" class="en" lang="en"></p>
+        <h4>התשובה בהקשר</h4><p id="help-answer" class="en" lang="en"></p>
+        <p id="help-translation" hidden></p>
+        <button id="read-answer" type="button" class="secondary">🔊 הקראת התשובה</button>
+        <button id="next-bottom" type="button" class="next next-bottom" hidden>לשאלה הבאה</button>
+      </section>
+    </div>
+    <section id="summary" class="practice-card summary" hidden aria-labelledby="summary-title">
+      <span class="icon" aria-hidden="true">🌟</span>
+      <h2 id="summary-title" tabindex="-1">סיימתם את הסבב!</h2>
+      <p id="summary-text"></p><p id="summary-score"></p>
+      <p>גם תיקון תשובה ושימוש בהסבר הם חלק מהלמידה.</p>
+      <div class="actions"><button id="play-again" type="button" class="primary">מתרגלים שוב</button><button id="summary-back" type="button" class="secondary">בוחרים משחק אחר</button></div>
+    </section>
+  </section>
+  <p id="audio-status" role="status" hidden></p>
+  <footer>תצוגה מקומית לבדיקה · האתר הראשי נשאר ללא שינוי</footer>
+</main>
+<dialog id="lesson" aria-labelledby="lesson-title">
+  <div class="lesson-head"><h2 id="lesson-title"></h2><button id="close-lesson" type="button" autofocus>סגירה</button></div>
+  <p id="lesson-en" class="en" lang="en"></p>
+  <div class="lesson-section"><h3>מה נלמד?</h3><p id="lesson-goal"></p><p id="lesson-intro"></p><p id="lesson-rule" class="rule"></p></div>
+  <div class="lesson-section"><h3>דוגמאות שמסבירות את הדרך</h3><div id="lesson-examples"></div></div>
+  <div id="vocab-formats" class="lesson-section" hidden>
+    <h3>שלוש דרכים לתרגל מילים</h3>
+    <p>בוחרים פירוש בעברית, משלימים אות חסרה או מתאימים מילה למשפט. באיות בודקים את האותיות בסדר משמאל לימין; המשמעות בעברית עוזרת לזהות את המילה.</p>
+    <div id="vocab-worked" class="example"></div>
+    <details id="lesson-wordbank" class="glossary"><summary>כל המילים בשיעור — פירוש והקראה</summary><div id="word-bank" class="word-bank"></div></details>
+  </div>
+  <div class="lesson-section mistake"><h3>טעות שכדאי להכיר</h3><p class="en" lang="en"><del id="mistake-wrong"></del></p><p id="mistake-correct" class="en" lang="en"></p><p id="mistake-why"></p></div>
+  <div class="lesson-section">
+    <h3>מנסים יחד</h3><p id="guided-prompt" class="en" lang="en"></p>
+    <div id="guided-choices" class="guided-choices" role="group" aria-label="ניסיון משותף"></div>
+    <p id="guided-feedback" role="status"></p>
+    <button id="guided-help" type="button" aria-expanded="false" aria-controls="guided-explanation">הראו לי את הדרך</button>
+    <div id="guided-explanation" class="example" hidden><p id="guided-why"></p><p id="guided-answer" class="en" lang="en"></p></div>
+  </div>
+  <div class="actions"><button id="lesson-practice" type="button" class="primary">מתחילים לתרגל</button></div>
+  <p id="lesson-audio-status" role="status" hidden></p>
+</dialog>
+<script>
+"use strict";
+const $ = id => document.getElementById(id);
+const areas = [
+  {
+    "id": "vocabulary",
+    "title": "אתגר המילים",
+    "en": "Word Challenge",
+    "icon": "🧩",
+    "goal": "מילים מבית הספר, מהמטבח ומשגרת היום — משמעות, איות והשלמת משפטים.",
+    "roundNote": "עד שש שאלות מגוונות בסבב. שאלות חדשות מוצגות לפני שחוזרים על שאלות."
+  },
+  {
+    "id": "reading",
+    "title": "בלשי הקריאה",
+    "en": "Reading Detective",
+    "icon": "📖",
+    "goal": "הודעות, יומנים וסיפורים — בכל סבב פוגשים קטע ושאלות שמתאימות לו.",
+    "roundNote": "עד שש שאלות על קטע אחד. עוברים בין הקטעים והשאלות שעדיין לא ראינו."
+  }
+];
+const areaMap = new Map(areas.map(area=>[area.id,area]));
+const topics = [
+  {
+    "id": "school",
+    "area": "vocabulary",
+    "title": "מילים בבית הספר",
+    "en": "School and learning",
+    "icon": "🎒",
+    "level": "מילים בהקשר",
+    "goal": "נבחר מילים לפי מה שקורה במשפט, ולא רק לפי תרגום בודד.",
+    "intro": "קוראים את המשפט עד הסוף ושואלים: האם חסר חפץ, מקום או פעולה? המילים מסביב עוזרות לנו לבחור.",
+    "rule": "המילה החסרה צריכה להתאים גם למשמעות המשפט וגם לתפקיד שלה בו.",
+    "examples": [["We borrow books from the library.","המקום שבו שואלים ספרים הוא הספרייה."],["Please open your notebook and write the date.","הבקשה לכתוב תאריך עוזרת לזהות שצריך מחברת."]],
+    "mistake": ["We read a ruler.","We read a book.","קוראים ספר; בסרגל משתמשים כדי למדוד. לא מספיק ששתי המילים קשורות לבית הספר."],
+    "guided": ["I put my books in my ___ before school.","bag",["chair","window"],"מחפשים חפץ שאפשר לשים בו ספרים ולשאת לבית הספר. כיסא וחלון אינם מתאימים."],
+    "words": [
+      {"word":"library","he":"ספרייה","sentence":"We borrow books from the ___.","distractors":["playground","kitchen","bedroom"],"clueHe":"שימו לב לפעולה של שאילת ספרים.","reasonHe":"ספרייה היא המקום שבו שואלים ספרים; מגרש משחקים נועד לפעילות אחרת.","ruleEn":"A library is a place where people can borrow books."},
+      {"word":"ruler","he":"סרגל","sentence":"I use a ___ to draw a straight line.","distractors":["glue stick","schoolbag","notebook"],"clueHe":"חפשו כלי שעוזר לצייר קו ישר.","reasonHe":"הקצה הישר של הסרגל מכוון את הקו; דבק אינו עוזר ליישר אותו.","ruleEn":"A ruler helps us draw straight lines."},
+      {"word":"homework","he":"שיעורי בית","sentence":"Our teacher gives us ___ to do at home.","distractors":["breakfast","rain","shoes"],"clueHe":"חפשו מה המורה נותנת לעשות בבית.","reasonHe":"המורה נותנת תרגול לבית; בגדים ומזג אוויר אינם משימה לימודית.","ruleEn":"Homework is schoolwork that we do at home."},
+      {"word":"question","he":"שאלה","sentence":"I do not understand. Can I ask a ___?","distractors":["window","sandwich","pencil"],"clueHe":"שימו לב שהדובר אינו מבין ורוצה לברר.","reasonHe":"כשלא מבינים שואלים שאלה; שלוש האפשרויות האחרות הן חפצים או אוכל.","ruleEn":"We ask a question when we want information."},
+      {"word":"quiet","he":"שקט","sentence":"The baby is sleeping. Please be ___.","distractors":["noisy","hungry","late"],"clueHe":"התינוק ישן; חשבו איזו התנהגות לא תפריע לו.","reasonHe":"צריך להיות בשקט כדי לא להעיר את התינוק. רעש מפריע לשינה.","ruleEn":"Being quiet means making little or no noise."},
+      {"word":"together","he":"יחד","sentence":"We work as a team. We do the project ___.","distractors":["alone","separately","individually"],"clueHe":"המשפט הראשון אומר שמדובר בצוות.","reasonHe":"עבודה בצוות נעשית יחד; עבודה לבד או בנפרד אינה מתארת את שיתוף הפעולה של הצוות.","ruleEn":"People in a team work together."},
+      {"word":"answer","he":"לענות","sentence":"The teacher asks a question. I raise my hand to ___.","distractors":["sleep","swim","cook"],"clueHe":"מה עושים אחרי שמורה שואלת שאלה?","reasonHe":"מרימים יד כדי לענות; שינה ושחייה אינן תגובה לשאלה בשיעור.","ruleEn":"We answer a question."},
+      {"word":"lesson","he":"שיעור","sentence":"Our English ___ starts at nine o'clock.","distractors":["spoon","shoe","cloud"],"clueHe":"מחפשים פעילות לימודית שמתחילה בשעה מסוימת.","reasonHe":"לשיעור יש שעת התחלה; כפית וענן אינם פעילות בבית הספר.","ruleEn":"A lesson is a time when we learn a subject."},
+      {"word":"pencil","he":"עיפרון","sentence":"I write with a ___ and use an eraser to remove my mistakes.","distractors":["pen","ruler","brush"],"clueHe":"אפשר למחוק את הכתיבה בעזרת מחק.","reasonHe":"כתיבה בעיפרון ניתנת למחיקה במחק רגיל; כתיבה בעט אינה נמחקת כך.","ruleEn":"A pencil makes marks that an eraser can remove."},
+      {"word":"eraser","he":"מחק","sentence":"I rub an ___ over a pencil mark to remove it.","distractors":["apple","envelope","onion"],"clueHe":"משפשפים את סימן העיפרון כדי להסיר אותו.","reasonHe":"מחק מסיר סימני עיפרון; מעטפה מיועדת למכתבים ולא למחיקה.","ruleEn":"An eraser removes pencil marks."},
+      {"word":"notebook","he":"מחברת","sentence":"I write my class notes on the lined pages of my ___.","distractors":["ruler","schoolbag","eraser"],"clueHe":"הרמז הוא דפים עם שורות לכתיבת סיכומי השיעור.","reasonHe":"מחברת מכילה דפים לכתיבה; סרגל עוזר למדוד ואינו מכיל דפים.","ruleEn":"A notebook has pages for writing notes."},
+      {"word":"schoolbag","he":"תיק בית ספר","sentence":"I carry my books to school in a ___ on my back.","distractors":["desk","cupboard","board"],"clueHe":"נושאים את הספרים על הגב בדרך לבית הספר.","reasonHe":"תיק בית ספר מיועד לנשיאת ציוד לימודי; שולחן אינו חפץ שנושאים על הגב.","ruleEn":"A schoolbag holds the things we take to school."},
+      {"word":"desk","he":"שולחן כתיבה","sentence":"I sit at my ___ and put my notebook on its flat top to write.","distractors":["window","coat","clock"],"clueHe":"יושבים ליד רהיט וכותבים על המשטח שלו.","reasonHe":"שולחן כתיבה מספק משטח לכתיבה; חלון אינו רהיט שיושבים לידו לצורך כתיבה.","ruleEn":"A desk has a flat surface for working."},
+      {"word":"chair","he":"כיסא","sentence":"Please pull up a ___ and sit on its seat.","distractors":["shelf","clock","curtain"],"clueHe":"הבקשה היא לשבת על מושב.","reasonHe":"לכיסא יש מושב המיועד לישיבה; מדף מיועד להנחת חפצים.","ruleEn":"A chair is a seat for one person."},
+      {"word":"board","he":"לוח","sentence":"The teacher writes on the big white ___ at the front of the classroom.","distractors":["bin","curtain","floor"],"clueHe":"המורה כותבת על משטח לבן גדול בקדמת הכיתה.","reasonHe":"לוח בכיתה נועד להצגת הכתיבה לכולם; וילון נועד לכיסוי חלון.","ruleEn":"A classroom board displays writing for the class."},
+      {"word":"teacher","he":"מורה","sentence":"Our ___ teaches us English and explains new words.","distractors":["dentist","farmer","pilot"],"clueHe":"הדמות מלמדת אנגלית ומסבירה מילים.","reasonHe":"מורה מלמדת מקצוע לימודי; רופאת שיניים מטפלת בשיניים.","ruleEn":"A teacher helps students learn."},
+      {"word":"student","he":"תלמיד","sentence":"A child who learns in a school class is a ___.","distractors":["pilot","baker","driver"],"clueHe":"המשפט מגדיר ילד הלומד בכיתה.","reasonHe":"תלמיד הוא מי שלומד; אופה הוא בעל מקצוע שמכין לחם.","ruleEn":"A student learns at school."},
+      {"word":"classroom","he":"כיתה","sentence":"Our ___ is the room where our class has lessons.","distractors":["garage","bathroom","kitchen"],"clueHe":"מדובר בחדר שבו הכיתה לומדת.","reasonHe":"כיתה היא חדר לימוד; מוסך מיועד לכלי רכב.","ruleEn":"A classroom is a room for lessons."},
+      {"word":"page","he":"עמוד","sentence":"Turn to ___ ten in your book and read the words there.","distractors":["door","shoe","chair"],"clueHe":"יש מספר בתוך ספר והוראה לקרוא בו.","reasonHe":"עמוד הוא חלק ממוספר בספר; דלת אינה חלק שקוראים בספר.","ruleEn":"A page is one side of a sheet in a book."},
+      {"word":"alphabet","he":"אלף־בית","sentence":"We say all the letters from A to Z to practice the English ___.","distractors":["calendar","menu","timetable"],"clueHe":"אומרים את כל האותיות לפי הסדר.","reasonHe":"האלף־בית הוא סדר האותיות; לוח שנה מציג ימים וחודשים.","ruleEn":"The English alphabet has 26 letters."},
+      {"word":"letter","he":"אות","sentence":"The first ___ in the word cat is c.","distractors":["number","color","shape"],"clueHe":"מחפשים את הסימן הראשון שמרכיב מילה.","reasonHe":"אות היא סימן בכתיבת מילה; מספר מציין כמות ולא אות במילה הזאת.","ruleEn":"Letters join together to make words."},
+      {"word":"number","he":"מספר","sentence":"Seven is a ___, not a letter.","distractors":["shape","month","letter"],"clueHe":"שבע מציין כמות ואינו אות.","reasonHe":"שבע הוא מספר; צורה מתארת מראה כמו עיגול ולא כמות.","ruleEn":"A number can tell us how many."},
+      {"word":"story","he":"סיפור","sentence":"The ___ begins with a dragon finding a lost child and ends with them becoming friends.","distractors":["ruler","timetable","dictionary"],"clueHe":"יש דמויות ואירועים עם התחלה וסוף.","reasonHe":"סיפור מתאר דמויות ואירועים; מערכת שעות מציגה זמני שיעורים.","ruleEn":"A story tells what happens to its characters."},
+      {"word":"dictionary","he":"מילון","sentence":"I look up the meaning of a new word in a ___.","distractors":["calendar","lunchbox","schoolbag"],"clueHe":"מחפשים את הפירוש של מילה חדשה.","reasonHe":"מילון מסביר משמעויות של מילים; לוח שנה מספק תאריכים.","ruleEn":"A dictionary explains the meanings of words."},
+      {"word":"scissors","he":"מספריים","sentence":"I use ___ to cut paper into small shapes.","distractors":["crayons","rulers","erasers"],"clueHe":"הפעולה היא גזירת נייר לצורות.","reasonHe":"מספריים גוזרים נייר; צבעים מוסיפים צבע ואינם כלי גזירה.","ruleEn":"Scissors are a tool for cutting."},
+      {"word":"glue","he":"דבק","sentence":"I use ___ to stick a paper star onto my card.","distractors":["water","paint","sand"],"clueHe":"צריך להצמיד כוכב נייר לכרטיס.","reasonHe":"דבק מחבר את הנייר לכרטיס; צבע נועד לצביעה ולא להדבקה.","ruleEn":"Glue helps things stick together."},
+      {"word":"read","he":"לקרוא","sentence":"I look at the words in my book and ___ them aloud.","distractors":["cut","close","wash"],"clueHe":"מסתכלים במילים ואומרים אותן בקול.","reasonHe":"קוראים מילים מהספר בקול; חיתוך אינו הופך מילים כתובות לדיבור.","ruleEn":"To read aloud is to say written words."},
+      {"word":"write","he":"לכתוב","sentence":"Please ___ your name on the paper using a pen.","distractors":["sing","carry","sleep"],"clueHe":"משתמשים בעט כדי להוסיף שם על נייר.","reasonHe":"כותבים שם בעט על נייר; שירה מפיקה קול ואינה משאירה שם כתוב.","ruleEn":"To write is to put words on a surface."},
+      {"word":"listen","he":"להקשיב","sentence":"Please ___ carefully while the teacher explains the game.","distractors":["shout","sleep","sing"],"clueHe":"המורה מסבירה וצריך לשים לב לדבריה.","reasonHe":"הקשבה מאפשרת להבין את ההסבר; צעקות מפריעות לשמוע אותו.","ruleEn":"To listen is to pay attention to sounds or speech."},
+      {"word":"spell","he":"לאיית","sentence":"Can you ___ dog by saying its letters in order?","distractors":["feed","wash","chase"],"clueHe":"אומרים את אותיות המילה לפי הסדר.","reasonHe":"איות הוא אמירת האותיות של מילה; האכלה מתייחסת לחיה ולא לאותיות.","ruleEn":"To spell a word is to give its letters in order."},
+      {"word":"count","he":"לספור","sentence":"I ___ the pencils: one, two, three, four.","distractors":["sharpen","break","hide"],"clueHe":"אומרים מספרים ברצף כדי לדעת כמה עפרונות יש.","reasonHe":"ספירה מגלה את מספר העפרונות; חידוד מכין אותם לכתיבה ואינו מונה אותם.","ruleEn":"To count is to find how many there are."},
+      {"word":"draw","he":"לצייר","sentence":"Use a pencil to ___ a picture of a tree.","distractors":["hear","eat","smell"],"clueHe":"נדרשת תמונה של עץ בעזרת עיפרון.","reasonHe":"מציירים תמונה בעיפרון; שמיעה אינה יוצרת תמונה על נייר.","ruleEn":"To draw is to make a picture with lines."},
+      {"word":"study","he":"ללמוד","sentence":"I ___ my English notes to learn the words before the test.","distractors":["hide","tear","throw"],"clueHe":"המטרה היא ללמוד את המילים לקראת מבחן.","reasonHe":"לומדים את הסיכומים כדי לזכור ולהבין; הסתרתם אינה עוזרת ללמוד מהם.","ruleEn":"To study is to spend time learning."},
+      {"word":"practice","he":"לתרגל","sentence":"I ___ saying the new words every day until I can say them well.","distractors":["avoid","forget","stop"],"clueHe":"חוזרים על אמירת המילים מדי יום כדי להשתפר.","reasonHe":"תרגול הוא חזרה שעוזרת להשתפר; הימנעות מאמירת המילים לא תשיג את המטרה.","ruleEn":"To practice is to do something repeatedly to improve."},
+      {"word":"test","he":"מבחן","sentence":"During the ___, we answer questions alone and the teacher gives us a score.","distractors":["picnic","holiday","break"],"clueHe":"עונים על שאלות לבד ומקבלים ציון.","reasonHe":"במבחן בודקים ידע ונותנים ציון; חופשה אינה בדיקת ידע בכיתה.","ruleEn":"A test checks what students know."},
+      {"word":"break","he":"הפסקה","sentence":"Between lessons, we have a short ___ to rest and play.","distractors":["exam","dictation","test"],"clueHe":"הזמן בין השיעורים מיועד למנוחה ולמשחק.","reasonHe":"הפסקה היא זמן מנוחה מהלימודים; מבחן דורש עבודה ואינו זמן משחק.","ruleEn":"A break is a short rest from work."},
+      {"word":"timetable","he":"מערכת שעות","sentence":"Our ___ shows which lessons we have and when they start.","distractors":["dictionary","pencil case","eraser"],"clueHe":"מוצגים שמות שיעורים ושעות ההתחלה שלהם.","reasonHe":"מערכת שעות מציגה את זמני השיעורים; מילון מציג פירושי מילים.","ruleEn":"A timetable shows when activities happen."},
+      {"word":"subject","he":"מקצוע לימוד","sentence":"English is my favorite school ___ because I enjoy learning languages.","distractors":["snack","uniform","playground"],"clueHe":"אנגלית היא תחום שלומדים בבית הספר.","reasonHe":"מקצוע לימוד הוא תחום כמו אנגלית; תלבושת היא בגד ולא תחום לימודי.","ruleEn":"A subject is an area of learning at school."},
+      {"word":"partner","he":"בן זוג לפעילות","sentence":"We work in pairs. The child working with me is my ___.","distractors":["audience","visitor","driver"],"clueHe":"העבודה נעשית בזוגות עם ילד נוסף.","reasonHe":"בן זוג לפעילות עובד איתי באותו זוג; קהל צופה ולא עובד איתי כבן זוג.","ruleEn":"A partner works with you in a pair."},
+      {"word":"mistake","he":"טעות","sentence":"I wrote that two plus two is five. That is a ___.","distractors":["prize","rule","reward"],"clueHe":"התוצאה שנכתבה אינה נכונה.","reasonHe":"תשובה לא נכונה היא טעות; פרס הוא דבר שמקבלים ולא תשובה שגויה.","ruleEn":"A mistake is something that is not correct."}
+    ]
+  },
+  {
+    "id": "food",
+    "area": "vocabulary",
+    "title": "אוכל והכנה במטבח",
+    "en": "Food and the kitchen",
+    "icon": "🥣",
+    "level": "מילים בהקשר",
+    "goal": "נבין מילים על אוכל, כלים ופעולות בעזרת רמזים במשפט.",
+    "intro": "במשפט על אוכל עשוי להופיע שם של כלי, שם של מאכל או פעולה. בודקים מה עושים ולמה צריך את הדבר החסר.",
+    "rule": "מזהים את הפעולה או המטרה במשפט ובוחרים מילה שהמשמעות שלה מתאימה לה.",
+    "examples": [["I eat soup with a spoon.","כדי לאכול מרק צריך כלי שמתאים לנוזל."],["Please wash the apple before you eat it.","הפעולה לפני האכילה היא שטיפה."]],
+    "mistake": ["I drink a sandwich.","I eat a sandwich.","כריך הוא מזון שאוכלים. בוחרים פועל לפי מה שעושים באמת."],
+    "guided": ["The milk must stay cold. Put it in the ___.","fridge",["oven","schoolbag"],"צריך מקום ששומר על קור. תנור מחמם, ותיק אינו מקרר."],
+    "words": [
+      {"word":"spoon","he":"כף","sentence":"I eat my soup with a ___.","distractors":["fork","plate","cupboard"],"clueHe":"שימו לב שהמאכל הוא מרק.","reasonHe":"כף יכולה להחזיק מרק נוזלי. מזלג אינו מתאים לכך.","ruleEn":"We use a spoon to eat soup."},
+      {"word":"fridge","he":"מקרר","sentence":"Put the cheese in the ___ to keep it cold.","distractors":["oven","drawer","schoolbag"],"clueHe":"חפשו מקום ששומר על מזון קר.","reasonHe":"מקרר שומר על קור; תנור נועד לחימום.","ruleEn":"A fridge keeps food cold."},
+      {"word":"breakfast","he":"ארוחת בוקר","sentence":"I eat ___ in the morning before school.","distractors":["dinner","lunch","supper"],"clueHe":"זמן הארוחה הוא בוקר, לפני הלימודים.","reasonHe":"ארוחת בוקר נאכלת בתחילת היום, ולא בצהריים או בערב.","ruleEn":"Breakfast is the morning meal."},
+      {"word":"thirsty","he":"צמא","sentence":"I need some water. I am ___.","distractors":["tired","cold","angry"],"clueHe":"הדובר מבקש מים; איזו תחושה מתאימה?","reasonHe":"צמא הוא צורך בשתייה. עייפות מתאימה לצורך במנוחה.","ruleEn":"A thirsty person needs a drink."},
+      {"word":"wash","he":"לשטוף","sentence":"Please ___ your hands with soap before lunch.","distractors":["draw","carry","read"],"clueHe":"הסבון מספק רמז לפעולה שעושים בידיים.","reasonHe":"שוטפים ידיים בעזרת סבון. לא קוראים או מציירים את הידיים בעזרת סבון.","ruleEn":"We wash our hands with soap and water."},
+      {"word":"hungry","he":"רעב","sentence":"I have not eaten today. I am ___.","distractors":["full","asleep","wet"],"clueHe":"הדובר לא אכל היום; מה הוא עשוי להרגיש?","reasonHe":"חוסר באוכל מוביל לרעב. שובע מתאר מצב אחרי שאוכלים מספיק.","ruleEn":"A hungry person needs food."},
+      {"word":"sweet","he":"מתוק","sentence":"This honey tastes ___.","distractors":["salty","sour","spicy"],"clueHe":"המשפט עוסק בטעם של דבש.","reasonHe":"הטעם האופייני לדבש הוא מתוק; מליחות, חמיצות וחריפות אינן מתאימות כאן.","ruleEn":"Honey tastes sweet."},
+      {"word":"bowl","he":"קערה","sentence":"I put cereal and milk in a ___ and eat them with a spoon.","distractors":["fork","napkin","knife"],"clueHe":"צריך כלי שיחזיק גם דגנים וגם חלב.","reasonHe":"קערה מחזיקה את הדגנים והנוזל יחד; מפית אינה כלי לאכילת דגנים בחלב.","ruleEn":"A bowl can hold cereal and milk."},
+      {"word":"apple","he":"תפוח","sentence":"This crunchy fruit grows on a tree and can be red or green. It is an ___.","distractors":["onion","egg","ice cube"],"clueHe":"זהו פרי פריך הגדל על עץ וצבעו עשוי להיות אדום או ירוק.","reasonHe":"תפוח מתאים לתיאור של פרי מהעץ; בצל גדל באדמה ואינו הפרי המתואר.","ruleEn":"An apple is a crunchy fruit that grows on a tree."},
+      {"word":"banana","he":"בננה","sentence":"I peel the yellow skin from a long, curved ___ before eating it.","distractors":["carrot","grape","apple"],"clueHe":"הפרי ארוך ומעוקל עם קליפה צהובה.","reasonHe":"לבננה יש צורה מעוקלת וקליפה צהובה; גזר אינו פרי מעוקל בעל קליפה כזאת.","ruleEn":"A banana is a long, curved fruit with a peel."},
+      {"word":"carrot","he":"גזר","sentence":"A rabbit is eating a long orange ___ that grew under the ground.","distractors":["cucumber","banana","potato"],"clueHe":"המאכל כתום, ארוך וגדל מתחת לאדמה.","reasonHe":"גזר הוא שורש כתום וארוך; מלפפון ירוק ואינו שורש.","ruleEn":"A carrot is an orange root vegetable."},
+      {"word":"potato","he":"תפוח אדמה","sentence":"We make chips by cutting a ___ into thin pieces and cooking them.","distractors":["grape","egg","lemon"],"clueHe":"פורסים ירק לחתיכות דקות כדי להכין חטיף פריך.","reasonHe":"תפוח אדמה משמש להכנת חטיף פרוסות פריך; ענב אינו מתאים להכנה המתוארת.","ruleEn":"A potato grows underground and can be cooked in many ways."},
+      {"word":"tomato","he":"עגבנייה","sentence":"We use a red, juicy ___ to make the sauce for our pizza.","distractors":["banana","carrot","potato"],"clueHe":"צריך מאכל אדום ועסיסי לרוטב של פיצה.","reasonHe":"עגבנייה משמשת לרוטב פיצה אדום; גזר כתום ואינו מתאים לתיאור.","ruleEn":"A tomato is a juicy food often used in red sauces."},
+      {"word":"bread","he":"לחם","sentence":"The baker takes a fresh loaf of ___ out of the oven.","distractors":["rice","milk","soup"],"clueHe":"האופה מוציא כיכר טרייה מהתנור.","reasonHe":"לחם נאפה בצורת כיכר; אורז אינו יוצא מהתנור ככיכר של אופה.","ruleEn":"Bread is baked food often sold as a loaf."},
+      {"word":"cheese","he":"גבינה","sentence":"We make this dairy food from milk and often put slices in sandwiches. It is ___.","distractors":["rice","lettuce","bread"],"clueHe":"זהו מוצר חלב שאפשר להוסיף בפרוסות לכריך.","reasonHe":"גבינה מיוצרת מחלב ומתאימה לפריסה; חסה אינה מוצר חלב.","ruleEn":"Cheese is a food made from milk."},
+      {"word":"egg","he":"ביצה","sentence":"The hen has laid an ___ with a white shell.","distractors":["apple","orange","onion"],"clueHe":"תרנגולת מטילה דבר בעל קליפה.","reasonHe":"תרנגולת מטילה ביצה; תפוז גדל על עץ ואינו מוטל בידי תרנגולת.","ruleEn":"An egg has a shell and can be laid by a hen."},
+      {"word":"rice","he":"אורז","sentence":"These small white grains become soft when cooked in water. They are ___.","distractors":["noodles","peas","carrots"],"clueHe":"מדובר בגרגרים לבנים קטנים שמתרככים בבישול.","reasonHe":"אורז מורכב מגרגרים כאלה; אטריות הן רצועות ולא גרגרים.","ruleEn":"Rice is a grain that we cook in water."},
+      {"word":"pasta","he":"פסטה","sentence":"Spaghetti is a long, thin kind of ___.","distractors":["fruit","cheese","bread"],"clueHe":"צריך לזהות לאיזו קבוצת מזון שייך ספגטי.","reasonHe":"ספגטי הוא סוג של פסטה; גבינה יכולה להיות תוספת אבל אינה הקבוצה שלו.","ruleEn":"Pasta comes in shapes such as spaghetti and shells."},
+      {"word":"milk","he":"חלב","sentence":"A cow gives us ___, which we can drink or use to make cheese.","distractors":["juice","soup","tea"],"clueHe":"המשקה מגיע מפרה ומשמש להכנת גבינה.","reasonHe":"חלב מגיע מפרה וניתן להכין ממנו גבינה; מיץ מתקבל מפירות או מירקות.","ruleEn":"Milk is a drink also used to make dairy foods."},
+      {"word":"water","he":"מים","sentence":"Ice turns into ___ when it melts.","distractors":["juice","oil","milk"],"clueHe":"קרח משנה מצב כשהוא נמס.","reasonHe":"קרח הוא מים קפואים ולכן הוא חוזר להיות מים; מיץ מכיל גם חומרי פרי.","ruleEn":"Water can freeze into ice and melt again."},
+      {"word":"juice","he":"מיץ","sentence":"We squeeze oranges to make fresh orange ___.","distractors":["butter","bread","cheese"],"clueHe":"סוחטים תפוזים כדי להפיק משקה.","reasonHe":"סחיטת תפוזים מפיקה מיץ; חמאה היא מוצר חלב ולא תוצר של סחיטת פרי.","ruleEn":"Juice is liquid from fruit or vegetables."},
+      {"word":"salad","he":"סלט","sentence":"I mix chopped cucumber, tomato, and lettuce to make a fresh ___.","distractors":["cake","omelet","biscuit"],"clueHe":"מערבבים ירקות טריים חתוכים ללא אפייה.","reasonHe":"סלט יכול להיות תערובת ירקות טריים; עוגה דורשת מרכיבים והכנה אחרים.","ruleEn":"A salad can be made from mixed fresh vegetables."},
+      {"word":"sandwich","he":"כריך","sentence":"I put cheese between two slices of bread to make a ___.","distractors":["soup","pancake","salad"],"clueHe":"המילוי נמצא בין שתי פרוסות לחם.","reasonHe":"כריך עשוי מלחם עם מילוי; מרק הוא מאכל נוזלי ולא מילוי בין פרוסות.","ruleEn":"A sandwich has a filling between pieces of bread."},
+      {"word":"soup","he":"מרק","sentence":"We cook vegetables in water to make a hot ___ that we eat with a spoon.","distractors":["sandwich","biscuit","salad"],"clueHe":"מבשלים ירקות במים ואוכלים את המאכל בכף.","reasonHe":"מרק הוא מאכל נוזלי שיכול להכיל ירקות; כריך אינו תבשיל במים.","ruleEn":"Soup is a liquid food often served hot."},
+      {"word":"salt","he":"מלח","sentence":"The soup is not salty enough, so I add a little ___.","distractors":["sugar","honey","lemon"],"clueHe":"חסרה מליחות במרק.","reasonHe":"מלח מוסיף טעם מלוח; סוכר מוסיף מתיקות ולא מליחות.","ruleEn":"Salt gives food a salty taste."},
+      {"word":"sugar","he":"סוכר","sentence":"I stir a spoonful of white ___ into my tea to make it sweeter.","distractors":["salt","flour","rice"],"clueHe":"התוספת לבנה ומטרתה להמתיק את התה.","reasonHe":"סוכר לבן ממתיק משקה; מלח נותן טעם מלוח.","ruleEn":"Sugar makes food and drinks sweeter."},
+      {"word":"lemon","he":"לימון","sentence":"This yellow fruit tastes very sour. It is a ___.","distractors":["banana","peach","pear"],"clueHe":"הפרי צהוב וטעמו חמוץ מאוד.","reasonHe":"לימון ידוע בטעם חמוץ; בננה צהובה בדרך כלל מתוקה ולא חמוצה מאוד.","ruleEn":"A lemon is a yellow fruit with a sour taste."},
+      {"word":"fork","he":"מזלג","sentence":"My ___ has four points that help me pick up pieces of food.","distractors":["spoon","cup","knife"],"clueHe":"לכלי יש ארבע שיניים לאיסוף האוכל.","reasonHe":"שיני המזלג ננעצות באוכל; לכף אין שיניים כאלה.","ruleEn":"A fork has points for picking up food."},
+      {"word":"knife","he":"סכין","sentence":"An adult uses a ___ with a sharp blade to slice the bread.","distractors":["spoon","bowl","fork"],"clueHe":"חיתוך הלחם נעשה בעזרת להב חד.","reasonHe":"לסכין יש להב לחיתוך; כף נועדה להרים אוכל ולא לפרוס לחם.","ruleEn":"A knife has a blade for cutting."},
+      {"word":"plate","he":"צלחת","sentence":"I put my sandwich on a flat, round ___ before I eat.","distractors":["cup","jug","bottle"],"clueHe":"מניחים כריך על כלי שטוח ועגול.","reasonHe":"צלחת מספקת משטח שטוח לאוכל; כד נועד להכיל ולמזוג נוזלים.","ruleEn":"A plate is a flat dish for food."},
+      {"word":"cup","he":"ספל","sentence":"I drink tea from a small ___ with a handle.","distractors":["fork","tray","napkin"],"clueHe":"זהו כלי קטן בעל ידית ששותים ממנו תה.","reasonHe":"ספל מתאים לשתיית תה ויש לו ידית; מגש נועד לנשיאת כלים.","ruleEn":"A cup is a small container for a drink."},
+      {"word":"oven","he":"תנור","sentence":"The cake bakes inside the hot ___.","distractors":["fridge","drawer","cupboard"],"clueHe":"העוגה נאפית בתוך מקום חם.","reasonHe":"תנור מספק חום לאפייה; מקרר שומר על קור.","ruleEn":"An oven uses heat to bake food."},
+      {"word":"pan","he":"מחבת","sentence":"We fry an egg in a ___ on the stove.","distractors":["glass","napkin","plate"],"clueHe":"מטגנים ביצה בכלי המונח על הכיריים.","reasonHe":"מחבת מיועדת לטיגון על הכיריים; כוס שתייה אינה כלי טיגון.","ruleEn":"A pan is a cooking container used on a stove."},
+      {"word":"napkin","he":"מפית","sentence":"I wipe food from my mouth with a paper ___.","distractors":["plate","straw","fork"],"clueHe":"מנגבים את הפה בעזרת פריט עשוי נייר.","reasonHe":"מפית נייר מיועדת לניגוב בזמן הארוחה; קשית מיועדת לשתייה.","ruleEn":"A napkin keeps your mouth and hands clean while eating."},
+      {"word":"cook","he":"לבשל","sentence":"We ___ the raw rice in boiling water until it is soft.","distractors":["freeze","count","hide"],"clueHe":"אורז לא מבושל מתרכך במים רותחים.","reasonHe":"בישול בחום מרכך את האורז; הקפאה אינה מתרחשת במים רותחים.","ruleEn":"To cook is to prepare food using heat."},
+      {"word":"cut","he":"לחתוך","sentence":"An adult uses a knife to ___ the melon into smaller pieces.","distractors":["wash","smell","weigh"],"clueHe":"משתמשים בסכין כדי ליצור חלקים קטנים יותר.","reasonHe":"חיתוך מחלק את המלון לחתיכות; שטיפה מנקה אותו ואינה מחלקת אותו.","ruleEn":"To cut food is to divide it into pieces."},
+      {"word":"mix","he":"לערבב","sentence":"Use a spoon to ___ the flour and water together until there are no dry bits.","distractors":["separate","freeze","count"],"clueHe":"מאחדים קמח ומים עד שאין חלקים יבשים.","reasonHe":"ערבוב מחבר את המרכיבים לתערובת; הפרדה עושה את ההפך.","ruleEn":"To mix is to combine things together."},
+      {"word":"pour","he":"למזוג","sentence":"Tilt the jug slowly to ___ the water into the glass.","distractors":["chew","slice","peel"],"clueHe":"מטים כד כדי להעביר ממנו מים לכוס.","reasonHe":"מזיגה מעבירה נוזל מכלי לכלי; לעיסה מתאימה למזון מוצק בפה.","ruleEn":"To pour is to make liquid flow from a container."},
+      {"word":"peel","he":"לקלף","sentence":"First ___ the banana by taking off its skin.","distractors":["boil","weigh","freeze"],"clueHe":"מורידים את הקליפה של הבננה.","reasonHe":"קילוף הוא הסרת הקליפה; שקילה בודקת משקל ואינה מסירה אותה.","ruleEn":"To peel is to remove the skin of a fruit or vegetable."},
+      {"word":"lunch","he":"ארוחת צהריים","sentence":"Our midday meal is called ___; we eat it between breakfast and dinner.","distractors":["dessert","supper","breakfast"],"clueHe":"מחפשים את שם הארוחה שבאמצע היום בין ארוחת הבוקר לארוחת הערב.","reasonHe":"ארוחת צהריים נאכלת באמצע היום; ארוחת ערב מאוחרת יותר.","ruleEn":"Lunch is a meal eaten around the middle of the day."}
+    ]
+  },
+  {
+    "id": "places",
+    "area": "vocabulary",
+    "title": "מקומות ושגרת היום",
+    "en": "Places and daily life",
+    "icon": "🏡",
+    "level": "מילים בהקשר",
+    "goal": "נקשר בין מקומות, פעולות והסיבה שבגללה הולכים אליהם.",
+    "intro": "חושבים מה הדמות רוצה לעשות. הפעולה עוזרת לבחור מקום או מילה שמתאימים למצב.",
+    "rule": "בודקים את הקשר בין המקום, הפעולה והמטרה; לא בוחרים רק מילה מוכרת.",
+    "examples": [["We buy bread at the bakery.","קניית לחם מצביעה על מאפייה."],["I take an umbrella because it is raining.","הגשם מסביר למה צריך מטרייה."]],
+    "mistake": ["We swim at the bus stop.","We swim in the pool.","צריך להתאים בין הפעולה למקום שבו אפשר לעשות אותה."],
+    "guided": ["We wait for the bus at the ___.","bus stop",["bakery","bedroom"],"מחפשים מקום שבו אוטובוס עוצר כדי לאסוף נוסעים."],
+    "words": [
+      {"word":"bakery","he":"מאפייה","sentence":"We go to the ___ to buy fresh bread.","distractors":["library","pool","classroom"],"clueHe":"המטרה היא לקנות לחם טרי.","reasonHe":"במאפייה מוכרים לחם; בספרייה שואלים ספרים.","ruleEn":"A bakery sells bread."},
+      {"word":"umbrella","he":"מטרייה","sentence":"It is raining. I open my ___ to stay dry.","distractors":["notebook","lunchbox","cupboard"],"clueHe":"חפשו חפץ שיכול להגן מהגשם.","reasonHe":"מטרייה עוזרת להישאר יבשים בגשם. מחברת אינה מיועדת לכך.","ruleEn":"An umbrella helps keep us dry in the rain."},
+      {"word":"neighbor","he":"שכן","sentence":"A person who lives next door is called a ___.","distractors":["teacher","cousin","driver"],"clueHe":"הרמז הוא שהאיש גר בדלת שלידנו.","reasonHe":"מגורים לידנו מגדירים אותו כשכן. אין מידע על מקצועו או על קרבה משפחתית.","ruleEn":"A neighbor lives near us."},
+      {"word":"early","he":"מוקדם","sentence":"The club starts at four. I arrive at three fifty, so I am ___.","distractors":["late","asleep","thirsty"],"clueHe":"השוו בין שעת ההגעה לשעת תחילת החוג.","reasonHe":"שלוש וחמישים היא שעה שלפני ארבע; לכן ההגעה מוקדמת. איחור הוא הגעה אחרי שעת ההתחלה.","ruleEn":"Arriving before the start time means arriving early."},
+      {"word":"park","he":"פארק","sentence":"We play outside on the grass under the trees in the ___.","distractors":["kitchen","bathroom","bedroom"],"clueHe":"יש דשא ועצים והפעילות נעשית בחוץ.","reasonHe":"פארק מתאים למשחק בחוץ בין עצים. האפשרויות האחרות הן חדרים בבית.","ruleEn":"A park is an outdoor place with space to play."},
+      {"word":"tired","he":"עייף","sentence":"After a long day, I want to rest. I feel ___.","distractors":["noisy","empty","sweet"],"clueHe":"הדובר רוצה לנוח אחרי יום ארוך.","reasonHe":"רצון במנוחה מתאים לתחושת עייפות; מתיקות היא תיאור של טעם.","ruleEn":"A tired person needs rest."},
+      {"word":"cross","he":"לחצות","sentence":"We wait for the green light before we ___ the street.","distractors":["drink","write","sleep"],"clueHe":"מה עושים כדי לעבור לצד השני של הרחוב?","reasonHe":"חוצים את הרחוב; שתייה וכתיבה אינן מתארות מעבר מצד לצד.","ruleEn":"To cross a street is to go from one side to the other."},
+      {"word":"weekend","he":"סוף שבוע","sentence":"My family often visits the park at the ___, on Saturday.","distractors":["morning","winter","afternoon"],"clueHe":"שבת היא חלק מסוף השבוע.","reasonHe":"כאן מחפשים חלק בשבוע. העונה ושעת היום אינן נקבעות לפי יום שבת.","ruleEn":"Saturday is part of the weekend."},
+      {"word":"home","he":"בית","sentence":"After our trip, we return ___ to the place where we live.","distractors":["upstairs","outside","downstairs"],"clueHe":"חוזרים מהטיול למקום שבו גרים.","reasonHe":"בית הוא המקום שבו גרים; בחוץ מציין מיקום ולא את מקום המגורים.","ruleEn":"Home is the place where you live."},
+      {"word":"bedroom","he":"חדר שינה","sentence":"The room with my bed where I sleep is my ___.","distractors":["bathroom","garage","kitchen"],"clueHe":"בחדר יש מיטה והוא משמש לשינה.","reasonHe":"חדר שינה מיועד לשינה במיטה; חדר רחצה מיועד לרחצה.","ruleEn":"A bedroom is a room for sleeping."},
+      {"word":"bathroom","he":"חדר רחצה","sentence":"The room with our shower and toilet is the ___.","distractors":["bedroom","dining room","garage"],"clueHe":"מוזכרים מקלחת ואסלה באותו חדר.","reasonHe":"בחדר רחצה יש מתקני רחצה ושירותים; חדר אוכל מיועד לאכילה.","ruleEn":"A bathroom is a room for washing and often has a toilet."},
+      {"word":"kitchen","he":"מטבח","sentence":"We prepare meals in the ___, where we keep the stove and fridge.","distractors":["bedroom","garage","bathroom"],"clueHe":"מכינים ארוחות בחדר עם כיריים ומקרר.","reasonHe":"מטבח מיועד להכנת אוכל; מוסך מיועד לכלי רכב.","ruleEn":"A kitchen is a room for preparing food."},
+      {"word":"garden","he":"גינה","sentence":"We grow flowers in the small ___ behind our house.","distractors":["attic","bathroom","kitchen"],"clueHe":"מגדלים פרחים בשטח קטן מאחורי הבית.","reasonHe":"גינה היא שטח לגידול צמחים; עליית גג היא חלל בתוך המבנה.","ruleEn":"A garden is a place where people grow plants."},
+      {"word":"playground","he":"מגרש משחקים","sentence":"Children use the swings and slide at the ___.","distractors":["museum","airport","hospital"],"clueHe":"יש נדנדות ומגלשה לילדים.","reasonHe":"מגרש משחקים מכיל מתקני משחק; שדה תעופה מיועד לטיסות.","ruleEn":"A playground has equipment for children to play on."},
+      {"word":"supermarket","he":"סופרמרקט","sentence":"At the ___, we fill a shopping cart with milk, fruit, and other groceries, then pay.","distractors":["hospital","cinema","museum"],"clueHe":"ממלאים עגלת קניות במוצרי מזון ומשלמים.","reasonHe":"בסופרמרקט קונים מגוון מצרכים; בקולנוע צופים בסרטים ולא ממלאים עגלת מצרכים.","ruleEn":"A supermarket is a large shop that sells groceries."},
+      {"word":"hospital","he":"בית חולים","sentence":"The ambulance takes the sick person to the ___ for medical care.","distractors":["bakery","cinema","station"],"clueHe":"אמבולנס מסיע חולה לקבלת טיפול רפואי.","reasonHe":"בית חולים מספק טיפול רפואי; מאפייה מוכרת מאפים ולא מטפלת בחולים.","ruleEn":"A hospital provides medical care for sick or injured people."},
+      {"word":"zoo","he":"גן חיות","sentence":"Keepers care for the lions, monkeys, and elephants at the ___.","distractors":["bakery","station","supermarket"],"clueHe":"מטפלים במגוון חיות בר במקום אחד.","reasonHe":"בגן חיות מטפלים בחיות כמו אריות ופילים; תחנה מיועדת לנוסעים.","ruleEn":"A zoo is a place where people care for animals that visitors can see."},
+      {"word":"beach","he":"חוף ים","sentence":"We build sandcastles on the ___ beside the sea.","distractors":["roof","bridge","forest"],"clueHe":"בונים ארמונות בחול ליד הים.","reasonHe":"חוף ים כולל שטח חולי לצד הים; גג הוא החלק העליון של בניין.","ruleEn":"A beach is land with sand or stones beside the water."},
+      {"word":"cinema","he":"בית קולנוע","sentence":"We buy tickets to watch a film on the big screen at the ___.","distractors":["bakery","pool","airport"],"clueHe":"קונים כרטיסים לצפייה בסרט על מסך גדול.","reasonHe":"בית קולנוע מציג סרטים לקהל; בריכה מיועדת לשחייה.","ruleEn":"A cinema is a place where people watch films."},
+      {"word":"museum","he":"מוזיאון","sentence":"We visit the ___ to see old objects and learn how people lived long ago.","distractors":["bakery","pool","bus stop"],"clueHe":"מוצגים חפצים עתיקים ולומדים על החיים בעבר.","reasonHe":"מוזיאון מציג חפצים שאפשר ללמוד מהם; מאפייה מוכרת מזון טרי.","ruleEn":"A museum displays objects that people can learn from."},
+      {"word":"restaurant","he":"מסעדה","sentence":"At the ___, we choose a meal from a menu and a waiter brings it.","distractors":["station","library","playground"],"clueHe":"בוחרים ארוחה מתפריט ומלצר מגיש אותה.","reasonHe":"מסעדה מגישה ארוחות לסועדים; ספרייה משאילה ספרים ולא מגישה ארוחות מתפריט.","ruleEn":"A restaurant prepares and serves meals to customers."},
+      {"word":"bus stop","he":"תחנת אוטובוס","sentence":"We wait by the bus sign at the ___ for our bus to arrive.","distractors":["airport","garage","bakery"],"clueHe":"מחכים לאוטובוס ליד שלט המסמן את מקום העצירה.","reasonHe":"תחנת אוטובוס היא המקום לאיסוף נוסעים; מוסך משמש לטיפול בכלי רכב.","ruleEn":"A bus stop is a place where buses pick up passengers."},
+      {"word":"station","he":"תחנת רכבת","sentence":"Our train arrives at the ___, and we wait on the platform.","distractors":["playground","beach","garden"],"clueHe":"מחכים על רציף לרכבת שמגיעה.","reasonHe":"תחנת רכבת כוללת רציפים לנוסעים; מגרש משחקים אינו מקום להמתנה לרכבת.","ruleEn":"A train station has platforms where passengers wait for trains."},
+      {"word":"airport","he":"שדה תעופה","sentence":"Planes take off and land at the ___.","distractors":["bus stop","bakery","hospital"],"clueHe":"מוזכרות המראה ונחיתה של מטוסים.","reasonHe":"שדה תעופה נועד למטוסים; תחנת אוטובוס נועדה לכלי רכב על הכביש.","ruleEn":"An airport is a place where planes take off and land."},
+      {"word":"street","he":"רחוב","sentence":"Our house is on a quiet ___ with houses along both sides and cars in the middle.","distractors":["roof","river","kitchen"],"clueHe":"בתים נמצאים משני הצדדים ומכוניות נוסעות באמצע.","reasonHe":"רחוב מחבר בין בתים וכולל מקום לנסיעת מכוניות; נהר הוא נתיב מים.","ruleEn":"A street is a road in a town or city."},
+      {"word":"bridge","he":"גשר","sentence":"We use the ___ over the river to reach the other side without getting wet.","distractors":["tunnel","boat","river"],"clueHe":"המעבר נמצא מעל הנהר ולא בתוך המים.","reasonHe":"גשר מאפשר מעבר מעל הנהר; סירה נעה על המים ולא משמשת מבנה מעליהם.","ruleEn":"A bridge lets people cross over water or a road."},
+      {"word":"door","he":"דלת","sentence":"I turn the handle and open the ___ to enter the room.","distractors":["roof","wall","floor"],"clueHe":"מסובבים ידית ופותחים פתח כדי להיכנס לחדר.","reasonHe":"דלת היא פתח כניסה שאפשר לפתוח בידית; קיר אינו נפתח כך.","ruleEn":"A door opens and closes an entrance."},
+      {"word":"window","he":"חלון","sentence":"Sunlight comes through the glass ___ in the wall.","distractors":["carpet","shelf","cupboard"],"clueHe":"אור שמש נכנס דרך זכוכית שבקיר.","reasonHe":"חלון זכוכית מאפשר לאור להיכנס; מדף נועד לאחסון ולא להעברת אור מבחוץ.","ruleEn":"A window lets light into a building."},
+      {"word":"stairs","he":"מדרגות","sentence":"We climb the ___, one step at a time, to reach the next floor.","distractors":["lift","corridor","roof"],"clueHe":"עולים צעד אחר צעד כדי להגיע לקומה הבאה.","reasonHe":"מדרגות מאפשרות עלייה בין קומות בצעדים; מעלית נעה ומסיעה את הנוסעים.","ruleEn":"Stairs are steps connecting different levels."},
+      {"word":"roof","he":"גג","sentence":"The ___ covers the top of the house and keeps rain out.","distractors":["floor","fence","door"],"clueHe":"החלק נמצא בראש הבית ומגן מפני גשם.","reasonHe":"גג מכסה את הבית מלמעלה; רצפה היא המשטח שעליו עומדים בפנים.","ruleEn":"A roof covers the top of a building."},
+      {"word":"map","he":"מפה","sentence":"We look at a ___ that shows the streets to find our way.","distractors":["menu","ticket","calendar"],"clueHe":"צריך לראות את הרחובות כדי למצוא את הדרך.","reasonHe":"מפה מציגה מקומות ודרכים; תפריט מציג מאכלים ולא רחובות.","ruleEn":"A map shows where places are."},
+      {"word":"ticket","he":"כרטיס כניסה","sentence":"I show my ___ at the cinema entrance to prove I have paid to see the film.","distractors":["map","umbrella","napkin"],"clueHe":"מציגים הוכחה לתשלום בכניסה לקולנוע.","reasonHe":"כרטיס כניסה מוכיח ששילמנו עבור הצפייה; מפה עוזרת למצוא מקומות ולא מוכיחה תשלום.","ruleEn":"A ticket shows that you may enter or travel."},
+      {"word":"bicycle","he":"אופניים","sentence":"I push the pedals with my feet to ride my two-wheeled ___.","distractors":["bus","skateboard","train"],"clueHe":"לכלי יש שני גלגלים ודוושות שמפעילים ברגליים.","reasonHe":"אופניים נעים בעזרת דיווש; אוטובוס מונע במנוע ואין לנוסע דוושות.","ruleEn":"A bicycle has two wheels and pedals."},
+      {"word":"bus","he":"אוטובוס","sentence":"The city ___ carries many passengers on the road and stops at bus stops.","distractors":["train","bicycle","plane"],"clueHe":"כלי הרכב מסיע נוסעים רבים בכביש ועוצר בתחנות אוטובוס.","reasonHe":"אוטובוס מתאים לנסיעה הזאת; רכבת נוסעת על מסילות ולא בכביש.","ruleEn":"A bus carries passengers along a road."},
+      {"word":"walk","he":"ללכת","sentence":"I ___ to the shop on foot instead of riding in a car.","distractors":["drive","fly","swim"],"clueHe":"הביטוי המתאר תנועה ברגל מבדיל אותה מנסיעה.","reasonHe":"הליכה נעשית ברגל; נהיגה מצריכה כלי רכב.","ruleEn":"To walk is to move on your feet."},
+      {"word":"turn","he":"לפנות","sentence":"At the corner, ___ left instead of going straight ahead.","distractors":["sleep","swim","cook"],"clueHe":"משנים כיוון בפינה במקום להמשיך ישר.","reasonHe":"פנייה היא שינוי כיוון בדרך; שינה אינה פעולת ניווט.","ruleEn":"To turn is to change direction."},
+      {"word":"left","he":"שמאל","sentence":"I have two hands: my right hand and my ___ hand.","distractors":["right","middle","upper"],"clueHe":"יד אחת נקראת יד ימין וצריך לזהות את שם הצד השני.","reasonHe":"היד שבצד השני היא יד שמאל; לאדם אין יד שלישית הנקראת יד אמצעית.","ruleEn":"Left is the opposite side to right."},
+      {"word":"right","he":"ימין","sentence":"The arrow points to the opposite of left. It points ___.","distractors":["left","down","up"],"clueHe":"החץ פונה לכיוון המנוגד לשמאל.","reasonHe":"ימין הוא הכיוון המנוגד לשמאל; למטה הוא כיוון אחר שאינו הניגוד לשמאל.","ruleEn":"Right is the opposite direction to left."},
+      {"word":"near","he":"קרוב","sentence":"The shop is ___ our house, only a few steps away.","distractors":["far from","many kilometers from","a long drive from"],"clueHe":"המרחק מהבית הוא צעדים בודדים.","reasonHe":"קרוב מתאר מרחק קצר; רחוק אינו מתאים למרחק של כמה צעדים.","ruleEn":"Near means only a short distance away."},
+      {"word":"far","he":"רחוק","sentence":"The town is ___ away; it takes five hours to drive there.","distractors":["upstairs","indoors","downstairs"],"clueHe":"הנסיעה לעיירה נמשכת חמש שעות.","reasonHe":"רחוק מתאר מרחק גדול; למעלה מציין כיוון בתוך מבנה ולא מרחק נסיעה.","ruleEn":"Far means a long distance away."}
+    ]
+  },
+  {
+    "id": "notices",
+    "area": "reading",
+    "title": "קוראים הודעות",
+    "en": "Notices and messages",
+    "icon": "📌",
+    "level": "קריאה עם תמיכה",
+    "goal": "נאתר בהודעה מי, מה, מתי ואיפה, ונבדוק מה מטרתה.",
+    "intro": "לפני שקוראים כל מילה, מסתכלים על הכותרת. אחר כך קוראים את השאלה ומחפשים את הפרט המתאים בתוך ההודעה.",
+    "rule": "לתשובה חייב להיות בסיס בקטע. בשאלת זמן מחפשים יום או שעה; בשאלת מקום מחפשים איפה הפעילות מתקיימת.",
+    "examples": [["Art Club: Meet in Room 3 on Tuesday at four.","אפשר למצוא כאן מקום, יום ושעת מפגש."],["Bring a pencil. Paper is provided.","צריך להביא עיפרון, אבל אין צורך להביא נייר."],["The trip is free. You do not need to bring money.","בודקים גם מה לא צריך להביא. פרט שנשמע הגיוני אינו תשובה אם ההודעה אומרת אחרת."]],
+    "mistake": ["Where is the club? On Tuesday.","Where is the club? In Room 3.","שאלת מקום דורשת מקום בתשובה, ולא יום."],
+    "guided": ["Book Club: Meet at the library on Monday. Where is the meeting?","At the library.",["On Monday.","At the pool."],"מחפשים מקום. הספרייה היא המקום שמופיע בהודעה, ואילו יום שני הוא זמן."]
+  },
+  {
+    "id": "diaries",
+    "area": "reading",
+    "title": "יום בחיים",
+    "en": "Diaries and routines",
+    "icon": "📔",
+    "level": "קריאה לכיתה ה׳",
+    "goal": "נעקוב אחרי סדר פעולות ונקשר בין מעשה לסיבה שלו.",
+    "intro": "ביומן יש לעיתים כמה פעולות. מסדרים אותן בראש ומפרידים בין מה שקורה בדרך כלל לבין מה שקרה ביום המסוים שמתואר.",
+    "rule": "מחפשים מילות זמן וסיבה. בודקים שהתשובה מתאימה ליום המתואר ולא רק להרגל של הדמות.",
+    "examples": [["I usually walk to school. Today it is raining, so I take the bus.","מבדילים בין הליכה בדרך כלל לבין נסיעה ביום המתואר."],["First I eat breakfast. Then I pack my bag.","ארוחת הבוקר קודמת לאריזת התיק."],["My brother packs our lunch. He puts it in my bag.","כדי להבין למי מתייחסת מילה קצרה, חוזרים למשפט הקודם: האח הוא שמכניס את הארוחה לתיק."]],
+    "mistake": ["Why does she take the bus? To school.","Why does she take the bus? Because it is raining.","כששואלים למה צריך סיבה, ולא רק יעד."],
+    "guided": ["I water the plants after breakfast. What do I do first?","Eat breakfast.",["Water the plants.","Go to sleep."],"אם משקים אחרי ארוחת הבוקר, הארוחה היא הפעולה הראשונה."]
+  },
+  {
+    "id": "stories",
+    "area": "reading",
+    "title": "סיפור ורמזים",
+    "en": "Stories and clues",
+    "icon": "🔎",
+    "level": "קריאה לכיתה ה׳",
+    "goal": "נבין בעיה ופתרון, נזהה רעיון מרכזי ונסיק מסקנה קטנה מתוך רמזים.",
+    "intro": "שואלים מי הדמויות, מה הבעיה ואיך היא נפתרת. לפעמים התשובה אינה כתובה בדיוק באותן מילים, אבל יש לה רמז ברור בסיפור.",
+    "rule": "מסקנה נשענת על מה שהדמויות אומרות ועושות. לא מוסיפים לסיפור פרטים שלא כתובים בו.",
+    "examples": [["The box is heavy. Ben asks his friend to help carry it.","הקושי הוא המשקל; הפתרון הוא עזרה מחבר."],["Lia finds her lost book and smiles.","החיוך אחרי מציאת הספר מרמז שליה שמחה."],["The children repair the broken sign together. Now visitors can find the garden.","הרעיון המרכזי מחבר בין הבעיה, הפעולה והפתרון. צבע השלט, למשל, אינו הרעיון המרכזי."]],
+    "mistake": ["Lia smiles because she wins a prize.","Lia smiles because she finds her book.","אין בסיפור פרס. לא ממציאים סיבה כשכבר יש רמז ברור."],
+    "guided": ["Dan has no pencil. Noor gives him one. How does Noor help?","She gives Dan a pencil.",["She writes his homework.","She buys a book."],"הסיפור מתאר פעולה אחת של עזרה: נור נותנת לדן עיפרון."]
+  }
+];
+const passages = [
+  {
+    "id": "garden-club",
+    "topic": "notices",
+    "title": "School Garden Club",
+    "lines": ["Do you like plants? Join our school garden club!","We meet every Wednesday at three o'clock, behind the library.","Bring a hat and a bottle of water. We have gloves for everyone.","This week, we are planting tomatoes. New members are welcome."],
+    "glossary": [["join","להצטרף"],["behind","מאחורי"],["gloves","כפפות"],["members","חברים בקבוצה"]],
+    "questions": [
+      ["When does the club meet?","מתי החוג נפגש?","On Wednesdays at three.",["On Tuesdays at three.","Every morning.","On Wednesdays at five."],1,"זמן","השורה מציינת גם יום רביעי וגם שעה שלוש. צריך ששני הפרטים יתאימו."],
+      ["Where does the club meet?","איפה החוג נפגש?","Behind the library.",["Inside the library.","In the classroom.","Next to the pool."],1,"מקום","המפגש מאחורי הספרייה, ולא בתוך הספרייה. מילת המקום משנה את התשובה."],
+      ["What should children bring?","מה הילדים צריכים להביא?","A hat and water.",["Gloves and tomatoes.","Books and pencils.","Only gloves."],2,"ציוד","הילדים מתבקשים להביא כובע ומים. הכפפות כבר מסופקות במקום."],
+      ["Why was this notice written?","למה נכתבה ההודעה?","To invite children to a club.",["To sell a library.","To tell a bedtime story.","To cancel a meeting."],0,"מטרה","ההודעה מזמינה להצטרף לחוג ומסבירה איך משתתפים."],
+      ["What are the children planting this week?","מה הילדים שותלים השבוע?","Tomatoes.",["Carrots.","Flowers.","Trees."],3,"פרט מפורש","בשורה האחרונה כתוב שהשבוע שותלים עגבניות."],
+      ["Can a child who is not a member yet join?","האם ילד שעדיין אינו חבר בקבוצה יכול להצטרף?","Yes, new members are welcome.",["No, only old members can come.","Only if the child brings gloves.","Only after the tomatoes grow."],3,"הסקת מסקנה","ההודעה מקבלת בברכה חברים חדשים, ולכן גם ילד שעדיין אינו חבר יכול להצטרף."]
+    ]
+  },
+  {
+    "id": "book-swap",
+    "topic": "notices",
+    "title": "Bring a Book, Take a Book",
+    "lines": ["Our class is having a book swap on Friday during the long break.","Bring one book that you do not need anymore. Please bring a book in good condition.","Put your book on the table near the classroom door. Then choose a different book to take home.","You do not need money. Ask Ms. Green if you need help."],
+    "glossary": [["swap","החלפה"],["break","הפסקה"],["condition","מצב"],["choose","לבחור"]],
+    "questions": [
+      ["When is the book swap?","מתי מתקיימת החלפת הספרים?","On Friday during the long break.",["On Friday after school.","Every morning.","On Monday during lunch."],0,"זמן","ההודעה מציינת יום שישי בזמן ההפסקה הארוכה, ולא אחרי הלימודים."],
+      ["Where should children put their books?","איפה הילדים צריכים לשים את הספרים?","On the table near the classroom door.",["Under their chairs.","Inside their bags.","Behind the library."],2,"מקום","כתוב לשים את הספרים על השולחן שליד דלת הכיתה."],
+      ["What do children do after putting down a book?","מה עושים אחרי שמניחים ספר?","Choose a different book.",["Pay for a book.","Go straight home.","Write a story."],2,"סדר פעולות","אחרי הנחת הספר בוחרים ספר אחר. סדר הפעולות מופיע באותה שורה."],
+      ["Do children need money for the swap?","האם צריך כסף להחלפה?","No, they do not.",["Yes, ten shekels.","Yes, for every book.","Only on Friday."],3,"פרט מפורש","השורה אומרת במפורש שאין צורך בכסף; לא צריך לנחש מחיר."],
+      ["What kind of book should a child bring?","איזה ספר ילד צריך להביא?","A book in good condition.",["A book with missing pages.","Only a brand-new book.","Only a book about animals."],1,"תנאי להשתתפות","הספר צריך להיות במצב טוב. אין דרישה שיהיה חדש או שיעסוק בנושא מסוים."],
+      ["Who can help children at the swap?","מי יכולה לעזור לילדים בהחלפה?","Ms. Green.",["The bus driver.","A football coach.","A shopkeeper."],3,"איתור דמות","השורה האחרונה אומרת לפנות לגברת גרין אם צריך עזרה."]
+    ]
+  },
+  {
+    "id": "rainy-morning",
+    "topic": "diaries",
+    "title": "Noa's Rainy Morning",
+    "lines": ["I usually walk to school with my brother. Today it is raining, so we take the bus.","At school, I put my wet coat near the door. My books are dry because they are inside my bag.","During the break, we stay in the classroom and play a word game.","After school, the rain stops. We walk home and look for puddles along the way."],
+    "glossary": [["usually","בדרך כלל"],["wet","רטוב"],["dry","יבש"],["puddles","שלוליות"]],
+    "questions": [
+      ["How does Noa usually go to school?","איך נועה מגיעה בדרך כלל לבית הספר?","She walks with her brother.",["She takes the bus alone.","She rides a bicycle.","Her teacher drives her."],0,"הרגל","שואלים על מה שקורה בדרך כלל: נועה הולכת עם אחיה. היום הגשום הוא יוצא דופן."],
+      ["Why do Noa and her brother take the bus today?","למה נועה ואחיה נוסעים היום באוטובוס?","Because it is raining.",["Because they are late.","Because their bags are heavy.","Because the school is closed."],0,"סיבה","הגשם הוא הסיבה שכתובה בקטע. אין מידע על איחור או משקל התיקים."],
+      ["Why are Noa's books dry?","למה הספרים של נועה יבשים?","They are inside her bag.",["She leaves them at home.","Her teacher dries them.","They are under her coat."],1,"סיבה","הספרים נשארים יבשים כי הם נמצאים בתוך התיק."],
+      ["What happens after the rain stops?","מה קורה אחרי שהגשם נפסק?","They walk home.",["They take the bus to school.","They put on wet coats.","They start a lesson."],3,"סדר פעולות","השורה האחרונה מתארת את סוף היום: הגשם נפסק והילדים הולכים הביתה."],
+      ["What do the children do during the break?","מה הילדים עושים בהפסקה?","Play a word game.",["Play football outside.","Read in the library.","Eat in the park."],2,"פרט מפורש","בהפסקה הילדים נשארים בכיתה ומשחקים במשחק מילים."],
+      ["In 'they are inside my bag', what does 'they' mean?","במשפט על הדברים שבתוך התיק, למה מתייחסת המילה הם?","Noa's books.",["Noa and her brother.","The puddles.","The coats."],1,"מילת התייחסות","תחילת השורה מדברת על הספרים היבשים. המילה הם מתייחסת לספרים שנמצאים בתוך התיק."]
+    ]
+  },
+  {
+    "id": "market-morning",
+    "topic": "diaries",
+    "title": "Saturday with Grandpa",
+    "lines": ["On Saturday mornings, I help Grandpa at his vegetable stall in the market.","First, we put the carrots and tomatoes in boxes. Then we write the prices on small cards.","Today, a woman asks for a bag of carrots. I give her the bag, and she says thank you.","At noon, we close the stall. Grandpa and I eat sandwiches in the park before we go home."],
+    "glossary": [["stall","דוכן"],["market","שוק"],["prices","מחירים"],["noon","צהריים"]],
+    "questions": [
+      ["Where does the writer help Grandpa?","איפה המספר עוזר לסבא?","At a vegetable stall.",["At a school library.","At a clothes shop.","At a swimming pool."],0,"מקום","המספר עוזר בדוכן הירקות של סבא בשוק."],
+      ["What do they do before writing the prices?","מה הם עושים לפני כתיבת המחירים?","Put vegetables in boxes.",["Close the stall.","Eat sandwiches.","Go home."],1,"סדר פעולות","קודם מסדרים גזרים ועגבניות בארגזים, ורק אז כותבים מחירים."],
+      ["What does the woman ask for?","מה האישה מבקשת?","A bag of carrots.",["A box of tomatoes.","A sandwich.","A price card."],2,"פרט מפורש","האישה מבקשת שקית גזרים. העגבניות שייכות לשלב אחר בסיפור."],
+      ["What is this diary entry mainly about?","במה עוסק בעיקר קטע היומן?","Helping Grandpa at the market.",["Learning to swim.","A trip to a new school.","Growing a tree."],0,"רעיון מרכזי","הקטע כולו מתאר עזרה לסבא בשוק. הארוחה בסוף היא רק פרט בתוך אותו יום."],
+      ["When do Grandpa and the writer close the stall?","מתי סבא והמספר סוגרים את הדוכן?","At noon.",["Before breakfast.","Late at night.","During the school break."],3,"זמן","השורה האחרונה מציינת שהם סוגרים את הדוכן בצהריים."],
+      ["Where do they eat before going home?","איפה הם אוכלים לפני שהם הולכים הביתה?","In the park.",["Inside the school.","On the bus.","At the vegetable stall."],3,"מקום","אחרי סגירת הדוכן הם אוכלים כריכים בפארק ורק אחר כך הולכים הביתה."]
+    ]
+  },
+  {
+    "id": "lost-lunchbox",
+    "topic": "stories",
+    "title": "The Missing Lunchbox",
+    "lines": ["At lunchtime, Omer opens his bag, but his lunchbox is not there. He looks worried.","His friend Lina says, \"Let's look near the football field. We sat there this morning.\"","They find a blue lunchbox on a bench. Omer opens it and sees his cheese sandwich.","\"That's mine!\" he says with a smile. He thanks Lina, and they sit down to eat together."],
+    "glossary": [["worried","מודאג"],["field","מגרש"],["bench","ספסל"],["together","יחד"]],
+    "questions": [
+      ["What is Omer's problem?","מה הבעיה של עומר?","He cannot find his lunchbox.",["His lunchbox is broken.","He has no schoolbag.","He misses the bus."],0,"בעיה","קופסת האוכל חסרה בתיק, ולכן עומר מודאג. לא נאמר שהיא נשברה."],
+      ["Why does Lina suggest the football field?","למה לינה מציעה לחפש במגרש הכדורגל?","They sat there that morning.",["She wants to play now.","Their teacher is there.","She sees a bus there."],1,"סיבה","לינה זוכרת שהם ישבו שם בבוקר. זהו רמז למקום שבו הקופסה נשכחה."],
+      ["How does Omer probably feel at the end?","איך עומר כנראה מרגיש בסוף?","Happy.",["Angry.","Still worried.","Bored."],3,"מסקנה","עומר מחייך ומודה ללינה אחרי שמצא את הקופסה. המעשים האלה מרמזים על שמחה."],
+      ["Which title also fits the whole story?","איזו כותרת נוספת מתאימה לסיפור כולו?","A Friend Helps Find Lunch.",["A New Football Team.","Cooking at Home.","A Rainy Bus Ride."],3,"רעיון מרכזי","הסיפור עוסק בחברה שעוזרת למצוא את ארוחת הצהריים; הוא אינו סיפור על משחק כדורגל."],
+      ["Where do the friends find the lunchbox?","איפה החברים מוצאים את קופסת האוכל?","On a bench.",["Under Omer's desk.","Inside Lina's bag.","Beside the bus stop."],2,"מקום","בשורה השלישית כתוב שהם מוצאים קופסה כחולה על ספסל."],
+      ["What does Omer see when he opens the lunchbox?","מה עומר רואה כשהוא פותח את קופסת האוכל?","His cheese sandwich.",["A small toy car.","An apple and a banana.","His water bottle."],2,"פרט מפורש","עומר פותח את הקופסה ורואה את כריך הגבינה שלו."]
+    ]
+  },
+  {
+    "id": "paper-bridge",
+    "topic": "stories",
+    "title": "A Bridge for a Toy Car",
+    "lines": ["In science class, Dana and Sam want to make a paper bridge between two books.","They put one flat sheet of paper across the gap. When they put a toy car on it, the paper bends and the car falls.","Dana folds a new sheet several times to make it stronger. Sam holds the books still.","This time, the paper holds the car. Dana and Sam smile. They show the class how their second bridge works."],
+    "glossary": [["bridge","גשר"],["flat","שטוח"],["bends","מתכופף"],["folds","מקפלת"]],
+    "questions": [
+      ["What are Dana and Sam trying to make?","מה דנה וסם מנסים להכין?","A paper bridge.",["A wooden car.","A new book.","A paper boat."],0,"מטרה","המטרה מופיעה בתחילת הסיפור: גשר מנייר בין שני ספרים."],
+      ["What goes wrong with the first bridge?","מה משתבש בגשר הראשון?","The paper bends and the car falls.",["The books disappear.","The car is too small.","The paper gets wet."],1,"בעיה","הנייר מתכופף והמכונית נופלת. הסיפור אינו מזכיר מים או ספרים שנעלמו."],
+      ["What does Dana change?","מה דנה משנה?","She folds a new sheet of paper.",["She uses a bigger car.","She removes the books.","She adds water."],2,"פתרון","דנה מקפלת דף חדש כדי לחזק אותו; היא משנה את צורת הנייר."],
+      ["What can we learn from the story?","מה אפשר ללמוד מהסיפור?","Trying a different way can help.",["We must always use a bigger car.","Paper can never hold anything.","Working together never helps."],3,"מסקנה","הגשר הראשון נכשל, אבל הניסיון השני מצליח אחרי שינוי. זהו בסיס למסקנה על ניסיון בדרך אחרת."],
+      ["What does Sam do while Dana folds the paper?","מה סם עושה בזמן שדנה מקפלת את הנייר?","He holds the books still.",["He drives a real car.","He cuts the paper.","He moves the books away."],2,"תפקיד של דמות","דנה מקפלת את הדף וסם מחזיק את הספרים בלי להזיז אותם."],
+      ["In 'a toy car on it', what does 'it' mean?","במשפט על הנחת מכונית הצעצוע, למה מתייחסת המילה עליו?","The flat sheet of paper.",["The classroom floor.","Dana's hand.","A schoolbag."],1,"מילת התייחסות","קודם מניחים דף שטוח על הרווח ואז מניחים עליו מכונית. המילה עליו מתייחסת לדף."]
+    ]
+  },
+  {
+    "id": "library-quiet-hour",
+    "topic": "notices",
+    "title": "A Quiet Hour at the Library",
+    "lines": ["The school library has a quiet reading hour on Monday from two to three. Children from all classes can come.","Choose a book from the low shelves. There are books with pictures and books with short stories.","Please leave food outside because crumbs can make the books dirty. You can keep a water bottle in your bag.","After reading, put your book in the green box. Do not put it back on a shelf.","You do not have to finish a whole book. Come and enjoy a few quiet pages with us!"],
+    "glossary": [["quiet","שקט"],["shelves","מדפים"],["crumbs","פירורים"],["pages","עמודים"],["finish","לסיים"]],
+    "questions": [
+      ["When does the quiet reading hour start?","מתי מתחילה שעת הקריאה השקטה?","At two on Monday.",["At three on Monday.","At two on Tuesday.","At one on Friday."],0,"זמן","שעת הקריאה מתקיימת ביום שני משתיים עד שלוש, ולכן היא מתחילה בשתיים."],
+      ["Where can children choose a book?","מאיפה הילדים יכולים לבחור ספר?","From the low shelves.",["From the green box.","From their classroom desks.","From the food table."],1,"מקום","השורה השנייה מזמינה לבחור ספר מהמדפים הנמוכים."],
+      ["Why must food stay outside?","למה האוכל צריך להישאר בחוץ?","Crumbs can make books dirty.",["There are no chairs.","The hour is too short.","All the books are new."],2,"סיבה","ההודעה מסבירה שפירורי אוכל עלולים ללכלך את הספרים."],
+      ["What should children do with a book after reading?","מה הילדים צריכים לעשות בספר אחרי הקריאה?","Put it in the green box.",["Put it on any shelf.","Leave it outside with food.","Take it to the playground."],3,"סדר פעולות","אחרי הקריאה צריך להניח את הספר בקופסה הירוקה, לא על מדף."],
+      ["Can a child read only a few pages?","האם ילד יכול לקרוא רק כמה עמודים?","Yes, finishing the book is not required.",["No, every book must be finished.","Only if the book has no pictures.","Only if the child brings food."],4,"הסקת מסקנה","נאמר שאין חובה לסיים ספר שלם, ולכן אפשר לקרוא רק כמה עמודים."],
+      ["What is the purpose of this notice?","מה מטרת ההודעה?","To invite children to quiet reading.",["To sell old library shelves.","To ask children to cook lunch.","To announce a running race."],0,"מטרה","ההודעה מזמינה ילדים מכל הכיתות לשעת קריאה ומסבירה כיצד להשתתף."]
+    ]
+  },
+  {
+    "id": "picnic-change-message",
+    "topic": "notices",
+    "title": "A Message About Our Class Picnic",
+    "lines": ["Hello, Class Five! Our picnic is on Thursday. We meet at the classroom at eight thirty, as planned.","There is very hot weather this week, so we are not going to the park. We are using the school hall instead.","Bring your usual lunch and a bottle of water. The school has cups, so leave your cups at home.","First, we will put our bags by the wall. Then we will sit in small groups on clean mats.","After lunch, each group can play a board game. Please tell your family about the new place. See you on Thursday!"],
+    "glossary": [["picnic","פיקניק"],["instead","במקום זאת"],["usual","רגיל"],["mats","מחצלות"],["board game","משחק קופסה"]],
+    "questions": [
+      ["What time should the class meet?","באיזו שעה הכיתה צריכה להיפגש?","At eight thirty.",["At eight.","At nine thirty.","At twelve."],0,"זמן","בשורה הראשונה כתוב שהמפגש בשמונה וחצי."],
+      ["Why is the picnic moving from the park?","למה הפיקניק עובר מהפארק?","The weather is very hot.",["The class has no food.","The park is too small.","The mats are wet."],1,"סיבה","החום הרב הוא הסיבה המפורשת לשינוי המקום."],
+      ["Which item should children leave at home?","איזה פריט הילדים צריכים להשאיר בבית?","Their cups.",["Their lunch.","Their water bottles.","Their schoolbags."],2,"הוראה","לבית הספר יש כוסות, ולכן הילדים מתבקשים להשאיר את הכוסות שלהם בבית."],
+      ["What happens just before children sit on the mats?","מה קורה ממש לפני שהילדים יושבים על המחצלות?","They put their bags by the wall.",["They play a board game.","They tell their families.","They walk to the park."],3,"סדר פעולות","קודם מניחים את התיקים ליד הקיר ואז יושבים בקבוצות."],
+      ["What does 'the new place' mean in the last line?","למה מתייחס הביטוי המקום החדש בשורה האחרונה?","The school hall.",["The park.","The classroom.","A family's home."],4,"מילת התייחסות","ההודעה החליפה את הפארק באולם בית הספר. לכן המקום החדש שעליו מספרים למשפחה הוא האולם."],
+      ["Which statement describes the message?","איזה משפט מתאר את ההודעה?","The picnic has a new place but the same meeting time.",["The picnic is cancelled.","The picnic is now on Friday.","The class will meet at the park later."],1,"רעיון מרכזי","ההודעה מעדכנת על מעבר לאולם. בשורה הראשונה נאמר ששעת המפגש נשארת כפי שתוכנן."]
+    ]
+  },
+  {
+    "id": "animal-art-display",
+    "topic": "notices",
+    "title": "Our Animal Picture Wall",
+    "lines": ["Do you enjoy drawing animals? Our school is making an animal picture wall for families to see.","Bring one drawing to Room Six by Tuesday. Draw an animal you know or one you see in a book.","Use paper, not cardboard. We need light pictures because we are hanging them with small paper clips.","Write your name on the back. Give your picture to Mr. Nasser before you go to your classroom.","Families can see the wall on Wednesday after school. You do not need to have a pet to take part. Everyone can draw!"],
+    "glossary": [["drawing","ציור"],["cardboard","קרטון"],["light","קל"],["paper clips","אטבים"],["take part","להשתתף"]],
+    "questions": [
+      ["Where should children bring their drawings?","לאן הילדים צריכים להביא את הציורים?","To Room Six.",["To the sports hall.","To the school kitchen.","To the bus stop."],1,"מקום","ההודעה מבקשת להביא ציור אחד לחדר שש."],
+      ["Why should children use paper rather than cardboard?","למה הילדים צריכים להשתמש בנייר ולא בקרטון?","The small clips need light pictures.",["Cardboard has no colours.","The pictures must get wet.","Paper is always larger."],2,"סיבה","תולים את הציורים באטבים קטנים, ולכן נדרשים ציורים קלים מנייר."],
+      ["What should children write on the back?","מה הילדים צריכים לכתוב מאחור?","Their names.",["Their home addresses.","The day of the week.","The animal's price."],3,"פרט מפורש","נאמר לכתוב את השם בצד האחורי של הציור."],
+      ["When can families see the pictures?","מתי המשפחות יכולות לראות את הציורים?","On Wednesday after school.",["On Tuesday before school.","On Monday at noon.","Only during the long break."],4,"זמן","המשפחות מוזמנות ביום רביעי אחרי הלימודים."],
+      ["Can a child without a pet take part?","האם ילד שאין לו חיית מחמד יכול להשתתף?","Yes, a pet is not needed.",["No, only pet owners can draw.","Only with a drawing of a dog.","Only if the child buys a pet."],4,"תנאי להשתתפות","השורה האחרונה אומרת במפורש שאין צורך בחיית מחמד כדי להשתתף."],
+      ["What is the notice asking children to do?","מה ההודעה מבקשת מהילדים לעשות?","Make drawings for an animal picture wall.",["Bring live animals to school.","Buy pictures for their bedrooms.","Build cages for school pets."],0,"מטרה","ההודעה מציגה קיר ציורי חיות ומסבירה איך למסור ציור עבורו."]
+    ]
+  },
+  {
+    "id": "bicycle-check-day",
+    "topic": "notices",
+    "title": "Bicycle Check Day",
+    "lines": ["On Sunday, a bicycle helper is coming to our school. She will check bikes in the yard from one to two.","Please walk your bike through the school gate. Do not ride it across the busy yard.","Wait beside the blue sign. The helper will check the brakes and wheels of one bike at a time.","Bring your helmet too. You can ask the helper to check if it fits your head.","The checks are free. A check may take ten minutes, so bring a short book to read while you wait. This is not a bike race."],
+    "glossary": [["check","לבדוק"],["gate","שער"],["brakes","בלמים"],["helmet","קסדה"],["fits","מתאים"]],
+    "questions": [
+      ["On which day will the helper come?","באיזה יום תגיע העוזרת?","Sunday.",["Monday.","Thursday.","Friday."],0,"זמן","בשורה הראשונה מצוין שהעוזרת מגיעה ביום ראשון."],
+      ["How should children take bikes through the gate?","איך הילדים צריכים להעביר אופניים בשער?","Walk beside them.",["Ride them quickly.","Carry them over the fence.","Leave them outside the school."],1,"הוראה","ההודעה מבקשת ללכת עם האופניים בשער, ולא לרכוב בחצר העמוסה."],
+      ["Where should children wait?","איפה הילדים צריכים להמתין?","Beside the blue sign.",["Inside the library.","Behind the kitchen.","Under the classroom tables."],2,"מקום","מקום ההמתנה הוא ליד השלט הכחול."],
+      ["What does 'it' mean in 'if it fits your head'?","למה מתייחסת מילת ההתייחסות במשפט על התאמה לראש?","The helmet.",["The wheel.","The book.","The blue sign."],3,"מילת התייחסות","השורה מבקשת להביא קסדה ואז לבדוק שהיא מתאימה לראש. מילת ההתייחסות מכוונת לקסדה."],
+      ["Why does the notice suggest bringing a book?","למה ההודעה מציעה להביא ספר?","Children may have to wait.",["The helper sells books.","The bikes need paper wheels.","There is a reading test."],4,"סיבה","כל בדיקה יכולה להימשך עשר דקות. הספר נועד לקריאה בזמן ההמתנה."],
+      ["What is this event mainly for?","למה מיועד בעיקר האירוע?","Checking children's bikes.",["Teaching children to win races.","Selling new school uniforms.","Painting the school gate."],0,"רעיון מרכזי","העוזרת מגיעה לבדוק אופניים. ההודעה אף מבהירה שלא מדובר במרוץ."]
+    ]
+  },
+  {
+    "id": "school-radio-message",
+    "topic": "notices",
+    "title": "Your Voice on School Radio",
+    "lines": ["Our school radio needs short messages for the morning show. Tell us about a school event that other children can join.","Write two or three sentences. Include the day and the place, so listeners know when and where to come.","Put your message in the yellow box outside the office by Monday afternoon. You can write it with a friend.","On Tuesday, Ms. Levy will choose three messages. She will help the writers practise reading them slowly.","The writers will read their messages on Wednesday morning. If you feel shy, your friend can read your message for you."],
+    "glossary": [["radio","רדיו"],["messages","הודעות"],["listeners","מאזינים"],["practise","להתאמן"],["shy","ביישן"]],
+    "questions": [
+      ["What should the messages be about?","על מה ההודעות צריכות להיות?","School events children can join.",["Long stories about space.","Prices in a shoe shop.","Private family phone numbers."],0,"נושא","השורה הראשונה מבקשת הודעות על אירועים בבית הספר שילדים אחרים יכולים להצטרף אליהם."],
+      ["Why must a message include a day and a place?","למה ההודעה חייבת לכלול יום ומקום?","So listeners know when and where to come.",["So the message becomes a song.","So nobody can join the event.","So the box changes colour."],1,"סיבה","היום והמקום עוזרים למאזינים לדעת מתי ולאן להגיע."],
+      ["Where should children put their messages?","איפה הילדים צריכים לשים את ההודעות?","In the yellow box outside the office.",["On the library floor.","In a blue bag by the gate.","Under the radio."],2,"מקום","מוסרים את ההודעות בקופסה הצהובה שמחוץ למשרד."],
+      ["What happens after Ms. Levy chooses the messages?","מה קורה אחרי שגברת לוי בוחרת את ההודעות?","The writers practise reading them.",["The writers buy a radio.","The children paint the office.","All messages go into the bin."],3,"סדר פעולות","אחרי בחירת שלוש ההודעות גברת לוי עוזרת לכותבים להתאמן בקריאה איטית."],
+      ["When will the messages be read on the radio?","מתי יקראו את ההודעות ברדיו?","On Wednesday morning.",["On Monday afternoon.","On Tuesday evening.","On Friday at noon."],4,"זמן","השורה האחרונה קובעת שהקריאה בשידור תהיה ביום רביעי בבוקר."],
+      ["How can a shy writer still share a message?","איך כותב ביישן עדיין יכול לשתף הודעה?","Ask a friend to read it.",["Leave out the day and place.","Write a much longer message.","Hide the message at home."],4,"פתרון","השורה האחרונה מציעה שחבר יקרא את ההודעה עבור מי שמתבייש."]
+    ]
+  },
+  {
+    "id": "pool-towel-notice",
+    "topic": "notices",
+    "title": "Is This Your Towel?",
+    "lines": ["A yellow towel with white stars is waiting at the neighbourhood pool. We found it near the small pool on Tuesday.","The towel is clean and dry. It is now in the lost items cupboard, not beside the water.","If it is yours, come to the pool office between four and six in the afternoon.","Tell the office worker the name on the little label. This helps us give the towel to the right person.","You do not need a swimming ticket to collect it. Please bring a bag to carry it home."],
+    "glossary": [["towel","מגבת"],["stars","כוכבים"],["cupboard","ארון"],["label","תווית"],["collect","לאסוף"]],
+    "questions": [
+      ["What does the towel look like?","איך נראית המגבת?","Yellow with white stars.",["White with yellow circles.","Blue with white stars.","Yellow with green stripes."],0,"תיאור","המגבת מתוארת כצהובה עם כוכבים לבנים."],
+      ["Where is the towel now?","איפה המגבת נמצאת עכשיו?","In the lost items cupboard.",["Beside the small pool.","On a bus seat.","Inside a swimming bag."],1,"מקום","המגבת נמצאה ליד הבריכה, אבל כעת היא בארון החפצים האבודים."],
+      ["When can the owner come to the office?","מתי בעלי המגבת יכולים להגיע למשרד?","Between four and six in the afternoon.",["Before eight in the morning.","Only at noon.","Between seven and nine at night."],2,"זמן","שעות האיסוף הן בין ארבע לשש אחר הצהריים."],
+      ["Why must the owner say the name on the label?","למה בעלי המגבת צריכים לומר את השם שעל התווית?","To show that the towel is theirs.",["To buy a bigger towel.","To join a swimming team.","To choose new stars."],3,"סיבה","זיהוי השם עוזר למסור את המגבת לאדם הנכון."],
+      ["Does the owner need to buy a swimming ticket?","האם בעלי המגבת צריכים לקנות כרטיס שחייה?","No, not to collect the towel.",["Yes, two tickets.","Yes, a ticket for the whole week.","Only if the towel is dry."],4,"פרט מפורש","ההודעה אומרת שאין צורך בכרטיס שחייה כדי לאסוף את המגבת."],
+      ["Why was this notice written?","למה נכתבה ההודעה?","To help return a lost towel.",["To advertise a swimming race.","To explain how to wash towels.","To close the neighbourhood pool."],0,"מטרה","ההודעה מתארת מגבת שנמצאה ומסבירה איך בעליה יכולים לקבל אותה בחזרה."]
+    ]
+  },
+  {
+    "id": "seed-sharing-table",
+    "topic": "notices",
+    "title": "A Table for Sharing Seeds",
+    "lines": ["Come to the community garden on Friday from ten to eleven. We are sharing seeds at the round table near the gate.","You may bring extra seeds from home in a small paper bag. Write the plant's name on the bag.","No seeds at home? You can still take one bag. There is no need to bring anything in return.","Garden helpers will show children how to put seeds in soil. The helpers have small pots for everyone to use.","Please keep the paths clear so people can move easily through the garden. Children should come with an adult."],
+    "glossary": [["seeds","זרעים"],["soil","אדמה"],["pots","עציצים"],["paths","שבילים"],["adult","מבוגר"]],
+    "questions": [
+      ["Where is the seed-sharing table?","איפה נמצא שולחן שיתוף הזרעים?","Near the garden gate.",["Behind the school kitchen.","Inside the town library.","On the football field."],0,"מקום","השולחן העגול נמצא ליד השער בגינה הקהילתית."],
+      ["What should be written on a bag of seeds?","מה צריך לכתוב על שקית זרעים?","The plant's name.",["The child's age.","The price of a pot.","The time of sunset."],1,"פרט מפורש","ההודעה מבקשת לכתוב על השקית את שם הצמח."],
+      ["Can someone with no seeds take a bag?","האם מי שאין לו זרעים יכול לקחת שקית?","Yes, without bringing something in return.",["No, every visitor must bring seeds.","Only after buying a large pot.","Only on Sunday."],2,"תנאי להשתתפות","גם מי שאין לו זרעים בבית יכול לקחת שקית אחת בלי להביא דבר בתמורה."],
+      ["What will the helpers teach children?","מה ילמדו העוזרים את הילדים?","How to put seeds in soil.",["How to paint the gate.","How to build a bicycle.","How to cook soup."],3,"פעולה","העוזרים יראו לילדים איך לשים זרעים באדמה."],
+      ["Why should the paths stay clear?","למה השבילים צריכים להישאר פנויים?","So people can move through the garden easily.",["So seeds cannot grow.","So nobody enters the garden.","So the bags stay warm."],4,"סיבה","השבילים הפנויים מאפשרים לאנשים לנוע בגינה בקלות."],
+      ["Who should come with a child?","מי צריך להגיע עם ילד?","An adult.",["A pet dog.","A school radio writer.","A bicycle helper."],4,"הוראה","בסוף ההודעה נאמר שילדים צריכים לבוא עם מבוגר."]
+    ]
+  },
+  {
+    "id": "train-window-diary",
+    "topic": "diaries",
+    "title": "My Window on the Train",
+    "lines": ["Sunday evening. Today Dad and I take the train to visit my cousin in Haifa. I sit by the window with my notebook.","Our train leaves at nine. I draw three things I can see: a field, a tall building and the blue sea.","Dad puts our tickets in his pocket. He keeps them there so they are easy to find when we need them.","At the station, my cousin Rami is waiting. First, we walk to his home. Then we all eat lunch.","Now I am back home. My drawings are not perfect, but they help me remember the trip. I want to show them to my class tomorrow."],
+    "glossary": [["train","רכבת"],["notebook","מחברת"],["tickets","כרטיסים"],["pocket","כיס"],["remember","לזכור"]],
+    "questions": [
+      ["Which city does the writer visit?","באיזו עיר המספר מבקר?","Haifa.",["Tel Aviv.","Eilat.","Jerusalem."],0,"מקום","המספר נוסע עם אבא לבקר בן דוד בחיפה."],
+      ["What time does the train leave?","באיזו שעה הרכבת יוצאת?","At nine.",["At eight.","At ten.","At noon."],1,"זמן","בשורה השנייה כתוב שהרכבת יוצאת בתשע."],
+      ["Why does Dad keep the tickets in his pocket?","למה אבא שומר את הכרטיסים בכיס?","To find them easily.",["To keep them away from Rami.","To use them as drawing paper.","To give them to the class."],2,"סיבה","אבא שומר את הכרטיסים בכיס כדי שיהיה קל למצוא אותם בשעת הצורך."],
+      ["What do they do before eating lunch?","מה הם עושים לפני ארוחת הצהריים?","Walk to Rami's home.",["Show drawings to the class.","Go back to their own home.","Buy a new notebook."],3,"סדר פעולות","קודם הולכים לבית של רמי ואחר כך כולם אוכלים צהריים."],
+      ["Who is waiting at the station?","מי מחכה בתחנה?","Rami.",["The writer's teacher.","The writer's grandmother.","A school librarian."],3,"איתור דמות","בשורה הרביעית נאמר שרמי, בן הדוד, מחכה בתחנה."],
+      ["How does the writer keep a memory of the trip?","איך המספר שומר זיכרון מהנסיעה?","By drawing things seen from the train.",["By buying a toy train.","By recording Rami's voice.","By collecting stones from the station."],4,"רעיון מרכזי","בשורה האחרונה נאמר שהציורים עוזרים לזכור את הנסיעה. בשורה השנייה מתואר מה צויר מהחלון."]
+    ]
+  },
+  {
+    "id": "bread-with-aunt",
+    "topic": "diaries",
+    "title": "Warm Bread with Aunt Maya",
+    "lines": ["Friday afternoon. I am at Aunt Maya's home in Ashdod. We are making small bread rolls for our family dinner.","First, we wash our hands. Then Aunt Maya gives me a large bowl. I mix flour and water in it with a spoon.","The dough sticks to my fingers. My aunt adds a little flour, and now I can make six small balls.","She puts the tray in the hot oven. I stay at the table and make name cards for everyone's place.","Soon the kitchen smells wonderful. At dinner, my little brother asks for a second roll. I smile because our bread is a success."],
+    "glossary": [["rolls","לחמניות"],["flour","קמח"],["dough","בצק"],["tray","מגש"],["oven","תנור"],["success","הצלחה"]],
+    "questions": [
+      ["Why are the writer and Aunt Maya making rolls?","למה המספר ודודה מאיה מכינים לחמניות?","For a family dinner.",["For a school art wall.","To feed birds in the park.","To sell at a train station."],0,"מטרה","הלחמניות מיועדות לארוחת הערב המשפחתית."],
+      ["What do they do first?","מה הם עושים קודם?","Wash their hands.",["Make name cards.","Put the tray in the oven.","Eat a second roll."],1,"סדר פעולות","השלב הראשון שמתואר הוא רחיצת הידיים."],
+      ["What does 'it' mean in 'in it with a spoon'?","למה מתייחסת המילה בו במשפט על הערבוב בכף?","The large bowl.",["The hot oven.","The name card.","The tray."],1,"מילת התייחסות","הדודה נותנת קערה גדולה ובה מערבבים את הקמח והמים בכף."],
+      ["What helps stop the dough sticking to the writer's fingers?","מה עוזר לבצק לא להידבק לאצבעות המספר?","A little more flour.",["A name card.","A second spoon.","A glass of juice."],2,"פתרון","הדודה מוסיפה מעט קמח, ולאחר מכן המספר מצליח ליצור כדורי בצק."],
+      ["What does the writer do while the rolls are in the oven?","מה המספר עושה כשהלחמניות בתנור?","Makes name cards.",["Opens the hot oven alone.","Washes the windows.","Goes to the market."],3,"פעולה","הדודה מכניסה את המגש לתנור, והמספר נשאר ליד השולחן ומכין כרטיסי שמות."],
+      ["Which clue suggests the little brother likes the rolls?","איזה רמז מצביע על כך שהאח הקטן אוהב את הלחמניות?","He asks for a second roll.",["He leaves the kitchen.","He adds flour to the dough.","He makes six balls."],4,"הסקת מסקנה","הבקשה ללחמנייה נוספת היא רמז לכך שהאח נהנה מהלחמנייה הראשונה."]
+    ]
+  },
+  {
+    "id": "welcome-new-classmate",
+    "topic": "diaries",
+    "title": "A Place Beside Me",
+    "lines": ["Tuesday. A new student, Amir, joins our class today. Our teacher asks me to show him around the school.","I show him the toilets and the drinking water tap. Then we visit the library, which is next to our classroom.","At break, Amir stands by the door with his lunch. I move my bag from the bench and invite him to sit beside me.","We talk about games. I like basketball, but Amir likes chess. He explains how one chess piece can move.","Before we go home, Amir asks if we can play chess tomorrow. I say yes. I am glad that a new classmate can also become a friend."],
+    "glossary": [["joins","מצטרף"],["tap","ברז"],["invite","להזמין"],["chess","שחמט"],["piece","כלי משחק"]],
+    "questions": [
+      ["Who asks the writer to show Amir around?","מי מבקשת מהמספר להראות לאמיר את בית הספר?","The teacher.",["Amir's father.","The bus driver.","The school gardener."],0,"איתור דמות","המורה מבקשת מהמספר לערוך לאמיר סיור בבית הספר."],
+      ["Where is the library?","איפה הספרייה?","Next to the classroom.",["Behind the school gate.","Inside the sports hall.","Across from the market."],1,"מקום","הספרייה מתוארת כצמודה לכיתה."],
+      ["Why does the writer move the bag from the bench?","למה המספר מזיז את התיק מהספסל?","To make space for Amir.",["To hide Amir's lunch.","To clean a chess piece.","To leave school early."],2,"הסקת מסקנה","מיד אחרי הזזת התיק המספר מזמין את אמיר לשבת לידו. מכאן שהתיק הוזז כדי לפנות מקום."],
+      ["Which game does Amir like?","איזה משחק אמיר אוהב?","Chess.",["Basketball.","Football.","Tennis."],3,"פרט מפורש","המספר אוהב כדורסל, ואילו אמיר אוהב שחמט."],
+      ["What do the children plan to do tomorrow?","מה הילדים מתכננים לעשות מחר?","Play chess together.",["Go to a basketball match.","Visit Amir's grandmother.","Buy a new bench."],4,"זמן ותוכנית","בסוף היום אמיר מבקש לשחק שחמט למחרת, והמספר מסכים."],
+      ["What is the diary entry mainly about?","במה עוסק בעיקר קטע היומן?","Welcoming a new classmate and making a friend.",["Winning a school basketball cup.","Looking for a lost lunchbox.","Moving to a different city."],4,"רעיון מרכזי","הסיור, ההזמנה לשבת והמשחק המתוכנן מתארים קבלת תלמיד חדש ותחילתה של חברות."]
+    ]
+  },
+  {
+    "id": "balcony-bean-diary",
+    "topic": "diaries",
+    "title": "My Small Bean Plant",
+    "lines": ["Monday. Mum gives me three bean seeds and a small pot. I put the seeds in soil and place the pot on our balcony.","I make a chart in my notebook. Every morning, I look at the pot and draw what I see.","On Wednesday, the soil feels dry. I add a little water, slowly, so it does not spill over the sides.","On Friday, a small green shoot is above the soil. I call Mum to look. We count two tiny leaves.","My plant is still very small. I cannot pick any beans yet, but the new leaves show a change. Waiting is easier when I have something to draw."],
+    "glossary": [["bean","שעועית"],["soil","אדמה"],["chart","טבלה"],["spill","להישפך"],["shoot","נבט"],["leaves","עלים"]],
+    "questions": [
+      ["Where does the writer put the pot?","איפה המספר מניח את העציץ?","On the balcony.",["Under the bed.","Inside a kitchen cupboard.","Beside the school gate."],0,"מקום","המספר ממקם את העציץ במרפסת."],
+      ["What does the writer do every morning?","מה המספר עושה בכל בוקר?","Looks at the pot and draws.",["Picks three beans.","Moves the plant to school.","Adds a new seed."],1,"הרגל","בכל בוקר המספר מתבונן בעציץ ומצייר את מה שהוא רואה."],
+      ["Why does the writer add water on Wednesday?","למה המספר מוסיף מים ביום רביעי?","The soil feels dry.",["The leaves are too big.","Mum wants to wash the pot.","The notebook is dirty."],2,"סיבה","תחילת השורה מציינת שהאדמה יבשה, ולכן המספר משקה אותה."],
+      ["When does the writer first describe a green shoot?","מתי המספר מתאר לראשונה נבט ירוק?","On Friday.",["On Monday.","On Tuesday.","On Wednesday."],3,"זמן","הנבט הירוק מופיע בתיאור של יום שישי."],
+      ["What does 'it' mean in 'so it does not spill'?","למה מתייחסת מילת ההתייחסות במשפט על מניעת שפיכה?","The water.",["The notebook.","The balcony.","The chart."],2,"מילת התייחסות","המספר מוסיף מים לאט כדי שהמים לא יישפכו מצדי העציץ."],
+      ["Which change shows that the plant is growing?","איזה שינוי מראה שהצמח גדל?","New leaves appear.",["The pot becomes larger.","The notebook changes colour.","Beans are ready to eat."],4,"הסקת מסקנה","המספר מציין שהעלים החדשים מראים שינוי. הם סימן לצמיחה, אף שעדיין אין שעועית לקטוף."]
+    ]
+  },
+  {
+    "id": "library-helper-diary",
+    "topic": "diaries",
+    "title": "My First Library Job",
+    "lines": ["Thursday afternoon. Today is my first day as a helper at our neighbourhood library in Be'er Sheva. I wear a small badge with my name.","The librarian gives me a cart of picture books. My job is to put them on the low shelf for young children.","I start with the animal books. Next, I put the books about vehicles beside them. I keep the covers facing out.","A little girl asks for a book about buses. I show her one with a red bus on the cover, and she takes it.","At four, my job is over. The cart is empty. I feel useful because someone can now enjoy a book that I helped her find."],
+    "glossary": [["badge","תג"],["librarian","ספרנית"],["cart","עגלה"],["vehicles","כלי רכב"],["covers","כריכות"],["useful","מועיל"]],
+    "questions": [
+      ["What does the writer wear?","מה המספר עונד?","A badge with a name.",["A swimming cap.","A red scarf.","A gardener's apron."],0,"פרט מפורש","המספר עונד תג קטן עם שמו."],
+      ["Who are the books on the low shelf for?","למי מיועדים הספרים שעל המדף הנמוך?","Young children.",["Only bus drivers.","Only the librarian.","People buying tickets."],1,"קהל יעד","המדף הנמוך מיועד לספרי תמונות לילדים צעירים."],
+      ["Which books does the writer put away first?","אילו ספרים המספר מסדר קודם?","Animal books.",["Vehicle books.","Cooking books.","Books about the moon."],2,"סדר פעולות","המספר מתחיל בספרי חיות ואחריהם מסדר ספרים על כלי רכב."],
+      ["Which book does the little girl take?","איזה ספר הילדה הקטנה לוקחת?","One with a red bus on the cover.",["One with a blue train on the cover.","One with a green tree on the cover.","One with a yellow cat on the cover."],3,"איתור מידע","המספר מציג ספר שעל כריכתו אוטובוס אדום, והילדה לוקחת אותו."],
+      ["When does the writer finish the job?","מתי המספר מסיים את העבודה?","At four.",["At two.","At three.","At six."],4,"זמן","השורה האחרונה מציינת שהעבודה מסתיימת בארבע."],
+      ["Why does the writer feel useful?","למה המספר מרגיש מועיל?","The writer helps a child find a book.",["The writer wins a drawing prize.","The writer buys a new library.","The writer drives a red bus."],4,"סיבה","המספר מרגיש מועיל משום שעזר לילדה למצוא ספר שהיא יכולה ליהנות ממנו."]
+    ]
+  },
+  {
+    "id": "beach-cleanup-diary",
+    "topic": "diaries",
+    "title": "A Different Morning at the Beach",
+    "lines": ["Saturday morning. My family joins a beach clean-up near Netanya. We come at eight, before the sand gets very hot.","A group leader gives us gloves and bags. She tells the children to collect only paper and plastic wrappers, not glass or sharp things.","My sister holds our bag open while I put wrappers inside. We stay close to Dad and work together.","After an hour, the leader weighs each full bag. Our bag weighs two kilos. Then we wash our hands and drink water.","We do not swim today. We sit and look at the clean sand instead. I like knowing that our small group can make this part of the beach nicer."],
+    "glossary": [["clean-up","מבצע ניקיון"],["gloves","כפפות"],["wrappers","עטיפות"],["sharp","חד"],["weighs","שוקלת"],["sand","חול"]],
+    "questions": [
+      ["Why does the family come at eight?","למה המשפחה מגיעה בשמונה?","To arrive before the sand gets very hot.",["To catch the last bus.","To buy tickets for a race.","To watch the sunset."],0,"סיבה","המשפחה מגיעה מוקדם לפני שהחול מתחמם מאוד."],
+      ["What are children allowed to collect?","מה מותר לילדים לאסוף?","Paper and plastic wrappers.",["Glass and sharp metal.","Only large stones.","Fish and shells."],1,"הוראה","המדריכה מתירה לילדים לאסוף נייר ועטיפות פלסטיק בלבד, ולא זכוכית או חפצים חדים."],
+      ["How does the sister help?","איך האחות עוזרת?","She holds the bag open.",["She weighs every bag.","She drives the family home.","She hands out gloves."],2,"תפקיד של דמות","האחות מחזיקה את השקית פתוחה בזמן שהמספר מכניס אליה עטיפות."],
+      ["How much does the family's full bag weigh?","כמה שוקלת השקית המלאה של המשפחה?","Two kilos.",["One kilo.","Three kilos.","Five kilos."],3,"כמות","השורה הרביעית מציינת משקל של שני קילוגרמים."],
+      ["What do they do after the bags are weighed?","מה הם עושים אחרי שקילת השקיות?","Wash their hands and drink water.",["Go swimming immediately.","Start collecting glass.","Eat without washing their hands."],3,"סדר פעולות","לאחר השקילה הם רוחצים ידיים ושותים מים."],
+      ["What is this diary entry mainly about?","במה עוסק בעיקר קטע היומן?","A family helping clean a beach.",["A family learning to swim.","A shop selling beach toys.","A competition to build sand castles."],4,"רעיון מרכזי","הקטע מתאר את עבודת הניקיון המשותפת ואת השמחה על החוף הנקי יותר, ולא יום שחייה."]
+    ]
+  },
+  {
+    "id": "rainy-day-puzzle",
+    "topic": "diaries",
+    "title": "One Hundred Pieces",
+    "lines": ["Wednesday evening. It is too rainy to play outside, so my cousin Leen and I open a puzzle at home. It has one hundred pieces.","The picture on the box shows a busy street in Jerusalem. We put the box where we can both see it.","First, we find the pieces with straight edges. After we finish the outside, we work on the shops in the middle.","One piece is missing. Leen looks under the table, but it is not there. I find it inside the puzzle box.","At last, the picture is complete. We leave it on the table to show Grandma tomorrow. Working together takes time, but we are proud of our finished street."],
+    "glossary": [["puzzle","פאזל"],["pieces","חלקים"],["straight","ישר"],["edges","קצוות"],["complete","שלם"],["proud","גאים"]],
+    "questions": [
+      ["Why do the cousins stay inside?","למה בני הדודים נשארים בפנים?","It is too rainy to play outside.",["Grandma locks the door.","The street has no shops.","They cannot find their shoes."],0,"סיבה","הגשם החזק מונע משחק בחוץ, ולכן הם מרכיבים פאזל בבית."],
+      ["What picture does the puzzle make?","איזו תמונה נוצרת בפאזל?","A busy street in Jerusalem.",["A quiet beach in Eilat.","A green field near Haifa.","A swimming pool in Ashdod."],1,"פרט מפורש","על הקופסה מופיעה תמונה של רחוב הומה בירושלים."],
+      ["Which part do the cousins finish before the shops?","איזה חלק בני הדודים משלימים לפני החנויות?","The outside of the puzzle.",["The roofs in the middle.","The cars in the street.","The words on the box."],2,"סדר פעולות","הם מתחילים בקצוות הישרים ומשלימים את המסגרת לפני החנויות שבאמצע."],
+      ["Where is the missing piece?","איפה החלק החסר?","Inside the box.",["Under the table.","In Leen's pocket.","Beside the front door."],3,"מקום","לין מחפשת מתחת לשולחן, אבל המספר מוצא את החלק בתוך הקופסה."],
+      ["Who will see the finished puzzle tomorrow?","מי תראה מחר את הפאזל המושלם?","Grandma.",["The school librarian.","Their teacher.","A shopkeeper."],4,"איתור דמות","הם משאירים את הפאזל על השולחן כדי להראות אותו לסבתא למחרת."],
+      ["What does 'it' mean in 'We leave it on the table'?","למה מתייחסת המילה אותו במשפט על השארה על השולחן?","The finished puzzle.",["The puzzle box.","A straight edge.","The missing piece on its own."],4,"מילת התייחסות","התמונה כבר שלמה. מה שנשאר על השולחן כדי להראות לסבתא הוא הפאזל המושלם."]
+    ]
+  },
+  {
+    "id": "kite-small-tear",
+    "topic": "stories",
+    "title": "One More Flight",
+    "lines": ["Yasmin and her uncle take a red paper kite to the park in Lod. A light wind is blowing, and the grass is dry.","The kite rises, then lands near a bush. Yasmin sees a small tear in the paper. Air can pass through the hole.","Her uncle has tape in his bag. Yasmin holds the paper flat while he puts tape over the tear on both sides.","They move away from the bush to an open part of the park. Yasmin holds the string, and her uncle lifts the kite.","This time, it stays in the air. Yasmin laughs. She is glad they tried a repair instead of throwing the kite away."],
+    "glossary": [["kite","עפיפון"],["bush","שיח"],["tear","קרע"],["tape","סרט הדבקה"],["string","חוט"],["repair","תיקון"]],
+    "questions": [
+      ["Where do Yasmin and her uncle fly the kite?","איפה יסמין ודודה מעיפים את העפיפון?","In a park in Lod.",["On a beach in Netanya.","In a school hall.","On a balcony in Haifa."],0,"מקום","הסיפור מתחיל בפארק בלוד."],
+      ["What is wrong with the kite after it lands?","מה לא תקין בעפיפון אחרי שהוא נוחת?","There is a small tear in the paper.",["Its string is missing.","The paper is wet.","Its colour has disappeared."],1,"בעיה","יסמין רואה קרע קטן בנייר שדרכו יכול לעבור אוויר."],
+      ["How do they repair the kite?","איך הם מתקנים את העפיפון?","They put tape over the tear.",["They cut off all the paper.","They add water to the string.","They tie it to the bush."],2,"פתרון","יסמין מחזיקה את הנייר שטוח ודודה מכסה את הקרע בסרט הדבקה משני הצדדים."],
+      ["What do they do before trying to fly the kite again?","מה הם עושים לפני הניסיון להעיף שוב את העפיפון?","Move to an open part of the park.",["Buy a blue kite.","Go back to their home.","Put the kite in a bin."],3,"סדר פעולות","לאחר התיקון הם מתרחקים מהשיח ועוברים לאזור פתוח לפני ההעפה הנוספת."],
+      ["What does 'it' mean in 'it stays in the air'?","למה מתייחסת המילה הוא במשפט על הישארות באוויר?","The kite.",["The bush.","The bag.","The grass."],4,"מילת התייחסות","מה שמתרומם ונשאר באוויר בניסיון השני הוא העפיפון."],
+      ["Which lesson is supported by the ending?","איזה לקח נתמך בסוף הסיפור?","A small repair can make an item useful again.",["Every broken item must be thrown away.","Kites only fly when there is no wind.","Tape can repair every possible problem."],4,"הסקת מסקנה","העפיפון חוזר לעוף לאחר תיקון הקרע. זה תומך במסקנה שתיקון קטן יכול לעזור, אך לא בטענה שכל בעיה נפתרת כך."]
+    ]
+  },
+  {
+    "id": "cat-by-blue-gate",
+    "topic": "stories",
+    "title": "The Cat by the Blue Gate",
+    "lines": ["On the way home from school, Adam sees a white cat beside a blue gate. It has a green collar but no name tag.","Adam does not know the cat, so he leaves it alone. He tells his mother, who is walking beside him.","A woman comes out of the house next door. She carries an empty cat basket and looks along the street.","Adam's mother asks if she is looking for a white cat. The woman says yes and calls, 'Snow!' The cat runs towards her.","The woman thanks them. She puts Snow in the basket and takes her home. Adam is happy that telling an adult helped the cat return safely."],
+    "glossary": [["collar","קולר"],["name tag","תג שם"],["basket","סל"],["towards","לכיוון"],["adult","מבוגר"],["safely","בבטחה"]],
+    "questions": [
+      ["What colour is the cat's collar?","באיזה צבע הקולר של החתולה?","Green.",["Blue.","White.","Red."],0,"פרט מפורש","החתולה לבנה והשער כחול, אבל הקולר ירוק."],
+      ["Why does Adam leave the cat alone?","למה אדם אינו נוגע בחתולה?","He does not know the cat.",["His bag is too small.","The cat is asleep in a basket.","He is late for a swimming lesson."],1,"סיבה","כתוב שאדם אינו מכיר את החתולה ולכן מניח לה ופונה לאמו."],
+      ["What suggests that the woman may be looking for a cat?","מה מרמז שהאישה אולי מחפשת חתולה?","She has an empty cat basket and looks along the street.",["She paints the gate blue.","She reads a schoolbook.","She carries a bag of vegetables."],2,"הסקת מסקנה","סל החתולים הריק וההתבוננות לאורך הרחוב הם שני רמזים לחיפוש חתולה."],
+      ["What happens when the woman calls 'Snow'?","מה קורה כשהאישה קוראת לחתולה בשמה?","The cat runs towards her.",["Adam runs into school.","The cat hides in Adam's bag.","The mother closes the gate."],3,"סדר אירועים","לאחר הקריאה החתולה רצה אל האישה."],
+      ["What does 'them' mean in 'The woman thanks them'?","למי מתייחסת המילה להם במשפט על התודה?","Adam and his mother.",["Two school teachers.","Snow and another cat.","The woman's neighbours inside the house."],4,"מילת התייחסות","אדם ואמו עוזרים לאישה למצוא את החתולה, והיא מודה לשניהם."],
+      ["How does Adam help in this story?","איך אדם עוזר בסיפור?","He tells an adult about the cat.",["He takes an unknown cat to school.","He makes a new collar.","He buys the woman a basket."],4,"רעיון מרכזי","בסיום נאמר שהפנייה למבוגר עזרה לחתולה לשוב הביתה בבטחה. אדם אינו לוקח את החתולה בעצמו."]
+    ]
+  },
+  {
+    "id": "arrow-at-library",
+    "topic": "stories",
+    "title": "The Arrow Points the Wrong Way",
+    "lines": ["The town library is holding a game afternoon. Farah stands by the front door to welcome children and show them where to go.","The games are in the room on the left. However, three children walk to the right and stop at a locked cupboard.","Farah looks at the sign near the door. Its arrow points right. The sign is upside down because one piece of string is loose.","She asks the librarian for help. Together, they turn the sign and tie both strings firmly. Now the arrow points left.","The next children find the game room without asking. Farah returns to the door with a smile. A small change makes the afternoon easier for everyone."],
+    "glossary": [["arrow","חץ"],["locked","נעול"],["upside down","הפוך"],["loose","רופף"],["firmly","בחוזקה"]],
+    "questions": [
+      ["What is happening at the library?","מה מתקיים בספרייה?","A game afternoon.",["A swimming lesson.","A vegetable sale.","A bicycle race."],0,"אירוע","הספרייה מקיימת אחר צהריים של משחקים."],
+      ["Where is the game room?","איפה חדר המשחקים?","On the left.",["On the right.","Inside the cupboard.","Outside the front gate."],1,"מקום","המשחקים נמצאים בחדר שמשמאל, אף שכמה ילדים הולכים ימינה."],
+      ["Why is the sign upside down?","למה השלט הפוך?","One piece of string is loose.",["The game room is closed.","The children cannot read.","Farah wants a new sign."],2,"סיבה","חוט אחד רופף וזו הסיבה המפורשת לכך שהשלט הפוך."],
+      ["Who helps Farah fix the sign?","מי עוזרת לפרח לתקן את השלט?","The librarian.",["A bus driver.","A swimming coach.","Her little brother."],3,"איתור דמות","פרח מבקשת עזרה מהספרנית, והן מתקנות יחד את השלט."],
+      ["What do they do after turning the sign?","מה הן עושות אחרי הפיכת השלט לכיוון הנכון?","Tie both strings firmly.",["Lock the game room.","Move the games outside.","Paint the cupboard green."],3,"סדר פעולות","הן מסובבות את השלט וקושרות היטב את שני החוטים."],
+      ["Which clue shows that the repair works?","איזה רמז מראה שהתיקון מצליח?","The next children find the room without asking.",["More children stop at the cupboard.","The library closes early.","Farah buys another sign."],4,"הסקת מסקנה","לאחר התיקון הילדים הבאים מגיעים לחדר בלי לשאול. זו ראיה שהשלט מכוון אותם נכון."]
+    ]
+  },
+  {
+    "id": "green-for-mural",
+    "topic": "stories",
+    "title": "Green for the Garden Picture",
+    "lines": ["Eli and Salma are painting a large garden picture for their classroom. Eli paints flowers while Salma paints the sky.","When they are ready to paint the grass, the green paint pot is empty. They still have blue, yellow and red paint.","Salma remembers a lesson about colours. She puts a little blue paint and a little yellow paint on a spare plate.","Eli mixes the paints with a clean brush. They turn green. He adds more yellow, and the green becomes lighter.","The children finish the grass and wash their brushes. Their teacher hangs the picture by the window. Eli writes their two names at the bottom because it is their work together."],
+    "glossary": [["paint","צבע"],["empty","ריק"],["spare","נוסף"],["mixes","מערבב"],["lighter","בהיר יותר"],["bottom","תחתית"]],
+    "questions": [
+      ["What are the children painting?","מה הילדים מציירים בצבע?","A large garden picture.",["A map of a train station.","A picture of the sea.","A small family portrait."],0,"מטרה","הילדים יוצרים תמונת גינה גדולה עבור הכיתה."],
+      ["What problem do they have?","באיזו בעיה הם נתקלים?","The green paint pot is empty.",["All their brushes are broken.","The classroom has no window.","They have no paper."],1,"בעיה","כשהם מגיעים לצביעת הדשא, הם מגלים שמכל הצבע הירוק ריק."],
+      ["Which two colours does Salma put on the plate?","אילו שני צבעים סלמה שמה על הצלחת?","Blue and yellow.",["Red and yellow.","Blue and red.","White and red."],2,"פרט מפורש","סלמה שמה מעט כחול ומעט צהוב על צלחת נוספת."],
+      ["What happens when Eli adds more yellow?","מה קורה כשאלי מוסיף עוד צהוב?","The green becomes lighter.",["The green turns black.","The paint disappears.","The brush becomes smaller."],3,"תוצאה","הוספת עוד צהוב גורמת לירוק להיות בהיר יותר."],
+      ["Where does the teacher hang the finished picture?","איפה המורה תולה את התמונה הגמורה?","By the window.",["Behind the library door.","Inside the paint cupboard.","Above the school gate."],4,"מקום","המורה תולה את התמונה ליד החלון."],
+      ["Why does Eli write both names on the picture?","למה אלי כותב את שני השמות על התמונה?","Both children worked on it.",["Only Salma did the painting.","They want to hide who made it.","The teacher forgot her name."],4,"סיבה","אלי כותב שני שמות משום שהתמונה היא עבודה משותפת של שניהם."]
+    ]
+  },
+  {
+    "id": "lights-out-game",
+    "topic": "stories",
+    "title": "A Game Without a Screen",
+    "lines": ["On a bright afternoon, Tom and his sister Neta are watching a film at home. Suddenly, the screen goes dark and the lights stop working.","Dad checks his phone. There is a message saying that the electricity in their street will return in one hour.","Tom wants to wait by the television. Neta points to a board game on the shelf and says, 'We can play this without electricity.'","They take the game to the table by the window, where there is plenty of daylight. Dad joins them for a round.","Before the game ends, the lights come on again. Tom leaves the television off. He wants to finish the game with his family first."],
+    "glossary": [["screen","מסך"],["electricity","חשמל"],["return","לחזור"],["daylight","אור יום"],["round","סבב"]],
+    "questions": [
+      ["What are Tom and Neta doing at the beginning?","מה תום ונטע עושים בתחילת הסיפור?","Watching a film.",["Reading separate books.","Cooking dinner.","Playing outside."],0,"תחילת אירוע","הסיפור נפתח בצפייה בסרט בבית."],
+      ["How long does the message say the electricity will be off?","לפי ההודעה, כמה זמן החשמל יהיה מנותק?","One hour.",["Ten minutes.","Three hours.","Two days."],1,"משך זמן","בהודעה כתוב שהחשמל ברחוב יחזור בעוד שעה."],
+      ["Who suggests playing a board game?","מי מציעה לשחק במשחק קופסה?","Neta.",["Tom.","Dad.","A neighbour."],2,"איתור דמות","נטע מצביעה על משחק הקופסה ומציעה לשחק בו בלי חשמל."],
+      ["Why do they use the table by the window?","למה הם משתמשים בשולחן ליד החלון?","There is plenty of daylight there.",["The television is on that table.","The game needs rain.","The other rooms are locked."],3,"סיבה","ליד החלון יש אור יום רב, ולכן אפשר לראות את המשחק גם בלי תאורה חשמלית."],
+      ["What happens before the game ends?","מה קורה לפני שהמשחק מסתיים?","The lights come on again.",["Dad leaves the house.","The family starts the film again.","The window breaks."],4,"סדר אירועים","החשמל והתאורה חוזרים לפני סיום המשחק."],
+      ["What does Tom's final choice show?","מה מראה הבחירה האחרונה של תום?","He wants to keep playing with his family.",["He never wants to watch a film again.","He thinks the television is broken forever.","He wants to play alone in the dark."],4,"הסקת מסקנה","תום משאיר את הטלוויזיה כבויה כדי לסיים קודם את המשחק המשפחתי. אין רמז שהוא מוותר על סרטים לתמיד."]
+    ]
+  },
+  {
+    "id": "two-purple-bags",
+    "topic": "stories",
+    "title": "Two Purple Bags",
+    "lines": ["After music club, Hila picks up a purple bag by the classroom door. She is in a hurry because her father is waiting outside.","At home, she opens the bag to find her recorder. Instead, she sees a small drum and a notebook with the name 'Matan'.","Hila remembers that Matan also has a purple bag. She tells her father, and he calls the club teacher.","The teacher checks the classroom. Hila's bag is still by the door. Matan is there too, looking for his drum.","Hila and her father return to the club with Matan's bag. Each child takes the right bag home. Next time, Hila plans to read her name label before leaving."],
+    "glossary": [["in a hurry","ממהרת"],["recorder","חלילית"],["instead","במקום זאת"],["drum","תוף"],["label","תווית"]],
+    "questions": [
+      ["Why is Hila in a hurry?","למה הילה ממהרת?","Her father is waiting outside.",["Her drum is broken.","The music teacher is ill.","She wants to buy a notebook."],0,"סיבה","הילה ממהרת משום שאביה ממתין בחוץ."],
+      ["Which instrument does Hila expect to find?","איזה כלי נגינה הילה מצפה למצוא?","Her recorder.",["A small drum.","A guitar.","A violin."],1,"פרט מפורש","הילה פותחת את התיק כדי למצוא את החלילית שלה, אך מגלה כלי אחר."],
+      ["Which clue shows whose bag Hila has?","איזה רמז מראה של מי התיק שנמצא אצל הילה?","Matan's name on a notebook.",["The bag is beside a chair.","The bag has a yellow star.","Her father knows the drum's sound."],1,"רמז לזיהוי","השם של מתן על המחברת שבתיק הוא הרמז הישיר לבעליו."],
+      ["Who calls the club teacher?","מי מתקשר למורה של החוג?","Hila's father.",["Matan's sister.","Hila's grandmother.","The school librarian."],2,"איתור דמות","הילה מספרת לאביה והוא מתקשר למורה."],
+      ["Where is Hila's own bag?","איפה התיק של הילה?","Still by the classroom door.",["At Matan's home.","On the bus.","Under Hila's bed."],3,"מקום","המורה בודק ומוצא שהתיק של הילה נשאר ליד דלת הכיתה."],
+      ["What will Hila do differently next time?","מה הילה תעשה אחרת בפעם הבאה?","Read her name label before leaving.",["Choose any purple bag quickly.","Leave her recorder at home forever.","Ask Matan to stop music lessons."],4,"מסקנה ויישום","הילה מתכננת לבדוק את תווית השם לפני היציאה כדי לקחת את התיק הנכון."]
+    ]
+  },
+  {
+    "id": "space-for-school-show",
+    "topic": "stories",
+    "title": "Space for the School Show",
+    "lines": ["The class is getting the school hall ready for a puppet show. Rina, who uses a wheelchair, brings a box of paper tickets.","There are two rows of chairs near the door. The gap between them is too narrow for Rina to move through.","'Can we make this gap wider?' Rina asks. The teacher agrees. Rina shows Ben and Tal which two chairs are in the way.","Ben and Tal move those chairs to the back wall. Now Rina can reach the ticket table, and other people can walk through easily too.","Before the show starts, Rina gives each visitor a ticket. Then she sits with her friends in the front row. Everyone is ready to enjoy the puppets."],
+    "glossary": [["puppet","בובה להצגה"],["wheelchair","כיסא גלגלים"],["rows","שורות"],["gap","רווח"],["narrow","צר"],["wider","רחב יותר"]],
+    "questions": [
+      ["Where does the class prepare for the show?","איפה הכיתה מתכוננת להצגה?","In the school hall.",["In the park.","At a train station.","In the school kitchen."],0,"מקום","הכיתה מכינה את אולם בית הספר להצגת בובות."],
+      ["What stops Rina from moving through at first?","מה מונע מרינה לעבור בהתחלה?","The gap between the chairs is too narrow.",["The front door is locked.","The floor is covered in water.","The tickets are too heavy."],1,"בעיה","הרווח בין שורות הכיסאות צר מדי למעבר של רינה בכיסא הגלגלים."],
+      ["Who suggests making the gap wider?","מי מציעה להרחיב את הרווח?","Rina.",["Ben.","Tal.","A visitor."],2,"יוזמה של דמות","רינה שואלת אם אפשר להרחיב את הרווח, והמורה מסכימה."],
+      ["What does 'those chairs' mean?","למה מתייחס הביטוי הכיסאות האלה?","The two chairs Rina points out.",["All the chairs in the front row.","The chairs already by the back wall.","The teacher's chairs at home."],3,"מילת התייחסות","בשורה הקודמת רינה מראה שני כיסאות שמפריעים למעבר. בן וטל מזיזים את אותם כיסאות."],
+      ["What does Rina do before sitting with her friends?","מה רינה עושה לפני שהיא יושבת עם חברותיה וחבריה?","Gives visitors tickets.",["Moves all the puppets outside.","Closes the hall door.","Paints the back wall."],4,"סדר פעולות","רינה מחלקת כרטיסים למבקרים ורק אחר כך יושבת עם חבריה."],
+      ["Who benefits from the wider gap?","מי מרוויח מהרווח הרחב יותר?","Rina and other people using the path.",["Only the people on the stage.","Only the teacher outside the hall.","Nobody coming to the show."],3,"הסקת מסקנה","אחרי הזזת הכיסאות רינה יכולה להגיע לשולחן, ונאמר שגם אחרים עוברים בקלות. לכן השינוי עוזר ליותר מאדם אחד."]
+    ]
+  }
+];
+const topicMap = new Map(topics.map(topic => [topic.id,topic]));
+const questions = [];
+topics.forEach(topic => {
+  if (topic.area === "vocabulary") {
+    topic.words.forEach((entry,index) => {
+      const id=topic.id+"-"+index;
+      questions.push({id:id+"-context",topic:topic.id,format:"context",prompt:entry.sentence,answer:entry.word,wrong:entry.distractors,
+        look:entry.clueHe,apply:entry.reasonHe,ruleEn:entry.ruleEn});
+      const otherMeanings=topic.words.filter(item=>item.he!==entry.he);
+      questions.push({id:id+"-meaning",topic:topic.id,format:"meaning",prompt:entry.word,answer:entry.he,
+        wrong:[...new Set(otherMeanings.map(item=>item.he))].slice(index%10,index%10+3),choiceLang:"he",
+        look:"קראו את המילה באנגלית וחשבו מה היא מציינת: חפץ, פעולה, מקום או תיאור.",
+        helpRule:"בחרו את הפירוש של המילה עצמה. אפשר להיזכר במשפט הדוגמה מהשיעור.",
+        apply:"המשמעות של המילה הזאת היא "+entry.he+". המשפט באנגלית מדגים את השימוש בה.",
+        check:"קראו את משפט הדוגמה וודאו שהפירוש שבחרתם מתאים למילה גם בתוך המשפט.",
+        ruleEn:entry.ruleEn,answerText:entry.word,translation:entry.he,example:entry.sentence.replace("___",entry.word)});
+      const letterIndexes=[...entry.word].map((letter,i)=>/[a-z]/i.test(letter)?i:-1).filter(i=>i>=0);
+      const missing=letterIndexes[Math.floor(letterIndexes.length/2)];
+      const answerLetter=entry.word[missing].toLowerCase();
+      const alphabet="abcdefghijklmnopqrstuvwxyz";
+      const wrongLetters=[...alphabet].filter(letter=>letter!==answerLetter);
+      questions.push({id:id+"-spelling",topic:topic.id,format:"spelling",
+        prompt:[...entry.word].map((letter,i)=>i===missing?"___":letter).join(" "),
+        answer:answerLetter,wrong:wrongLetters.slice(index%20,index%20+3),meaning:entry.he,
+        look:"הפירוש הוא "+entry.he+". חפשו איזו אות חסרה בין האותיות שכבר מופיעות.",
+        helpRule:"באיות בודקים את סדר האותיות משמאל לימין. כל רווח מסומן מחליף אות אחת בלבד.",
+        apply:"במילה שפירושה "+entry.he+" חסרה האות ה־"+(letterIndexes.indexOf(missing)+1)+". משווים לאיות המלא באנגלית למטה ובוחרים באות שבמקום הזה.",
+        check:"קראו את האיות המלא באנגלית ובדקו שהאות שבחרתם משלימה אותו בלי לשנות אות אחרת.",
+        ruleEn:entry.word+" is spelled "+[...entry.word].join(" - ")+".",answerText:entry.word});
+    });
+  } else if (topic.rows) {
+    topic.rows.forEach((row,index) => {
+      const [prompt,answer,wrong,look,apply,ruleEn] = row;
+      questions.push({id:topic.id+"-"+index,topic:topic.id,prompt,answer,wrong,look,apply,ruleEn});
+    });
+  }
+});
+passages.forEach(passage => passage.questions.forEach((row,index) => {
+  const [prompt,he,answer,wrong,line,skill,apply] = row;
+  questions.push({id:passage.id+"-"+index,topic:passage.topic,passage:passage.id,prompt,he,answer,wrong,line,skill,apply,
+    look:"זהו את סוג השאלה: "+skill+". חזרו לקטע וחפשו את הרמז שמתאים לה.",
+    ruleEn:passage.lines[line]});
+}));
+const passageMap = new Map(passages.map(passage => [passage.id,passage]));
+const lastQuestions = new Map();
+const questionDecks = new Map();
+let readingQueue = [], lastPassage = null;
+let currentArea = null, currentTopic = null, round = [], position = 0, solved = false, assisted = false, independent = 0;
+let lessonTopic = null, lessonTrigger = null, guidedSolved = false, speechVersion = 0;
+function shuffle(items) {
+  const result = [...items];
+  for (let i=result.length-1;i>0;i--) {
+    const j=Math.floor(Math.random()*(i+1));
+    [result[i],result[j]]=[result[j],result[i]];
+  }
+  return result;
+}
+function element(tag,text,className) {
+  const node=document.createElement(tag);
+  if (text !== undefined) node.textContent=text;
+  if (className) node.className=className;
+  return node;
+}
+function english(tag,text,className="en") {
+  const node=element(tag,text,className);
+  node.lang="en";node.dir="ltr";
+  return node;
+}
+function button(text,handler,className="secondary") {
+  const node=element("button",text,className);node.type="button";
+  node.addEventListener("click",handler);return node;
+}
+function currentQuestion() { return round[position]; }
+function answerText(q) { return q.answerText || (q.passage?q.answer:q.prompt.replace("___",q.answer)); }
+function remainingQuestions(areaId) {
+  if (!questionDecks.has(areaId) || !questionDecks.get(areaId).length) {
+    questionDecks.set(areaId,shuffle(questions.filter(q=>topicMap.get(q.topic).area===areaId)));
+    if (areaId==="reading") readingQueue=[];
+  }
+  return questionDecks.get(areaId);
+}
+function planRound(areaId) {
+  const deck=remainingQuestions(areaId);
+  if (areaId==="reading") {
+    if (!readingQueue.length) readingQueue=shuffle([...new Set(deck.map(q=>q.passage))]);
+    if (readingQueue.length>1 && readingQueue[0]===lastPassage)
+      [readingQueue[0],readingQueue[1]]=[readingQueue[1],readingQueue[0]];
+    const passageId=readingQueue.shift();
+    lastPassage=passageId;
+    return shuffle(deck.filter(q=>q.passage===passageId));
+  }
+  const available=[...deck],selected=[],counts=new Map();
+  while (selected.length<6 && available.length) {
+    const minimum=Math.min(...available.map(q=>counts.get(q.topic)||0));
+    const index=available.findIndex(q=>(counts.get(q.topic)||0)===minimum);
+    const [q]=available.splice(index,1);
+    selected.push(q);counts.set(q.topic,(counts.get(q.topic)||0)+1);
+  }
+  const mixed=shuffle(selected);
+  if (mixed.length>1 && mixed[0].id===lastQuestions.get(areaId)) [mixed[0],mixed[1]]=[mixed[1],mixed[0]];
+  return mixed;
+}
+function cancelSpeech() {
+  speechVersion++;
+  if ("speechSynthesis" in window) speechSynthesis.cancel();
+  $("audio-status").hidden=true;$("lesson-audio-status").hidden=true;
+}
+function speakEnglish(text,statusId) {
+  cancelSpeech();
+  const status=$(statusId),version=speechVersion;
+  status.hidden=false;
+  if (!("speechSynthesis" in window) || !("SpeechSynthesisUtterance" in window)) {
+    status.textContent="הקראה אינה זמינה בדפדפן הזה. אפשר להמשיך לקרוא ולתרגל כרגיל.";return;
+  }
+  const utterance=new SpeechSynthesisUtterance(text);
+  utterance.lang="en-GB";utterance.rate=.85;
+  const voice=speechSynthesis.getVoices().find(item=>/^en[-_]/i.test(item.lang));
+  if (voice) utterance.voice=voice;
+  status.textContent="מקריאים באנגלית. אם אין קול, אפשר להמשיך לקרוא את הטקסט.";
+  utterance.onend=()=>{if(version===speechVersion)status.textContent="ההקראה הסתיימה.";};
+  utterance.onerror=event=>{
+    if(version!==speechVersion || event.error==="canceled" || event.error==="interrupted")return;
+    status.textContent="ההקראה לא הצליחה. אפשר לקרוא את הטקסט ולהמשיך ללא קול.";
+  };
+  speechSynthesis.speak(utterance);
+}
+let menuFilter="all";
+function filterMenu(group) {
+  const control=document.querySelector('[data-hub-filter="'+group+'"]');
+  if(!control)return;
+  menuFilter=group;
+  document.querySelectorAll("[data-hub-filter]").forEach(item=>item.setAttribute("aria-pressed",String(item===control)));
+  $("topics").querySelectorAll(".topic-card").forEach(card=>{card.hidden=group!=="all"&&card.dataset.group!==group});
+  $("hub-filter-note").textContent=group==="all"?"כל מסלולי הלמידה מוצגים.":"המסלולים המוצגים: "+control.textContent+". אפשר לבחור סינון אחר בכל רגע.";
+}
+function renderMenu() {
+  areas.forEach(area=>{
+    const areaTopics=topics.filter(topic=>topic.area===area.id);
+    const card=element("article",undefined,"topic-card");card.dataset.area=area.id;card.dataset.group="foundations";
+    const icon=element("span",area.icon,"icon");icon.setAttribute("aria-hidden","true");card.append(icon);
+    card.append(element("h3",area.title),english("div",area.en),element("p",area.goal));
+    card.append(element("p",area.roundNote,"count"));
+    const actions=element("div",undefined,"actions");
+    const practice=button("מתחילים לשחק",()=>navigate(area.id),"primary");
+    practice.dataset.practice=area.id;practice.setAttribute("aria-label","משחק: "+area.title);
+    actions.append(practice);card.append(actions);
+    const lessons=element("details",undefined,"lesson-list");
+    lessons.append(element("summary","📚 שיעורים קצרים"));
+    areaTopics.forEach(topic=>{
+      const learn=button(topic.icon+" "+topic.title,()=>openLesson(topic.id,learn));
+      learn.dataset.lesson=topic.id;learn.setAttribute("aria-label","שיעור קצר: "+topic.title);
+      lessons.append(learn);
+    });
+    card.append(lessons);$("topics").append(card);
+  });
+  const sections=[
+    {id:"grammar",icon:"🔍",title:"אזור הדקדוק",en:"Grammar",description:"שיעורי דקדוק ותרגול משולב במקום נפרד: פעלים, כינויים, שייכות, יחיד ורבים ועוד.",label:"נכנסים לאזור הדקדוק"},
+    {id:"sentence-builder",icon:"🧱",title:"בונים משפטים",en:"Sentence Builder",description:"מרכיבים מילים, בונים שאלות ומשפטי שלילה ומחברים רעיונות.",label:"מתחילים לבנות"},
+    {id:"writing-workshop",icon:"✍️",title:"סדנת כתיבה",en:"Writing Workshop",description:"מתארים תמונות וכותבים הודעות ופסקאות, עם בדיקה עצמית. במסלול העריכה מתרגלים אותיות גדולות, סימני פיסוק, סדר משפטים ומילות קישור בדוגמאות מוכנות.",label:"כותבים ומשפרים"},
+    {id:"listening-lab",icon:"🎧",title:"מעבדת ההאזנה",en:"Listening Lab",description:"מקשיבים לשיחות, להוראות ולסיפורים. אפשר לבחור גם קטעים ארוכים יותר ולמצוא סדר אירועים, רמזים וסיבות, עם האזנה חוזרת ועזרה.",label:"מתחילים להקשיב"},
+    {id:"speaking-practice",icon:"💬",title:"מדברים באנגלית",en:"Speaking Practice",description:"בוחרים אורך תשובה, מתרגלים שיחה או כלל עם דוגמה חדשה. אפשר לבחור מיקרופון מקומי בדפדפן תומך ולאשר את המילים לפני המשוב, או לתרגל בלי מיקרופון. אין ציון הגייה.",label:"תרגילי דיבור"},
+    {id:"connected-missions",icon:"🧭",title:"משימה אחת, כמה מיומנויות",en:"Connected Missions",description:"קוראים, מקשיבים, מדברים וכותבים בתוך אותו סיפור. מתקדמים עם עזרה ובודקים את הכתיבה והדיבור בעצמנו.",label:"בוחרים משימה",group:"missions"},
+    {id:"mixed-review",icon:"🔄",title:"חוזרים ומחזקים",en:"Mixed Review",description:"משלבים מילים ודקדוק, לומדים מהסברים וחוזרים עם דוגמאות חדשות לנושאים שדרשו עזרה.",label:"מתחילים חזרה",group:"missions"}
+  ];
+  sections.forEach(section=>{
+    const card=element("article",undefined,"topic-card");card.dataset.section=section.id;card.dataset.group=section.group||(section.id==="grammar"?"foundations":"communication");
+    const icon=element("span",section.icon,"icon");icon.setAttribute("aria-hidden","true");
+    card.append(icon,element("h3",section.title),english("div",section.en),element("p",section.description));
+    const actions=element("div",undefined,"actions"),link=element("a",section.label,"button primary");
+    link.href="./"+section.id+"/index.html";actions.append(link);card.append(actions);
+    if(section.id==="speaking-practice"){
+      const mission=element("a","בוחרים משימת דיבור","button primary");
+      mission.href="./speaking-town/index.html";actions.prepend(mission);
+    }
+    if(section.id==="grammar")$("topics").insertBefore(card,$("topics").children[1]);
+    else $("topics").append(card);
+  });
+  const first=$("topics").firstElementChild;
+  for(const id of ["connected-missions","mixed-review"])$("topics").insertBefore($("topics").querySelector('[data-section="'+id+'"]'),first);
+  document.querySelectorAll("[data-hub-filter]").forEach(control=>control.onclick=()=>filterMenu(control.dataset.hubFilter));
+  filterMenu(menuFilter);
+}
+function navigate(id) {
+  if (location.hash==="#"+id) startRound(id);
+  else location.hash=id;
+}
+function showMenu() {
+  cancelSpeech();
+  currentArea=null;currentTopic=null;round=[];$("game").hidden=true;$("hub").hidden=false;$("audio-status").hidden=true;
+  $("back-topics").disabled=false;
+  const first=$('topics').querySelector('article:not([hidden]) :is(button,a)');
+  if (first) first.focus({preventScroll:true});
+  window.scrollTo(0,0);
+}
+function route() {
+  if ($("lesson").open) $("lesson").close();
+  const fragment=location.hash.slice(1);
+  if (["grammar","have-has","there-is","routines-now","be","pronouns","possessives","articles","plurals","prepositions","questions"].includes(fragment)) {
+    location.replace("./grammar/index.html#"+fragment);
+    return;
+  }
+  const id=topicMap.get(fragment)?.area||fragment;
+  if (areaMap.has(id)) startRound(id);
+  else {
+    showMenu();
+    if (id) {
+      $("audio-status").hidden=false;
+      $("audio-status").textContent="המשחק שבקישור אינו קיים בתצוגה הזו. בחרו משחק מהתפריט.";
+    }
+  }
+}
+function startRound(id) {
+  cancelSpeech();
+  currentArea=areaMap.get(id);
+  if (!currentArea) throw new Error("Unknown game: "+id);
+  round=planRound(id);
+  position=0;independent=0;
+  $("hub").hidden=true;$("game").hidden=false;$("round").hidden=false;$("summary").hidden=true;$("audio-status").hidden=true;
+  $("topic-title").textContent=currentArea.title;$("topic-en").textContent=currentArea.en;$("topic-goal").textContent=currentArea.goal;
+  renderQuestion();
+  $("topic-title").focus({preventScroll:true});$("game").scrollIntoView({block:"start"});
+}
+function renderQuestion() {
+  cancelSpeech();solved=false;assisted=false;
+  const q=currentQuestion();
+  currentTopic=topicMap.get(q.topic);
+  // Only displayed questions leave the deck; restarting never skips unseen items.
+  const deck=questionDecks.get(currentArea.id);
+  const deckIndex=deck?deck.findIndex(item=>item.id===q.id):-1;
+  if (deckIndex>=0) deck.splice(deckIndex,1);
+  lastQuestions.set(currentArea.id,q.id);
+  $("question-topic").textContent="הנושא: "+currentTopic.title;
+  $("open-lesson").hidden=false;
+  $("open-lesson").setAttribute("aria-label","שיעור לשאלה הזאת: "+currentTopic.title);
+  $("progress").max=round.length;$("progress").value=position;
+  $("round-label").textContent="שאלה "+(position+1)+" מתוך "+round.length;
+  $("round-score").textContent="תשובות עצמאיות: "+independent;
+  $("instruction").textContent=q.passage?"קראו את הקטע ובחרו תשובה. אפשר לפתוח עזרה בעברית.":
+    q.format==="meaning"?"בחרו את הפירוש בעברית של המילה.":
+    q.format==="spelling"?"איזו אות חסרה? בחרו אות אחת להשלמת המילה.":"בחרו את המילה או הצורה שמתאימה למשפט.";
+  $("prompt").textContent=q.prompt;$("feedback").textContent="";$("feedback").className="feedback";
+  $("vocab-meaning").hidden=q.format!=="spelling";
+  $("vocab-meaning").textContent=q.meaning?"הפירוש: "+q.meaning:"";
+  $("question-support").hidden=!q.passage;$("question-he").textContent=q.he||"";$("question-he").hidden=true;
+  $("translate-question").setAttribute("aria-expanded","false");
+  $("translate-question").textContent="עזרה בהבנת השאלה";
+  $("next-top").hidden=true;$("next-bottom").hidden=true;
+  $("choices").replaceChildren();
+  shuffle([q.answer,...q.wrong]).forEach(value=>{
+    const choice=button(value,()=>answer(q.id,value,choice),"choice");
+    choice.lang=q.choiceLang||"en";choice.dir=choice.lang==="he"?"rtl":"ltr";$("choices").append(choice);
+  });
+  renderPassage(q);
+  renderHelp(q);
+  toggleHelp(false,false);
+}
+function renderPassage(q) {
+  $("passage-box").hidden=!q.passage;
+  if (!q.passage) {$("passage-text").replaceChildren();return;}
+  const passage=passageMap.get(q.passage);
+  $("passage-title").textContent=passage.title;
+  $("passage-text").replaceChildren();
+  passage.lines.forEach((line,index)=>{
+    const p=english("p",line);p.dataset.line=index;$("passage-text").append(p);
+  });
+  $("glossary").replaceChildren();
+  passage.glossary.forEach(([en,he])=>$("glossary").append(english("dt",en),element("dd",he)));
+}
+function renderHelp(q) {
+  const check=q.check || (q.passage
+    ?"בדקו שהתשובה עונה לסוג השאלה ושאינה מוסיפה פרטים שלא כתובים. המשפט התומך מודגש בקטע."
+    :"השלימו את המשפט בתשובה ובדקו שהוא הגיוני ותקין. קראו את המשפט המלא שמופיע למטה.");
+  const steps=[["מה מחפשים?",q.look],["איזה כלל עוזר?",q.helpRule||currentTopic.rule],["איך זה מתאים לשאלה הזאת?",q.apply],["איך בודקים?",check]];
+  $("help-steps").replaceChildren();
+  steps.forEach(([title,text])=>{
+    const block=element("div",undefined,"help-step");block.append(element("h4",title),element("p",text));$("help-steps").append(block);
+  });
+  $("help-rule").textContent=q.example?q.ruleEn+" "+q.example:q.ruleEn;
+  $("help-answer").textContent=answerText(q);
+  $("help-translation").hidden=!q.translation;
+  $("help-translation").textContent=q.translation?"הפירוש: "+q.translation:"";
+}
+function toggleHelp(open,used=true) {
+  if (open && used && !solved) assisted=true;
+  $("help-panel").hidden=!open;
+  $("help-toggle").setAttribute("aria-expanded",String(open));
+  $("help-toggle").textContent=open?"🙈 הסתר הסבר":"🔍 איך פותרים?";
+  const q=currentQuestion();
+  if (q && q.passage) {
+    const line=$("passage-text").querySelector('[data-line="'+q.line+'"]');
+    line.replaceChildren(open?element("mark",q.ruleEn):document.createTextNode(q.ruleEn));
+  }
+}
+function answer(id,value,choice) {
+  if (!currentTopic || solved || id!==currentQuestion().id || choice.disabled || choice.parentElement!==$("choices")) return;
+  const q=currentQuestion();
+  if (value!==q.answer) {
+    assisted=true;choice.disabled=true;choice.classList.add("wrong");
+    choice.setAttribute("aria-label",value+(q.choiceLang==="he"?" — לא נכון":" — incorrect"));
+    $("feedback").textContent="עוד ניסיון. ההסבר פתוח כדי לעזור; קראו אותו ואז בחרו שוב.";
+    $("feedback").className="feedback wrong";toggleHelp(true);
+    $("choices").querySelector("button:not(:disabled)").focus({preventScroll:true});
+    return;
+  }
+  solved=true;if(!assisted)independent++;
+  choice.classList.add("correct");choice.setAttribute("aria-label",value+(q.choiceLang==="he"?" — נכון":" — correct"));
+  $("choices").querySelectorAll("button").forEach(item=>item.disabled=true);
+  $("feedback").textContent=assisted?"נכון! השתמשתם ברמזים והגעתם לתשובה.":"נכון! פתרתם את השאלה בעצמכם.";
+  $("feedback").className="feedback good";$("round-score").textContent="תשובות עצמאיות: "+independent;
+  $("progress").value=position+1;
+  for (const id of ["next-top","next-bottom"]) {
+    $(id).hidden=false;$(id).textContent=position===round.length-1?"לסיכום הסבב":"לשאלה הבאה";
+  }
+  $("next-top").focus({preventScroll:true});
+}
+function nextQuestion() {
+  if (!solved) return;
+  cancelSpeech();
+  if (position===round.length-1) {
+    $("round").hidden=true;$("summary").hidden=false;$("open-lesson").hidden=true;
+    $("summary-text").textContent="תרגלתם "+round.length+" שאלות במשחק "+currentArea.title+".";
+    $("summary-score").textContent=independent+" מתוך "+round.length+" תשובות נפתרו בניסיון הראשון וללא פתיחת הפתרון.";
+    $("summary-title").focus({preventScroll:true});$("summary").scrollIntoView({block:"start"});
+    solved=false;return;
+  }
+  position++;renderQuestion();
+  const target=currentTopic.area==="reading"?$("passage-box"):$("prompt");
+  target.scrollIntoView({block:"start"});$("prompt").focus({preventScroll:true});
+}
+function openLesson(id,trigger) {
+  cancelSpeech();lessonTopic=topicMap.get(id);lessonTrigger=trigger;guidedSolved=false;
+  $("lesson-title").textContent=lessonTopic.title;$("lesson-en").textContent=lessonTopic.en;
+  $("lesson-goal").textContent=lessonTopic.goal;$("lesson-intro").textContent=lessonTopic.intro;$("lesson-rule").textContent=lessonTopic.rule;
+  $("lesson-examples").replaceChildren();
+  lessonTopic.examples.forEach(([en,he])=>{
+    const row=element("div",undefined,"example");
+    row.append(english("p",en),element("p",he),button("🔊 הקראת הדוגמה",()=>speakEnglish(en,"lesson-audio-status")));
+    $("lesson-examples").append(row);
+  });
+  $("vocab-formats").hidden=!lessonTopic.words;
+  $("word-bank").replaceChildren();$("vocab-worked").replaceChildren();$("lesson-wordbank").open=false;
+  if (lessonTopic.words) {
+    const entry=lessonTopic.words[0];
+    const spelling=questions.find(q=>q.topic===id && q.format==="spelling");
+    $("vocab-worked").append(element("p","דוגמה קבועה: מזהים את המשמעות, משלימים את האות ובודקים את המילה."),
+      english("p",spelling.prompt),english("p",entry.word),element("p",entry.he));
+    lessonTopic.words.forEach(entry=>{
+      const item=button("",()=>speakEnglish(entry.word,"lesson-audio-status"));
+      item.append(english("span",entry.word),element("span",entry.he,"translation"));
+      item.setAttribute("aria-label","הקראת מילה שפירושה "+entry.he);$("word-bank").append(item);
+    });
+  }
+  const [wrong,correct,why]=lessonTopic.mistake;
+  $("mistake-wrong").textContent=wrong;$("mistake-correct").textContent=correct;$("mistake-why").textContent=why;
+  const [prompt,answerValue,distractors,explanation]=lessonTopic.guided;
+  $("guided-prompt").textContent=prompt;$("guided-why").textContent=explanation;
+  $("guided-answer").textContent=prompt.includes("___")?prompt.replace("___",answerValue):answerValue;
+  $("guided-explanation").hidden=true;$("guided-help").setAttribute("aria-expanded","false");
+  $("guided-help").textContent="הראו לי את הדרך";$("guided-feedback").textContent="";$("lesson-audio-status").hidden=true;
+  $("guided-choices").replaceChildren();
+  shuffle([answerValue,...distractors]).forEach(value=>{
+    const choice=button(value,()=>{
+      if(guidedSolved || choice.disabled)return;
+      $("guided-explanation").hidden=false;$("guided-help").setAttribute("aria-expanded","true");$("guided-help").textContent="הסתירו את ההסבר";
+      if(value===answerValue){
+        guidedSolved=true;choice.classList.add("correct");$("guided-feedback").textContent="נכון! עכשיו אפשר לנסות שאלות נוספות לבד.";
+        $("guided-choices").querySelectorAll("button").forEach(item=>item.disabled=true);
+        $("lesson-practice").focus({preventScroll:true});
+      } else {
+        choice.classList.add("wrong");choice.disabled=true;$("guided-feedback").textContent="כמעט. קראו את ההסבר ונסו שוב.";
+        $("guided-choices").querySelector("button:not(:disabled)").focus({preventScroll:true});
+      }
+    },"guided-choice");
+    choice.lang="en";choice.dir="ltr";$("guided-choices").append(choice);
+  });
+  $("lesson-practice").textContent=currentArea?.id===lessonTopic.area && !$("round").hidden?"חוזרים לתרגול":"מתחילים במשחק המשותף";
+  document.body.classList.add("lesson-opened");$("lesson").showModal();$("lesson").scrollTop=0;
+}
+$("close-lesson").addEventListener("click",()=>$("lesson").close());
+$("lesson").addEventListener("close",()=>{
+  cancelSpeech();document.body.classList.remove("lesson-opened");
+  if(lessonTrigger?.isConnected)lessonTrigger.focus({preventScroll:true});
+});
+$("lesson-practice").addEventListener("click",()=>{
+  const id=lessonTopic.area,resume=currentArea?.id===id && !$("round").hidden;
+  $("lesson").close();
+  if(resume) $("prompt").focus({preventScroll:true});
+  else navigate(id);
+});
+$("guided-help").addEventListener("click",()=>{
+  const open=$("guided-explanation").hidden;$("guided-explanation").hidden=!open;
+  $("guided-help").setAttribute("aria-expanded",String(open));$("guided-help").textContent=open?"הסתירו את ההסבר":"הראו לי את הדרך";
+});
+$("open-lesson").addEventListener("click",()=>openLesson(currentTopic.id,$("open-lesson")));
+$("restart").addEventListener("click",()=>startRound(currentArea.id));
+$("play-again").addEventListener("click",()=>startRound(currentArea.id));
+for (const id of ["back-topics","summary-back"]) $(id).addEventListener("click",()=>{location.hash="";});
+for (const id of ["next-top","next-bottom"]) $(id).addEventListener("click",nextQuestion);
+$("help-toggle").addEventListener("click",()=>toggleHelp($("help-panel").hidden));
+$("translate-question").addEventListener("click",()=>{
+  const open=$("question-he").hidden;$("question-he").hidden=!open;
+  $("translate-question").setAttribute("aria-expanded",String(open));
+  $("translate-question").textContent=open?"הסתר עזרה בעברית":"עזרה בהבנת השאלה";
+});
+$("read-answer").addEventListener("click",()=>speakEnglish($("help-answer").textContent,"audio-status"));
+$("read-passage").addEventListener("click",()=>{
+  const passage=passageMap.get(currentQuestion().passage);
+  speakEnglish(passage.title+". "+passage.lines.join(" "),"audio-status");
+});
+window.addEventListener("hashchange",route);
+window.addEventListener("pagehide",cancelSpeech);
+renderMenu();
+route();
+</script>
+</body>
+</html>

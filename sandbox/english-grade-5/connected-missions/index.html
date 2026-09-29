@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>משימות מחוברות — אנגלית לכיתה ה׳</title>
+<link rel="stylesheet" href="../../../assets/refresh.css">
+<style>
+*{box-sizing:border-box}body{margin:0;padding-top:62px;background:var(--refresh-bg,#f4f7fb);color:var(--refresh-text,#243b53);font:18px/1.65 "Segoe UI",Arial,sans-serif}main{max-width:980px;margin:auto;padding:18px 20px 50px}h1{font-size:clamp(28px,5vw,42px);line-height:1.3}h2{font-size:25px}h3{font-size:21px}button,select,textarea{font:inherit;color:inherit}button,select,.back{min-height:46px;border:2px solid var(--refresh-border,#d5dfec);border-radius:12px;padding:9px 13px;background:var(--refresh-soft,#edf3fb)}button{cursor:pointer;font-weight:650}button:disabled{opacity:.55;cursor:default}a{color:var(--refresh-accent,#285f9f)}.back{display:inline-flex;align-items:center;text-decoration:none}.card{padding:22px;margin:18px 0;border:1px solid var(--refresh-border,#d5dfec);border-radius:22px;background:var(--refresh-surface,#fff);box-shadow:var(--refresh-shadow)}.soft{background:var(--refresh-soft,#edf3fb);padding:16px;border-radius:14px;margin:12px 0}.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}.row>*{max-width:100%}nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}nav [aria-current="step"]{outline:3px solid var(--refresh-accent,#285f9f);outline-offset:1px}.en{direction:ltr;text-align:left;white-space:pre-line;overflow-wrap:anywhere}.small{font-size:15px}.choices{display:grid;gap:10px}.choices button{text-align:left;direction:ltr}.status{min-height:28px;font-weight:650}.evidence{border-inline-start:4px solid var(--refresh-accent,#285f9f)}textarea{display:block;width:100%;min-height:150px;padding:12px;border:2px solid var(--refresh-border,#d5dfec);border-radius:12px;background:var(--refresh-surface,#fff)}#plan{min-height:88px}label{display:block;margin:12px 0}.check{display:flex;gap:12px;align-items:flex-start;min-height:46px;cursor:pointer;padding:6px}.check input{width:25px;height:25px;flex-shrink:0;margin-top:4px}summary{cursor:pointer;min-height:46px;padding:10px 0;font-weight:650}button:focus-visible,a:focus-visible,select:focus-visible,summary:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--refresh-accent,#285f9f);outline-offset:3px}h2:focus{outline:2px solid var(--refresh-accent,#285f9f)}[hidden]{display:none!important}#stage-title{scroll-margin-top:90px}li{margin:8px 0}del{text-decoration:line-through double}ins{text-decoration:underline double}#summary-list{padding-inline-start:22px}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}@media(max-width:540px){main{padding:12px}.card{padding:15px}nav{grid-template-columns:repeat(2,minmax(0,1fr))}.row>button{flex:1 1 120px}select{width:100%}}
+</style>
+<script src="../../../assets/theme-selector.js" defer></script>
+</head>
+<body id="edu-refresh">
+<main>
+<a class="back" href="../index.html">← חזרה לכיתה ה׳</a>
+<header><h1>משימה אחת, ארבע דרכים</h1><p>קוראים, מקשיבים, מדברים וכותבים על אותו רעיון. אפשר לבקר בכל שלב, בכל סדר.</p></header>
+<section class="card" aria-label="בחירת משימה">
+<label for="mission">במה נעסוק?</label><select id="mission"></select>
+<p id="goal"></p><nav aria-label="שלבי המשימה" id="stages">
+<button data-stage="read">📖 קריאה</button><button data-stage="listen">🎧 האזנה</button><button data-stage="speak">💬 דיבור</button><button data-stage="write">✏️ כתיבה</button>
+</nav>
+<details id="consent-panel" open><summary id="consent-summary">הסכמה לזיהוי מקומי באנגלית</summary>
+<label class="check"><input type="checkbox" id="consent" aria-describedby="consent-note"><span>אני, או מבוגר/ת שמלווה אותי, בוחרים להפעיל זיהוי מקומי באנגלית.</span></label>
+<p id="consent-note" class="small">מסמנים פעם אחת לביקור בעמוד הזה — הבחירה נשארת במעבר בין פעילויות. התמיכה נבדקת מיד, בלי האזנה. אין מעבר לענן ואין שמירת אודיו או תמלילים. אפשר לבטל כאן בכל רגע.</p>
+</details>
+<div class="row"><button id="check-support" hidden>בדיקת תמיכה מקומית</button><button id="download-pack" hidden>הורדת חבילת אנגלית</button><button id="stop-setup" hidden>הפסקת המתנה</button></div>
+<p id="pack-note" class="small" hidden>ההורדה דורשת חיבור. הפסקת המתנה אינה מבטלת הורדה שהדפדפן כבר התחיל.</p>
+<p id="mic-status" class="status" role="status">המיקרופון כבוי. אפשר להכין זיהוי מקומי כאן; כפתור הדיבור נמצא בשלב הדיבור בלבד.</p>
+</section>
+<section class="card" aria-labelledby="stage-title">
+<h2 id="stage-title" tabindex="-1"></h2><p id="instruction"></p>
+<div id="read-panel"><div class="soft en" lang="en" id="passage"></div></div>
+<div id="listen-panel" hidden>
+<p class="small">הקלטת תרגול סינתטית, שמורה עם העמוד. השמע אינו חובה.</p>
+<div class="row"><button id="play">▶ האזנה</button><button id="pause">עצירת שמע</button><label for="speed">מהירות</label><select id="speed"><option value="1">רגילה</option><option value="0.8">איטית</option></select></div>
+<button id="transcript-toggle" aria-expanded="false" aria-controls="transcript">הצגת תמליל — תרגול בעזרת טקסט</button>
+<div id="transcript" class="en soft" lang="en" hidden></div>
+</div>
+<p id="audio-status" class="status" role="status"></p>
+<div id="audio-error" class="soft" role="alert" hidden>השמע לא זמין כרגע. אפשר לנסות שוב, או לפתוח תמליל בהאזנה / דוגמה בדיבור ולהמשיך בעזרת טקסט.</div>
+<div id="safety-alert" class="soft" role="alert" hidden><p>לא ניתן לאשר שהמיקרופון נסגר. שמע וזיהוי חדש חסומים. נסו לבטל שוב; אם סמל המיקרופון נשאר פעיל, סגרו את העמוד או בטלו הרשאה בדפדפן.</p><button id="recover">ניסיון נוסף לסגירת המיקרופון</button></div>
+<div id="structured">
+<p id="question" class="en" lang="en"></p><p id="question-he" class="small"></p>
+<div class="choices" id="choices" role="group" aria-label="תשובות"></div>
+<p id="answer-status" class="status" role="status"></p>
+<div class="row"><button id="help-toggle" aria-expanded="false" aria-controls="help">🔍 איך פותרים?</button><button id="next-top" hidden>לשלב הבא</button></div>
+<div id="help" class="soft" hidden><ol id="help-steps"></ol><p class="small">רמז מתוך המקור:</p><p id="evidence" class="en evidence" lang="en"></p><p id="english-rule" class="en" lang="en"></p><p class="small">התשובה בהקשר:</p><p id="context-answer" class="en" lang="en"></p><button id="next-bottom" hidden>לשלב הבא</button></div>
+</div>
+<div id="speaking" hidden>
+<p id="speak-prompt" class="en soft" lang="en"></p>
+<div class="row"><button id="model-toggle" aria-expanded="false" aria-controls="model-panel">דוגמה אפשרית ועזרה</button><button id="model-play">▶ האזנה לדוגמה</button></div>
+<div id="model-panel" class="soft" hidden><p id="speak-help"></p><p class="small">דוגמה אחת בלבד — אפשר לומר רעיון אחר שמתאים למשימה.</p><p id="model" class="en" lang="en"></p></div>
+<div class="soft">
+<p class="small">אפשר לומר בקול בלי מחשב מאזין. זיהוי מקומי הוא אפשרות בלבד; אין ציון הגייה.</p>
+<div class="row"><button id="speak" lang="en" dir="ltr" disabled>Speak</button><button id="mic-setup" aria-controls="mic-settings">הגדרות מתקדמות ופרטי תקלה</button><button id="stop" hidden>סיום דיבור</button><button id="cancel" hidden>ביטול / ניסיון לסגור מיקרופון</button></div>
+<p id="recognition-status" class="status" role="status"></p>
+<div id="review" hidden><p>האם אלו המילים שאמרתם? הזיהוי עלול לטעות.</p><p id="heard" class="en soft" lang="en"></p><div class="row"><button id="confirm">אלו המילים שלי — משוב מוגבל</button><button id="discard">מחיקה וניסיון חדש</button></div></div>
+<div id="coaching" hidden><p id="coach-rule"></p><p id="coach-english-rule" class="en" lang="en"></p><div id="correction-panel" hidden><p class="small">לפני — מילים שהוסרו מסומנות בקו חוצה:</p><p id="before" class="en" lang="en"></p><p class="small">הצעה — מילים שנוספו מסומנות בקו תחתון:</p><p id="after" class="en" lang="en"></p></div><div id="coach-example-panel" hidden><p>דוגמה אפשרית אחת למשימה — לא תיקון של המילים או הכוונה שלכם:</p><p id="coach-example" class="en" lang="en"></p></div><p class="small">משוב על תבנית מצומצמת בלבד, לא בדיקת אנגלית כללית או ציון הגייה.</p><div class="row"><button id="retry">הכנה לניסיון נוסף</button><button id="clear-speech">מחיקת המילים והמשוב</button></div></div>
+</div>
+<label class="check"><input id="spoken-self" type="checkbox"><span>לפי הדיווח שלי, אמרתי בקול בקשה שמתאימה למשימה. זו הערכה עצמית, לא בדיקת המחשב.</span></label>
+<button id="speak-next">לכתיבה</button>
+</div>
+<div id="writing" hidden>
+<p id="write-prompt" class="en soft" lang="en"></p><p>בחרו פרטים דמיוניים; אין צורך בשמות, כתובות או פרטים אישיים.</p>
+<label for="plan">תכנון קצר — למי, מה, ולמה?</label><textarea id="plan" class="en" lang="en" maxlength="600" autocomplete="off" spellcheck="false"></textarea>
+<label for="draft">ההודעה שלי באנגלית</label><textarea id="draft" class="en" lang="en" maxlength="1200" autocomplete="off" spellcheck="false"></textarea>
+<p class="small">התכנון והטיוטה נשארים בזיכרון העמוד במעבר בין שלבים. הם נמחקים באיפוס, ברענון או ביציאה. אין שמירה, שליחה או בדיקת נכונות אוטומטית.</p>
+<button id="write-help-toggle" aria-expanded="false" aria-controls="write-help">עזרה ודוגמה אפשרית</button>
+<div id="write-help" class="soft" hidden><p id="write-guide"></p><p id="write-model" class="en" lang="en"></p><p class="small">זו אפשרות אחת, לא תשובה שחייבים להעתיק.</p></div>
+<label class="check"><input id="written-self" type="checkbox"><span>קראתי את הטיוטה: בדקתי את המטרה, את הפרטים ואת הקשר ביניהם. זו בדיקה עצמית ללא ציון.</span></label>
+<button id="clear-draft">מחיקת התכנון והטיוטה במשימה</button>
+</div>
+</section>
+<section class="card" aria-labelledby="summary-title"><h2 id="summary-title" tabindex="-1">סיכום הביקור</h2><p class="small">הבחנה בין תשובות מובנות, דיווח עצמי וכתיבה לא מדורגת — לא מדד לשליטה באנגלית.</p><ul id="summary-list"></ul><button id="reset">איפוס הביקור ומחיקת כל הטיוטות</button></section>
+<details id="mic-settings" class="card"><summary>מידע טכני על הזיהוי המקומי</summary><p>התמיכה תלויה בדפדפן, בהרשאות ובחבילת האנגלית. אין שירות, חשבון או מודל חיצוני. בדיקת תמיכה אינה פותחת מיקרופון. כל ניסיון מוגבל לעשרים שניות כדי להספיק בקשה והסבר; ביטול ומעבר שלב מוחקים את המילים. אם הביטול נכשל, שמע וזיהוי חדש חסומים עד לסגירת המיקרופון.</p></details>
+</main>
+<script id="mission-data" type="application/json">
+{
+ "recordings":[
+  {"id":"picnic-update","lines":[{"speaker":"a","text":"The forecast says rain on Saturday. Can we still have our picnic?"},{"speaker":"b","text":"Yes. Let's use the covered area beside the garden. Bring a cup, but do not bring juice. I have water for everyone."}]},
+  {"id":"picnic-model","lines":[{"speaker":"n","text":"Can we use the covered area, please? We need a dry place because it may rain."}]},
+  {"id":"library-update","lines":[{"speaker":"a","text":"Our reading event starts at four. Are the picture books ready?"},{"speaker":"b","text":"Yes, but the small room is too noisy today. Please put the books in the quiet room upstairs. The event still starts at four."}]},
+  {"id":"library-model","lines":[{"speaker":"n","text":"Can I put the books upstairs, please? The quiet room is better for our reading event."}]},
+  {"id":"garden-update","lines":[{"speaker":"a","text":"We have seeds and pots for our class garden. What is missing?"},{"speaker":"b","text":"We need soil. Please ask another class for some soil. Do not buy new pots. We can use the old pots near the window."}]},
+  {"id":"garden-model","lines":[{"speaker":"n","text":"Can we have some soil, please? We have pots, but we need soil for our seeds."}]}
+ ],
+ "missions":[
+  {
+   "id":"picnic","title":"פיקניק בכל מזג אוויר","goal":"נתכנן פיקניק, נקשיב לשינוי ונציע פתרון.",
+   "passage":"Our class is planning a picnic for Saturday. We want a place with tables because we will share lunch and draw nature pictures. The garden has tables and a covered area. The sports field has no tables. Everyone will bring a cup and a sandwich.",
+   "read":{"question":"Why does the garden fit the class plan?","he":"איזה פרט מראה שהגינה מתאימה לתכנית?","options":["It has tables for lunch and drawing.","It has a large sports field.","It has free sandwiches for everyone."],"answer":0,"steps":["מחפשים מה הכיתה צריכה לעשות בפיקניק.","מחברים בין צורך לבין פרט מפורש בטקסט, ולא רק בין מילים דומות.","הכיתה צריכה שולחנות לארוחה ולציור; בגינה יש שולחנות.","בודקים: המגרש דווקא חסר שולחנות, ואין הבטחה לכריכים בחינם."],"evidence":"We want a place with tables because we will share lunch and draw nature pictures. The garden has tables and a covered area.","rule":"A good reason connects a need with a matching detail.","context":"The garden fits the plan because it has tables for lunch and drawing."},
+   "recording":"picnic-update",
+   "listen":{"question":"What is the new plan if it rains?","he":"מהו הפתרון החדש לגשם?","options":["Cancel the picnic and stay home.","Use the covered area beside the garden.","Move to the sports field."],"answer":1,"steps":["מקשיבים לבעיה החדשה בתחזית.","מחפשים את ההצעה שבאה אחרי השאלה על הפיקניק.","הדוברת מציעה אזור מקורה ליד הגינה, ולכן אפשר להמשיך בתכנית.","בודקים שהפתרון נותן מחסה מהגשם; אין הצעה לבטל או לעבור למגרש."],"evidence":"Let's use the covered area beside the garden.","rule":"Listen for the proposed solution after the problem.","context":"They will use the covered area beside the garden."},
+   "speak":{"prompt":"Ask to use a dry place for the picnic. Give a reason.","help":"אפשר להתחיל בבקשת רשות, ואז להסביר מדוע צריך מחסה. אחרי מילת הבקשה משתמשים בפועל בצורת הבסיס.","grammarRule":"Ask permission with Can we + base verb? Add because + a reason to explain the need.","model":"picnic-model","rule":"can-base","verb":"use"},
+   "write":{"prompt":"Write a short message to the picnic group. Explain the new place, why it helps, and what to bring. Use imaginary details if you add anything.","guide":"כתבו פתיחה, מקום שמתאים לגשם, סיבה וציוד. אפשר לחזור לקריאה ולהאזנה בלי לאבד את הטיוטה.","model":"Hi team! Let's meet in the covered area beside the garden because it may rain. Bring a cup and a sandwich. We can draw there after lunch."}
+  },
+  {
+   "id":"library","title":"מפגש סיפורים בספרייה","goal":"נארגן מפגש סיפורים, נבדוק שינוי בחדר ונכתוב הזמנה.",
+   "passage":"The library is holding a reading event on Tuesday at four. Older children will read picture books to younger children. Each helper should choose a short book with clear pictures. After the story, the children will draw their favourite character. Long books may leave too little time for drawing.",
+   "read":{"question":"Why should helpers choose a short book?","he":"למה כדאי לבחור ספר קצר?","options":["The library has no long books.","The helpers cannot read long words.","The children need time to draw after the story."],"answer":2,"steps":["מחפשים מה מתוכנן אחרי הסיפור.","משתמשים בסיבה שבטקסט ולא בהשערה על יכולת הקריאה.","הילדים יציירו דמות אהובה; ספר ארוך עלול להשאיר מעט זמן לציור.","פוסלים את הטענות שאין ספרים ארוכים או שהעוזרים לא יודעים לקרוא; הן לא כתובות."],"evidence":"After the story, the children will draw their favourite character. Long books may leave too little time for drawing.","rule":"Use the stated consequence to explain the choice.","context":"A short book leaves time to draw after the story."},
+   "recording":"library-update",
+   "listen":{"question":"What changes for the reading event?","he":"איזה פרט משתנה במפגש?","options":["The room changes, but the start time stays the same.","The event starts at five instead of four.","The children will not read any books."],"answer":0,"steps":["מקשיבים בנפרד למקום ולשעת ההתחלה.","מבחינים בין פרט שמשתנה לפרט שנשאר קבוע.","החדר הקטן רועש, ולכן עוברים לחדר השקט למעלה; השעה נשארת ארבע.","בודקים את משפט הסיום: השעה אינה חמש, והספרים מוכנים."],"evidence":"Please put the books in the quiet room upstairs. The event still starts at four.","rule":"A change of place does not necessarily change the time.","context":"The event moves to the quiet room upstairs and still starts at four."},
+   "speak":{"prompt":"Ask to move the books to the quiet room. Explain why that room helps.","help":"אפשר לבקש להעביר את הספרים ואז להסביר שהחדר שקט. בבקשת רשות הפועל נשאר בצורת הבסיס.","grammarRule":"Ask permission with Can I + base verb? Then explain why the place is useful.","model":"library-model","rule":"can-base","verb":"put"},
+   "write":{"prompt":"Write a short invitation to the reading event. Include the day, time, new room, and one activity after the story.","guide":"בחרו פרטים מהקריאה ומהעדכון: יום ושעה, החדר החדש ומה עושים אחרי הסיפור. הוסיפו פתיחה ידידותית.","model":"Come to our reading event on Tuesday at four! We will meet in the quiet room upstairs. After a short story, we will draw our favourite characters."}
+  },
+  {
+   "id":"garden","title":"גינת הכיתה","goal":"נכין תכנית לצמחים, נזהה מה חסר ונבקש עזרה.",
+   "passage":"Our class wants to grow beans near the window. We will put two seeds in each pot and check the plants every morning. A team will write down changes in a notebook. We want to compare the plants after two weeks, so the notes should include the date and the plant's height.",
+   "read":{"question":"Which notes will help the class compare the plants?","he":"אילו רשימות יעזרו להשוות בין הצמחים?","options":["Only the colour of each pot.","The date and the height of each plant.","The names of everyone's favourite foods."],"answer":1,"steps":["מזהים מה מטרת המחברת: להשוות צמיחה לאורך זמן.","מחפשים מידע שאפשר למדוד ולשייך ליום מסוים.","התאריך והגובה מאפשרים להשוות אותו צמח בימים שונים או צמחים באותו יום.","בודקים שצבע העציץ ומאכלים אהובים אינם מתעדים את צמיחת הצמח."],"evidence":"We want to compare the plants after two weeks, so the notes should include the date and the plant's height.","rule":"Choose details that support the purpose of the record.","context":"The notes should include the date and each plant's height."},
+   "recording":"garden-update",
+   "listen":{"question":"What should the class ask another class for?","he":"מה צריך לבקש מכיתה אחרת?","options":["New pots.","More notebooks.","Some soil."],"answer":2,"steps":["מקשיבים לשאלה מה חסר, לא רק לרשימת הציוד.","מבדילים בין דברים שכבר יש לבין מה שצריך להשיג.","כבר יש זרעים ועציצים; הדוברת אומרת שחסרה אדמה.","בודקים את ההוראה לבקש אדמה מכיתה אחרת; אין צורך לקנות עציצים."],"evidence":"We need soil. Please ask another class for some soil.","rule":"Listen for what is missing, not only for familiar objects.","context":"The class should ask another class for some soil."},
+   "speak":{"prompt":"Ask another class for soil. Say what you already have and what you need.","help":"הציגו בקשה מנומסת והסבירו מה חסר. אפשר לחבר בין ציוד שכבר יש לבין מה שעדיין צריך.","grammarRule":"Request something with Can we have + object + please? Use have and need to explain what is missing.","model":"garden-model","rule":"can-base","verb":"have"},
+   "write":{"prompt":"Write a short project note. Say where the beans will grow, what the class still needs, and what the team will record.","guide":"חברו את התכנית מהקריאה עם הציוד החסר מההאזנה. בדקו שמופיעים מקום, בקשה ומה שמתעדים במחברת.","model":"We will grow beans near the window. We have seeds and old pots, but we need soil. Each morning, our team will record the date and the height of each plant."}
+  }
+ ]
+}
+</script>
+<script>
+'use strict';
+const $=id=>document.getElementById(id),curriculum=JSON.parse($('mission-data').textContent);
+const recordings=new Map(curriculum.recordings.map(r=>[r.id,r]));
+const stages=['read','listen','speak','write'];
+const state={mission:0,stage:'read',epoch:0,visits:new Map()};
+const mic={Ctor:null,ready:false,availability:'unchecked',busy:false,op:0,setupTimer:null,run:0,rec:null,failed:new Set(),phase:'idle',deadline:null,grace:null,draft:''};
+const player={element:new Audio(),run:0,id:null};
+let modelOpen=false,writeHelpOpen=false;
+const mission=()=>curriculum.missions[state.mission];
+const transcript=id=>recordings.get(id).lines.map(l=>l.text).join('\n');
+function saved(){
+ if(!state.visits.has(mission().id))state.visits.set(mission().id,{read:{done:false,assisted:false,help:false},listen:{done:false,assisted:false,help:false,transcript:false,heard:false},spoken:false,written:false,plan:'',draft:''});
+ return state.visits.get(mission().id);
+}
+function stopAudio(){++player.run;player.element.pause();player.element.removeAttribute('src');player.element.load();player.id=null;$('audio-status').textContent='';$('audio-error').hidden=true;}
+function clearSpeech(keepCoach=false){mic.draft='';$('heard').textContent='';$('review').hidden=true;if(!keepCoach){$('coaching').hidden=$('correction-panel').hidden=$('coach-example-panel').hidden=true;for(const id of ['before','after','coach-rule','coach-english-rule','coach-example'])$(id).replaceChildren();}}
+function syncMic(){
+ const blocked=mic.failed.size>0;
+ $('safety-alert').hidden=!blocked;
+ $('speak').disabled=state.stage!=='speak'||!mic.ready||!$('consent').checked||mic.busy||!!mic.rec||blocked||!!mic.draft;
+ $('stop').hidden=!mic.rec;$('stop').disabled=mic.phase==='stopping';
+ $('cancel').hidden=!mic.rec&&!blocked;
+ $('check-support').hidden=!$('consent').checked||mic.busy;
+ $('check-support').disabled=blocked;
+ $('download-pack').hidden=!$('consent').checked||mic.availability!=='downloadable';$('download-pack').disabled=mic.busy||blocked;
+ $('stop-setup').hidden=!mic.busy;$('pack-note').hidden=!['downloadable','downloading'].includes(mic.availability);
+ $('consent-summary').textContent=$('consent').checked?'ההסכמה פעילה — לפתיחת הפרטים או לביטול':'הסכמה לזיהוי מקומי באנגלית';
+}
+function abortInstance(rec){
+ try{rec.abort();mic.failed.delete(rec);return true}
+ catch{mic.failed.add(rec);mic.ready=false;stopAudio();$('mic-status').textContent='הביטול נכשל. שמע וזיהוי חדש חסומים. לחצו ביטול שוב; אם סמל המיקרופון נשאר פעיל, סגרו את העמוד או בטלו הרשאה בדפדפן.';return false}
+}
+function abortRecognition(keepCoach=false){
+ const instances=[...new Set([mic.rec,...mic.failed].filter(Boolean))];++mic.run;mic.rec=null;mic.phase='idle';
+ clearTimeout(mic.deadline);clearTimeout(mic.grace);mic.deadline=mic.grace=null;
+ let stopped=true;for(const rec of instances)if(!abortInstance(rec))stopped=false;
+ clearSpeech(keepCoach);$('recognition-status').textContent=stopped?'המיקרופון כבוי. ניסיון חדש מתחיל רק בלחיצה.':'לא ניתן לאשר שהמיקרופון נסגר.';syncMic();return stopped;
+}
+function stopSetup(message){
+ ++mic.op;clearTimeout(mic.setupTimer);mic.setupTimer=null;
+ if(mic.busy){mic.busy=false;mic.ready=false;mic.availability='unchecked';mic.Ctor=null;$('mic-status').textContent=message||'ההמתנה הופסקה. הורדה שהדפדפן התחיל עשויה להימשך; בדקו תמיכה שוב.'}
+ syncMic();
+}
+function boundary(){++state.epoch;stopAudio();stopSetup();return abortRecognition();}
+async function playAudio(id){
+ if(!boundary()||document.hidden)return;
+ const run=++player.run,epoch=state.epoch,missionId=mission().id,visit=saved(),audio=new Audio();
+ const current=()=>run===player.run&&epoch===state.epoch&&missionId===mission().id&&player.element===audio;
+ const listening=state.stage==='listen'&&id===mission().recording;
+ if(id===mission().speak.model)exposeListening();
+ player.element=audio;player.id=id;audio.src='audio/'+id+'.wav';audio.playbackRate=Number($('speed').value);
+ const fail=()=>{if(current()){if(listening&&!visit.listen.done)visit.listen.assisted=true;$('audio-error').hidden=false;$('audio-status').textContent='לא הצלחנו להשמיע. אפשר להמשיך בעזרת הטקסט.'}};
+ audio.onerror=fail;audio.onended=()=>{if(current())$('audio-status').textContent='ההקלטה הסתיימה.'};
+ audio.onplaying=()=>{if(current()){if(listening)visit.listen.heard=true;$('audio-status').textContent='משמיעים הקלטת תרגול.'}};
+ try{await audio.play()}catch{fail()}
+}
+function exposeListening(){if(!saved().listen.done)saved().listen.assisted=true;}
+function creditLabel(q,stage){
+ if(!q.done)return 'טרם נענתה';
+ if(q.credit==='non-listening')return 'נכון בתרגול ללא שמע מאומת — לא האזנה עצמאית';
+ if(q.credit==='assisted')return 'נכון עם תמיכה';
+ return stage==='listen'?'נכון לאחר שמע, ללא עזרה':'נכון ללא עזרה';
+}
+function currentQuestion(){return mission()[state.stage];}
+function showHelp(open){
+ const s=saved()[state.stage];s.help=open;if(open&&!s.done)s.assisted=true;
+ $('help').hidden=!open;$('help-toggle').setAttribute('aria-expanded',String(open));$('help-toggle').textContent=open?'🙈 הסתר הסבר':'🔍 איך פותרים?';
+}
+function answer(index){
+ const s=saved()[state.stage],q=currentQuestion();if(s.done)return;
+ boundary();
+ if(index!==q.answer){s.assisted=true;showHelp(true);$('answer-status').textContent='כמעט. ניעזר ברמז ובשלבים, ואז ננסה שוב.';return}
+ s.done=true;s.credit=state.stage==='listen'&&!s.heard?'non-listening':s.assisted?'assisted':'independent';$('answer-status').textContent=creditLabel(s,state.stage);
+ [...$('choices').children].forEach(b=>b.disabled=true);$('next-top').hidden=$('next-bottom').hidden=false;renderSummary();
+}
+function renderStructured(){
+ const q=currentQuestion(),s=saved()[state.stage];$('question').textContent=q.question;$('question-he').textContent=q.he;
+ $('choices').replaceChildren();q.options.forEach((text,index)=>{const b=document.createElement('button');b.textContent=text;b.lang='en';b.disabled=s.done;b.onclick=()=>answer(index);$('choices').append(b)});
+ $('help-steps').replaceChildren();q.steps.forEach(text=>{const li=document.createElement('li');li.textContent=text;$('help-steps').append(li)});
+ $('evidence').textContent=q.evidence;$('english-rule').textContent=q.rule;$('context-answer').textContent=q.context;
+ $('answer-status').textContent=s.done?creditLabel(s,state.stage):'בחרו תשובה. אפשר לפתוח עזרה בכל רגע.';
+ $('next-top').hidden=$('next-bottom').hidden=!s.done;showHelp(s.help);
+}
+function renderSummary(){
+ $('summary-list').replaceChildren();
+ for(const m of curriculum.missions){const s=state.visits.get(m.id);if(!s)continue;const li=document.createElement('li');
+ li.textContent=m.title+' — קריאה: '+creditLabel(s.read,'read')+'; האזנה: '+creditLabel(s.listen,'listen')+'; דיבור: '+(s.spoken?'דיווח עצמי על אמירה':'טרם דווח')+'; כתיבה: '+(s.written?'בדיקה עצמית ללא ציון':'טרם נבדקה עצמאית');$('summary-list').append(li)}
+}
+function render(){
+ const m=mission(),s=saved();$('mission').value=String(state.mission);$('goal').textContent=m.goal;
+ $('stage-title').textContent={read:'קוראים את התכנית',listen:'מקשיבים לעדכון',speak:'מציעים בקול',write:'מחברים להודעה'}[state.stage];
+ $('instruction').textContent={read:'קראו ובחרו תשובה שמבוססת על הטקסט.',listen:'הקשיבו לעדכון. אפשר גם לפתוח תמליל לתרגול נתמך.',speak:'אמרו בקול בקשה קצרה והסבר. אפשר להיעזר בדוגמה.',write:'חברו בין התכנית לעדכון, במילים שלכם.'}[state.stage];
+ [...$('stages').children].forEach(b=>{if(b.dataset.stage===state.stage)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current')});
+ $('read-panel').hidden=state.stage!=='read';$('listen-panel').hidden=state.stage!=='listen';$('structured').hidden=!['read','listen'].includes(state.stage);$('speaking').hidden=state.stage!=='speak';$('writing').hidden=state.stage!=='write';
+ $('passage').textContent=m.passage;$('transcript').textContent=transcript(m.recording);$('transcript').hidden=!s.listen.transcript;$('transcript-toggle').setAttribute('aria-expanded',String(s.listen.transcript));
+ if(['read','listen'].includes(state.stage))renderStructured();
+ $('speak-prompt').textContent=m.speak.prompt;$('speak-help').textContent=m.speak.help;$('model').textContent=transcript(m.speak.model);$('model-panel').hidden=!modelOpen;$('model-toggle').setAttribute('aria-expanded',String(modelOpen));
+ $('write-prompt').textContent=m.write.prompt;$('write-guide').textContent=m.write.guide;$('write-model').textContent=m.write.model;$('write-help').hidden=!writeHelpOpen;$('write-help-toggle').setAttribute('aria-expanded',String(writeHelpOpen));
+ if((state.stage==='speak'&&modelOpen)||(state.stage==='write'&&writeHelpOpen))exposeListening();
+ $('plan').value=s.plan;$('draft').value=s.draft;$('spoken-self').checked=s.spoken;$('written-self').checked=s.written;renderSummary();syncMic();
+}
+function navigate(stage,index=state.mission){boundary();state.stage=stage;state.mission=index;modelOpen=writeHelpOpen=false;render();$('stage-title').focus();}
+function nextStage(){if(['read','listen'].includes(state.stage)&&!saved()[state.stage].done)return;navigate(stages[Math.min(3,stages.indexOf(state.stage)+1)]);}
+function localConstructor(){
+ if(!window.isSecureContext)throw new Error('secure');
+ for(const C of [window.SpeechRecognition,window.webkitSpeechRecognition]){
+  if(typeof C!=='function'||typeof C.available!=='function')continue;const probe=new C();
+  // Test the browser capability before assigning; an expando is not local support.
+  if(!('processLocally' in probe))continue;probe.processLocally=true;if(probe.processLocally===true)return C;
+ }
+ throw new Error('unsupported');
+}
+function availability(value){return {available:'הזיהוי המקומי מוכן. רק לחיצה על כפתור הדיבור תפעיל מיקרופון.',downloadable:'חסרה חבילת אנגלית. אפשר לבחור בנפרד להוריד אותה.',downloading:'חבילת האנגלית בהורדה. בדקו תמיכה שוב לאחר סיום.',unavailable:'זיהוי מקומי אינו זמין. אין מעבר לענן; אפשר להמשיך בדיווח עצמי.'}[value]||'מצב לא מוכר; המיקרופון חסום. אפשר להמשיך בדיווח עצמי.'}
+function setupDeadline(op,delay){clearTimeout(mic.setupTimer);mic.setupTimer=setTimeout(()=>{if(op===mic.op&&mic.busy)stopSetup('ההמתנה הסתיימה ללא תשובה. הורדה בדפדפן עשויה להימשך; בדקו תמיכה שוב. אין האזנה.');},delay);}
+async function checkSupport(){
+ if(mic.busy||!$('consent').checked||document.hidden)return;
+ if(!boundary())return;const op=++mic.op,epoch=state.epoch,current=()=>op===mic.op&&epoch===state.epoch&&$('consent').checked;
+ mic.busy=true;mic.ready=false;mic.availability='unchecked';$('mic-status').textContent='בודקים תמיכה מקומית בלבד, בלי מיקרופון.';syncMic();setupDeadline(op,15000);
+ try{const C=localConstructor();mic.Ctor=C;const value=await C.available({langs:['en-US'],processLocally:true});if(!current())return;mic.availability=value;mic.ready=value==='available';$('mic-status').textContent=availability(value)}
+ catch{if(current()){mic.Ctor=null;mic.ready=false;mic.availability='unavailable';$('mic-status').textContent='לא ניתן לאמת תמיכה מקומית. נדרשים דפדפן תומך, הקשר מאובטח והרשאות מתאימות. אפשר להמשיך ללא מיקרופון.'}}
+ finally{if(current()){clearTimeout(mic.setupTimer);mic.busy=false;syncMic()}}
+}
+async function downloadPack(){
+ if(mic.busy||mic.failed.size||!$('consent').checked||mic.availability!=='downloadable'||document.hidden)return;
+ if(!boundary())return;const C=mic.Ctor,op=++mic.op,epoch=state.epoch,current=()=>op===mic.op&&epoch===state.epoch&&$('consent').checked;
+ mic.busy=true;mic.ready=false;$('mic-status').textContent='ממתינים להתקנה בלבד. אין האזנה; אפשר להפסיק להמתין.';syncMic();setupDeadline(op,120000);
+ try{
+  if(typeof C?.install!=='function')throw new Error('unsupported');
+  const installed=await C.install({langs:['en-US'],processLocally:true});if(!current())return;
+  if(installed!==true)throw new Error('not installed');setupDeadline(op,15000);
+  const value=await C.available({langs:['en-US'],processLocally:true});if(!current())return;
+  mic.availability=value;mic.ready=value==='available';$('mic-status').textContent=availability(value);
+ }catch{if(current()){mic.ready=false;mic.availability='unchecked';$('mic-status').textContent='ההתקנה או בדיקת המוכנות לא אושרה. בדקו חיבור, הרשאות ותמיכה מחדש. המיקרופון לא הופעל.'}}
+ finally{if(current()){clearTimeout(mic.setupTimer);mic.busy=false;syncMic()}}
+}
+function failRecognition(message){const stopped=abortRecognition();if(stopped)$('recognition-status').textContent=message+' אפשר להמשיך בלי מיקרופון, או לנסות שוב בלחיצה.';}
+function startSpeaking(){
+ if(state.stage!=='speak'||document.hidden||!window.isSecureContext||!$('consent').checked||!mic.ready||mic.busy||mic.rec||mic.failed.size||mic.draft)return;
+ stopAudio();clearSpeech(true);let rec;
+ try{rec=new mic.Ctor();if(!('processLocally' in rec))throw new Error('missing');rec.processLocally=true;if(rec.processLocally!==true)throw new Error('disabled');rec.lang='en-US';rec.continuous=false;rec.interimResults=false;rec.maxAlternatives=1}
+ catch{mic.ready=false;failRecognition('לא ניתן להבטיח זיהוי מקומי.');return}
+ const run=++mic.run,epoch=state.epoch,current=()=>run===mic.run&&epoch===state.epoch&&mic.rec===rec;
+ mic.rec=rec;mic.phase='requesting';$('recognition-status').textContent='מבקשים רשות; עדיין אין אישור שההאזנה התחילה. יש עד עשרים שניות לבקשה ולהסבר.';syncMic();
+ mic.deadline=setTimeout(()=>{if(current())failRecognition('הזמן הסתיים והמיקרופון בוטל.');},20000);
+ rec.onstart=()=>{if(!current()){if(!abortInstance(rec))abortRecognition();syncMic();return}if(mic.phase==='stopping')return;mic.phase='listening';$('recognition-status').textContent='מקשיבים עכשיו, מקומית בלבד. אפשר לסיים או לבטל.';syncMic()};
+ rec.onresult=event=>{
+  if(!current())return;const result=event.results?.[event.resultIndex||0];if(!result||result.isFinal===false||typeof result[0]?.transcript!=='string')return;
+  const text=result[0].transcript.slice(0,600).replace(/[\u0000-\u001f\u007f\u202a-\u202e\u2066-\u2069]/g,' ').trim();
+  if(!text){failRecognition('לא התקבל משפט.');return}if(!abortRecognition())return;
+  mic.draft=text;$('heard').textContent=text;$('review').hidden=false;$('recognition-status').textContent='המיקרופון כבוי. אשרו את המילים לפני משוב; אין שינוי בהשלמה.';syncMic();
+ };
+ rec.onerror=event=>{if(!current())return;const messages={'not-allowed':'רשות למיקרופון לא ניתנה.','service-not-allowed':'מדיניות הדפדפן חסמה זיהוי מקומי.','audio-capture':'אין גישה למיקרופון.','no-speech':'לא נקלט דיבור.','language-not-supported':'חבילת האנגלית אינה מוכנה.','network':'הזיהוי המקומי נכשל; אין מעבר לענן.','aborted':'הניסיון בוטל.'};if(event.error==='language-not-supported')mic.ready=false;failRecognition(messages[event.error]||'הזיהוי לא הצליח.')};
+ rec.onend=()=>{if(mic.failed.has(rec)){mic.failed.delete(rec);if(!mic.failed.size)$('mic-status').textContent='הדפדפן דיווח שהמיקרופון נסגר. בדקו תמיכה שוב.';syncMic();return}if(current())failRecognition('הניסיון הסתיים ללא משפט.')};
+ try{if(rec.processLocally!==true)throw new Error('local disabled');rec.start()}catch{if(current())failRecognition('לא ניתן להתחיל זיהוי מקומי.')}
+}
+function stopSpeaking(){
+ if(!mic.rec||mic.phase==='stopping')return;const rec=mic.rec,run=mic.run;mic.phase='stopping';syncMic();
+ mic.grace=setTimeout(()=>{if(run===mic.run)failRecognition('לא התקבל משפט בזמן.');},1500);
+ try{rec.stop()}catch{if(run===mic.run)failRecognition('הסיום הרגיל נכשל.')}
+}
+function wordChanges(before,after){
+ const tokens=text=>Array.from(text.slice(0,600).matchAll(/[\p{L}\p{N}]+(?:['’][\p{L}\p{N}]+)*/gu),m=>({word:m[0],start:m.index,end:m.index+m[0].length,key:m[0].toLowerCase().replace(/’/g,"'"),changed:true}));
+ const a=tokens(before),b=tokens(after),lcs=Array.from({length:a.length+1},()=>new Uint16Array(b.length+1));
+ for(let i=a.length-1;i>=0;i--)for(let j=b.length-1;j>=0;j--)lcs[i][j]=a[i].key===b[j].key?1+lcs[i+1][j+1]:Math.max(lcs[i+1][j],lcs[i][j+1]);
+ let i=0,j=0;while(i<a.length&&j<b.length){if(a[i].key===b[j].key){a[i++].changed=false;b[j++].changed=false}else if(lcs[i+1][j]>=lcs[i][j+1])i++;else j++}return [a,b];
+}
+function renderWords(id,text,tokens,tag){
+ const element=$(id);element.replaceChildren();let cursor=0;
+ for(const token of tokens){element.append(document.createTextNode(text.slice(cursor,token.start)));const node=document.createElement(token.changed?tag:'span');node.textContent=token.word;
+ if(token.changed)node.setAttribute('aria-label',(tag==='del'?'Removed word: ':'Added word: ')+token.word);element.append(node);cursor=token.end}element.append(document.createTextNode(text.slice(cursor)));
+}
+function normalize(text){return text.toLowerCase().replace(/[’‘]/g,"'").replace(/[^\p{L}\p{N}'\s]/gu,' ').replace(/\s+/g,' ').trim()}
+function sentence(text,question=false){return (text.charAt(0).toUpperCase()+text.slice(1)).replace(/\bi\b/g,'I').replace(/\benglish\b/g,'English').replace(/\bmonday\b/g,'Monday')+(question?'?':'.')}
+// Keep these finite, anchored rules aligned with Speaking Practice; unmatched language is not graded.
+function grammarFeedback(text){
+ const s=normalize(text),advice=(ruleId,grammarRule,example,hint)=>({ruleId,grammarRule,example,hint});let m;
+ const color='(?:red|blue|green|yellow|brown|purple|orange|black|white)';
+ const noun='(?:bag|backpack|book|bottle|basket|bowl|pencil|dog)';
+ const place='(?:on the (?:desk|table|blanket)|under the desk|beside the (?:tree|basket)|on a bench)';
+ if((m=s.match(new RegExp('^(?:a )?('+noun+') ('+color+')$'))))
+  return advice('color-order','In a noun phrase, put the color before the noun. Use an before a vowel sound, otherwise a.',(m[2]==='orange'?'an':'a')+' '+m[2]+' '+m[1],'בצירוף המתאר חפץ, הצבע בא לפני שם החפץ. אם התכוונתם למשפט מלא, אפשר להוסיף מילת קישור.');
+ if((m=s.match(new RegExp('^((?:the|my|your) '+noun+'|it) ('+color+')$'))))
+  return advice('be-agreement','For a full sentence about one object, use subject + is + color.',sentence(m[1]+' is '+m[2]),'למשפט מלא על חפץ אחד, הוסיפו מילת קישור בין החפץ לצבע.');
+ if((m=s.match(new RegExp('^there is ((?:two|three|four|five|2|3|4|5) (?:'+color+' )?(?:pencils|apples|carrots|books|bags)(?: '+place+')?)$'))))
+  return advice('there-is-are','Use there are with two or more things; use there is with one thing.',sentence('there are '+m[1]),'כשסופרים כמה חפצים, השתמשו במבנה של רבים. הכמות והחפצים נשארים כפי שאמרתם.');
+ if((m=s.match(new RegExp('^there are ((?:a|one) (?:'+color+' )?'+noun+'(?: '+place+')?)$'))))
+  return advice('there-is-are','Use there is when you describe one thing.',sentence('there is '+m[1]),'כאן מתואר חפץ אחד, ולכן נתרגל מבנה של יחיד.');
+ const action='(?:reading a (?:book|story)|sitting on a bench|stirring food in a bowl|playing (?:a (?:ball|word) game|football)|eating (?:breakfast|lunch)|walking to school)';
+ const subject='(i|you|we|they|he|she|it|the child|the children|the bag|the bags|the dog)';
+ const be=who=>who==='i'?'am':['you','we','they','the children','the bags'].includes(who)?'are':'is';
+ if((m=s.match(new RegExp('^'+subject+' ('+action+')$'))))
+  return advice('present-progressive','For an action happening now, use subject + am/is/are + verb-ing.',sentence(m[1]+' '+be(m[1])+' '+m[2]),'בתיאור פעולה שקורית עכשיו, הוסיפו את מילת הקישור המתאימה לפני הפעולה.');
+ if((m=s.match(new RegExp('^'+subject+' (am|is|are) ('+color+'|happy|ready|'+action+'|'+place+')$')))&&m[2]!==be(m[1]))
+  return advice('be-agreement','Match be to the subject: I am; he, she or it is; you, we or they are.',sentence(m[1]+' '+be(m[1])+' '+m[3]),'התאימו את מילת הקישור למי או למה שמתואר. התיאור עצמו נשאר כפי שאמרתם.');
+ if((m=s.match(/^(?:(i (?:would like|can see|have|want)|there is|it is) )?(a|an) (apple|egg|orange|banana|book|pencil|blue bag|cheese sandwich)( please)?$/))){
+  const article=/^(apple|egg|orange)$/.test(m[3])?'an':'a';
+  if(m[2]!==article)return advice('articles','Use an before a vowel sound, and a before a consonant sound.',sentence((m[1]?m[1]+' ':'')+article+' '+m[3]+(m[4]?', please':'')),'בחרו את מילת הליווי לפי הצליל הראשון של המילה שאחריה.');
+ }
+ if((m=s.match(/^i likes ((?:art|math|science|english|music|bananas|apples|rice|carrots|word games|reading)(?: because i can draw animals)?)$/)))
+  return advice('present-simple','With I in the present simple, use like, not likes.',sentence('I like '+m[1]),'כשמדברים על מה שאוהבים בגוף ראשון, הפועל אינו מקבל סיומת של גוף שלישי.');
+ const base={helps:'help',brings:'bring',borrows:'borrow',finds:'find',plays:'play',sits:'sit',moves:'move'};
+ const object='(?:me|us|a pencil|your pencil|a book|some apples|a game|here|my bag)';
+ const verbObjects={helps:['me','us'],brings:['a pencil','your pencil','a book','some apples','my bag'],borrows:['a pencil','your pencil','a book'],finds:['a pencil','your pencil','a book','my bag'],plays:['a game'],sits:['here'],moves:['my bag','here']};
+ if((m=s.match(new RegExp('^(?:(can|could|may|should|will) (i|you|we)|(i|you|we) (can|could|may|should|will)) (helps|brings|borrows|finds|plays|sits|moves) ('+object+')( please)?$')))&&verbObjects[m[5]].includes(m[6])){
+  const question=!!m[1],prefix=question?m[1]+' '+m[2]:m[3]+' '+m[4];
+  return advice('modal-base','After a modal such as can, could, may or should, use the base verb without -s.',sentence(prefix+' '+base[m[5]]+' '+m[6]+(m[7]?', please':''),question),'אחרי פועל עזר של יכולת או רשות, השתמשו בצורה הבסיסית של הפועל.');
+ }
+ if((m=s.match(/^(where|what) (i|we) (can|should) (find a book(?: about animals)?|fill my water bottle|bring)$/)))
+  return advice('question-order','In a direct question, use question word + modal + subject + base verb.',sentence(m[1]+' '+m[3]+' '+m[2]+' '+m[4],true),'לשאלה ישירה, מילת העזר באה לפני מי ששואל. זהו ניסוח לשאלה, לא תיקון של משפט עקיף.');
+ if((m=s.match(/^when does (the art club) starts$/)))
+  return advice('question-order','After does in a question, use the base verb: start, not starts.',sentence('when does '+m[1]+' start',true),'אחרי מילת העזר בשאלה, השתמשו בפועל הבסיסי ללא סיומת.');
+ if((m=s.match(/^where is (the (?:animal books|books|pencils|apples|carrots))$/)))
+  return advice('be-agreement','For several things, ask Where are + plural noun phrase?',sentence('where are '+m[1],true),'בשאלה על המיקום של כמה חפצים, השתמשו במבנה של רבים.');
+ if((m=s.match(/^where are (the (?:bag|bottle|basket|dog|library))$/)))
+  return advice('be-agreement','For one thing or place, ask Where is + singular noun phrase?',sentence('where is '+m[1],true),'בשאלה על המיקום של חפץ או מקום אחד, השתמשו במבנה של יחיד.');
+ if((m=s.match(/^(can|could) you borrow me (a pencil|your pencil|a book)( please)?$/)))
+  return advice('borrow-lend','Lend means give something temporarily. Borrow means receive something temporarily.',sentence(m[1]+' you lend me '+m[2]+(m[3]?', please':''),true),'אם מבקשים שמישהו ייתן לכם חפץ לזמן קצר, בחרו בפועל המתאר נתינה זמנית.');
+ if((m=s.match(/^(may|can|could) i lend (a pencil|a book) from you( please)?$/)))
+  return advice('borrow-lend','Use borrow from someone when you receive something temporarily.',sentence(m[1]+' I borrow '+m[2]+' from you'+(m[3]?', please':''),true),'כשמקבלים חפץ לזמן קצר מאדם אחר, בחרו בפועל המתאר קבלה זמנית.');
+ if((m=s.match(/^(the (?:pencils|apples|carrots|leaves)) (?:is )?(red|yellow|orange|green)$/)))
+  return advice('be-agreement','Use are to describe the color of several things.',sentence(m[1]+' are '+m[2]),'בתיאור צבע של כמה דברים, הוסיפו או בחרו את מילת הקישור של רבים. הצבע נשאר כפי שאמרתם.');
+ if((m=s.match(/^the book (?:are )?(open|closed)$/)))
+  return advice('be-agreement','Use is to describe the state of one book.',sentence('the book is '+m[1]),'כאן מתארים ספר אחד. הוסיפו או בחרו את מילת הקישור של יחיד, בלי לשנות את התיאור שבחרתם.');
+ if((m=s.match(/^(what time does (?:the shop|it)|does (?:the shop|it)) (opens|closes)( (?:at (?:nine|ten|five)|on monday))?$/)))
+  return advice('question-order','After does in a question, use the base verb: open or close.',sentence(m[1]+' '+(m[2]==='opens'?'open':'close')+(m[3]||''),true),'אחרי מילת העזר בשאלה, הסירו את הסיומת מהפועל. שמרו על אותה חנות ואותה שעה.');
+ if((m=s.match(/^(it|the shop) (open|close) at (nine|ten|five)( on monday)?$/)))
+  return advice('present-simple','For one shop in the present simple, use opens or closes in a statement.',sentence(m[1]+' '+m[2]+'s at '+m[3]+(m[4]||'')),'בתשובה על חנות אחת, הוסיפו לפועל את הסיומת המתאימה. זהו משפט מידע, לא שאלה.');
+ if((m=s.match(/^(can|shall) we meets (in the park|by the big tree|at the park gate|at (?:three|four))$/)))
+  return advice('modal-base','After can or shall, use the base verb meet, without -s.',sentence(m[1]+' we meet '+m[2],true),'בהצעה או בשאלה עם פועל עזר, פועל המפגש נשאר בצורה הבסיסית. המקום או השעה אינם משתנים.');
+ if((m=s.match(/^i would like to (some soup|some bread|pasta|rice)( please)?$/)))
+  return advice('would-like','Use would like + a food noun phrase. Use would like to only before a base verb.',sentence('I would like '+m[1]+(m[2]?', please':'')),'בבקשת מאכל אומרים את שם המאכל מיד אחרי הבקשה, בלי מילת קישור לפעולה. המאכל שבחרתם נשאר זהה.');
+ return null;
+}
+function missionGrammarFeedback(text){
+ const pattern=new RegExp('^(\\s*can\\s+(?:i|we))\\s+to\\s+('+mission().speak.verb+')\\b','i'),example=text.replace(pattern,'$1 $2');
+ return example===text?null:{ruleId:'can-base',grammarRule:'After can in a request, use the base verb without to.',example,hint:'בבקשת הרשות הזאת, השתמשו בפועל הבסיסי בלי מילת קישור לפניו. בדקו שההצעה שומרת על הכוונה שלכם.'};
+}
+function confirmTranscript(){
+ if(!mic.draft||mic.rec||mic.failed.size||state.stage!=='speak')return;
+ const original=mic.draft,feedback=grammarFeedback(original)||missionGrammarFeedback(original);
+ $('coaching').hidden=false;
+ $('correction-panel').hidden=!feedback;$('coach-example-panel').hidden=!!feedback;
+ $('before').replaceChildren();$('after').replaceChildren();$('coach-example').textContent='';
+ if(feedback){$('coach-rule').textContent=feedback.hint;$('coach-english-rule').textContent=feedback.grammarRule;const suggestion=feedback.example.slice(0,600),[a,b]=wordChanges(original,suggestion);renderWords('before',original,a,'del');renderWords('after',suggestion,b,'ins')}
+ else{$('coach-rule').textContent='לא נמצאה תבנית תיקון ממוקדת במשפט הזה. זה לא אישור לנכונות: היעזרו בכלל ובדוגמה כדי לבנות בקשה והסבר משלכם.';$('coach-english-rule').textContent=mission().speak.grammarRule;$('coach-example').textContent=transcript(mission().speak.model);exposeListening();}
+ $('review').hidden=true;mic.draft='';$('heard').textContent='';$('recognition-status').textContent='המשוב אינו מסמן השלמה. ההשלמה נעשית רק בדיווח העצמי.';syncMic();
+}
+curriculum.missions.forEach((m,i)=>{const option=document.createElement('option');option.value=String(i);option.textContent=m.title;$('mission').append(option)});
+$('mission').onchange=()=>navigate('read',Number($('mission').value));
+$('stages').onclick=event=>{const b=event.target.closest('button[data-stage]');if(b)navigate(b.dataset.stage)};
+$('help-toggle').onclick=()=>{boundary();showHelp($('help').hidden)};$('next-top').onclick=$('next-bottom').onclick=nextStage;
+$('play').onclick=()=>playAudio(mission().recording);$('pause').onclick=()=>{boundary();$('audio-status').textContent='השמע נעצר.'};$('speed').onchange=()=>boundary();
+$('transcript-toggle').onclick=()=>{boundary();const s=saved().listen;s.transcript=!s.transcript;if(s.transcript&&!s.done)s.assisted=true;render()};
+$('model-toggle').onclick=()=>{boundary();modelOpen=!modelOpen;render()};$('model-play').onclick=()=>playAudio(mission().speak.model);
+$('write-help-toggle').onclick=()=>{boundary();writeHelpOpen=!writeHelpOpen;render()};
+$('spoken-self').onchange=()=>{boundary();saved().spoken=$('spoken-self').checked;renderSummary()};$('speak-next').onclick=()=>navigate('write');
+for(const id of ['plan','draft'])$(id).oninput=()=>{saved()[id]=$(id).value;saved().written=false;$('written-self').checked=false;renderSummary()};
+$('written-self').onchange=()=>{saved().written=$('written-self').checked;renderSummary()};
+$('clear-draft').onclick=()=>{boundary();saved().plan=saved().draft='';saved().written=false;render()};
+$('mic-setup').onclick=()=>{boundary();$('mic-settings').open=true;$('mic-settings').querySelector('summary').focus()};
+$('consent').onchange=async()=>{boundary();if($('consent').checked){$('consent-panel').open=false;$('consent-summary').focus();await checkSupport()}else{$('consent-panel').open=true;mic.ready=false;mic.Ctor=null;mic.availability='unchecked';if(!mic.failed.size)$('mic-status').textContent='ההסכמה בוטלה. אין האזנה. הורדה שכבר התחילה בדפדפן עשויה להימשך.'}syncMic()};
+$('check-support').onclick=checkSupport;$('download-pack').onclick=downloadPack;$('stop-setup').onclick=()=>{stopSetup();abortRecognition()};
+$('speak').onclick=startSpeaking;$('stop').onclick=stopSpeaking;$('cancel').onclick=$('recover').onclick=()=>boundary();
+$('confirm').onclick=confirmTranscript;$('discard').onclick=$('clear-speech').onclick=()=>{boundary();$('speak').focus()};
+$('retry').onclick=()=>{stopAudio();stopSetup();abortRecognition(true);$('recognition-status').textContent='אפשר לקרוא את ההצעה ולנסות שוב. אין האזנה עד לחיצה.';$('speak').focus()};
+$('reset').onclick=()=>{boundary();state.visits.clear();modelOpen=writeHelpOpen=false;render();$('stage-title').focus()};
+function leave(){boundary();state.visits.clear();$('plan').value=$('draft').value='';$('consent').checked=false;mic.ready=false;mic.Ctor=null;mic.availability='unchecked';$('consent-panel').open=true;syncMic()}
+document.addEventListener('visibilitychange',()=>{if(document.hidden)boundary()});
+window.addEventListener('pagehide',leave);window.addEventListener('beforeunload',leave);
+window.addEventListener('pageshow',event=>{if(event.persisted)render()});
+document.querySelectorAll('a').forEach(a=>a.addEventListener('click',leave));
+render();
+</script>
+</body>
+</html>

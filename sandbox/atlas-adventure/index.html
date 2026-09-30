@@ -484,8 +484,8 @@ html.reduce-motion *,html.reduce-motion *:before,html.reduce-motion *:after{anim
   </section>
   <section class="panel">
     <h2>Harbor restoration</h2>
-    <div class="progress-track" role="progressbar" aria-label="Adventure progress" aria-valuemin="0" aria-valuemax="6" aria-valuenow="0"><span id="progress-fill"></span></div>
-    <p><strong id="progress-text">0 of 6 challenges complete</strong></p>
+    <div class="progress-track" role="progressbar" aria-label="Adventure progress" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0"><span id="progress-fill"></span></div>
+    <p><strong id="progress-text">0 of 10 challenges complete</strong></p>
     <ol class="quest-list" id="quest-list"></ol>
   </section>
   <section class="panel">
@@ -643,7 +643,7 @@ html.reduce-motion *,html.reduce-motion *:before,html.reduce-motion *:after{anim
 <script id="atlas-challenges" type="application/json">
 [
   {
-    "id":"blue-cargo","subject":"English · vocabulary and location","type":"choice","title":"The engineer's message","label":"Challenge 1 of 6",
+    "id":"blue-cargo","subject":"English · vocabulary and location","type":"choice","title":"The engineer's message","label":"Challenge 1 of 10",
     "story":"Spark projects a short instruction. Use the colour and location words to identify the correct object.",
     "variants":[
       {"question":"Which object matches this instruction?","expression":"Find the blue box near the boat.","choices":["The blue crate beside the airship","The brown house behind the dock","The gold lighthouse across the bridge"],"answer":"The blue crate beside the airship","hint":"Look for three clues: blue, box, and near the boat.","explanation":"The blue cargo crate is beside the airship. The other objects do not match all three clues."},
@@ -657,7 +657,7 @@ html.reduce-motion *,html.reduce-motion *:before,html.reduce-motion *:after{anim
     "reward":"cell"
   },
   {
-    "id":"bridge-energy","subject":"Mathematics · equal groups","type":"choice","title":"Power the bridge","label":"Challenge 2 of 6",
+    "id":"bridge-energy","subject":"Mathematics · equal groups","type":"choice","title":"Power the bridge","label":"Challenge 2 of 10",
     "story":"The bridge mechanism divides its power equally across four sections.",
     "variants":[
       {"question":"Four bridge sections need 6 energy units each. How many units are needed altogether?","expression":"4 × 6 = ?","choices":["18","24","30","10"],"answer":"24","hint":"Think of four equal groups: 6 + 6 + 6 + 6.","explanation":"Four groups of six make twenty-four: 4 × 6 = 24."},
@@ -671,7 +671,7 @@ html.reduce-motion *,html.reduce-motion *:before,html.reduce-motion *:after{anim
     "reward":"bridge"
   },
   {
-    "id":"airship-sentence","subject":"English · sentence building","type":"order","title":"Restore the airship log","label":"Challenge 3 of 6",
+    "id":"airship-sentence","subject":"English · sentence building","type":"order","title":"Restore the airship log","label":"Challenge 3 of 10",
     "story":"The wind scattered the words in the engineer's log. Put them back into a complete English sentence.",
     "question":"Build the sentence that describes the harbor.",
     "variants":[
@@ -686,7 +686,7 @@ html.reduce-motion *,html.reduce-motion *:before,html.reduce-motion *:after{anim
     "reward":"lens"
   },
   {
-    "id":"cargo-division","subject":"Mathematics · division","type":"choice","title":"Balance the rescue cargo","label":"Challenge 4 of 6",
+    "id":"cargo-division","subject":"Mathematics · division","type":"choice","title":"Balance the rescue cargo","label":"Challenge 4 of 10",
     "story":"Four airships must carry the same number of emergency lanterns.",
     "variants":[
       {"question":"There are 36 lanterns and 4 airships. How many should each airship carry?","expression":"36 ÷ 4 = ?","choices":["8","9","10","32"],"answer":"9","hint":"Find the number that gives 36 when multiplied by 4.","explanation":"Nine lanterns on each of four airships make 36: 9 × 4 = 36."},
@@ -700,7 +700,7 @@ html.reduce-motion *,html.reduce-motion *:before,html.reduce-motion *:after{anim
     "reward":"cargo"
   },
   {
-    "id":"engineer-note","subject":"English · reading comprehension","type":"choice","title":"The engineer's note","label":"Challenge 5 of 6",
+    "id":"engineer-note","subject":"English · reading comprehension","type":"choice","title":"The engineer's note","label":"Challenge 5 of 10",
     "story":"A weathered page is pinned inside the lighthouse entrance.",
     "variants":[
       {"passage":"Mira reached Cloud Harbor before sunset. She placed the brass key under the third lantern because the lighthouse door would not open. Then she sailed east to warn the next island.","question":"Where did Mira place the brass key?","choices":["Under the third lantern","Inside the blue cargo crate","On the eastern airship","Behind the lighthouse door"],"answer":"Under the third lantern","hint":"Return to the second sentence and look for the words placed and under.","explanation":"The note says directly that Mira placed the brass key under the third lantern."},
@@ -714,7 +714,7 @@ html.reduce-motion *,html.reduce-motion *:before,html.reduce-motion *:after{anim
     "reward":"key"
   },
   {
-    "id":"lens-fraction","subject":"Mathematics · equivalent fractions","type":"choice","title":"Align the lighthouse lens","label":"Challenge 6 of 6",
+    "id":"lens-fraction","subject":"Mathematics · equivalent fractions","type":"choice","title":"Align the lighthouse lens","label":"Challenge 6 of 10",
     "story":"Three of four lens panels are glowing. The control asks for an equivalent fraction before it will focus the beam.",
     "variants":[
       {"question":"Which fraction is equivalent to 3/4?","expression":"3/4 = ?","choices":["6/8","4/7","3/8","7/4"],"answer":"6/8","hint":"Multiply the numerator and denominator by the same number.","explanation":"Multiplying both 3 and 4 by 2 gives 6/8."},
@@ -723,9 +723,66 @@ html.reduce-motion *,html.reduce-motion *:before,html.reduce-motion *:after{anim
       {"question":"Which fraction is equivalent to 5/6?","expression":"5/6 = ?","choices":["10/12","6/11","5/12","11/6"],"answer":"10/12","hint":"Multiply both the numerator and denominator by 2.","explanation":"Five times two is 10 and six times two is 12, so 5/6 = 10/12."},
       {"question":"Which fraction is equivalent to 3/5?","expression":"3/5 = ?","choices":["9/15","6/15","3/10","8/5"],"answer":"9/15","hint":"Multiply both parts by 3.","explanation":"Multiplying both 3 and 5 by 3 gives 9/15."}
     ],
-    "objective":"The lighthouse is awake. Open the expedition journal.",
-    "spark":"The beam points east—to an island erased from every ordinary map. This expedition has only begun.",
+    "objective":"Follow the Echo Lens signal into the hidden cave.",
+    "spark":"The lighthouse is awake, but its beam exposed a coded chamber behind the eastern cliff.",
     "reward":"lighthouse"
+  },
+  {
+    "id":"cave-echo","subject":"English · inference and vocabulary","type":"choice","title":"Decode the cave echo","label":"Challenge 7 of 10",
+    "story":"The Echo Lens reveals a message that changes one word each time the lighthouse beam passes.",
+    "variants":[
+      {"passage":"The message says, “Mira departed in haste when the silver clouds gathered.” Her tools are packed, but one cup still sits beside the map.","question":"What does in haste mean?","choices":["Very quickly","Very quietly","Without a map","Before sunrise"],"answer":"Very quickly","hint":"Use the clue that Mira left as the storm gathered.","explanation":"In haste means quickly or urgently."},
+      {"passage":"The cave wall reads, “The route is concealed until the golden beam touches the crystal.” When the lighthouse turns away, the marks disappear.","question":"What does concealed mean?","choices":["Hidden","Broken","Dangerous","Nearby"],"answer":"Hidden","hint":"The marks cannot be seen when the beam moves away.","explanation":"Concealed means hidden from view."},
+      {"passage":"Spark reads, “Do not take the direct route. The calm passage curves beneath the storm.” The straight path flashes with lightning.","question":"Why should the explorer avoid the direct route?","choices":["It crosses the lightning","It returns to Cloud Harbor","It is too calm","It passes beneath the storm"],"answer":"It crosses the lightning","hint":"Contrast the straight path with the calm curved passage.","explanation":"The direct route is dangerous because lightning crosses it."},
+      {"passage":"The inscription says, “Collect the fragment only after the harbor signal is stable.” The lighthouse beam is now bright and steady.","question":"What shows that the signal is stable?","choices":["The beam is bright and steady","The bridge is made of wood","The airship is still docked","The cave is behind the island"],"answer":"The beam is bright and steady","hint":"Stable means not changing or shaking.","explanation":"A steady beam shows that the harbor signal is stable."},
+      {"passage":"Mira wrote, “The next island is not deserted. Its machines are silent, yet fresh footprints cross the garden.”","question":"What can we infer from the footprints?","choices":["Someone was there recently","The island has no visitors","The machines made the footprints","The garden is underwater"],"answer":"Someone was there recently","hint":"Fresh footprints have not been there for long.","explanation":"Fresh footprints suggest that someone crossed the garden recently."}
+    ],
+    "objective":"Calculate the distance shown by the restored harbor console.",
+    "spark":"The cave message names two safe flight segments. The console must combine them before the airship can depart.",
+    "reward":"echo"
+  },
+  {
+    "id":"signal-distance","subject":"Mathematics · two-step calculations","type":"choice","title":"Chart the safe flight path","label":"Challenge 8 of 10",
+    "story":"Use the harbor console to calculate the complete safe route around the storm.",
+    "variants":[
+      {"question":"The first flight segment is 1,275 metres and the second is 2,450 metres. A 325-metre detour is closed. How far is the usable route?","expression":"1,275 + 2,450 − 325 = ?","choices":["3,400 metres","3,700 metres","4,050 metres","2,400 metres"],"answer":"3,400 metres","hint":"Add the two segments first, then subtract the closed detour.","explanation":"1,275 + 2,450 = 3,725, and 3,725 − 325 = 3,400."},
+      {"question":"The southern route is 4,800 metres. Mira already travelled 1,650 metres, then another 925 metres. How far remains?","expression":"4,800 − 1,650 − 925 = ?","choices":["2,225 metres","3,150 metres","1,325 metres","2,325 metres"],"answer":"2,225 metres","hint":"Subtract both completed sections from the total route.","explanation":"4,800 − 1,650 = 3,150, and 3,150 − 925 = 2,225."},
+      {"question":"Three calm passages measure 860, 1,240, and 975 metres. What is their total length?","expression":"860 + 1,240 + 975 = ?","choices":["3,075 metres","2,975 metres","3,175 metres","2,075 metres"],"answer":"3,075 metres","hint":"Combine 860 and 1,240 first.","explanation":"860 + 1,240 = 2,100, and 2,100 + 975 = 3,075."},
+      {"question":"The console stored 6,500 energy units. Launch checks used 1,875 units and navigation used 2,225. How many remain?","expression":"6,500 − 1,875 − 2,225 = ?","choices":["2,400","2,500","4,100","1,400"],"answer":"2,400","hint":"Add the energy used, then subtract it from 6,500.","explanation":"1,875 + 2,225 = 4,100, leaving 2,400."},
+      {"question":"The route was 5,250 metres, but a 750-metre loop was removed and a 425-metre safe turn was added. What is the new distance?","expression":"5,250 − 750 + 425 = ?","choices":["4,925 metres","5,425 metres","4,075 metres","5,000 metres"],"answer":"4,925 metres","hint":"Remove the loop before adding the safe turn.","explanation":"5,250 − 750 = 4,500, and 4,500 + 425 = 4,925."}
+    ],
+    "objective":"Rebuild Mira's launch instruction in the airship log.",
+    "spark":"The safe distance is stored. Mira also left a scrambled launch instruction aboard the airship.",
+    "reward":"route"
+  },
+  {
+    "id":"launch-instructions","subject":"English · sentence building","type":"order","title":"Prepare the airship launch","label":"Challenge 9 of 10",
+    "story":"Arrange the log words into a clear instruction for the next stage of the journey.",
+    "question":"Build Mira's launch instruction.",
+    "variants":[
+      {"words":["storm.","Fly","the","beneath","silver"],"answer":["Fly","beneath","the","silver","storm."],"hint":"Begin with the action word Fly, then add the location phrase.","explanation":"The instruction is: Fly beneath the silver storm."},
+      {"words":["before","Check","launch.","compass","the"],"answer":["Check","the","compass","before","launch."],"hint":"Start with Check and name what must be checked.","explanation":"The instruction is: Check the compass before launch."},
+      {"words":["green","Follow","eastern","the","signal."],"answer":["Follow","the","green","eastern","signal."],"hint":"Begin with Follow, then describe the signal.","explanation":"The instruction is: Follow the green eastern signal."},
+      {"words":["clouds.","Keep","below","airship","the","the"],"answer":["Keep","the","airship","below","the","clouds."],"hint":"Use Keep + object + location.","explanation":"The instruction is: Keep the airship below the clouds."},
+      {"words":["garden","at","Land","the","observatory."],"answer":["Land","at","the","garden","observatory."],"hint":"Start with the action Land and finish with the destination.","explanation":"The instruction is: Land at the garden observatory."}
+    ],
+    "objective":"Load the correct number of rescue supplies into the blue cargo crate.",
+    "spark":"The launch sentence is restored. One final supply calculation will keep the crew prepared for Gale Garden.",
+    "reward":"launch"
+  },
+  {
+    "id":"rescue-supplies","subject":"Mathematics · multiplication and addition","type":"choice","title":"Load the rescue supplies","label":"Challenge 10 of 10",
+    "story":"Pack equal emergency kits and add the shared equipment without overloading the airship.",
+    "variants":[
+      {"question":"Four explorers need 6 food packs each, and the crew shares 5 lanterns. How many items are loaded altogether?","expression":"4 × 6 + 5 = ?","choices":["29","24","35","15"],"answer":"29","hint":"Find the food packs first, then add the lanterns.","explanation":"Four groups of six make 24; 24 + 5 = 29."},
+      {"question":"Five rescue kits contain 7 bandages each, plus 8 shared ropes. How many supplies are there?","expression":"5 × 7 + 8 = ?","choices":["43","35","48","20"],"answer":"43","hint":"Multiply before adding the shared ropes.","explanation":"5 × 7 = 35, and 35 + 8 = 43."},
+      {"question":"Six tool bags hold 4 tools each. Spark adds 9 signal crystals. How many objects are packed?","expression":"6 × 4 + 9 = ?","choices":["33","24","39","19"],"answer":"33","hint":"Calculate the tools in all bags, then add nine.","explanation":"6 × 4 = 24, and 24 + 9 = 33."},
+      {"question":"Three water cases hold 12 bottles each, plus 7 spare bottles. What is the total?","expression":"3 × 12 + 7 = ?","choices":["43","36","55","29"],"answer":"43","hint":"Three groups of twelve make 36.","explanation":"3 × 12 = 36, and 36 + 7 = 43."},
+      {"question":"Eight map tubes hold 3 pages each, and Mira left 6 loose pages. How many pages are there?","expression":"8 × 3 + 6 = ?","choices":["30","24","32","18"],"answer":"30","hint":"Multiply the tubes and pages first.","explanation":"8 × 3 = 24, and 24 + 6 = 30."}
+    ],
+    "objective":"Use the Echo Lens to collect the hidden Atlas fragment.",
+    "spark":"Supplies loaded. The harbor is fully prepared, and the hidden Atlas fragment is ready to be collected.",
+    "reward":"supplies"
   }
 ]
 </script>
@@ -742,6 +799,8 @@ const WORLD_TARGETS={
   spark:modelTarget("spark-companion"),crate:modelTarget("cargo-crate"),bridge:modelTarget("atlas-bridge"),
   boat:modelTarget("harbor-airship"),console:modelTarget("harbor-console"),lighthouse:modelTarget("cloud-lighthouse"),secret:modelTarget("hidden-cave")
 };
+const CHALLENGE_TARGET_IDS=["hotspot-crate","hotspot-bridge","hotspot-boat","hotspot-console","hotspot-lighthouse","hotspot-lighthouse","hotspot-secret","hotspot-console","hotspot-boat","hotspot-crate"];
+const TARGET_BY_HOTSPOT={"hotspot-crate":WORLD_TARGETS.crate,"hotspot-bridge":WORLD_TARGETS.bridge,"hotspot-boat":WORLD_TARGETS.boat,"hotspot-console":WORLD_TARGETS.console,"hotspot-lighthouse":WORLD_TARGETS.lighthouse,"hotspot-secret":WORLD_TARGETS.secret};
 const GENERATED_ASSETS={
   "atlas-explorer":{element:"generated-player",idle:"explorer/explorer-idle.webp"},
   "spark-companion":{element:"generated-spark",sleeping:"spark/spark-sleeping.webp",idle:"spark/spark-idle.webp",guiding:"spark/spark-guiding.webp",concerned:"spark/spark-concerned.webp",celebrate:"spark/spark-celebrate.webp"},
@@ -790,7 +849,7 @@ function loadState(){
     const parsed=JSON.parse(localStorage.getItem(SAVE_KEY));
     if(!parsed||parsed.version!==1||!Array.isArray(parsed.completed))return freshState();
     const base=freshState(),player=parsed.player&&Number.isFinite(parsed.player.x)&&Number.isFinite(parsed.player.y)?parsed.player:base.player;
-    return {...base,...parsed,player,step:Math.min(challenges.length,Math.max(0,Number(parsed.step)||0))};
+    return {...base,...parsed,questionVariants:{...base.questionVariants,...parsed.questionVariants},player,step:Math.min(challenges.length,Math.max(0,Number(parsed.step)||0))};
   }catch(error){return freshState();}
 }
 function saveState(){
@@ -934,7 +993,7 @@ function render(){
   $("interior-scene").classList.toggle("lens-ready",inside&&state.step===5);
   document.querySelector(".movement-controls").hidden=inside;
   $("movement-help").hidden=inside;
-  const targets=["Inspect the blue cargo crate near the airship.","Use the broken bridge mechanism.","Restore the scrambled airship log.","Balance the rescue cargo at the harbor console.","Read the engineer's note inside the lighthouse.","Align the lighthouse lens."];
+  const targets=["Inspect the blue cargo crate near the airship.","Use the broken bridge mechanism.","Restore the scrambled airship log.","Balance the rescue cargo at the harbor console.","Read the engineer's note inside the lighthouse.","Align the lighthouse lens.","Follow the Echo Lens signal into the hidden cave.","Chart the safe route at the harbor console.","Prepare the airship launch instruction.","Load the rescue supplies into the blue cargo crate."];
   $("objective").textContent=!state.started?"Talk to Spark near the dock.":state.step>=challenges.length&&!state.secret?"Use the Echo Lens to investigate the hidden cave.":state.step>=challenges.length?"The lighthouse is restored. Travel onward or review the journal.":targets[state.step];
   $("spark-message").textContent=!state.started?"The harbor is quiet. Wake me and we will investigate together.":state.step===0?"I am Spark! The engineer left a message: Find the blue box near the boat.":state.step>=challenges.length?challenges.at(-1).spark:challenges[state.step-1].spark;
   $("progress-fill").style.width=(state.completed.length/challenges.length*100)+"%";
@@ -945,10 +1004,10 @@ function render(){
   $("item-fragment").classList.toggle("unlocked",state.secret);
   setSparkPortrait(state.lighthouse?"celebrating":state.started?"guiding":"neutral");
   setModelState("spark-companion",state.lighthouse?"celebrate":state.started?"guiding":"sleeping",state.started?"states":"idle");
-  setModelState("cargo-crate",state.completed.includes("blue-cargo")?"opened":state.started&&state.step===0?"active":"sealed");
-  setModelState("harbor-airship",state.step===2?"log-active":state.step>2?"launch-ready":"docked",state.step===2?"active":"docked");
+  setModelState("cargo-crate",state.step===9?"active":state.completed.includes("blue-cargo")?"opened":state.started&&state.step===0?"active":"sealed");
+  setModelState("harbor-airship",state.step===2||state.step===8?"log-active":state.step>2?"launch-ready":"docked",state.step===2||state.step===8?"active":"docked");
   setModelState("atlas-bridge",state.bridge?"complete":"broken");
-  setModelState("harbor-console",state.completed.includes("cargo-division")?"solved":state.step===3?"active":"offline");
+  setModelState("harbor-console",state.step===3||state.step===7?"active":state.completed.includes("cargo-division")?"solved":"offline");
   setModelState("cloud-lighthouse",state.lighthouse?"lit":state.step===5?"lens-aligning":state.step>=4?"door-open":"dark",state.lighthouse?"lit":state.step>=4?"open":"dark");
   setModelState("hidden-cave",state.secret?"collected":state.lens?"revealed":"concealed");
   updateGeneratedInterior();
@@ -970,7 +1029,6 @@ function renderQuestList(){
   });
 }
 function renderHotspots(){
-  const map=[["hotspot-crate",0],["hotspot-bridge",1],["hotspot-boat",2],["hotspot-console",3]];
   $("hotspot-crate").textContent=state.completed.includes("blue-cargo")?"Cargo opened":"Cargo crates";
   $("hotspot-bridge").textContent=state.bridge?"Restored bridge":"Broken bridge";
   $("hotspot-boat").textContent=state.completed.includes("airship-sentence")?"Airship ready":"Airship log";
@@ -979,17 +1037,18 @@ function renderHotspots(){
   $("hotspot-spark").classList.toggle("current",!state.started);
   $("hotspot-spark").classList.toggle("done",state.started);
   $("hotspot-spark").setAttribute("aria-current",!state.started?"step":"false");
-  map.forEach(([id,index])=>{
-    const button=$(id),current=state.started&&index===state.step;
-    button.classList.toggle("current",current);button.classList.toggle("done",index<state.step);
-    button.classList.toggle("locked",!state.started||index>state.step);button.setAttribute("aria-current",current?"step":"false");
+  const activeTargetId=state.step<challenges.length?CHALLENGE_TARGET_IDS[state.step]:!state.secret?"hotspot-secret":null;
+  [...new Set(CHALLENGE_TARGET_IDS)].forEach(id=>{
+    const button=$(id),indices=CHALLENGE_TARGET_IDS.flatMap((targetId,index)=>targetId===id?[index]:[]);
+    const current=state.started&&id===activeTargetId;
+    button.classList.toggle("current",current);
+    button.classList.toggle("done",indices.every(index=>index<state.step)&&!(id==="hotspot-secret"&&!state.secret));
+    button.classList.toggle("locked",!state.started||(!current&&!indices.some(index=>index<state.step)));
+    button.setAttribute("aria-current",current?"step":"false");
   });
-  const lighthouse=$("hotspot-lighthouse"),lighthouseCurrent=state.started&&(state.step===4||state.step===5);
-  lighthouse.classList.toggle("current",lighthouseCurrent);lighthouse.classList.toggle("done",state.step>=challenges.length);
-  lighthouse.classList.toggle("locked",!state.started||state.step<4);lighthouse.setAttribute("aria-current",lighthouseCurrent?"step":"false");
-  const secret=$("hotspot-secret"),secretCurrent=state.step>=challenges.length&&!state.secret;
+  const secret=$("hotspot-secret"),secretCurrent=state.started&&activeTargetId==="hotspot-secret";
   secret.classList.toggle("current",secretCurrent);secret.classList.toggle("done",state.secret);secret.setAttribute("aria-current",secretCurrent?"step":"false");
-  const targetId=state.interior?null:!state.started?"hotspot-spark":state.step===0?"hotspot-crate":state.step===1?"hotspot-bridge":state.step===2?"hotspot-boat":state.step===3?"hotspot-console":state.step<challenges.length?"hotspot-lighthouse":!state.secret?"hotspot-secret":null;
+  const targetId=state.interior?null:!state.started?"hotspot-spark":activeTargetId;
   requestAnimationFrame(()=>positionQuestBeacon(targetId));
 }
 function positionQuestBeacon(targetId){
@@ -1002,11 +1061,7 @@ function positionQuestBeacon(targetId){
 }
 function currentWorldTarget(){
   if(!state.started)return WORLD_TARGETS.spark;
-  if(state.step===0)return WORLD_TARGETS.crate;
-  if(state.step===1)return WORLD_TARGETS.bridge;
-  if(state.step===2)return WORLD_TARGETS.boat;
-  if(state.step===3)return WORLD_TARGETS.console;
-  if(state.step<challenges.length)return WORLD_TARGETS.lighthouse;
+  if(state.step<challenges.length)return TARGET_BY_HOTSPOT[CHALLENGE_TARGET_IDS[state.step]];
   if(!state.secret&&state.lens)return WORLD_TARGETS.secret;
   return null;
 }
@@ -1227,7 +1282,9 @@ function burst(){
   setTimeout(()=>field.replaceChildren(),1500);
 }
 function closeChallenge(){
-  $("challenge-dialog").close();lastFocus?.focus({preventScroll:true});
+  $("challenge-dialog").close();
+  if(state.interior&&state.step>=6){state.interior=false;saveState();render();}
+  lastFocus?.focus({preventScroll:true});
   if(state.step>=challenges.length){pendingDialogue=null;setTimeout(showCompletion,250);}
   else if(pendingDialogue){const dialogue=pendingDialogue;pendingDialogue=null;setTimeout(()=>showWorldDialogue(dialogue.speaker,dialogue.text),220);}
 }
@@ -1239,6 +1296,7 @@ function showCompletion(){
 }
 function findSecret(){
   if(!state.lens){showToast("A special lens is needed to reveal this path.");return;}
+  if(state.step<challenges.length){showToast("The cave signal is incomplete. Finish the current objectives first.");return;}
   if(state.secret){showToast("The hidden map fragment is already in your journal.");return;}
   state.secret=true;saveState();render();playCue("secret");burst();
   openInfo("A hidden map fragment",`<p>The Echo Lens reveals a cave behind the lighthouse island. Inside is a fragment marked with a sixth island—one that does not appear in the ordinary atlas.</p><p><strong>Secret discovered:</strong> The Unwritten Isle.</p><p>A fresh green line now points toward Gale Garden, where Mira's storm warning was never received.</p><div class="actions"><button class="primary" type="button" data-action="island-two">Travel to Island Two</button><button class="secondary" type="button" data-action="journal">Record the discovery</button></div>`,"Secret found");
@@ -1274,11 +1332,11 @@ function resetGame(){
 
 document.querySelectorAll("[data-step]").forEach(button=>button.addEventListener("click",()=>{
   const step=Number(button.dataset.step);
-  if(step===state.step)approachCurrentTarget();else openChallenge(step);
+  if(CHALLENGE_TARGET_IDS[state.step]===button.id)approachCurrentTarget();else openChallenge(step);
 }));
 $("hotspot-spark").addEventListener("click",()=>state.started?openJournal():approachCurrentTarget());
-$("hotspot-lighthouse").addEventListener("click",()=>state.step===4||state.step===5?approachCurrentTarget():openChallenge(4));
-$("hotspot-secret").addEventListener("click",approachSecret);
+$("hotspot-lighthouse").addEventListener("click",()=>CHALLENGE_TARGET_IDS[state.step]==="hotspot-lighthouse"?approachCurrentTarget():openChallenge(4));
+$("hotspot-secret").addEventListener("click",()=>CHALLENGE_TARGET_IDS[state.step]==="hotspot-secret"?approachCurrentTarget():approachSecret());
 $("dialogue-close").addEventListener("click",()=>{clearTimeout(dialogueTimer);$("world-dialogue").hidden=true;});
 $("interior-exit").addEventListener("click",exitLighthouse);
 $("interior-note").addEventListener("click",()=>state.step===4?openChallenge(4):showToast("Mira's note is already recorded in the journal."));

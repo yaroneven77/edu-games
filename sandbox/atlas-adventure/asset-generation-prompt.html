@@ -1,0 +1,843 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Atlas Adventure · GPT Asset Generation Prompt</title>
+<style>
+*{box-sizing:border-box}
+:root{--bg:#07172d;--panel:#102b47;--soft:#173955;--ink:#eef8fa;--muted:#b7d2d9;--gold:#f3c75c;--teal:#65d8c7;--line:#47677b}
+html{background:var(--bg);color:var(--ink);font:16px/1.6 "Segoe UI",Arial,sans-serif}
+body{margin:0;background:radial-gradient(circle at 50% 0,#214f6f,transparent 36%),var(--bg)}
+main{width:min(1100px,calc(100% - 24px));margin:auto;padding:28px 0 60px}
+h1{margin:0;color:#fff1bc;font-size:clamp(28px,5vw,48px);line-height:1.1}h2{color:#fff1bc}
+.lead{color:var(--muted);max-width:850px}.toolbar{position:sticky;top:8px;z-index:2;display:flex;flex-wrap:wrap;gap:10px;margin:20px 0}
+button,a{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:9px 15px;border:1px solid var(--line);border-radius:13px;background:var(--soft);color:var(--ink);font:700 15px/1.2 inherit;text-decoration:none;cursor:pointer}
+button.primary{background:#337d68;border-color:#70dac0}.status{align-self:center;color:var(--teal);font-weight:700}
+.card{margin:18px 0;padding:18px;border:1px solid var(--line);border-radius:20px;background:rgba(16,43,71,.94);box-shadow:0 18px 50px #0004}
+.checklist{columns:2;gap:32px}.checklist li{break-inside:avoid;margin:5px 0}
+pre{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;color:#e8f6f8;font:14px/1.55 Consolas,"Courier New",monospace}
+code{color:#fff0aa}.note{border-left:4px solid var(--gold);padding:10px 13px;background:#142f4a;border-radius:10px;color:#dcecef}
+@media(max-width:700px){.checklist{columns:1}main{padding-top:18px}.card{padding:14px}}
+@media print{.toolbar{display:none}body{background:#fff;color:#111}.card{box-shadow:none;background:#fff}pre{color:#111}}
+</style>
+</head>
+<body>
+<main>
+  <h1>Atlas: The Lost Islands</h1>
+  <p class="lead">Master GPT prompt for producing the complete Cloud Harbor visual asset library in one consistent cartoon-realistic style. Copy the prompt below into an image-capable GPT conversation.</p>
+  <div class="toolbar">
+    <a href="./index.html">← Return to game</a>
+    <button class="primary" id="copy-prompt" type="button">Copy complete prompt</button>
+    <button id="download-prompt" type="button">Download as text</button>
+    <span class="status" id="status" role="status"></span>
+  </div>
+
+  <section class="card">
+    <h2>Asset coverage</h2>
+    <ul class="checklist">
+      <li>Explorer character and movement states</li>
+      <li>Spark companion and emotion states</li>
+      <li>Cargo crate and bridge-energy cell</li>
+      <li>Harbor airship and propeller states</li>
+      <li>Five-part animated bridge</li>
+      <li>Harbor console and controls</li>
+      <li>Lighthouse exterior and floating island</li>
+      <li>Secret cave, crystal, and map fragment</li>
+      <li>Harbor workshop and modular dock</li>
+      <li>Barrels, lanterns, signs, ropes, grass, rocks</li>
+      <li>Lighthouse interior and lens machine</li>
+      <li>Workbench, note, stairs, windows, wall modules</li>
+      <li>Quest markers and environmental effects</li>
+      <li>Inventory and HUD icons</li>
+      <li>Dialogue portraits</li>
+      <li>Layered Cloud Harbor backgrounds</li>
+    </ul>
+    <p class="note"><strong>Recommended workflow:</strong> Generate the style reference sheet first. After approval, generate each numbered asset independently rather than asking for one enormous sprite sheet.</p>
+  </section>
+
+  <section class="card">
+<pre id="prompt">You are the Art Director, Senior 2D Game Artist, Character Designer, Environment Designer, UI Artist, and Technical Asset Producer for an original educational adventure game named “Atlas: The Lost Islands.”
+
+Your task is to create the complete visual asset library for the first playable location, “Cloud Harbor.”
+
+IMPORTANT WORKFLOW
+
+Do not attempt to place every object into one final image.
+
+Work as a production artist:
+1. First create a STYLE BIBLE / REFERENCE SHEET.
+2. Wait for approval of the style.
+3. Then create each numbered asset or closely related asset group separately.
+4. Keep an internal record of proportions, palette, lighting, camera angle, materials, and line treatment.
+5. Every later asset must look as if it belongs to exactly the same commercial game.
+6. After each generated asset, state:
+   - Asset number and name
+   - Intended filename
+   - Canvas dimensions
+   - Animation or state name
+   - Recommended pivot/anchor point
+   - Whether the background is transparent
+7. Never add readable words, labels, logos, watermarks, signatures, borders, UI mockup frames, or presentation-card backgrounds to an asset.
+8. Do not imitate or reproduce a copyrighted game, character, film, or franchise. Everything must be original.
+
+============================================================
+1. MASTER ART DIRECTION
+============================================================
+
+STYLE NAME
+“Cartoon Realism — Painterly Sky Adventure”
+
+TARGET QUALITY
+Premium commercial 2D adventure-game artwork suitable for children aged approximately 9–12 and their parents.
+
+The visual result must feel:
+- Adventurous
+- Mysterious
+- Warm
+- Polished
+- Cinematic
+- Imaginative
+- Trustworthy
+- Detailed enough to reward exploration
+
+The visual result must NOT feel:
+- Preschool-like
+- Flat clip art
+- Generic mobile-game stock art
+- Photorealistic
+- Dark horror
+- Aggressive
+- Overly cute
+- Plastic or toy-like
+- Like a school worksheet
+
+CARTOON-REALISTIC DEFINITION
+Use realistic materials, believable construction, plausible lighting, and convincing depth, but simplify shapes and exaggerate silhouettes so every object remains clear at small game size.
+
+Think of an original high-budget animated adventure film translated into readable 2D game assets:
+- Realistic wood grain, stone, brass, fabric, glass, cloud mist, and painted metal
+- Slightly exaggerated proportions
+- Clean, confident silhouettes
+- Soft painterly shading
+- Selective edge highlights
+- Expressive characters
+- No thick black comic outlines
+- Use dark coloured edge accents only where needed for clarity
+
+CAMERA
+- Three-quarter isometric view
+- Approximately 25–30 degrees above the horizon
+- Consistent camera angle for every world object
+- Character sprites should match the same world perspective
+- Avoid extreme perspective or wide-angle distortion
+
+LIGHTING
+- Main light comes from the upper left
+- Warm late-afternoon sunlight
+- Cool teal bounce light from energy technology
+- Soft contact shadows cast down and slightly right
+- Brass surfaces receive warm highlights
+- Glass and energy surfaces receive restrained teal glow
+- Night or interior states may be darker, but silhouettes must remain readable
+
+CORE PALETTE
+- Deep navy: #07172D
+- Slate blue: #173955
+- Cloud teal: #65D8C7
+- Energy teal: #57D4C0
+- Warm brass: #D8A74C
+- Highlight gold: #F3C75C
+- Weathered cedar: #795139
+- Parchment cream: #E8D8B7
+- Lighthouse coral: #BB674D
+- Mist blue: #B8E1DF
+- Stone indigo: #29384A
+
+MATERIAL LANGUAGE
+- Technology: brass frames, dark blue painted metal, teal glass, restrained glowing seams
+- Buildings: warm plaster, slate roofs, cedar beams, brass fasteners
+- Harbor: weathered wood, thick rope, iron brackets, salt-worn paint
+- Lighthouse: parchment-coloured stone, muted coral bands, slate roof, brass rails
+- Ancient Atlas objects: parchment, gold geometric lines, teal crystal details
+
+SHAPE LANGUAGE
+- Friendly technology uses hexagons, circles, and softened corners
+- Harbor structures use sturdy triangles and rectangles
+- Atlas mysteries use compass points, concentric circles, and six-sided motifs
+- Dangerous or blocked objects may use sharper broken diagonals, but never frightening spikes
+
+============================================================
+2. TECHNICAL EXPORT RULES
+============================================================
+
+Unless an asset description says otherwise:
+- Create at 2048 × 2048 pixels
+- Transparent background with real alpha
+- Object centred with comfortable transparent padding
+- Object fills approximately 75–85% of the canvas
+- No ground rectangle
+- Include a soft contact shadow as a separable visual layer when possible
+- Avoid cropping antennas, ropes, light beams, fins, limbs, or shadows
+- Use sRGB colour
+- Output PNG or lossless WebP
+- Preserve clean edges when reduced to 96–256 pixels
+
+STATE CONSISTENCY
+When producing multiple states:
+- Keep identical camera
+- Keep identical scale
+- Keep identical object position
+- Keep identical proportions
+- Keep identical palette
+- Change only the parts required by the state
+- Never redesign the object between states
+
+SPRITE CONSISTENCY
+For movement sprites:
+- Keep feet aligned to the same baseline
+- Keep the character’s height constant
+- Leave equal transparent padding
+- Use a stable pivot at the centre between the feet
+
+NAMING
+Use lowercase kebab-case filenames.
+Examples:
+- explorer-idle.webp
+- spark-guiding.webp
+- bridge-segment-03.webp
+- lighthouse-lit.webp
+
+NEGATIVE REQUIREMENTS FOR EVERY IMAGE
+- No text
+- No letters
+- No numbers
+- No logos
+- No watermarks
+- No signatures
+- No copyright characters
+- No recognisable franchise costumes
+- No photoreal human face
+- No thick black outline
+- No flat vector icon style unless explicitly requested for a HUD icon
+- No white or coloured rectangular background
+- No mockup presentation board
+- No duplicate objects unless requested
+- No detached accidental parts
+- No extra limbs
+- No inconsistent light direction
+- No perspective mismatch
+- No blurry edges
+- No excessive bloom hiding the silhouette
+
+============================================================
+3. PHASE ZERO — STYLE BIBLE
+============================================================
+
+ASSET 00 — MASTER STYLE REFERENCE
+
+Create a production reference sheet showing:
+- The explorer
+- Spark
+- The blue cargo crate
+- One bridge segment
+- The harbor console
+- The airship
+- The lighthouse
+- One dock lantern
+- One inventory icon
+- Swatches for the core palette
+- Small material samples for wood, brass, teal glass, stone, rope, and fabric
+
+This reference sheet may use a neutral presentation background because it is documentation, not a game asset.
+
+Show front/three-quarter consistency and label the visual hierarchy using a separate written response, not text inside the image.
+
+STYLE GOAL
+The explorer and world must feel like one coherent original animated adventure film. The character must not appear pasted over the environment.
+
+============================================================
+4. CHARACTERS
+============================================================
+
+ASSET 01 — THE EXPLORER
+
+ROLE
+Player character, approximately 10 years old, gender-neutral presentation, courageous but approachable.
+
+DESIGN
+- Slightly oversized head and hands for animation readability, but believable anatomy
+- Warm medium skin tone
+- Dark brown practical hair under a small navy expedition cap or hood
+- Navy expedition coat with lighter blue panels
+- Burnt-orange scarf that can move during walking
+- Compact weathered leather backpack
+- Dark practical trousers
+- Sturdy brown boots with brass buckles
+- Small Atlas compass clipped to the backpack strap
+- No weapon
+- No armour
+- No superhero costume
+
+PERSONALITY
+- Curious
+- Thoughtful
+- Brave
+- Kind
+- Focused
+
+REQUIRED STATES
+01A explorer-idle
+- Relaxed alert stance
+- Slight breathing motion implied
+- Looking toward the next objective
+
+01B explorer-walk-east-strip
+01C explorer-walk-west-strip
+01D explorer-walk-north-strip
+01E explorer-walk-south-strip
+- Four to six readable walk frames per direction
+- Natural arm and scarf motion
+- Backpack remains attached consistently
+
+01F explorer-inspect
+- Leaning slightly forward, one hand near the compass
+
+01G explorer-celebrate
+- Small confident victory pose, not exaggerated
+
+01H explorer-thinking
+- One hand near chin, attentive expression
+
+01I explorer-surprised
+- Positive discovery surprise, not fear
+
+PIVOT
+Centre point between the boots.
+
+ASSET 02 — SPARK, THE MECHANICAL COMPANION
+
+ROLE
+Small hovering guide, helper, hint provider, and emotional companion.
+
+SIZE
+Approximately the width of the explorer’s torso.
+
+DESIGN
+- Original hexagonal warm-brass body
+- One large circular teal lens-eye
+- Dark navy inner mechanism
+- Small translucent teal stabiliser fins
+- Short antenna with glowing teal tip
+- Tiny visible rivets
+- Slight weathering and scratches
+- A few small floating light particles when active
+- No mouth
+- Emotion is communicated through eye shape, body tilt, fin angle, and antenna light
+
+REQUIRED STATES
+02A spark-sleeping
+- Eye dark or nearly closed
+- Fins folded
+- Antenna dim
+
+02B spark-idle
+- Calm hover
+- Soft teal eye
+
+02C spark-guiding
+- Body tilted toward a destination
+- One fin extended like a pointer
+
+02D spark-hint
+- Lens projects a small non-text geometric clue
+
+02E spark-concerned
+- Eye slightly narrowed
+- Antenna amber
+
+02F spark-celebrate
+- Brighter teal glow
+- Fins raised
+- Small gold and teal particles
+
+02G spark-dialogue-portrait
+- Larger bust-style portrait crop for dialogue UI
+- Transparent background
+- Eye facing slightly toward the player
+
+PIVOT
+Centre of the hexagonal body.
+
+============================================================
+5. PRIMARY INTERACTIVE WORLD OBJECTS
+============================================================
+
+ASSET 03 — BLUE CARGO CRATE
+
+DESIGN
+- Weathered blue-painted cedar
+- Dark metal corner protection
+- Pale teal straps
+- Brass lock plate
+- Subtle original compass emblem made only from geometry
+- Strong readable box silhouette
+
+STATES
+03A cargo-crate-sealed
+03B cargo-crate-active
+- Teal light escaping from seams
+- Brass lock softly glowing
+03C cargo-crate-opened
+- Lid raised
+- Contains one bridge-energy cell
+- Interior warmly lit
+
+ASSET 04 — BRIDGE-ENERGY CELL
+
+DESIGN
+- Hand-sized hexagonal brass frame
+- Teal crystal centre
+- Dark navy grip
+- Four small energy indicators without text
+- Original design
+
+STATES
+04A energy-cell-empty
+04B energy-cell-charged
+04C energy-cell-icon
+
+ASSET 05 — MODULAR FLOATING-ISLAND BRIDGE
+
+DESIGN
+- Weathered cedar planks
+- Thick golden rope handrails
+- Dark iron brackets
+- Brass Atlas connectors
+- Teal energy seam under every segment
+- Five visibly separate construction sections
+- Stable enough for a child explorer
+
+OUTPUT EACH PIECE SEPARATELY
+05A bridge-anchor-left
+05B bridge-segment-01
+05C bridge-segment-02
+05D bridge-segment-03
+05E bridge-segment-04
+05F bridge-segment-05
+05G bridge-anchor-right
+05H bridge-complete
+05I bridge-broken-preview
+
+All bridge pieces must align perfectly when placed in a straight rising isometric line.
+
+Provide:
+- The exact connection point on the left edge
+- The exact connection point on the right edge
+- Matching rope endpoints
+- Matching energy-seam endpoints
+
+ASSET 06 — HARBOR CONTROL CONSOLE
+
+DESIGN
+- Waist-high slate-blue metal pedestal
+- Angled dark glass screen
+- Brass rotary control
+- Teal circuit lines
+- Coral warning lamp
+- Worn corners
+- No readable text on screen
+
+STATES
+06A harbor-console-offline
+06B harbor-console-active
+- Teal screen and circuit glow
+- Coral lamp pulsing
+06C harbor-console-solved
+- Calm green-teal state
+- Brass control aligned
+
+ASSET 07 — CLOUD HARBOR AIRSHIP
+
+DESIGN
+- Compact practical transport airship
+- Golden canvas balloon
+- Cedar gondola
+- Coral tail propeller
+- Teal glass navigation window
+- Brass fittings
+- Rope suspension
+- Small patched areas showing long use
+- No weapons
+
+STATES
+07A airship-docked
+07B airship-log-active
+- Navigation window glowing
+- Small geometric projection with no text
+07C airship-launch-ready
+- Propeller active
+- Ropes released
+07D airship-propeller-strip
+- Separate rotating propeller frames
+
+ASSET 08 — CLOUD LIGHTHOUSE EXTERIOR
+
+DESIGN
+- Tall parchment-coloured stone tower
+- Muted coral horizontal bands
+- Dark slate lantern roof
+- Brass balcony rails
+- Teal entrance door
+- Narrow teal glass windows
+- Slight weathering from cloud storms
+- Distinct silhouette visible at small scale
+
+STATES
+08A lighthouse-dark
+08B lighthouse-door-open
+08C lighthouse-lens-aligning
+08D lighthouse-lit
+- Warm golden core
+- Teal edge reflections
+08E lighthouse-beam
+- Separate transparent beam layer
+- Soft golden cone with subtle mist scattering
+
+ASSET 09 — LIGHTHOUSE FLOATING ISLAND
+
+DESIGN
+- Grassy green upper surface
+- Layered brown and indigo cliff rock
+- Small brass path lamps
+- A path from bridge to lighthouse
+- Secret cave area built into the lower-right cliff
+- Strong readable floating-island silhouette
+
+LAYERS
+09A island-base
+09B grass-and-path overlay
+09C foreground-rock overlay
+09D cloud-mist overlay
+
+ASSET 10 — HIDDEN CAVE
+
+DESIGN
+- Small dark indigo stone arch
+- Thin teal mineral veins
+- Partly concealed by grass
+- Warm crystal inside
+- Torn map fragment visible only in revealed state
+- Mysterious but safe
+
+STATES
+10A hidden-cave-concealed
+10B hidden-cave-revealed
+10C hidden-cave-collected
+
+============================================================
+6. HARBOR ENVIRONMENT KIT
+============================================================
+
+ASSET 11 — HARBOR WORKSHOP
+
+DESIGN
+- Warm plaster walls
+- Cedar structural beams
+- Slate triangular roof
+- Small chimney
+- Warm illuminated window
+- Blue storage door
+- Brass weather vane shaped like an original compass
+- Modular enough to sit on the left island
+
+LAYERS
+11A workshop-building
+11B workshop-window-glow
+11C workshop-chimney-smoke
+11D workshop-sign-without-text
+
+ASSET 12 — MODULAR DOCK KIT
+
+Create matching isometric pieces:
+12A dock-straight
+12B dock-corner-left
+12C dock-corner-right
+12D dock-end
+12E dock-support-post
+12F dock-rope-railing
+12G dock-shadow
+
+Material:
+- Weathered cedar
+- Iron nails and brackets
+- Slight water and salt wear
+
+ASSET 13 — HARBOR PROP KIT
+
+Create separate transparent objects:
+13A wooden-barrel
+13B coiled-rope
+13C brass-and-glass-dock-lantern-off
+13D brass-and-glass-dock-lantern-on
+13E small-blue-crate
+13F canvas-supply-bag
+13G wooden-direction-sign-with-no-text
+13H mooring-post
+13I repair-toolbox
+13J folded-airship-sail
+
+ASSET 14 — NATURE KIT
+
+Create separate transparent objects:
+14A grass-tuft-01
+14B grass-tuft-02
+14C cliff-rock-small
+14D cliff-rock-medium
+14E cliff-rock-large
+14F cloud-mist-small
+14G cloud-mist-wide
+14H distant-floating-island
+14I small-bird-silhouette-pair
+
+============================================================
+7. LIGHTHOUSE INTERIOR KIT
+============================================================
+
+ASSET 15 — LENS MECHANISM
+
+DESIGN
+- Large circular brass frame
+- Teal glass lens divided into fraction-like panels
+- Parchment-gold centre light
+- Dark navy support pedestal
+- Mechanical rings and alignment controls
+- Designed for visible slow rotation
+
+STATES
+15A lens-machine-dark
+15B lens-machine-ready
+15C lens-machine-aligning
+15D lens-machine-lit
+15E lens-outer-ring
+15F lens-inner-panels
+15G lens-centre-glow
+
+Export separable layers so rings can rotate independently.
+
+ASSET 16 — ENGINEER’S WORKBENCH
+
+DESIGN
+- Heavy cedar workbench
+- Brass magnifying instrument
+- Open drawer
+- Small tools
+- Weathered parchment note
+- No readable writing
+
+LAYERS
+16A workbench
+16B engineer-note
+16C brass-tool
+16D warm-desk-light
+
+ASSET 17 — LIGHTHOUSE INTERIOR ARCHITECTURE
+
+Create modular pieces:
+17A curved-stone-wall
+17B curved-metal-floor
+17C tall-cloud-window
+17D brass-window-frame
+17E spiral-stair-section
+17F stair-railing
+17G interior-lantern-off
+17H interior-lantern-on
+17I interior-door-closed
+17J interior-door-open
+
+============================================================
+8. QUEST, EFFECT, AND FEEDBACK ASSETS
+============================================================
+
+ASSET 18 — NEXT-OBJECTIVE MARKER
+
+DESIGN
+- Original compass-pin shape
+- Warm gold outer shape
+- Teal circular centre
+- Small downward arrow
+- Clear at 32–64 pixels
+
+LAYERS / STATES
+18A quest-marker-base
+18B quest-marker-ring
+18C quest-marker-arrow
+18D quest-marker-complete
+
+ASSET 19 — ENERGY EFFECTS
+
+Separate transparent effects:
+19A teal-soft-glow
+19B teal-energy-spark-particles
+19C gold-success-particles
+19D bridge-construction-dust
+19E bridge-energy-line
+19F lighthouse-golden-beam
+19G secret-reveal-shimmer
+19H soft-contact-shadow-round
+19I soft-contact-shadow-wide
+
+Effects must remain subtle and must not hide objects.
+
+ASSET 20 — ENVIRONMENTAL ANIMATION ELEMENTS
+
+20A slow-cloud-small
+20B slow-cloud-medium
+20C slow-cloud-large
+20D water-highlight-strip
+20E chimney-smoke-strip
+20F grass-wind-strip
+20G airship-propeller-strip
+20H lighthouse-lens-rotation-layer
+
+============================================================
+9. INVENTORY AND HUD ICONS
+============================================================
+
+ICON STYLE
+- Simplified cartoon-realistic rendering
+- Slightly stronger outline than world assets
+- Dark navy circular or rounded-square backing
+- Warm gold and teal highlights
+- Readable at 32 pixels
+- Transparent outside the icon silhouette
+- No text
+
+ASSET 21 — INVENTORY ICONS
+21A atlas-page-icon
+21B echo-lens-icon
+21C map-fragment-icon
+21D bridge-energy-cell-icon
+21E brass-key-icon
+21F engineer-note-icon
+21G lighthouse-lens-icon
+
+ASSET 22 — SUBJECT ICONS
+22A english-vocabulary-icon
+22B english-sentence-icon
+22C english-reading-icon
+22D math-multiplication-icon
+22E math-division-icon
+22F math-fraction-icon
+
+Do not put letters, equations, or numbers inside these icons. Communicate the subject through shapes and objects.
+
+ASSET 23 — DIALOGUE PORTRAITS
+23A spark-neutral-portrait
+23B spark-guiding-portrait
+23C spark-concerned-portrait
+23D spark-celebrating-portrait
+23E explorer-neutral-portrait
+23F explorer-thinking-portrait
+23G explorer-celebrating-portrait
+
+Portraits should be cropped consistently and face slightly toward the centre of a dialogue box.
+
+============================================================
+10. LAYERED BACKGROUND ART
+============================================================
+
+ASSET 24 — CLOUD HARBOR BACKGROUND
+
+Create separate wide layers at 3840 × 2160:
+24A sky-gradient
+24B distant-clouds
+24C distant-floating-islands
+24D far-water-and-cloud-sea
+24E left-harbor-island-base
+24F right-lighthouse-island-base
+24G foreground-mist
+24H warm-sun-glow
+
+IMPORTANT
+- Do not include interactive objects in background layers.
+- Do not include explorer, Spark, crate, bridge, console, airship, lighthouse, or secret.
+- Leave clear areas for game objects.
+- Layers must align perfectly when stacked.
+
+============================================================
+11. SCALE GUIDE
+============================================================
+
+Use the explorer’s standing height as 1.0 unit.
+
+Approximate relative sizes:
+- Spark: 0.35 explorer heights
+- Cargo crate: 0.55 explorer heights
+- Console: 0.75 explorer heights
+- Dock lantern: 0.45 explorer heights
+- Workshop door: 1.15 explorer heights
+- Airship gondola: 2.0 explorer heights long
+- Airship balloon: 3.0 explorer heights long
+- Bridge width: 0.9 explorer heights
+- Lighthouse door: 1.25 explorer heights
+- Lighthouse tower: 4.5–5 explorer heights
+- Lens machine: 2.2 explorer heights
+
+Keep scale consistent across all outputs.
+
+============================================================
+12. FINAL DELIVERY CHECKLIST
+============================================================
+
+Before presenting any asset, verify:
+- It follows the approved style bible.
+- It uses the same upper-left light direction.
+- It matches the three-quarter isometric camera.
+- It is original.
+- It has no text or watermark.
+- It has a transparent background when required.
+- No part is cropped.
+- The object remains readable at small size.
+- State variants have identical proportions and placement.
+- The filename follows the requested naming convention.
+- The pivot point is documented.
+- The asset can be used directly in a web game.
+
+BEGIN NOW
+
+Start only with ASSET 00, the master style reference sheet.
+
+After producing it, provide a short written style specification containing:
+- Confirmed palette
+- Confirmed camera angle
+- Confirmed light direction
+- Confirmed line treatment
+- Character proportion rules
+- Material rendering rules
+
+Do not generate the remaining production assets until the style reference is approved.</pre>
+  </section>
+</main>
+<script>
+const promptText=document.getElementById("prompt").textContent;
+const status=document.getElementById("status");
+document.getElementById("copy-prompt").addEventListener("click",async()=>{
+  try{
+    if(!navigator.clipboard?.writeText)throw new Error("Clipboard API unavailable");
+    await navigator.clipboard.writeText(promptText);status.textContent="Prompt copied.";
+  }catch(error){
+    const area=document.createElement("textarea");area.value=promptText;area.style.position="fixed";area.style.opacity="0";
+    document.body.append(area);area.select();
+    const copied=document.execCommand("copy");area.remove();
+    status.textContent=copied?"Prompt copied.":"Copy was blocked. Select the prompt text manually.";
+  }
+});
+document.getElementById("download-prompt").addEventListener("click",()=>{
+  const blob=new Blob([promptText],{type:"text/plain;charset=utf-8"}),link=document.createElement("a");
+  link.href=URL.createObjectURL(blob);link.download="atlas-gpt-asset-generation-prompt.txt";link.click();
+  setTimeout(()=>URL.revokeObjectURL(link.href),1000);status.textContent="Prompt downloaded.";
+});
+</script>
+</body>
+</html>

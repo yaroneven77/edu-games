@@ -1,0 +1,1285 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Atlas: The Lost Islands · Cloud Harbor Demo</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2307172d'/%3E%3Cpath d='M12 45 30 13l8 18 14-7-9 27Z' fill='%23f3c75c' stroke='%2357d4c0' stroke-width='4'/%3E%3C/svg%3E">
+<script src="../../assets/theme-selector.js" defer></script>
+<link rel="stylesheet" href="../../assets/refresh.css">
+<style>
+*{box-sizing:border-box}
+:root{
+  --night:#07172d;--deep:#102d4e;--water:#1f6684;--sky:#8fd1db;--mist:#d7eef0;
+  --gold:#f3c75c;--orange:#df7f45;--teal:#57d4c0;--blue:#4a91d8;--paper:#f7f2df;
+  --ink:#13263b;--atlas-panel:rgba(7,23,45,.94);--line:rgba(190,226,237,.35);--good:#79df9a;--bad:#ff9c8e;
+}
+html{min-width:300px;background:var(--night);scroll-behavior:smooth}
+body{margin:0;min-height:100vh;color:#eef8fa;background:
+  radial-gradient(circle at 50% -10%,#285c7e 0,transparent 42%),
+  linear-gradient(180deg,#07172d,#10233d 52%,#07172d);
+  font:17px/1.55 "Segoe UI",Arial,sans-serif;overflow-x:hidden}
+button,a,input,select{font:inherit}
+button{touch-action:manipulation}
+button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.skip{position:fixed;top:8px;left:8px;z-index:1000;transform:translateY(-150%);padding:10px 14px;background:#fff;color:#111;border-radius:10px}
+.skip:focus{transform:none}
+.shell{width:min(1280px,100%);margin:auto;padding:12px}
+.topbar{position:relative;z-index:20;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;margin-bottom:10px}
+.back,.icon-button,.primary,.secondary,.choice,.word,.world-hotspot{
+  border:1px solid var(--line);border-radius:14px;min-height:46px;color:#eef8fa;
+  background:linear-gradient(180deg,#22476a,#173653);box-shadow:0 5px 0 rgba(0,0,0,.27);
+  font-weight:750;cursor:pointer;text-decoration:none
+}
+.back{display:inline-flex;align-items:center;padding:9px 13px}
+.title{text-align:center;min-width:0}.title h1{margin:0;color:#fff4ce;font-size:clamp(24px,4vw,38px);line-height:1.1;letter-spacing:.03em}
+.title p{margin:3px 0 0;color:#acd5df;font-size:14px}
+.toolbar{display:flex;gap:8px}.icon-button{width:48px;padding:4px;font-size:21px}
+.game-layout{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:14px;align-items:start}
+.world-card{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:24px;background:#0b2541!important;
+  box-shadow:0 20px 60px rgba(0,0,0,.35);isolation:isolate}
+.world{position:relative;aspect-ratio:16/9;min-height:520px;background:linear-gradient(180deg,#8fd1db 0 48%,#1f6684 62%,#123f61)}
+.world svg{position:relative;z-index:2;display:block;width:100%;height:100%}
+.generated-environment{position:absolute;z-index:1;inset:0;overflow:hidden;opacity:0;pointer-events:none;transition:opacity .7s}
+.environment-ready .generated-environment{opacity:1}
+.environment-ready #svg-environment{opacity:0}
+.environment-sky{position:absolute;inset:0;background:
+  radial-gradient(circle at 78% 15%,rgba(255,231,154,.95) 0 4%,rgba(246,191,99,.42) 10%,transparent 24%),
+  linear-gradient(180deg,#62b2c7 0%,#a8d9dc 39%,#e9d9b8 62%,#2a7996 63%,#123e60 100%)}
+.environment-sea{position:absolute;inset:48% 0 0;background:
+  radial-gradient(ellipse at 50% 0,rgba(159,224,223,.4),transparent 48%),
+  repeating-linear-gradient(174deg,rgba(172,233,232,.13) 0 2px,transparent 2px 30px),
+  linear-gradient(180deg,#317f96,#174f70 57%,#102f50)}
+.environment-art{position:absolute;display:block;object-fit:contain}
+.environment-distant{left:37%;top:12%;width:27%;opacity:.54;filter:saturate(.72) hue-rotate(5deg);animation:environmentDrift 14s ease-in-out infinite alternate}
+.environment-cloud-wide{left:2%;top:14%;width:34%;opacity:.5;animation:cloudDrift 24s ease-in-out infinite alternate}
+.environment-cloud-small{right:4%;top:19%;width:24%;opacity:.42;animation:cloudDrift 19s ease-in-out infinite alternate-reverse}
+.environment-land{top:38%;width:47%;filter:drop-shadow(0 18px 20px rgba(3,18,29,.38))}
+.environment-land-left{left:-3%}
+.environment-land-right{right:-4%;top:35%;transform:scaleX(-1)}
+.environment-water{bottom:9%;width:34%;opacity:.35;mix-blend-mode:screen;animation:waterGlint 7s ease-in-out infinite alternate}
+.environment-water.one{left:-2%}.environment-water.two{left:32%}.environment-water.three{right:-1%}
+#svg-environment{transition:opacity .7s}
+.generated-models{position:absolute;z-index:4;inset:0;pointer-events:none;overflow:hidden}
+.generated-model{position:absolute;display:block;object-fit:contain;filter:drop-shadow(0 8px 7px rgba(3,14,24,.38));transition:opacity .3s,filter .3s}
+.generated-model.asset-changing{opacity:.18;filter:drop-shadow(0 3px 3px rgba(3,14,24,.2))}
+#generated-airship{left:8%;top:24%;width:24%}
+#generated-crate{left:11%;top:59%;width:10%}
+#generated-bridge{left:32%;top:51%;width:34%}
+#generated-console{left:56%;top:49%;width:10%}
+#generated-lighthouse{left:74%;top:16%;width:17%}
+#generated-lighthouse-beam{left:47%;top:13%;width:32%;opacity:0;transform:scaleX(-1);transform-origin:100% 50%;mix-blend-mode:screen;filter:blur(.25px) saturate(.75);transition:opacity .8s}
+#generated-cave{left:85%;top:66%;width:11%;opacity:.28}
+#generated-spark{left:44.5%;top:43%;width:6.5%;transform:translate(-50%,-50%)}
+#generated-player{left:33.4%;top:72%;width:5.8%;transform:translate(-50%,-100%);transform-origin:50% 100%}
+#generated-spark{animation:sparkFloat 6.8s ease-in-out infinite}
+.lens-unlocked #generated-cave{opacity:1}.secret-found #generated-cave{filter:drop-shadow(0 0 12px rgba(243,199,92,.7))}
+.bridge-built #generated-bridge{animation:generatedBridgeBuild 1s cubic-bezier(.2,.85,.25,1)}
+.lighthouse-lit #generated-lighthouse-beam{opacity:.58;animation:generatedBeamSweep 6s ease-in-out infinite}
+.world.generated-cargo-crate #crate-art,.world.generated-harbor-airship #airship,.world.generated-atlas-bridge #bridge-art,
+.world.generated-harbor-console #console-art,.world.generated-cloud-lighthouse #lighthouse,.world.generated-hidden-cave #secret-art,
+.world.generated-spark-companion #spark,.world.generated-atlas-explorer #player{opacity:0}
+.sky-glow{animation:skyPulse 8s ease-in-out infinite alternate}
+.cloud{animation:cloudDrift 18s ease-in-out infinite alternate}
+.cloud.slow{animation-duration:27s}
+.water-line{animation:waterShift 5s linear infinite}
+.spark-body{transform-origin:center;animation:sparkFloat 6.8s ease-in-out infinite}
+.beacon-ray{opacity:0;transform-origin:790px 120px}
+.lighthouse-lit .beacon-ray{opacity:.4;animation:beaconSweep 5s ease-in-out infinite}
+.lighthouse-lit .beacon-core{fill:#fff1a8;filter:url(#glow)}
+.bridge-piece{opacity:.17;transform:translateY(22px);transition:opacity .45s,transform .65s cubic-bezier(.2,.8,.2,1)}
+.bridge-built .bridge-piece{opacity:1;transform:none}
+.bridge-built .bridge-piece:nth-child(2){transition-delay:.1s}.bridge-built .bridge-piece:nth-child(3){transition-delay:.2s}
+.bridge-built .bridge-piece:nth-child(4){transition-delay:.3s}.bridge-built .bridge-piece:nth-child(5){transition-delay:.4s}
+.secret-cave{opacity:.2;transition:opacity .4s}.lens-unlocked .secret-cave{opacity:.9}
+.secret-found .secret-crystal{fill:#fff3a2;filter:url(#glow)}
+.world-hotspot,html[data-edu-theme] body#edu-refresh .world-hotspot{position:absolute;z-index:8;padding:7px 10px;min-height:44px;font-size:14px;background:rgba(6,24,43,.42)!important;border-color:rgba(214,239,242,.58)!important;color:#eef8fa!important;backdrop-filter:blur(3px);text-shadow:0 1px 3px rgba(0,0,0,.9);box-shadow:0 4px 12px rgba(2,13,24,.24)}
+.world-hotspot.current{border-color:var(--gold);box-shadow:0 0 0 3px rgba(243,199,92,.22),0 5px 0 rgba(0,0,0,.3);animation:questPulse 2.4s ease-in-out infinite}
+.world-hotspot.done{border-color:var(--good);color:#dcffe6}
+.world-hotspot.locked{opacity:.65}
+#hotspot-crate{left:14%;bottom:20%}#hotspot-bridge{left:49%;bottom:27%}#hotspot-boat{left:20%;bottom:43%}
+#hotspot-console{left:57%;bottom:41%}#hotspot-lighthouse{right:8%;top:22%}#hotspot-spark{left:39%;top:31%}
+#hotspot-secret{right:7%;bottom:17%;opacity:0;pointer-events:none}
+.lens-unlocked #hotspot-secret{opacity:1;pointer-events:auto}
+.quest-beacon{position:absolute;z-index:10;left:50%;top:20%;display:grid;justify-items:center;gap:3px;pointer-events:none;
+  transform:translate(-50%,-100%);filter:drop-shadow(0 5px 6px rgba(0,0,0,.5));transition:left .45s ease,top .45s ease}
+.quest-beacon[hidden]{display:none}
+.quest-beacon-label{padding:3px 8px;border:2px solid #fff0a6;border-radius:99px;background:#132c48;color:#fff4bd;font-size:11px;font-weight:900;letter-spacing:.13em}
+.quest-pin{position:relative;width:38px;height:38px;display:grid;place-items:center;border:3px solid #fff4bd;border-radius:50% 50% 50% 10%;
+  background:url("./assets/generated/marker/quest-marker-base.webp") center/contain no-repeat;border:0;border-radius:0;box-shadow:0 0 0 0 rgba(255,231,139,.55);animation:markerBlink 2.2s ease-in-out infinite}
+.quest-pin:before{content:none}
+.quest-arrow{width:22px;height:27px;background:url("./assets/generated/marker/quest-marker-arrow.webp") center/contain no-repeat;animation:arrowNudge 2.2s ease-in-out infinite}
+.movement-controls{position:absolute;z-index:12;left:50%;top:15px;transform:translateX(-50%);display:grid;grid-template-columns:repeat(4,48px);grid-template-rows:44px 44px;gap:4px;
+  padding:8px;border:1px solid rgba(190,226,237,.38);border-radius:18px;background:rgba(5,22,39,.78);backdrop-filter:blur(7px)}
+.move-button{min-width:44px;min-height:44px;border:1px solid #7594a7;border-radius:12px;background:#173653;color:#eef8fa;font-weight:900;cursor:pointer}
+.move-button[data-direction="up"]{grid-column:1;grid-row:1}.move-button[data-direction="left"]{grid-column:2;grid-row:1}.move-button[data-direction="down"]{grid-column:3;grid-row:1}.move-button[data-direction="right"]{grid-column:4;grid-row:1}
+.interact-button{grid-column:1/5;grid-row:2;border-color:#e8c65f;background:linear-gradient(180deg,#876a2c,#5a471f);color:#fff5c8}
+.interact-button.ready{background:linear-gradient(180deg,#3e9679,#276551);border-color:#8aebca;animation:interactReady 2s ease-in-out infinite}
+.movement-help{position:absolute;z-index:7;right:15px;top:20px;max-width:255px;padding:7px 10px;border-radius:11px;background:rgba(5,22,39,.78);color:#cfe4e9;font-size:12px;pointer-events:none}
+.movement-help strong{color:#fff0aa}
+.player-moving{animation:playerStep .42s ease-in-out infinite alternate}
+.interior-scene{position:absolute;z-index:18;inset:0;overflow:hidden;background:#091a2d;color:#eef8fa}
+.interior-scene[hidden]{display:none}
+.interior-scene>svg{display:block;width:100%;height:100%}
+.interior-title{position:absolute;top:16px;left:50%;transform:translateX(-50%);margin:0;padding:7px 14px;border:1px solid #d9b75c;border-radius:99px;background:rgba(6,24,43,.88);color:#fff1b8;font-size:16px;white-space:nowrap}
+.interior-hotspot{position:absolute;z-index:2;min-height:46px;padding:8px 12px;border:1px solid #85a8b8;border-radius:13px;background:rgba(10,35,57,.9);color:#eef8fa;font-weight:800;cursor:pointer}
+.interior-hotspot.current{border-color:#ffe075;box-shadow:0 0 0 4px rgba(255,224,117,.18);animation:questPulse 2.4s ease-in-out infinite}
+#interior-note{left:18%;bottom:24%}#interior-lens{right:20%;top:31%}
+.interior-exit{left:18px;top:16px;background:rgba(10,35,57,.94)}
+.interior-caption{position:absolute;left:18%;right:18%;bottom:12%;padding:9px 13px;border:1px solid rgba(190,226,237,.35);border-radius:13px;background:rgba(4,18,34,.86);color:#d5e8ec;text-align:center}
+.world-dialogue{position:absolute;z-index:16;right:18px;bottom:76px;width:min(390px,calc(100% - 36px));display:grid;grid-template-columns:58px 1fr auto;gap:10px;align-items:center;
+  padding:11px 12px;border:2px solid #e2bd58;border-radius:17px;background:rgba(6,23,41,.95);color:#e9f6f8;box-shadow:0 12px 32px rgba(0,0,0,.35);pointer-events:none}
+.world-dialogue[hidden]{display:none}.dialogue-portrait{width:58px;height:58px;border:2px solid #69d8c9;border-radius:50%;display:grid;place-items:center;background:#173a4e;color:#f4ce63;font-size:27px}
+.dialogue-portrait img{width:54px;height:54px;object-fit:contain}
+.world-dialogue strong{display:block;color:#fff0b0}.world-dialogue p{margin:2px 0 0;color:#d1e7eb;font-size:14px}
+html body#edu-refresh .world-dialogue strong{color:#fff0b0!important}html body#edu-refresh .world-dialogue p{color:#d1e7eb!important}
+.dialogue-close{align-self:start;width:44px;height:44px;min-height:44px;border:1px solid #7594a7;border-radius:10px;background:#173653;color:#fff;cursor:pointer;pointer-events:auto}
+[data-model-id="cargo-crate"][data-model-state="active"],[data-model-id="harbor-console"][data-model-state="active"]{filter:url(#shadow) drop-shadow(0 0 8px rgba(87,212,192,.8))}
+[data-model-id="harbor-airship"][data-model-state="log-active"]{filter:url(#shadow) drop-shadow(0 0 7px rgba(243,199,92,.55))}
+[data-model-id="hidden-cave"][data-model-state="revealed"]{filter:drop-shadow(0 0 9px rgba(87,212,192,.7))}
+.interior-scene.lens-ready #interior-lens-machine{animation:lensReady 5s linear infinite;transform-origin:500px 206px}
+.generated-interior-object{position:absolute;z-index:1;display:block;object-fit:contain;filter:drop-shadow(0 8px 8px rgba(0,0,0,.45));pointer-events:none}
+#generated-interior-lens{left:36%;top:15%;width:28%}#generated-workbench{left:10%;bottom:12%;width:28%}
+.interior-scene.generated-interior-lens #interior-lens-machine,.interior-scene.generated-workbench #interior-workbench{opacity:0}
+.objective-strip{position:absolute;z-index:6;left:16px;right:16px;bottom:14px;display:flex;align-items:center;gap:12px;
+  padding:10px 14px;border:1px solid var(--line);border-radius:14px;background:rgba(4,18,34,.88);backdrop-filter:blur(8px)}
+.objective-strip strong{color:var(--gold);white-space:nowrap}.objective-strip span{min-width:0;color:#d7e7ed}
+.side{display:grid;gap:12px;position:sticky;top:10px}
+.panel{border:1px solid var(--line)!important;border-radius:20px;background:var(--atlas-panel)!important;color:#eef8fa!important;box-shadow:0 12px 35px rgba(0,0,0,.25)!important;padding:16px}
+.panel h2,.panel h3{margin:0 0 9px;color:#fff2c5!important}.panel p{margin:8px 0}
+html body#edu-refresh .side>.panel{background:rgba(7,23,45,.94)!important;color:#eef8fa!important;border-color:rgba(190,226,237,.35)!important}
+html body#edu-refresh .side>.panel :where(h2,h3){color:#fff2c5!important}
+html body#edu-refresh .side>.panel .spark-message{color:#cdeaf0!important}
+.companion{display:grid;grid-template-columns:76px 1fr;gap:12px;align-items:center}
+.spark-portrait{width:76px;height:76px;border-radius:50%;background:radial-gradient(circle,#4d92a8,#173653 70%);border:2px solid #83dacf;display:grid;place-items:center}
+.spark-portrait svg{width:64px;height:64px}.spark-portrait img{width:70px;height:70px;object-fit:contain}.spark-message{color:#cdeaf0}
+.progress-track{height:13px;border-radius:99px;background:#132d47;overflow:hidden;border:1px solid var(--line)}
+.progress-track span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--gold));transition:width .5s}
+.quest-list{display:grid;gap:7px;padding:0;margin:10px 0 0;list-style:none}.quest-list li{display:flex;gap:8px;align-items:flex-start;color:#9fb8c8}
+.quest-list li.active{color:#fff3c7}.quest-list li.done{color:#a9f1bd}.quest-list .mark{width:22px;text-align:center}
+.inventory{display:flex;flex-wrap:wrap;gap:8px}.item{border:1px solid var(--line);border-radius:12px;padding:7px 9px;background:#102d4e;color:#9db4c4}
+.item img{width:25px;height:25px;object-fit:contain;vertical-align:middle;margin-inline-end:5px;filter:saturate(.55)}
+.item.unlocked{color:#fff0b6;border-color:#ad9858;background:#293848}
+.item.unlocked img{filter:none}
+.save-row{display:flex;align-items:center;justify-content:space-between;gap:8px;color:#a9c7d0;font-size:13px}.save-dot{width:9px;height:9px;border-radius:50%;background:#7890a0}.save-dot.saved{background:var(--good)}
+.modal{border:0;padding:0;width:min(700px,calc(100% - 24px));max-height:92vh;border-radius:23px;background:#0c223d;color:#eef8fa;box-shadow:0 30px 90px rgba(0,0,0,.65)}
+html body#edu-refresh dialog.modal{background:#0c223d!important;color:#eef8fa!important;border-color:rgba(190,226,237,.35)!important}
+.modal::backdrop{background:rgba(2,9,19,.75);backdrop-filter:blur(5px)}
+.modal-inner{padding:clamp(18px,4vw,30px);overflow:auto;max-height:92vh}
+.modal-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.eyebrow{margin:0;color:var(--teal);font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+.modal h2{margin:3px 0;color:#fff0bd;font-size:clamp(24px,5vw,33px)}
+.close{border:1px solid var(--line);border-radius:11px;background:#193955;color:#fff;min-width:44px;min-height:44px;cursor:pointer}
+.story{color:#c8dfe6}.challenge-visual{margin:16px 0;border:1px solid var(--line);border-radius:17px;background:#102d4e;padding:14px;text-align:center}
+html body#edu-refresh .modal .eyebrow{color:#8ce6d6!important}html body#edu-refresh .modal .story{color:#d9ebee!important}
+.challenge-visual svg{display:block;width:min(100%,500px);max-height:220px;margin:auto}
+.question{font-weight:800;font-size:clamp(19px,4vw,25px);color:#fff;margin:16px 0 8px}.expression{font:800 clamp(30px,7vw,48px)/1.2 "Segoe UI",Arial,sans-serif;color:#fff0b0;direction:ltr;unicode-bidi:isolate;text-align:center;margin:10px 0}
+html body#edu-refresh .modal h2{color:#fff0bd!important}html body#edu-refresh .modal .question{color:#fff!important}html body#edu-refresh .modal .expression{color:#fff0b0!important}
+.choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0}.choice{padding:12px;min-height:58px}
+.choice:hover:not(:disabled),.word:hover:not(:disabled){border-color:var(--gold);transform:translateY(-1px)}
+.choice.correct{background:#174c38;border-color:var(--good)}.choice.wrong{background:#562c36;border-color:var(--bad)}
+.choice:disabled{cursor:default;opacity:.88}
+.feedback{min-height:30px;font-weight:750;margin:10px 0}.feedback.good{color:var(--good)}.feedback.try{color:var(--bad)}
+.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}.primary,.secondary{padding:10px 16px}
+.primary{background:linear-gradient(#3c8a73,#276451);border-color:#78d6b8}.secondary{background:linear-gradient(#294f70,#1b3c5c)}
+.hint{border-inline-start:4px solid var(--gold);background:#142f4a;border-radius:10px;padding:10px 12px;margin:12px 0;color:#d5e9ed}
+.hint[hidden],.completion[hidden],.settings[hidden]{display:none}
+.word-area{display:grid;gap:12px}.word-bank,.answer-line{display:flex;flex-wrap:wrap;gap:8px;min-height:58px;padding:10px;border:1px dashed #66869c;border-radius:13px;background:#0a1d34}
+.word{padding:8px 12px;min-height:42px}.answer-line .word{background:#315a76}.reading{direction:ltr;text-align:left;background:#f7f2df;color:#20334b;border-radius:13px;padding:15px;font-weight:650}
+.completion{text-align:center}.completion h2{font-size:clamp(29px,6vw,43px)}.completion .map-fragment{font-size:65px;filter:drop-shadow(0 0 18px #f2c95e)}
+.settings-grid{display:grid;gap:13px}.setting{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.switch{width:52px;height:30px;border:0;border-radius:99px;background:#30485d;position:relative;cursor:pointer}.switch:after{content:"";position:absolute;width:22px;height:22px;top:4px;left:4px;border-radius:50%;background:#fff;transition:transform .2s}.switch[aria-pressed=true]{background:#3e8c72}.switch[aria-pressed=true]:after{transform:translateX(22px)}
+.toast{position:fixed;z-index:80;left:50%;bottom:18px;transform:translate(-50%,130%);background:#07172d;border:1px solid var(--gold);color:#fff2bf;border-radius:13px;padding:10px 16px;transition:transform .3s;box-shadow:0 9px 30px #0008}.toast.show{transform:translate(-50%,0)}
+.celebrate{position:absolute;inset:0;z-index:7;pointer-events:none;overflow:hidden}.star{position:absolute;font-size:24px;animation:starBurst 1.4s ease-out forwards}
+.noscript{margin:30px auto;max-width:700px;padding:20px;background:#fff;color:#111;border-radius:15px}
+@keyframes cloudDrift{to{transform:translateX(45px)}}@keyframes waterShift{to{transform:translateX(36px)}}@keyframes sparkFloat{50%{transform:translateY(-3px) rotate(.6deg)}}
+@keyframes skyPulse{to{opacity:.75}}@keyframes questPulse{50%{box-shadow:0 0 0 6px rgba(243,199,92,.12),0 5px 0 rgba(0,0,0,.3)}}
+@keyframes markerBlink{50%{box-shadow:0 0 0 13px rgba(255,231,139,0);filter:brightness(1.18)}}@keyframes arrowNudge{50%{transform:translateY(4px)}}
+@keyframes generatedBridgeBuild{0%{opacity:.12;transform:translateY(24px) scale(.92)}55%{opacity:1;transform:translateY(-4px) scale(1.015)}100%{transform:none}}
+@keyframes generatedBeamSweep{0%,100%{transform:scaleX(-1) rotate(-2deg);opacity:.38}50%{transform:scaleX(-1) rotate(3deg);opacity:.68}}
+@keyframes environmentDrift{to{transform:translateY(-5px) translateX(7px)}}
+@keyframes waterGlint{0%{transform:translateX(-8px);opacity:.2}50%{opacity:.42}100%{transform:translateX(12px);opacity:.2}}
+@keyframes interactReady{50%{box-shadow:0 0 0 5px rgba(138,235,202,.14)}}@keyframes playerStep{to{translate:0 -2px}}
+@keyframes lensReady{to{rotate:360deg}}
+@keyframes beaconSweep{0%,100%{transform:rotate(-13deg)}50%{transform:rotate(13deg)}}@keyframes starBurst{to{transform:translate(var(--x),var(--y)) rotate(180deg);opacity:0}}
+@media(max-width:900px){.game-layout{grid-template-columns:1fr}.side{position:static;grid-template-columns:1fr 1fr}.world{min-height:auto}.world-hotspot{font-size:12px;padding:5px 8px}.objective-strip{position:relative;left:auto;right:auto;bottom:auto;border-radius:0;border-inline:0;border-bottom:0}.companion{grid-template-columns:62px 1fr}.spark-portrait{width:62px;height:62px}.spark-portrait svg{width:52px;height:52px}}
+@media(max-width:590px){.shell{padding:8px}.topbar{grid-template-columns:auto 1fr}.toolbar{grid-column:1/-1;justify-content:flex-end}.game-layout{gap:9px}.side{grid-template-columns:1fr}.world-card{border-radius:17px}.world{aspect-ratio:4/5}.world>svg{width:125%;max-width:none;transform:translateX(-10%)}.generated-environment,.generated-models{width:125%;left:-10%;right:auto}.environment-distant{left:34%;top:16%;width:30%}.environment-cloud-wide{left:-3%;top:18%;width:38%}.environment-cloud-small{right:-2%;top:22%;width:28%}.environment-land{top:42%;width:49%}.environment-land-right{top:39%}.environment-water{bottom:14%;width:38%}.world-hotspot{font-size:0;width:46px;height:46px;padding:0;border-radius:50%}.world-hotspot:before{content:"✦";font-size:20px}.world-hotspot.done:not(#hotspot-secret),.world-hotspot.locked{display:none}.world-hotspot.current:after{content:none}.quest-beacon-label{display:none}.quest-pin{width:31px;height:31px}.quest-arrow{width:18px;height:22px}.movement-controls{left:8px;top:8px;transform:none;grid-template-columns:repeat(4,44px);grid-template-rows:44px 44px;padding:6px;background:rgba(5,22,39,.68)}.move-button{font-size:16px}.move-button[data-direction="up"]{grid-column:1;grid-row:1}.move-button[data-direction="left"]{grid-column:2;grid-row:1}.move-button[data-direction="down"]{grid-column:3;grid-row:1}.move-button[data-direction="right"]{grid-column:4;grid-row:1}.interact-button{grid-column:1/5;grid-row:2}.movement-help{display:none}.world-dialogue{right:8px;bottom:72px;width:calc(100% - 16px);grid-template-columns:40px 1fr 44px;padding:8px 9px}.dialogue-portrait{width:40px;height:40px;font-size:20px}.dialogue-portrait img{width:38px;height:38px}.world-dialogue p{font-size:13px;line-height:1.4}.interior-scene>svg{width:100%;transform:none}.interior-title{top:72px}.interior-exit{top:12px}.interior-caption{left:8%;right:8%;bottom:7%}#interior-note{left:10%;bottom:22%}#interior-lens{right:8%;top:37%}.objective-strip{font-size:14px;align-items:flex-start}.objective-strip strong{white-space:normal}.choices{grid-template-columns:1fr}.modal-inner{padding:17px}.panel{padding:14px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+html.reduce-motion *,html.reduce-motion *:before,html.reduce-motion *:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+</style>
+</head>
+<body id="edu-refresh">
+<a class="skip" href="#world-card">Skip to the harbor</a>
+<noscript><div class="noscript">This interactive demo needs JavaScript enabled. No information is sent anywhere.</div></noscript>
+<main class="shell">
+<header class="topbar">
+  <a class="back" href="../sandbox.html">← Sandbox</a>
+  <div class="title"><h1>Atlas: The Lost Islands</h1><p>Cloud Harbor · playable prototype</p></div>
+  <div class="toolbar">
+    <button class="icon-button" id="journal-button" type="button" aria-label="Open expedition journal">📜</button>
+    <button class="icon-button" id="settings-button" type="button" aria-label="Open settings">⚙</button>
+  </div>
+</header>
+
+<div class="game-layout">
+<section class="world-card" id="world-card" aria-label="Cloud Harbor adventure world">
+  <div class="world" id="world">
+  <div class="generated-environment" id="generated-environment" aria-hidden="true">
+    <div class="environment-sky"></div>
+    <img class="environment-art environment-distant" src="./assets/generated/environment/distant-islands.webp" alt="" data-environment-layer>
+    <img class="environment-art environment-cloud-wide" src="./assets/generated/environment/cloud-mist-wide.webp" alt="" data-environment-layer>
+    <img class="environment-art environment-cloud-small" src="./assets/generated/environment/cloud-mist-small.webp" alt="" data-environment-layer>
+    <div class="environment-sea"></div>
+    <img class="environment-art environment-land environment-land-left" src="./assets/generated/environment/playable-land.webp" alt="" data-environment-layer>
+    <img class="environment-art environment-land environment-land-right" src="./assets/generated/environment/playable-land.webp" alt="" data-environment-layer>
+    <img class="environment-art environment-water one" src="./assets/generated/environment/water-highlight-strip.webp" alt="" data-environment-layer>
+    <img class="environment-art environment-water two" src="./assets/generated/environment/water-highlight-strip.webp" alt="" data-environment-layer>
+    <img class="environment-art environment-water three" src="./assets/generated/environment/water-highlight-strip.webp" alt="" data-environment-layer>
+  </div>
+  <svg viewBox="0 0 1000 562" role="img" aria-labelledby="world-title world-desc">
+    <title id="world-title">Cloud Harbor and the dark lighthouse</title>
+    <desc id="world-desc">An original illustrated floating harbor with a dock, airship, cargo, a broken bridge, a lighthouse island, Spark the mechanical companion, and a hidden cave.</desc>
+    <defs>
+      <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#5ca9bd"/><stop offset=".58" stop-color="#b8e1df"/><stop offset="1" stop-color="#e8d9b8"/></linearGradient>
+      <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#2d8098"/><stop offset="1" stop-color="#123f61"/></linearGradient>
+      <linearGradient id="island" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#71865e"/><stop offset=".35" stop-color="#536646"/><stop offset=".36" stop-color="#73543d"/><stop offset="1" stop-color="#342c34"/></linearGradient>
+      <linearGradient id="cliff" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#89644a"/><stop offset=".5" stop-color="#624638"/><stop offset="1" stop-color="#302a34"/></linearGradient>
+      <linearGradient id="wood" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#8b5c3e"/><stop offset="1" stop-color="#513829"/></linearGradient>
+      <linearGradient id="brass" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffe59a"/><stop offset=".4" stop-color="#d8a74c"/><stop offset="1" stop-color="#8d5b2d"/></linearGradient>
+      <radialGradient id="sun"><stop stop-color="#fff6c9"/><stop offset=".4" stop-color="#f0cd78"/><stop offset="1" stop-color="#e59a59" stop-opacity="0"/></radialGradient>
+      <pattern id="cliff-lines" width="38" height="30" patternUnits="userSpaceOnUse"><path d="M4 0 0 8m38 7-11 11M15 30l8-8" stroke="#d1a27c" stroke-width="2" opacity=".2"/></pattern>
+      <filter id="glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      <filter id="shadow"><feDropShadow dx="0" dy="8" stdDeviation="8" flood-opacity=".35"/></filter>
+      <filter id="small-glow"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    </defs>
+    <g id="svg-environment">
+    <rect width="1000" height="562" fill="url(#sky)"/>
+    <circle class="sky-glow" cx="758" cy="77" r="118" fill="url(#sun)"/>
+    <g fill="#fff" opacity=".45">
+      <path class="cloud" d="M40 92c26-34 80-22 86 10 34-22 81 2 72 35H24c-11-20-1-39 16-45Z"/>
+      <path class="cloud slow" d="M662 162c20-28 65-20 74 6 30-16 66 5 57 31H632c-7-19 5-33 30-37Z"/>
+      <path class="cloud" d="M340 54c16-22 53-16 60 6 25-14 55 4 48 27H316c-6-16 4-28 24-33Z"/>
+    </g>
+    <g opacity=".42" filter="url(#shadow)">
+      <path d="M455 238q47-43 99-7l-13 33-91 2Z" fill="#5f7769"/>
+      <path d="m474 264 18 38 32-38Z" fill="#4b3e3c"/>
+      <path d="M892 192q35-32 74-7l-10 25-72 2Z" fill="#617d70"/>
+      <path d="m902 211 16 29 25-29Z" fill="#453a3b"/>
+    </g>
+    <g fill="none" stroke="#31596a" stroke-width="4" stroke-linecap="round" opacity=".65">
+      <path d="m513 106 12-8 12 8M548 130l10-7 10 7M272 125l11-7 11 7"/>
+    </g>
+    <path d="M0 346C151 315 274 370 405 343s249-47 381-12 151 18 214 7v224H0Z" fill="url(#sea)"/>
+    <g opacity=".22" stroke="#b6eef2" stroke-width="3">
+      <path class="water-line" d="M-60 405q80-22 160 0t160 0 160 0 160 0 160 0 160 0 160 0" fill="none"/>
+      <path class="water-line" d="M-20 465q70-20 140 0t140 0 140 0 140 0 140 0 140 0 140 0" fill="none"/>
+      <path class="water-line" d="M-80 525q90-19 180 0t180 0 180 0 180 0 180 0 180 0" fill="none"/>
+    </g>
+    <g filter="url(#shadow)">
+      <path d="M12 292 222 246l160 73-41 176-208 4-98-75Z" fill="url(#island)"/>
+      <path d="M621 262 845 218l142 84-30 185-226 13-117-102Z" fill="url(#island)"/>
+    </g>
+    <g opacity=".42" fill="url(#cliff-lines)">
+      <path d="M31 355 133 499l208-4 30-130-48 30-100 25-112-4Z"/>
+      <path d="m641 332 90 168 226-13 21-130-85 44-107 25-93-27Z"/>
+    </g>
+    <g fill="none" stroke="#a4bd7c" stroke-width="7" stroke-linecap="round" opacity=".85">
+      <path d="M22 299q74-11 133-34t132 20q45 21 84 34"/>
+      <path d="M629 269q87-20 160-39t126 30q34 29 62 41"/>
+    </g>
+    <g fill="#b2c88c" opacity=".9">
+      <path d="m48 321 8-25 8 26 9-22 6 27ZM283 306l8-23 8 24 8-19 7 25ZM687 282l8-25 8 27 9-21 7 26ZM923 290l8-24 8 26 9-18 7 24Z"/>
+    </g>
+    <g fill="#465052" opacity=".8">
+      <ellipse cx="79" cy="477" rx="17" ry="9"/><ellipse cx="300" cy="475" rx="24" ry="10"/><ellipse cx="708" cy="468" rx="23" ry="11"/><ellipse cx="942" cy="461" rx="19" ry="9"/>
+    </g>
+    </g>
+    <g id="harbor-buildings">
+      <path d="M70 296h116v100H70Z" fill="#c59c67" stroke="#493b35" stroke-width="5"/>
+      <path d="m57 298 72-62 74 62Z" fill="#31576a" stroke="#493b35" stroke-width="5"/>
+      <path d="M91 260v-43h24v26" fill="#74503c" stroke="#493b35" stroke-width="5"/>
+      <path d="M101 211q-18-20 1-34 18-12 3-29" fill="none" stroke="#d7eef0" stroke-width="9" stroke-linecap="round" opacity=".45"/>
+      <rect x="88" y="331" width="28" height="65" fill="#604534"/><rect x="140" y="323" width="28" height="31" fill="#f6d887" stroke="#493b35" stroke-width="4"/>
+      <path d="M154 323v31M140 338h28" stroke="#8c6744" stroke-width="3"/>
+      <path d="M78 303h99" stroke="#e3b875" stroke-width="6" opacity=".65"/>
+      <path d="M39 403h285v32H39Z" fill="url(#wood)" stroke="#382b27" stroke-width="5"/>
+      <path d="M70 435v52M130 435v52M220 435v52M290 435v52" stroke="#382b27" stroke-width="10"/>
+      <path d="M40 421h284M67 405v30M126 405v30M217 405v30M287 405v30" stroke="#c2915c" stroke-width="3" opacity=".55"/>
+      <path d="M217 356h59v47h-59Z" fill="#306d82" stroke="#493b35" stroke-width="4"/>
+      <path d="M239 356v47M217 379h59" stroke="#d0e4e0" stroke-width="3"/>
+      <path d="M198 305v93M198 311h38" stroke="#3c332f" stroke-width="6"/>
+      <path d="m236 311-12 10 12 10Z" fill="#e7b959" stroke="#3c332f" stroke-width="3"/>
+      <g transform="translate(51 370)"><ellipse cx="0" cy="25" rx="15" ry="7" fill="#332b29"/><path d="M-12 0h24l-3 27H-9Z" fill="#805338" stroke="#332b29" stroke-width="3"/><path d="M-11 9h22M0 0v27" stroke="#c49158" stroke-width="2"/></g>
+      <g id="crate-art" data-model-id="cargo-crate">
+        <path d="M118 402v-53h61v53Z" fill="#2e71a2" stroke="#2c2c35" stroke-width="5"/>
+        <path d="M118 349l30-15 31 15-31 14Z" fill="#5aa4cb" stroke="#2c2c35" stroke-width="4"/>
+        <path d="M148 363v39M118 374h61" stroke="#a8d5df" stroke-width="4"/>
+      </g>
+    </g>
+    <g id="airship" data-model-id="harbor-airship" transform="translate(125 175)" filter="url(#shadow)">
+      <path d="M0 48C16 3 129-5 166 29c-19 42-132 53-166 19Z" fill="#d8b066" stroke="#3b3741" stroke-width="5"/>
+      <path d="M12 52Q77 10 155 33" fill="none" stroke="#ffe6ad" stroke-width="4" opacity=".65"/>
+      <path d="m18 57-30 18 35 5M147 54l25 17-31 5" fill="#b96f48" stroke="#3b3741" stroke-width="4"/>
+      <path d="M31 29h101" stroke="#f3ddb1" stroke-width="5" stroke-linecap="round"/>
+      <path d="m60 70 18 35h51l18-43" fill="#704a37" stroke="#3b3741" stroke-width="5"/>
+      <path d="M82 68v37M124 66v39" stroke="#3b3741" stroke-width="4"/>
+      <rect x="89" y="78" width="27" height="16" rx="5" fill="#8bd7d0" stroke="#3b3741" stroke-width="3"/>
+      <path d="M75 106q28 17 60-2" fill="none" stroke="#d2a56b" stroke-width="4"/>
+      <circle cx="170" cy="38" r="14" fill="#df8350" stroke="#3b3741" stroke-width="4"/>
+      <path d="M176 27v22M165 38h22" stroke="#ffd59b" stroke-width="3"/>
+    </g>
+    <g id="bridge-art" data-model-id="atlas-bridge" transform="translate(340 342)">
+      <path d="M0 22 285-34" stroke="#25333d" stroke-width="13" stroke-dasharray="40 18" opacity=".5"/>
+      <g id="bridge-pieces">
+        <path class="bridge-piece" d="m0 0 58-11 22 31-59 12Z" fill="#a56e42" stroke="#392c29" stroke-width="5"/>
+        <path class="bridge-piece" d="m58-11 58-12 22 31-58 12Z" fill="#ae7749" stroke="#392c29" stroke-width="5"/>
+        <path class="bridge-piece" d="m116-23 58-11 22 31-58 11Z" fill="#a56e42" stroke="#392c29" stroke-width="5"/>
+        <path class="bridge-piece" d="m174-34 58-12 22 31-58 12Z" fill="#ae7749" stroke="#392c29" stroke-width="5"/>
+        <path class="bridge-piece" d="m232-46 58-11 22 31-58 11Z" fill="#a56e42" stroke="#392c29" stroke-width="5"/>
+      </g>
+      <path d="M0-6 285-62M22 38l289-58" stroke="#dfc47c" stroke-width="4" fill="none"/>
+      <path d="M4-3v-32M61-14v-32M119-26v-32M177-38v-32M235-50v-32M290-60v-32M21 38V7M80 26V-5M138 14v-31M196 3v-31M254-9v-31M311-20v-31" stroke="#3a3836" stroke-width="5"/>
+    </g>
+    <g id="console-art" data-model-id="harbor-console" transform="translate(566 270)" filter="url(#shadow)">
+      <path d="m0 84 18-75h77l18 75Z" fill="#2a4d5e" stroke="#26333a" stroke-width="5"/>
+      <rect x="30" y="24" width="50" height="35" rx="5" fill="#173040" stroke="#62c6bc" stroke-width="4"/>
+      <circle cx="45" cy="42" r="6" fill="#df7f45"/><circle cx="65" cy="42" r="6" fill="#506576"/>
+      <path d="M11 74h91M21 61h70" stroke="#76a8ae" stroke-width="3" opacity=".5"/>
+      <circle cx="93" cy="17" r="10" fill="url(#brass)" stroke="#26333a" stroke-width="4"/><path d="M93 9v16M85 17h16" stroke="#5a402d" stroke-width="3"/>
+    </g>
+    <g id="lighthouse" data-model-id="cloud-lighthouse" transform="translate(746 96)">
+      <path d="M42 238 63 54h62l23 184Z" fill="#e4d5b2" stroke="#3f3b3c" stroke-width="6"/>
+      <path d="M59 92h70M54 138h81M49 184h91" stroke="#bb674d" stroke-width="17"/>
+      <path d="M52 54h85l-12-32H63Z" fill="#334d5b" stroke="#3f3b3c" stroke-width="5"/>
+      <path d="M55 57h78M48 71h93" stroke="#2d3c44" stroke-width="5"/>
+      <path d="M48 71v23M68 71v20M92 71v20M116 71v20M138 71v23" stroke="#2d3c44" stroke-width="4"/>
+      <rect class="beacon-core" x="73" y="31" width="42" height="24" fill="#627580" stroke="#3f3b3c" stroke-width="4"/>
+      <path class="beacon-ray" d="M94 43 8-10v104Z" fill="#fff4a6"/>
+      <path class="beacon-ray" d="m94 43 135-50v102Z" fill="#fff4a6"/>
+      <path d="M36 238h119v22H36Z" fill="#514032"/>
+      <path d="M85 238v-47h24v47" fill="#2b4c5d" stroke="#3f3b3c" stroke-width="5"/>
+      <path d="M91 198h12M91 211h12" stroke="#78cec1" stroke-width="4"/>
+      <path d="M154 230q24 5 34 26M36 230q-23 8-28 28" fill="none" stroke="#c6a166" stroke-width="5"/>
+    </g>
+    <g id="secret-art" data-model-id="hidden-cave" class="secret-cave">
+      <path d="M864 403q46-45 93 2l-2 68-90 4Z" fill="#172436" stroke="#89b2ba" stroke-width="5"/>
+      <path d="M880 466q28-87 60 0" fill="#050d18"/>
+      <path class="secret-crystal" d="m912 438 10-20 13 18-8 25Z" fill="#517080" stroke="#b1d2d4" stroke-width="2"/>
+    </g>
+    <g id="player" data-model-id="atlas-explorer" transform="translate(334 316)" filter="url(#shadow)">
+      <ellipse cx="0" cy="69" rx="31" ry="11" fill="#061522" opacity=".4"/>
+      <path d="M-21 63-13 6h29l13 57Z" fill="#384f77" stroke="#202b3b" stroke-width="4"/>
+      <circle cx="1" cy="-9" r="23" fill="#b87d57" stroke="#202b3b" stroke-width="4"/>
+      <path d="M-20-14Q0-42 22-14v-10Q0-50-24-21Z" fill="#263549"/>
+      <path d="m-12 61-9 31M18 61l12 30" stroke="#202b3b" stroke-width="10" stroke-linecap="round"/>
+      <path d="m-18 20-25 29M22 20l24 25" stroke="#b87d57" stroke-width="9" stroke-linecap="round"/>
+      <path d="M-20 12q-18 17-13 47" fill="none" stroke="#b2713e" stroke-width="12"/><path d="M-18 9q-20 15-14 49" fill="none" stroke="#263549" stroke-width="3"/>
+      <path d="m15 6 29 13-25 6Z" fill="#d98a49" stroke="#202b3b" stroke-width="3"/>
+      <circle cx="-8" cy="-8" r="2.5" fill="#101b2b"/><circle cx="9" cy="-8" r="2.5" fill="#101b2b"/>
+    </g>
+    <g id="spark" data-model-id="spark-companion" class="spark-body" transform="translate(443 244)" filter="url(#shadow)">
+      <path d="M5 32-17 16l8 28M57 32l24-15-10 29" fill="#68c9c0" stroke="#28323a" stroke-width="4" opacity=".9"/>
+      <path d="m0 30 18-19 29 2 15 22-10 25-27 7L4 55Z" fill="#d19a4d" stroke="#28323a" stroke-width="5"/>
+      <path d="m8 30 15-11 20 2 12 15-8 18-20 5-16-10Z" fill="url(#brass)" opacity=".75"/>
+      <circle cx="23" cy="36" r="10" fill="#162e3d" stroke="#6fe0d1" stroke-width="4"/>
+      <circle cx="23" cy="36" r="3" fill="#e8fff8"/>
+      <path d="M-1 39-20 25M59 41l20-15M25 13V-5" stroke="#28323a" stroke-width="6" stroke-linecap="round"/>
+      <circle cx="25" cy="-8" r="7" fill="#6fe0d1" stroke="#28323a" stroke-width="3"/>
+      <circle cx="-12" cy="59" r="3" fill="#82e9dc" opacity=".65"/><circle cx="-22" cy="68" r="2" fill="#82e9dc" opacity=".4"/>
+    </g>
+  </svg>
+  <div class="generated-models" id="generated-models" aria-hidden="true">
+    <img class="generated-model" id="generated-airship" alt="">
+    <img class="generated-model" id="generated-crate" alt="">
+    <img class="generated-model" id="generated-bridge" alt="">
+    <img class="generated-model" id="generated-console" alt="">
+    <img class="generated-model" id="generated-lighthouse-beam" src="./assets/generated/lighthouse/lighthouse-beam.webp" alt="">
+    <img class="generated-model" id="generated-lighthouse" alt="">
+    <img class="generated-model" id="generated-cave" alt="">
+    <img class="generated-model" id="generated-spark" alt="">
+    <img class="generated-model" id="generated-player" alt="">
+  </div>
+  <button class="world-hotspot" id="hotspot-spark" type="button" aria-label="Talk to Spark">Talk to Spark</button>
+  <button class="world-hotspot" id="hotspot-crate" data-step="0" type="button" aria-label="Inspect the cargo crates">Cargo crates</button>
+  <button class="world-hotspot" id="hotspot-bridge" data-step="1" type="button" aria-label="Inspect the broken bridge">Broken bridge</button>
+  <button class="world-hotspot" id="hotspot-boat" data-step="2" type="button" aria-label="Inspect the airship log">Airship log</button>
+  <button class="world-hotspot" id="hotspot-console" data-step="3" type="button" aria-label="Use the harbor console">Harbor console</button>
+  <button class="world-hotspot" id="hotspot-lighthouse" type="button" aria-label="Enter the lighthouse">Lighthouse</button>
+  <button class="world-hotspot" id="hotspot-secret" type="button" aria-label="Explore the hidden cave">Hidden cave</button>
+  <div class="quest-beacon" id="quest-beacon" aria-hidden="true"><span class="quest-beacon-label">NEXT</span><span class="quest-pin"></span><span class="quest-arrow"></span></div>
+  <div class="movement-controls" aria-label="Explorer movement controls">
+    <button class="move-button" data-direction="up" type="button" aria-label="Move explorer up">▲</button>
+    <button class="move-button" data-direction="left" type="button" aria-label="Move explorer left">◀</button>
+    <button class="move-button" data-direction="down" type="button" aria-label="Move explorer down">▼</button>
+    <button class="move-button" data-direction="right" type="button" aria-label="Move explorer right">▶</button>
+    <button class="move-button interact-button" id="interact-button" type="button">Interact</button>
+  </div>
+  <div class="movement-help" id="movement-help"><strong>Explore:</strong> Arrow keys or WASD · E to interact</div>
+  <div class="world-dialogue" id="world-dialogue" role="status" hidden>
+    <div class="dialogue-portrait" aria-hidden="true"><img id="dialogue-portrait-image" src="./assets/generated/portraits/spark-neutral-portrait.webp" alt=""></div>
+    <div><strong id="dialogue-speaker">Spark</strong><p id="dialogue-text"></p></div>
+    <button class="dialogue-close" id="dialogue-close" type="button" aria-label="Close dialogue">×</button>
+  </div>
+  <section class="interior-scene" id="interior-scene" aria-label="Lighthouse interior" hidden>
+    <svg viewBox="0 0 1000 562" role="img" aria-labelledby="interior-title-svg interior-desc">
+      <title id="interior-title-svg">The lighthouse lens chamber</title>
+      <desc id="interior-desc">A round stone chamber with a brass lens machine, a weathered engineer's note, stairs, lanterns, and a large window overlooking the clouds.</desc>
+      <defs>
+        <radialGradient id="interior-wall" cx="50%" cy="35%" r="75%"><stop stop-color="#36536a"/><stop offset=".6" stop-color="#162b41"/><stop offset="1" stop-color="#081725"/></radialGradient>
+        <radialGradient id="lens-light"><stop stop-color="#fff6b0"/><stop offset=".35" stop-color="#6ee0d0" stop-opacity=".7"/><stop offset="1" stop-color="#6ee0d0" stop-opacity="0"/></radialGradient>
+        <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#385064"/><stop offset="1" stop-color="#17283a"/></linearGradient>
+      </defs>
+      <rect width="1000" height="562" fill="url(#interior-wall)"/>
+      <path d="M0 380Q500 290 1000 380V562H0Z" fill="url(#floor)"/>
+      <path d="M30 375Q500 285 970 375" fill="none" stroke="#78909b" stroke-width="8" opacity=".45"/>
+      <g opacity=".32" stroke="#9eb0b7" stroke-width="3">
+        <path d="M45 80h220v115H45ZM735 80h220v115H735ZM70 235h170v80H70ZM760 235h170v80H760Z" fill="#10273a"/>
+        <path d="M155 80v115M845 80v115M70 275h170M760 275h170"/>
+      </g>
+      <g id="interior-lens-machine" transform="translate(410 86)">
+        <circle cx="90" cy="120" r="135" fill="url(#lens-light)" opacity=".5"/>
+        <path d="M18 295h144l-18-153H36Z" fill="#71523c" stroke="#111c27" stroke-width="7"/>
+        <circle cx="90" cy="120" r="84" fill="#1b3447" stroke="#d4ab52" stroke-width="12"/>
+        <circle cx="90" cy="120" r="56" fill="#79d9ce" stroke="#263d4d" stroke-width="9"/>
+        <path d="M90 64v112M34 120h112M50 80l80 80M130 80l-80 80" stroke="#f6e19a" stroke-width="7" opacity=".72"/>
+        <circle cx="90" cy="120" r="17" fill="#fff5b7" filter="url(#small-glow)"/>
+        <path d="M2 295h176M30 264h120" stroke="#d5b066" stroke-width="8"/>
+      </g>
+      <g id="interior-workbench" transform="translate(115 325)">
+        <path d="M0 70h220v85H0Z" fill="#684a35" stroke="#17212a" stroke-width="7"/>
+        <path d="M18 62h184l-14-48H32Z" fill="#936744" stroke="#17212a" stroke-width="7"/>
+        <path d="m74 45 64-14 12 45-65 14Z" fill="#eee2bd" stroke="#5b4637" stroke-width="4"/>
+        <path d="m91 53 39-8M94 63l45-9M98 73l31-7" stroke="#756550" stroke-width="3"/>
+        <circle cx="178" cy="43" r="18" fill="#d6a64c" stroke="#3d322d" stroke-width="5"/>
+      </g>
+      <g transform="translate(770 336)" fill="none" stroke="#b68a50" stroke-width="12">
+        <path d="M0 150h160M18 150 120 0M55 150 145 22M92 150l67-100"/>
+      </g>
+      <g fill="#f6ca65" stroke="#3f342d" stroke-width="5">
+        <path d="M73 166h35v62H73Z"/><path d="M892 165h35v62h-35Z"/>
+      </g>
+      <g fill="#fff0a5" filter="url(#small-glow)"><circle cx="91" cy="190" r="11"/><circle cx="909" cy="189" r="11"/></g>
+      <path d="M285 116q-80 45-116 126M716 115q82 45 117 127" fill="none" stroke="#d1b16e" stroke-width="6" stroke-dasharray="12 10" opacity=".55"/>
+    </svg>
+    <img class="generated-interior-object" id="generated-interior-lens" alt="">
+    <img class="generated-interior-object" id="generated-workbench" alt="">
+    <h3 class="interior-title">Lighthouse Lens Chamber</h3>
+    <button class="interior-hotspot interior-exit" id="interior-exit" type="button">← Return outside</button>
+    <button class="interior-hotspot" id="interior-note" type="button">Read Mira's note</button>
+    <button class="interior-hotspot" id="interior-lens" type="button">Align the lens</button>
+    <div class="interior-caption" id="interior-caption">The chamber is silent. Mira's note rests on the workbench.</div>
+  </section>
+  <div class="celebrate" id="celebrate" aria-hidden="true"></div>
+  </div>
+  <div class="objective-strip" aria-live="polite"><strong>Current objective</strong><span id="objective">Talk to Spark near the dock.</span></div>
+</section>
+
+<aside class="side" aria-label="Expedition information">
+  <section class="panel companion">
+    <div class="spark-portrait" aria-hidden="true">
+      <img id="spark-panel-portrait" src="./assets/generated/portraits/spark-neutral-portrait.webp" alt="">
+    </div>
+    <div><h2>Spark</h2><p class="spark-message" id="spark-message">The harbor is quiet. Wake me and we will investigate together.</p></div>
+  </section>
+  <section class="panel">
+    <h2>Harbor restoration</h2>
+    <div class="progress-track" role="progressbar" aria-label="Adventure progress" aria-valuemin="0" aria-valuemax="6" aria-valuenow="0"><span id="progress-fill"></span></div>
+    <p><strong id="progress-text">0 of 6 challenges complete</strong></p>
+    <ol class="quest-list" id="quest-list"></ol>
+  </section>
+  <section class="panel">
+    <h2>Expedition tools</h2>
+    <div class="inventory">
+      <span class="item" id="item-atlas"><img src="./assets/generated/inventory/atlas-page-icon.webp" alt="">Atlas page</span>
+      <span class="item" id="item-lens"><img src="./assets/generated/inventory/echo-lens-icon.webp" alt="">Echo Lens</span>
+      <span class="item" id="item-fragment"><img src="./assets/generated/inventory/map-fragment-icon.webp" alt="">Map fragment</span>
+    </div>
+    <div class="save-row"><span><span class="save-dot" id="save-dot"></span> <span id="save-status">Progress stays on this device.</span></span><button class="secondary" id="reset-button" type="button">Reset</button></div>
+  </section>
+</aside>
+</div>
+</main>
+
+<dialog class="modal" id="challenge-dialog" aria-labelledby="challenge-title">
+<div class="modal-inner">
+  <div class="modal-head"><div><p class="eyebrow" id="challenge-label"></p><h2 id="challenge-title"></h2></div><button class="close" id="close-challenge" type="button" aria-label="Close challenge">×</button></div>
+  <p class="story" id="challenge-story"></p>
+  <div class="challenge-visual" id="challenge-visual"></div>
+  <p class="question" id="challenge-question"></p>
+  <p class="expression" id="challenge-expression"></p>
+  <div id="challenge-content"></div>
+  <p class="feedback" id="challenge-feedback" role="status"></p>
+  <div class="hint" id="challenge-hint" hidden></div>
+  <div class="actions">
+    <button class="secondary" id="hint-button" type="button">Show a hint</button>
+    <button class="primary" id="continue-button" type="button" hidden>Return to the harbor</button>
+  </div>
+</div>
+</dialog>
+
+<dialog class="modal" id="info-dialog" aria-labelledby="info-title">
+<div class="modal-inner">
+  <div class="modal-head"><div><p class="eyebrow" id="info-label">Expedition</p><h2 id="info-title"></h2></div><button class="close" id="close-info" type="button" aria-label="Close">×</button></div>
+  <div id="info-content"></div>
+</div>
+</dialog>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script id="atlas-world-models" type="application/json">
+{
+  "schemaVersion": 1,
+  "artDirection": {
+    "name": "Atlas painterly isometric adventure",
+    "description": "Original premium 2D game art with a three-quarter isometric view, hand-painted shapes, clean silhouettes, warm brass technology, teal energy, weathered wood, soft cinematic light, and enough detail for ages 9-12 without looking preschool-like.",
+    "renderRequirements": ["transparent background", "no text", "no logo", "no copyrighted character resemblance", "consistent upper-left light", "soft contact shadow on separate layer", "readable at 96 pixels", "WebP or PNG with alpha"],
+    "camera": "three-quarter front view, approximately 25-degree elevation",
+    "palette": ["deep navy", "cloud teal", "warm brass", "weathered cedar", "lighthouse coral", "parchment cream"]
+  },
+  "models": [
+    {
+      "id": "atlas-explorer",
+      "role": "player",
+      "svgGroupId": "player",
+      "interaction": {"x": 334, "y": 316, "radius": 0, "label": "explorer"},
+      "states": ["idle", "walk-north", "walk-south", "walk-east", "walk-west", "celebrate"],
+      "assetSlots": {"idle": "assets/models/explorer/idle.webp", "walk": "assets/models/explorer/walk-strip.webp", "celebrate": "assets/models/explorer/celebrate.webp"},
+      "prompt": "Create an original courageous 10-year-old sky explorer for a premium educational adventure game. Three-quarter isometric full-body pose, practical navy expedition coat, compact leather backpack, burnt-orange scarf, sturdy boots, friendly focused expression, no weapon. Produce an idle pose, four-direction walk sprites, and a joyful discovery pose. Keep the silhouette readable at small size and preserve identical clothing and proportions across every state."
+    },
+    {
+      "id": "spark-companion",
+      "role": "companion",
+      "svgGroupId": "spark",
+      "interaction": {"x": 350, "y": 294, "radius": 82, "label": "Spark"},
+      "states": ["sleeping", "idle", "guiding", "celebrate", "concerned"],
+      "assetSlots": {"idle": "assets/models/spark/idle.webp", "states": "assets/models/spark/state-strip.webp"},
+      "prompt": "Create Spark, an original palm-sized hovering mechanical companion for a premium sky-island adventure. Hexagonal warm-brass body, one expressive circular teal lens-eye, small translucent teal stabilizer fins, short antenna with glowing tip, subtle rivets and weathering. Friendly and clever rather than cute or babyish. Produce sleeping, calm hover, pointing/guiding, celebration, and concerned states with identical proportions."
+    },
+    {
+      "id": "cargo-crate",
+      "role": "quest-object",
+      "svgGroupId": "crate-art",
+      "interaction": {"x": 150, "y": 332, "radius": 82, "label": "cargo crates"},
+      "states": ["sealed", "active", "opened"],
+      "assetSlots": {"sealed": "assets/models/cargo-crate/sealed.webp", "active": "assets/models/cargo-crate/active.webp", "opened": "assets/models/cargo-crate/opened.webp"},
+      "prompt": "Create an original blue harbor cargo crate used as a quest object in an isometric adventure game. Weathered blue-painted wood reinforced with dark metal corners, pale teal straps, brass lock plate, subtle atlas compass emblem without letters. Produce sealed, softly glowing active, and opened states. The opened state contains a small teal bridge-energy cell."
+    },
+    {
+      "id": "harbor-airship",
+      "role": "landmark",
+      "svgGroupId": "airship",
+      "interaction": {"x": 235, "y": 294, "radius": 82, "label": "airship log"},
+      "states": ["docked", "log-active", "launch-ready"],
+      "assetSlots": {"docked": "assets/models/airship/docked.webp", "active": "assets/models/airship/log-active.webp"},
+      "prompt": "Create an original compact cloud-harbor airship in premium painterly isometric game style. Golden canvas balloon, cedar gondola, coral tail propeller, teal glass navigation window, ropes and brass fittings, visibly repaired and practical. Produce docked, navigation-log glowing, and launch-ready states with a clean transparent silhouette."
+    },
+    {
+      "id": "atlas-bridge",
+      "role": "world-gate",
+      "svgGroupId": "bridge-art",
+      "interaction": {"x": 350, "y": 326, "radius": 82, "label": "bridge mechanism"},
+      "states": ["broken", "building-1", "building-2", "building-3", "complete"],
+      "assetSlots": {"broken": "assets/models/bridge/broken.webp", "segments": "assets/models/bridge/segments.webp", "complete": "assets/models/bridge/complete.webp"},
+      "prompt": "Create an original modular rope-and-wood bridge spanning two floating islands, three-quarter isometric view. Weathered cedar planks, dark iron brackets, thick golden rope rails, five clearly separate bridge sections, teal energy seams under each section. Produce a broken state, five independent construction segments, and a complete stable state so the game can animate assembly one section at a time."
+    },
+    {
+      "id": "harbor-console",
+      "role": "quest-object",
+      "svgGroupId": "console-art",
+      "interaction": {"x": 650, "y": 294, "radius": 82, "label": "harbor console"},
+      "states": ["offline", "active", "solved"],
+      "assetSlots": {"offline": "assets/models/console/offline.webp", "active": "assets/models/console/active.webp", "solved": "assets/models/console/solved.webp"},
+      "prompt": "Create an original waist-high harbor control console for an isometric fantasy-technology adventure. Slate-blue metal pedestal, angled dark glass screen, brass rotary control, teal circuit lines, coral warning lamp, worn edges. Produce offline, interactive glowing, and solved green-teal states. No readable text on the screen."
+    },
+    {
+      "id": "cloud-lighthouse",
+      "role": "destination",
+      "svgGroupId": "lighthouse",
+      "interaction": {"x": 810, "y": 290, "radius": 82, "label": "lighthouse"},
+      "states": ["dark", "door-open", "lens-aligning", "lit"],
+      "assetSlots": {"dark": "assets/models/lighthouse/dark.webp", "open": "assets/models/lighthouse/door-open.webp", "lit": "assets/models/lighthouse/lit.webp"},
+      "prompt": "Create an original tall cloud-harbor lighthouse in premium painterly isometric game style. Parchment stone tower with muted coral bands, dark slate lantern roof, brass balcony rails, teal door and narrow glowing windows, built on a small rocky floating island. Produce dark, door-open, lens-aligning, and fully lit beacon states. The lit state includes a separate transparent light-beam layer."
+    },
+    {
+      "id": "hidden-cave",
+      "role": "secret",
+      "svgGroupId": "secret-art",
+      "interaction": {"x": 885, "y": 350, "radius": 82, "label": "hidden cave"},
+      "states": ["concealed", "revealed", "collected"],
+      "assetSlots": {"concealed": "assets/models/secret/concealed.webp", "revealed": "assets/models/secret/revealed.webp", "collected": "assets/models/secret/collected.webp"},
+      "prompt": "Create an original small secret cave entrance in the cliff of a floating lighthouse island. Dark indigo stone arch, thin teal mineral veins, partially hidden by grass, one warm crystal and a torn map fragment inside. Produce concealed, Echo-Lens revealed, and treasure-collected states. Keep the opening mysterious but not frightening."
+    },
+    {
+      "id": "cloud-harbor-landscape",
+      "role": "environment-background",
+      "svgGroupId": "svg-environment",
+      "interaction": {"x": 0, "y": 0, "radius": 0, "label": "distant cloud landscape"},
+      "states": ["morning", "restored"],
+      "assetSlots": {"morning": "assets/generated/environment/distant-islands.webp", "clouds": "assets/generated/environment/cloud-mist-wide.webp"},
+      "prompt": "Create a wide layered landscape for Cloud Harbor in premium cartoon-realistic painterly style. Show distant floating islands emerging through warm cream and cool blue clouds, tiny towers and bridges only as atmospheric silhouettes, and a clear turquoise sky with a soft golden morning sun. Keep the central gameplay area visually quiet. Export distant islands and cloud banks as separate transparent layers with no rectangular edges, matching a 16:9 three-quarter isometric game camera."
+    },
+    {
+      "id": "cloud-sea",
+      "role": "environment-surface",
+      "svgGroupId": "svg-environment",
+      "interaction": {"x": 0, "y": 0, "radius": 0, "label": "cloud sea"},
+      "states": ["calm", "shimmering"],
+      "assetSlots": {"surface": "assets/generated/environment/water-highlight-strip.webp"},
+      "prompt": "Create a seamless fantasy cloud-sea surface for an educational sky adventure. Blend deep teal-blue water with pale turquoise reflected light and soft cloud mist at the horizon. Provide a calm base texture plus several transparent horizontal highlight strips that can drift independently. The pattern must tile without visible seams, remain low contrast behind characters and controls, and contain no boats, creatures, text, or hard rectangular boundaries."
+    },
+    {
+      "id": "floating-land",
+      "role": "environment-terrain",
+      "svgGroupId": "svg-environment",
+      "interaction": {"x": 0, "y": 0, "radius": 0, "label": "floating island terrain"},
+      "states": ["harbor-left", "lighthouse-right"],
+      "assetSlots": {"terrain": "assets/generated/environment/playable-land.webp"},
+      "prompt": "Create modular walkable floating-island terrain in premium cartoon-realistic isometric style. Use a broad warm sandstone plateau with readable flat walking space, cool slate cliff faces, small moss and grass clusters, hanging rock fragments, and connection ledges for a bridge. Produce distinct left-harbor and right-lighthouse layouts with matching height, perspective, lighting, and bridge anchors. Keep interaction areas uncluttered and export each landmass on a tightly trimmed transparent canvas without color fringes."
+    }
+  ]
+}
+</script>
+<script id="atlas-challenges" type="application/json">
+[
+  {
+    "id":"blue-cargo","subject":"English · vocabulary and location","type":"choice","title":"The engineer's message","label":"Challenge 1 of 6",
+    "story":"Spark projects a short instruction. Use the colour and location words to identify the correct object.",
+    "variants":[
+      {"question":"Which object matches this instruction?","expression":"Find the blue box near the boat.","choices":["The blue crate beside the airship","The brown house behind the dock","The gold lighthouse across the bridge"],"answer":"The blue crate beside the airship","hint":"Look for three clues: blue, box, and near the boat.","explanation":"The blue cargo crate is beside the airship. The other objects do not match all three clues."},
+      {"question":"Which place matches this instruction?","expression":"Go to the tall tower across the bridge.","choices":["The lighthouse on the far island","The airship above the dock","The console beside the bridge"],"answer":"The lighthouse on the far island","hint":"A lighthouse is a tall tower. Across tells you it is on the other side.","explanation":"The lighthouse is the tall tower on the island across the bridge."},
+      {"question":"Which object matches this instruction?","expression":"Find the machine beside the bridge.","choices":["The harbor console","The blue cargo crate","The airship balloon"],"answer":"The harbor console","hint":"Beside means next to. Look for a machine next to the bridge.","explanation":"The harbor console is the machine positioned beside the bridge."},
+      {"question":"Which object matches this instruction?","expression":"Find the golden vehicle above the dock.","choices":["The airship","The lighthouse","The wooden bridge"],"answer":"The airship","hint":"A vehicle can carry people. Above means higher than the dock.","explanation":"The golden airship is floating above the dock."},
+      {"question":"Which object matches this instruction?","expression":"Find the small robot between the player and the bridge.","choices":["Spark","The harbor console","The lighthouse"],"answer":"Spark","hint":"Between means in the middle of two things.","explanation":"Spark is the small robot hovering between the explorer and the bridge."}
+    ],
+    "objective":"Use the bridge mechanism to calculate the required energy.",
+    "spark":"The crate holds a bridge cell. Four bridge sections each need six energy units.",
+    "reward":"cell"
+  },
+  {
+    "id":"bridge-energy","subject":"Mathematics · equal groups","type":"choice","title":"Power the bridge","label":"Challenge 2 of 6",
+    "story":"The bridge mechanism divides its power equally across four sections.",
+    "variants":[
+      {"question":"Four bridge sections need 6 energy units each. How many units are needed altogether?","expression":"4 × 6 = ?","choices":["18","24","30","10"],"answer":"24","hint":"Think of four equal groups: 6 + 6 + 6 + 6.","explanation":"Four groups of six make twenty-four: 4 × 6 = 24."},
+      {"question":"Five stabilizers need 7 energy units each. How many units are needed altogether?","expression":"5 × 7 = ?","choices":["30","35","42","12"],"answer":"35","hint":"Count five equal groups of seven, or use 10 × 7 and take half.","explanation":"Five groups of seven make thirty-five: 5 × 7 = 35."},
+      {"question":"Eight bridge lamps need 4 crystals each. How many crystals are needed?","expression":"8 × 4 = ?","choices":["24","28","32","36"],"answer":"32","hint":"Double 8 to get 16, then double again.","explanation":"Eight groups of four make thirty-two: 8 × 4 = 32."},
+      {"question":"Six support gears each have 9 teeth. How many teeth are there in all?","expression":"6 × 9 = ?","choices":["45","54","63","15"],"answer":"54","hint":"Use 6 × 10, then subtract one group of 6.","explanation":"Six tens are 60; subtract 6 to get 54, so 6 × 9 = 54."},
+      {"question":"Seven power cells hold 3 charges each. How many charges are stored?","expression":"7 × 3 = ?","choices":["18","21","24","10"],"answer":"21","hint":"Add seven three times: 7 + 7 + 7.","explanation":"Seven groups of three make twenty-one: 7 × 3 = 21."}
+    ],
+    "objective":"Read the airship log and rebuild its sentence.",
+    "spark":"The bridge is stable. The airship log is scrambled, and one word is missing from its display.",
+    "reward":"bridge"
+  },
+  {
+    "id":"airship-sentence","subject":"English · sentence building","type":"order","title":"Restore the airship log","label":"Challenge 3 of 6",
+    "story":"The wind scattered the words in the engineer's log. Put them back into a complete English sentence.",
+    "question":"Build the sentence that describes the harbor.",
+    "variants":[
+      {"words":["beside","The","dock.","small","is","the","boat"],"answer":["The","small","boat","is","beside","the","dock."],"hint":"Start with the subject, then use is, and finish with the location phrase.","explanation":"The sentence follows subject + verb + location: The small boat / is / beside the dock."},
+      {"words":["bridge.","Spark","the","is","above"],"answer":["Spark","is","above","the","bridge."],"hint":"Begin with Spark, then use is, followed by the location word.","explanation":"The complete sentence is: Spark is above the bridge."},
+      {"words":["lighthouse.","leads","The","to","path","the"],"answer":["The","path","leads","to","the","lighthouse."],"hint":"Begin with The path. What does the path do?","explanation":"The complete sentence is: The path leads to the lighthouse."},
+      {"words":["behind","clouds.","The","sun","the","is"],"answer":["The","sun","is","behind","the","clouds."],"hint":"Use subject + is + location phrase.","explanation":"The complete sentence is: The sun is behind the clouds."},
+      {"words":["waits","blue","near","crate","The","airship.","the"],"answer":["The","blue","crate","waits","near","the","airship."],"hint":"Begin with The blue crate. Then say what it does and where it is.","explanation":"The complete sentence is: The blue crate waits near the airship."}
+    ],
+    "objective":"Use the harbor console to divide the rescue cargo.",
+    "spark":"Excellent. The restored log unlocked my Echo Lens. A faint signal is now visible near the lighthouse island.",
+    "reward":"lens"
+  },
+  {
+    "id":"cargo-division","subject":"Mathematics · division","type":"choice","title":"Balance the rescue cargo","label":"Challenge 4 of 6",
+    "story":"Four airships must carry the same number of emergency lanterns.",
+    "variants":[
+      {"question":"There are 36 lanterns and 4 airships. How many should each airship carry?","expression":"36 ÷ 4 = ?","choices":["8","9","10","32"],"answer":"9","hint":"Find the number that gives 36 when multiplied by 4.","explanation":"Nine lanterns on each of four airships make 36: 9 × 4 = 36."},
+      {"question":"There are 48 supply packs shared equally among 6 crews. How many packs does each crew receive?","expression":"48 ÷ 6 = ?","choices":["6","7","8","9"],"answer":"8","hint":"Which number multiplied by 6 gives 48?","explanation":"Eight packs for each of six crews make 48: 8 × 6 = 48."},
+      {"question":"There are 56 rope coils shared equally among 7 docks. How many coils go to each dock?","expression":"56 ÷ 7 = ?","choices":["6","7","8","9"],"answer":"8","hint":"Use the related multiplication fact 7 × ? = 56.","explanation":"Seven groups of eight make 56, so 56 ÷ 7 = 8."},
+      {"question":"There are 63 fuel cells shared equally among 9 machines. How many cells does each machine receive?","expression":"63 ÷ 9 = ?","choices":["6","7","8","9"],"answer":"7","hint":"Think of the 9-times table.","explanation":"Nine machines with seven cells each use 63 cells: 9 × 7 = 63."},
+      {"question":"There are 72 signal flags packed equally into 8 cases. How many flags go in each case?","expression":"72 ÷ 8 = ?","choices":["8","9","10","64"],"answer":"9","hint":"Find the missing factor in 8 × ? = 72.","explanation":"Eight cases with nine flags each hold 72 flags: 8 × 9 = 72."}
+    ],
+    "objective":"Cross the bridge and read the engineer's lighthouse note.",
+    "spark":"Cargo balanced. The lighthouse door is responding, but its keeper left a final reading clue.",
+    "reward":"cargo"
+  },
+  {
+    "id":"engineer-note","subject":"English · reading comprehension","type":"choice","title":"The engineer's note","label":"Challenge 5 of 6",
+    "story":"A weathered page is pinned inside the lighthouse entrance.",
+    "variants":[
+      {"passage":"Mira reached Cloud Harbor before sunset. She placed the brass key under the third lantern because the lighthouse door would not open. Then she sailed east to warn the next island.","question":"Where did Mira place the brass key?","choices":["Under the third lantern","Inside the blue cargo crate","On the eastern airship","Behind the lighthouse door"],"answer":"Under the third lantern","hint":"Return to the second sentence and look for the words placed and under.","explanation":"The note says directly that Mira placed the brass key under the third lantern."},
+      {"passage":"The storm damaged the western bridge first. Mira repaired two ropes, but the final wooden section was too heavy to lift alone. She left a power cell in the blue crate for the next explorer.","question":"Why did Mira leave the final bridge section unfinished?","choices":["It was too heavy to lift alone","She could not find the blue crate","The lighthouse was already repaired","She sailed away before the storm"],"answer":"It was too heavy to lift alone","hint":"Look for the sentence containing the word because or a reason.","explanation":"The note explains that the final wooden section was too heavy for Mira to lift alone."},
+      {"passage":"Spark's old map shows three safe routes. The northern route is short but blocked by ice. The southern route is longer and calm. Mira circled the southern route before leaving.","question":"Which route did Mira choose?","choices":["The southern route","The northern route","The blocked ice route","No route was selected"],"answer":"The southern route","hint":"The final sentence tells which route Mira circled.","explanation":"Mira circled the southern route, so that is the route she chose."},
+      {"passage":"At dawn, the lighthouse lens flashed twice and then went dark. Mira checked the lamp and found it full. She wrote that the lens gears, not the lamp, needed repair.","question":"What needed repair?","choices":["The lens gears","The lamp fuel","The harbor bridge","The airship balloon"],"answer":"The lens gears","hint":"The last sentence contrasts the gears with the lamp.","explanation":"The lamp was full; Mira wrote that the lens gears needed repair."},
+      {"passage":"A map fragment fell behind the stone arch when the wind shook the lighthouse. Mira could see its golden edge, but the narrow gap was too dark. She marked the place for someone carrying an Echo Lens.","question":"What tool is needed to find the map fragment?","choices":["An Echo Lens","A bridge power cell","A cargo rope","An airship propeller"],"answer":"An Echo Lens","hint":"Read the final words of the passage.","explanation":"Mira marked the secret for someone carrying an Echo Lens."}
+    ],
+    "objective":"Align the lighthouse lens with an equivalent fraction.",
+    "spark":"We found the key. One last pattern will align the lighthouse lens and reveal why Mira sailed east.",
+    "reward":"key"
+  },
+  {
+    "id":"lens-fraction","subject":"Mathematics · equivalent fractions","type":"choice","title":"Align the lighthouse lens","label":"Challenge 6 of 6",
+    "story":"Three of four lens panels are glowing. The control asks for an equivalent fraction before it will focus the beam.",
+    "variants":[
+      {"question":"Which fraction is equivalent to 3/4?","expression":"3/4 = ?","choices":["6/8","4/7","3/8","7/4"],"answer":"6/8","hint":"Multiply the numerator and denominator by the same number.","explanation":"Multiplying both 3 and 4 by 2 gives 6/8."},
+      {"question":"Which fraction is equivalent to 2/3?","expression":"2/3 = ?","choices":["4/6","3/5","2/6","5/3"],"answer":"4/6","hint":"Multiply both parts of 2/3 by 2.","explanation":"Multiplying both 2 and 3 by 2 gives 4/6."},
+      {"question":"Which fraction is equivalent to 4/5?","expression":"4/5 = ?","choices":["8/10","5/9","4/10","9/5"],"answer":"8/10","hint":"Double the numerator and denominator.","explanation":"Doubling both parts gives 8/10, which names the same amount as 4/5."},
+      {"question":"Which fraction is equivalent to 5/6?","expression":"5/6 = ?","choices":["10/12","6/11","5/12","11/6"],"answer":"10/12","hint":"Multiply both the numerator and denominator by 2.","explanation":"Five times two is 10 and six times two is 12, so 5/6 = 10/12."},
+      {"question":"Which fraction is equivalent to 3/5?","expression":"3/5 = ?","choices":["9/15","6/15","3/10","8/5"],"answer":"9/15","hint":"Multiply both parts by 3.","explanation":"Multiplying both 3 and 5 by 3 gives 9/15."}
+    ],
+    "objective":"The lighthouse is awake. Open the expedition journal.",
+    "spark":"The beam points east—to an island erased from every ordinary map. This expedition has only begun.",
+    "reward":"lighthouse"
+  }
+]
+</script>
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const worldModelRegistry=JSON.parse($("atlas-world-models").textContent);
+const worldModels=Object.freeze(Object.fromEntries(worldModelRegistry.models.map(model=>[model.id,Object.freeze(model)])));
+const challenges=JSON.parse($("atlas-challenges").textContent);
+const SAVE_KEY="edu-games-atlas-cloud-harbor-v1";
+const modelTarget=id=>{const interaction=worldModels[id].interaction;return{x:interaction.x,y:interaction.y,name:interaction.label,radius:interaction.radius};};
+const WORLD_TARGETS={
+  spark:modelTarget("spark-companion"),crate:modelTarget("cargo-crate"),bridge:modelTarget("atlas-bridge"),
+  boat:modelTarget("harbor-airship"),console:modelTarget("harbor-console"),lighthouse:modelTarget("cloud-lighthouse"),secret:modelTarget("hidden-cave")
+};
+const GENERATED_ASSETS={
+  "atlas-explorer":{element:"generated-player",idle:"explorer/explorer-idle.webp"},
+  "spark-companion":{element:"generated-spark",sleeping:"spark/spark-sleeping.webp",idle:"spark/spark-idle.webp",guiding:"spark/spark-guiding.webp",concerned:"spark/spark-concerned.webp",celebrate:"spark/spark-celebrate.webp"},
+  "cargo-crate":{element:"generated-crate",sealed:"crate/cargo-crate-sealed.webp",active:"crate/cargo-crate-active.webp",opened:"crate/cargo-crate-opened.webp"},
+  "atlas-bridge":{element:"generated-bridge",broken:"bridge/bridge-broken-preview.webp",complete:"bridge/bridge-complete.webp"},
+  "harbor-console":{element:"generated-console",offline:"console/harbor-console-offline.webp",active:"console/harbor-console-active.webp",solved:"console/harbor-console-solved.webp"},
+  "harbor-airship":{element:"generated-airship",docked:"airship/airship-docked.webp","log-active":"airship/airship-log-active.webp","launch-ready":"airship/airship-launch-ready.webp"},
+  "cloud-lighthouse":{element:"generated-lighthouse",dark:"lighthouse/lighthouse-dark.webp","door-open":"lighthouse/lighthouse-door-open.webp","lens-aligning":"lighthouse/lighthouse-lens-aligning.webp",lit:"lighthouse/lighthouse-lit.webp"},
+  "hidden-cave":{element:"generated-cave",concealed:"cave/hidden-cave-concealed.webp",revealed:"cave/hidden-cave-revealed.webp",collected:"cave/hidden-cave-collected.webp"}
+};
+const GENERATED_ROOT="./assets/generated/";
+function randomUint(){
+  if(globalThis.crypto?.getRandomValues){const value=new Uint32Array(1);crypto.getRandomValues(value);return value[0];}
+  return Math.floor(Math.random()*0x100000000);
+}
+function randomBelow(maximum){return maximum?randomUint()%maximum:0;}
+function createQuestionVariants(previous={}){
+  return Object.fromEntries(challenges.map(challenge=>{
+    const count=challenge.variants?.length||1;
+    let index=randomBelow(count);
+    if(count>1&&Number.isInteger(previous[challenge.id])&&index===previous[challenge.id])index=(index+1+randomBelow(count-1))%count;
+    return[challenge.id,index];
+  }));
+}
+function hashText(text){
+  let hash=2166136261;
+  for(const character of text){hash^=character.charCodeAt(0);hash=Math.imul(hash,16777619);}
+  return hash>>>0;
+}
+function seededShuffle(values,seed){
+  const result=[...values];let stateValue=seed>>>0;
+  for(let index=result.length-1;index>0;index--){
+    stateValue=(Math.imul(stateValue,1664525)+1013904223)>>>0;
+    const target=stateValue%(index+1);[result[index],result[target]]=[result[target],result[index]];
+  }
+  return result;
+}
+function freshState(previousVariants={}){
+  return{version:1,runNonce:randomUint(),questionVariants:createQuestionVariants(previousVariants),started:false,interior:false,step:0,completed:[],assisted:[],lens:false,bridge:false,lighthouse:false,secret:false,atlas:false,sound:true,reducedMotion:false,facing:"east",player:{x:334,y:316},updatedAt:null};
+}
+let state=loadState(),activeChallenge=null,orderedWords=[],lastFocus=null,audioContext=null,toastTimer=0,dialogueTimer=0,pendingDialogue=null,movementSaveTimer=0,autoWalkFrame=0,movementFrame=0;
+const heldDirections=new Set();
+
+function loadState(){
+  try{
+    const parsed=JSON.parse(localStorage.getItem(SAVE_KEY));
+    if(!parsed||parsed.version!==1||!Array.isArray(parsed.completed))return freshState();
+    const base=freshState(),player=parsed.player&&Number.isFinite(parsed.player.x)&&Number.isFinite(parsed.player.y)?parsed.player:base.player;
+    return {...base,...parsed,player,step:Math.min(challenges.length,Math.max(0,Number(parsed.step)||0))};
+  }catch(error){return freshState();}
+}
+function saveState(){
+  state.updatedAt=new Date().toISOString();
+  try{
+    localStorage.setItem(SAVE_KEY,JSON.stringify(state));
+    $("save-dot").classList.add("saved");$("save-status").textContent="Saved on this device.";
+    setTimeout(()=>$("save-dot").classList.remove("saved"),900);
+  }catch(error){$("save-status").textContent="Progress could not be saved in this browser.";}
+}
+function tone(frequency=520,duration=.12,type="sine"){
+  if(!state.sound)return;
+  try{
+    audioContext ||= new (window.AudioContext||window.webkitAudioContext)();
+    const oscillator=audioContext.createOscillator(),gain=audioContext.createGain();
+    oscillator.type=type;oscillator.frequency.value=frequency;gain.gain.setValueAtTime(.05,audioContext.currentTime);
+    gain.gain.exponentialRampToValueAtTime(.001,audioContext.currentTime+duration);
+    oscillator.connect(gain).connect(audioContext.destination);oscillator.start();oscillator.stop(audioContext.currentTime+duration);
+  }catch(error){}
+}
+function playCue(name){
+  const cues={
+    start:[[440,.08,0],[620,.11,90],[820,.16,190]],
+    success:[[620,.08,0],[780,.1,90]],
+    bridge:[[330,.1,0],[440,.1,110],[550,.1,220],[700,.2,340]],
+    lens:[[520,.12,0],[780,.16,120],[1040,.25,280]],
+    secret:[[760,.12,0],[930,.12,130],[1180,.22,260]],
+    door:[[240,.1,0],[360,.13,120],[480,.18,240]]
+  };
+  (cues[name]||cues.success).forEach(([frequency,duration,delay])=>setTimeout(()=>tone(frequency,duration),delay));
+}
+function showWorldDialogue(speaker,text,duration=6500){
+  clearTimeout(dialogueTimer);
+  $("dialogue-speaker").textContent=speaker;$("dialogue-text").textContent=text;$("world-dialogue").hidden=false;
+  if(speaker==="Spark")setSparkPortrait(state.lighthouse?"celebrating":/not yet|careful|missing|broken|dark/i.test(text)?"concerned":"guiding");
+  dialogueTimer=setTimeout(()=>$("world-dialogue").hidden=true,duration);
+}
+function showToast(message){
+  clearTimeout(toastTimer);$("toast").textContent=message;$("toast").classList.add("show");
+  toastTimer=setTimeout(()=>$("toast").classList.remove("show"),2600);
+}
+function resolvedChallenge(index){
+  const challenge=challenges[Math.min(index,challenges.length-1)],variants=challenge.variants||[];
+  if(!variants.length)return challenge;
+  const selected=Number(state.questionVariants?.[challenge.id]),variantIndex=Number.isInteger(selected)&&selected>=0&&selected<variants.length?selected:0;
+  const variant=variants[variantIndex],shuffleSeed=(Number(state.runNonce)||0)^hashText(challenge.id);
+  const resolved={...challenge,...variant,variantIndex};
+  if(Array.isArray(variant.choices))resolved.choices=seededShuffle(variant.choices,shuffleSeed);
+  if(Array.isArray(variant.words))resolved.words=seededShuffle(variant.words,shuffleSeed^0x9e3779b9);
+  return resolved;
+}
+function currentChallenge(){return resolvedChallenge(state.step);}
+function setModelState(modelId,modelState,assetKey=modelState){
+  const model=worldModels[modelId],element=model?$(model.svgGroupId):null;
+  if(!element)return;
+  element.dataset.modelState=modelState;
+  element.dataset.assetSlot=model.assetSlots[assetKey]||"inline-svg";
+  updateGeneratedModel(modelId,modelState);
+}
+function updateGeneratedModel(modelId,modelState){
+  const config=GENERATED_ASSETS[modelId],image=config?$(config.element):null;
+  if(!image)return;
+  const relative=config[modelState]||config.idle;
+  if(!relative)return;
+  const className=`generated-${modelId}`;
+  const path=GENERATED_ROOT+relative;
+  if(image.getAttribute("src")===path)return;
+  image.classList.add("asset-changing");
+  image.onload=()=>{$("world").classList.add(className);requestAnimationFrame(()=>image.classList.remove("asset-changing"));};
+  image.onerror=()=>{$("world").classList.remove(className);image.classList.remove("asset-changing");};
+  image.src=path;
+}
+function setSparkPortrait(mood){
+  const file={neutral:"spark-neutral-portrait.webp",guiding:"spark-guiding-portrait.webp",concerned:"spark-concerned-portrait.webp",celebrating:"spark-celebrating-portrait.webp"}[mood]||"spark-neutral-portrait.webp";
+  const path=GENERATED_ROOT+"portraits/"+file;
+  [$("dialogue-portrait-image"),$("spark-panel-portrait")].forEach(image=>{if(image.getAttribute("src")!==path)image.src=path;});
+}
+function updateGeneratedInterior(){
+  const scene=$("interior-scene"),lens=$("generated-interior-lens"),workbench=$("generated-workbench");
+  const lensState=state.lighthouse?"lit":state.step===5?"aligning":state.step>=4?"ready":"dark";
+  const lensPath=GENERATED_ROOT+`lens/lens-machine-${lensState}.webp`,workbenchPath=GENERATED_ROOT+"workbench/workbench.webp";
+  lens.onload=()=>scene.classList.add("generated-interior-lens");lens.onerror=()=>scene.classList.remove("generated-interior-lens");
+  workbench.onload=()=>scene.classList.add("generated-workbench");workbench.onerror=()=>scene.classList.remove("generated-workbench");
+  if(lens.getAttribute("src")!==lensPath)lens.src=lensPath;
+  if(workbench.getAttribute("src")!==workbenchPath)workbench.src=workbenchPath;
+}
+function render(){
+  document.documentElement.classList.toggle("reduce-motion",state.reducedMotion);
+  $("world").classList.toggle("bridge-built",state.bridge);
+  $("world").classList.toggle("lighthouse-lit",state.lighthouse);
+  $("world").classList.toggle("lens-unlocked",state.lens);
+  $("world").classList.toggle("secret-found",state.secret);
+  const inside=Boolean(state.interior&&state.step>=4);
+  $("world").classList.toggle("interior-open",inside);
+  $("interior-scene").hidden=!inside;
+  $("interior-scene").classList.toggle("lens-ready",inside&&state.step===5);
+  document.querySelector(".movement-controls").hidden=inside;
+  $("movement-help").hidden=inside;
+  const targets=["Inspect the blue cargo crate near the airship.","Use the broken bridge mechanism.","Restore the scrambled airship log.","Balance the rescue cargo at the harbor console.","Read the engineer's note inside the lighthouse.","Align the lighthouse lens."];
+  $("objective").textContent=!state.started?"Talk to Spark near the dock.":state.step>=challenges.length?"The lighthouse is restored. Review the journal or find the hidden cave.":targets[state.step];
+  $("spark-message").textContent=!state.started?"The harbor is quiet. Wake me and we will investigate together.":state.step===0?"I am Spark! The engineer left a message: Find the blue box near the boat.":state.step>=challenges.length?challenges.at(-1).spark:challenges[state.step-1].spark;
+  $("progress-fill").style.width=(state.completed.length/challenges.length*100)+"%";
+  document.querySelector(".progress-track").setAttribute("aria-valuenow",String(state.completed.length));
+  $("progress-text").textContent=`${state.completed.length} of ${challenges.length} challenges complete`;
+  $("item-atlas").classList.toggle("unlocked",state.atlas);
+  $("item-lens").classList.toggle("unlocked",state.lens);
+  $("item-fragment").classList.toggle("unlocked",state.secret);
+  setSparkPortrait(state.lighthouse?"celebrating":state.started?"guiding":"neutral");
+  setModelState("spark-companion",state.lighthouse?"celebrate":state.started?"guiding":"sleeping",state.started?"states":"idle");
+  setModelState("cargo-crate",state.completed.includes("blue-cargo")?"opened":state.started&&state.step===0?"active":"sealed");
+  setModelState("harbor-airship",state.step===2?"log-active":state.step>2?"launch-ready":"docked",state.step===2?"active":"docked");
+  setModelState("atlas-bridge",state.bridge?"complete":"broken");
+  setModelState("harbor-console",state.completed.includes("cargo-division")?"solved":state.step===3?"active":"offline");
+  setModelState("cloud-lighthouse",state.lighthouse?"lit":state.step===5?"lens-aligning":state.step>=4?"door-open":"dark",state.lighthouse?"lit":state.step>=4?"open":"dark");
+  setModelState("hidden-cave",state.secret?"collected":state.lens?"revealed":"concealed");
+  updateGeneratedInterior();
+  $("interior-note").classList.toggle("current",inside&&state.step===4);
+  $("interior-note").classList.toggle("done",state.step>4);
+  $("interior-lens").classList.toggle("current",inside&&state.step===5);
+  $("interior-lens").disabled=state.step<5;
+  $("interior-caption").textContent=state.step===4?"The chamber is silent. Mira's note rests on the workbench.":state.step===5?"The note reveals the final lens pattern. The brass mechanism is ready.":"The restored lens sends a golden beam through the clouds.";
+  renderQuestList();renderHotspots();updatePlayerVisual();
+}
+function renderQuestList(){
+  $("quest-list").replaceChildren();
+  challenges.forEach((challenge,index)=>{
+    const li=document.createElement("li"),mark=document.createElement("span"),text=document.createElement("span");
+    mark.className="mark";mark.textContent=state.completed.includes(challenge.id)?"✓":index===state.step?"◆":"○";
+    text.textContent=challenge.title;li.append(mark,text);
+    if(state.completed.includes(challenge.id))li.className="done";else if(index===state.step)li.className="active";
+    $("quest-list").append(li);
+  });
+}
+function renderHotspots(){
+  const map=[["hotspot-crate",0],["hotspot-bridge",1],["hotspot-boat",2],["hotspot-console",3]];
+  $("hotspot-crate").textContent=state.completed.includes("blue-cargo")?"Cargo opened":"Cargo crates";
+  $("hotspot-bridge").textContent=state.bridge?"Restored bridge":"Broken bridge";
+  $("hotspot-boat").textContent=state.completed.includes("airship-sentence")?"Airship ready":"Airship log";
+  $("hotspot-console").textContent=state.completed.includes("cargo-division")?"Console online":"Harbor console";
+  $("hotspot-lighthouse").textContent=state.lighthouse?"Lighthouse restored":"Lighthouse";
+  $("hotspot-spark").classList.toggle("current",!state.started);
+  $("hotspot-spark").classList.toggle("done",state.started);
+  $("hotspot-spark").setAttribute("aria-current",!state.started?"step":"false");
+  map.forEach(([id,index])=>{
+    const button=$(id),current=state.started&&index===state.step;
+    button.classList.toggle("current",current);button.classList.toggle("done",index<state.step);
+    button.classList.toggle("locked",!state.started||index>state.step);button.setAttribute("aria-current",current?"step":"false");
+  });
+  const lighthouse=$("hotspot-lighthouse"),lighthouseCurrent=state.started&&(state.step===4||state.step===5);
+  lighthouse.classList.toggle("current",lighthouseCurrent);lighthouse.classList.toggle("done",state.step>=challenges.length);
+  lighthouse.classList.toggle("locked",!state.started||state.step<4);lighthouse.setAttribute("aria-current",lighthouseCurrent?"step":"false");
+  const targetId=state.interior?null:!state.started?"hotspot-spark":state.step===0?"hotspot-crate":state.step===1?"hotspot-bridge":state.step===2?"hotspot-boat":state.step===3?"hotspot-console":state.step<challenges.length?"hotspot-lighthouse":null;
+  requestAnimationFrame(()=>positionQuestBeacon(targetId));
+}
+function positionQuestBeacon(targetId){
+  const beacon=$("quest-beacon");
+  if(!targetId){beacon.hidden=true;return;}
+  const target=$(targetId),world=$("world"),targetRect=target.getBoundingClientRect(),worldRect=world.getBoundingClientRect();
+  beacon.hidden=false;
+  beacon.style.left=`${targetRect.left-worldRect.left+targetRect.width/2}px`;
+  beacon.style.top=`${Math.max(68,targetRect.top-worldRect.top-8)}px`;
+}
+function currentWorldTarget(){
+  if(!state.started)return WORLD_TARGETS.spark;
+  if(state.step===0)return WORLD_TARGETS.crate;
+  if(state.step===1)return WORLD_TARGETS.bridge;
+  if(state.step===2)return WORLD_TARGETS.boat;
+  if(state.step===3)return WORLD_TARGETS.console;
+  if(state.step<challenges.length)return WORLD_TARGETS.lighthouse;
+  return null;
+}
+function distanceTo(target){
+  if(!target)return Infinity;
+  return Math.hypot(state.player.x-target.x,state.player.y-target.y);
+}
+function canOccupy(x,y){
+  const left=x>=52&&x<=372&&y>=258&&y<=358;
+  const right=x>=620&&x<=930&&y>=246&&y<=370;
+  const bridgeCenter=330-(x-340)*.16;
+  const bridge=state.bridge&&x>=330&&x<=655&&Math.abs(y-bridgeCenter)<=34;
+  return left||right||bridge;
+}
+function queueMovementSave(){
+  clearTimeout(movementSaveTimer);
+  movementSaveTimer=setTimeout(saveState,350);
+}
+function updatePlayerVisual(moving=false){
+  const player=$("player");
+  const flip=state.facing==="west"?" scale(-1 1)":"";
+  player.setAttribute("transform",`translate(${state.player.x.toFixed(1)} ${state.player.y.toFixed(1)})${flip}`);
+  player.classList.toggle("player-moving",moving&&!state.reducedMotion);
+  setModelState("atlas-explorer",moving?`walk-${state.facing}`:"idle",moving?"walk":"idle");
+  const generatedPlayer=$("generated-player");
+  generatedPlayer.style.left=`${state.player.x/10}%`;
+  generatedPlayer.style.top=`${(state.player.y+90)/5.62}%`;
+  generatedPlayer.style.transform=`translate(-50%,-100%) scaleX(${state.facing==="west"?-1:1})`;
+  generatedPlayer.classList.toggle("player-moving",moving&&!state.reducedMotion);
+  const target=currentWorldTarget(),near=distanceTo(target)<=82,button=$("interact-button");
+  button.classList.toggle("ready",near);
+  button.textContent=target?(near?"Interact":"Auto-walk"):"Complete";
+  button.setAttribute("aria-label",target?(near?`Interact with ${target.name}`:`Automatically walk to ${target.name}`):"Expedition complete");
+  button.disabled=!target;
+  $("movement-help").innerHTML=target
+    ?near?`<strong>Ready:</strong> Press E or Interact`:`<strong>Explore:</strong> Arrow keys or WASD · follow the NEXT marker`
+    :`<strong>Harbor restored:</strong> Keep exploring for secrets`;
+}
+function movePlayer(dx,dy){
+  cancelAnimationFrame(autoWalkFrame);autoWalkFrame=0;
+  const length=Math.hypot(dx,dy)||1,nextX=state.player.x+dx/length*11,nextY=state.player.y+dy/length*11;
+  if(Math.abs(dx)>Math.abs(dy))state.facing=dx<0?"west":"east";else if(dy)state.facing=dy<0?"north":"south";
+  if(canOccupy(nextX,nextY)){state.player={x:nextX,y:nextY};updatePlayerVisual(true);queueMovementSave();}
+  else{updatePlayerVisual(false);}
+}
+function movementLoop(){
+  if(!heldDirections.size){movementFrame=0;updatePlayerVisual(false);return;}
+  let dx=0,dy=0;
+  if(heldDirections.has("left"))dx--;if(heldDirections.has("right"))dx++;
+  if(heldDirections.has("up"))dy--;if(heldDirections.has("down"))dy++;
+  movePlayer(dx,dy);movementFrame=requestAnimationFrame(movementLoop);
+}
+function beginDirection(direction){
+  heldDirections.add(direction);
+  if(!movementFrame)movementFrame=requestAnimationFrame(movementLoop);
+}
+function endDirection(direction){heldDirections.delete(direction);}
+function autoWalkTo(target,callback){
+  cancelAnimationFrame(autoWalkFrame);heldDirections.clear();
+  const crossingRight=state.player.x<500&&target.x>500,crossingLeft=state.player.x>500&&target.x<500;
+  const points=crossingRight&&state.bridge?[{x:350,y:326},{x:635,y:283},target]:
+    crossingLeft&&state.bridge?[{x:635,y:283},{x:350,y:326},target]:[target];
+  let pointIndex=0,lastTime=performance.now();
+  function frame(now){
+    const point=points[pointIndex],dx=point.x-state.player.x,dy=point.y-state.player.y,distance=Math.hypot(dx,dy);
+    if(distance<5){
+      state.player={x:point.x,y:point.y};pointIndex++;
+      if(pointIndex>=points.length){updatePlayerVisual(false);queueMovementSave();callback?.();return;}
+    }else{
+      const step=Math.min(distance,(now-lastTime)*.22),nextX=state.player.x+dx/distance*step,nextY=state.player.y+dy/distance*step;
+      if(Math.abs(dx)>Math.abs(dy))state.facing=dx<0?"west":"east";else state.facing=dy<0?"north":"south";
+      if(canOccupy(nextX,nextY)){state.player={x:nextX,y:nextY};updatePlayerVisual(true);}
+      else{updatePlayerVisual(false);showToast("That route is blocked.");return;}
+    }
+    lastTime=now;autoWalkFrame=requestAnimationFrame(frame);
+  }
+  autoWalkFrame=requestAnimationFrame(frame);
+}
+function performCurrentInteraction(){
+  if(!state.started){talkToSpark();return;}
+  if(state.step===4||state.step===5){enterLighthouse();return;}
+  if(state.step<challenges.length)openChallenge(state.step);
+}
+function approachCurrentTarget(){
+  const target=currentWorldTarget();
+  if(!target)return;
+  if(distanceTo(target)<=82){performCurrentInteraction();return;}
+  autoWalkTo(target,performCurrentInteraction);
+}
+function approachSecret(){
+  if(!state.lens){findSecret();return;}
+  if(distanceTo(WORLD_TARGETS.secret)<=82){findSecret();return;}
+  autoWalkTo(WORLD_TARGETS.secret,findSecret);
+}
+function enterLighthouse(){
+  if(state.step<4){showToast("The lighthouse door is still sealed.");return;}
+  state.interior=true;saveState();render();playCue("door");showWorldDialogue("Spark",state.step===4?"The lock accepted Mira's key. Her note is on the workbench.":"The lens mechanism is waiting for the fraction pattern.");
+}
+function exitLighthouse(){
+  state.interior=false;saveState();render();$("hotspot-lighthouse").focus({preventScroll:true});
+}
+function openChallenge(index){
+  if(!state.started){showToast("Talk to Spark before exploring the harbor.");return;}
+  if(index<state.step){showToast("That part of the harbor is already restored.");return;}
+  if(index>state.step){tone(180,.12,"square");showToast("Spark: We need to finish the current objective first.");return;}
+  activeChallenge=resolvedChallenge(index);orderedWords=[];lastFocus=document.activeElement;
+  $("challenge-label").textContent=activeChallenge.label;$("challenge-title").textContent=activeChallenge.title;
+  $("challenge-story").textContent=activeChallenge.story;$("challenge-question").textContent=activeChallenge.question;
+  $("challenge-expression").textContent=activeChallenge.expression||"";
+  $("challenge-expression").hidden=!activeChallenge.expression;
+  $("challenge-feedback").textContent="";$("challenge-feedback").className="feedback";
+  $("challenge-hint").hidden=true;$("challenge-hint").textContent=activeChallenge.hint;
+  $("hint-button").hidden=false;$("continue-button").hidden=true;
+  renderChallengeVisual(activeChallenge);renderChallengeContent(activeChallenge);
+  $("challenge-dialog").showModal();setTimeout(()=>$("challenge-dialog").querySelector("button:not(.close)")?.focus(),30);
+}
+function renderChallengeVisual(challenge){
+  const visual=$("challenge-visual");visual.innerHTML="";
+  if(challenge.passage){const passage=document.createElement("div");passage.className="reading";passage.textContent=challenge.passage;visual.append(passage);return;}
+  if(challenge.id==="bridge-energy"){
+    const values=(challenge.expression.match(/\d+/g)||[]).map(Number),groups=values[0]||4,perGroup=values[1]||6;
+    const groupWidth=360/groups,circles=Array.from({length:groups},(_,group)=>Array.from({length:perGroup},(_,item)=>{
+      const columns=Math.ceil(Math.sqrt(perGroup)),row=Math.floor(item/columns),column=item%columns;
+      return `<circle cx="${30+group*groupWidth+column*16}" cy="${43+row*19}" r="6"/>`;
+    }).join("")).join("");
+    visual.innerHTML=`<svg viewBox="0 0 420 150" role="img" aria-label="${groups} equal groups of ${perGroup} energy lights"><g fill="#73dcc7" stroke="#18394a" stroke-width="2">${circles}</g><path d="M20 124H400" stroke="#d7b55f" stroke-width="6" stroke-dasharray="${Math.max(35,360/groups-10)} 10"/></svg>`;
+    return;
+  }
+  if(challenge.id==="cargo-division"){
+    const values=(challenge.expression.match(/\d+/g)||[]).map(Number),total=values[0]||36,groups=values[1]||4;
+    const ships=Array.from({length:groups},(_,index)=>`<g transform="translate(${24+index*(372/groups)} 48)"><path d="M0 18Q18-8 42 12 26 37 0 18Z" fill="#d8b066" stroke="#26343c" stroke-width="3"/><path d="m13 28 7 16h15l7-18" fill="#704a37" stroke="#26343c" stroke-width="3"/></g>`).join("");
+    visual.innerHTML=`<svg viewBox="0 0 420 150" role="img" aria-label="${total} supplies divided among ${groups} groups">${ships}<rect x="135" y="105" width="150" height="34" rx="17" fill="#173653" stroke="#65cfc0" stroke-width="3"/><text x="210" y="129" text-anchor="middle" fill="#fff0b0" font-size="22" font-weight="800">${total} ÷ ${groups}</text></svg>`;
+    return;
+  }
+  if(challenge.id==="lens-fraction"){
+    const values=(challenge.expression.match(/\d+/g)||[]).map(Number),numerator=values[0]||3,denominator=values[1]||4,segmentWidth=320/denominator;
+    const segments=Array.from({length:denominator},(_,index)=>`<rect x="${50+index*segmentWidth}" y="45" width="${segmentWidth}" height="62" fill="${index<numerator?"#f1ce68":"#314b5e"}" stroke="#26343c" stroke-width="4"/>`).join("");
+    visual.innerHTML=`<svg viewBox="0 0 420 150" role="img" aria-label="${numerator} of ${denominator} lens panels glowing">${segments}</svg>`;
+    return;
+  }
+  const art={
+    "blue-cargo":`<svg viewBox="0 0 420 150" role="img" aria-label="A blue crate beside an airship, a brown building, and a gold lighthouse"><path d="M25 110H395" stroke="#6d8790" stroke-width="5"/><path d="M33 82h79v54H33Z" fill="#347fae" stroke="#26343c" stroke-width="5"/><path d="m33 82 39-18 40 18-40 17Z" fill="#63acd0" stroke="#26343c" stroke-width="4"/><path d="M145 80c12-36 112-43 145-8-13 39-113 50-145 8Z" fill="#d9b26c" stroke="#26343c" stroke-width="5"/><path d="m190 104 12 25h42l13-30" fill="#704a37" stroke="#26343c" stroke-width="5"/><path d="M334 122 347 47h35l14 75Z" fill="#ead9b7" stroke="#26343c" stroke-width="5"/></svg>`,
+    "airship-sentence":`<svg viewBox="0 0 420 150" role="img" aria-label="An airship log with scattered glowing words"><rect x="35" y="20" width="350" height="112" rx="16" fill="#091b30" stroke="#69cbbf" stroke-width="4"/><path d="M70 53h95M196 53h145M70 85h60M160 85h100M290 85h50" stroke="#e5cb79" stroke-width="12" stroke-linecap="round"/><path d="M72 112h270" stroke="#42657b" stroke-width="5"/></svg>`,
+  };
+  visual.innerHTML=art[challenge.id]||`<svg viewBox="0 0 420 150" aria-hidden="true"><path d="M60 120Q210 5 360 120" fill="none" stroke="#6ed6c5" stroke-width="8"/><circle cx="210" cy="74" r="24" fill="#edc866"/></svg>`;
+}
+function renderChallengeContent(challenge){
+  const content=$("challenge-content");content.replaceChildren();
+  if(challenge.type==="choice"){
+    const choices=document.createElement("div");choices.className="choices";
+    challenge.choices.forEach(value=>{
+      const button=document.createElement("button");button.type="button";button.className="choice";button.textContent=value;
+      button.addEventListener("click",()=>answerChoice(button,value));choices.append(button);
+    });
+    content.append(choices);return;
+  }
+  const area=document.createElement("div");area.className="word-area";
+  const answer=document.createElement("div");answer.className="answer-line";answer.id="answer-line";answer.setAttribute("aria-label","Sentence under construction");
+  const bank=document.createElement("div");bank.className="word-bank";bank.id="word-bank";bank.setAttribute("aria-label","Available words");
+  challenge.words.forEach((word,index)=>{
+    const button=document.createElement("button");button.type="button";button.className="word";button.textContent=word;button.dataset.index=index;
+    button.addEventListener("click",()=>selectWord(index));bank.append(button);
+  });
+  const actions=document.createElement("div");actions.className="actions";
+  const clear=document.createElement("button");clear.type="button";clear.className="secondary";clear.textContent="Clear";clear.onclick=clearWords;
+  const undo=document.createElement("button");undo.type="button";undo.className="secondary";undo.textContent="Undo last word";undo.onclick=undoWord;
+  const check=document.createElement("button");check.type="button";check.className="primary";check.textContent="Check sentence";check.onclick=checkOrder;
+  actions.append(clear,undo,check);area.append(answer,bank,actions);content.append(area);renderWords();
+}
+function answerChoice(button,value){
+  if(!activeChallenge||$("continue-button").hidden===false)return;
+  if(value===activeChallenge.answer){
+    button.classList.add("correct");finishChallenge();
+  }else{
+    button.disabled=true;button.classList.add("wrong");state.assisted.push(activeChallenge.id);state.assisted=[...new Set(state.assisted)];
+    $("challenge-feedback").textContent="Not yet. Spark opened a clue—try another answer.";$("challenge-feedback").className="feedback try";
+    $("challenge-hint").hidden=false;$("hint-button").hidden=true;tone(180,.12,"square");saveState();
+  }
+}
+function selectWord(index){if(orderedWords.includes(index))return;orderedWords.push(index);renderWords();tone(420,.05);}
+function clearWords(){orderedWords=[];renderWords();tone(300,.05);}
+function undoWord(){orderedWords.pop();renderWords();}
+function renderWords(){
+  if(!activeChallenge||activeChallenge.type!=="order")return;
+  const bank=$("word-bank"),answer=$("answer-line");answer.replaceChildren();
+  [...bank.children].forEach(button=>button.hidden=orderedWords.includes(Number(button.dataset.index)));
+  orderedWords.forEach(index=>{
+    const button=document.createElement("button");button.type="button";button.className="word";button.textContent=activeChallenge.words[index];
+    button.title="Remove this word";button.onclick=()=>{orderedWords=orderedWords.filter(i=>i!==index);renderWords();};answer.append(button);
+  });
+}
+function checkOrder(){
+  const built=orderedWords.map(i=>activeChallenge.words[i]);
+  if(JSON.stringify(built)===JSON.stringify(activeChallenge.answer)){finishChallenge();return;}
+  state.assisted.push(activeChallenge.id);state.assisted=[...new Set(state.assisted)];
+  $("challenge-feedback").textContent="The sentence is not complete yet. Use the clue, adjust the word order, and try again.";
+  $("challenge-feedback").className="feedback try";$("challenge-hint").hidden=false;$("hint-button").hidden=true;tone(180,.12,"square");saveState();
+}
+function finishChallenge(){
+  const challenge=activeChallenge;if(!challenge||state.completed.includes(challenge.id))return;
+  state.completed.push(challenge.id);state.step=Math.min(challenges.length,state.step+1);
+  if(challenge.reward==="bridge")state.bridge=true;
+  if(challenge.reward==="lens")state.lens=true;
+  if(challenge.reward==="lighthouse")state.lighthouse=true;
+  $("challenge-content").querySelectorAll("button").forEach(button=>button.disabled=true);
+  $("challenge-feedback").textContent="Success! "+challenge.explanation;$("challenge-feedback").className="feedback good";
+  $("challenge-hint").hidden=true;$("hint-button").hidden=true;$("continue-button").hidden=false;
+  pendingDialogue={speaker:"Spark",text:challenge.spark};
+  playCue(challenge.reward==="bridge"?"bridge":challenge.reward==="lighthouse"?"lens":"success");burst();saveState();render();
+  if(challenge.reward==="bridge")showToast("The bridge has been rebuilt.");
+  if(challenge.reward==="lens")showToast("Echo Lens unlocked. A secret signal is visible.");
+  if(challenge.reward==="lighthouse")showToast("Cloud Harbor lighthouse restored.");
+}
+function burst(){
+  const field=$("celebrate");field.replaceChildren();
+  for(let i=0;i<16;i++){const star=document.createElement("span");star.className="star";star.textContent=i%2?"✦":"◆";star.style.left=(45+Math.random()*10)+"%";star.style.top=(45+Math.random()*10)+"%";star.style.setProperty("--x",(Math.random()*420-210)+"px");star.style.setProperty("--y",(Math.random()*280-180)+"px");star.style.color=i%3?"#f3c75c":"#57d4c0";field.append(star);}
+  setTimeout(()=>field.replaceChildren(),1500);
+}
+function closeChallenge(){
+  $("challenge-dialog").close();lastFocus?.focus({preventScroll:true});
+  if(state.step>=challenges.length){pendingDialogue=null;setTimeout(showCompletion,250);}
+  else if(pendingDialogue){const dialogue=pendingDialogue;pendingDialogue=null;setTimeout(()=>showWorldDialogue(dialogue.speaker,dialogue.text),220);}
+}
+function showCompletion(){
+  openInfo("Harbor restored",`<div class="completion"><div class="map-fragment">✦</div><h2>The lighthouse is awake</h2><p>Its beam points east toward an island erased from ordinary maps.</p><p>You completed ${challenges.length} learning challenges. ${state.assisted.length?`${state.assisted.length} challenge${state.assisted.length===1?"":"s"} used support; those can return later with fresh questions.`:"Every challenge was completed without opening support."}</p><div class="actions"><button class="primary" type="button" data-action="journal">Open the expedition journal</button><button class="secondary" type="button" data-action="replay">Replay with new questions</button></div></div>`,"Expedition complete");
+}
+function findSecret(){
+  if(!state.lens){showToast("A special lens is needed to reveal this path.");return;}
+  if(state.secret){showToast("The hidden map fragment is already in your journal.");return;}
+  state.secret=true;saveState();render();playCue("secret");burst();
+  openInfo("A hidden map fragment",`<p>The Echo Lens reveals a cave behind the lighthouse island. Inside is a fragment marked with a sixth island—one that does not appear in the ordinary atlas.</p><p><strong>Secret discovered:</strong> The Unwritten Isle.</p>`,"Secret found");
+}
+function talkToSpark(){
+  if(state.started){openJournal();return;}
+  openInfo("A companion wakes",`<p>A small machine is curled beside the dock. You inspect it carefully without damaging it. Its turquoise eye opens.</p><p><strong>“I am Spark. The engineer is missing, the bridge is broken, and the lighthouse has gone dark. If we solve the harbor mechanisms, the Atlas may show us where she went.”</strong></p><p>The first message reads: <span lang="en" dir="ltr"><strong>Find the blue box near the boat.</strong></span></p><div class="actions"><button class="primary" type="button" data-action="start-expedition">Begin the expedition</button></div>`,"Cloud Harbor");
+}
+function openJournal(){
+  const questRows=challenges.map((q,i)=>`<li>${state.completed.includes(q.id)?"✓":"○"} <strong>${q.title}</strong>${state.assisted.includes(q.id)?" — completed with support":""}</li>`).join("");
+  const replay=state.step>=challenges.length?`<div class="actions"><button class="primary" type="button" data-action="replay">Replay with new questions</button></div>`:"";
+  openInfo("Expedition journal",`<p><strong>Cloud Harbor:</strong> ${state.completed.length}/${challenges.length} challenges complete.</p><ol>${questRows}</ol><p><strong>Tools:</strong> ${state.atlas?"Atlas page":""}${state.lens?", Echo Lens":""}${state.secret?", secret map fragment":""}.</p><p class="story">Progress is stored only in this browser. No account or personal information is used.</p>${replay}`,"Journal");
+}
+function startNewRun(){
+  const sound=state.sound,reducedMotion=state.reducedMotion,previousVariants=state.questionVariants||{};
+  state={...freshState(previousVariants),started:true,atlas:true,sound,reducedMotion};
+  $("info-dialog").close();saveState();render();showToast("A new randomized expedition is ready.");tone(620,.12);
+}
+function openSettings(){
+  openInfo("Settings",`<div class="settings-grid">
+  <div class="setting"><span><strong>Sound effects</strong><br><small>Short generated tones only</small></span><button class="switch" type="button" data-setting="sound" aria-label="Toggle sound effects" aria-pressed="${state.sound}"></button></div>
+  <div class="setting"><span><strong>Reduce motion</strong><br><small>Stops decorative animation</small></span><button class="switch" type="button" data-setting="motion" aria-label="Toggle reduced motion" aria-pressed="${state.reducedMotion}"></button></div>
+  <p>No music, microphone, account, analytics, or child information is used by this demo.</p></div>`,"Game settings");
+}
+function openInfo(title,html,label){
+  lastFocus=document.activeElement;$("info-label").textContent=label;$("info-title").textContent=title;$("info-content").innerHTML=html;$("info-dialog").showModal();
+}
+function resetGame(){
+  openInfo("Reset this expedition?",`<p>This removes the locally saved Cloud Harbor progress from this browser. It does not affect any other Edu Games page.</p><div class="actions"><button class="secondary" type="button" data-action="cancel-reset">Keep progress</button><button class="primary" type="button" data-action="confirm-reset">Reset Cloud Harbor</button></div>`,"Local progress");
+}
+
+document.querySelectorAll("[data-step]").forEach(button=>button.addEventListener("click",()=>{
+  const step=Number(button.dataset.step);
+  if(step===state.step)approachCurrentTarget();else openChallenge(step);
+}));
+$("hotspot-spark").addEventListener("click",()=>state.started?openJournal():approachCurrentTarget());
+$("hotspot-lighthouse").addEventListener("click",()=>state.step===4||state.step===5?approachCurrentTarget():openChallenge(4));
+$("hotspot-secret").addEventListener("click",approachSecret);
+$("dialogue-close").addEventListener("click",()=>{clearTimeout(dialogueTimer);$("world-dialogue").hidden=true;});
+$("interior-exit").addEventListener("click",exitLighthouse);
+$("interior-note").addEventListener("click",()=>state.step===4?openChallenge(4):showToast("Mira's note is already recorded in the journal."));
+$("interior-lens").addEventListener("click",()=>state.step===5?openChallenge(5):showToast("Read Mira's note before adjusting the lens."));
+$("interact-button").addEventListener("click",approachCurrentTarget);
+const directionVectors={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]};
+document.querySelectorAll("[data-direction]").forEach(button=>{
+  const direction=button.dataset.direction,[dx,dy]=directionVectors[direction];
+  button.addEventListener("pointerdown",event=>{event.preventDefault();movePlayer(dx,dy);beginDirection(direction);button.setPointerCapture?.(event.pointerId);});
+  ["pointerup","pointercancel","lostpointercapture"].forEach(type=>button.addEventListener(type,()=>endDirection(direction)));
+  button.addEventListener("click",event=>{if(event.detail===0)movePlayer(dx,dy);});
+});
+document.addEventListener("keydown",event=>{
+  if($("challenge-dialog").open||$("info-dialog").open)return;
+  const key=event.key.toLowerCase(),direction=key==="arrowup"||key==="w"?"up":key==="arrowdown"||key==="s"?"down":key==="arrowleft"||key==="a"?"left":key==="arrowright"||key==="d"?"right":null;
+  if(direction){event.preventDefault();beginDirection(direction);return;}
+  if(key==="e"){event.preventDefault();approachCurrentTarget();}
+});
+document.addEventListener("keyup",event=>{
+  const key=event.key.toLowerCase(),direction=key==="arrowup"||key==="w"?"up":key==="arrowdown"||key==="s"?"down":key==="arrowleft"||key==="a"?"left":key==="arrowright"||key==="d"?"right":null;
+  if(direction)endDirection(direction);
+});
+window.addEventListener("blur",()=>{heldDirections.clear();});
+$("hint-button").addEventListener("click",()=>{state.assisted.push(activeChallenge.id);state.assisted=[...new Set(state.assisted)];$("challenge-hint").hidden=false;$("hint-button").hidden=true;saveState();tone(360,.08);});
+$("continue-button").addEventListener("click",closeChallenge);$("close-challenge").addEventListener("click",closeChallenge);
+$("challenge-dialog").addEventListener("cancel",event=>{event.preventDefault();closeChallenge();});
+$("close-info").addEventListener("click",()=>{$("info-dialog").close();lastFocus?.focus({preventScroll:true});});
+$("info-dialog").addEventListener("cancel",event=>{event.preventDefault();$("info-dialog").close();});
+$("journal-button").addEventListener("click",openJournal);$("settings-button").addEventListener("click",openSettings);$("reset-button").addEventListener("click",resetGame);
+$("info-content").addEventListener("click",event=>{
+  const action=event.target.closest("[data-action]")?.dataset.action;if(!action)return;
+  if(action==="journal"){$("info-dialog").close();openJournal();}
+  if(action==="replay")startNewRun();
+  if(action==="start-expedition"){state.started=true;state.atlas=true;saveState();$("info-dialog").close();render();showToast("Atlas page unlocked. The expedition has begun.");playCue("start");showWorldDialogue("Spark","The engineer left a message: Find the blue box near the boat.");}
+  if(action==="cancel-reset")$("info-dialog").close();
+  if(action==="confirm-reset"){localStorage.removeItem(SAVE_KEY);state=freshState();$("info-dialog").close();render();showToast("Cloud Harbor progress reset.");}
+});
+$("info-content").addEventListener("click",event=>{
+  const setting=event.target.closest("[data-setting]")?.dataset.setting;if(!setting)return;
+  if(setting==="sound")state.sound=!state.sound;if(setting==="motion")state.reducedMotion=!state.reducedMotion;
+  event.target.setAttribute("aria-pressed",String(setting==="sound"?state.sound:state.reducedMotion));saveState();render();if(setting==="sound")tone(520,.08);
+});
+window.addEventListener("storage",event=>{if(event.key===SAVE_KEY){state=loadState();render();}});
+window.addEventListener("resize",()=>renderHotspots());
+function prepareGeneratedEnvironment(){
+  const layers=[...document.querySelectorAll("[data-environment-layer]")];
+  let ready=0,failed=false;
+  const complete=()=>{ready++;if(!failed&&ready===layers.length)$("world").classList.add("environment-ready");};
+  layers.forEach(image=>{
+    if(image.complete){if(image.naturalWidth)complete();else failed=true;return;}
+    image.addEventListener("load",complete,{once:true});
+    image.addEventListener("error",()=>{failed=true;},{once:true});
+  });
+}
+prepareGeneratedEnvironment();
+render();
+if(new URLSearchParams(location.search).get("selftest")==="1")window.__atlasSelfTest={challenges,state:()=>structuredClone(state),activeChallenge:()=>structuredClone(activeChallenge),freshState,resolvedChallenge,SAVE_KEY,openChallenge,answerChoice,findSecret,render};
+</script>
+</body>
+</html>

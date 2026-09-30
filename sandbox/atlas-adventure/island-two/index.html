@@ -6,6 +6,7 @@
 <title>Atlas: The Lost Islands · Gale Garden Sandbox</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2307182a'/%3E%3Cpath d='M32 8c7 12 18 16 18 29 0 11-8 19-18 19s-18-8-18-19C14 24 25 20 32 8Z' fill='%2377e0b0'/%3E%3Cpath d='M32 18v30M20 34h24' stroke='%23f4cd65' stroke-width='5'/%3E%3C/svg%3E">
 <script src="../../../assets/theme-selector.js" defer></script>
+<script src="../../../assets/atlas-progress.js" defer></script>
 <link rel="stylesheet" href="../../../assets/refresh.css">
 <style>
 *{box-sizing:border-box}
@@ -53,7 +54,7 @@ dialog{width:min(720px,calc(100% - 22px));max-height:90vh;border:1px solid var(-
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}html.reduce-motion *,html.reduce-motion *:before,html.reduce-motion *:after{animation:none!important;transition:none!important}
 </style>
 </head>
-<body id="edu-refresh">
+<body id="edu-refresh" data-atlas-mode="sandbox">
 <a class="skip" href="#world-card">Skip to Gale Garden</a>
 <main class="shell">
 <header class="topbar">
@@ -237,7 +238,7 @@ function checkRoute(){if(JSON.stringify(route)===JSON.stringify(active.route)){f
 function retry(message="Not yet. Spark opened a clue—try another answer."){state.assisted.push(active.id);state.assisted=[...new Set(state.assisted)];$("challenge-feedback").textContent=message;$("challenge-feedback").className="feedback try";$("challenge-hint").hidden=false;$("hint-button").hidden=true;const dialog=$("challenge-dialog");dialog.classList.remove("wrong-attempt");void dialog.offsetWidth;dialog.classList.add("wrong-attempt");setTimeout(()=>dialog.classList.remove("wrong-attempt"),520);tone(180);save()}
 function finish(){if(state.completed.includes(active.id))return;state.completed.push(active.id);state.step=Math.min(challenges.length,state.step+1);$("challenge-content").querySelectorAll("button").forEach(b=>b.disabled=true);$("challenge-feedback").textContent="Success! "+active.explanation;$("challenge-feedback").className="feedback good";$("challenge-hint").hidden=true;$("hint-button").hidden=true;$("continue-button").hidden=false;tone(760,.14);save();render()}
 function closeChallenge(){$("challenge-dialog").close();lastFocus?.focus();if(state.step>=challenges.length)setTimeout(showCompletion,200)}
-function showCompletion(){openInfo("Gale Garden expedition ready",`<div class="completion"><img class="completion-art" src="${ASSET_ROOT}completion.webp" alt="The restored Gale Garden glowing above the clouds"><p>The Sky Tree sends a green path across the clouds. The wind reserve, storm corridor, and expedition supplies are ready to follow Mira.</p><p>You completed all ${challenges.length} randomized challenges${state.assisted.length?` with support on ${state.assisted.length}`:" without opening support"}.</p><a class="primary" href="../index.html">Return to Cloud Harbor</a><button class="secondary" data-action="replay">Replay with new questions</button></div>`,"Island Two complete")}
+function showCompletion(){window.AtlasProgress?.completeIsland(2,"Gale Garden",{assisted:state.assisted.length,challengeCount:challenges.length});openInfo("Gale Garden expedition ready",`<div class="completion"><img class="completion-art" src="${ASSET_ROOT}completion.webp" alt="The restored Gale Garden glowing above the clouds"><p>The Sky Tree sends a green path across the clouds. The wind reserve, storm corridor, and expedition supplies are ready to follow Mira.</p><p>You completed all ${challenges.length} randomized challenges${state.assisted.length?` with support on ${state.assisted.length}`:" without opening support"}.</p><a class="primary" href="../island-three/index.html">Test Ember Archive</a><a class="secondary" href="../map/index.html">Sandbox map</a><button class="secondary" data-action="replay">Replay with new questions</button></div>`,"Island Two complete")}
 function openInfo(title,html,label="Gale Garden"){lastFocus=document.activeElement;$("info-title").textContent=title;$("info-label").textContent=label;$("info-content").innerHTML=html;$("info-dialog").showModal()}
 function journal(){const rows=challenges.map(c=>`<li>${state.completed.includes(c.id)?"✓":"○"} ${c.title}</li>`).join("");openInfo("Expedition journal",`<p><strong>Gale Garden:</strong> ${state.completed.length}/${challenges.length} challenges complete.</p><ol>${rows}</ol><p>Sandbox progress is stored only in this browser.</p>${state.step>=challenges.length?'<div class="actions"><button class="primary" data-action="replay">Replay with new questions</button></div>':""}`,"Journal")}
 function replay(){const sound=state.sound,reducedMotion=state.reducedMotion,old=state.variants;state={...fresh(old),started:true,sound,reducedMotion};$("info-dialog").close();save();render()}

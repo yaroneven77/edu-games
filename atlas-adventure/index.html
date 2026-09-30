@@ -6,6 +6,7 @@
 <title>Atlas: The Lost Islands · Cloud Harbor Adventure</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2307172d'/%3E%3Cpath d='M12 45 30 13l8 18 14-7-9 27Z' fill='%23f3c75c' stroke='%2357d4c0' stroke-width='4'/%3E%3C/svg%3E">
 <script src="../assets/theme-selector.js" defer></script>
+<script src="../assets/atlas-progress.js" defer></script>
 <link rel="stylesheet" href="../assets/refresh.css">
 <style>
 *{box-sizing:border-box}
@@ -209,7 +210,7 @@ html body#edu-refresh .modal h2{color:#fff0bd!important}html body#edu-refresh .m
 html.reduce-motion *,html.reduce-motion *:before,html.reduce-motion *:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
 </style>
 </head>
-<body id="edu-refresh">
+<body id="edu-refresh" data-atlas-mode="production">
 <a class="skip" href="#world-card">Skip to the harbor</a>
 <noscript><div class="noscript">This interactive demo needs JavaScript enabled. No information is sent anywhere.</div></noscript>
 <main class="shell">
@@ -1292,13 +1293,14 @@ function showCompletion(){
   const nextAction=state.secret
     ?`<button class="primary" type="button" data-action="island-two">Travel to Island Two</button>`
     :`<button class="primary" type="button" data-action="secret-epilogue">Follow the Echo Lens to the hidden cave</button>`;
-  openInfo("Harbor restored",`<div class="completion"><div class="map-fragment">✦</div><h2>The lighthouse is awake</h2><p>Its beam points east toward Gale Garden, where a silver storm has silenced the wind beacons.</p>${state.secret?"<p>The hidden map fragment confirms Mira's route.</p>":"<p>Before leaving, Spark detects one final Echo Lens signal behind the lighthouse island.</p>"}<p>You completed ${challenges.length} learning challenges. ${state.assisted.length?`${state.assisted.length} challenge${state.assisted.length===1?"":"s"} used support; those can return later with fresh questions.`:"Every challenge was completed without opening support."}</p><div class="actions">${nextAction}<button class="secondary" type="button" data-action="journal">Open the expedition journal</button><button class="secondary" type="button" data-action="replay">Replay with new questions</button></div></div>`,"Expedition complete");
+  openInfo("Harbor restored",`<div class="completion"><div class="map-fragment">✦</div><h2>The lighthouse is awake</h2><p>Its beam points east toward Gale Garden, where a silver storm has silenced the wind beacons.</p>${state.secret?"<p>The hidden map fragment confirms Mira's route.</p>":"<p>Before leaving, Spark detects one final Echo Lens signal behind the lighthouse island.</p>"}<p>You completed ${challenges.length} learning challenges. ${state.assisted.length?`${state.assisted.length} challenge${state.assisted.length===1?"":"s"} used support; those can return later with fresh questions.`:"Every challenge was completed without opening support."}</p><div class="actions">${nextAction}<a class="secondary" href="./map/index.html">Expedition map</a><button class="secondary" type="button" data-action="journal">Open the expedition journal</button><button class="secondary" type="button" data-action="replay">Replay with new questions</button></div></div>`,"Expedition complete");
 }
 function findSecret(){
   if(!state.lens){showToast("A special lens is needed to reveal this path.");return;}
   if(state.step<challenges.length){showToast("The cave signal is incomplete. Finish the current objectives first.");return;}
   if(state.secret){showToast("The hidden map fragment is already in your journal.");return;}
   state.secret=true;saveState();render();playCue("secret");burst();
+  window.AtlasProgress?.completeIsland(1,"Cloud Harbor",{assisted:state.assisted.length,challengeCount:challenges.length});
   openInfo("A hidden map fragment",`<p>The Echo Lens reveals a cave behind the lighthouse island. Inside is a fragment marked with a sixth island—one that does not appear in the ordinary atlas.</p><p><strong>Secret discovered:</strong> The Unwritten Isle.</p><p>A fresh green line now points toward Gale Garden, where Mira's storm warning was never received.</p><div class="actions"><button class="primary" type="button" data-action="island-two">Travel to Island Two</button><button class="secondary" type="button" data-action="journal">Record the discovery</button></div>`,"Secret found");
 }
 function talkToSpark(){

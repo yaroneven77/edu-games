@@ -1,0 +1,486 @@
+(() => {
+  "use strict";
+
+  const $ = id => document.getElementById(id);
+  const islandNumber = Number(document.body.dataset.island);
+  const mode = document.body.dataset.atlasMode === "sandbox" ? "sandbox" : "production";
+  const config = window.ATLAS_CHAPTERS?.[islandNumber];
+  const islandFolders = { 3: "island-three", 4: "island-four", 5: "island-five", 6: "island-six" };
+  const artworkHref = mode === "sandbox" ? `../../../atlas-adventure/${islandFolders[islandNumber]}/artwork-prompt.html` : "artwork-prompt.html";
+  if (!config) throw new Error(`Missing Atlas chapter configuration for Island ${islandNumber}`);
+
+  const generatedRoot = document.body.dataset.generatedRoot || "../assets/generated/";
+  const saveKey = `edu-games-atlas-island-${islandNumber}-${mode}-v1`;
+  const randomUint = () => globalThis.crypto?.getRandomValues
+    ? crypto.getRandomValues(new Uint32Array(1))[0]
+    : Math.floor(Math.random() * 0x100000000);
+  const randomBelow = maximum => maximum ? randomUint() % maximum : 0;
+
+  function chooseVariants(previous = {}) {
+    return Object.fromEntries(config.challenges.map(challenge => {
+      let index = randomBelow(challenge.variants.length);
+      if (challenge.variants.length > 1 && index === previous[challenge.id]) {
+        index = (index + 1 + randomBelow(challenge.variants.length - 1)) % challenge.variants.length;
+      }
+      return [challenge.id, index];
+    }));
+  }
+
+  function fresh(previous = {}) {
+    return {
+      version: 1,
+      nonce: randomUint(),
+      variants: chooseVariants(previous),
+      started: false,
+      step: 0,
+      completed: [],
+      assisted: [],
+      player: { x: 50, y: 73 },
+      sound: true,
+      reducedMotion: false,
+      updatedAt: null
+    };
+  }
+
+  function load() {
+    const base = fresh();
+    try {
+      const parsed = JSON.parse(localStorage.getItem(saveKey));
+      if (parsed?.version !== 1) return base;
+      return {
+        ...base,
+        ...parsed,
+        variants: { ...base.variants, ...(parsed.variants || {}) },
+        step: Math.min(config.challenges.length, Math.max(0, Number(parsed.step) || 0))
+      };
+    } catch {
+      return base;
+    }
+  }
+
+  let state = load();
+  let active = null;
+  let sequence = [];
+  let balanceValue = 0;
+  let lastFocus = null;
+  let audio = null;
+
+  function save() {
+    state.updatedAt = new Date().toISOString();
+    try {
+      localStorage.setItem(saveKey, JSON.stringify(state));
+      $("save-status").textContent = "Saved on this device.";
+    } catch {
+      $("save-status").textContent = "Progress could not be saved.";
+    }
+  }
+
+  function tone(frequency = 520, duration = .08) {
+    if (!state.sound) return;
+    try {
+      audio ||= new (window.AudioContext || window.webkitAudioContext)();
+      const oscillator = audio.createOscillator();
+      const gain = audio.createGain();
+      oscillator.frequency.value = frequency;
+      gain.gain.value = .045;
+      oscillator.connect(gain).connect(audio.destination);
+      oscillator.start();
+      gain.gain.exponentialRampToValueAtTime(.001, audio.currentTime + duration);
+      oscillator.stop(audio.currentTime + duration);
+    } catch {}
+  }
+
+  function resolvedChallenge(index = state.step) {
+    const base = config.challenges[Math.min(index, config.challenges.length - 1)];
+    const variant = base.variants[state.variants[base.id] ?? 0];
+    return { ...base, ...variant };
+  }
+
+  function buildWorld() {
+    $("world").classList.add(`island-${islandNumber}`);
+    $("world").innerHTML = `
+      <div class="sky-orb" aria-hidden="true"></div><div class="mist one" aria-hidden="true"></div><div class="mist two" aria-hidden="true"></div>
+      <div id="landmarks"></div>
+      <img class="spark" src="${generatedRoot}spark/spark-guiding.webp" alt="">
+      <img class="player" id="player" src="${generatedRoot}explorer/explorer-idle.webp" alt="Explorer">
+      <div class="controls" aria-label="Explorer movement controls">
+        <button class="move" data-move="up" aria-label="Move up">↑</button><button class="move" data-move="left" aria-label="Move left">←</button><button class="move" data-move="down" aria-label="Move down">↓</button><button class="move" data-move="right" aria-label="Move right">→</button>
+        <button class="move interact" id="interact" type="button">Begin expedition</button>
+      </div>
+      <div class="objective"><strong>Current objective</strong><span id="objective"></span></div>`;
+    config.spots.forEach((spot, index) => {
+      const landmark = document.createElement("div");
+      landmark.className = "landmark";
+      landmark.id = `landmark-${index}`;
+      landmark.textContent = spot.icon;
+      landmark.style.left = `${spot.x}%`;
+      landmark.style.top = `${spot.y}%`;
+      landmark.setAttribute("aria-hidden", "true");
+      $("landmarks").append(landmark);
+      const button = document.createElement("button");
+      button.className = "hotspot";
+      button.id = `spot-${index}`;
+      button.type = "button";
+      button.textContent = spot.label;
+      button.style.left = `${spot.labelX ?? spot.x}%`;
+      button.style.top = `${spot.labelY ?? spot.y + 13}%`;
+      button.addEventListener("click", () => {
+        if (index === state.step) approachCurrent();
+      });
+      $("world").append(button);
+    });
+  }
+
+  function render() {
+    document.documentElement.classList.toggle("reduce-motion", state.reducedMotion);
+    $("chapter-name").textContent = `Island ${islandNumber} · ${config.title}`;
+    $("chapter-heading").textContent = config.title;
+    $("spark-message").textContent = !state.started
+      ? config.intro
+      : state.step >= config.challenges.length
+        ? config.completionMessage
+        : state.step ? config.challenges[state.step - 1].spark : config.startMessage;
+    $("objective").textContent = !state.started
+      ? `Talk to Spark and begin ${config.title}.`
+      : state.step >= config.challenges.length
+        ? "The chapter is complete. Open the expedition map or replay."
+        : config.challenges[state.step].objective;
+    $("progress-fill").style.width = `${state.completed.length / config.challenges.length * 100}%`;
+    $("progress").setAttribute("aria-valuenow", String(state.completed.length));
+    $("progress-text").textContent = `${state.completed.length} of ${config.challenges.length} challenges complete`;
+    $("quest-list").replaceChildren();
+    config.challenges.forEach((challenge, index) => {
+      const item = document.createElement("li");
+      item.className = state.completed.includes(challenge.id) ? "done" : index === state.step ? "active" : "";
+      item.innerHTML = `<span>${state.completed.includes(challenge.id) ? "✓" : index === state.step ? "◆" : "○"}</span><span>${challenge.title}</span>`;
+      $("quest-list").append(item);
+      const hotspot = $(`spot-${index}`);
+      hotspot.classList.toggle("current", state.started && index === state.step);
+      hotspot.classList.toggle("done", index < state.step);
+      hotspot.classList.toggle("locked", !state.started || index > state.step);
+      hotspot.disabled = !state.started || index !== state.step;
+      $(`landmark-${index}`).classList.toggle("active", state.started && index === state.step);
+      $(`landmark-${index}`).classList.toggle("done", index < state.step);
+    });
+    updatePlayer();
+  }
+
+  function updatePlayer() {
+    const player = $("player");
+    player.style.left = `${state.player.x}%`;
+    player.style.top = `${state.player.y}%`;
+    const target = state.step < config.spots.length ? config.spots[state.step] : null;
+    const distance = target ? Math.hypot(state.player.x - target.x, state.player.y - target.y) : Infinity;
+    const near = distance < 12;
+    $("interact").textContent = !state.started ? "Begin expedition" : target ? near ? "Interact" : "Auto-walk" : "Complete";
+    $("interact").classList.toggle("ready", near);
+    $("interact").disabled = state.started && !target;
+  }
+
+  function move(dx, dy) {
+    if (!state.started) return;
+    state.player.x = Math.max(7, Math.min(93, state.player.x + dx * 3));
+    state.player.y = Math.max(25, Math.min(78, state.player.y + dy * 3));
+    updatePlayer();
+    save();
+  }
+
+  function approachCurrent() {
+    if (!state.started) {
+      state.started = true;
+      window.AtlasProgress?.recordVisit(islandNumber, config.title);
+      save();
+      render();
+      openInfo(config.title, `<p>${config.opening}</p><p><strong>${config.startMessage}</strong></p>`, "New chapter");
+      return;
+    }
+    if (state.step >= config.challenges.length) return;
+    const target = config.spots[state.step];
+    state.player = { x: target.x, y: Math.min(78, target.y + 9) };
+    save();
+    render();
+    openChallenge(state.step);
+  }
+
+  function openChallenge(index) {
+    if (index !== state.step) return;
+    active = resolvedChallenge(index);
+    sequence = [];
+    balanceValue = Number(active.start ?? 0);
+    lastFocus = document.activeElement;
+    $("challenge-label").textContent = `${active.label} · ${active.subject}`;
+    $("challenge-title").textContent = active.title;
+    $("challenge-story").textContent = active.story;
+    $("challenge-hint").textContent = active.hint;
+    $("challenge-hint").hidden = true;
+    $("challenge-feedback").textContent = "";
+    $("challenge-feedback").className = "feedback";
+    $("hint-button").hidden = false;
+    $("continue-button").hidden = true;
+    renderChallenge();
+    $("challenge-dialog").showModal();
+  }
+
+  function renderChallenge() {
+    const box = $("challenge-content");
+    box.replaceChildren();
+    if (active.passage) {
+      const passage = document.createElement("div");
+      passage.className = "passage";
+      passage.textContent = active.passage;
+      box.append(passage);
+    }
+    const question = document.createElement("h3");
+    question.textContent = active.question;
+    box.append(question);
+    if (active.expression) {
+      const expression = document.createElement("div");
+      expression.className = "expression";
+      expression.textContent = active.expression;
+      box.append(expression);
+    }
+    if (active.type === "choice") {
+      const choices = document.createElement("div");
+      choices.className = "choices";
+      active.choices.forEach(value => {
+        const button = document.createElement("button");
+        button.className = "choice";
+        button.type = "button";
+        button.textContent = value;
+        button.onclick = () => answerChoice(button, value);
+        choices.append(button);
+      });
+      box.append(choices);
+      return;
+    }
+    if (active.type === "order" || active.type === "sequence" || active.type === "route") {
+      renderSequence(box);
+      return;
+    }
+    if (active.type === "balance") renderBalance(box);
+  }
+
+  function renderSequence(box) {
+    const answer = document.createElement("div");
+    answer.className = "token-answer";
+    answer.id = "token-answer";
+    const bank = document.createElement("div");
+    bank.className = "token-bank";
+    const available = active.type === "order" ? active.tokens : active.bank;
+    available.forEach((value, index) => {
+      const button = document.createElement("button");
+      button.className = "token";
+      button.type = "button";
+      button.textContent = value;
+      button.dataset.index = index;
+      button.onclick = () => {
+        if (active.type === "order" && sequence.includes(index)) return;
+        sequence.push(active.type === "order" ? index : value);
+        drawSequence(bank, answer);
+        tone(430, .05);
+      };
+      bank.append(button);
+    });
+    const actions = document.createElement("div");
+    actions.className = "actions";
+    actions.innerHTML = '<button class="secondary" id="clear-sequence" type="button">Clear</button><button class="secondary" id="undo-sequence" type="button">Undo</button><button class="primary" id="check-sequence" type="button">Check</button>';
+    box.append(answer, bank, actions);
+    $("clear-sequence").onclick = () => { sequence = []; drawSequence(bank, answer); };
+    $("undo-sequence").onclick = () => { sequence.pop(); drawSequence(bank, answer); };
+    $("check-sequence").onclick = checkSequence;
+    drawSequence(bank, answer);
+  }
+
+  function drawSequence(bank, answer) {
+    answer.replaceChildren();
+    [...bank.children].forEach(button => {
+      button.hidden = active.type === "order" && sequence.includes(Number(button.dataset.index));
+    });
+    sequence.forEach(entry => {
+      const token = document.createElement("button");
+      token.className = "token";
+      token.type = "button";
+      token.textContent = active.type === "order" ? active.tokens[entry] : entry;
+      token.onclick = () => {
+        const index = sequence.indexOf(entry);
+        if (index >= 0) sequence.splice(index, 1);
+        drawSequence(bank, answer);
+      };
+      answer.append(token);
+    });
+  }
+
+  function checkSequence() {
+    const built = active.type === "order" ? sequence.map(index => active.tokens[index]) : sequence;
+    if (JSON.stringify(built) === JSON.stringify(active.answer)) finishChallenge();
+    else retry("That sequence is not correct yet. Use Spark's clue and try again.");
+  }
+
+  function renderBalance(box) {
+    const wrap = document.createElement("div");
+    wrap.className = "balance";
+    wrap.innerHTML = `<div class="balance-value" id="balance-value"></div><div class="balance-track"><span id="balance-marker"></span></div><div class="actions" id="balance-actions"></div>`;
+    box.append(wrap);
+    active.moves.forEach(move => {
+      const button = document.createElement("button");
+      button.className = "token";
+      button.type = "button";
+      button.textContent = move.label;
+      button.onclick = () => {
+        balanceValue += move.amount;
+        drawBalance();
+        tone(move.amount > 0 ? 560 : 320, .06);
+      };
+      $("balance-actions").append(button);
+    });
+    const reset = document.createElement("button");
+    reset.className = "secondary";
+    reset.textContent = "Reset";
+    reset.onclick = () => { balanceValue = Number(active.start); drawBalance(); };
+    const check = document.createElement("button");
+    check.className = "primary";
+    check.textContent = "Check level";
+    check.onclick = () => balanceValue === active.target ? finishChallenge() : retry("The level has not reached the target yet.");
+    $("balance-actions").append(reset, check);
+    drawBalance();
+  }
+
+  function drawBalance() {
+    $("balance-value").textContent = `${balanceValue} ${active.unit || ""}`.trim();
+    const minimum = Number(active.minimum ?? Math.min(active.start, active.target) - 5);
+    const maximum = Number(active.maximum ?? Math.max(active.start, active.target) + 5);
+    const percent = Math.max(0, Math.min(100, (balanceValue - minimum) / (maximum - minimum) * 100));
+    $("balance-marker").style.left = `${percent}%`;
+  }
+
+  function answerChoice(button, value) {
+    if (value === active.answer) {
+      button.classList.add("correct");
+      finishChallenge();
+    } else {
+      button.disabled = true;
+      button.classList.add("wrong");
+      retry();
+    }
+  }
+
+  function retry(message = "Not yet. Spark opened a clue—try another answer.") {
+    state.assisted = [...new Set([...state.assisted, active.id])];
+    $("challenge-feedback").textContent = message;
+    $("challenge-feedback").className = "feedback try";
+    $("challenge-hint").hidden = false;
+    $("hint-button").hidden = true;
+    tone(180, .12);
+    save();
+  }
+
+  function finishChallenge() {
+    if (state.completed.includes(active.id)) return;
+    state.completed.push(active.id);
+    state.step = Math.min(config.challenges.length, state.step + 1);
+    $("challenge-content").querySelectorAll("button").forEach(button => button.disabled = true);
+    $("challenge-feedback").textContent = `Success! ${active.explanation}`;
+    $("challenge-feedback").className = "feedback good";
+    $("challenge-hint").hidden = true;
+    $("hint-button").hidden = true;
+    $("continue-button").hidden = false;
+    tone(760, .14);
+    save();
+    render();
+  }
+
+  function closeChallenge() {
+    $("challenge-dialog").close();
+    lastFocus?.focus();
+    if (state.step >= config.challenges.length) setTimeout(showCompletion, 180);
+  }
+
+  function showCompletion() {
+    window.AtlasProgress?.completeIsland(islandNumber, config.title, {
+      assisted: state.assisted.length,
+      challengeCount: config.challenges.length
+    });
+    const next = config.next
+      ? `<a class="primary" href="${config.next}">Travel to ${config.nextTitle}</a>`
+      : `<a class="primary" href="../map/index.html">View the completed Atlas</a>`;
+    openInfo(`${config.title} complete`, `<div class="completion"><div class="fragment">${config.fragment}</div><p>${config.ending}</p><p><strong>Atlas fragment ${islandNumber} of 6 collected.</strong></p><p>You completed all ${config.challenges.length} challenges${state.assisted.length ? ` with support on ${state.assisted.length}` : " without opening support"}.</p><div class="actions">${next}<a class="secondary" href="../map/index.html">Expedition map</a><button class="secondary" data-action="replay" type="button">Replay with new questions</button></div></div>`, "Chapter complete");
+  }
+
+  function openJournal() {
+    const rows = config.challenges.map(challenge => `<li>${state.completed.includes(challenge.id) ? "✓" : "○"} ${challenge.title}</li>`).join("");
+    openInfo("Expedition journal", `<p><strong>${config.title}:</strong> ${state.completed.length}/${config.challenges.length} challenges complete.</p><ol>${rows}</ol><div class="actions"><a class="secondary" href="../map/index.html">Expedition map</a>${state.step >= config.challenges.length ? '<button class="primary" data-action="replay">Replay chapter</button>' : ""}</div>`, "Journal");
+  }
+
+  function openSettings() {
+    openInfo("Settings", `<div class="settings-grid"><p><strong>Sound effects:</strong> ${state.sound ? "On" : "Off"}</p><p><strong>Reduced motion:</strong> ${state.reducedMotion ? "On" : "Off"}</p><div class="actions"><button class="secondary" data-action="sound">Toggle sound</button><button class="secondary" data-action="motion">Toggle reduced motion</button><a class="secondary" href="${artworkHref}">GPT artwork prompt</a></div><p>No microphone, account, analytics, or child information is used by this chapter.</p></div>`, "Game settings");
+  }
+
+  function openInfo(title, html, label = config.title) {
+    lastFocus = document.activeElement;
+    $("info-title").textContent = title;
+    $("info-label").textContent = label;
+    $("info-content").innerHTML = html;
+    $("info-dialog").showModal();
+  }
+
+  function replay() {
+    const previous = state.variants;
+    const sound = state.sound;
+    const reducedMotion = state.reducedMotion;
+    state = { ...fresh(previous), started: true, sound, reducedMotion };
+    $("info-dialog").close();
+    save();
+    render();
+  }
+
+  buildWorld();
+  $("journal").setAttribute("aria-label", "Open expedition journal");
+  $("settings").setAttribute("aria-label", "Open settings");
+  $("close-challenge").setAttribute("aria-label", "Close challenge");
+  $("close-info").setAttribute("aria-label", "Close");
+  document.querySelectorAll("[data-move]").forEach(button => {
+    const vectors = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] };
+    button.onclick = () => move(...vectors[button.dataset.move]);
+  });
+  $("interact").onclick = approachCurrent;
+  $("journal").onclick = openJournal;
+  $("settings").onclick = openSettings;
+  $("hint-button").onclick = () => {
+    state.assisted = [...new Set([...state.assisted, active.id])];
+    $("challenge-hint").hidden = false;
+    $("hint-button").hidden = true;
+    save();
+  };
+  $("continue-button").onclick = closeChallenge;
+  $("close-challenge").onclick = closeChallenge;
+  $("challenge-dialog").addEventListener("cancel", event => { event.preventDefault(); closeChallenge(); });
+  $("close-info").onclick = () => $("info-dialog").close();
+  $("info-content").onclick = event => {
+    const action = event.target.closest("[data-action]")?.dataset.action;
+    if (action === "replay") replay();
+    if (action === "sound") { state.sound = !state.sound; save(); $("info-dialog").close(); openSettings(); }
+    if (action === "motion") { state.reducedMotion = !state.reducedMotion; save(); render(); $("info-dialog").close(); openSettings(); }
+  };
+  $("reset").onclick = () => openInfo("Reset this chapter?", `<p>This removes only ${config.title} progress from this browser.</p><div class="actions"><button class="secondary" data-action="cancel-reset">Keep progress</button><button class="primary" data-action="confirm-reset">Reset chapter</button></div>`, "Local progress");
+  $("info-content").addEventListener("click", event => {
+    const action = event.target.closest("[data-action]")?.dataset.action;
+    if (action === "cancel-reset") $("info-dialog").close();
+    if (action === "confirm-reset") {
+      localStorage.removeItem(saveKey);
+      state = fresh();
+      $("info-dialog").close();
+      render();
+    }
+  });
+  document.addEventListener("keydown", event => {
+    if ($("challenge-dialog").open || $("info-dialog").open) return;
+    const vectors = { ArrowUp: [0, -1], ArrowDown: [0, 1], ArrowLeft: [-1, 0], ArrowRight: [1, 0] };
+    if (vectors[event.key]) { event.preventDefault(); move(...vectors[event.key]); }
+    if (event.key.toLowerCase() === "e") { event.preventDefault(); approachCurrent(); }
+  });
+  window.AtlasProgress?.recordVisit(islandNumber, config.title);
+  render();
+  if (new URLSearchParams(location.search).get("selftest") === "1") {
+    window.__atlasChapterSelfTest = { config, state: () => structuredClone(state), saveKey, resolvedChallenge, openChallenge, finishChallenge };
+  }
+})();

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Atlas: The Lost Islands · Expedition Map</title>
+<script src="../../assets/atlas-progress.js" defer></script>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;padding:18px;color:#eef8f7;background:radial-gradient(circle at 50% 0,#315f76,transparent 42%),linear-gradient(#081629,#102c40);font:17px/1.5 "Segoe UI",Arial,sans-serif}.shell{width:min(1100px,100%);margin:auto}.top{display:flex;justify-content:space-between;gap:12px;align-items:center}.back,.reset,.island{border:1px solid rgba(211,235,239,.34);border-radius:16px;background:#183b52;color:#f4fbfa;text-decoration:none;font-weight:800}.back,.reset{padding:10px 14px}.reset{cursor:pointer}h1{text-align:center;color:#fff0b3;font-size:clamp(30px,6vw,50px);margin:18px 0 4px}.intro{text-align:center;color:#c9e4df;margin:0 auto 24px;max-width:720px}.summary{display:flex;justify-content:center;gap:15px;flex-wrap:wrap;margin-bottom:22px}.pill{padding:8px 13px;border-radius:99px;background:rgba(13,42,61,.86);border:1px solid rgba(211,235,239,.28)}.map{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.island{position:relative;display:grid;grid-template-columns:72px 1fr;gap:13px;align-items:center;padding:18px;min-height:150px;box-shadow:0 12px 28px rgba(0,0,0,.24)}.island:hover{transform:translateY(-2px)}.island.locked{opacity:.5;pointer-events:none}.icon{display:grid;place-items:center;width:72px;height:72px;border-radius:50%;font-size:38px;background:linear-gradient(145deg,#376d79,#152f4d);box-shadow:inset 0 0 0 5px rgba(255,255,255,.08)}.island h2{margin:0;color:#fff0b3;font-size:21px}.island p{margin:4px 0;color:#c6dfdc;font-size:14px}.status{position:absolute;right:12px;top:10px;padding:3px 8px;border-radius:99px;background:#213b51;color:#d6e6e5;font-size:11px}.complete{border-color:#79df9a}.complete .status{background:#235f3d;color:#eaffef}.current{border-color:#f4cf6a;box-shadow:0 0 0 3px rgba(244,207,106,.14),0 12px 28px rgba(0,0,0,.24)}.finale{grid-column:2/3}.ending{display:none;margin:24px 0;padding:22px;border:1px solid #f4cf6a;border-radius:20px;background:rgba(50,38,70,.88);text-align:center}.ending.show{display:block}.ending h2{color:#fff0b3}.fragments{font-size:35px;letter-spacing:8px}@media(max-width:820px){.map{grid-template-columns:1fr 1fr}.finale{grid-column:auto}}@media(max-width:560px){body{padding:10px}.map{grid-template-columns:1fr}.island{min-height:128px}.top{align-items:flex-start}.finale{grid-column:auto}}
+</style>
+</head>
+<body data-atlas-mode="production">
+<main class="shell"><div class="top"><a class="back" href="../index.html">← Cloud Harbor</a><button class="reset" id="reset-map">Reset expedition map</button></div><h1>Atlas Expedition Map</h1><p class="intro">Choose any unlocked chapter, revisit completed islands, and collect all six Atlas fragments.</p><div class="summary"><span class="pill" id="completion-count"></span><span class="pill" id="fragment-count"></span></div><section class="map" id="map"></section><section class="ending" id="ending"><div class="fragments">✦ ✦ ✦ ✦ ✦ ✦</div><h2>The Atlas is complete</h2><p>Mira, Spark, the explorer, and the guardian restored every Lost Island. One blank page remains for the next adventure.</p><a class="back" href="../island-six/index.html">Replay the finale</a></section></main>
+<script>
+window.addEventListener("DOMContentLoaded",()=>{
+ const islands=[
+  ["Cloud Harbor","🏝️","Rebuild the bridge and restore the lighthouse.","../index.html"],
+  ["Gale Garden","🌳","Wake the Sky Tree and prepare the storm expedition.","../island-two/index.html"],
+  ["Ember Archive","🔥","Recover the volcanic library's memories.","../island-three/index.html"],
+  ["Tidal Observatory","🌊","Balance moon tides and focus the sea telescope.","../island-four/index.html"],
+  ["Frostfire Summit","❄️","Balance ice and fire and meet the guardian.","../island-five/index.html"],
+  ["The Unwritten Isle","✦","Restore the Atlas Heart and complete Mira's story.","../island-six/index.html"]
+ ],state=AtlasProgress.load(),map=document.getElementById("map");
+ islands.forEach(([title,icon,description,href],index)=>{const number=index+1,complete=Boolean(state.islands[String(number)]?.complete),unlocked=AtlasProgress.isUnlocked(number),card=document.createElement("a");card.className=`island ${complete?"complete":""} ${!unlocked?"locked":""} ${unlocked&&!complete?"current":""} ${number===6?"finale":""}`;card.href=href;card.innerHTML=`<span class="status">${complete?"Complete":unlocked?"Ready":"Locked"}</span><span class="icon">${icon}</span><span><h2>${number}. ${title}</h2><p>${description}</p></span>`;map.append(card)});
+ const completeCount=Object.values(state.islands).filter(item=>item.complete).length;
+ document.getElementById("completion-count").textContent=`${completeCount} of 6 islands complete`;
+ document.getElementById("fragment-count").textContent=`${state.fragments.length} Atlas fragments collected`;
+ document.getElementById("ending").classList.toggle("show",completeCount===6);
+ document.getElementById("reset-map").onclick=()=>{if(confirm("Reset the unified expedition map? Individual chapter saves will remain.")){AtlasProgress.reset();location.reload()}};
+});
+</script>
+</body></html>

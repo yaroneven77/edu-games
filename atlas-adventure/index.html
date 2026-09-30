@@ -97,10 +97,11 @@ button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{o
 .world-hotspot.current{border-color:var(--gold);box-shadow:0 0 0 3px rgba(243,199,92,.22),0 5px 0 rgba(0,0,0,.3);animation:questPulse 2.4s ease-in-out infinite}
 .world-hotspot.done{border-color:var(--good);color:#dcffe6}
 .world-hotspot.locked{opacity:.65}
-#hotspot-crate{left:14%;bottom:20%}#hotspot-bridge{left:49%;bottom:27%}#hotspot-boat{left:20%;bottom:43%}
-#hotspot-console{left:57%;bottom:41%}#hotspot-lighthouse{right:8%;top:22%}#hotspot-spark{left:39%;top:31%}
-#hotspot-secret{right:7%;bottom:17%;opacity:0;pointer-events:none}
+#hotspot-crate{left:8.65%;top:79.99%;transform:translate(-50%,-50%)}#hotspot-bridge{left:45.16%;top:79.62%;transform:translate(-50%,-50%)}#hotspot-boat{left:8.65%;top:19.97%;transform:translate(-50%,-50%)}
+#hotspot-console{left:61.32%;top:43.56%;transform:translate(-50%,-50%)}#hotspot-lighthouse{left:89.86%;top:19.97%;transform:translate(-50%,-50%)}#hotspot-spark{left:39%;top:31%}
+#hotspot-secret{left:76.72%;top:74.61%;transform:translate(-50%,-50%);opacity:0;pointer-events:none}
 .lens-unlocked #hotspot-secret{opacity:1;pointer-events:auto}
+.world.label-edit-mode .world-hotspot{cursor:grab!important;outline:3px dashed #fff1a8;outline-offset:3px;opacity:1!important;pointer-events:auto!important}.world.label-edit-mode .world-hotspot:active{cursor:grabbing!important}.world.label-edit-mode .quest-beacon{display:none}
 .quest-beacon{position:absolute;z-index:10;left:50%;top:20%;display:grid;justify-items:center;gap:3px;pointer-events:none;
   transform:translate(-50%,-100%);filter:drop-shadow(0 5px 6px rgba(0,0,0,.5));transition:left .45s ease,top .45s ease}
 .quest-beacon[hidden]{display:none}
@@ -111,7 +112,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{o
 .quest-arrow{width:22px;height:27px;background:url("./assets/generated/marker/quest-marker-arrow.webp") center/contain no-repeat;animation:arrowNudge 2.2s ease-in-out infinite}
 .movement-controls{position:absolute;z-index:12;left:50%;top:15px;transform:translateX(-50%);display:grid;grid-template-columns:repeat(4,48px);grid-template-rows:44px 44px;gap:4px;
   padding:8px;border:1px solid rgba(190,226,237,.38);border-radius:18px;background:rgba(5,22,39,.78);backdrop-filter:blur(7px)}
-.move-button{min-width:44px;min-height:44px;border:1px solid #7594a7;border-radius:12px;background:#173653;color:#eef8fa;font-weight:900;cursor:pointer}
+.move-button{display:grid;place-items:center;min-width:44px;min-height:44px;padding:4px;border:1px solid #7594a7;border-radius:12px;background:#173653;color:#eef8fa;font-weight:900;cursor:pointer}.move-button img{width:34px;height:34px;object-fit:contain;pointer-events:none}
 .move-button[data-direction="up"]{grid-column:1;grid-row:1}.move-button[data-direction="left"]{grid-column:2;grid-row:1}.move-button[data-direction="down"]{grid-column:3;grid-row:1}.move-button[data-direction="right"]{grid-column:4;grid-row:1}
 .interact-button{grid-column:1/5;grid-row:2;border-color:#e8c65f;background:linear-gradient(180deg,#876a2c,#5a471f);color:#fff5c8}
 .interact-button.ready{background:linear-gradient(180deg,#3e9679,#276551);border-color:#8aebca;animation:interactReady 2s ease-in-out infinite}
@@ -203,7 +204,7 @@ html body#edu-refresh .modal h2{color:#fff0bd!important}html body#edu-refresh .m
 @keyframes lensReady{to{rotate:360deg}}
 @keyframes beaconSweep{0%,100%{transform:rotate(-13deg)}50%{transform:rotate(13deg)}}@keyframes starBurst{to{transform:translate(var(--x),var(--y)) rotate(180deg);opacity:0}}
 @media(max-width:900px){.game-layout{grid-template-columns:1fr}.side{position:static;grid-template-columns:1fr 1fr}.world{min-height:auto}.world-hotspot{font-size:12px;padding:5px 8px}.objective-strip{position:relative;left:auto;right:auto;bottom:auto;border-radius:0;border-inline:0;border-bottom:0}.companion{grid-template-columns:62px 1fr}.spark-portrait{width:62px;height:62px}.spark-portrait svg{width:52px;height:52px}}
-@media(max-width:590px){.shell{padding:8px}.topbar{grid-template-columns:auto 1fr}.toolbar{grid-column:1/-1;justify-content:flex-end}.game-layout{gap:9px}.side{grid-template-columns:1fr}.world-card{border-radius:17px}.world{aspect-ratio:4/5}.world>svg{width:125%;max-width:none;transform:translateX(-10%)}.generated-environment,.generated-models{width:125%;left:-10%;right:auto}.environment-distant{left:34%;top:16%;width:30%}.environment-cloud-wide{left:-3%;top:18%;width:38%}.environment-cloud-small{right:-2%;top:22%;width:28%}.environment-land{top:42%;width:49%}.environment-land-right{top:39%}.environment-water{bottom:14%;width:38%}.world-hotspot{font-size:0;width:46px;height:46px;padding:0;border-radius:50%}.world-hotspot:before{content:"✦";font-size:20px}.world-hotspot.done:not(#hotspot-secret),.world-hotspot.locked{display:none}.world-hotspot.current:after{content:none}.quest-beacon-label{display:none}.quest-pin{width:31px;height:31px}.quest-arrow{width:18px;height:22px}.movement-controls{left:8px;top:8px;transform:none;grid-template-columns:repeat(4,44px);grid-template-rows:44px 44px;padding:6px;background:rgba(5,22,39,.68)}.move-button{font-size:16px}.move-button[data-direction="up"]{grid-column:1;grid-row:1}.move-button[data-direction="left"]{grid-column:2;grid-row:1}.move-button[data-direction="down"]{grid-column:3;grid-row:1}.move-button[data-direction="right"]{grid-column:4;grid-row:1}.interact-button{grid-column:1/5;grid-row:2}.movement-help{display:none}.world-dialogue{right:8px;bottom:72px;width:calc(100% - 16px);grid-template-columns:40px 1fr 44px;padding:8px 9px}.dialogue-portrait{width:40px;height:40px;font-size:20px}.dialogue-portrait img{width:38px;height:38px}.world-dialogue p{font-size:13px;line-height:1.4}.interior-scene>svg{width:100%;transform:none}.interior-title{top:72px}.interior-exit{top:12px}.interior-caption{left:8%;right:8%;bottom:7%}#interior-note{left:10%;bottom:22%}#interior-lens{right:8%;top:37%}.objective-strip{font-size:14px;align-items:flex-start}.objective-strip strong{white-space:normal}.choices{grid-template-columns:1fr}.modal-inner{padding:17px}.panel{padding:14px}}
+@media(max-width:590px){.shell{padding:8px}.topbar{grid-template-columns:auto 1fr}.toolbar{grid-column:1/-1;justify-content:flex-end}.game-layout{gap:9px}.side{grid-template-columns:1fr}.world-card{border-radius:17px}.world{aspect-ratio:4/5}.world>svg{width:125%;max-width:none;transform:translateX(-10%)}.generated-environment,.generated-models{width:125%;left:-10%;right:auto}.environment-distant{left:34%;top:16%;width:30%}.environment-cloud-wide{left:-3%;top:18%;width:38%}.environment-cloud-small{right:-2%;top:22%;width:28%}.environment-land{top:42%;width:49%}.environment-land-right{top:39%}.environment-water{bottom:14%;width:38%}.world-hotspot{font-size:0;width:46px;height:46px;padding:0;border-radius:50%}.world-hotspot:before{content:"✦";font-size:20px}.world-hotspot.done:not(#hotspot-secret),.world-hotspot.locked{display:none}.world-hotspot.current:after{content:none}#hotspot-crate{left:20%!important;top:70%!important;transform:none!important}#hotspot-bridge{left:48%!important;top:66%!important;transform:none!important}#hotspot-boat{left:65%!important;top:24%!important;transform:none!important}#hotspot-console{left:62%!important;top:49%!important;transform:none!important}#hotspot-lighthouse{left:80%!important;top:34%!important;transform:none!important}#hotspot-secret{left:78%!important;top:72%!important;transform:none!important}.quest-beacon-label{display:none}.quest-pin{width:31px;height:31px}.quest-arrow{width:18px;height:22px}.movement-controls{left:8px;top:8px;transform:none;grid-template-columns:repeat(4,44px);grid-template-rows:44px 44px;padding:6px;background:rgba(5,22,39,.68)}.move-button{font-size:16px}.move-button img{width:30px;height:30px}.move-button[data-direction="up"]{grid-column:1;grid-row:1}.move-button[data-direction="left"]{grid-column:2;grid-row:1}.move-button[data-direction="down"]{grid-column:3;grid-row:1}.move-button[data-direction="right"]{grid-column:4;grid-row:1}.interact-button{grid-column:1/5;grid-row:2}.movement-help{display:none}.world-dialogue{right:8px;bottom:72px;width:calc(100% - 16px);grid-template-columns:40px 1fr 44px;padding:8px 9px}.dialogue-portrait{width:40px;height:40px;font-size:20px}.dialogue-portrait img{width:38px;height:38px}.world-dialogue p{font-size:13px;line-height:1.4}.interior-scene>svg{width:100%;transform:none}.interior-title{top:72px}.interior-exit{top:12px}.interior-caption{left:8%;right:8%;bottom:7%}#interior-note{left:10%;bottom:22%}#interior-lens{right:8%;top:37%}.objective-strip{font-size:14px;align-items:flex-start}.objective-strip strong{white-space:normal}.choices{grid-template-columns:1fr}.modal-inner{padding:17px}.panel{padding:14px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 html.reduce-motion *,html.reduce-motion *:before,html.reduce-motion *:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
 </style>
@@ -408,10 +409,10 @@ html.reduce-motion *,html.reduce-motion *:before,html.reduce-motion *:after{anim
   <button class="world-hotspot" id="hotspot-secret" type="button" aria-label="Explore the hidden cave">Hidden cave</button>
   <div class="quest-beacon" id="quest-beacon" aria-hidden="true"><span class="quest-beacon-label">NEXT</span><span class="quest-pin"></span><span class="quest-arrow"></span></div>
   <div class="movement-controls" aria-label="Explorer movement controls">
-    <button class="move-button" data-direction="up" type="button" aria-label="Move explorer up">▲</button>
-    <button class="move-button" data-direction="left" type="button" aria-label="Move explorer left">◀</button>
-    <button class="move-button" data-direction="down" type="button" aria-label="Move explorer down">▼</button>
-    <button class="move-button" data-direction="right" type="button" aria-label="Move explorer right">▶</button>
+    <button class="move-button" data-direction="up" type="button" aria-label="Move explorer up"><img src="./assets/generated/gale-garden/move-up.webp" alt=""></button>
+    <button class="move-button" data-direction="left" type="button" aria-label="Move explorer left"><img src="./assets/generated/gale-garden/move-left.webp" alt=""></button>
+    <button class="move-button" data-direction="down" type="button" aria-label="Move explorer down"><img src="./assets/generated/gale-garden/move-down.webp" alt=""></button>
+    <button class="move-button" data-direction="right" type="button" aria-label="Move explorer right"><img src="./assets/generated/gale-garden/move-right.webp" alt=""></button>
     <button class="move-button interact-button" id="interact-button" type="button">Interact</button>
   </div>
   <div class="movement-help" id="movement-help"><strong>Explore:</strong> Arrow keys or WASD · E to interact</div>
@@ -734,7 +735,8 @@ const $=id=>document.getElementById(id);
 const worldModelRegistry=JSON.parse($("atlas-world-models").textContent);
 const worldModels=Object.freeze(Object.fromEntries(worldModelRegistry.models.map(model=>[model.id,Object.freeze(model)])));
 const challenges=JSON.parse($("atlas-challenges").textContent);
-const SAVE_KEY="edu-games-atlas-cloud-harbor-v1";
+const SAVE_KEY="edu-games-atlas-cloud-harbor-v1",LABEL_LAYOUT_KEY="edu-games-atlas-cloud-harbor-label-layout-v1";
+const MOVABLE_LABEL_IDS=["hotspot-spark","hotspot-crate","hotspot-bridge","hotspot-boat","hotspot-console","hotspot-lighthouse","hotspot-secret"];
 const modelTarget=id=>{const interaction=worldModels[id].interaction;return{x:interaction.x,y:interaction.y,name:interaction.label,radius:interaction.radius};};
 const WORLD_TARGETS={
   spark:modelTarget("spark-companion"),crate:modelTarget("cargo-crate"),bridge:modelTarget("atlas-bridge"),
@@ -780,7 +782,7 @@ function seededShuffle(values,seed){
 function freshState(previousVariants={}){
   return{version:1,runNonce:randomUint(),questionVariants:createQuestionVariants(previousVariants),started:false,interior:false,step:0,completed:[],assisted:[],lens:false,bridge:false,lighthouse:false,secret:false,atlas:false,sound:true,reducedMotion:false,facing:"east",player:{x:334,y:316},updatedAt:null};
 }
-let state=loadState(),activeChallenge=null,orderedWords=[],lastFocus=null,audioContext=null,toastTimer=0,dialogueTimer=0,pendingDialogue=null,movementSaveTimer=0,autoWalkFrame=0,movementFrame=0;
+let state=loadState(),activeChallenge=null,orderedWords=[],lastFocus=null,audioContext=null,toastTimer=0,dialogueTimer=0,pendingDialogue=null,movementSaveTimer=0,autoWalkFrame=0,movementFrame=0,labelEditMode=false,labelLayout=loadLabelLayout();
 const heldDirections=new Set();
 
 function loadState(){
@@ -798,6 +800,51 @@ function saveState(){
     $("save-dot").classList.add("saved");$("save-status").textContent="Saved on this device.";
     setTimeout(()=>$("save-dot").classList.remove("saved"),900);
   }catch(error){$("save-status").textContent="Progress could not be saved in this browser.";}
+}
+function loadLabelLayout(){
+  try{const parsed=JSON.parse(localStorage.getItem(LABEL_LAYOUT_KEY));return parsed&&typeof parsed==="object"?parsed:{};}catch(error){return{};}
+}
+function applyLabelLayout(){
+  MOVABLE_LABEL_IDS.forEach(id=>{
+    const button=$(id),position=labelLayout[id];if(!button||!position)return;
+    button.style.left=`${position.left}%`;button.style.top=`${position.top}%`;button.style.right="auto";button.style.bottom="auto";button.style.transform="translate(-50%,-50%)";
+  });
+}
+function saveLabelLayout(){
+  try{localStorage.setItem(LABEL_LAYOUT_KEY,JSON.stringify(labelLayout));}catch(error){showToast("Label positions could not be saved.");}
+}
+function clearLabelLayout(){
+  labelLayout={};localStorage.removeItem(LABEL_LAYOUT_KEY);
+  MOVABLE_LABEL_IDS.forEach(id=>{const button=$(id);button.style.removeProperty("left");button.style.removeProperty("top");button.style.removeProperty("right");button.style.removeProperty("bottom");button.style.removeProperty("transform");});
+  renderHotspots();showToast("Label positions reset.");
+}
+function setLabelEditMode(enabled){
+  labelEditMode=enabled;$("world").classList.toggle("label-edit-mode",enabled);
+  showToast(enabled?"Drag any object label to move it. Open Settings when finished.":"Label movement finished. Positions stay in this browser.");
+}
+async function copyLabelLayout(){
+  const rounded=Object.fromEntries(Object.entries(labelLayout).map(([id,p])=>[id,{left:Number(p.left.toFixed(2)),top:Number(p.top.toFixed(2))}]));
+  const text=JSON.stringify(rounded,null,2);
+  try{await navigator.clipboard.writeText(text);showToast("Label positions copied. Paste them into our chat.");}
+  catch(error){openInfo("Label positions",`<p>Copy this text and paste it into our chat:</p><pre>${text.replaceAll("&","&amp;").replaceAll("<","&lt;")}</pre>`,"Layout editor");}
+}
+function prepareMovableLabels(){
+  MOVABLE_LABEL_IDS.forEach(id=>{
+    const button=$(id);if(!button)return;
+    let dragging=false;
+    const move=event=>{
+      if(!dragging)return;
+      const worldRect=$("world").getBoundingClientRect();
+      const left=Math.max(4,Math.min(96,(event.clientX-worldRect.left)/worldRect.width*100));
+      const top=Math.max(6,Math.min(94,(event.clientY-worldRect.top)/worldRect.height*100));
+      labelLayout[id]={left,top};applyLabelLayout();positionQuestBeacon(id);
+    };
+    button.addEventListener("pointerdown",event=>{if(!labelEditMode)return;event.preventDefault();event.stopPropagation();dragging=true;button.setPointerCapture?.(event.pointerId);move(event);},{capture:true});
+    button.addEventListener("pointermove",move);
+    ["pointerup","pointercancel","lostpointercapture"].forEach(type=>button.addEventListener(type,event=>{if(!dragging)return;dragging=false;saveLabelLayout();event.preventDefault();event.stopPropagation();}));
+    button.addEventListener("click",event=>{if(!labelEditMode)return;event.preventDefault();event.stopImmediatePropagation();},{capture:true});
+  });
+  applyLabelLayout();
 }
 function tone(frequency=520,duration=.12,type="sine"){
   if(!state.sound)return;
@@ -888,7 +935,7 @@ function render(){
   document.querySelector(".movement-controls").hidden=inside;
   $("movement-help").hidden=inside;
   const targets=["Inspect the blue cargo crate near the airship.","Use the broken bridge mechanism.","Restore the scrambled airship log.","Balance the rescue cargo at the harbor console.","Read the engineer's note inside the lighthouse.","Align the lighthouse lens."];
-  $("objective").textContent=!state.started?"Talk to Spark near the dock.":state.step>=challenges.length?"The lighthouse is restored. Review the journal or find the hidden cave.":targets[state.step];
+  $("objective").textContent=!state.started?"Talk to Spark near the dock.":state.step>=challenges.length&&!state.secret?"Use the Echo Lens to investigate the hidden cave.":state.step>=challenges.length?"The lighthouse is restored. Travel onward or review the journal.":targets[state.step];
   $("spark-message").textContent=!state.started?"The harbor is quiet. Wake me and we will investigate together.":state.step===0?"I am Spark! The engineer left a message: Find the blue box near the boat.":state.step>=challenges.length?challenges.at(-1).spark:challenges[state.step-1].spark;
   $("progress-fill").style.width=(state.completed.length/challenges.length*100)+"%";
   document.querySelector(".progress-track").setAttribute("aria-valuenow",String(state.completed.length));
@@ -940,7 +987,9 @@ function renderHotspots(){
   const lighthouse=$("hotspot-lighthouse"),lighthouseCurrent=state.started&&(state.step===4||state.step===5);
   lighthouse.classList.toggle("current",lighthouseCurrent);lighthouse.classList.toggle("done",state.step>=challenges.length);
   lighthouse.classList.toggle("locked",!state.started||state.step<4);lighthouse.setAttribute("aria-current",lighthouseCurrent?"step":"false");
-  const targetId=state.interior?null:!state.started?"hotspot-spark":state.step===0?"hotspot-crate":state.step===1?"hotspot-bridge":state.step===2?"hotspot-boat":state.step===3?"hotspot-console":state.step<challenges.length?"hotspot-lighthouse":null;
+  const secret=$("hotspot-secret"),secretCurrent=state.step>=challenges.length&&!state.secret;
+  secret.classList.toggle("current",secretCurrent);secret.classList.toggle("done",state.secret);secret.setAttribute("aria-current",secretCurrent?"step":"false");
+  const targetId=state.interior?null:!state.started?"hotspot-spark":state.step===0?"hotspot-crate":state.step===1?"hotspot-bridge":state.step===2?"hotspot-boat":state.step===3?"hotspot-console":state.step<challenges.length?"hotspot-lighthouse":!state.secret?"hotspot-secret":null;
   requestAnimationFrame(()=>positionQuestBeacon(targetId));
 }
 function positionQuestBeacon(targetId){
@@ -958,6 +1007,7 @@ function currentWorldTarget(){
   if(state.step===2)return WORLD_TARGETS.boat;
   if(state.step===3)return WORLD_TARGETS.console;
   if(state.step<challenges.length)return WORLD_TARGETS.lighthouse;
+  if(!state.secret&&state.lens)return WORLD_TARGETS.secret;
   return null;
 }
 function distanceTo(target){
@@ -1039,6 +1089,7 @@ function performCurrentInteraction(){
   if(!state.started){talkToSpark();return;}
   if(state.step===4||state.step===5){enterLighthouse();return;}
   if(state.step<challenges.length)openChallenge(state.step);
+  else if(!state.secret&&state.lens)findSecret();
 }
 function approachCurrentTarget(){
   const target=currentWorldTarget();
@@ -1181,13 +1232,16 @@ function closeChallenge(){
   else if(pendingDialogue){const dialogue=pendingDialogue;pendingDialogue=null;setTimeout(()=>showWorldDialogue(dialogue.speaker,dialogue.text),220);}
 }
 function showCompletion(){
-  openInfo("Harbor restored",`<div class="completion"><div class="map-fragment">✦</div><h2>The lighthouse is awake</h2><p>Its beam points east toward an island erased from ordinary maps.</p><p>You completed ${challenges.length} learning challenges. ${state.assisted.length?`${state.assisted.length} challenge${state.assisted.length===1?"":"s"} used support; those can return later with fresh questions.`:"Every challenge was completed without opening support."}</p><div class="actions"><button class="primary" type="button" data-action="journal">Open the expedition journal</button><button class="secondary" type="button" data-action="replay">Replay with new questions</button></div></div>`,"Expedition complete");
+  const nextAction=state.secret
+    ?`<button class="primary" type="button" data-action="island-two">Travel to Island Two</button>`
+    :`<button class="primary" type="button" data-action="secret-epilogue">Follow the Echo Lens to the hidden cave</button>`;
+  openInfo("Harbor restored",`<div class="completion"><div class="map-fragment">✦</div><h2>The lighthouse is awake</h2><p>Its beam points east toward Gale Garden, where a silver storm has silenced the wind beacons.</p>${state.secret?"<p>The hidden map fragment confirms Mira's route.</p>":"<p>Before leaving, Spark detects one final Echo Lens signal behind the lighthouse island.</p>"}<p>You completed ${challenges.length} learning challenges. ${state.assisted.length?`${state.assisted.length} challenge${state.assisted.length===1?"":"s"} used support; those can return later with fresh questions.`:"Every challenge was completed without opening support."}</p><div class="actions">${nextAction}<button class="secondary" type="button" data-action="journal">Open the expedition journal</button><button class="secondary" type="button" data-action="replay">Replay with new questions</button></div></div>`,"Expedition complete");
 }
 function findSecret(){
   if(!state.lens){showToast("A special lens is needed to reveal this path.");return;}
   if(state.secret){showToast("The hidden map fragment is already in your journal.");return;}
   state.secret=true;saveState();render();playCue("secret");burst();
-  openInfo("A hidden map fragment",`<p>The Echo Lens reveals a cave behind the lighthouse island. Inside is a fragment marked with a sixth island—one that does not appear in the ordinary atlas.</p><p><strong>Secret discovered:</strong> The Unwritten Isle.</p>`,"Secret found");
+  openInfo("A hidden map fragment",`<p>The Echo Lens reveals a cave behind the lighthouse island. Inside is a fragment marked with a sixth island—one that does not appear in the ordinary atlas.</p><p><strong>Secret discovered:</strong> The Unwritten Isle.</p><p>A fresh green line now points toward Gale Garden, where Mira's storm warning was never received.</p><div class="actions"><button class="primary" type="button" data-action="island-two">Travel to Island Two</button><button class="secondary" type="button" data-action="journal">Record the discovery</button></div>`,"Secret found");
 }
 function talkToSpark(){
   if(state.started){openJournal();return;}
@@ -1207,6 +1261,8 @@ function openSettings(){
   openInfo("Settings",`<div class="settings-grid">
   <div class="setting"><span><strong>Sound effects</strong><br><small>Short generated tones only</small></span><button class="switch" type="button" data-setting="sound" aria-label="Toggle sound effects" aria-pressed="${state.sound}"></button></div>
   <div class="setting"><span><strong>Reduce motion</strong><br><small>Stops decorative animation</small></span><button class="switch" type="button" data-setting="motion" aria-label="Toggle reduced motion" aria-pressed="${state.reducedMotion}"></button></div>
+  <div class="setting"><span><strong>Move object labels</strong><br><small>Drag labels to choose their exact positions</small></span><button class="secondary" type="button" data-action="toggle-label-edit">${labelEditMode?"Finish moving":"Start moving"}</button></div>
+  <div class="actions"><button class="secondary" type="button" data-action="copy-label-layout">Copy label positions</button><button class="secondary" type="button" data-action="reset-label-layout">Reset label positions</button></div>
   <p>No music, microphone, account, analytics, or child information is used by this demo.</p></div>`,"Game settings");
 }
 function openInfo(title,html,label){
@@ -1255,8 +1311,13 @@ $("journal-button").addEventListener("click",openJournal);$("settings-button").a
 $("info-content").addEventListener("click",event=>{
   const action=event.target.closest("[data-action]")?.dataset.action;if(!action)return;
   if(action==="journal"){$("info-dialog").close();openJournal();}
+  if(action==="secret-epilogue"){state.interior=false;state.player={x:810,y:315};$("info-dialog").close();saveState();render();showWorldDialogue("Spark","The Echo Lens signal is behind the lighthouse. Follow the NEXT marker and press Interact near the hidden cave.",8500);}
+  if(action==="island-two")location.href="./island-two/index.html";
   if(action==="replay")startNewRun();
   if(action==="start-expedition"){state.started=true;state.atlas=true;saveState();$("info-dialog").close();render();showToast("Atlas page unlocked. The expedition has begun.");playCue("start");showWorldDialogue("Spark","The engineer left a message: Find the blue box near the boat.");}
+  if(action==="toggle-label-edit"){$("info-dialog").close();setLabelEditMode(!labelEditMode);}
+  if(action==="copy-label-layout")copyLabelLayout();
+  if(action==="reset-label-layout"){clearLabelLayout();$("info-dialog").close();}
   if(action==="cancel-reset")$("info-dialog").close();
   if(action==="confirm-reset"){localStorage.removeItem(SAVE_KEY);state=freshState();$("info-dialog").close();render();showToast("Cloud Harbor progress reset.");}
 });
@@ -1278,6 +1339,7 @@ function prepareGeneratedEnvironment(){
   });
 }
 prepareGeneratedEnvironment();
+prepareMovableLabels();
 render();
 if(new URLSearchParams(location.search).get("selftest")==="1")window.__atlasSelfTest={challenges,state:()=>structuredClone(state),activeChallenge:()=>structuredClone(activeChallenge),freshState,resolvedChallenge,SAVE_KEY,openChallenge,answerChoice,findSecret,render};
 </script>

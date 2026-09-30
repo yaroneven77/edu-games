@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Atlas: The Lost Islands · Gale Garden Sandbox</title>
+<title>Atlas: The Lost Islands · Gale Garden</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2307182a'/%3E%3Cpath d='M32 8c7 12 18 16 18 29 0 11-8 19-18 19s-18-8-18-19C14 24 25 20 32 8Z' fill='%2377e0b0'/%3E%3Cpath d='M32 18v30M20 34h24' stroke='%23f4cd65' stroke-width='5'/%3E%3C/svg%3E">
-<script src="../../../assets/theme-selector.js" defer></script>
-<link rel="stylesheet" href="../../../assets/refresh.css">
+<script src="../../assets/theme-selector.js" defer></script>
+<link rel="stylesheet" href="../../assets/refresh.css">
 <style>
 *{box-sizing:border-box}
 :root{--night:#07182a;--panel:rgba(7,25,43,.94);--line:rgba(207,239,222,.38);--mint:#77e0b0;--gold:#f4cd65;--sky:#85cfd1;--ink:#183146;--good:#86e5a6;--bad:#ff9b8d}
@@ -58,7 +58,7 @@ dialog{width:min(720px,calc(100% - 22px));max-height:90vh;border:1px solid var(-
 <main class="shell">
 <header class="topbar">
   <a class="back" href="../index.html">← Cloud Harbor</a>
-  <div class="title"><h1>Atlas: The Lost Islands</h1><p>Island Two · Gale Garden sandbox chapter</p></div>
+  <div class="title"><h1>Atlas: The Lost Islands</h1><p>Island Two · Gale Garden</p></div>
   <div class="toolbar"><button class="icon-button" id="journal" type="button" aria-label="Open expedition journal">📜</button><button class="icon-button" id="settings" type="button" aria-label="Open settings">⚙</button></div>
 </header>
 <div class="layout">
@@ -163,7 +163,7 @@ dialog{width:min(720px,calc(100% - 22px));max-height:90vh;border:1px solid var(-
 </script>
 <script>
 "use strict";
-const $=id=>document.getElementById(id),challenges=JSON.parse($("island-two-challenges").textContent),SAVE_KEY="edu-games-atlas-gale-garden-sandbox-v1",LABEL_LAYOUT_KEY="edu-games-atlas-gale-garden-label-layout-v1";
+const $=id=>document.getElementById(id),challenges=JSON.parse($("island-two-challenges").textContent),SAVE_KEY="edu-games-atlas-gale-garden-v1",LABEL_LAYOUT_KEY="edu-games-atlas-gale-garden-label-layout-v1";
 const MOVABLE_LABEL_IDS=["spot-sign","spot-gauge","spot-route","spot-seeds","spot-note","spot-tree"];
 const ASSET_ROOT="../assets/generated/gale-garden/",targets=[{id:"spot-sign",x:520,y:245},{id:"spot-gauge",x:165,y:190},{id:"spot-route",x:405,y:255},{id:"spot-seeds",x:530,y:275},{id:"spot-note",x:700,y:245},{id:"spot-tree",x:835,y:210}];
 const arrowAssets={north:"move-up.webp",west:"move-left.webp",south:"move-down.webp",east:"move-right.webp"},challengeArt={"trail-signs":"challenge-directions.webp","storm-gauge":"challenge-storm-gauge.webp","wind-route":"challenge-directions.webp","seed-pods":"challenge-seeds.webp","field-note":"challenge-note.webp","sky-tree":"challenge-fractions.webp"};
@@ -214,7 +214,7 @@ function finish(){if(state.completed.includes(active.id))return;state.completed.
 function closeChallenge(){$("challenge-dialog").close();lastFocus?.focus();if(state.step>=6)setTimeout(showCompletion,200)}
 function showCompletion(){openInfo("Gale Garden restored",`<div class="completion"><img class="completion-art" src="${ASSET_ROOT}completion.webp" alt="The restored Gale Garden glowing above the clouds"><p>The Sky Tree sends a green path across the clouds. Mira's storm ship passed this way only hours ago.</p><p>You completed all six randomized challenges${state.assisted.length?` with support on ${state.assisted.length}`:" without opening support"}.</p><a class="primary" href="../index.html">Return to Cloud Harbor</a><button class="secondary" data-action="replay">Replay with new questions</button></div>`,"Island Two complete")}
 function openInfo(title,html,label="Gale Garden"){lastFocus=document.activeElement;$("info-title").textContent=title;$("info-label").textContent=label;$("info-content").innerHTML=html;$("info-dialog").showModal()}
-function journal(){const rows=challenges.map(c=>`<li>${state.completed.includes(c.id)?"✓":"○"} ${c.title}</li>`).join("");openInfo("Expedition journal",`<p><strong>Gale Garden:</strong> ${state.completed.length}/6 challenges complete.</p><ol>${rows}</ol><p>Sandbox progress is stored only in this browser.</p>${state.step>=6?'<div class="actions"><button class="primary" data-action="replay">Replay with new questions</button></div>':""}`,"Journal")}
+function journal(){const rows=challenges.map(c=>`<li>${state.completed.includes(c.id)?"✓":"○"} ${c.title}</li>`).join("");openInfo("Expedition journal",`<p><strong>Gale Garden:</strong> ${state.completed.length}/6 challenges complete.</p><ol>${rows}</ol><p>Progress is stored only in this browser.</p>${state.step>=6?'<div class="actions"><button class="primary" data-action="replay">Replay with new questions</button></div>':""}`,"Journal")}
 function replay(){const sound=state.sound,reducedMotion=state.reducedMotion,old=state.variants;state={...fresh(old),started:true,sound,reducedMotion};$("info-dialog").close();save();render()}
 document.querySelectorAll(".hotspot").forEach((b,i)=>b.onclick=()=>{if(i===state.step)approach()});
 document.querySelectorAll("[data-dir]").forEach(b=>{const v={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]}[b.dataset.dir];b.onclick=()=>move(...v)});
@@ -229,7 +229,7 @@ $("journal").onclick=journal;$("settings").onclick=()=>openInfo("Settings",`<div
 <p>No music, microphone, account, analytics, or child information is used by this demo.</p></div>`,"Game settings");
 $("close-info").onclick=()=>$("info-dialog").close();$("info-content").onclick=e=>{const a=e.target.closest("[data-action]")?.dataset.action;if(a==="replay")replay();if(a==="sound"){state.sound=!state.sound;save();$("info-dialog").close();$("settings").click()}if(a==="motion"){state.reducedMotion=!state.reducedMotion;save();render();$("info-dialog").close();$("settings").click()}if(a==="toggle-label-edit"){$("info-dialog").close();setLabelEditMode(!labelEditMode)}if(a==="copy-label-layout")copyLabelLayout();if(a==="reset-label-layout"){clearLabelLayout();$("info-dialog").close()}};
 $("info-content").addEventListener("click",e=>{const setting=e.target.closest("[data-setting]")?.dataset.setting;if(!setting)return;if(setting==="sound")state.sound=!state.sound;if(setting==="motion")state.reducedMotion=!state.reducedMotion;e.target.setAttribute("aria-pressed",String(setting==="sound"?state.sound:state.reducedMotion));save();render();if(setting==="sound")tone(520)});
-$("reset").onclick=()=>openInfo("Reset Gale Garden?",'<p>This removes only the sandbox Island Two progress.</p><div class="actions"><button class="secondary" data-action="cancel">Keep progress</button><button class="primary" data-action="confirm-reset">Reset chapter</button></div>','Local progress');
+$("reset").onclick=()=>openInfo("Reset Gale Garden?",'<p>This removes only the Island Two progress stored in this browser.</p><div class="actions"><button class="secondary" data-action="cancel">Keep progress</button><button class="primary" data-action="confirm-reset">Reset chapter</button></div>','Local progress');
 $("info-content").addEventListener("click",e=>{const a=e.target.closest("[data-action]")?.dataset.action;if(a==="cancel")$("info-dialog").close();if(a==="confirm-reset"){localStorage.removeItem(SAVE_KEY);state=fresh();$("info-dialog").close();render()}});
 window.addEventListener("resize",positionMarker);prepareMovableLabels();render();
 </script>

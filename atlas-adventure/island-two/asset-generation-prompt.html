@@ -1,0 +1,1320 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Atlas Gale Garden - GPT Environment Asset Prompt</title>
+<style>
+*{box-sizing:border-box}
+:root{--bg:#07182a;--panel:#102f3d;--soft:#184b50;--ink:#effcf5;--muted:#c2e3d5;--gold:#f4cd65;--mint:#77e0b0;--line:#4d7777}
+html{background:var(--bg);color:var(--ink);font:16px/1.6 "Segoe UI",Arial,sans-serif}
+body{margin:0;background:radial-gradient(circle at 50% 0,#337f7e,transparent 36%),var(--bg)}
+main{width:min(1120px,calc(100% - 24px));margin:auto;padding:28px 0 60px}
+h1{margin:0;color:#fff1bd;font-size:clamp(28px,5vw,48px);line-height:1.1}h2{color:#fff1bd}
+.lead{color:var(--muted);max-width:900px}.toolbar{position:sticky;top:8px;z-index:2;display:flex;flex-wrap:wrap;gap:10px;margin:20px 0}
+button,a{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:9px 15px;border:1px solid var(--line);border-radius:13px;background:var(--soft);color:var(--ink);font:700 15px/1.2 inherit;text-decoration:none;cursor:pointer}
+button.primary{background:#356f54;border-color:#77e0b0}.status{align-self:center;color:var(--mint);font-weight:700}
+.card{margin:18px 0;padding:18px;border:1px solid var(--line);border-radius:20px;background:rgba(16,47,61,.95);box-shadow:0 18px 50px #0004}
+.checklist{columns:2;gap:32px}.checklist li{break-inside:avoid;margin:5px 0}
+pre{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;color:#e8f7ef;font:14px/1.55 Consolas,"Courier New",monospace}
+.note{border-left:4px solid var(--gold);padding:10px 13px;background:#163847;border-radius:10px;color:#e2f2ea}
+@media(max-width:700px){.checklist{columns:1}main{padding-top:18px}.card{padding:14px}}
+@media print{.toolbar{display:none}body{background:#fff;color:#111}.card{box-shadow:none;background:#fff}pre{color:#111}}
+</style>
+</head>
+<body>
+<main>
+  <h1>Atlas: Gale Garden</h1>
+  <p class="lead">Master GPT prompt for generating every Island Two environment, building, quest object, nature prop, effect, icon, and layered background. The explorer and Spark already exist and must not be redesigned or regenerated.</p>
+  <div class="toolbar">
+    <a href="./index.html">Return to Gale Garden</a>
+    <button class="primary" id="copy-prompt" type="button">Copy complete prompt</button>
+    <button id="download-prompt" type="button">Download as text</button>
+    <span class="status" id="status" role="status"></span>
+  </div>
+
+  <section class="card">
+    <h2>Asset coverage</h2>
+    <ul class="checklist">
+      <li>Layered storm and restored skies</li>
+      <li>Cloud sea and distant floating islands</li>
+      <li>Modular Gale Garden landmass</li>
+      <li>Cliffs, paths, waterfalls, and mist</li>
+      <li>Wind observatory exterior</li>
+      <li>Sleeping and awakened Sky Tree</li>
+      <li>Six wind beacons and state layers</li>
+      <li>Trail signs and storm gauge</li>
+      <li>Wind-route mechanism</li>
+      <li>Seed pods and Mira's field note</li>
+      <li>Garden flora, rocks, and small props</li>
+      <li>Wind, rain, leaves, glow, and particles</li>
+      <li>Challenge illustration objects</li>
+      <li>Inventory and chapter icons</li>
+      <li>Completion sky path and key art</li>
+      <li>Scene assembly and export guide</li>
+    </ul>
+    <p class="note"><strong>Important:</strong> Give GPT the existing explorer and Spark images only as style, scale, and lighting references. The prompt explicitly prevents GPT from drawing either character into production assets.</p>
+  </section>
+
+  <section class="card">
+<pre id="prompt">You are the Art Director, Senior 2D Environment Artist, Prop Designer, Background Painter, Effects Artist, UI Artist, and Technical Asset Producer for an original educational adventure game named "Atlas: The Lost Islands."
+
+Your task is to create the complete non-character visual asset library for Island Two, "Gale Garden."
+
+The explorer and Spark companion have already been created.
+
+ABSOLUTE CHARACTER RULE
+- Do not create, redesign, redraw, replace, reinterpret, or include the explorer.
+- Do not create, redesign, redraw, replace, reinterpret, or include Spark.
+- Do not create new people, robots, creatures, portraits, silhouettes, statues shaped like characters, or background crowds.
+- If character reference images are attached, use them only to match scale, camera, palette, rendering quality, and light direction.
+- Every production environment and object file must contain no characters.
+
+============================================================
+1. PRODUCTION WORKFLOW
+============================================================
+
+Do not attempt to generate all objects inside one giant image.
+
+Work like a professional game-art production team:
+1. First create ASSET 00, the environment style bible.
+2. Wait for approval.
+3. Generate each numbered asset or tightly related asset group separately.
+4. Keep a written continuity record for palette, camera, light, scale, materials, edge treatment, and weather.
+5. Use the exact same design language for every later asset.
+6. When an object has multiple states, generate a locked master design first and derive all states from it.
+7. For every generated image, report:
+   - Asset number and asset name
+   - Exact intended filename
+   - Pixel dimensions
+   - Transparent or opaque background
+   - State or animation frame
+   - Recommended CSS anchor or sprite pivot
+   - Intended visual size relative to the existing explorer
+   - Any layers that must align with it
+8. Generate only one numbered asset group at a time unless explicitly asked for a batch.
+9. Never place production assets on a presentation card, white rectangle, checkerboard preview, mock phone, mock monitor, or decorative frame.
+10. Never add readable text, labels, numbers, logos, signatures, watermarks, or brand marks inside an image.
+11. Everything must be original and must not reproduce a copyrighted game, film, character, or franchise.
+
+============================================================
+2. WORLD STORY AND VISUAL PURPOSE
+============================================================
+
+Gale Garden is a large floating botanical island suspended above a luminous cloud sea. Long ago, gardeners and weather engineers used brass wind beacons to guide gentle air currents through the island. Those currents watered the plants, carried seeds between terraces, powered the observatory, and kept the giant Sky Tree awake.
+
+A recent storm twisted the paths, darkened the beacons, scattered seed pods, and covered the garden in moving cloud shadow. The island is damaged but not destroyed. It must feel recoverable, inviting, magical, and safe for children aged approximately 9-12.
+
+The visual story has two main states:
+
+STORM STATE
+- Wind beacons are dark or weak.
+- The Sky Tree core is dormant.
+- Blue-grey storm clouds occupy parts of the upper sky.
+- Grass and hanging leaves lean in the wind.
+- Waterfalls remain active.
+- Warm daylight still breaks through some clouds.
+- The scene is mysterious and urgent, never frightening.
+
+RESTORED STATE
+- Six wind beacons glow mint-teal and warm gold.
+- The Sky Tree core shines pale gold.
+- Healthy green light travels through branch channels.
+- Storm clouds thin and reveal a warm sun.
+- Leaves, pollen, and small seed motes travel on smooth wind paths.
+- A luminous green route stretches toward the next island.
+- The same scene becomes brighter and more hopeful without changing object positions.
+
+============================================================
+3. MASTER ART DIRECTION
+============================================================
+
+STYLE NAME
+"Cartoon Realism - Painterly Wind Garden Adventure"
+
+TARGET
+Premium commercial 2D adventure-game artwork suitable for a polished browser game. The world must appeal to children and adults.
+
+The artwork must feel:
+- Adventurous
+- Wind-swept
+- Botanical
+- Believable
+- Warm beneath the storm
+- Detailed but readable
+- Cinematic
+- Hand-crafted
+- Magical through materials and light, not through random visual noise
+
+The artwork must not feel:
+- Preschool-like
+- Flat clip art
+- Generic stock fantasy
+- Photorealistic
+- Hyper-detailed concept art that becomes muddy at game size
+- Plastic
+- Toy-like
+- Candy-coloured
+- Dark horror
+- Post-apocalyptic
+- Aggressive
+- Like a school worksheet
+- Like a board-game tile
+- Like a screenshot from an existing franchise
+
+CARTOON-REALISTIC DEFINITION
+Use believable materials, construction, lighting, depth, and weathering. Simplify and slightly exaggerate silhouettes so objects remain easy to identify when displayed between 64 and 300 pixels. Use soft painterly rendering, selective crisp edges, gentle texture, and controlled highlights.
+
+Do not use thick black outlines.
+Use dark coloured edge accents only where required for readability.
+
+CAMERA
+- Three-quarter elevated world view.
+- Approximately 25-30 degrees above the horizon.
+- Objects show their front, side, and a useful amount of top surface.
+- Maintain the same camera angle for every freestanding world object.
+- Background landscapes use matching perspective and horizon height.
+- Avoid fisheye, extreme wide-angle distortion, dramatic Dutch angles, or top-down map views.
+
+LIGHTING
+- Primary daylight from upper left.
+- Warm late-afternoon sunlight filtered through clouds.
+- Cool sky fill from above.
+- Mint-teal glow from restored wind technology.
+- Pale gold glow from the Sky Tree and completed mechanisms.
+- Soft contact shadows fall down and slightly right.
+- Brass catches restrained warm highlights.
+- Wet rock and waterfall edges catch small cool highlights.
+- No harsh black shadows.
+- No excessive bloom that erases silhouettes.
+
+CORE PALETTE
+- Deep storm navy: #07182A
+- Dark blue-green: #173D4F
+- Observatory teal: #365963
+- Open sky teal-blue: #64ABB6
+- Clear sky aqua: #85CFD1
+- Cloud cream: #EDF8E5
+- Distant mist green: #C8E4CE
+- Healthy leaf green: #78985A
+- Deep leaf green: #4C6C3F
+- Moss green: #82AF62
+- Earth brown: #66513D
+- Cliff charcoal: #27353B
+- Weathered cedar: #865F3B
+- Dark painted metal: #14394B
+- Warm brass: #D69C42
+- Brass shadow: #79502E
+- Highlight gold: #F4CD65
+- Energy mint: #77E0B0
+- Bright energy teal: #76F0D0
+- Waterfall ice blue: #B9ECF2
+- Parchment cream: #F2E3BD
+- Storm cloud blue-grey: #344B62
+
+MATERIAL LANGUAGE
+- Wind technology: warm brass frames, dark teal painted metal, mint glass or crystal, ceramic insulators, visible but simple mechanical joints.
+- Observatory: warm sandstone plaster, cedar beams, dark teal slate or metal roof, brass fittings, circular glass instruments.
+- Garden structures: worn cedar, mossy stone, brass pins, pale rope, glazed ceramic irrigation pieces.
+- Land: layered soil, brown and charcoal floating cliffs, roots, moss, grass shelves, occasional small crystal mineral seams.
+- Sky Tree: believable bark, broad sculpted branches, wind-shaped leaf clusters, brass botanical channels integrated into the trunk, luminous core that feels ancient but engineered.
+- Paper: warm parchment with weathered edges and abstract marks only; never readable writing.
+- Water: cool transparent blue with white highlights, not flat cyan.
+
+SHAPE LANGUAGE
+- Friendly technology uses circles, rounded hexagons, arcs, and softened compass shapes.
+- Wind mechanisms use spirals, vanes, feather-like fins, curved channels, and directional chevrons.
+- Buildings use sturdy triangles, circles, and gently tapered walls.
+- Botanical forms use flowing S-curves, layered leaf fans, and wind-bent silhouettes.
+- Ancient Atlas details use concentric circles, compass points, six-part radial patterns, and subtle geometric inlays.
+- Broken or storm-affected states use diagonals and asymmetry but no dangerous spikes.
+
+DETAIL HIERARCHY
+- Large silhouette first.
+- One clear focal feature second.
+- Medium material details third.
+- Fine texture last.
+- Do not cover every surface with markings.
+- Leave calm areas so interactive objects remain readable.
+
+============================================================
+4. TECHNICAL EXPORT RULES
+============================================================
+
+STANDARD OBJECT ASSETS
+- 2048 x 2048 pixels unless another size is specified.
+- Real transparent alpha background.
+- Object centred with generous transparent padding.
+- Object fills approximately 75-85 percent of the canvas.
+- Never crop leaves, fins, roots, light beams, shadows, or waterfall spray.
+- sRGB colour.
+- PNG or lossless WebP.
+- Clean edges when reduced to 64-300 pixels.
+- Include a soft contact shadow only when requested; otherwise provide shadow separately.
+
+WIDE BACKGROUND LAYERS
+- 3840 x 2160 pixels.
+- Exact 16:9 composition.
+- Each layer must align pixel-perfectly when stacked.
+- Opaque only for the base sky layer.
+- Transparent alpha for clouds, distant islands, glow, mist, and foreground overlays.
+- Do not bake interactive landmarks into the background.
+
+STATE CONSISTENCY
+- Identical canvas size.
+- Identical camera.
+- Identical scale.
+- Identical position.
+- Identical silhouette unless the requested state changes moving parts.
+- Identical colour base and materials.
+- Change only lighting, damage, motion, or mechanism state.
+
+TRANSPARENT EDGE QUALITY
+- No white halo.
+- No dark matte fringe.
+- No checkerboard pixels.
+- No rectangular colour residue.
+- Semi-transparent mist, glow, rain, and particles must fade smoothly to true alpha.
+
+NAMING
+Use lowercase kebab-case filenames exactly as requested.
+
+UNIVERSAL NEGATIVE REQUIREMENTS
+- No explorer.
+- No Spark.
+- No people.
+- No robots.
+- No animals unless a specific distant bird silhouette asset is requested.
+- No text.
+- No letters.
+- No numbers.
+- No equations.
+- No logos.
+- No watermarks.
+- No signatures.
+- No copyrighted characters.
+- No franchise architecture.
+- No thick black outlines.
+- No flat vector style except explicitly requested UI icons.
+- No white or coloured rectangular background behind transparent objects.
+- No presentation board.
+- No duplicate accidental objects.
+- No detached accidental parts.
+- No random floating fragments.
+- No mismatched perspective.
+- No inconsistent light direction.
+- No blurry silhouette.
+- No excessive bloom.
+- No heavy fog hiding gameplay areas.
+- No foreground object that blocks the centre walking area.
+
+============================================================
+5. ASSET 00 - ENVIRONMENT STYLE BIBLE
+============================================================
+
+Create a production reference sheet for Gale Garden.
+
+Include:
+- One small storm-sky colour study.
+- One small restored-sky colour study.
+- A floating cliff material sample.
+- Grass, moss, bark, brass, dark painted metal, mint crystal, parchment, water, cloud, and wet stone material samples.
+- The observatory exterior.
+- The Sky Tree.
+- One wind beacon in off and active states.
+- The trail sign.
+- The storm gauge.
+- A seed pod.
+- One waterfall edge.
+- A small palette strip.
+- A scale silhouette rectangle representing the existing explorer's height, but do not draw a person inside it.
+
+The reference sheet may use a neutral dark presentation background because it is documentation rather than a game asset.
+
+Use separate written notes outside the image to confirm:
+- Camera angle.
+- Horizon position.
+- Main light direction.
+- Shadow direction.
+- Palette.
+- Edge treatment.
+- Texture density.
+- Explorer-height scale unit.
+- Storm-to-restored lighting transition.
+
+Intended filename:
+- gale-garden-style-bible.webp
+
+Stop after this asset and wait for approval.
+
+============================================================
+6. ASSET 01 - LAYERED SKY SYSTEM
+============================================================
+
+Create a perfectly aligned 3840 x 2160 sky system.
+
+01A gale-sky-base-storm
+- Opaque base.
+- Turquoise-blue horizon grading into muted storm blue overhead.
+- Warm cream near the distant horizon.
+- Gentle atmospheric depth.
+- No clouds, sun, land, buildings, or objects.
+
+01B gale-sky-base-restored
+- Same gradient structure and horizon.
+- Slightly clearer aqua upper sky.
+- Warmer cream-gold near the horizon.
+- Must align with the storm version.
+
+01C gale-sun-glow-dim
+- Transparent layer.
+- Large soft warm sun glow in the upper-right quadrant.
+- Mostly hidden, low opacity, no hard disc.
+
+01D gale-sun-glow-restored
+- Transparent layer in the exact same location.
+- Brighter cream-gold centre with broad soft scattering.
+- No lens flare artifacts.
+
+01E storm-cloud-bank-left
+- Transparent.
+- Large layered blue-grey cloud bank entering from upper left.
+- Rounded painterly masses, darker underside, soft edges.
+- Safe and dramatic, not threatening.
+
+01F storm-cloud-bank-right
+- Transparent.
+- Separate upper-right cloud bank.
+- Different silhouette from the left bank.
+- Leave the centre partly open for readability.
+
+01G storm-cloud-small-01
+01H storm-cloud-small-02
+01I storm-cloud-small-03
+- Three separate transparent clouds.
+- Designed for slow side-to-side animation.
+- Similar palette, visibly different silhouettes.
+
+01J fair-cloud-wide-01
+01K fair-cloud-wide-02
+01L fair-cloud-small
+- Cream-white clouds with cool mint shadow.
+- Used as restored-state replacements and distant depth.
+- Soft painterly edges and no rectangular haze.
+
+01M high-wind-wisps
+- Transparent thin high-altitude cloud streaks.
+- Gentle curved flow from left to right.
+- Sparse enough not to compete with landmarks.
+
+============================================================
+7. ASSET 02 - CLOUD SEA AND DISTANT WORLD
+============================================================
+
+Create separate 3840 x 2160 aligned layers.
+
+02A cloud-sea-far
+- Transparent or compositing-ready layer below the horizon.
+- Vast soft cloud ocean with large distant forms.
+- Blue-green shadow valleys and cream highlights.
+- No hard horizon seam.
+
+02B cloud-sea-mid
+- Transparent.
+- Larger rolling cloud forms below the island.
+- Suggest great depth without looking like water foam.
+
+02C distant-floating-islands-left
+- Transparent.
+- Two or three tiny distant islands with simple dark-green tops and blue-grey undersides.
+- Strong atmospheric fading.
+- No buildings or readable objects.
+
+02D distant-floating-islands-right
+- Transparent.
+- Different silhouettes, slightly nearer than left group.
+- One narrow waterfall may fade into cloud.
+
+02E far-storm-rain-curtain
+- Transparent.
+- Very subtle distant diagonal rain beneath one cloud bank.
+- Never cross the main gameplay island.
+
+02F horizon-light-restored
+- Transparent.
+- Warm horizontal atmospheric glow revealed at completion.
+
+02G foreground-cloud-mist-left
+02H foreground-cloud-mist-right
+- Transparent lower-corner overlays.
+- Soft cloud curls that frame rather than cover the island.
+
+============================================================
+8. ASSET 03 - MAIN FLOATING GARDEN ISLAND
+============================================================
+
+Create a modular floating island that supports a wide 16:9 game scene.
+
+OVERALL DESIGN
+- Broad irregular crescent or wing-like landmass.
+- Three readable garden terraces connected by paths.
+- Grassy upper surface.
+- Thick soil layer visible at edges.
+- Layered brown, slate, and charcoal floating cliffs beneath.
+- Hanging roots and small moss ledges.
+- Two natural waterfall outlets.
+- Stable, welcoming walking areas.
+- Central open path for explorer movement.
+- Left platform sized for observatory.
+- Right platform sized for Sky Tree.
+- Six distributed beacon mounting positions.
+- No observatory, tree, beacons, signs, gauge, notes, seed pods, characters, or UI baked in.
+
+LAYERS
+03A gale-island-cliff-base
+- Transparent.
+- Complete underside and cliff silhouette.
+- Strong depth and readable floating form.
+
+03B gale-island-top-grass
+- Transparent aligned overlay.
+- Grass shelves, moss, exposed soil edges.
+- Broad quiet areas for objects.
+
+03C gale-island-path-network
+- Transparent.
+- Warm pale stone and packed-earth paths.
+- Curved routes from left observatory terrace through centre to Sky Tree terrace.
+- Six subtle circular beacon pads.
+- No arrows or text.
+
+03D gale-island-foreground-rocks
+- Transparent foreground depth layer.
+- Low rocks and grass only along lower edge.
+- Must not block central movement or hotspots.
+
+03E gale-island-hanging-roots
+- Transparent.
+- Several grouped root shapes for parallax movement.
+
+03F gale-island-edge-mist
+- Transparent.
+- Thin mist hugging selected cliff edges.
+
+03G gale-island-contact-shadow
+- Transparent wide soft shadow beneath the landmass.
+
+CANVAS
+- 3840 x 2160 for all aligned island layers.
+- Land occupies approximately the middle 60 percent of the frame.
+- Keep upper sky and lower cloud sea visible.
+
+============================================================
+9. ASSET 04 - WIND OBSERVATORY
+============================================================
+
+DESIGN
+- Small weather observatory and garden workshop.
+- Rounded rectangular sandstone-plaster lower structure.
+- Cedar frame details.
+- Dark teal triangular roof with curved brass ridge.
+- Large circular wind instrument on the front.
+- Brass rim, dark glass face, mint compass-star mechanism.
+- One small side chimney or wind exhaust.
+- One arched door without text.
+- One warm window.
+- Weathered but cared for.
+- Sized approximately 2.4 explorer heights tall and 3.0 explorer heights wide.
+
+STATES AND LAYERS
+04A observatory-storm-dark
+- Window dim.
+- Front wind instrument inactive.
+- Roof vane leaning slightly.
+
+04B observatory-powered
+- Same exact object and position.
+- Warm window.
+- Mint front instrument glow.
+- Brass highlights slightly brighter.
+
+04C observatory-building-base
+- Structure without window glow, instrument glow, smoke, or shadow.
+
+04D observatory-window-glow
+- Transparent aligned glow layer.
+
+04E observatory-wind-dial
+- Transparent circular dial mechanism for optional rotation.
+
+04F observatory-roof-vane
+- Transparent separate vane.
+
+04G observatory-exhaust-mist
+- Transparent subtle curved air plume.
+
+04H observatory-contact-shadow
+- Separate transparent soft shadow.
+
+============================================================
+10. ASSET 05 - SKY TREE
+============================================================
+
+DESIGN
+- Ancient giant wind-shaped tree, approximately 5 explorer heights tall.
+- Broad asymmetrical crown leaning gently with prevailing wind.
+- Thick believable trunk with twisting roots gripping the right terrace.
+- Deep green bark-shadow palette with warm brown bark highlights.
+- Layered leaf clusters rather than thousands of tiny leaves.
+- Brass botanical channels integrated into the trunk and major branches.
+- A circular heart-core nested safely in the upper trunk.
+- Heart-core frame uses warm brass and a six-part radial pattern.
+- Dormant core is grey-green glass.
+- Awakened core is pale gold with mint edge light.
+- Magical but still botanical and constructed from believable materials.
+- No face, eyes, mouth, hands, humanoid body, or character-like expression.
+
+STATES
+05A sky-tree-dormant
+- Leaves slightly muted.
+- Core dark.
+- Brass channels unlit.
+- Some branches wind-bent.
+
+05B sky-tree-stirring
+- Same silhouette.
+- Faint mint light rising through lower trunk channels.
+- A few loose leaves.
+
+05C sky-tree-awakened
+- Healthy green leaves.
+- Pale gold core.
+- Mint-gold light through branch channels.
+- Gentle luminous seed motes.
+
+SEPARATE LAYERS
+05D sky-tree-trunk-base
+05E sky-tree-leaf-canopy-back
+05F sky-tree-leaf-canopy-front
+05G sky-tree-brass-channels
+05H sky-tree-core-dark
+05I sky-tree-core-lit
+05J sky-tree-core-glow
+05K sky-tree-roots
+05L sky-tree-contact-shadow
+
+All layers must align exactly. Leaf layers should allow very small CSS sway without exposing gaps.
+
+============================================================
+11. ASSET 06 - WIND BEACON SYSTEM
+============================================================
+
+Create one master modular beacon design that can be placed six times.
+
+DESIGN
+- Tapered brass-and-dark-metal pedestal.
+- Approximately 0.85 explorer heights tall.
+- Broad stable base attached to a circular garden pad.
+- Mint crystal or glass wind receiver at top.
+- Two small curved wind fins.
+- Six subtle radial divisions echoing the six challenges.
+- Friendly rounded engineering.
+- Clear at 70-110 pixels in the final game.
+
+STATES
+06A wind-beacon-off
+- Crystal dark desaturated teal.
+- Fins still.
+- No glow.
+
+06B wind-beacon-flicker
+- Small weak mint light.
+- One faint energy seam.
+
+06C wind-beacon-charging
+- Brighter crystal.
+- Small curved energy traces around fins.
+
+06D wind-beacon-on
+- Bright mint crystal.
+- Warm brass highlights.
+- Restrained mint halo.
+
+SEPARATE PARTS
+06E wind-beacon-base
+06F wind-beacon-fins
+06G wind-beacon-crystal-dark
+06H wind-beacon-crystal-lit
+06I wind-beacon-glow
+06J wind-beacon-ground-ring
+06K wind-beacon-contact-shadow
+
+OPTIONAL VISUAL VARIANTS
+Create six subtle base variations by changing only small plant growth or brass weathering:
+- wind-beacon-01 through wind-beacon-06.
+- Do not change height, core silhouette, crystal position, or camera.
+
+============================================================
+12. ASSET 07 - TRAIL SIGN CHALLENGE OBJECT
+============================================================
+
+DESIGN
+- Cedar signpost with two broad arrow boards.
+- Brass fastening pin.
+- Moss at base.
+- No writing.
+- Direction communicated only through board shape.
+- Approximately 1.05 explorer heights tall.
+
+STATES
+07A trail-signs-twisted
+- Arrow boards point in confusing opposing diagonal directions.
+- Post leans slightly but remains safe and intact.
+
+07B trail-signs-aligned
+- Boards face clear left and right directions.
+- Post upright.
+- Small warm brass confirmation glint.
+
+LAYERS
+07C trail-sign-post
+07D trail-sign-arrow-left
+07E trail-sign-arrow-right
+07F trail-sign-moss-base
+07G trail-sign-contact-shadow
+
+============================================================
+13. ASSET 08 - STORM GAUGE CHALLENGE OBJECT
+============================================================
+
+DESIGN
+- Freestanding circular weather gauge.
+- Dark teal enamel body.
+- Thick brass rim.
+- Cream needle.
+- Three broad colour zones without numbers or text.
+- Small glass face with believable reflection.
+- Stable stone-and-metal base.
+- Approximately 0.9 explorer heights tall.
+
+STATES
+08A storm-gauge-unstable
+- Needle angled into storm zone.
+- Subtle vibration marks as a separate effect, not baked lines.
+
+08B storm-gauge-balanced
+- Needle centred.
+- Mint indicator light active.
+
+PARTS
+08C storm-gauge-body
+08D storm-gauge-needle
+08E storm-gauge-glass
+08F storm-gauge-mint-light
+08G storm-gauge-contact-shadow
+
+The needle must rotate around a precisely documented centre pivot.
+
+============================================================
+14. ASSET 09 - WIND ROUTE MECHANISM
+============================================================
+
+The current world requires a visible object for the wind-routing challenge.
+
+DESIGN
+- Low circular stone-and-brass route table embedded in the centre garden.
+- Approximately 1.4 explorer heights wide and 0.45 heights tall.
+- Four large directional channels: north, east, south, west.
+- Direction shown through geometric arrow grooves only, with no letters.
+- Dark teal centre glass.
+- Brass outer compass ring.
+- Curved mint energy line can travel between selected directions.
+- Readable from the elevated camera.
+
+STATES
+09A wind-route-table-dark
+09B wind-route-table-ready
+09C wind-route-table-complete
+
+PARTS
+09D wind-route-stone-base
+09E wind-route-brass-ring
+09F wind-route-glass-centre
+09G wind-route-arrow-north
+09H wind-route-arrow-east
+09I wind-route-arrow-south
+09J wind-route-arrow-west
+09K wind-route-energy-segment-straight
+09L wind-route-energy-segment-curve
+09M wind-route-centre-glow
+09N wind-route-contact-shadow
+
+All four arrow pieces must share identical style and fit the table precisely.
+
+============================================================
+15. ASSET 10 - SEED POD CHALLENGE OBJECTS
+============================================================
+
+DESIGN
+- Wind-carried botanical seed pods, each about 0.28 explorer heights.
+- Warm ochre-gold outer shell.
+- Dark green seam.
+- Small curled stem.
+- Slightly exaggerated oval silhouette.
+- Believable natural texture.
+- No face or creature-like features.
+
+ASSETS
+10A seed-pod-closed-01
+10B seed-pod-closed-02
+10C seed-pod-closed-03
+- Three distinct rotations and subtle shape variations.
+
+10D seed-pod-open
+- Shell opened into three soft sections.
+- Pale mint seed fibres visible.
+
+10E seed-pod-cluster
+- Group of three arranged for the world scene.
+
+10F seed-pod-counting-tray
+- Shallow cedar-and-brass garden tray for multiplication/division illustrations.
+
+10G seed-pod-soft-shadow
+
+============================================================
+16. ASSET 11 - MIRA'S FIELD NOTE
+============================================================
+
+DESIGN
+- Small weathered parchment field note.
+- Folded once and held by a slim brass corner clip.
+- Abstract faded route lines and botanical marks.
+- No readable writing, letters, or numbers.
+- One small original compass-flower emblem.
+- Safe rounded worn corners.
+
+STATES
+11A mira-field-note-closed
+11B mira-field-note-open
+11C mira-field-note-glow
+11D field-note-brass-clip
+11E field-note-contact-shadow
+
+Also create:
+11F field-note-weatherproof-case
+- Small dark teal and brass case that could plausibly protect the note.
+
+============================================================
+17. ASSET 12 - WATERFALL AND STREAM KIT
+============================================================
+
+Create modular transparent water elements.
+
+12A waterfall-left-base
+12B waterfall-right-base
+- Long vertical water bodies aligned to the island outlets.
+- Cool blue-green transparent water.
+- White broken highlights.
+- Taper and fade into cloud below.
+
+12C waterfall-highlight-strip
+- Seamless vertical animation strip or four aligned animation frames.
+
+12D waterfall-mist-small
+12E waterfall-mist-wide
+- Soft true-alpha spray.
+
+12F stream-straight
+12G stream-curve-left
+12H stream-curve-right
+12I stream-small-pool
+- Shallow garden irrigation water pieces.
+- Match the elevated camera and connect seamlessly.
+
+12J wet-rock-edge
+- Separate subtle reflective edge overlay.
+
+============================================================
+18. ASSET 13 - MODULAR PATH AND TERRACE KIT
+============================================================
+
+Create transparent pieces with consistent camera and scale:
+- 13A path-straight
+- 13B path-curve-left
+- 13C path-curve-right
+- 13D path-fork
+- 13E path-end
+- 13F circular-beacon-pad
+- 13G small-stone-step
+- 13H terrace-retaining-wall-straight
+- 13I terrace-retaining-wall-curve
+- 13J low-brass-garden-railing
+- 13K small-wooden-footbridge
+- 13L footbridge-shadow
+
+MATERIALS
+- Pale worn garden stone.
+- Packed warm earth between stones.
+- Moss in selected joints.
+- Brass pins and brackets used sparingly.
+
+All pieces must connect without obvious seams.
+
+============================================================
+19. ASSET 14 - GALE GARDEN FLORA KIT
+============================================================
+
+Create each as a separate transparent object:
+- 14A grass-tuft-calm-01
+- 14B grass-tuft-calm-02
+- 14C grass-tuft-wind-left
+- 14D grass-tuft-wind-right
+- 14E mint-flower-cluster
+- 14F gold-flower-cluster
+- 14G blue-bell-flower-cluster
+- 14H broad-leaf-shrub-small
+- 14I broad-leaf-shrub-large
+- 14J wind-fern-small
+- 14K wind-fern-large
+- 14L hanging-vine-short
+- 14M hanging-vine-long
+- 14N moss-patch-01
+- 14O moss-patch-02
+- 14P small-wind-shaped-tree
+- 14Q fallen-leaf-cluster
+- 14R loose-leaf-single-01
+- 14S loose-leaf-single-02
+- 14T luminous-seed-mote-cluster
+
+FLORA RULES
+- Use natural variation but one coherent botanical ecosystem.
+- Keep silhouettes readable.
+- Do not use giant fantasy flowers.
+- Do not make plants neon.
+- Mint and gold accents should be rare focal colours.
+
+============================================================
+20. ASSET 15 - ROCK, ROOT, AND CLIFF PROP KIT
+============================================================
+
+Create separate transparent objects:
+- 15A garden-rock-small
+- 15B garden-rock-medium
+- 15C garden-rock-large
+- 15D cliff-rock-dark-small
+- 15E cliff-rock-dark-large
+- 15F exposed-root-small
+- 15G exposed-root-wide
+- 15H hanging-root-bundle
+- 15I broken-stone-edge
+- 15J mossy-boulder
+- 15K brass-mineral-vein-overlay
+- 15L mint-crystal-vein-overlay
+
+Use restrained detail and consistent upper-left light.
+
+============================================================
+21. ASSET 16 - SMALL GARDEN PROP KIT
+============================================================
+
+Create separate transparent objects:
+- 16A cedar-watering-can
+- 16B coiled-garden-rope
+- 16C brass-hand-trowel
+- 16D closed-toolbox
+- 16E open-toolbox
+- 16F empty-seed-basket
+- 16G filled-seed-basket
+- 16H ceramic-irrigation-jar
+- 16I wind-chime-off
+- 16J wind-chime-moving
+- 16K garden-lantern-off
+- 16L garden-lantern-on
+- 16M blank-botanical-marker
+- 16N folded-weather-cloth
+
+No labels or readable marks.
+
+============================================================
+22. ASSET 17 - WEATHER AND WIND EFFECTS
+============================================================
+
+Every effect must use true transparent alpha and remain subtle.
+
+- 17A wind-line-thin-short
+- 17B wind-line-thin-wide
+- 17C wind-spiral-small
+- 17D wind-spiral-large
+- 17E diagonal-rain-light
+- 17F distant-rain-heavy
+- 17G loose-leaves-left-to-right
+- 17H loose-leaves-right-to-left
+- 17I pollen-drift
+- 17J mint-energy-flow-short
+- 17K mint-energy-flow-wide
+- 17L gold-success-sparkles
+- 17M beacon-activation-ring
+- 17N tree-awakening-particles
+- 17O soft-lightning-cloud-glow
+- 17P warm-sun-ray-bundle
+
+ANIMATION RULE
+Where a strip is requested, create 6-8 evenly spaced frames with identical canvas, alignment, and no camera movement.
+
+============================================================
+23. ASSET 18 - ENVIRONMENTAL SHADOW KIT
+============================================================
+
+Create soft transparent multiply-ready shadows:
+- 18A contact-shadow-small-round
+- 18B contact-shadow-medium-round
+- 18C contact-shadow-wide
+- 18D tree-shadow-wide
+- 18E building-shadow
+- 18F beacon-shadow
+- 18G cloud-shadow-soft
+
+Shadows fall down and slightly right.
+No object colour may be baked into a shadow file.
+
+============================================================
+24. ASSET 19 - CHALLENGE ILLUSTRATION OBJECTS
+============================================================
+
+These assets support question dialogs and must remain readable at 96-220 pixels.
+
+ENGLISH DIRECTIONS
+- 19A direction-compass-board
+- Circular brass and teal board with four arrow shapes and no letters.
+- 19B direction-arrow-up
+- 19C direction-arrow-right
+- 19D direction-arrow-down
+- 19E direction-arrow-left
+
+MATH ADDITION AND SUBTRACTION
+- 19F storm-energy-orb
+- 19G storm-energy-orb-cluster-05
+- 19H storm-energy-orb-cluster-10
+- Distinct countable spacing; no printed numbers.
+
+WIND ROUTING
+- 19I route-tile-straight
+- 19J route-tile-turn
+- 19K route-tile-crossing
+- 19L route-goal-beacon
+
+MULTIPLICATION AND DIVISION
+- 19M seed-tray-empty
+- 19N seed-tray-with-03
+- 19O seed-tray-with-04
+- Pods clearly separated for counting.
+
+READING COMPREHENSION
+- 19P mira-note-dialog-illustration
+- Open note with a storm ship, tree, and route shown only as pictures and abstract lines.
+- No text.
+
+EQUIVALENT FRACTIONS
+- 19Q leaf-disc-whole
+- 19R leaf-disc-halves
+- 19S leaf-disc-thirds
+- 19T leaf-disc-fourths
+- 19U leaf-disc-sixths
+- 19V leaf-disc-eighths
+- Same circular leaf design and exact dimensions.
+- Segment divisions visible through veins and colour blocks.
+- No numbers.
+
+============================================================
+25. ASSET 20 - INVENTORY AND CHAPTER ICONS
+============================================================
+
+ICON STYLE
+- Simplified cartoon-realistic rendering.
+- Slightly stronger coloured edge than world objects.
+- Dark navy circular or rounded backing.
+- Brass and mint focal highlights.
+- Readable at 32 pixels.
+- 512 x 512 master.
+- Transparent outside icon silhouette.
+- No text, letters, or numbers.
+
+CREATE
+- 20A wind-compass-icon
+- 20B echo-lens-icon
+- 20C atlas-page-icon
+- 20D gale-garden-chapter-icon
+- 20E wind-beacon-icon-off
+- 20F wind-beacon-icon-on
+- 20G seed-pod-icon
+- 20H sky-tree-icon
+- 20I storm-gauge-icon
+- 20J mira-note-icon
+
+============================================================
+26. ASSET 21 - QUEST AND FEEDBACK MARKERS
+============================================================
+
+Create:
+- 21A quest-marker-gale
+- Gold compass-pin outer form, mint centre, small downward point.
+- No text.
+
+- 21B quest-marker-gale-active-ring
+- Separate pulsing ring.
+
+- 21C quest-marker-complete
+- Same marker with green-gold completion light.
+
+- 21D hotspot-ring-idle
+- 21E hotspot-ring-near
+- 21F hotspot-ring-complete
+
+- 21G correct-answer-spark
+- 21H try-again-soft-puff
+- 21I hint-lightbulb-garden-style
+
+Feedback must feel encouraging, never explosive or punishing.
+
+============================================================
+27. ASSET 22 - RESTORATION AND COMPLETION LAYERS
+============================================================
+
+Create transparent aligned completion layers:
+
+22A six-beacon-network-lines
+- Curved mint energy paths connecting six beacon positions.
+- Thin, elegant, readable.
+
+22B sky-tree-ground-light
+- Pale gold and mint light around roots.
+
+22C sky-tree-canopy-light-rays
+- Upward soft rays between leaves.
+
+22D restored-leaf-swarm
+- A few leaves and seed motes following the wind.
+
+22E green-sky-path-near
+- Luminous green-gold cloud path beginning beyond the right side of Gale Garden.
+
+22F green-sky-path-far
+- Fades into distant cloud sea toward the next island.
+
+22G restored-horizon-glow
+- Warm hopeful atmospheric layer.
+
+22H chapter-complete-particles
+- Restrained mint leaves and small gold sparks.
+
+============================================================
+28. ASSET 23 - FULL SCENE COMPOSITION REFERENCES
+============================================================
+
+These are visual assembly guides, not flattened production backgrounds.
+
+23A gale-garden-storm-composition-guide
+- 3840 x 2160.
+- Show all environment layers assembled.
+- Include observatory, island, paths, Sky Tree, six dark beacons, trail signs, gauge, route table, seed pods, and field note case.
+- Do not include the explorer or Spark.
+- Leave clear walking routes and hotspot visibility.
+
+23B gale-garden-restored-composition-guide
+- Exact same camera and object positions.
+- Show active beacons, awakened tree, clear sky openings, restored light, and green sky path.
+- Do not move or redesign objects.
+
+23C gale-garden-mobile-crop-guide
+- Show the safe 4:5 crop inside the 16:9 composition.
+- Keep observatory, centre route table, and Sky Tree visible.
+- This may be a guide overlay only, not a production game asset.
+
+IMPORTANT
+- Composition guides are used to validate scale and placement.
+- Production still requires every requested layer and object separately.
+- Do not replace the requested asset library with only these scene images.
+
+============================================================
+29. ASSET 24 - SANDBOX CARD AND CHAPTER KEY ART
+============================================================
+
+Create promotional art without text:
+
+24A gale-garden-card-art
+- 1600 x 900.
+- Wide view of the island beneath parting storm clouds.
+- Observatory left, Sky Tree right, glowing beacons leading through the centre.
+- No explorer or Spark.
+- Strong simple silhouette suitable for a home-page card.
+- Leave calm negative space for HTML title text placed outside the image.
+
+24B gale-garden-completion-art
+- 1600 x 900.
+- Awakened Sky Tree sending a green-gold route across the clouds.
+- Warm, triumphant, not overly bright.
+- No characters and no text.
+
+============================================================
+30. SCALE GUIDE
+============================================================
+
+Use the existing explorer's standing height as 1.0 unit. Do not draw the explorer into production outputs.
+
+Approximate relative sizes:
+- Seed pod: 0.28 explorer heights.
+- Small garden lantern: 0.45 heights.
+- Wind beacon: 0.85 heights.
+- Storm gauge: 0.9 heights.
+- Trail sign: 1.05 heights.
+- Route table: 1.4 heights wide and 0.45 tall.
+- Observatory door: 1.2 heights.
+- Observatory: 2.4 heights tall.
+- Small wind-shaped tree: 1.8 heights tall.
+- Sky Tree: approximately 5 heights tall.
+- Main island walking path: 0.9-1.2 heights wide.
+- Waterfall outlet: 0.7 heights wide.
+
+Keep these relationships consistent across all outputs.
+
+============================================================
+31. LAYER STACKING ORDER
+============================================================
+
+Use this back-to-front scene order:
+1. gale-sky-base-storm or gale-sky-base-restored
+2. sun glow
+3. far cloud and rain layers
+4. distant floating islands
+5. cloud-sea-far
+6. cloud-sea-mid
+7. main island contact shadow
+8. island cliff base
+9. hanging roots
+10. island top grass
+11. path network and streams
+12. observatory, Sky Tree roots, beacon pads
+13. world objects and flora
+14. waterfalls
+15. existing explorer and Spark, added later by the game
+16. foreground rocks and flora
+17. island edge mist
+18. weather and energy effects
+19. foreground cloud mist
+
+All background and island layers must be designed to work in this order.
+
+============================================================
+32. FINAL DELIVERY MANIFEST
+============================================================
+
+Organize files into:
+- backgrounds/sky/
+- backgrounds/cloud-sea/
+- environment/island/
+- environment/observatory/
+- environment/sky-tree/
+- environment/water/
+- objects/beacons/
+- objects/quest-props/
+- objects/garden-props/
+- nature/flora/
+- nature/rocks-roots/
+- effects/weather/
+- effects/energy/
+- effects/shadows/
+- ui/challenge-art/
+- ui/icons/
+- ui/markers/
+- reference/
+
+Also provide a plain-text manifest containing:
+- Filename.
+- Asset number.
+- Pixel dimensions.
+- Alpha requirement.
+- Pivot or anchor.
+- State.
+- Layer dependencies.
+- Recommended final display size.
+
+============================================================
+33. FINAL QUALITY CHECKLIST
+============================================================
+
+Before presenting an asset, verify:
+- No explorer or Spark appears.
+- No new character appears.
+- It follows the approved Gale Garden style bible.
+- It uses the same elevated three-quarter camera.
+- Upper-left lighting is consistent.
+- It is original.
+- It contains no text, number, logo, watermark, or signature.
+- Transparent files have real clean alpha.
+- No part is cropped.
+- No rectangular background or halo remains.
+- The silhouette remains clear when reduced.
+- Materials match the defined world.
+- State variants align exactly.
+- Background layers stack without seams.
+- Interactive objects are not baked into generic background layers.
+- Storm and restored versions preserve object placement.
+- Filename follows the requested kebab-case name.
+- Canvas size, pivot, and intended scale are documented.
+- The result can be used directly in a responsive browser game.
+
+BEGIN NOW
+
+Start only with ASSET 00, "gale-garden-style-bible.webp."
+
+Use attached explorer and Spark images only to understand style, scale, camera, and lighting. Do not draw them.
+
+After producing ASSET 00, provide a short written environment specification confirming:
+- Palette.
+- Camera angle.
+- Horizon height.
+- Light direction.
+- Shadow direction.
+- Material rendering.
+- Edge treatment.
+- Texture density.
+- Scale unit.
+- Storm-state rules.
+- Restored-state rules.
+
+Do not generate the remaining assets until the style bible is approved.</pre>
+  </section>
+</main>
+<script>
+const promptText=document.getElementById("prompt").textContent;
+const status=document.getElementById("status");
+document.getElementById("copy-prompt").addEventListener("click",async()=>{
+  try{
+    if(!navigator.clipboard?.writeText)throw new Error("Clipboard API unavailable");
+    await navigator.clipboard.writeText(promptText);
+    status.textContent="Prompt copied.";
+  }catch(error){
+    const area=document.createElement("textarea");
+    area.value=promptText;
+    area.style.position="fixed";
+    area.style.opacity="0";
+    document.body.append(area);
+    area.select();
+    const copied=document.execCommand("copy");
+    area.remove();
+    status.textContent=copied?"Prompt copied.":"Copy was blocked. Select the prompt text manually.";
+  }
+});
+document.getElementById("download-prompt").addEventListener("click",()=>{
+  const blob=new Blob([promptText],{type:"text/plain;charset=utf-8"});
+  const link=document.createElement("a");
+  link.href=URL.createObjectURL(blob);
+  link.download="atlas-gale-garden-gpt-environment-prompt.txt";
+  link.click();
+  setTimeout(()=>URL.revokeObjectURL(link.href),1000);
+  status.textContent="Prompt downloaded.";
+});
+</script>
+</body>
+</html>

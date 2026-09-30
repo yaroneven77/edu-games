@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Atlas: The Lost Islands · Cloud Harbor Demo</title>
+<title>Atlas: The Lost Islands · Cloud Harbor Adventure</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2307172d'/%3E%3Cpath d='M12 45 30 13l8 18 14-7-9 27Z' fill='%23f3c75c' stroke='%2357d4c0' stroke-width='4'/%3E%3C/svg%3E">
-<script src="../../assets/theme-selector.js" defer></script>
-<link rel="stylesheet" href="../../assets/refresh.css">
+<script src="../assets/theme-selector.js" defer></script>
+<link rel="stylesheet" href="../assets/refresh.css">
 <style>
 *{box-sizing:border-box}
 :root{
@@ -213,8 +213,8 @@ html.reduce-motion *,html.reduce-motion *:before,html.reduce-motion *:after{anim
 <noscript><div class="noscript">This interactive demo needs JavaScript enabled. No information is sent anywhere.</div></noscript>
 <main class="shell">
 <header class="topbar">
-  <a class="back" href="../sandbox.html">← Sandbox</a>
-  <div class="title"><h1>Atlas: The Lost Islands</h1><p>Cloud Harbor · playable prototype</p></div>
+  <a class="back" href="../">← Edu Games</a>
+  <div class="title"><h1>Atlas: The Lost Islands</h1><p>Cloud Harbor · learning adventure</p></div>
   <div class="toolbar">
     <button class="icon-button" id="journal-button" type="button" aria-label="Open expedition journal">📜</button>
     <button class="icon-button" id="settings-button" type="button" aria-label="Open settings">⚙</button>
@@ -734,7 +734,7 @@ const $=id=>document.getElementById(id);
 const worldModelRegistry=JSON.parse($("atlas-world-models").textContent);
 const worldModels=Object.freeze(Object.fromEntries(worldModelRegistry.models.map(model=>[model.id,Object.freeze(model)])));
 const challenges=JSON.parse($("atlas-challenges").textContent);
-const SAVE_KEY="edu-games-atlas-cloud-harbor-sandbox-v1";
+const SAVE_KEY="edu-games-atlas-cloud-harbor-v1";
 const modelTarget=id=>{const interaction=worldModels[id].interaction;return{x:interaction.x,y:interaction.y,name:interaction.label,radius:interaction.radius};};
 const WORLD_TARGETS={
   spark:modelTarget("spark-companion"),crate:modelTarget("cargo-crate"),bridge:modelTarget("atlas-bridge"),

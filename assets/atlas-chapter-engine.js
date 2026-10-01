@@ -217,7 +217,7 @@
       <img class="spark" src="${generatedRoot}spark/spark-guiding.webp" alt="">
       <img class="player" id="player" src="${generatedRoot}explorer/explorer-idle.webp" alt="Explorer">
       <div class="controls" aria-label="Explorer movement controls">
-        <button class="move" data-move="up" aria-label="Move up">↑</button><button class="move" data-move="left" aria-label="Move left">←</button><button class="move" data-move="down" aria-label="Move down">↓</button><button class="move" data-move="right" aria-label="Move right">→</button>
+        <button class="move" data-move="up" aria-label="Move up"><img src="${generatedRoot}gale-garden/move-up.webp" alt=""></button><button class="move" data-move="left" aria-label="Move left"><img src="${generatedRoot}gale-garden/move-left.webp" alt=""></button><button class="move" data-move="down" aria-label="Move down"><img src="${generatedRoot}gale-garden/move-down.webp" alt=""></button><button class="move" data-move="right" aria-label="Move right"><img src="${generatedRoot}gale-garden/move-right.webp" alt=""></button>
         <button class="move interact" id="interact" type="button">Begin expedition</button>
       </div>
       <div class="objective"><strong>Current objective</strong><span id="objective"></span></div>`;

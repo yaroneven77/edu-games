@@ -11,19 +11,49 @@
 
   const generatedRoot = document.body.dataset.generatedRoot || "../assets/generated/";
   const artworkRoot = document.body.dataset.artworkRoot || generatedRoot;
-  const emberArtworkRoot = `${artworkRoot}ember-archive/`;
-  const emberObjects = [
-    ["01-ash-inscription", 123, 674, 139, 165],
-    ["02-ember-counter", 374, 609, 137, 165],
-    ["03-rune-circuit", 600, 509, 145, 170],
-    ["04-gear-shelves", 844, 618, 157, 190],
-    ["05-miras-journal", 1096, 534, 150, 165],
-    ["06-archive-mosaic", 1349, 623, 144, 180],
-    ["07-grammar-seal", 1590, 510, 161, 190],
-    ["08-furnace-floor", 1385, 334, 148, 175],
-    ["09-master-circuit", 930, 265, 177, 205],
-    ["10-memory-furnace", 469, 287, 176, 205]
-  ];
+  const generatedScenes = {
+    3: {
+      root: `${artworkRoot}ember-archive/`,
+      prefix: "ember-archive",
+      className: "generated-ember-scene",
+      beforeObjects: ["background", "terrain", "building", "props-back"],
+      afterObjects: ["props-front", "atmosphere"],
+      completeState: "completed",
+      objects: [
+        ["01-ash-inscription", 123, 674, 139, 165],
+        ["02-ember-counter", 374, 609, 137, 165],
+        ["03-rune-circuit", 600, 509, 145, 170],
+        ["04-gear-shelves", 844, 618, 157, 190],
+        ["05-miras-journal", 1096, 534, 150, 165],
+        ["06-archive-mosaic", 1349, 623, 144, 180],
+        ["07-grammar-seal", 1590, 510, 161, 190],
+        ["08-furnace-floor", 1385, 334, 148, 175],
+        ["09-master-circuit", 930, 265, 177, 205],
+        ["10-memory-furnace", 469, 287, 176, 205]
+      ]
+    },
+    5: {
+      root: `${artworkRoot}frostfire-summit/`,
+      prefix: "frostfire",
+      className: "generated-frostfire-scene",
+      beforeObjects: ["background", "terrain", "station", "route"],
+      afterObjects: ["props-front", "atmosphere"],
+      completeState: "repaired",
+      objects: [
+        ["01-weather-warning", 88, 595, 170, 170],
+        ["02-temperature-grid", 311, 686, 184, 185],
+        ["03-thermal-core", 562, 526, 183, 180],
+        ["04-supply-ratios", 807, 650, 190, 190],
+        ["05-miras-recording", 1043, 518, 181, 175],
+        ["06-ice-equations", 1271, 653, 185, 185],
+        ["07-warning-beacon", 1588, 524, 205, 205],
+        ["08-summit-map", 1408, 331, 180, 180],
+        ["09-twin-thermal-core", 930, 260, 215, 215],
+        ["10-guardian-gate", 406, 277, 225, 225]
+      ]
+    }
+  };
+  const generatedScene = generatedScenes[islandNumber];
   const saveKey = `edu-games-atlas-island-${islandNumber}-${mode}-v1`;
   const randomUint = () => globalThis.crypto?.getRandomValues
     ? crypto.getRandomValues(new Uint32Array(1))[0]
@@ -111,15 +141,15 @@
   }
 
   function sceneMarkup() {
-    if (islandNumber === 3) {
-      const layer = name => `<img class="generated-scene-layer layer-${name}" src="${emberArtworkRoot}layers/ember-archive-${name}.webp" alt="">`;
-      const objects = emberObjects.map(([name, left, top, width, height], index) =>
-        `<img class="generated-scene-object" id="generated-object-${index}" src="${emberArtworkRoot}objects/${name}-inactive.webp" alt="" style="left:${left / 19.2}%;top:${top / 10.8}%;width:${width / 19.2}%;height:${height / 10.8}%">`
+    if (generatedScene) {
+      const layer = name => `<img class="generated-scene-layer layer-${name}" src="${generatedScene.root}layers/${generatedScene.prefix}-${name}.webp" alt="">`;
+      const objects = generatedScene.objects.map(([name, left, top, width, height], index) =>
+        `<img class="generated-scene-object" id="generated-object-${index}" src="${generatedScene.root}objects/${name}-inactive.webp" alt="" style="left:${left / 19.2}%;top:${top / 10.8}%;width:${width / 19.2}%;height:${height / 10.8}%">`
       ).join("");
-      return `<div class="chapter-scene generated-ember-scene">
-        ${layer("background")}${layer("terrain")}${layer("building")}${layer("props-back")}
+      return `<div class="chapter-scene ${generatedScene.className}">
+        ${generatedScene.beforeObjects.map(layer).join("")}
         <div class="generated-scene-objects">${objects}</div>
-        ${layer("props-front")}${layer("atmosphere")}
+        ${generatedScene.afterObjects.map(layer).join("")}
       </div>`;
     }
     return `<div class="chapter-scene">${window.ATLAS_ISLAND_SCENES?.[islandNumber] || ""}</div>`;
@@ -205,8 +235,8 @@
       $(`landmark-${index}`).classList.toggle("locked", !state.started || index > state.step);
       const generatedObject = $(`generated-object-${index}`);
       if (generatedObject) {
-        const objectState = index < state.step ? "completed" : state.started && index === state.step ? "current" : "inactive";
-        const source = `${emberArtworkRoot}objects/${emberObjects[index][0]}-${objectState}.webp`;
+        const objectState = index < state.step ? generatedScene.completeState : state.started && index === state.step ? "current" : "inactive";
+        const source = `${generatedScene.root}objects/${generatedScene.objects[index][0]}-${objectState}.webp`;
         if (!generatedObject.src.endsWith(source)) generatedObject.src = source;
       }
     });

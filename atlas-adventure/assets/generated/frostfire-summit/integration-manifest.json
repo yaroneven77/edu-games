@@ -1,0 +1,196 @@
+{
+  "sourcePackage": "atlas-frostfire-summit-artwork-package (1).zip",
+  "preparedAt": "2026-10-01T15:20:55.006Z",
+  "removedDisconnectedPixels": 350172,
+  "layerStack": [
+    "frostfire-background.webp",
+    "frostfire-terrain.webp",
+    "frostfire-station.webp",
+    "frostfire-route.webp",
+    "interactive objects",
+    "frostfire-props-front.webp",
+    "frostfire-atmosphere.webp"
+  ],
+  "placements": [
+    {
+      "filename": "01-weather-warning.webp",
+      "coordinate_percent": [
+        9,
+        63
+      ],
+      "pixel_center": [
+        173,
+        680
+      ],
+      "display_box": [
+        88,
+        595,
+        170,
+        170
+      ],
+      "anchor_point": "center"
+    },
+    {
+      "filename": "02-temperature-grid.webp",
+      "coordinate_percent": [
+        21,
+        72
+      ],
+      "pixel_center": [
+        403,
+        778
+      ],
+      "display_box": [
+        311,
+        686,
+        184,
+        185
+      ],
+      "anchor_point": "center"
+    },
+    {
+      "filename": "03-thermal-core.webp",
+      "coordinate_percent": [
+        34,
+        56.99999999999999
+      ],
+      "pixel_center": [
+        653,
+        616
+      ],
+      "display_box": [
+        562,
+        526,
+        183,
+        180
+      ],
+      "anchor_point": "center"
+    },
+    {
+      "filename": "04-supply-ratios.webp",
+      "coordinate_percent": [
+        47,
+        69
+      ],
+      "pixel_center": [
+        902,
+        745
+      ],
+      "display_box": [
+        807,
+        650,
+        190,
+        190
+      ],
+      "anchor_point": "center"
+    },
+    {
+      "filename": "05-miras-recording.webp",
+      "coordinate_percent": [
+        59,
+        56.00000000000001
+      ],
+      "pixel_center": [
+        1133,
+        605
+      ],
+      "display_box": [
+        1043,
+        518,
+        181,
+        175
+      ],
+      "anchor_point": "center"
+    },
+    {
+      "filename": "06-ice-equations.webp",
+      "coordinate_percent": [
+        71,
+        69
+      ],
+      "pixel_center": [
+        1363,
+        745
+      ],
+      "display_box": [
+        1271,
+        653,
+        185,
+        185
+      ],
+      "anchor_point": "center"
+    },
+    {
+      "filename": "07-warning-beacon.webp",
+      "coordinate_percent": [
+        88,
+        57.99999999999999
+      ],
+      "pixel_center": [
+        1690,
+        626
+      ],
+      "display_box": [
+        1588,
+        524,
+        205,
+        205
+      ],
+      "anchor_point": "center"
+    },
+    {
+      "filename": "08-summit-map.webp",
+      "coordinate_percent": [
+        78,
+        39
+      ],
+      "pixel_center": [
+        1498,
+        421
+      ],
+      "display_box": [
+        1408,
+        331,
+        180,
+        180
+      ],
+      "anchor_point": "center"
+    },
+    {
+      "filename": "09-twin-thermal-core.webp",
+      "coordinate_percent": [
+        54,
+        34
+      ],
+      "pixel_center": [
+        1037,
+        367
+      ],
+      "display_box": [
+        930,
+        260,
+        215,
+        215
+      ],
+      "anchor_point": "center"
+    },
+    {
+      "filename": "10-guardian-gate.webp",
+      "coordinate_percent": [
+        27,
+        36
+      ],
+      "pixel_center": [
+        518,
+        389
+      ],
+      "display_box": [
+        406,
+        277,
+        225,
+        225
+      ],
+      "anchor_point": "center"
+    }
+  ]
+}

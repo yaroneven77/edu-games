@@ -289,7 +289,7 @@
     pointer.hidden = !pointerTarget;
     if (pointerTarget) {
       pointer.style.left = `${pointerTarget.x}%`;
-      pointer.style.top = `${Math.max(25, pointerTarget.y - 5)}%`;
+      pointer.style.top = `${Math.max(10, pointerTarget.y - 20)}%`;
     }
     updatePlayer();
   }

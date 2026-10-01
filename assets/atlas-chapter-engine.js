@@ -149,6 +149,8 @@
   let balanceValue = 0;
   let lastFocus = null;
   let audio = null;
+  let autoWalkFrame = 0;
+  let arrivalTimer = 0;
 
   function save() {
     state.updatedAt = new Date().toISOString();
@@ -305,6 +307,10 @@
 
   function move(dx, dy) {
     if (!state.started) return;
+    cancelAnimationFrame(autoWalkFrame);
+    autoWalkFrame = 0;
+    clearTimeout(arrivalTimer);
+    arrivalTimer = 0;
     state.player.x = Math.max(7, Math.min(93, state.player.x + dx * 3));
     state.player.y = Math.max(25, Math.min(78, state.player.y + dy * 3));
     updatePlayer();
@@ -322,10 +328,39 @@
     }
     if (state.step >= config.challenges.length) return;
     const target = config.spots[state.step];
-    state.player = { x: target.x, y: Math.min(78, target.y + 9) };
-    save();
-    render();
-    openChallenge(state.step);
+    const destination = { x: target.x, y: Math.min(78, target.y + 9) };
+    const distance = Math.hypot(state.player.x - destination.x, state.player.y - destination.y);
+    if (distance < 12) {
+      openChallenge(state.step);
+      return;
+    }
+    cancelAnimationFrame(autoWalkFrame);
+    clearTimeout(arrivalTimer);
+    arrivalTimer = 0;
+    const start = { ...state.player };
+    const startedAt = performance.now();
+    const duration = Math.max(1400, distance / .025);
+    const step = state.step;
+    const frame = now => {
+      const progress = Math.min(1, (now - startedAt) / duration);
+      state.player = {
+        x: start.x + (destination.x - start.x) * progress,
+        y: start.y + (destination.y - start.y) * progress
+      };
+      updatePlayer();
+      if (progress < 1) {
+        autoWalkFrame = requestAnimationFrame(frame);
+        return;
+      }
+      autoWalkFrame = 0;
+      save();
+      render();
+      arrivalTimer = setTimeout(() => {
+        arrivalTimer = 0;
+        openChallenge(step);
+      }, 1000);
+    };
+    autoWalkFrame = requestAnimationFrame(frame);
   }
 
   function openChallenge(index) {

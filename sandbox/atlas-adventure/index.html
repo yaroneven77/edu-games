@@ -842,7 +842,7 @@ function seededShuffle(values,seed){
 function freshState(previousVariants={}){
   return{version:1,runNonce:randomUint(),questionVariants:createQuestionVariants(previousVariants),started:false,interior:false,step:0,completed:[],assisted:[],lens:false,bridge:false,lighthouse:false,secret:false,atlas:false,sound:true,reducedMotion:false,facing:"east",player:{x:334,y:316},updatedAt:null};
 }
-let state=loadState(),activeChallenge=null,orderedWords=[],lastFocus=null,audioContext=null,toastTimer=0,dialogueTimer=0,pendingDialogue=null,movementSaveTimer=0,autoWalkFrame=0,movementFrame=0,labelEditMode=false,labelLayout=loadLabelLayout();
+let state=loadState(),activeChallenge=null,orderedWords=[],lastFocus=null,audioContext=null,toastTimer=0,dialogueTimer=0,pendingDialogue=null,movementSaveTimer=0,autoWalkFrame=0,arrivalTimer=0,movementFrame=0,labelEditMode=false,labelLayout=loadLabelLayout();
 const heldDirections=new Set();
 
 function loadState(){
@@ -1102,7 +1102,7 @@ function updatePlayerVisual(moving=false){
     :`<strong>Harbor restored:</strong> Keep exploring for secrets`;
 }
 function movePlayer(dx,dy){
-  cancelAnimationFrame(autoWalkFrame);autoWalkFrame=0;
+  cancelAnimationFrame(autoWalkFrame);autoWalkFrame=0;clearTimeout(arrivalTimer);arrivalTimer=0;
   const length=Math.hypot(dx,dy)||1,nextX=state.player.x+dx/length*11,nextY=state.player.y+dy/length*11;
   if(Math.abs(dx)>Math.abs(dy))state.facing=dx<0?"west":"east";else if(dy)state.facing=dy<0?"north":"south";
   if(canOccupy(nextX,nextY)){state.player={x:nextX,y:nextY};updatePlayerVisual(true);queueMovementSave();}
@@ -1121,7 +1121,7 @@ function beginDirection(direction){
 }
 function endDirection(direction){heldDirections.delete(direction);}
 function autoWalkTo(target,callback){
-  cancelAnimationFrame(autoWalkFrame);heldDirections.clear();
+  cancelAnimationFrame(autoWalkFrame);clearTimeout(arrivalTimer);arrivalTimer=0;heldDirections.clear();
   const crossingRight=state.player.x<500&&target.x>500,crossingLeft=state.player.x>500&&target.x<500;
   const points=crossingRight&&state.bridge?[{x:350,y:326},{x:635,y:283},target]:
     crossingLeft&&state.bridge?[{x:635,y:283},{x:350,y:326},target]:[target];
@@ -1130,9 +1130,9 @@ function autoWalkTo(target,callback){
     const point=points[pointIndex],dx=point.x-state.player.x,dy=point.y-state.player.y,distance=Math.hypot(dx,dy);
     if(distance<5){
       state.player={x:point.x,y:point.y};pointIndex++;
-      if(pointIndex>=points.length){updatePlayerVisual(false);queueMovementSave();callback?.();return;}
+      if(pointIndex>=points.length){updatePlayerVisual(false);queueMovementSave();arrivalTimer=setTimeout(()=>{arrivalTimer=0;callback?.()},1000);return;}
     }else{
-      const step=Math.min(distance,(now-lastTime)*.22),nextX=state.player.x+dx/distance*step,nextY=state.player.y+dy/distance*step;
+      const step=Math.min(distance,(now-lastTime)*.1),nextX=state.player.x+dx/distance*step,nextY=state.player.y+dy/distance*step;
       if(Math.abs(dx)>Math.abs(dy))state.facing=dx<0?"west":"east";else state.facing=dy<0?"north":"south";
       if(canOccupy(nextX,nextY)){state.player={x:nextX,y:nextY};updatePlayerVisual(true);}
       else{updatePlayerVisual(false);showToast("That route is blocked.");return;}

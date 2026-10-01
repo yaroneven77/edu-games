@@ -136,6 +136,11 @@
       <div class="sky-orb" aria-hidden="true"></div><div class="mist one" aria-hidden="true"></div><div class="mist two" aria-hidden="true"></div>
       ${sceneMarkup()}${routeMarkup()}
       <div id="landmarks"></div>
+      <div class="quest-pointer" id="quest-pointer" hidden aria-hidden="true">
+        <span>Next</span>
+        <img class="quest-pointer-base" src="${generatedRoot}marker/quest-marker-base.webp" alt="">
+        <img class="quest-pointer-arrow" src="${generatedRoot}marker/quest-marker-arrow.webp" alt="">
+      </div>
       <img class="spark" src="${generatedRoot}spark/spark-guiding.webp" alt="">
       <img class="player" id="player" src="${generatedRoot}explorer/explorer-idle.webp" alt="Explorer">
       <div class="controls" aria-label="Explorer movement controls">
@@ -205,6 +210,13 @@
         if (!generatedObject.src.endsWith(source)) generatedObject.src = source;
       }
     });
+    const pointer = $("quest-pointer");
+    const pointerTarget = state.started && state.step < config.spots.length ? config.spots[state.step] : null;
+    pointer.hidden = !pointerTarget;
+    if (pointerTarget) {
+      pointer.style.left = `${pointerTarget.x}%`;
+      pointer.style.top = `${Math.max(25, pointerTarget.y - 5)}%`;
+    }
     updatePlayer();
   }
 

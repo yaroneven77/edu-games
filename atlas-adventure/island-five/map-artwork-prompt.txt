@@ -1,0 +1,110 @@
+GPT ARTWORK PRODUCTION BRIEF
+Atlas: The Lost Islands - Island Five: Frostfire Summit
+
+GOAL
+Create a detailed mountain weather station physically divided between ice and volcanic heat. The map must feel like one engineered expedition site built across a dangerous summit, not separate symbols. Match the rich painterly-isometric adventure style of Islands One and Two.
+
+IMPORTANT
+- Original, copyright-safe artwork.
+- Do not draw the explorer, Spark, labels, written words, numbers, or interface.
+- Use one elevated three-quarter camera and one consistent scale.
+- Preserve the strong left-cold/right-hot visual split while connecting both halves through the central station.
+- Leave breathing room beneath the top-centre controls.
+
+MASTER MAP
+Filename: frostfire-summit-map.webp
+Canvas: 1920 x 1080, sRGB WebP, opaque.
+Lighting: cold blue moonlight from upper-left, orange lava light from lower-right, neutral light at the balanced centre.
+Palette: glacier blue, snow white, steel grey, charcoal, volcanic red, ember orange, brass warning yellow.
+
+LAYOUT
+- Left half: icy cliffs, snow drifts, frozen turbines, icicles and blue mist.
+- Right half: dark volcanic rock, lava cracks, smoke, heat shimmer and ember vents.
+- Centre: a weather station joining both climates.
+- A reinforced switchback route connects every object.
+- The Guardian Gate is the upper-left final destination.
+- Add ropes, pylons, warning flags, supply crates, pipes, cables, turbines, ladders, snow fences, vents, weather vanes, broken bridge pieces, footprints and guardian tracks.
+
+OBJECT LOCATIONS
+1. Weather warning: 9%, 63%.
+2. Temperature grid: 21%, 72%.
+3. Thermal Core: 34%, 57%.
+4. Supply ratios lift: 47%, 69%.
+5. Mira's recording station: 59%, 56%.
+6. Ice equations: 71%, 69%.
+7. Warning beacon: 88%, 58%.
+8. Summit map: 78%, 39%.
+9. Twin Thermal Core: 54%, 34%.
+10. Guardian Gate: 27%, 36%.
+
+INDIVIDUAL TRANSPARENT OBJECTS
+Create each at 1024 x 1024, transparent WebP, tightly trimmed.
+
+01-weather-warning.webp
+A rugged mountain warning board with weather vane, storm lights, snow crust on one edge, heat scorching on the other, diagram shapes without text.
+
+02-temperature-grid.webp
+A large outdoor thermometer and sensor grid, below-zero blue section, above-zero orange section, pipes and probes anchored into the mountain.
+
+03-thermal-core.webp
+A circular heat-control machine with one central flame chamber, cold intake pipes, hot exhaust pipes, temperature ring, damaged and balanced states.
+
+04-supply-ratios.webp
+A mechanical mountain supply lift with paired heat cells and ice shields, cargo baskets, pulley, ratio grouping racks, ropes and platform.
+
+05-miras-recording.webp
+A protected expedition audio recorder in a weatherproof station, microphone, glowing playback reel, brass speaker, snow and ash deposits.
+
+06-ice-equations.webp
+A frozen calculation panel embedded in an ice wall, cracked translucent slabs, glowing operator-shaped channels without written equations, heater cables.
+
+07-warning-beacon.webp
+A tall red-orange emergency beacon with rotating lamp, support legs, storm siren, cable box, ice on the cold-facing side and heat damage on the other.
+
+08-summit-map.webp
+A weatherproof relief-map table showing mountain ridges and routes without labels, compass mechanism, hinged glass cover, snow and ember markers.
+
+09-twin-thermal-core.webp
+A major two-chamber core: left chamber icy cyan, right chamber fiery orange, central balancing column, linked pipes, rotating rings and restored equilibrium state.
+
+10-guardian-gate.webp
+A monumental ancient stone gate shaped like a protective guardian, ice crystals on one side, volcanic glow on the other, central Atlas socket, sealed and open states.
+
+EXTRA PROP ASSETS
+- ice-cliff-segment.webp
+- lava-cliff-segment.webp
+- summit-path-segment.webp
+- rope-pylon.webp
+- frozen-turbine.webp
+- heat-vent.webp
+- warning-flag.webp
+- supply-crate.webp
+- snow-drift.webp
+- ember-smoke-effect.webp
+- blowing-snow-effect.webp
+
+STATES
+Provide damaged/inactive, current/energized, and repaired/balanced states for the thermal machinery, beacon, map and gate. Maintain identical size and registration.
+
+LAYER PACKAGE
+- frostfire-background.webp: sky, moon, distant split mountain range.
+- frostfire-terrain.webp: ice ridge, lava ridge, summit ground.
+- frostfire-station.webp: central weather-station architecture without interactive objects.
+- frostfire-route.webp: connected switchback bridges, rails and stairs.
+- frostfire-props-front.webp: crates, ropes, flags, rocks, snow and vents.
+- frostfire-atmosphere.webp: transparent snow, embers, smoke and heat shimmer.
+
+COMPOSITION RULES
+- Anchor every object to the mountain using foundations, cables, rails, pipes, platforms or carved recesses.
+- No floating cards or unrelated icon boxes.
+- Show how the central machinery transfers energy between the cold and hot halves.
+- Keep the walking route readable.
+- The game overlays labels, challenge numbers, glows and characters.
+- Preserve readable silhouettes at 70-120 pixels.
+
+DELIVERY
+- WebP, sRGB, clean alpha without blue or orange fringes.
+- Master scene under 750 KB where practical.
+- Objects under 170 KB; effects under 90 KB.
+- Include contact sheet and manifest.json with filename, dimensions, alpha, state, anchor, coordinate and layer.
+- Verify all filenames.

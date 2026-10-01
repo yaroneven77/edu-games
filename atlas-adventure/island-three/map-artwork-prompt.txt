@@ -1,0 +1,118 @@
+GPT ARTWORK PRODUCTION BRIEF
+Atlas: The Lost Islands - Island Three: Ember Archive
+
+GOAL
+Create a rich, coherent volcanic archive map and its separate interactive object assets. The result must look like one believable location, not ten unrelated icons. Match the premium painterly-isometric adventure style of Cloud Harbor and Gale Garden.
+
+IMPORTANT
+- Create original, copyright-safe artwork.
+- Do not draw the explorer, Spark, interface controls, labels, numbers, buttons, or written words.
+- The explorer and Spark are existing separate assets.
+- Every object must have the same camera angle, scale, lighting, outline treatment, and colour language.
+- Use a three-quarter elevated camera with readable silhouettes and a 16:9 composition.
+- Keep the lower and middle parts of the scene playable and avoid placing important art behind the top-centre movement controls.
+
+MASTER MAP
+Filename: ember-archive-map.webp
+Canvas: 1920 x 1080, sRGB WebP, no transparency.
+Camera: elevated three-quarter game-map view.
+Lighting: warm furnace glow from lower centre and right, dim violet volcanic sky, soft amber rim lighting.
+Palette: charcoal black, dark plum, burnt umber, brass, copper, ember orange, parchment cream, cyan rune light.
+
+LAYOUT
+- Background: dark volcanic mountain silhouettes and a hazy copper sun.
+- Main structure: one connected ancient archive building spanning most of the middle of the map.
+- The archive must include repeating arches, stone-and-brass walls, shelf windows, support pillars, pipes, rails, and warm interior openings.
+- Foreground: dark stone floor crossed by a glowing lava channel and safe brass walkways.
+- A continuous physical route must connect every interactive object.
+- Add environmental storytelling: ash piles, loose pages, book stacks, small gears, rune cables, crystal trays, furnace pipes, lamps, cracked tiles, heat haze, sparks, and soot.
+
+OBJECT LOCATIONS
+Coordinates are percentages from the top-left of the master canvas. Keep the centre of each object near its coordinate.
+1. Ash inscription: 10%, 70%.
+2. Ember counter: 23%, 64%.
+3. Rune circuit: 35%, 55%.
+4. Gear shelves: 48%, 66%.
+5. Mira's journal: 61%, 57%.
+6. Archive mosaic: 74%, 66%.
+7. Grammar seal: 87%, 56%.
+8. Furnace floor diagram: 76%, 39%.
+9. Master circuit: 53%, 34%.
+10. Memory furnace: 29%, 36%.
+
+INDIVIDUAL TRANSPARENT OBJECTS
+Produce each object as a separate tightly trimmed transparent WebP at 1024 x 1024. Leave natural transparent padding for glow and shadows.
+
+01-ash-inscription.webp
+An old parchment-and-brass inscription stand, ash brushed away to reveal engraved lines, folded corner, small ember-lit base.
+
+02-ember-counter.webp
+A mechanical brass counting frame with rows of glowing ember beads, readable abacus structure, pipes connecting it to the archive.
+
+03-rune-circuit.webp
+A circular stone-and-brass rune mechanism with a hexagonal orange crystal, six connection terminals, cyan circuit lines, active and inactive states.
+
+04-gear-shelves.webp
+A library shelving machine combining books, visible gears, sliding rails, cog wheels, small crystal indicators, and a heavy archive base.
+
+05-miras-journal.webp
+An open protected expedition journal on a brass reading pedestal, waterproof leather cover, map sketches without readable text, warm page light.
+
+06-archive-mosaic.webp
+A large framed wall/floor mosaic made from interlocking amber glass pieces, missing-piece sockets, brass border, completed and incomplete states.
+
+07-grammar-seal.webp
+A tall archive door seal with a quill-shaped brass key, glowing sentence-line motifs without actual letters, stone housing and locking bars.
+
+08-furnace-floor.webp
+A raised brass floor-measurement platform with geometric tiles, ruler-like borders without numbers, hinged panels, heat vents, and chalk-like construction lines.
+
+09-master-circuit.webp
+A larger suspended rune wheel with layered rotating rings, cyan energy paths, central white-gold core, brass supports, and six cables leading to earlier machines.
+
+10-memory-furnace.webp
+The dominant archive furnace: arched stone chamber, copper shell, visible orange flame, memory-crystal window, chimney pipes, heat glow, dark and restored states.
+
+EXTRA PROP ASSETS
+- ember-archive-arch.webp
+- brass-walkway-segment.webp
+- lava-channel-segment.webp
+- archive-book-stack.webp
+- archive-gear-pile.webp
+- rune-cable-segment.webp
+- ash-rock-cluster.webp
+- ember-lamp.webp
+- furnace-pipe.webp
+- drifting-spark-effect.webp
+
+STATES
+For interactive machinery provide at least:
+- inactive or damaged
+- current or energized
+- completed or restored
+Keep dimensions and registration identical between states.
+
+LAYER PACKAGE
+Also provide these full-width 1920 x 1080 transparent or opaque layers:
+- ember-archive-background.webp: sky, mountains, sun, distant smoke.
+- ember-archive-terrain.webp: island rock, stone floor, lava channel.
+- ember-archive-building.webp: connected archive architecture without interactive objects.
+- ember-archive-props-back.webp: rear pipes, lamps, shelves, cables.
+- ember-archive-props-front.webp: foreground rocks, ash, rails, loose books.
+- ember-archive-atmosphere.webp: transparent sparks, smoke, heat haze.
+
+COMPOSITION RULES
+- Objects must feel installed in the archive through pipes, rails, foundations, cables, stairs, or wall recesses.
+- Do not place objects on isolated square cards or floating platforms.
+- Preserve open walking space around the route.
+- Keep labels and interaction rings out of the artwork; the game adds them.
+- Object silhouettes must remain recognizable when displayed at approximately 70-120 pixels.
+
+DELIVERY
+- WebP, sRGB.
+- Clean alpha with no coloured matte fringe.
+- Master scene under 700 KB where practical.
+- Individual objects under 160 KB where practical.
+- Effects under 80 KB.
+- Include a contact sheet and manifest.json listing filename, dimensions, transparency, state, anchor point, and intended coordinate.
+- Verify every filename exactly.

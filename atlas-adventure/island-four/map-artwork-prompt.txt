@@ -1,0 +1,108 @@
+GPT ARTWORK PRODUCTION BRIEF
+Atlas: The Lost Islands - Island Four: Tidal Observatory
+
+GOAL
+Create a rich floating ocean laboratory where every dock, instrument, tank, gate, and telescope belongs to one connected moon-powered observatory. Match the painterly-isometric quality and visual richness of Cloud Harbor and Gale Garden.
+
+IMPORTANT
+- Original, copyright-safe artwork only.
+- Do not draw the explorer, Spark, labels, words, numbers, buttons, or interface controls.
+- Use one consistent elevated three-quarter camera and scale.
+- Keep the top-centre area relatively quiet for movement controls.
+- The map must communicate water flow: pipes, channels, gates, tanks, bridges, and instruments must visibly connect.
+
+MASTER MAP
+Filename: tidal-observatory-map.webp
+Canvas: 1920 x 1080, sRGB WebP, opaque.
+Lighting: bright turquoise ocean daylight with a pale moon, cool reflected light, soft gold instrument highlights.
+Palette: deep ocean blue, turquoise, sea-glass green, moon cream, weathered brass, pale stone, dark teal.
+
+LAYOUT
+- Endless ocean with distant clouds and a pale moon.
+- One large circular observatory platform composed of connected laboratory decks.
+- A flooded dock begins at lower-left.
+- Curved bridges and water channels move through the pearl laboratory, diving station, moon dial, tanks, deep lock, and telescope.
+- The large moon telescope occupies the upper-left destination.
+- Add waves, dock ropes, buoys, pipes, valves, ladders, glass tubes, drainage grates, wet reflections, barnacles, floating lights, bubbles, gull silhouettes, and small maintenance boats.
+
+OBJECT LOCATIONS
+1. Dock report: 9%, 72%.
+2. Tide clock: 20%, 57%.
+3. Tide Lock: 33%, 69%.
+4. Pearl arrays: 45%, 55%.
+5. Diving log: 58%, 68%.
+6. Moon fractions dial: 70%, 55%.
+7. Signal grammar antenna: 88%, 68%.
+8. Glass tanks: 81%, 39%.
+9. Deep Tide Lock: 55%, 34%.
+10. Moon telescope: 27%, 34%.
+
+INDIVIDUAL TRANSPARENT OBJECTS
+Create each at 1024 x 1024 as a tightly trimmed transparent WebP.
+
+01-dock-report.webp
+A waterproof report board mounted to a weathered dock post, clipped parchment under glass, anchor hardware, rope, wet brass lamp, no readable writing.
+
+02-tide-clock.webp
+A moon-tide clock tower with four synchronized dials, brass hands, sea-glass face, tide markings without numbers, pipes descending into the deck.
+
+03-tide-lock.webp
+A compact water-control gate with a visible glass level chamber, raise/lower valves, flowing water, drainage pipe, inactive and balanced states.
+
+04-pearl-arrays.webp
+A laboratory rack of luminous pearl depth sensors in ordered rows, glass bowls, brass supports, cables and decimal gauge shapes without numbers.
+
+05-diving-log.webp
+A diving helmet and waterproof log station on a small equipment platform, air hose, depth lamp, map case, no readable text.
+
+06-moon-fractions.webp
+A circular moon-phase calculating dial with layered rotating crescent plates, fraction-like segmented rings without written values, sea-glass and brass frame.
+
+07-signal-grammar.webp
+A tall observatory signal antenna with dish, beacon lamp, articulated arm, wave-emission rings, cable connection and restored signal state.
+
+08-glass-tanks.webp
+Two or three large transparent tidewater tanks with fish silhouettes, level lines without numbers, connected pipes, valves, moonlight reflections and bubbles.
+
+09-deep-tide-lock.webp
+A larger central pressure lock with three vertical water columns, heavy brass frame, pressure pipes, rotating trident-shaped control, dry and balanced states.
+
+10-moon-telescope.webp
+The dominant moon telescope tower with a rotating sea-glass dome, long angled telescope tube, brass lens rim, observation deck, ladder, and focused-beam state.
+
+EXTRA PROP ASSETS
+- observatory-platform-segment.webp
+- curved-bridge-segment.webp
+- water-channel-segment.webp
+- brass-pipe-set.webp
+- tide-valve.webp
+- dock-rope-and-buoy.webp
+- drainage-grate.webp
+- sea-glass-lamp.webp
+- bubble-effect.webp
+- moon-reflection-strip.webp
+
+STATES
+Provide inactive/flooded, current/active, and restored/balanced states for locks, clocks, tanks, antenna, and telescope. State images must have identical dimensions and registration.
+
+LAYER PACKAGE
+- tidal-observatory-background.webp: sky, moon, distant ocean and clouds.
+- tidal-observatory-water.webp: water surface and distant waves.
+- tidal-observatory-platforms.webp: connected decks and bridges without interactive objects.
+- tidal-observatory-pipes.webp: rear pipes, channels, valves and rails.
+- tidal-observatory-props-front.webp: dock details, ropes, wet crates, foreground rails.
+- tidal-observatory-atmosphere.webp: transparent spray, bubbles, reflections and moon glints.
+
+COMPOSITION RULES
+- Every laboratory object must connect physically to a deck, pipe, cable, water channel, or bridge.
+- Do not use floating cards, isolated icon pedestals, or unrelated decorative frames.
+- Keep a clear walking route and readable depth.
+- The game adds labels, numbers, interaction glows, characters, and controls.
+- Objects must remain readable at 70-120 pixels.
+
+DELIVERY
+- WebP, sRGB, clean alpha.
+- Master scene under 700 KB where practical.
+- Objects under 160 KB; effects under 80 KB.
+- Supply a contact sheet and manifest.json with filename, dimensions, alpha, state, anchor, coordinate, and layer order.
+- Verify every requested file.

@@ -1,0 +1,114 @@
+GPT ARTWORK PRODUCTION BRIEF
+Atlas: The Lost Islands - Island Six: The Unwritten Isle
+
+GOAL
+Create the final rich map: a mysterious island assembled from visual memories of all previous environments around the Atlas Heart. It must feel magical, coherent and climactic, with one connected temple complex rather than separate icons.
+
+IMPORTANT
+- Original, copyright-safe artwork.
+- Do not draw the explorer, Spark, Mira, the guardian character, labels, words, numbers, buttons or interface.
+- Existing character art will be overlaid separately.
+- Use the same elevated three-quarter camera, scale and painterly-isometric style as the prior islands.
+- Leave the top-centre region readable beneath movement controls.
+
+MASTER MAP
+Filename: unwritten-isle-map.webp
+Canvas: 1920 x 1080, sRGB WebP, opaque.
+Lighting: violet twilight, warm gold Atlas light, coloured reflections from the remembered biomes.
+Palette: midnight violet, muted teal, garden green, ember red, ocean blue, frost silver, ancient gold, crystal cyan.
+
+LAYOUT
+- One circular final island divided organically into remembered regions:
+  - cloud/harbor stone and blue water
+  - garden greenery and wind patterns
+  - ember archive rock and orange glow
+  - tidal sea-glass channels
+  - frostfire ice and lava details
+- Golden Atlas pathways bind all regions together.
+- A layered temple and convergence mechanism occupy the upper middle.
+- The Atlas Heart chamber is the upper-left final destination.
+- Add fragment stones, blank map pages, floating runes, guardian carvings, memory plants, tiny waterfalls, ember cracks, snow crystals, brass rails, broken route pieces, light motes and unfinished architecture fading into particles.
+
+OBJECT LOCATIONS
+1. Mira's message station: 9%, 70%.
+2. Fragment sum altar: 21%, 56%.
+3. Combined route mechanism: 34%, 69%.
+4. Atlas ratio gate: 47%, 55%.
+5. Guardian memory monument: 60%, 69%.
+6. Map fractions table: 72%, 55%.
+7. Final sentence seal: 88%, 67%.
+8. Heart chamber: 79%, 38%.
+9. Atlas convergence: 54%, 33%.
+10. Atlas Heart: 28%, 36%.
+
+INDIVIDUAL TRANSPARENT OBJECTS
+Create each at 1024 x 1024 as a transparent WebP with consistent lighting and scale.
+
+01-miras-message.webp
+A final expedition message station with compass mast, protected blank-page journal, brass playback crystal and route pointer, no text or character.
+
+02-fragment-sum.webp
+A circular altar holding six distinct Atlas fragments, six energy channels merging into one central light, cloud/leaf/flame/wave/ice/star motifs.
+
+03-combined-route.webp
+A physical route-switching machine combining bridge, garden path, archive rail, water channel and ice walkway pieces into one navigable mechanism.
+
+04-atlas-ratio.webp
+A golden proportion gate with paired energy bowls, adjustable rings and linked fragment channels, mathematical balance suggested without numbers.
+
+05-guardian-memory.webp
+An ancient stone memory monument shaped around a guardian handprint and glowing Atlas symbol, layered memory crystals, protected viewing aperture.
+
+06-map-fractions.webp
+A large map assembly table with six irregular map pieces, brass hinges, scaling frame, magnifying lens and completed/incomplete arrangements.
+
+07-final-sentence.webp
+A tall promise seal made from blank glowing line segments and quill-shaped mechanisms, no actual writing, opening bars and golden completion light.
+
+08-heart-chamber.webp
+A grand arched chamber containing a floating golden energy heart, tide pipes, thermal conduits and rune supports from earlier islands.
+
+09-atlas-convergence.webp
+A major suspended orrery with six coloured island rings, rotating pathways, central white-gold core, cables to every region and synchronized state.
+
+10-atlas-heart.webp
+The dominant final crystal engine: large cyan-and-gold faceted heart crystal inside an ancient temple arch, six fragment sockets, radiant restored state.
+
+EXTRA PROP ASSETS
+- remembered-cloud-rock.webp
+- remembered-garden-cluster.webp
+- remembered-ember-rock.webp
+- remembered-tide-channel.webp
+- remembered-frostfire-rock.webp
+- golden-route-segment.webp
+- blank-atlas-page.webp
+- guardian-carving.webp
+- fragment-pedestal.webp
+- memory-light-motes.webp
+- unfinished-particle-edge.webp
+
+STATES
+Provide incomplete/dormant, current/energized, and completed/restored states for the altar, route, gate, map table, sentence seal, convergence and Heart. Use identical dimensions and registration.
+
+LAYER PACKAGE
+- unwritten-isle-background.webp: violet sky, moon, distant blank islands.
+- unwritten-isle-terrain.webp: one coherent island containing the five remembered biomes.
+- unwritten-isle-temple.webp: connected golden temple and unfinished architecture.
+- unwritten-isle-routes.webp: all physical paths, bridges, rails and energy channels.
+- unwritten-isle-props-front.webp: pages, fragment stones, plants, crystals and foreground ruins.
+- unwritten-isle-atmosphere.webp: transparent motes, runes, fading particles and Heart glow.
+
+COMPOSITION RULES
+- Blend biome boundaries naturally using shared stone, gold pathways and converging energy.
+- Every object must connect to the central Atlas system.
+- Do not use floating cards, icon tiles or isolated pedestals without physical context.
+- Keep the journey route visually readable from lower-left through the middle to the upper-left Heart.
+- The game adds characters, labels, challenge numbers, interaction rings and controls.
+- Objects must remain recognizable at 70-120 pixels.
+
+DELIVERY
+- WebP, sRGB, clean alpha.
+- Master scene under 800 KB where practical.
+- Objects under 180 KB; effects under 100 KB.
+- Include contact sheet and manifest.json listing filename, dimensions, transparency, state, anchor point, coordinate and layer order.
+- Confirm every file exists and visually matches the complete package.

@@ -11,7 +11,7 @@
 <style>
 *{box-sizing:border-box}
 :root{--night:#07182a;--panel:rgba(7,25,43,.94);--line:rgba(207,239,222,.38);--mint:#77e0b0;--gold:#f4cd65;--sky:#85cfd1;--ink:#183146;--good:#86e5a6;--bad:#ff9b8d}
-html{min-width:300px;background:#07182a;scroll-behavior:smooth}
+html{min-width:300px;background:#07182a;scroll-behavior:smooth}html:has(dialog[open]),body:has(dialog[open]){overflow:hidden}
 body{margin:0;min-height:100vh;color:#effcf5;background:radial-gradient(circle at 50% -10%,#337f7e,transparent 40%),linear-gradient(#07182a,#102d3e);font:17px/1.5 "Segoe UI",Arial,sans-serif}
 button,a{font:inherit}button{touch-action:manipulation}button:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
 .skip{position:fixed;left:8px;top:8px;z-index:100;transform:translateY(-150%);background:white;color:#111;padding:9px 13px;border-radius:10px}.skip:focus{transform:none}

@@ -51,6 +51,27 @@
         ["09-twin-thermal-core", 930, 260, 215, 215],
         ["10-guardian-gate", 406, 277, 225, 225]
       ]
+    },
+    6: {
+      root: `${artworkRoot}unwritten-isle/`,
+      prefix: "unwritten-isle",
+      className: "generated-unwritten-scene",
+      beforeObjects: ["background", "terrain", "temple", "routes"],
+      afterObjects: ["props-front", "atmosphere"],
+      initialState: "incomplete",
+      completeState: "completed",
+      objects: [
+        ["01-miras-message", 89, 669, 169, 175],
+        ["02-fragment-sum", 311, 513, 184, 185],
+        ["03-combined-route", 558, 650, 190, 190],
+        ["04-atlas-ratio", 807, 499, 190, 190],
+        ["05-guardian-memory", 1057, 650, 190, 190],
+        ["06-map-fractions", 1290, 502, 185, 185],
+        ["07-final-sentence", 1588, 622, 205, 205],
+        ["08-heart-chamber", 1407, 300, 220, 220],
+        ["09-atlas-convergence", 925, 244, 225, 225],
+        ["10-atlas-heart", 421, 272, 235, 235]
+      ]
     }
   };
   const generatedScene = generatedScenes[islandNumber];
@@ -144,7 +165,7 @@
     if (generatedScene) {
       const layer = name => `<img class="generated-scene-layer layer-${name}" src="${generatedScene.root}layers/${generatedScene.prefix}-${name}.webp" alt="">`;
       const objects = generatedScene.objects.map(([name, left, top, width, height], index) =>
-        `<img class="generated-scene-object" id="generated-object-${index}" src="${generatedScene.root}objects/${name}-inactive.webp" alt="" style="left:${left / 19.2}%;top:${top / 10.8}%;width:${width / 19.2}%;height:${height / 10.8}%">`
+        `<img class="generated-scene-object" id="generated-object-${index}" src="${generatedScene.root}objects/${name}-${generatedScene.initialState || "inactive"}.webp" alt="" style="left:${left / 19.2}%;top:${top / 10.8}%;width:${width / 19.2}%;height:${height / 10.8}%">`
       ).join("");
       return `<div class="chapter-scene ${generatedScene.className}">
         ${generatedScene.beforeObjects.map(layer).join("")}
@@ -235,7 +256,7 @@
       $(`landmark-${index}`).classList.toggle("locked", !state.started || index > state.step);
       const generatedObject = $(`generated-object-${index}`);
       if (generatedObject) {
-        const objectState = index < state.step ? generatedScene.completeState : state.started && index === state.step ? "current" : "inactive";
+        const objectState = index < state.step ? generatedScene.completeState : state.started && index === state.step ? "current" : generatedScene.initialState || "inactive";
         const source = `${generatedScene.root}objects/${generatedScene.objects[index][0]}-${objectState}.webp`;
         if (!generatedObject.src.endsWith(source)) generatedObject.src = source;
       }

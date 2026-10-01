@@ -1,0 +1,196 @@
+{
+  "sourcePackage": "atlas-unwritten-isle-artwork-package.zip",
+  "preparedAt": "2026-10-01T17:41:01.670Z",
+  "removedDisconnectedPixels": 259047,
+  "layerStack": [
+    "unwritten-isle-background.webp",
+    "unwritten-isle-terrain.webp",
+    "unwritten-isle-temple.webp",
+    "unwritten-isle-routes.webp",
+    "interactive objects",
+    "unwritten-isle-props-front.webp",
+    "unwritten-isle-atmosphere.webp"
+  ],
+  "placements": [
+    {
+      "filename": "01-miras-message.webp",
+      "coordinate_percent": [
+        9,
+        70
+      ],
+      "pixel_center": [
+        173,
+        756
+      ],
+      "display_box": [
+        89,
+        669,
+        169,
+        175
+      ],
+      "anchor_point": "center"
+    },
+    {
+      "filename": "02-fragment-sum.webp",
+      "coordinate_percent": [
+        21,
+        56.00000000000001
+      ],
+      "pixel_center": [
+        403,
+        605
+      ],
+      "display_box": [
+        311,
+        513,
+        184,
+        185
+      ],
+      "anchor_point": "center"
+    },
+    {
+      "filename": "03-combined-route.webp",
+      "coordinate_percent": [
+        34,
+        69
+      ],
+      "pixel_center": [
+        653,
+        745
+      ],
+      "display_box": [
+        558,
+        650,
+        190,
+        190
+      ],
+      "anchor_point": "center"
+    },
+    {
+      "filename": "04-atlas-ratio.webp",
+      "coordinate_percent": [
+        47,
+        55.00000000000001
+      ],
+      "pixel_center": [
+        902,
+        594
+      ],
+      "display_box": [
+        807,
+        499,
+        190,
+        190
+      ],
+      "anchor_point": "center"
+    },
+    {
+      "filename": "05-guardian-memory.webp",
+      "coordinate_percent": [
+        60,
+        69
+      ],
+      "pixel_center": [
+        1152,
+        745
+      ],
+      "display_box": [
+        1057,
+        650,
+        190,
+        190
+      ],
+      "anchor_point": "center"
+    },
+    {
+      "filename": "06-map-fractions.webp",
+      "coordinate_percent": [
+        72,
+        55.00000000000001
+      ],
+      "pixel_center": [
+        1382,
+        594
+      ],
+      "display_box": [
+        1290,
+        502,
+        185,
+        185
+      ],
+      "anchor_point": "center"
+    },
+    {
+      "filename": "07-final-sentence.webp",
+      "coordinate_percent": [
+        88,
+        67
+      ],
+      "pixel_center": [
+        1690,
+        724
+      ],
+      "display_box": [
+        1588,
+        622,
+        205,
+        205
+      ],
+      "anchor_point": "center"
+    },
+    {
+      "filename": "08-heart-chamber.webp",
+      "coordinate_percent": [
+        79,
+        38
+      ],
+      "pixel_center": [
+        1517,
+        410
+      ],
+      "display_box": [
+        1407,
+        300,
+        220,
+        220
+      ],
+      "anchor_point": "center"
+    },
+    {
+      "filename": "09-atlas-convergence.webp",
+      "coordinate_percent": [
+        54,
+        33
+      ],
+      "pixel_center": [
+        1037,
+        356
+      ],
+      "display_box": [
+        925,
+        244,
+        225,
+        225
+      ],
+      "anchor_point": "center"
+    },
+    {
+      "filename": "10-atlas-heart.webp",
+      "coordinate_percent": [
+        28.000000000000004,
+        36
+      ],
+      "pixel_center": [
+        538,
+        389
+      ],
+      "display_box": [
+        421,
+        272,
+        235,
+        235
+      ],
+      "anchor_point": "center"
+    }
+  ]
+}

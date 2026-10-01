@@ -10,6 +10,20 @@
   if (!config) throw new Error(`Missing Atlas chapter configuration for Island ${islandNumber}`);
 
   const generatedRoot = document.body.dataset.generatedRoot || "../assets/generated/";
+  const artworkRoot = document.body.dataset.artworkRoot || generatedRoot;
+  const emberArtworkRoot = `${artworkRoot}ember-archive/`;
+  const emberObjects = [
+    ["01-ash-inscription", 123, 674, 139, 165],
+    ["02-ember-counter", 374, 609, 137, 165],
+    ["03-rune-circuit", 600, 509, 145, 170],
+    ["04-gear-shelves", 844, 618, 157, 190],
+    ["05-miras-journal", 1096, 534, 150, 165],
+    ["06-archive-mosaic", 1349, 623, 144, 180],
+    ["07-grammar-seal", 1590, 510, 161, 190],
+    ["08-furnace-floor", 1385, 334, 148, 175],
+    ["09-master-circuit", 930, 265, 177, 205],
+    ["10-memory-furnace", 469, 287, 176, 205]
+  ];
   const saveKey = `edu-games-atlas-island-${islandNumber}-${mode}-v1`;
   const randomUint = () => globalThis.crypto?.getRandomValues
     ? crypto.getRandomValues(new Uint32Array(1))[0]
@@ -97,6 +111,17 @@
   }
 
   function sceneMarkup() {
+    if (islandNumber === 3) {
+      const layer = name => `<img class="generated-scene-layer layer-${name}" src="${emberArtworkRoot}layers/ember-archive-${name}.webp" alt="">`;
+      const objects = emberObjects.map(([name, left, top, width, height], index) =>
+        `<img class="generated-scene-object" id="generated-object-${index}" src="${emberArtworkRoot}objects/${name}-inactive.webp" alt="" style="left:${left / 19.2}%;top:${top / 10.8}%;width:${width / 19.2}%;height:${height / 10.8}%">`
+      ).join("");
+      return `<div class="chapter-scene generated-ember-scene">
+        ${layer("background")}${layer("terrain")}${layer("building")}${layer("props-back")}
+        <div class="generated-scene-objects">${objects}</div>
+        ${layer("props-front")}${layer("atmosphere")}
+      </div>`;
+    }
     return `<div class="chapter-scene">${window.ATLAS_ISLAND_SCENES?.[islandNumber] || ""}</div>`;
   }
 
@@ -173,6 +198,12 @@
       $(`landmark-${index}`).classList.toggle("active", state.started && index === state.step);
       $(`landmark-${index}`).classList.toggle("done", index < state.step);
       $(`landmark-${index}`).classList.toggle("locked", !state.started || index > state.step);
+      const generatedObject = $(`generated-object-${index}`);
+      if (generatedObject) {
+        const objectState = index < state.step ? "completed" : state.started && index === state.step ? "current" : "inactive";
+        const source = `${emberArtworkRoot}objects/${emberObjects[index][0]}-${objectState}.webp`;
+        if (!generatedObject.src.endsWith(source)) generatedObject.src = source;
+      }
     });
     updatePlayer();
   }

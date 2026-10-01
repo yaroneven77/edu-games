@@ -1,0 +1,177 @@
+{
+  "sourcePackage": "atlas-ember-archive-map-artwork-package.zip",
+  "preparedAt": "2026-10-01T13:57:41.918Z",
+  "removedEdgeConnectedPixels": 251012,
+  "placements": [
+    {
+      "filename": "01-ash-inscription.webp",
+      "coordinate_percent": [
+        10,
+        70
+      ],
+      "pixel_center": [
+        192,
+        756
+      ],
+      "display_box": [
+        123,
+        674,
+        139,
+        165
+      ]
+    },
+    {
+      "filename": "02-ember-counter.webp",
+      "coordinate_percent": [
+        23,
+        64
+      ],
+      "pixel_center": [
+        442,
+        691
+      ],
+      "display_box": [
+        374,
+        609,
+        137,
+        165
+      ]
+    },
+    {
+      "filename": "03-rune-circuit.webp",
+      "coordinate_percent": [
+        35,
+        55.00000000000001
+      ],
+      "pixel_center": [
+        672,
+        594
+      ],
+      "display_box": [
+        600,
+        509,
+        145,
+        170
+      ]
+    },
+    {
+      "filename": "04-gear-shelves.webp",
+      "coordinate_percent": [
+        48,
+        66
+      ],
+      "pixel_center": [
+        922,
+        713
+      ],
+      "display_box": [
+        844,
+        618,
+        157,
+        190
+      ]
+    },
+    {
+      "filename": "05-miras-journal.webp",
+      "coordinate_percent": [
+        61,
+        56.99999999999999
+      ],
+      "pixel_center": [
+        1171,
+        616
+      ],
+      "display_box": [
+        1096,
+        534,
+        150,
+        165
+      ]
+    },
+    {
+      "filename": "06-archive-mosaic.webp",
+      "coordinate_percent": [
+        74,
+        66
+      ],
+      "pixel_center": [
+        1421,
+        713
+      ],
+      "display_box": [
+        1349,
+        623,
+        144,
+        180
+      ]
+    },
+    {
+      "filename": "07-grammar-seal.webp",
+      "coordinate_percent": [
+        87,
+        56.00000000000001
+      ],
+      "pixel_center": [
+        1670,
+        605
+      ],
+      "display_box": [
+        1590,
+        510,
+        161,
+        190
+      ]
+    },
+    {
+      "filename": "08-furnace-floor.webp",
+      "coordinate_percent": [
+        76,
+        39
+      ],
+      "pixel_center": [
+        1459,
+        421
+      ],
+      "display_box": [
+        1385,
+        334,
+        148,
+        175
+      ]
+    },
+    {
+      "filename": "09-master-circuit.webp",
+      "coordinate_percent": [
+        53,
+        34
+      ],
+      "pixel_center": [
+        1018,
+        367
+      ],
+      "display_box": [
+        930,
+        265,
+        177,
+        205
+      ]
+    },
+    {
+      "filename": "10-memory-furnace.webp",
+      "coordinate_percent": [
+        28.999999999999996,
+        36
+      ],
+      "pixel_center": [
+        557,
+        389
+      ],
+      "display_box": [
+        469,
+        287,
+        176,
+        205
+      ]
+    }
+  ]
+}

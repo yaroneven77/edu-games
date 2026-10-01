@@ -324,7 +324,7 @@
       window.AtlasProgress?.recordVisit(islandNumber, config.title);
       save();
       render();
-      openInfo(config.title, `<p>${config.opening}</p><p><strong>${config.startMessage}</strong></p>`, "New chapter");
+      openInfo(config.title, `<p>${config.opening}</p><p><strong>${config.startMessage}</strong></p><div class="actions"><button class="primary" data-action="close-info" type="button">OK</button></div>`, "New chapter");
       return;
     }
     if (state.step >= config.challenges.length) return;
@@ -574,7 +574,12 @@
   }
 
   function openSettings() {
-    openInfo("Settings", `<div class="settings-grid"><p><strong>Sound effects:</strong> ${state.sound ? "On" : "Off"}</p><p><strong>Reduced motion:</strong> ${state.reducedMotion ? "On" : "Off"}</p><div class="actions"><button class="secondary" data-action="sound">Toggle sound</button><button class="secondary" data-action="motion">Toggle reduced motion</button><a class="secondary" href="${artworkHref}">GPT artwork prompt</a></div><p>No microphone, account, analytics, or child information is used by this chapter.</p></div>`, "Game settings");
+    openInfo("Settings", `<div class="settings-grid">
+      <div class="setting"><span><strong>Sound effects</strong><br><small>Short generated tones only</small></span><button class="switch" type="button" data-action="sound" aria-label="Toggle sound effects" aria-pressed="${state.sound}"></button></div>
+      <div class="setting"><span><strong>Reduce motion</strong><br><small>Stops decorative animation</small></span><button class="switch" type="button" data-action="motion" aria-label="Toggle reduced motion" aria-pressed="${state.reducedMotion}"></button></div>
+      <div class="actions"><a class="secondary" href="${artworkHref}">GPT artwork prompt</a></div>
+      <p>Progress and settings are saved only in this browser. No microphone, account, analytics, or child information is used.</p>
+    </div>`, "Game settings");
   }
 
   function openInfo(title, html, label = config.title) {
@@ -619,6 +624,7 @@
   $("close-info").onclick = () => $("info-dialog").close();
   $("info-content").onclick = event => {
     const action = event.target.closest("[data-action]")?.dataset.action;
+    if (action === "close-info") $("info-dialog").close();
     if (action === "replay") replay();
     if (action === "sound") { state.sound = !state.sound; save(); $("info-dialog").close(); openSettings(); }
     if (action === "motion") { state.reducedMotion = !state.reducedMotion; save(); render(); $("info-dialog").close(); openSettings(); }

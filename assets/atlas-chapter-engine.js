@@ -278,6 +278,7 @@
       $(`landmark-${index}`).classList.toggle("locked", !state.started || index > state.step);
       const generatedObject = $(`generated-object-${index}`);
       if (generatedObject) {
+        generatedObject.dataset.progressState = index < state.step ? "completed" : state.started && index === state.step ? "current" : "future";
         const objectState = index < state.step ? generatedScene.completeState : state.started && index === state.step ? "current" : generatedScene.initialState || "inactive";
         const source = `${generatedScene.root}objects/${generatedScene.objects[index][0]}-${objectState}.webp`;
         if (!generatedObject.src.endsWith(source)) generatedObject.src = source;

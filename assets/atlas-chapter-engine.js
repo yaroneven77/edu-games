@@ -97,31 +97,7 @@
   }
 
   function sceneMarkup() {
-    const scenes = {
-      3: `
-        <div class="scene-name">Archive entrance <span>Memory furnace</span></div>
-        <div class="archive-wall" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
-        <div class="lava-channel" aria-hidden="true"></div>
-        <div class="furnace-hall" aria-hidden="true"><span></span></div>`,
-      4: `
-        <div class="scene-name">Flooded dock <span>Moon telescope</span></div>
-        <div class="observatory-ring" aria-hidden="true"></div>
-        <div class="water-channel channel-one" aria-hidden="true"></div>
-        <div class="water-channel channel-two" aria-hidden="true"></div>
-        <div class="telescope-tower" aria-hidden="true"><span></span></div>`,
-      5: `
-        <div class="scene-name">Storm approach <span>Guardian pass</span></div>
-        <div class="ice-ridge" aria-hidden="true"></div>
-        <div class="lava-ridge" aria-hidden="true"></div>
-        <div class="summit-station" aria-hidden="true"><span></span></div>
-        <div class="guardian-pass" aria-hidden="true"></div>`,
-      6: `
-        <div class="scene-name">Mira's camp <span>Atlas Heart</span></div>
-        <div class="memory-biomes" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-        <div class="atlas-rings" aria-hidden="true"><i></i><i></i><i></i></div>
-        <div class="heart-temple" aria-hidden="true"><span></span></div>`
-    };
-    return `<div class="chapter-scene" aria-hidden="true">${scenes[islandNumber] || ""}</div>`;
+    return `<div class="chapter-scene">${window.ATLAS_ISLAND_SCENES?.[islandNumber] || ""}</div>`;
   }
 
   function routeMarkup() {
@@ -196,6 +172,7 @@
       hotspot.disabled = !state.started || index !== state.step;
       $(`landmark-${index}`).classList.toggle("active", state.started && index === state.step);
       $(`landmark-${index}`).classList.toggle("done", index < state.step);
+      $(`landmark-${index}`).classList.toggle("locked", !state.started || index > state.step);
     });
     updatePlayer();
   }

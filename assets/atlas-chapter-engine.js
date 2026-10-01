@@ -96,10 +96,44 @@
     return { ...base, ...variant };
   }
 
+  function sceneMarkup() {
+    const scenes = {
+      3: `
+        <div class="scene-name">Archive entrance <span>Memory furnace</span></div>
+        <div class="archive-wall" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="lava-channel" aria-hidden="true"></div>
+        <div class="furnace-hall" aria-hidden="true"><span></span></div>`,
+      4: `
+        <div class="scene-name">Flooded dock <span>Moon telescope</span></div>
+        <div class="observatory-ring" aria-hidden="true"></div>
+        <div class="water-channel channel-one" aria-hidden="true"></div>
+        <div class="water-channel channel-two" aria-hidden="true"></div>
+        <div class="telescope-tower" aria-hidden="true"><span></span></div>`,
+      5: `
+        <div class="scene-name">Storm approach <span>Guardian pass</span></div>
+        <div class="ice-ridge" aria-hidden="true"></div>
+        <div class="lava-ridge" aria-hidden="true"></div>
+        <div class="summit-station" aria-hidden="true"><span></span></div>
+        <div class="guardian-pass" aria-hidden="true"></div>`,
+      6: `
+        <div class="scene-name">Mira's camp <span>Atlas Heart</span></div>
+        <div class="memory-biomes" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        <div class="atlas-rings" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div class="heart-temple" aria-hidden="true"><span></span></div>`
+    };
+    return `<div class="chapter-scene" aria-hidden="true">${scenes[islandNumber] || ""}</div>`;
+  }
+
+  function routeMarkup() {
+    const points = config.spots.map(spot => `${spot.x},${spot.y}`).join(" ");
+    return `<svg class="quest-route" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><polyline points="${points}"></polyline></svg>`;
+  }
+
   function buildWorld() {
     $("world").classList.add(`island-${islandNumber}`);
     $("world").innerHTML = `
       <div class="sky-orb" aria-hidden="true"></div><div class="mist one" aria-hidden="true"></div><div class="mist two" aria-hidden="true"></div>
+      ${sceneMarkup()}${routeMarkup()}
       <div id="landmarks"></div>
       <img class="spark" src="${generatedRoot}spark/spark-guiding.webp" alt="">
       <img class="player" id="player" src="${generatedRoot}explorer/explorer-idle.webp" alt="Explorer">
@@ -110,9 +144,9 @@
       <div class="objective"><strong>Current objective</strong><span id="objective"></span></div>`;
     config.spots.forEach((spot, index) => {
       const landmark = document.createElement("div");
-      landmark.className = "landmark";
+      landmark.className = `landmark landmark-${config.challenges[index].id}`;
       landmark.id = `landmark-${index}`;
-      landmark.textContent = spot.icon;
+      landmark.innerHTML = `<span class="landmark-number">${index + 1}</span><span class="landmark-icon">${spot.icon}</span>`;
       landmark.style.left = `${spot.x}%`;
       landmark.style.top = `${spot.y}%`;
       landmark.setAttribute("aria-hidden", "true");
@@ -122,6 +156,7 @@
       button.id = `spot-${index}`;
       button.type = "button";
       button.textContent = spot.label;
+      button.dataset.step = index + 1;
       button.style.left = `${spot.labelX ?? spot.x}%`;
       button.style.top = `${spot.labelY ?? spot.y + 13}%`;
       button.addEventListener("click", () => {

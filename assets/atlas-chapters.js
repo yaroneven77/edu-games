@@ -58,11 +58,16 @@
     next: "../island-four/index.html",
     nextTitle: "Tidal Observatory",
     spots: [
-      { label: "Ash inscription", icon: "📜", x: 14, y: 55 }, { label: "Ember counter", icon: "🧮", x: 27, y: 66 },
-      { label: "Rune circuit", icon: "🔶", x: 39, y: 48 }, { label: "Gear shelves", icon: "⚙️", x: 51, y: 67 },
-      { label: "Mira's journal", icon: "📖", x: 63, y: 48 }, { label: "Archive mosaic", icon: "🧩", x: 75, y: 65 },
-      { label: "Grammar seal", icon: "✒️", x: 85, y: 45 }, { label: "Furnace floor", icon: "📐", x: 72, y: 35 },
-      { label: "Master circuit", icon: "💠", x: 47, y: 31 }, { label: "Memory furnace", icon: "🔥", x: 24, y: 35 }
+      { label: "Ash inscription", icon: "📜", x: 10, y: 70, labelX: 11, labelY: 82 },
+      { label: "Ember counter", icon: "🧮", x: 23, y: 64, labelX: 23, labelY: 77 },
+      { label: "Rune circuit", icon: "🔶", x: 35, y: 55, labelX: 34, labelY: 68 },
+      { label: "Gear shelves", icon: "⚙️", x: 48, y: 66, labelX: 48, labelY: 79 },
+      { label: "Mira's journal", icon: "📖", x: 61, y: 57, labelX: 61, labelY: 70 },
+      { label: "Archive mosaic", icon: "🧩", x: 74, y: 66, labelX: 74, labelY: 79 },
+      { label: "Grammar seal", icon: "✒️", x: 87, y: 56, labelX: 86, labelY: 69 },
+      { label: "Furnace floor", icon: "📐", x: 76, y: 39, labelX: 76, labelY: 51 },
+      { label: "Master circuit", icon: "💠", x: 53, y: 34, labelX: 54, labelY: 46 },
+      { label: "Memory furnace", icon: "🔥", x: 29, y: 36, labelX: 28, labelY: 48 }
     ],
     challenges: [
       challenge("ember-context", "Read the ash inscription", "English · context clues", "choice",
@@ -180,11 +185,16 @@
     next: "../island-five/index.html",
     nextTitle: "Frostfire Summit",
     spots: [
-      { label: "Dock report", icon: "⚓", x: 13, y: 62 }, { label: "Tide clock", icon: "🕰️", x: 25, y: 44 },
-      { label: "Tide Lock", icon: "🌊", x: 36, y: 67 }, { label: "Pearl arrays", icon: "🔵", x: 48, y: 45 },
-      { label: "Diving log", icon: "🤿", x: 60, y: 66 }, { label: "Moon fractions", icon: "🌙", x: 72, y: 46 },
-      { label: "Signal grammar", icon: "📡", x: 85, y: 63 }, { label: "Glass tanks", icon: "🐠", x: 78, y: 32 },
-      { label: "Deep Tide Lock", icon: "🔱", x: 52, y: 30 }, { label: "Moon telescope", icon: "🔭", x: 24, y: 30 }
+      { label: "Dock report", icon: "⚓", x: 9, y: 72, labelX: 10, labelY: 84 },
+      { label: "Tide clock", icon: "🕰️", x: 20, y: 57, labelX: 19, labelY: 69 },
+      { label: "Tide Lock", icon: "🌊", x: 33, y: 69, labelX: 33, labelY: 82 },
+      { label: "Pearl arrays", icon: "🔵", x: 45, y: 55, labelX: 45, labelY: 67 },
+      { label: "Diving log", icon: "🤿", x: 58, y: 68, labelX: 58, labelY: 81 },
+      { label: "Moon fractions", icon: "🌙", x: 70, y: 55, labelX: 70, labelY: 67 },
+      { label: "Signal grammar", icon: "📡", x: 88, y: 68, labelX: 87, labelY: 81 },
+      { label: "Glass tanks", icon: "🐠", x: 81, y: 39, labelX: 82, labelY: 51 },
+      { label: "Deep Tide Lock", icon: "🔱", x: 55, y: 34, labelX: 55, labelY: 46 },
+      { label: "Moon telescope", icon: "🔭", x: 27, y: 34, labelX: 27, labelY: 46 }
     ],
     challenges: [
       challenge("dock-report", "Read the flooded dock report", "English · main idea", "choice",
@@ -294,11 +304,16 @@
     next: "../island-six/index.html",
     nextTitle: "The Unwritten Isle",
     spots: [
-      { label: "Weather warning", icon: "🌨️", x: 13, y: 48 }, { label: "Temperature grid", icon: "🌡️", x: 24, y: 68 },
-      { label: "Thermal Core", icon: "🔥", x: 36, y: 43 }, { label: "Supply ratios", icon: "⚖️", x: 48, y: 67 },
-      { label: "Mira's recording", icon: "🎙️", x: 60, y: 43 }, { label: "Ice equations", icon: "🧊", x: 72, y: 67 },
-      { label: "Warning beacon", icon: "🚨", x: 85, y: 47 }, { label: "Summit map", icon: "🗺️", x: 76, y: 31 },
-      { label: "Twin Thermal Core", icon: "♨️", x: 50, y: 29 }, { label: "Guardian gate", icon: "🗿", x: 25, y: 31 }
+      { label: "Weather warning", icon: "🌨️", x: 9, y: 63, labelX: 10, labelY: 76 },
+      { label: "Temperature grid", icon: "🌡️", x: 21, y: 72, labelX: 22, labelY: 84 },
+      { label: "Thermal Core", icon: "🔥", x: 34, y: 57, labelX: 34, labelY: 69 },
+      { label: "Supply ratios", icon: "⚖️", x: 47, y: 69, labelX: 47, labelY: 82 },
+      { label: "Mira's recording", icon: "🎙️", x: 59, y: 56, labelX: 59, labelY: 68 },
+      { label: "Ice equations", icon: "🧊", x: 71, y: 69, labelX: 71, labelY: 82 },
+      { label: "Warning beacon", icon: "🚨", x: 88, y: 58, labelX: 87, labelY: 71 },
+      { label: "Summit map", icon: "🗺️", x: 78, y: 39, labelX: 79, labelY: 51 },
+      { label: "Twin Thermal Core", icon: "♨️", x: 54, y: 34, labelX: 54, labelY: 46 },
+      { label: "Guardian gate", icon: "🗿", x: 27, y: 36, labelX: 27, labelY: 48 }
     ],
     challenges: [
       challenge("weather-warning", "Interpret the weather warning", "English · summarizing", "choice",
@@ -408,11 +423,16 @@
     next: null,
     nextTitle: null,
     spots: [
-      { label: "Mira's message", icon: "🧭", x: 13, y: 60 }, { label: "Fragment sum", icon: "🔢", x: 24, y: 42 },
-      { label: "Combined route", icon: "🛤️", x: 35, y: 67 }, { label: "Atlas ratio", icon: "⚖️", x: 47, y: 44 },
-      { label: "Guardian memory", icon: "🗿", x: 59, y: 67 }, { label: "Map fractions", icon: "🗺️", x: 71, y: 44 },
-      { label: "Final sentence", icon: "✍️", x: 85, y: 61 }, { label: "Heart chamber", icon: "💛", x: 77, y: 30 },
-      { label: "Atlas convergence", icon: "🌐", x: 51, y: 29 }, { label: "Atlas Heart", icon: "💎", x: 25, y: 30 }
+      { label: "Mira's message", icon: "🧭", x: 9, y: 70, labelX: 10, labelY: 83 },
+      { label: "Fragment sum", icon: "🔢", x: 21, y: 56, labelX: 21, labelY: 68 },
+      { label: "Combined route", icon: "🛤️", x: 34, y: 69, labelX: 34, labelY: 82 },
+      { label: "Atlas ratio", icon: "⚖️", x: 47, y: 55, labelX: 47, labelY: 67 },
+      { label: "Guardian memory", icon: "🗿", x: 60, y: 69, labelX: 60, labelY: 82 },
+      { label: "Map fractions", icon: "🗺️", x: 72, y: 55, labelX: 72, labelY: 67 },
+      { label: "Final sentence", icon: "✍️", x: 88, y: 67, labelX: 87, labelY: 80 },
+      { label: "Heart chamber", icon: "💛", x: 79, y: 38, labelX: 79, labelY: 50 },
+      { label: "Atlas convergence", icon: "🌐", x: 54, y: 33, labelX: 54, labelY: 45 },
+      { label: "Atlas Heart", icon: "💎", x: 28, y: 36, labelX: 28, labelY: 48 }
     ],
     challenges: [
       challenge("mira-message", "Understand Mira's final message", "English · theme and inference", "choice",

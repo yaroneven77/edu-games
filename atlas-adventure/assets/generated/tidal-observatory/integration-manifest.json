@@ -1,0 +1,196 @@
+{
+  "sourcePackage": "atlas-tidal-observatory-complete-download.zip",
+  "preparedAt": "2026-10-01T17:54:44.273Z",
+  "removedDisconnectedPixels": 107972,
+  "layerStack": [
+    "tidal-observatory-background.webp",
+    "tidal-observatory-water.webp",
+    "tidal-observatory-platforms.webp",
+    "tidal-observatory-pipes.webp",
+    "interactive objects",
+    "tidal-observatory-props-front.webp",
+    "tidal-observatory-atmosphere.webp"
+  ],
+  "placements": [
+    {
+      "filename": "01-dock-report.webp",
+      "coordinate_percent": [
+        9,
+        72
+      ],
+      "pixel_center": [
+        173,
+        778
+      ],
+      "display_box": [
+        95,
+        696,
+        157,
+        165
+      ],
+      "anchor_point": "center"
+    },
+    {
+      "filename": "02-tide-clock.webp",
+      "coordinate_percent": [
+        20,
+        56.99999999999999
+      ],
+      "pixel_center": [
+        384,
+        616
+      ],
+      "display_box": [
+        296,
+        524,
+        177,
+        185
+      ],
+      "anchor_point": "center"
+    },
+    {
+      "filename": "03-tide-lock.webp",
+      "coordinate_percent": [
+        33,
+        69
+      ],
+      "pixel_center": [
+        634,
+        745
+      ],
+      "display_box": [
+        549,
+        658,
+        171,
+        175
+      ],
+      "anchor_point": "center"
+    },
+    {
+      "filename": "04-pearl-arrays.webp",
+      "coordinate_percent": [
+        45,
+        55.00000000000001
+      ],
+      "pixel_center": [
+        864,
+        594
+      ],
+      "display_box": [
+        771,
+        504,
+        187,
+        180
+      ],
+      "anchor_point": "center"
+    },
+    {
+      "filename": "05-diving-log.webp",
+      "coordinate_percent": [
+        57.99999999999999,
+        68
+      ],
+      "pixel_center": [
+        1114,
+        734
+      ],
+      "display_box": [
+        1017,
+        647,
+        195,
+        175
+      ],
+      "anchor_point": "center"
+    },
+    {
+      "filename": "06-moon-fractions.webp",
+      "coordinate_percent": [
+        70,
+        55.00000000000001
+      ],
+      "pixel_center": [
+        1344,
+        594
+      ],
+      "display_box": [
+        1256,
+        502,
+        176,
+        185
+      ],
+      "anchor_point": "center"
+    },
+    {
+      "filename": "07-signal-grammar.webp",
+      "coordinate_percent": [
+        88,
+        68
+      ],
+      "pixel_center": [
+        1690,
+        734
+      ],
+      "display_box": [
+        1594,
+        634,
+        192,
+        200
+      ],
+      "anchor_point": "center"
+    },
+    {
+      "filename": "08-glass-tanks.webp",
+      "coordinate_percent": [
+        81,
+        39
+      ],
+      "pixel_center": [
+        1555,
+        421
+      ],
+      "display_box": [
+        1458,
+        326,
+        195,
+        190
+      ],
+      "anchor_point": "center"
+    },
+    {
+      "filename": "09-deep-tide-lock.webp",
+      "coordinate_percent": [
+        55.00000000000001,
+        34
+      ],
+      "pixel_center": [
+        1056,
+        367
+      ],
+      "display_box": [
+        954,
+        265,
+        205,
+        205
+      ],
+      "anchor_point": "center"
+    },
+    {
+      "filename": "10-moon-telescope.webp",
+      "coordinate_percent": [
+        27,
+        34
+      ],
+      "pixel_center": [
+        518,
+        367
+      ],
+      "display_box": [
+        408,
+        257,
+        220,
+        220
+      ],
+      "anchor_point": "center"
+    }
+  ]
+}

@@ -32,6 +32,26 @@
         ["10-memory-furnace", 469, 287, 176, 205]
       ]
     },
+    4: {
+      root: `${artworkRoot}tidal-observatory/`,
+      prefix: "tidal-observatory",
+      className: "generated-tidal-scene",
+      beforeObjects: ["background", "water", "platforms", "pipes"],
+      afterObjects: ["props-front", "atmosphere"],
+      completeState: "restored",
+      objects: [
+        ["01-dock-report", 95, 696, 157, 165],
+        ["02-tide-clock", 296, 524, 177, 185],
+        ["03-tide-lock", 549, 658, 171, 175],
+        ["04-pearl-arrays", 771, 504, 187, 180],
+        ["05-diving-log", 1017, 647, 195, 175],
+        ["06-moon-fractions", 1256, 502, 176, 185],
+        ["07-signal-grammar", 1594, 634, 192, 200],
+        ["08-glass-tanks", 1458, 326, 195, 190],
+        ["09-deep-tide-lock", 954, 265, 205, 205],
+        ["10-moon-telescope", 408, 257, 220, 220]
+      ]
+    },
     5: {
       root: `${artworkRoot}frostfire-summit/`,
       prefix: "frostfire",

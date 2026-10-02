@@ -935,6 +935,17 @@ function seededShuffle(values,seed){
   }
   return result;
 }
+function randomizedWordOrder(values,answer,seed){
+  let order=seededShuffle(values.map((_,index)=>index),seed);
+  const matchesAnswer=indices=>JSON.stringify(indices.map(index=>values[index]))===JSON.stringify(answer);
+  if(matchesAnswer(order)){
+    for(let shift=1;shift<order.length;shift++){
+      const rotated=[...order.slice(shift),...order.slice(0,shift)];
+      if(!matchesAnswer(rotated)){order=rotated;break;}
+    }
+  }
+  return order;
+}
 function freshState(previousVariants={}){
   return{version:1,depthVersion:1,runNonce:randomUint(),questionVariants:createQuestionVariants(previousVariants),started:false,interior:false,step:0,completed:[],assisted:[],lens:false,bridge:false,lighthouse:false,secret:false,atlas:false,sound:true,reducedMotion:false,facing:"east",player:{x:334,y:316},activeTool:"atlas",tools:{multitool:false},sideQuests:{handyman:{started:false,repairs:[],completed:false},echoes:{started:false,scans:[],completed:false}},collectibles:[],discoveries:[],updatedAt:null};
 }
@@ -1159,7 +1170,7 @@ function resolvedChallenge(index){
     if(Array.isArray(variant.choicesHe))resolved.choicesHe=order.map(index=>variant.choicesHe[index]);
   }
   if(Array.isArray(variant.words)){
-    const order=seededShuffle(variant.words.map((_,index)=>index),shuffleSeed^0x9e3779b9);
+    const order=randomizedWordOrder(variant.words,variant.answer,shuffleSeed^0x9e3779b9);
     resolved.words=order.map(index=>variant.words[index]);
     if(Array.isArray(variant.wordsHe))resolved.wordsHe=order.map(index=>variant.wordsHe[index]);
     const used=new Set(),answerSourceIndexes=variant.answer.map(word=>{const index=variant.words.findIndex((value,wordIndex)=>value===word&&!used.has(wordIndex));used.add(index);return index;});

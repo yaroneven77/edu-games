@@ -112,6 +112,31 @@
     ? crypto.getRandomValues(new Uint32Array(1))[0]
     : Math.floor(Math.random() * 0x100000000);
   const randomBelow = maximum => maximum ? randomUint() % maximum : 0;
+  const hashText = text => {
+    let hash = 2166136261;
+    for (const character of text) {
+      hash ^= character.charCodeAt(0);
+      hash = Math.imul(hash, 16777619);
+    }
+    return hash >>> 0;
+  };
+  const shuffledIndexes = (values, answer, seed) => {
+    const order = values.map((_, index) => index);
+    let stateValue = seed >>> 0;
+    for (let index = order.length - 1; index > 0; index--) {
+      stateValue = (Math.imul(stateValue, 1664525) + 1013904223) >>> 0;
+      const target = stateValue % (index + 1);
+      [order[index], order[target]] = [order[target], order[index]];
+    }
+    const matchesAnswer = indexes => JSON.stringify(indexes.map(index => values[index])) === JSON.stringify(answer);
+    if (matchesAnswer(order)) {
+      for (let shift = 1; shift < order.length; shift++) {
+        const rotated = [...order.slice(shift), ...order.slice(0, shift)];
+        if (!matchesAnswer(rotated)) return rotated;
+      }
+    }
+    return order;
+  };
 
   function chooseVariants(previous = {}) {
     return Object.fromEntries(config.challenges.map(challenge => {
@@ -193,7 +218,13 @@
   function resolvedChallenge(index = state.step) {
     const base = config.challenges[Math.min(index, config.challenges.length - 1)];
     const variant = base.variants[state.variants[base.id] ?? 0];
-    return { ...base, ...variant };
+    const resolved = { ...base, ...variant };
+    if (base.type === "order") {
+      const order = shuffledIndexes(variant.tokens, variant.answer, state.nonce ^ hashText(base.id));
+      resolved.tokens = order.map(tokenIndex => variant.tokens[tokenIndex]);
+      if (Array.isArray(variant.tokensHe)) resolved.tokensHe = order.map(tokenIndex => variant.tokensHe[tokenIndex]);
+    }
+    return resolved;
   }
 
   function sceneMarkup() {
@@ -835,6 +866,17 @@
   window.addEventListener("atlas-language", render);
   render();
   if (new URLSearchParams(location.search).get("selftest") === "1") {
-    window.__atlasChapterSelfTest = { config, state: () => structuredClone(state), saveKey, resolvedChallenge, openChallenge, finishChallenge };
+    window.__atlasChapterSelfTest = {
+      config,
+      state: () => structuredClone(state),
+      saveKey,
+      resolvedChallenge,
+      openChallenge,
+      finishChallenge,
+      setVariant: (challengeId, variantIndex, nonce) => {
+        state.variants[challengeId] = variantIndex;
+        state.nonce = nonce >>> 0;
+      }
+    };
   }
 })();

@@ -897,6 +897,12 @@ const GUIDANCE_HE={
   interior:["החדר שקט. הפתק של מירה מונח על שולחן העבודה.","הפתק חושף את תבנית העדשה האחרונה. מנגנון הפליז מוכן.","העדשה ששוחזרה שולחת אלומת זהב דרך העננים."]
 };
 const MOVABLE_LABEL_IDS=["hotspot-spark","hotspot-crate","hotspot-bridge","hotspot-boat","hotspot-console","hotspot-lighthouse","hotspot-secret","interior-note","interior-lens"];
+const DEFAULT_LABEL_LAYOUT={
+  "hotspot-lighthouse":{left:90.15,top:21.46},
+  "interior-note":{left:26.01,top:67.77},
+  "interior-lens":{left:79.66,top:48.67},
+  "hotspot-secret":{left:80.78,top:82.14}
+};
 const modelTarget=id=>{const interaction=worldModels[id].interaction;return{x:interaction.x,y:interaction.y,name:interaction.label,radius:interaction.radius};};
 const WORLD_TARGETS={
   spark:modelTarget("spark-companion"),crate:modelTarget("cargo-crate"),bridge:modelTarget("atlas-bridge"),
@@ -1106,7 +1112,7 @@ function saveState(){
   }catch(error){$("save-status").textContent="Progress could not be saved in this browser.";}
 }
 function loadLabelLayout(){
-  try{const parsed=JSON.parse(localStorage.getItem(LABEL_LAYOUT_KEY));return parsed&&typeof parsed==="object"?parsed:{};}catch(error){return{};}
+  try{const parsed=JSON.parse(localStorage.getItem(LABEL_LAYOUT_KEY));return{...DEFAULT_LABEL_LAYOUT,...(parsed&&typeof parsed==="object"?parsed:{})};}catch(error){return{...DEFAULT_LABEL_LAYOUT};}
 }
 function applyLabelLayout(){
   MOVABLE_LABEL_IDS.forEach(id=>{
@@ -1118,9 +1124,9 @@ function saveLabelLayout(){
   try{localStorage.setItem(LABEL_LAYOUT_KEY,JSON.stringify(labelLayout));}catch(error){showToast("Label positions could not be saved.");}
 }
 function clearLabelLayout(){
-  labelLayout={};localStorage.removeItem(LABEL_LAYOUT_KEY);
+  labelLayout={...DEFAULT_LABEL_LAYOUT};localStorage.removeItem(LABEL_LAYOUT_KEY);
   MOVABLE_LABEL_IDS.forEach(id=>{const button=$(id);button.style.removeProperty("left");button.style.removeProperty("top");button.style.removeProperty("right");button.style.removeProperty("bottom");button.style.removeProperty("transform");});
-  renderHotspots();showToast("Label positions reset.");
+  applyLabelLayout();renderHotspots();showToast("Label positions reset.");
 }
 function setLabelEditMode(enabled){
   labelEditMode=enabled;$("world").classList.toggle("label-edit-mode",enabled);

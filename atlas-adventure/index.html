@@ -75,6 +75,12 @@ button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{o
 #generated-player{left:33.4%;top:72%;width:5.8%;transform:translate(-50%,-100%);transform-origin:50% 100%}
 #generated-spark{animation:sparkFloat 6.8s ease-in-out infinite}
 .lens-unlocked #generated-cave{opacity:1}.secret-found #generated-cave{filter:drop-shadow(0 0 12px rgba(243,199,92,.7))}
+.bridge-braced #generated-bridge{filter:drop-shadow(0 0 12px rgba(243,199,92,.85)) saturate(1.18)}
+.console-repaired #generated-console{filter:drop-shadow(0 0 13px rgba(87,212,192,.95)) brightness(1.12)}
+.airship-winch-repaired #generated-airship{transform:translateY(-7px);filter:drop-shadow(0 12px 10px rgba(3,14,24,.45)) saturate(1.16)}
+.dock-lanterns-lit .environment-sky{filter:brightness(1.09) saturate(1.08)}
+.world.echo-route-visible:after{content:"";position:absolute;z-index:5;left:28%;top:42%;width:51%;height:5px;border-radius:99px;background:linear-gradient(90deg,transparent,#79df9a 14% 86%,transparent);box-shadow:0 0 12px #79df9a;transform:rotate(-12deg);pointer-events:none}
+.cave-mural-visible #generated-cave{filter:drop-shadow(0 0 15px rgba(121,223,154,.95)) hue-rotate(18deg) saturate(1.25)}
 .bridge-built #generated-bridge{animation:generatedBridgeBuild 1s cubic-bezier(.2,.85,.25,1)}
 .lighthouse-lit #generated-lighthouse-beam{opacity:.58;animation:generatedBeamSweep 6s ease-in-out infinite}
 .world.generated-cargo-crate #crate-art,.world.generated-harbor-airship #airship,.world.generated-atlas-bridge #bridge-art,
@@ -102,7 +108,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{o
 #hotspot-console{left:61.32%;top:43.56%;transform:translate(-50%,-50%)}#hotspot-lighthouse{left:89.86%;top:19.97%;transform:translate(-50%,-50%)}#hotspot-spark{left:39%;top:31%}
 #hotspot-secret{left:76.72%;top:74.61%;transform:translate(-50%,-50%);opacity:0;pointer-events:none}
 .lens-unlocked #hotspot-secret{opacity:1;pointer-events:auto}
-.world-hotspot.locked,.world-hotspot.done{display:none}.world.label-edit-mode .world-hotspot{display:block!important;cursor:grab!important;outline:3px dashed #fff1a8;outline-offset:3px;opacity:1!important;pointer-events:auto!important}.world.label-edit-mode .world-hotspot:active{cursor:grabbing!important}.world.label-edit-mode .quest-beacon{display:none}
+.world-hotspot.locked,.world-hotspot.done{display:none}.world-hotspot.done.explorable{display:block;opacity:.86;border-style:dashed}.world.label-edit-mode .world-hotspot{display:block!important;cursor:grab!important;outline:3px dashed #fff1a8;outline-offset:3px;opacity:1!important;pointer-events:auto!important}.world.label-edit-mode .world-hotspot:active{cursor:grabbing!important}.world.label-edit-mode .quest-beacon{display:none}
 .quest-beacon{position:absolute;z-index:10;left:50%;top:20%;display:grid;justify-items:center;gap:3px;pointer-events:none;
   transform:translate(-50%,-100%);filter:drop-shadow(0 5px 6px rgba(0,0,0,.5));transition:left .45s ease,top .45s ease}
 .quest-beacon[hidden]{display:none}
@@ -163,6 +169,7 @@ html body#edu-refresh .side>.panel .spark-message{color:#cdeaf0!important}
 .item img{width:25px;height:25px;object-fit:contain;vertical-align:middle;margin-inline-end:5px;filter:saturate(.55)}
 .item.unlocked{color:#fff0b6;border-color:#ad9858;background:#293848}
 .item.unlocked img{filter:none}
+.tool-button{min-height:44px;cursor:pointer;text-align:start}.tool-button:disabled{cursor:not-allowed;opacity:.5}.tool-button.active{border-color:var(--good);box-shadow:0 0 0 3px rgba(121,223,154,.2);color:#eaffef}.tool-icon{display:inline-grid;width:25px;height:25px;margin-inline-end:5px;place-items:center;font-size:21px;vertical-align:middle}.depth-status{display:grid;gap:6px;margin:11px 0;padding:10px;border:1px solid rgba(190,226,237,.22);border-radius:12px;background:#0b2039;color:#b9d4db;font-size:13px}.depth-status strong{color:#fff0b6}.depth-status .done{color:#a9f1bd}
 .save-row{display:flex;align-items:center;justify-content:space-between;gap:8px;color:#a9c7d0;font-size:13px}.reset-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}.save-dot{width:9px;height:9px;border-radius:50%;background:#7890a0}.save-dot.saved{background:var(--good)}
 .modal{border:0;padding:0;width:min(700px,calc(100% - 24px));max-height:92vh;overflow:hidden;border-radius:23px;background:#0c223d;color:#eef8fa;box-shadow:0 30px 90px rgba(0,0,0,.65)}
 html body#edu-refresh dialog.modal{background:#0c223d!important;color:#eef8fa!important;border-color:rgba(190,226,237,.35)!important}
@@ -175,7 +182,7 @@ html body#edu-refresh dialog.modal{background:#0c223d!important;color:#eef8fa!im
 .story{color:#c8dfe6}.challenge-visual{margin:16px 0;border:1px solid var(--line);border-radius:17px;background:#102d4e;padding:14px;text-align:center}
 html body#edu-refresh .modal .eyebrow{color:#8ce6d6!important}html body#edu-refresh .modal .story{color:#d9ebee!important}
 .challenge-visual svg{display:block;width:min(100%,500px);max-height:220px;margin:auto}
-.question{font-weight:800;font-size:clamp(19px,4vw,25px);color:#fff;margin:16px 0 8px}.expression{font:800 clamp(30px,7vw,48px)/1.2 "Segoe UI",Arial,sans-serif;color:#fff0b0;direction:ltr;unicode-bidi:isolate;text-align:center;margin:10px 0}
+.question{font-weight:800;font-size:clamp(19px,4vw,25px);color:#fff;margin:16px 0 8px}.expression{font:800 clamp(30px,7vw,48px)/1.2 "Segoe UI",Arial,sans-serif;color:#fff0b0;direction:ltr;unicode-bidi:isolate;text-align:center;margin:10px 0}.expression[lang="he"]{direction:rtl}
 html body#edu-refresh .modal h2{color:#fff0bd!important}html body#edu-refresh .modal .question{color:#fff!important}html body#edu-refresh .modal .expression{color:#fff0b0!important}
 .choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0}.choice{padding:12px;min-height:58px}
 .choice:hover:not(:disabled),.word:hover:not(:disabled){border-color:var(--gold);transform:translateY(-1px)}
@@ -189,7 +196,7 @@ html body#edu-refresh .modal h2{color:#fff0bd!important}html body#edu-refresh .m
 .guidance-tools{display:flex;flex-wrap:wrap;gap:9px;margin:10px 0}.translation-panel{margin:8px 0 14px;padding:11px 13px;border:1px solid rgba(87,212,192,.55);border-radius:12px;background:#102d4e;color:#d9ebee}.translation-panel p{margin:5px 0}
 [lang="he"][dir="rtl"]{direction:rtl;text-align:right}.language-select{min-height:42px;padding:7px 10px;border:1px solid var(--line);border-radius:10px;background:#173653;color:#fff}
 .word-area{display:grid;gap:12px}.word-bank,.answer-line{display:flex;flex-wrap:wrap;gap:8px;min-height:58px;padding:10px;border:1px dashed #66869c;border-radius:13px;background:#0a1d34}
-.word{padding:8px 12px;min-height:42px}.answer-line .word{background:#315a76}.reading{direction:ltr;text-align:left;background:#f7f2df;color:#20334b;border-radius:13px;padding:15px;font-weight:650}
+.word{padding:8px 12px;min-height:42px}.answer-line .word{background:#315a76}.reading{direction:ltr;text-align:left;background:#f7f2df;color:#20334b;border-radius:13px;padding:15px;font-weight:650}.reading[lang="he"]{direction:rtl;text-align:right}
 .completion{text-align:center}.completion h2{font-size:clamp(29px,6vw,43px)}.completion .map-fragment{font-size:65px;filter:drop-shadow(0 0 18px #f2c95e)}
 .settings-grid{display:grid;gap:13px}.setting{display:flex;justify-content:space-between;align-items:center;gap:12px}
 .switch{width:64px;height:24px;min-height:24px!important;padding:0 7px 0 27px;border:0;border-radius:99px;background:#30485d;color:#fff;font-size:10px;font-weight:900;position:relative;cursor:pointer}.switch:before{content:"Off";position:relative;z-index:1}.switch:after{content:"";position:absolute;width:16px;height:16px;top:4px;left:4px;border-radius:50%;background:#fff;transition:transform .2s}html body#edu-refresh dialog .switch[aria-pressed="false"]{background:#30485d!important;color:#fff!important}html body#edu-refresh dialog .switch[aria-pressed="true"]{padding:0 27px 0 7px;background:#3e8c72!important;color:#fff!important}.switch[aria-pressed=true]:before{content:"On"}.switch[aria-pressed=true]:after{transform:translateX(40px)}
@@ -493,11 +500,13 @@ html.reduce-motion *,html.reduce-motion *:before,html.reduce-motion *:after{anim
   </section>
   <section class="panel">
     <h2>Expedition tools</h2>
-    <div class="inventory">
-      <span class="item" id="item-atlas"><img src="./assets/generated/inventory/atlas-page-icon.webp" alt="">Atlas page</span>
-      <span class="item" id="item-lens"><img src="./assets/generated/inventory/echo-lens-icon.webp" alt="">Echo Lens</span>
+    <div class="inventory" aria-label="Reusable expedition tools">
+      <button class="item tool-button" id="item-atlas" type="button" data-tool="atlas"><img src="./assets/generated/inventory/atlas-page-icon.webp" alt="">Atlas page</button>
+      <button class="item tool-button" id="item-lens" type="button" data-tool="lens"><img src="./assets/generated/inventory/echo-lens-icon.webp" alt="">Echo Lens</button>
+      <button class="item tool-button" id="item-multitool" type="button" data-tool="multitool"><span class="tool-icon" aria-hidden="true">🔧</span>Brass Multitool</button>
       <span class="item" id="item-fragment"><img src="./assets/generated/inventory/map-fragment-icon.webp" alt="">Map fragment</span>
     </div>
+    <div class="depth-status" id="depth-status"></div>
     <div class="save-row"><span><span class="save-dot" id="save-dot"></span> <span id="save-status">Progress stays on this device.</span></span><div class="reset-actions"><button class="secondary" id="reset-button" type="button">Reset island</button><button class="secondary" id="reset-all-button" type="button">Reset all</button></div></div>
   </section>
 </aside>
@@ -509,7 +518,7 @@ html.reduce-motion *,html.reduce-motion *:before,html.reduce-motion *:after{anim
   <div class="modal-head"><div><p class="eyebrow" id="challenge-label"></p><h2 id="challenge-title"></h2></div><button class="close" id="close-challenge" type="button" aria-label="Close challenge">×</button></div>
   <p class="story" id="challenge-story"></p>
   <div class="guidance-tools" id="challenge-guidance-tools" hidden>
-    <button class="secondary" id="translate-guidance" type="button" aria-label="Show Hebrew translation of the story and mathematics task" aria-expanded="false">Translate to Hebrew</button>
+    <button class="secondary" id="translate-guidance" type="button" aria-label="Show Hebrew translation" aria-expanded="false">Translate to Hebrew</button>
     <button class="secondary" id="listen-guidance" type="button" aria-label="Listen to the English story and question">Listen</button>
   </div>
   <div class="translation-panel" id="challenge-translation" lang="he" dir="rtl" hidden></div>
@@ -652,16 +661,17 @@ html.reduce-motion *,html.reduce-motion *:before,html.reduce-motion *:after{anim
 [
   {
     "id":"blue-cargo","subject":"English · vocabulary and location","type":"choice","title":"The engineer's message","label":"Challenge 1 of 10",
+    "titleHe":"ההודעה של המהנדסת","labelHe":"אתגר 1 מתוך 10",
     "story":"Spark projects a short instruction. Use the colour and location words to identify the correct object.",
     "storyHe":"ספארק מקרין הוראה קצרה. השתמשו במילות הצבע והמיקום כדי לזהות את החפץ הנכון.",
     "variants":[
-      {"question":"Which object matches this instruction?","expression":"Find the blue box near the boat.","choices":["The blue crate beside the airship","The brown house behind the dock","The gold lighthouse across the bridge"],"answer":"The blue crate beside the airship","hint":"Look for three clues: blue, box, and near the boat.","explanation":"The blue cargo crate is beside the airship. The other objects do not match all three clues.","hintHe":"חפשו שלושה רמזים: blue, box ו־near the boat."},
-      {"question":"Which place matches this instruction?","expression":"Go to the tall tower across the bridge.","choices":["The lighthouse on the far island","The airship above the dock","The console beside the bridge"],"answer":"The lighthouse on the far island","hint":"A lighthouse is a tall tower. Across tells you it is on the other side.","explanation":"The lighthouse is the tall tower on the island across the bridge.","hintHe":"מגדלור הוא מגדל גבוה. המילה Across אומרת שהוא נמצא בצד האחר."},
-      {"question":"Which object matches this instruction?","expression":"Find the machine beside the bridge.","choices":["The harbor console","The blue cargo crate","The airship balloon"],"answer":"The harbor console","hint":"Beside means next to. Look for a machine next to the bridge.","explanation":"The harbor console is the machine positioned beside the bridge.","hintHe":"Beside פירושו ליד. חפשו מכונה שנמצאת ליד הגשר."},
-      {"question":"Which object matches this instruction?","expression":"Find the golden vehicle above the dock.","choices":["The airship","The lighthouse","The wooden bridge"],"answer":"The airship","hint":"A vehicle can carry people. Above means higher than the dock.","explanation":"The golden airship is floating above the dock.","hintHe":"כלי רכב יכול לשאת אנשים. Above פירושו גבוה יותר מן הרציף."},
-      {"question":"Which object matches this instruction?","expression":"Find the small robot between the player and the bridge.","choices":["Spark","The harbor console","The lighthouse"],"answer":"Spark","hint":"Between means in the middle of two things.","explanation":"Spark is the small robot hovering between the explorer and the bridge.","hintHe":"Between פירושו באמצע, בין שני דברים."},
-      {"question":"Which place matches this instruction?","expression":"Go to the wooden dock below the airship.","choices":["The dock beneath the airship","The lighthouse beyond the bridge","The cave behind the island"],"answer":"The dock beneath the airship","hint":"Below and beneath both mean lower than something.","explanation":"The wooden dock is directly beneath the floating airship.","hintHe":"Below ו־beneath פירושן נמוך יותר ממשהו."},
-      {"question":"Which place matches this instruction?","expression":"Find the cave behind the eastern cliff.","choices":["The hidden opening at the back of the cliff","The bridge in front of the lighthouse","The airship above the harbor"],"answer":"The hidden opening at the back of the cliff","hint":"Behind means at the back of something.","explanation":"The hidden cave is an opening behind the eastern cliff.","hintHe":"Behind פירושו מאחורי משהו."}
+      {"question":"Which object matches this instruction?","expression":"Find the blue box near the boat.","choices":["The blue crate beside the airship","The brown house behind the dock","The gold lighthouse across the bridge"],"answer":"The blue crate beside the airship","hint":"Look for three clues: blue, box, and near the boat.","explanation":"The blue cargo crate is beside the airship. The other objects do not match all three clues.","hintHe":"חפשו שלושה רמזים: blue, box ו־near the boat.","questionHe":"איזה חפץ מתאים להוראה הזאת?","expressionHe":"מצאו את הקופסה הכחולה ליד הסירה.","choicesHe":["ארגז המטען הכחול לצד ספינת האוויר","הבית החום מאחורי הרציף","המגדלור הזהוב מעבר לגשר"],"explanationHe":"ארגז המטען הכחול נמצא לצד ספינת האוויר. החפצים האחרים אינם מתאימים לכל שלושת הרמזים."},
+      {"question":"Which place matches this instruction?","expression":"Go to the tall tower across the bridge.","choices":["The lighthouse on the far island","The airship above the dock","The console beside the bridge"],"answer":"The lighthouse on the far island","hint":"A lighthouse is a tall tower. Across tells you it is on the other side.","explanation":"The lighthouse is the tall tower on the island across the bridge.","hintHe":"מגדלור הוא מגדל גבוה. המילה Across אומרת שהוא נמצא בצד האחר.","questionHe":"איזה מקום מתאים להוראה הזאת?","expressionHe":"לכו אל המגדל הגבוה שמעבר לגשר.","choicesHe":["המגדלור באי המרוחק","ספינת האוויר מעל הרציף","המסוף לצד הגשר"],"explanationHe":"המגדלור הוא המגדל הגבוה באי שמעבר לגשר."},
+      {"question":"Which object matches this instruction?","expression":"Find the machine beside the bridge.","choices":["The harbor console","The blue cargo crate","The airship balloon"],"answer":"The harbor console","hint":"Beside means next to. Look for a machine next to the bridge.","explanation":"The harbor console is the machine positioned beside the bridge.","hintHe":"Beside פירושו ליד. חפשו מכונה שנמצאת ליד הגשר.","questionHe":"איזה חפץ מתאים להוראה הזאת?","expressionHe":"מצאו את המכונה שלצד הגשר.","choicesHe":["מסוף הנמל","ארגז המטען הכחול","הבלון של ספינת האוויר"],"explanationHe":"מסוף הנמל הוא המכונה שנמצאת לצד הגשר."},
+      {"question":"Which object matches this instruction?","expression":"Find the golden vehicle above the dock.","choices":["The airship","The lighthouse","The wooden bridge"],"answer":"The airship","hint":"A vehicle can carry people. Above means higher than the dock.","explanation":"The golden airship is floating above the dock.","hintHe":"כלי רכב יכול לשאת אנשים. Above פירושו גבוה יותר מן הרציף.","questionHe":"איזה חפץ מתאים להוראה הזאת?","expressionHe":"מצאו את כלי הרכב הזהוב שמעל הרציף.","choicesHe":["ספינת האוויר","המגדלור","גשר העץ"],"explanationHe":"ספינת האוויר הזהובה מרחפת מעל הרציף."},
+      {"question":"Which object matches this instruction?","expression":"Find the small robot between the player and the bridge.","choices":["Spark","The harbor console","The lighthouse"],"answer":"Spark","hint":"Between means in the middle of two things.","explanation":"Spark is the small robot hovering between the explorer and the bridge.","hintHe":"Between פירושו באמצע, בין שני דברים.","questionHe":"איזה חפץ מתאים להוראה הזאת?","expressionHe":"מצאו את הרובוט הקטן שבין השחקן לגשר.","choicesHe":["ספארק","מסוף הנמל","המגדלור"],"explanationHe":"ספארק הוא הרובוט הקטן שמרחף בין החוקר לגשר."},
+      {"question":"Which place matches this instruction?","expression":"Go to the wooden dock below the airship.","choices":["The dock beneath the airship","The lighthouse beyond the bridge","The cave behind the island"],"answer":"The dock beneath the airship","hint":"Below and beneath both mean lower than something.","explanation":"The wooden dock is directly beneath the floating airship.","hintHe":"Below ו־beneath פירושן נמוך יותר ממשהו.","questionHe":"איזה מקום מתאים להוראה הזאת?","expressionHe":"לכו אל רציף העץ שמתחת לספינת האוויר.","choicesHe":["הרציף שמתחת לספינת האוויר","המגדלור שמעבר לגשר","המערה מאחורי האי"],"explanationHe":"רציף העץ נמצא ישירות מתחת לספינת האוויר המרחפת."},
+      {"question":"Which place matches this instruction?","expression":"Find the cave behind the eastern cliff.","choices":["The hidden opening at the back of the cliff","The bridge in front of the lighthouse","The airship above the harbor"],"answer":"The hidden opening at the back of the cliff","hint":"Behind means at the back of something.","explanation":"The hidden cave is an opening behind the eastern cliff.","hintHe":"Behind פירושו מאחורי משהו.","questionHe":"איזה מקום מתאים להוראה הזאת?","expressionHe":"מצאו את המערה שמאחורי המצוק המזרחי.","choicesHe":["הפתח הנסתר בחלקו האחורי של המצוק","הגשר שלפני המגדלור","ספינת האוויר שמעל הנמל"],"explanationHe":"המערה הנסתרת היא פתח מאחורי המצוק המזרחי."}
     ],
     "objective":"Use the bridge mechanism to calculate the required energy.",
     "objectiveHe":"השתמשו במנגנון הגשר כדי לחשב את כמות האנרגיה הדרושה.",
@@ -690,17 +700,19 @@ html.reduce-motion *,html.reduce-motion *:before,html.reduce-motion *:after{anim
   },
   {
     "id":"airship-sentence","subject":"English · sentence building","type":"order","title":"Restore the airship log","label":"Challenge 3 of 10",
+    "titleHe":"שחזור יומן ספינת האוויר","labelHe":"אתגר 3 מתוך 10",
     "story":"The wind scattered the words in the engineer's log. Put them back into a complete English sentence.",
     "storyHe":"הרוח פיזרה את המילים ביומן המהנדסת. סדרו אותן מחדש למשפט שלם באנגלית.",
     "question":"Build the sentence that describes the harbor.",
+    "questionHe":"בנו את המשפט שמתאר את הנמל.",
     "variants":[
-      {"words":["beside","The","dock.","small","is","the","boat"],"answer":["The","small","boat","is","beside","the","dock."],"hint":"Start with the subject, then use is, and finish with the location phrase.","explanation":"The sentence follows subject + verb + location: The small boat / is / beside the dock.","hintHe":"התחילו בנושא המשפט, המשיכו ב־is וסיימו בצירוף המקום."},
-      {"words":["bridge.","Spark","the","is","above"],"answer":["Spark","is","above","the","bridge."],"hint":"Begin with Spark, then use is, followed by the location word.","explanation":"The complete sentence is: Spark is above the bridge.","hintHe":"התחילו ב־Spark, המשיכו ב־is ואז הוסיפו את מילת המקום."},
-      {"words":["lighthouse.","leads","The","to","path","the"],"answer":["The","path","leads","to","the","lighthouse."],"hint":"Begin with The path. What does the path do?","explanation":"The complete sentence is: The path leads to the lighthouse.","hintHe":"התחילו ב־The path. אחר כך אמרו מה השביל עושה."},
-      {"words":["behind","clouds.","The","sun","the","is"],"answer":["The","sun","is","behind","the","clouds."],"hint":"Use subject + is + location phrase.","explanation":"The complete sentence is: The sun is behind the clouds.","hintHe":"השתמשו במבנה: נושא + is + צירוף מקום."},
-      {"words":["waits","blue","near","crate","The","airship.","the"],"answer":["The","blue","crate","waits","near","the","airship."],"hint":"Begin with The blue crate. Then say what it does and where it is.","explanation":"The complete sentence is: The blue crate waits near the airship.","hintHe":"התחילו ב־The blue crate. אחר כך אמרו מה הוא עושה והיכן הוא נמצא."},
-      {"words":["harbor.","floats","The","above","airship","the"],"answer":["The","airship","floats","above","the","harbor."],"hint":"Begin with The airship, then say what it does and where.","explanation":"The complete sentence is: The airship floats above the harbor.","hintHe":"התחילו ב־The airship, ואז אמרו מה היא עושה והיכן."},
-      {"words":["door.","bright","beside","A","shines","lantern","the"],"answer":["A","bright","lantern","shines","beside","the","door."],"hint":"Start with A bright lantern, then add the action and location.","explanation":"The complete sentence is: A bright lantern shines beside the door.","hintHe":"התחילו ב־A bright lantern, ואז הוסיפו את הפעולה ואת המקום."}
+      {"words":["beside","The","dock.","small","is","the","boat"],"answer":["The","small","boat","is","beside","the","dock."],"hint":"Start with the subject, then use is, and finish with the location phrase.","explanation":"The sentence follows subject + verb + location: The small boat / is / beside the dock.","hintHe":"התחילו בנושא המשפט, המשיכו ב־is וסיימו בצירוף המקום.","wordsHe":["המזח","הסירה","הנמל.","הקטנה","ליד","של","נמצאת"],"explanationHe":"המשפט השלם הוא: הסירה הקטנה נמצאת ליד המזח של הנמל."},
+      {"words":["bridge.","Spark","the","is","above"],"answer":["Spark","is","above","the","bridge."],"hint":"Begin with Spark, then use is, followed by the location word.","explanation":"The complete sentence is: Spark is above the bridge.","hintHe":"התחילו ב־Spark, המשיכו ב־is ואז הוסיפו את מילת המקום.","wordsHe":["כעת.","ספארק","הגשר","נמצא","מעל"],"explanationHe":"המשפט השלם הוא: ספארק נמצא מעל הגשר כעת."},
+      {"words":["lighthouse.","leads","The","to","path","the"],"answer":["The","path","leads","to","the","lighthouse."],"hint":"Begin with The path. What does the path do?","explanation":"The complete sentence is: The path leads to the lighthouse.","hintHe":"התחילו ב־The path. אחר כך אמרו מה השביל עושה.","wordsHe":["בבטחה.","מוביל","השביל","אל","הזה","המגדלור"],"explanationHe":"המשפט השלם הוא: השביל הזה מוביל אל המגדלור בבטחה."},
+      {"words":["behind","clouds.","The","sun","the","is"],"answer":["The","sun","is","behind","the","clouds."],"hint":"Use subject + is + location phrase.","explanation":"The complete sentence is: The sun is behind the clouds.","hintHe":"השתמשו במבנה: נושא + is + צירוף מקום.","wordsHe":["מאחורי","הכהים.","השמש","נמצאת","העננים","היום"],"explanationHe":"המשפט השלם הוא: השמש נמצאת היום מאחורי העננים הכהים."},
+      {"words":["waits","blue","near","crate","The","airship.","the"],"answer":["The","blue","crate","waits","near","the","airship."],"hint":"Begin with The blue crate. Then say what it does and where it is.","explanation":"The complete sentence is: The blue crate waits near the airship.","hintHe":"התחילו ב־The blue crate. אחר כך אמרו מה הוא עושה והיכן הוא נמצא.","wordsHe":["ממתין","הכחול","ליד","הגדול","הארגז","האוויר.","ספינת"],"explanationHe":"המשפט השלם הוא: הארגז הכחול הגדול ממתין ליד ספינת האוויר."},
+      {"words":["harbor.","floats","The","above","airship","the"],"answer":["The","airship","floats","above","the","harbor."],"hint":"Begin with The airship, then say what it does and where.","explanation":"The complete sentence is: The airship floats above the harbor.","hintHe":"התחילו ב־The airship, ואז אמרו מה היא עושה והיכן.","wordsHe":["הנמל.","מרחפת","ספינת","היום","האוויר","מעל"],"explanationHe":"המשפט השלם הוא: ספינת האוויר מרחפת היום מעל הנמל."},
+      {"words":["door.","bright","beside","A","shines","lantern","the"],"answer":["A","bright","lantern","shines","beside","the","door."],"hint":"Start with A bright lantern, then add the action and location.","explanation":"The complete sentence is: A bright lantern shines beside the door.","hintHe":"התחילו ב־A bright lantern, ואז הוסיפו את הפעולה ואת המקום.","wordsHe":["הדלת.","בהיר","היטב","פנס","מאיר","אחד","ליד"],"explanationHe":"המשפט השלם הוא: פנס בהיר אחד מאיר היטב ליד הדלת."}
     ],
     "objective":"Use the harbor console to divide the rescue cargo.",
     "objectiveHe":"השתמשו במסוף הנמל כדי לחלק את ציוד החילוץ.",
@@ -729,16 +741,17 @@ html.reduce-motion *,html.reduce-motion *:before,html.reduce-motion *:after{anim
   },
   {
     "id":"engineer-note","subject":"English · reading comprehension","type":"choice","title":"The engineer's note","label":"Challenge 5 of 10",
+    "titleHe":"הפתק של המהנדסת","labelHe":"אתגר 5 מתוך 10",
     "story":"A weathered page is pinned inside the lighthouse entrance.",
     "storyHe":"דף בלוי מוצמד לקיר בתוך הכניסה למגדלור.",
     "variants":[
-      {"passage":"Mira reached Cloud Harbor before sunset. She placed the brass key under the third lantern because the lighthouse door would not open. Then she sailed east to warn the next island.","question":"Where did Mira place the brass key?","choices":["Under the third lantern","Inside the blue cargo crate","On the eastern airship","Behind the lighthouse door"],"answer":"Under the third lantern","hint":"Return to the second sentence and look for the words placed and under.","explanation":"The note says directly that Mira placed the brass key under the third lantern.","hintHe":"חזרו למשפט השני וחפשו את המילים placed ו־under."},
-      {"passage":"The storm damaged the western bridge first. Mira repaired two ropes, but the final wooden section was too heavy to lift alone. She left a power cell in the blue crate for the next explorer.","question":"Why did Mira leave the final bridge section unfinished?","choices":["It was too heavy to lift alone","She could not find the blue crate","The lighthouse was already repaired","She sailed away before the storm"],"answer":"It was too heavy to lift alone","hint":"Look for the sentence containing the word because or a reason.","explanation":"The note explains that the final wooden section was too heavy for Mira to lift alone.","hintHe":"חפשו את המשפט שמסביר את הסיבה לכך שהחלק לא הושלם."},
-      {"passage":"Spark's old map shows three safe routes. The northern route is short but blocked by ice. The southern route is longer and calm. Mira circled the southern route before leaving.","question":"Which route did Mira choose?","choices":["The southern route","The northern route","The blocked ice route","No route was selected"],"answer":"The southern route","hint":"The final sentence tells which route Mira circled.","explanation":"Mira circled the southern route, so that is the route she chose.","hintHe":"המשפט האחרון מספר איזה מסלול מירה הקיפה בעיגול."},
-      {"passage":"At dawn, the lighthouse lens flashed twice and then went dark. Mira checked the lamp and found it full. She wrote that the lens gears, not the lamp, needed repair.","question":"What needed repair?","choices":["The lens gears","The lamp fuel","The harbor bridge","The airship balloon"],"answer":"The lens gears","hint":"The last sentence contrasts the gears with the lamp.","explanation":"The lamp was full; Mira wrote that the lens gears needed repair.","hintHe":"המשפט האחרון משווה בין גלגלי השיניים לבין המנורה."},
-      {"passage":"A map fragment fell behind the stone arch when the wind shook the lighthouse. Mira could see its golden edge, but the narrow gap was too dark. She marked the place for someone carrying an Echo Lens.","question":"What tool is needed to find the map fragment?","choices":["An Echo Lens","A bridge power cell","A cargo rope","An airship propeller"],"answer":"An Echo Lens","hint":"Read the final words of the passage.","explanation":"Mira marked the secret for someone carrying an Echo Lens.","hintHe":"קראו את המילים האחרונות בקטע."},
-      {"passage":"Mira tested two levers beside the lighthouse door. The lever with a blue ribbon was stuck. She tied a red ribbon to the safe lever so the next explorer would know which one to pull.","question":"Which lever is safe to pull?","choices":["The lever with the red ribbon","The lever with the blue ribbon","Both levers together","Neither lever"],"answer":"The lever with the red ribbon","hint":"Look for the sentence that says which ribbon marks the safe lever.","explanation":"Mira tied the red ribbon to the safe lever.","hintHe":"חפשו את המשפט שמספר איזה סרט מסמן את הידית הבטוחה."},
-      {"passage":"The rain stopped just before dawn. Mira opened the lighthouse shutters so the morning sunlight could reach the lens. Soon the glass began to glow.","question":"Why did Mira open the shutters?","choices":["To let sunlight reach the lens","To bring rain into the lighthouse","To hide the glowing glass","To close the lighthouse door"],"answer":"To let sunlight reach the lens","hint":"The second sentence gives the reason.","explanation":"Mira opened the shutters so the morning sunlight could reach the lens.","hintHe":"המשפט השני מסביר את הסיבה."}
+      {"passage":"Mira reached Cloud Harbor before sunset. She placed the brass key under the third lantern because the lighthouse door would not open. Then she sailed east to warn the next island.","question":"Where did Mira place the brass key?","choices":["Under the third lantern","Inside the blue cargo crate","On the eastern airship","Behind the lighthouse door"],"answer":"Under the third lantern","hint":"Return to the second sentence and look for the words placed and under.","explanation":"The note says directly that Mira placed the brass key under the third lantern.","hintHe":"חזרו למשפט השני וחפשו את המילים placed ו־under.","passageHe":"מירה הגיעה לנמל העננים לפני השקיעה. היא הניחה את מפתח הפליז מתחת לפנס השלישי מפני שדלת המגדלור לא נפתחה. אחר כך הפליגה מזרחה כדי להזהיר את האי הבא.","questionHe":"היכן הניחה מירה את מפתח הפליז?","choicesHe":["מתחת לפנס השלישי","בתוך ארגז המטען הכחול","על ספינת האוויר המזרחית","מאחורי דלת המגדלור"],"explanationHe":"בפתק נאמר במפורש שמירה הניחה את מפתח הפליז מתחת לפנס השלישי."},
+      {"passage":"The storm damaged the western bridge first. Mira repaired two ropes, but the final wooden section was too heavy to lift alone. She left a power cell in the blue crate for the next explorer.","question":"Why did Mira leave the final bridge section unfinished?","choices":["It was too heavy to lift alone","She could not find the blue crate","The lighthouse was already repaired","She sailed away before the storm"],"answer":"It was too heavy to lift alone","hint":"Look for the sentence containing the word because or a reason.","explanation":"The note explains that the final wooden section was too heavy for Mira to lift alone.","hintHe":"חפשו את המשפט שמסביר את הסיבה לכך שהחלק לא הושלם.","passageHe":"הסערה פגעה תחילה בגשר המערבי. מירה תיקנה שני חבלים, אך חלק העץ האחרון היה כבד מכדי שתוכל להרים אותו לבדה. היא השאירה תא כוח בארגז הכחול לחוקר הבא.","questionHe":"מדוע השאירה מירה את חלק הגשר האחרון לא גמור?","choicesHe":["הוא היה כבד מכדי להרים אותו לבד","היא לא מצאה את הארגז הכחול","המגדלור כבר תוקן","היא הפליגה לפני הסערה"],"explanationHe":"הפתק מסביר שחלק העץ האחרון היה כבד מכדי שמירה תרים אותו לבדה."},
+      {"passage":"Spark's old map shows three safe routes. The northern route is short but blocked by ice. The southern route is longer and calm. Mira circled the southern route before leaving.","question":"Which route did Mira choose?","choices":["The southern route","The northern route","The blocked ice route","No route was selected"],"answer":"The southern route","hint":"The final sentence tells which route Mira circled.","explanation":"Mira circled the southern route, so that is the route she chose.","hintHe":"המשפט האחרון מספר איזה מסלול מירה הקיפה בעיגול.","passageHe":"המפה הישנה של ספארק מציגה שלושה מסלולים בטוחים. המסלול הצפוני קצר אך חסום בקרח. המסלול הדרומי ארוך יותר ורגוע. מירה הקיפה בעיגול את המסלול הדרומי לפני שעזבה.","questionHe":"באיזה מסלול בחרה מירה?","choicesHe":["המסלול הדרומי","המסלול הצפוני","המסלול החסום בקרח","לא נבחר מסלול"],"explanationHe":"מירה הקיפה בעיגול את המסלול הדרומי, ולכן זה המסלול שבחרה."},
+      {"passage":"At dawn, the lighthouse lens flashed twice and then went dark. Mira checked the lamp and found it full. She wrote that the lens gears, not the lamp, needed repair.","question":"What needed repair?","choices":["The lens gears","The lamp fuel","The harbor bridge","The airship balloon"],"answer":"The lens gears","hint":"The last sentence contrasts the gears with the lamp.","explanation":"The lamp was full; Mira wrote that the lens gears needed repair.","hintHe":"המשפט האחרון משווה בין גלגלי השיניים לבין המנורה.","passageHe":"עם שחר הבהבה עדשת המגדלור פעמיים ואז כבתה. מירה בדקה את המנורה וגילתה שהיא מלאה. היא כתבה שגלגלי השיניים של העדשה, ולא המנורה, זקוקים לתיקון.","questionHe":"מה היה זקוק לתיקון?","choicesHe":["גלגלי השיניים של העדשה","הדלק של המנורה","גשר הנמל","הבלון של ספינת האוויר"],"explanationHe":"המנורה הייתה מלאה; מירה כתבה שגלגלי השיניים של העדשה זקוקים לתיקון."},
+      {"passage":"A map fragment fell behind the stone arch when the wind shook the lighthouse. Mira could see its golden edge, but the narrow gap was too dark. She marked the place for someone carrying an Echo Lens.","question":"What tool is needed to find the map fragment?","choices":["An Echo Lens","A bridge power cell","A cargo rope","An airship propeller"],"answer":"An Echo Lens","hint":"Read the final words of the passage.","explanation":"Mira marked the secret for someone carrying an Echo Lens.","hintHe":"קראו את המילים האחרונות בקטע.","passageHe":"קטע מפה נפל מאחורי קשת האבן כשהרוח הרעידה את המגדלור. מירה ראתה את שוליו הזהובים, אך המרווח הצר היה חשוך מדי. היא סימנה את המקום למי שיישא עדשת הד.","questionHe":"איזה כלי דרוש כדי למצוא את קטע המפה?","choicesHe":["עדשת הד","תא כוח לגשר","חבל מטען","מדחף לספינת אוויר"],"explanationHe":"מירה סימנה את הסוד למי שיישא עדשת הד."},
+      {"passage":"Mira tested two levers beside the lighthouse door. The lever with a blue ribbon was stuck. She tied a red ribbon to the safe lever so the next explorer would know which one to pull.","question":"Which lever is safe to pull?","choices":["The lever with the red ribbon","The lever with the blue ribbon","Both levers together","Neither lever"],"answer":"The lever with the red ribbon","hint":"Look for the sentence that says which ribbon marks the safe lever.","explanation":"Mira tied the red ribbon to the safe lever.","hintHe":"חפשו את המשפט שמספר איזה סרט מסמן את הידית הבטוחה.","passageHe":"מירה בדקה שתי ידיות לצד דלת המגדלור. הידית עם הסרט הכחול הייתה תקועה. היא קשרה סרט אדום לידית הבטוחה כדי שהחוקר הבא ידע באיזו ידית למשוך.","questionHe":"באיזו ידית בטוח למשוך?","choicesHe":["בידית עם הסרט האדום","בידית עם הסרט הכחול","בשתי הידיות יחד","באף אחת מהידיות"],"explanationHe":"מירה קשרה את הסרט האדום לידית הבטוחה."},
+      {"passage":"The rain stopped just before dawn. Mira opened the lighthouse shutters so the morning sunlight could reach the lens. Soon the glass began to glow.","question":"Why did Mira open the shutters?","choices":["To let sunlight reach the lens","To bring rain into the lighthouse","To hide the glowing glass","To close the lighthouse door"],"answer":"To let sunlight reach the lens","hint":"The second sentence gives the reason.","explanation":"Mira opened the shutters so the morning sunlight could reach the lens.","hintHe":"המשפט השני מסביר את הסיבה.","passageHe":"הגשם פסק ממש לפני עלות השחר. מירה פתחה את תריסי המגדלור כדי שאור הבוקר יגיע לעדשה. עד מהרה החלה הזכוכית לזהור.","questionHe":"מדוע פתחה מירה את התריסים?","choicesHe":["כדי לאפשר לאור השמש להגיע לעדשה","כדי להכניס גשם למגדלור","כדי להסתיר את הזכוכית הזוהרת","כדי לסגור את דלת המגדלור"],"explanationHe":"מירה פתחה את התריסים כדי שאור הבוקר יגיע לעדשה."}
     ],
     "objective":"Align the lighthouse lens with an equivalent fraction.",
     "objectiveHe":"כוונו את עדשת המגדלור בעזרת שבר שווה־ערך.",
@@ -767,16 +780,17 @@ html.reduce-motion *,html.reduce-motion *:before,html.reduce-motion *:after{anim
   },
   {
     "id":"cave-echo","subject":"English · inference and vocabulary","type":"choice","title":"Decode the cave echo","label":"Challenge 7 of 10",
+    "titleHe":"פענוח הד המערה","labelHe":"אתגר 7 מתוך 10",
     "story":"The Echo Lens reveals a message that changes one word each time the lighthouse beam passes.",
     "storyHe":"עדשת ההד חושפת הודעה שבה מילה אחת משתנה בכל פעם שאלומת המגדלור חולפת.",
     "variants":[
-      {"passage":"The message says, “Mira departed in haste when the silver clouds gathered.” Her tools are packed, but one cup still sits beside the map.","question":"What does in haste mean?","choices":["Very quickly","Very quietly","Without a map","Before sunrise"],"answer":"Very quickly","hint":"Use the clue that Mira left as the storm gathered.","explanation":"In haste means quickly or urgently.","hintHe":"היעזרו ברמז שמירה עזבה בזמן שהסערה התקרבה."},
-      {"passage":"The cave wall reads, “The route is concealed until the golden beam touches the crystal.” When the lighthouse turns away, the marks disappear.","question":"What does concealed mean?","choices":["Hidden","Broken","Dangerous","Nearby"],"answer":"Hidden","hint":"The marks cannot be seen when the beam moves away.","explanation":"Concealed means hidden from view.","hintHe":"אי אפשר לראות את הסימנים כשהאלומה מתרחקת."},
-      {"passage":"Spark reads, “Do not take the direct route. The calm passage curves beneath the storm.” The straight path flashes with lightning.","question":"Why should the explorer avoid the direct route?","choices":["It crosses the lightning","It returns to Cloud Harbor","It is too calm","It passes beneath the storm"],"answer":"It crosses the lightning","hint":"Contrast the straight path with the calm curved passage.","explanation":"The direct route is dangerous because lightning crosses it.","hintHe":"השוו בין המסלול הישר לבין המעבר המעוקל והרגוע."},
-      {"passage":"The inscription says, “Collect the fragment only after the harbor signal is stable.” The lighthouse beam is now bright and steady.","question":"What shows that the signal is stable?","choices":["The beam is bright and steady","The bridge is made of wood","The airship is still docked","The cave is behind the island"],"answer":"The beam is bright and steady","hint":"Stable means not changing or shaking.","explanation":"A steady beam shows that the harbor signal is stable.","hintHe":"Stable פירושו יציב — לא משתנה ולא רועד."},
-      {"passage":"Mira wrote, “The next island is not deserted. Its machines are silent, yet fresh footprints cross the garden.”","question":"What can we infer from the footprints?","choices":["Someone was there recently","The island has no visitors","The machines made the footprints","The garden is underwater"],"answer":"Someone was there recently","hint":"Fresh footprints have not been there for long.","explanation":"Fresh footprints suggest that someone crossed the garden recently.","hintHe":"טביעות רגליים טריות לא נמצאות שם זמן רב."},
-      {"passage":"The cave warning says, “Carry the crystal carefully because it is fragile.” A tiny crack appears when Spark taps it against the wall.","question":"What does fragile mean?","choices":["Easy to break","Brightly coloured","Very heavy","Safe to drop"],"answer":"Easy to break","hint":"The tiny crack shows what can happen to the crystal.","explanation":"Fragile means easily broken or damaged.","hintHe":"הסדק הקטן מראה מה עלול לקרות לגביש."},
-      {"passage":"Mira tied blue ribbons along the calm route. Each ribbon points toward the next safe landing place.","question":"Why did Mira leave the ribbons?","choices":["To help others follow the safe route","To decorate the storm clouds","To repair the airship engine","To hide the landing places"],"answer":"To help others follow the safe route","hint":"Think about what the pointing ribbons show.","explanation":"The ribbons guide other explorers from one safe landing place to the next.","hintHe":"חשבו מה מראים הסרטים שמצביעים על הדרך."}
+      {"passage":"The message says, “Mira departed in haste when the silver clouds gathered.” Her tools are packed, but one cup still sits beside the map.","question":"What does in haste mean?","choices":["Very quickly","Very quietly","Without a map","Before sunrise"],"answer":"Very quickly","hint":"Use the clue that Mira left as the storm gathered.","explanation":"In haste means quickly or urgently.","hintHe":"היעזרו ברמז שמירה עזבה בזמן שהסערה התקרבה.","passageHe":"בהודעה כתוב: „מירה יצאה בחיפזון כשהעננים הכסופים התקבצו.” הכלים שלה ארוזים, אך ספל אחד עדיין מונח לצד המפה.","questionHe":"מה פירוש הביטוי בחיפזון?","choicesHe":["מהר מאוד","בשקט רב","בלי מפה","לפני הזריחה"],"explanationHe":"בחיפזון פירושו במהירות או בדחיפות."},
+      {"passage":"The cave wall reads, “The route is concealed until the golden beam touches the crystal.” When the lighthouse turns away, the marks disappear.","question":"What does concealed mean?","choices":["Hidden","Broken","Dangerous","Nearby"],"answer":"Hidden","hint":"The marks cannot be seen when the beam moves away.","explanation":"Concealed means hidden from view.","hintHe":"אי אפשר לראות את הסימנים כשהאלומה מתרחקת.","passageHe":"על קיר המערה כתוב: „המסלול מוסתר עד שאלומת הזהב נוגעת בגביש.” כשהמגדלור פונה לכיוון אחר, הסימנים נעלמים.","questionHe":"מה פירוש המילה מוסתר?","choicesHe":["חבוי","שבור","מסוכן","קרוב"],"explanationHe":"מוסתר פירושו חבוי מן העין."},
+      {"passage":"Spark reads, “Do not take the direct route. The calm passage curves beneath the storm.” The straight path flashes with lightning.","question":"Why should the explorer avoid the direct route?","choices":["It crosses the lightning","It returns to Cloud Harbor","It is too calm","It passes beneath the storm"],"answer":"It crosses the lightning","hint":"Contrast the straight path with the calm curved passage.","explanation":"The direct route is dangerous because lightning crosses it.","hintHe":"השוו בין המסלול הישר לבין המעבר המעוקל והרגוע.","passageHe":"ספארק קורא: „אל תבחרו במסלול הישיר. המעבר הרגוע מתעקל מתחת לסערה.” הברקים מבזיקים לאורך הדרך הישרה.","questionHe":"מדוע על החוקר להימנע מהמסלול הישיר?","choicesHe":["הוא חוצה את אזור הברקים","הוא חוזר לנמל העננים","הוא רגוע מדי","הוא עובר מתחת לסערה"],"explanationHe":"המסלול הישיר מסוכן מפני שהברקים חוצים אותו."},
+      {"passage":"The inscription says, “Collect the fragment only after the harbor signal is stable.” The lighthouse beam is now bright and steady.","question":"What shows that the signal is stable?","choices":["The beam is bright and steady","The bridge is made of wood","The airship is still docked","The cave is behind the island"],"answer":"The beam is bright and steady","hint":"Stable means not changing or shaking.","explanation":"A steady beam shows that the harbor signal is stable.","hintHe":"Stable פירושו יציב — לא משתנה ולא רועד.","passageHe":"בכתובת נאמר: „אספו את הקטע רק לאחר שאות הנמל יהיה יציב.” אלומת המגדלור כעת בהירה ויציבה.","questionHe":"מה מראה שהאות יציב?","choicesHe":["האלומה בהירה ויציבה","הגשר עשוי עץ","ספינת האוויר עדיין ברציף","המערה נמצאת מאחורי האי"],"explanationHe":"אלומה יציבה מראה שאות הנמל יציב."},
+      {"passage":"Mira wrote, “The next island is not deserted. Its machines are silent, yet fresh footprints cross the garden.”","question":"What can we infer from the footprints?","choices":["Someone was there recently","The island has no visitors","The machines made the footprints","The garden is underwater"],"answer":"Someone was there recently","hint":"Fresh footprints have not been there for long.","explanation":"Fresh footprints suggest that someone crossed the garden recently.","hintHe":"טביעות רגליים טריות לא נמצאות שם זמן רב.","passageHe":"מירה כתבה: „האי הבא אינו נטוש. המכונות שלו דוממות, ובכל זאת טביעות רגליים טריות חוצות את הגן.”","questionHe":"מה אפשר להסיק מטביעות הרגליים?","choicesHe":["מישהו היה שם לאחרונה","אין מבקרים באי","המכונות יצרו את טביעות הרגליים","הגן נמצא מתחת למים"],"explanationHe":"טביעות רגליים טריות מרמזות שמישהו חצה את הגן לאחרונה."},
+      {"passage":"The cave warning says, “Carry the crystal carefully because it is fragile.” A tiny crack appears when Spark taps it against the wall.","question":"What does fragile mean?","choices":["Easy to break","Brightly coloured","Very heavy","Safe to drop"],"answer":"Easy to break","hint":"The tiny crack shows what can happen to the crystal.","explanation":"Fragile means easily broken or damaged.","hintHe":"הסדק הקטן מראה מה עלול לקרות לגביש.","passageHe":"באזהרת המערה כתוב: „שאו את הגביש בזהירות מפני שהוא שביר.” סדק זעיר מופיע כשספארק מקיש אותו בקיר.","questionHe":"מה פירוש המילה שביר?","choicesHe":["קל לשבירה","צבעוני ובהיר","כבד מאוד","בטוח להפלה"],"explanationHe":"שביר פירושו דבר שנשבר או ניזוק בקלות."},
+      {"passage":"Mira tied blue ribbons along the calm route. Each ribbon points toward the next safe landing place.","question":"Why did Mira leave the ribbons?","choices":["To help others follow the safe route","To decorate the storm clouds","To repair the airship engine","To hide the landing places"],"answer":"To help others follow the safe route","hint":"Think about what the pointing ribbons show.","explanation":"The ribbons guide other explorers from one safe landing place to the next.","hintHe":"חשבו מה מראים הסרטים שמצביעים על הדרך.","passageHe":"מירה קשרה סרטים כחולים לאורך המסלול הרגוע. כל סרט מצביע לעבר מקום הנחיתה הבטוח הבא.","questionHe":"מדוע השאירה מירה את הסרטים?","choicesHe":["כדי לעזור לאחרים לעקוב אחר המסלול הבטוח","כדי לקשט את ענני הסערה","כדי לתקן את מנוע ספינת האוויר","כדי להסתיר את מקומות הנחיתה"],"explanationHe":"הסרטים מנחים חוקרים אחרים ממקום נחיתה בטוח אחד לבא אחריו."}
     ],
     "objective":"Calculate the distance shown by the restored harbor console.",
     "objectiveHe":"חשבו את המרחק שמציג מסוף הנמל ששוחזר.",
@@ -805,17 +819,19 @@ html.reduce-motion *,html.reduce-motion *:before,html.reduce-motion *:after{anim
   },
   {
     "id":"launch-instructions","subject":"English · sentence building","type":"order","title":"Prepare the airship launch","label":"Challenge 9 of 10",
+    "titleHe":"הכנת ספינת האוויר להמראה","labelHe":"אתגר 9 מתוך 10",
     "story":"Arrange the log words into a clear instruction for the next stage of the journey.",
     "storyHe":"סדרו את מילות היומן להוראה ברורה לקראת השלב הבא במסע.",
     "question":"Build Mira's launch instruction.",
+    "questionHe":"בנו את הוראת ההמראה של מירה.",
     "variants":[
-      {"words":["storm.","Fly","the","beneath","silver"],"answer":["Fly","beneath","the","silver","storm."],"hint":"Begin with the action word Fly, then add the location phrase.","explanation":"The instruction is: Fly beneath the silver storm.","hintHe":"התחילו בפועל Fly ואז הוסיפו את צירוף המקום."},
-      {"words":["before","Check","launch.","compass","the"],"answer":["Check","the","compass","before","launch."],"hint":"Start with Check and name what must be checked.","explanation":"The instruction is: Check the compass before launch.","hintHe":"התחילו ב־Check וציינו מה צריך לבדוק."},
-      {"words":["green","Follow","eastern","the","signal."],"answer":["Follow","the","green","eastern","signal."],"hint":"Begin with Follow, then describe the signal.","explanation":"The instruction is: Follow the green eastern signal.","hintHe":"התחילו ב־Follow ואז תארו את האות."},
-      {"words":["clouds.","Keep","below","airship","the","the"],"answer":["Keep","the","airship","below","the","clouds."],"hint":"Use Keep + object + location.","explanation":"The instruction is: Keep the airship below the clouds.","hintHe":"השתמשו במבנה Keep + object + location."},
-      {"words":["garden","at","Land","the","observatory."],"answer":["Land","at","the","garden","observatory."],"hint":"Start with the action Land and finish with the destination.","explanation":"The instruction is: Land at the garden observatory.","hintHe":"התחילו בפעולה Land וסיימו ביעד."},
-      {"words":["golden","after","Turn","beacon.","the","east"],"answer":["Turn","east","after","the","golden","beacon."],"hint":"Begin with Turn, then add the direction and time phrase.","explanation":"The instruction is: Turn east after the golden beacon.","hintHe":"התחילו ב־Turn ואז הוסיפו את הכיוון ואת צירוף הזמן."},
-      {"words":["takeoff.","cargo","before","the","Secure"],"answer":["Secure","the","cargo","before","takeoff."],"hint":"Start with the action Secure and name what must be secured.","explanation":"The instruction is: Secure the cargo before takeoff.","hintHe":"התחילו בפעולה Secure וציינו מה צריך לאבטח."}
+      {"words":["storm.","Fly","the","beneath","silver"],"answer":["Fly","beneath","the","silver","storm."],"hint":"Begin with the action word Fly, then add the location phrase.","explanation":"The instruction is: Fly beneath the silver storm.","hintHe":"התחילו בפועל Fly ואז הוסיפו את צירוף המקום.","wordsHe":["הכסופה.","טוסו","מתחת","בזהירות","לסערה"],"explanationHe":"ההוראה היא: טוסו בזהירות מתחת לסערה הכסופה."},
+      {"words":["before","Check","launch.","compass","the"],"answer":["Check","the","compass","before","launch."],"hint":"Start with Check and name what must be checked.","explanation":"The instruction is: Check the compass before launch.","hintHe":"התחילו ב־Check וציינו מה צריך לבדוק.","wordsHe":["לפני","בדקו","ההמראה.","המצפן","את"],"explanationHe":"ההוראה היא: בדקו את המצפן לפני ההמראה."},
+      {"words":["green","Follow","eastern","the","signal."],"answer":["Follow","the","green","eastern","signal."],"hint":"Begin with Follow, then describe the signal.","explanation":"The instruction is: Follow the green eastern signal.","hintHe":"התחילו ב־Follow ואז תארו את האות.","wordsHe":["האות","עקבו","הירוק","אחר","המזרחי."],"explanationHe":"ההוראה היא: עקבו אחר האות הירוק המזרחי."},
+      {"words":["clouds.","Keep","below","airship","the","the"],"answer":["Keep","the","airship","below","the","clouds."],"hint":"Use Keep + object + location.","explanation":"The instruction is: Keep the airship below the clouds.","hintHe":"השתמשו במבנה Keep + object + location.","wordsHe":["כעת.","השאירו","מתחת","הספינה","את","לעננים"],"explanationHe":"ההוראה היא: השאירו את הספינה מתחת לעננים כעת."},
+      {"words":["garden","at","Land","the","observatory."],"answer":["Land","at","the","garden","observatory."],"hint":"Start with the action Land and finish with the destination.","explanation":"The instruction is: Land at the garden observatory.","hintHe":"התחילו בפעולה Land וסיימו ביעד.","wordsHe":["היפה","היום","נחתו","במצפה","שבגן."],"explanationHe":"ההוראה היא: נחתו היום במצפה היפה שבגן."},
+      {"words":["golden","after","Turn","beacon.","the","east"],"answer":["Turn","east","after","the","golden","beacon."],"hint":"Begin with Turn, then add the direction and time phrase.","explanation":"The instruction is: Turn east after the golden beacon.","hintHe":"התחילו ב־Turn ואז הוסיפו את הכיוון ואת צירוף הזמן.","wordsHe":["המשואה","כעת","פנו","הזהובה.","אחרי","מזרחה"],"explanationHe":"ההוראה היא: פנו מזרחה כעת אחרי המשואה הזהובה."},
+      {"words":["takeoff.","cargo","before","the","Secure"],"answer":["Secure","the","cargo","before","takeoff."],"hint":"Start with the action Secure and name what must be secured.","explanation":"The instruction is: Secure the cargo before takeoff.","hintHe":"התחילו בפעולה Secure וציינו מה צריך לאבטח.","wordsHe":["ההמראה.","המטען","לפני","את","אבטחו"],"explanationHe":"ההוראה היא: אבטחו את המטען לפני ההמראה."}
     ],
     "objective":"Load the correct number of rescue supplies into the blue cargo crate.",
     "objectiveHe":"העמיסו את הכמות הנכונה של ציוד חילוץ בארגז המטען הכחול.",
@@ -867,6 +883,21 @@ const WORLD_TARGETS={
 };
 const CHALLENGE_TARGET_IDS=["hotspot-crate","hotspot-bridge","hotspot-boat","hotspot-console","hotspot-lighthouse","hotspot-lighthouse","hotspot-secret","hotspot-console","hotspot-boat","hotspot-crate"];
 const TARGET_BY_HOTSPOT={"hotspot-crate":WORLD_TARGETS.crate,"hotspot-bridge":WORLD_TARGETS.bridge,"hotspot-boat":WORLD_TARGETS.boat,"hotspot-console":WORLD_TARGETS.console,"hotspot-lighthouse":WORLD_TARGETS.lighthouse,"hotspot-secret":WORLD_TARGETS.secret};
+const DEPTH_IDS={
+  repairs:["bridge-brace","console-dial","airship-winch"],
+  scans:["workbench","console","cave"],
+  collectibles:["dock-seal","bridge-rivet","console-token","lens-shard","cave-crystal","harbor-mechanic-seal","mira-compass-rubbing"]
+};
+const DEPTH_COPY={
+  handyman:["Harbor Handyman","מכונאי הנמל"],
+  echoes:["Mira's Echoes","ההדים של מירה"],
+  multitool:["Brass Multitool acquired.","כלי הרב־שימושי מפליז התקבל."],
+  repairs:["Repair the bridge brace, console dial, and airship winch—in any order.","תקנו את תמיכת הגשר, חוגת המסוף וכננת ספינת האוויר — בכל סדר."],
+  scans:["Scan Mira's note, the console, and the hidden cave.","סרקו את הפתק של מירה, את המסוף ואת המערה הנסתרת."],
+  repaired:["The harbor mechanisms hum together again.","מנגנוני הנמל שוב פועלים יחד."],
+  route:["Mira's hidden route is complete.","המסלול הנסתר של מירה הושלם."],
+  archive:["Cave Archive","ארכיון המערה"]
+};
 const GENERATED_ASSETS={
   "atlas-explorer":{element:"generated-player",idle:"explorer/explorer-idle.webp"},
   "spark-companion":{element:"generated-spark",sleeping:"spark/spark-sleeping.webp",idle:"spark/spark-idle.webp",guiding:"spark/spark-guiding.webp",concerned:"spark/spark-concerned.webp",celebrate:"spark/spark-celebrate.webp"},
@@ -905,12 +936,14 @@ function seededShuffle(values,seed){
   return result;
 }
 function freshState(previousVariants={}){
-  return{version:1,runNonce:randomUint(),questionVariants:createQuestionVariants(previousVariants),started:false,interior:false,step:0,completed:[],assisted:[],lens:false,bridge:false,lighthouse:false,secret:false,atlas:false,sound:true,reducedMotion:false,facing:"east",player:{x:334,y:316},updatedAt:null};
+  return{version:1,depthVersion:1,runNonce:randomUint(),questionVariants:createQuestionVariants(previousVariants),started:false,interior:false,step:0,completed:[],assisted:[],lens:false,bridge:false,lighthouse:false,secret:false,atlas:false,sound:true,reducedMotion:false,facing:"east",player:{x:334,y:316},activeTool:"atlas",tools:{multitool:false},sideQuests:{handyman:{started:false,repairs:[],completed:false},echoes:{started:false,scans:[],completed:false}},collectibles:[],discoveries:[],updatedAt:null};
 }
-let state=loadState(),activeChallenge=null,orderedWords=[],lastFocus=null,audioContext=null,toastTimer=0,dialogueTimer=0,pendingDialogue=null,movementSaveTimer=0,autoWalkFrame=0,arrivalTimer=0,movementFrame=0,labelEditMode=false,labelLayout=loadLabelLayout(),guidanceLanguage=window.AtlasLanguage?.get?.()||"he",translationPanelOpen=false;
+let state=loadState(),activeChallenge=null,orderedWords=[],lastFocus=null,audioContext=null,toastTimer=0,dialogueTimer=0,pendingDialogue=null,movementSaveTimer=0,autoWalkFrame=0,arrivalTimer=0,movementFrame=0,labelEditMode=false,labelLayout=loadLabelLayout(),guidanceLanguage=window.AtlasLanguage?.get?.()||"he",translationPanelOpen=false,englishTaskTranslated=false;
 const heldDirections=new Set();
 
 function isHebrewGuidance(){return guidanceLanguage!=="en";}
+function isEnglishChallenge(challenge=activeChallenge){return Boolean(challenge?.subject.startsWith("English"));}
+function usesHebrewTaskText(){return isEnglishChallenge()?englishTaskTranslated:isHebrewGuidance();}
 function setGuidanceText(element,english,hebrew,useHebrew=isHebrewGuidance()){
   const showHebrew=Boolean(useHebrew&&hebrew);
   element.textContent=showHebrew?hebrew:english;
@@ -922,13 +955,112 @@ function applyGuidanceLanguage(language){
   render();
   if($("challenge-dialog").open&&activeChallenge)renderChallengeGuidance();
 }
+function depthText(pair){return pair[isHebrewGuidance()?1:0];}
+function addUnique(list,value){if(list.includes(value))return false;list.push(value);return true;}
+function selectTool(tool){
+  if(tool==="lens"&&!state.lens){showToast(depthText(["Restore the Echo Lens first.","שחזרו תחילה את עדשת ההד."]));return;}
+  if(tool==="multitool"&&!state.tools.multitool){showToast(depthText(["Find the Brass Multitool first.","מצאו תחילה את הכלי הרב־שימושי מפליז."]));return;}
+  state.activeTool=tool;saveState();render();
+  const names={atlas:["Atlas Page selected.","דף האטלס נבחר."],lens:["Echo Lens selected.","עדשת ההד נבחרה."],multitool:["Brass Multitool selected.","הכלי הרב־שימושי מפליז נבחר."]};
+  showToast(depthText(names[tool]));
+}
+function collectKeepsake(id,english,hebrew){
+  if(!addUnique(state.collectibles,id)){showToast(depthText(["Already collected.","כבר נאסף."]));return false;}
+  saveState();render();showToast(depthText([`${english} collected.`,`${hebrew} נאסף.`]));tone(680,.1);return true;
+}
+function startHandyman(){
+  const quest=state.sideQuests.handyman;
+  if(state.step<2){showToast(depthText(["The cargo compartment is still jammed.","תא המטען עדיין תקוע."]));return;}
+  if(quest.started)return;
+  quest.started=true;state.tools.multitool=true;state.activeTool="multitool";
+  collectKeepsake("dock-seal","Dock seal","חותם הרציף");
+  saveState();render();
+  openInfo(depthText(DEPTH_COPY.handyman),`<div${isHebrewGuidance()?' lang="he" dir="rtl"':""}><p>${depthText(DEPTH_COPY.multitool)}</p><p>${depthText(DEPTH_COPY.repairs)}</p></div>`,depthText(["Optional quest","משימה צדדית"]));
+}
+function repairHarbor(id){
+  const quest=state.sideQuests.handyman;
+  if(!quest.started){showToast(depthText(["Find the multitool in the opened cargo crate.","מצאו את הכלי הרב־שימושי בארגז המטען הפתוח."]));return;}
+  const requirements={"bridge-brace":state.bridge,"console-dial":state.completed.includes("cargo-division"),"airship-winch":state.completed.includes("airship-sentence")};
+  if(!requirements[id]){showToast(depthText(["This mechanism is not ready to repair yet.","המנגנון הזה עדיין אינו מוכן לתיקון."]));return;}
+  if(!addUnique(quest.repairs,id)){showToast(depthText(["That repair is already complete.","התיקון הזה כבר הושלם."]));return;}
+  const names={"bridge-brace":["Bridge brace repaired.","תמיכת הגשר תוקנה."],"console-dial":["Console dial repaired.","חוגת המסוף תוקנה."],"airship-winch":["Airship winch repaired.","כננת ספינת האוויר תוקנה."]};
+  if(quest.repairs.length===DEPTH_IDS.repairs.length){
+    quest.completed=true;addUnique(state.collectibles,"harbor-mechanic-seal");
+    saveState();render();burst();
+    openInfo(depthText(DEPTH_COPY.handyman),`<div${isHebrewGuidance()?' lang="he" dir="rtl"':""}><p>${depthText(DEPTH_COPY.repaired)}</p><p>${depthText(["You earned the Harbor Mechanic Seal.","קיבלתם את חותם מכונאי הנמל."])}</p></div>`,depthText(["Side quest complete","המשימה הצדדית הושלמה"]));
+    return;
+  }
+  saveState();render();showToast(depthText(names[id]));tone(590,.09);
+}
+function scanEcho(id){
+  if(!state.lens){showToast(depthText(["Restore the Echo Lens first.","שחזרו תחילה את עדשת ההד."]));return;}
+  if(state.step<6){showToast(depthText(["Finish restoring the lighthouse before tracing Mira's echoes.","סיימו לשחזר את המגדלור לפני מעקב אחר ההדים של מירה."]));return;}
+  const quest=state.sideQuests.echoes;
+  quest.started=true;
+  if(!addUnique(quest.scans,id)){showToast(depthText(["This echo is already recorded.","ההד הזה כבר תועד."]));return;}
+  const messages={workbench:["Mira repaired the lens before leaving.","מירה תיקנה את העדשה לפני שעזבה."],console:["Mira's storm warning failed to transmit.","אזהרת הסערה של מירה לא שודרה."],cave:["Mira concealed a route rubbing behind the crystal.","מירה הסתירה העתק של המסלול מאחורי הגביש."]};
+  if(quest.scans.length===DEPTH_IDS.scans.length){
+    quest.completed=true;addUnique(state.collectibles,"mira-compass-rubbing");
+    saveState();render();burst();
+    openInfo(depthText(DEPTH_COPY.echoes),`<div${isHebrewGuidance()?' lang="he" dir="rtl"':""}><p>${depthText(DEPTH_COPY.route)}</p><p>${depthText(["You earned Mira's Compass Rubbing.","קיבלתם את העתק המצפן של מירה."])}</p></div>`,depthText(["Side quest complete","המשימה הצדדית הושלמה"]));
+    return;
+  }
+  saveState();render();showWorldDialogue("Spark",messages[id][0],messages[id][1],6500);
+}
+function openCaveArchive(){
+  const quest=state.sideQuests.echoes;
+  const copy=isHebrewGuidance();
+  const rows=[
+    [quest.scans.includes("workbench"),"Workbench echo","הד שולחן העבודה"],
+    [quest.scans.includes("console"),"Console echo","הד המסוף"],
+    [quest.scans.includes("cave"),"Cave echo","הד המערה"]
+  ].map(([done,en,he])=>`<li>${done?"✓":"○"} ${copy?he:en}</li>`).join("");
+  openInfo(depthText(DEPTH_COPY.archive),`<div${copy?' lang="he" dir="rtl"':""}><p>${depthText(["The hidden cave remains open for further exploration.","המערה הנסתרת נשארת פתוחה להמשך חקירה."])}</p><ul>${rows}</ul><p>${depthText([`Keepsakes: ${state.collectibles.length} of 7`,`מזכרות: ${state.collectibles.length} מתוך 7`])}</p></div>`,depthText(["Revisitable secret","סוד שאפשר לחזור אליו"]));
+}
+function exploreHotspot(id){
+  if(!state.started){talkToSpark();return;}
+  if(id==="hotspot-lighthouse"&&state.step>=6){enterLighthouse();return;}
+  if(id==="hotspot-secret"&&state.secret&&((state.activeTool==="atlas"&&state.collectibles.includes("cave-crystal"))||(state.activeTool==="lens"&&state.sideQuests.echoes.scans.includes("cave")))){openCaveArchive();return;}
+  if(state.activeTool==="multitool"){
+    const repairId={"hotspot-bridge":"bridge-brace","hotspot-console":"console-dial","hotspot-boat":"airship-winch"}[id];
+    if(repairId){repairHarbor(repairId);return;}
+  }
+  if(state.activeTool==="lens"){
+    const scanId={"hotspot-console":"console","hotspot-secret":"cave"}[id];
+    if(scanId){scanEcho(scanId);return;}
+  }
+  if(state.activeTool==="atlas"){
+    if(id==="hotspot-crate"&&state.step>=2){startHandyman();return;}
+    const keepsakes={
+      "hotspot-bridge":["bridge-rivet","Bridge rivet","מסמרת הגשר",state.bridge],
+      "hotspot-console":["console-token","Console token","אסימון המסוף",state.completed.includes("cargo-division")],
+      "hotspot-secret":["cave-crystal","Cave crystal","גביש המערה",state.lens&&state.step>=7]
+    };
+    const item=keepsakes[id];
+    if(item&&item[3]){collectKeepsake(item[0],item[1],item[2]);return;}
+  }
+  if(id==="hotspot-secret"&&state.secret){openCaveArchive();return;}
+  showToast(depthText(["Try another tool or return after restoring more of the harbor.","נסו כלי אחר או חזרו לאחר שחזור חלקים נוספים בנמל."]));
+}
+function approachOptional(id){
+  const target=TARGET_BY_HOTSPOT[id];
+  if(!target){exploreHotspot(id);return;}
+  if(distanceTo(target)<=82){exploreHotspot(id);return;}
+  autoWalkTo(target,()=>exploreHotspot(id));
+}
 
 function loadState(){
   try{
     const parsed=JSON.parse(localStorage.getItem(SAVE_KEY));
     if(!parsed||parsed.version!==1||!Array.isArray(parsed.completed))return freshState();
     const base=freshState(),player=parsed.player&&Number.isFinite(parsed.player.x)&&Number.isFinite(parsed.player.y)?parsed.player:base.player;
-    return {...base,...parsed,questionVariants:{...base.questionVariants,...parsed.questionVariants},player,step:Math.min(challenges.length,Math.max(0,Number(parsed.step)||0))};
+    const repairs=[...new Set(parsed.sideQuests?.handyman?.repairs||[])].filter(id=>DEPTH_IDS.repairs.includes(id));
+    const scans=[...new Set(parsed.sideQuests?.echoes?.scans||[])].filter(id=>DEPTH_IDS.scans.includes(id));
+    const collectibles=[...new Set(parsed.collectibles||[])].filter(id=>DEPTH_IDS.collectibles.includes(id));
+    const handymanComplete=repairs.length===DEPTH_IDS.repairs.length,echoesComplete=scans.length===DEPTH_IDS.scans.length;
+    if(handymanComplete&&!collectibles.includes("harbor-mechanic-seal"))collectibles.push("harbor-mechanic-seal");
+    if(echoesComplete&&!collectibles.includes("mira-compass-rubbing"))collectibles.push("mira-compass-rubbing");
+    return{...base,...parsed,depthVersion:1,questionVariants:{...base.questionVariants,...parsed.questionVariants},player,step:Math.min(challenges.length,Math.max(0,Number(parsed.step)||0)),activeTool:["atlas","lens","multitool"].includes(parsed.activeTool)?parsed.activeTool:"atlas",tools:{multitool:Boolean(parsed.tools?.multitool||parsed.sideQuests?.handyman?.started)},sideQuests:{handyman:{started:Boolean(parsed.sideQuests?.handyman?.started),repairs,completed:handymanComplete},echoes:{started:Boolean(parsed.sideQuests?.echoes?.started),scans,completed:echoesComplete}},collectibles,discoveries:[...new Set(parsed.discoveries||[])]};
   }catch(error){return freshState();}
 }
 function saveState(){
@@ -1021,8 +1153,18 @@ function resolvedChallenge(index){
   const selected=Number(state.questionVariants?.[challenge.id]),variantIndex=Number.isInteger(selected)&&selected>=0&&selected<variants.length?selected:0;
   const variant=variants[variantIndex],shuffleSeed=(Number(state.runNonce)||0)^hashText(challenge.id);
   const resolved={...challenge,...variant,variantIndex};
-  if(Array.isArray(variant.choices))resolved.choices=seededShuffle(variant.choices,shuffleSeed);
-  if(Array.isArray(variant.words))resolved.words=seededShuffle(variant.words,shuffleSeed^0x9e3779b9);
+  if(Array.isArray(variant.choices)){
+    const order=seededShuffle(variant.choices.map((_,index)=>index),shuffleSeed);
+    resolved.choices=order.map(index=>variant.choices[index]);
+    if(Array.isArray(variant.choicesHe))resolved.choicesHe=order.map(index=>variant.choicesHe[index]);
+  }
+  if(Array.isArray(variant.words)){
+    const order=seededShuffle(variant.words.map((_,index)=>index),shuffleSeed^0x9e3779b9);
+    resolved.words=order.map(index=>variant.words[index]);
+    if(Array.isArray(variant.wordsHe))resolved.wordsHe=order.map(index=>variant.wordsHe[index]);
+    const used=new Set(),answerSourceIndexes=variant.answer.map(word=>{const index=variant.words.findIndex((value,wordIndex)=>value===word&&!used.has(wordIndex));used.add(index);return index;});
+    resolved.answerWordIndexes=answerSourceIndexes.map(sourceIndex=>order.indexOf(sourceIndex));
+  }
   return resolved;
 }
 function currentChallenge(){return resolvedChallenge(state.step);}
@@ -1066,6 +1208,12 @@ function render(){
   $("world").classList.toggle("lighthouse-lit",state.lighthouse);
   $("world").classList.toggle("lens-unlocked",state.lens);
   $("world").classList.toggle("secret-found",state.secret);
+  $("world").classList.toggle("bridge-braced",state.sideQuests.handyman.repairs.includes("bridge-brace"));
+  $("world").classList.toggle("console-repaired",state.sideQuests.handyman.repairs.includes("console-dial"));
+  $("world").classList.toggle("airship-winch-repaired",state.sideQuests.handyman.repairs.includes("airship-winch"));
+  $("world").classList.toggle("dock-lanterns-lit",state.sideQuests.handyman.completed);
+  $("world").classList.toggle("echo-route-visible",state.sideQuests.echoes.completed);
+  $("world").classList.toggle("cave-mural-visible",state.sideQuests.echoes.scans.includes("cave"));
   const inside=Boolean(state.interior&&state.step>=4);
   $("world").classList.toggle("interior-open",inside);
   $("interior-scene").hidden=!inside;
@@ -1096,7 +1244,12 @@ function render(){
   $("progress-text").textContent=`${state.completed.length} of ${challenges.length} challenges complete`;
   $("item-atlas").classList.toggle("unlocked",state.atlas);
   $("item-lens").classList.toggle("unlocked",state.lens);
+  $("item-multitool").classList.toggle("unlocked",state.tools.multitool);
   $("item-fragment").classList.toggle("unlocked",state.secret);
+  if(state.activeTool==="lens"&&!state.lens)state.activeTool="atlas";
+  if(state.activeTool==="multitool"&&!state.tools.multitool)state.activeTool="atlas";
+  document.querySelectorAll("[data-tool]").forEach(button=>button.classList.toggle("active",button.dataset.tool===state.activeTool));
+  $("item-atlas").disabled=!state.atlas;$("item-lens").disabled=!state.lens;$("item-multitool").disabled=!state.tools.multitool;
   setSparkPortrait(state.lighthouse?"celebrating":state.started?"guiding":"neutral");
   setModelState("spark-companion",state.lighthouse?"celebrate":state.started?"guiding":"sleeping",state.started?"states":"idle");
   setModelState("cargo-crate",state.step===9?"active":state.completed.includes("blue-cargo")?"opened":state.started&&state.step===0?"active":"sealed");
@@ -1112,7 +1265,15 @@ function render(){
   $("interior-lens").disabled=state.step<5;
   const interiorIndex=state.step===4?0:state.step===5?1:2;
   setGuidanceText($("interior-caption"),["The chamber is silent. Mira's note rests on the workbench.","The note reveals the final lens pattern. The brass mechanism is ready.","The restored lens sends a golden beam through the clouds."][interiorIndex],GUIDANCE_HE.interior[interiorIndex]);
-  renderQuestList();renderHotspots();updatePlayerVisual();
+  renderQuestList();renderDepthStatus();renderHotspots();updatePlayerVisual();
+}
+function renderDepthStatus(){
+  const hebrew=isHebrewGuidance(),handyman=state.sideQuests.handyman,echoes=state.sideQuests.echoes;
+  const line=(title,started,count,total,complete)=>`<div class="${complete?"done":""}"><strong>${title}</strong>: ${started?complete?(hebrew?"הושלם":"complete"):`${count}/${total}`:(hebrew?"טרם התגלתה":"not discovered")}</div>`;
+  $("depth-status").innerHTML=`${line(depthText(DEPTH_COPY.handyman),handyman.started,handyman.repairs.length,3,handyman.completed)}${line(depthText(DEPTH_COPY.echoes),echoes.started,echoes.scans.length,3,echoes.completed)}<div><strong>${hebrew?"מזכרות":"Keepsakes"}</strong>: ${state.collectibles.length}/7</div>`;
+  $("depth-status").lang=hebrew?"he":"en";$("depth-status").dir=hebrew?"rtl":"ltr";
+  const toolLabels={atlas:["Atlas page","דף האטלס"],lens:["Echo Lens","עדשת ההד"],multitool:["Brass Multitool","כלי רב־שימושי מפליז"]};
+  Object.entries(toolLabels).forEach(([tool,pair])=>{const button=$(`item-${tool}`);button.lastChild.nodeValue=depthText(pair);button.setAttribute("aria-label",depthText([`Select ${pair[0]}`,`בחירת ${pair[1]}`]));});
 }
 function renderQuestList(){
   $("quest-list").replaceChildren();
@@ -1144,6 +1305,15 @@ function renderHotspots(){
   });
   const secret=$("hotspot-secret"),secretCurrent=state.started&&activeTargetId==="hotspot-secret";
   secret.classList.toggle("current",secretCurrent);secret.classList.toggle("done",state.secret);secret.setAttribute("aria-current",secretCurrent?"step":"false");
+  const explorable={
+    "hotspot-crate":state.step>0,
+    "hotspot-bridge":state.bridge,
+    "hotspot-boat":state.step>2,
+    "hotspot-console":state.step>3,
+    "hotspot-lighthouse":state.step>=4,
+    "hotspot-secret":state.lens
+  };
+  Object.entries(explorable).forEach(([id,enabled])=>$(id).classList.toggle("explorable",enabled));
   const targetId=state.interior?null:!state.started?"hotspot-spark":activeTargetId;
   requestAnimationFrame(()=>positionQuestBeacon(targetId));
 }
@@ -1256,7 +1426,8 @@ function approachSecret(){
 function enterLighthouse(){
   if(state.step<4){showToast("The lighthouse door is still sealed.");return;}
   state.interior=true;saveState();render();playCue("door");
-  showWorldDialogue("Spark",state.step===4?"The lock accepted Mira's key. Her note is on the workbench.":"The lens mechanism is waiting for the fraction pattern.",state.step===4?"המנעול קיבל את המפתח של מירה. הפתק שלה מונח על שולחן העבודה.":"מנגנון העדשה ממתין לתבנית השבר.");
+  const message=state.step===4?["The lock accepted Mira's key. Her note is on the workbench.","המנעול קיבל את המפתח של מירה. הפתק שלה מונח על שולחן העבודה."]:state.step===5?["The lens mechanism is waiting for the fraction pattern.","מנגנון העדשה ממתין לתבנית השבר."]:["The chamber remains open. Try the Atlas Page or Echo Lens on Mira's workbench.","החדר נשאר פתוח. נסו את דף האטלס או את עדשת ההד על שולחן העבודה של מירה."];
+  showWorldDialogue("Spark",message[0],message[1]);
 }
 function exitLighthouse(){
   state.interior=false;saveState();render();$("hotspot-lighthouse").focus({preventScroll:true});
@@ -1265,10 +1436,7 @@ function openChallenge(index){
   if(!state.started){showToast("Talk to Spark before exploring the harbor.");return;}
   if(index<state.step){showToast("That part of the harbor is already restored.");return;}
   if(index>state.step){tone(180,.12,"square");showToast("Spark: We need to finish the current objective first.");return;}
-  activeChallenge=resolvedChallenge(index);orderedWords=[];lastFocus=document.activeElement;translationPanelOpen=false;
-  $("challenge-label").textContent=activeChallenge.label;$("challenge-title").textContent=activeChallenge.title;
-  $("challenge-expression").textContent=activeChallenge.expression||"";
-  $("challenge-expression").hidden=!activeChallenge.expression;
+  activeChallenge=resolvedChallenge(index);orderedWords=[];lastFocus=document.activeElement;translationPanelOpen=false;englishTaskTranslated=false;
   $("challenge-feedback").textContent="";$("challenge-feedback").className="feedback";
   $("challenge-hint").hidden=true;
   $("hint-button").hidden=false;$("continue-button").hidden=true;
@@ -1278,17 +1446,26 @@ function openChallenge(index){
 }
 function renderChallengeGuidance(){
   if(!activeChallenge)return;
-  const hebrew=isHebrewGuidance(),isMath=activeChallenge.subject.startsWith("Mathematics");
-  setGuidanceText($("challenge-story"),activeChallenge.story,activeChallenge.storyHe,hebrew);
-  setGuidanceText($("challenge-question"),activeChallenge.question,activeChallenge.questionHe,hebrew&&isMath);
-  setGuidanceText($("challenge-hint"),activeChallenge.hint,activeChallenge.hintHe,hebrew);
-  $("hint-button").textContent=hebrew?"הצגת רמז":"Show a hint";
-  $("hint-button").setAttribute("aria-label",hebrew?"הצגת רמז לאתגר":"Show a hint for this challenge");
-  $("continue-button").textContent=hebrew?"חזרה לנמל":"Return to the harbor";
-  const tools=$("challenge-guidance-tools"),panel=$("challenge-translation");
-  tools.hidden=hebrew;panel.hidden=hebrew||!translationPanelOpen;
-  $("translate-guidance").setAttribute("aria-expanded",String(!panel.hidden));
-  if(!hebrew){
+  const hebrew=isHebrewGuidance(),isEnglish=isEnglishChallenge(),isMath=activeChallenge.subject.startsWith("Mathematics"),taskHebrew=isEnglish&&englishTaskTranslated;
+  setGuidanceText($("challenge-label"),activeChallenge.label,activeChallenge.labelHe,taskHebrew);
+  setGuidanceText($("challenge-title"),activeChallenge.title,activeChallenge.titleHe,taskHebrew);
+  setGuidanceText($("challenge-story"),activeChallenge.story,activeChallenge.storyHe,isEnglish?taskHebrew:hebrew);
+  setGuidanceText($("challenge-question"),activeChallenge.question,activeChallenge.questionHe,isEnglish?taskHebrew:hebrew&&isMath);
+  setGuidanceText($("challenge-expression"),activeChallenge.expression||"",activeChallenge.expressionHe,taskHebrew);
+  $("challenge-expression").hidden=!activeChallenge.expression;
+  setGuidanceText($("challenge-hint"),activeChallenge.hint,activeChallenge.hintHe,isEnglish?taskHebrew:hebrew);
+  $("hint-button").textContent=taskHebrew||hebrew?"הצגת רמז":"Show a hint";
+  $("hint-button").setAttribute("aria-label",taskHebrew||hebrew?"הצגת רמז לאתגר":"Show a hint for this challenge");
+  $("continue-button").textContent=taskHebrew||hebrew?"חזרה לנמל":"Return to the harbor";
+  const tools=$("challenge-guidance-tools"),panel=$("challenge-translation"),translate=$("translate-guidance"),listen=$("listen-guidance");
+  tools.hidden=!isEnglish&&hebrew;
+  panel.hidden=isEnglish||hebrew||!translationPanelOpen;
+  listen.hidden=!isEnglish&&hebrew;
+  translate.textContent=isEnglish?(hebrew?(taskHebrew?"הצגת המשימה באנגלית":"תרגום המשימה לעברית"):(taskHebrew?"Show task in English":"Translate task to Hebrew")):"Translate to Hebrew";
+  translate.lang=hebrew?"he":"en";translate.dir=hebrew?"rtl":"ltr";
+  translate.setAttribute("aria-label",isEnglish?(taskHebrew?"הצגת משימת האנגלית באנגלית":"תרגום כל משימת האנגלית לעברית"):"Show Hebrew translation");
+  translate.setAttribute("aria-expanded",String(isEnglish?taskHebrew:!panel.hidden));
+  if(!hebrew&&!isEnglish){
     panel.replaceChildren();
     const story=document.createElement("p");story.textContent=activeChallenge.storyHe;panel.append(story);
     if(isMath&&activeChallenge.questionHe){const question=document.createElement("p");question.className="question";question.textContent=activeChallenge.questionHe;panel.append(question);}
@@ -1296,7 +1473,7 @@ function renderChallengeGuidance(){
 }
 function renderChallengeVisual(challenge){
   const visual=$("challenge-visual");visual.innerHTML="";
-  if(challenge.passage){const passage=document.createElement("div");passage.className="reading";passage.textContent=challenge.passage;visual.append(passage);return;}
+  if(challenge.passage){const passage=document.createElement("div");passage.className="reading";setGuidanceText(passage,challenge.passage,challenge.passageHe,isEnglishChallenge(challenge)&&englishTaskTranslated);visual.append(passage);return;}
   if(challenge.id==="bridge-energy"){
     const values=(challenge.expression.match(/\d+/g)||[]).map(Number),groups=values[0]||4,perGroup=values[1]||6;
     const groupWidth=360/groups,circles=Array.from({length:groups},(_,group)=>Array.from({length:perGroup},(_,item)=>{
@@ -1325,26 +1502,28 @@ function renderChallengeVisual(challenge){
   visual.innerHTML=art[challenge.id]||`<svg viewBox="0 0 420 150" aria-hidden="true"><path d="M60 120Q210 5 360 120" fill="none" stroke="#6ed6c5" stroke-width="8"/><circle cx="210" cy="74" r="24" fill="#edc866"/></svg>`;
 }
 function renderChallengeContent(challenge){
-  const content=$("challenge-content");content.replaceChildren();
+  const content=$("challenge-content"),taskHebrew=isEnglishChallenge(challenge)&&englishTaskTranslated;content.replaceChildren();
   if(challenge.type==="choice"){
     const choices=document.createElement("div");choices.className="choices";
-    challenge.choices.forEach(value=>{
-      const button=document.createElement("button");button.type="button";button.className="choice";button.textContent=value;
+    challenge.choices.forEach((value,index)=>{
+      const button=document.createElement("button");button.type="button";button.className="choice";button.textContent=taskHebrew?challenge.choicesHe[index]:value;
+      button.lang=taskHebrew?"he":"en";button.dir=taskHebrew?"rtl":"ltr";
       button.addEventListener("click",()=>answerChoice(button,value));choices.append(button);
     });
     content.append(choices);return;
   }
-  const area=document.createElement("div");area.className="word-area";
-  const answer=document.createElement("div");answer.className="answer-line";answer.id="answer-line";answer.setAttribute("aria-label","Sentence under construction");
-  const bank=document.createElement("div");bank.className="word-bank";bank.id="word-bank";bank.setAttribute("aria-label","Available words");
+  const area=document.createElement("div"),controlHebrew=isHebrewGuidance()||taskHebrew;area.className="word-area";
+  const answer=document.createElement("div");answer.className="answer-line";answer.id="answer-line";answer.setAttribute("aria-label",taskHebrew?"משפט בבנייה":"Sentence under construction");
+  const bank=document.createElement("div");bank.className="word-bank";bank.id="word-bank";bank.setAttribute("aria-label",taskHebrew?"מילים זמינות":"Available words");
   challenge.words.forEach((word,index)=>{
-    const button=document.createElement("button");button.type="button";button.className="word";button.textContent=word;button.dataset.index=index;
+    const button=document.createElement("button");button.type="button";button.className="word";button.textContent=taskHebrew?challenge.wordsHe[index]:word;button.dataset.index=index;
+    button.lang=taskHebrew?"he":"en";button.dir=taskHebrew?"rtl":"ltr";
     button.addEventListener("click",()=>selectWord(index));bank.append(button);
   });
   const actions=document.createElement("div");actions.className="actions";
-  const clear=document.createElement("button");clear.type="button";clear.className="secondary";clear.textContent=isHebrewGuidance()?"ניקוי":"Clear";clear.onclick=clearWords;
-  const undo=document.createElement("button");undo.type="button";undo.className="secondary";undo.textContent=isHebrewGuidance()?"ביטול המילה האחרונה":"Undo last word";undo.onclick=undoWord;
-  const check=document.createElement("button");check.type="button";check.className="primary";check.textContent=isHebrewGuidance()?"בדיקת המשפט":"Check sentence";check.onclick=checkOrder;
+  const clear=document.createElement("button");clear.type="button";clear.className="secondary";clear.textContent=controlHebrew?"ניקוי":"Clear";clear.onclick=clearWords;
+  const undo=document.createElement("button");undo.type="button";undo.className="secondary";undo.textContent=controlHebrew?"ביטול המילה האחרונה":"Undo last word";undo.onclick=undoWord;
+  const check=document.createElement("button");check.type="button";check.className="primary";check.textContent=controlHebrew?"בדיקת המשפט":"Check sentence";check.onclick=checkOrder;
   actions.append(clear,undo,check);area.append(answer,bank,actions);content.append(area);renderWords();
 }
 function answerChoice(button,value){
@@ -1353,7 +1532,7 @@ function answerChoice(button,value){
     button.classList.add("correct");finishChallenge();
   }else{
     button.disabled=true;button.classList.add("wrong");state.assisted.push(activeChallenge.id);state.assisted=[...new Set(state.assisted)];
-    $("challenge-feedback").textContent=isHebrewGuidance()?"עדיין לא. ספארק פתח רמז — נסו תשובה אחרת.":"Not yet. Spark opened a clue—try another answer.";$("challenge-feedback").className="feedback try";
+    $("challenge-feedback").textContent=usesHebrewTaskText()?"עדיין לא. ספארק פתח רמז — נסו תשובה אחרת.":"Not yet. Spark opened a clue—try another answer.";$("challenge-feedback").className="feedback try";renderChallengeFeedbackLanguage();
     $("challenge-hint").hidden=false;$("hint-button").hidden=true;tone(180,.12,"square");saveState();
   }
 }
@@ -1365,16 +1544,19 @@ function renderWords(){
   const bank=$("word-bank"),answer=$("answer-line");answer.replaceChildren();
   [...bank.children].forEach(button=>button.hidden=orderedWords.includes(Number(button.dataset.index)));
   orderedWords.forEach(index=>{
-    const button=document.createElement("button");button.type="button";button.className="word";button.textContent=activeChallenge.words[index];
-    button.title="Remove this word";button.onclick=()=>{orderedWords=orderedWords.filter(i=>i!==index);renderWords();};answer.append(button);
+    const taskHebrew=isEnglishChallenge()&&englishTaskTranslated,button=document.createElement("button");button.type="button";button.className="word";button.textContent=taskHebrew?activeChallenge.wordsHe[index]:activeChallenge.words[index];
+    button.lang=taskHebrew?"he":"en";button.dir=taskHebrew?"rtl":"ltr";button.title=taskHebrew?"הסרת המילה הזאת":"Remove this word";button.onclick=()=>{orderedWords=orderedWords.filter(i=>i!==index);renderWords();};answer.append(button);
   });
 }
 function checkOrder(){
   const built=orderedWords.map(i=>activeChallenge.words[i]);
-  if(JSON.stringify(built)===JSON.stringify(activeChallenge.answer)){finishChallenge();return;}
+  const correct=englishTaskTranslated&&activeChallenge.answerWordIndexes
+    ?JSON.stringify(orderedWords)===JSON.stringify(activeChallenge.answerWordIndexes)
+    :JSON.stringify(built)===JSON.stringify(activeChallenge.answer);
+  if(correct){finishChallenge();return;}
   state.assisted.push(activeChallenge.id);state.assisted=[...new Set(state.assisted)];
-  $("challenge-feedback").textContent=isHebrewGuidance()?"המשפט עדיין אינו שלם. היעזרו ברמז, שנו את סדר המילים ונסו שוב.":"The sentence is not complete yet. Use the clue, adjust the word order, and try again.";
-  $("challenge-feedback").className="feedback try";$("challenge-hint").hidden=false;$("hint-button").hidden=true;tone(180,.12,"square");saveState();
+  $("challenge-feedback").textContent=usesHebrewTaskText()?"המשפט עדיין אינו שלם. היעזרו ברמז, שנו את סדר המילים ונסו שוב.":"The sentence is not complete yet. Use the clue, adjust the word order, and try again.";
+  $("challenge-feedback").className="feedback try";renderChallengeFeedbackLanguage();$("challenge-hint").hidden=false;$("hint-button").hidden=true;tone(180,.12,"square");saveState();
 }
 function finishChallenge(){
   const challenge=activeChallenge;if(!challenge||state.completed.includes(challenge.id))return;
@@ -1383,13 +1565,24 @@ function finishChallenge(){
   if(challenge.reward==="lens")state.lens=true;
   if(challenge.reward==="lighthouse")state.lighthouse=true;
   $("challenge-content").querySelectorAll("button").forEach(button=>button.disabled=true);
-  $("challenge-feedback").textContent=(isHebrewGuidance()?"הצלחה! ":"Success! ")+challenge.explanation;$("challenge-feedback").className="feedback good";
+  const hebrewTask=usesHebrewTaskText();
+  $("challenge-feedback").textContent=(hebrewTask?"הצלחה! ":"Success! ")+(hebrewTask&&challenge.explanationHe?challenge.explanationHe:challenge.explanation);$("challenge-feedback").className="feedback good";renderChallengeFeedbackLanguage();
   $("challenge-hint").hidden=true;$("hint-button").hidden=true;$("continue-button").hidden=false;
   pendingDialogue={speaker:"Spark",text:challenge.spark,textHe:challenge.sparkHe};
   playCue(challenge.reward==="bridge"?"bridge":challenge.reward==="lighthouse"?"lens":"success");burst();saveState();render();
   if(challenge.reward==="bridge")showToast("The bridge has been rebuilt.");
   if(challenge.reward==="lens")showToast("Echo Lens unlocked. A secret signal is visible.");
   if(challenge.reward==="lighthouse")showToast("Cloud Harbor lighthouse restored.");
+}
+function renderChallengeFeedbackLanguage(){
+  const feedback=$("challenge-feedback");
+  if(!activeChallenge||!feedback.textContent)return;
+  const hebrewTask=usesHebrewTaskText();
+  if(feedback.classList.contains("good"))feedback.textContent=(hebrewTask?"הצלחה! ":"Success! ")+(hebrewTask&&activeChallenge.explanationHe?activeChallenge.explanationHe:activeChallenge.explanation);
+  else if(feedback.classList.contains("try"))feedback.textContent=activeChallenge.type==="order"
+    ?(hebrewTask?"המשפט עדיין אינו שלם. היעזרו ברמז, שנו את סדר המילים ונסו שוב.":"The sentence is not complete yet. Use the clue, adjust the word order, and try again.")
+    :(hebrewTask?"עדיין לא. ספארק פתח רמז — נסו תשובה אחרת.":"Not yet. Spark opened a clue—try another answer.");
+  feedback.lang=hebrewTask?"he":"en";feedback.dir=hebrewTask?"rtl":"ltr";
 }
 function burst(){
   const field=$("celebrate");field.replaceChildren();
@@ -1420,7 +1613,7 @@ function showCompletion(){
 function findSecret(){
   if(!state.lens){showToast("A special lens is needed to reveal this path.");return;}
   if(state.step<challenges.length){showToast("The cave signal is incomplete. Finish the current objectives first.");return;}
-  if(state.secret){showToast("The hidden map fragment is already in your journal.");return;}
+  if(state.secret){openCaveArchive();return;}
   state.secret=true;saveState();render();playCue("secret");burst();
   window.AtlasProgress?.completeIsland(1,"Cloud Harbor",{assisted:state.assisted.length,challengeCount:challenges.length});
   if(isHebrewGuidance()){openInfo("שבר מפה נסתר",`<div lang="he" dir="rtl"><p>עדשת ההד חושפת מערה מאחורי אי המגדלור. בתוכה נמצא שבר המסומן באי שישי — אי שאינו מופיע באטלס הרגיל.</p><p><strong>הסוד התגלה:</strong> האי הבלתי כתוב.</p><p>קו ירוק חדש מצביע כעת אל גן הרוחות, שאליו אזהרת הסערה של מירה מעולם לא הגיעה.</p><div class="actions"><button class="primary" type="button" data-action="island-two">המשך אל האי השני</button><button class="secondary" type="button" data-action="journal">רישום התגלית</button></div></div>`,"הסוד התגלה");return}
@@ -1436,8 +1629,11 @@ function talkToSpark(){
 }
 function openJournal(){
   const questRows=challenges.map((q,i)=>`<li>${state.completed.includes(q.id)?"✓":"○"} <strong>${q.title}</strong>${state.assisted.includes(q.id)?" — completed with support":""}</li>`).join("");
-  const replay=state.step>=challenges.length?`<div class="actions"><button class="primary" type="button" data-action="replay">Replay with new questions</button></div>`:"";
-  openInfo("Expedition journal",`<p><strong>Cloud Harbor:</strong> ${state.completed.length}/${challenges.length} challenges complete.</p><ol>${questRows}</ol><p><strong>Tools:</strong> ${state.atlas?"Atlas page":""}${state.lens?", Echo Lens":""}${state.secret?", secret map fragment":""}.</p><p class="story">Progress is stored only in this browser. No account or personal information is used.</p>${replay}`,"Journal");
+  const handyman=state.sideQuests.handyman,echoes=state.sideQuests.echoes,hebrew=isHebrewGuidance();
+  const replay=state.step>=challenges.length?`<div class="actions"><button class="primary" type="button" data-action="replay">${hebrew?"משחק חוזר עם שאלות חדשות":"Replay with new questions"}</button></div>`:"";
+  const optional=`<h3>${hebrew?"משימות צדדיות":"Optional quests"}</h3><ul><li>${handyman.completed?"✓":handyman.started?"◆":"○"} ${depthText(DEPTH_COPY.handyman)} — ${handyman.repairs.length}/3</li><li>${echoes.completed?"✓":echoes.started?"◆":"○"} ${depthText(DEPTH_COPY.echoes)} — ${echoes.scans.length}/3</li></ul><p><strong>${hebrew?"מזכרות":"Keepsakes"}:</strong> ${state.collectibles.length}/7</p>`;
+  const content=`<div${hebrew?' lang="he" dir="rtl"':""}><p><strong>${hebrew?"נמל העננים":"Cloud Harbor"}:</strong> ${state.completed.length}/${challenges.length} ${hebrew?"אתגרים הושלמו":"challenges complete"}.</p><ol>${questRows}</ol>${optional}<p><strong>${hebrew?"כלים":"Tools"}:</strong> ${state.atlas?(hebrew?"דף האטלס":"Atlas page"):""}${state.lens?(hebrew?", עדשת ההד":", Echo Lens"):""}${state.tools.multitool?(hebrew?", כלי רב־שימושי מפליז":", Brass Multitool"):""}${state.secret?(hebrew?", שבר מפה נסתר":", secret map fragment"):""}.</p><p class="story">${hebrew?"ההתקדמות נשמרת רק בדפדפן הזה. לא נעשה שימוש בחשבון או במידע אישי.":"Progress is stored only in this browser. No account or personal information is used."}</p>${replay}</div>`;
+  openInfo(hebrew?"יומן המסע":"Expedition journal",content,hebrew?"יומן":"Journal");
 }
 function startNewRun(){
   const sound=state.sound,reducedMotion=state.reducedMotion,previousVariants=state.questionVariants||{};
@@ -1463,18 +1659,23 @@ function resetWholeAdventure(){
   openInfo("Reset the whole adventure?",`<p>This removes progress for all six islands and returns the Atlas adventure to the beginning.</p><div class="actions"><button class="secondary" type="button" data-action="cancel-reset">Keep progress</button><button class="primary" type="button" data-action="confirm-reset-all">Reset everything</button></div>`,"All Atlas progress");
 }
 
+function requiredHotspotId(){return state.step<challenges.length?CHALLENGE_TARGET_IDS[state.step]:!state.secret&&state.lens?"hotspot-secret":null;}
 document.querySelectorAll("[data-step]").forEach(button=>button.addEventListener("click",()=>{
-  const step=Number(button.dataset.step);
-  if(CHALLENGE_TARGET_IDS[state.step]===button.id)approachCurrentTarget();else openChallenge(step);
+  if(requiredHotspotId()===button.id)approachCurrentTarget();else approachOptional(button.id);
 }));
+["hotspot-lighthouse","hotspot-secret"].forEach(id=>$(id).addEventListener("click",()=>requiredHotspotId()===id?approachCurrentTarget():approachOptional(id)));
 $("hotspot-spark").addEventListener("click",()=>state.started?openJournal():approachCurrentTarget());
-$("hotspot-lighthouse").addEventListener("click",()=>CHALLENGE_TARGET_IDS[state.step]==="hotspot-lighthouse"?approachCurrentTarget():openChallenge(4));
-$("hotspot-secret").addEventListener("click",()=>CHALLENGE_TARGET_IDS[state.step]==="hotspot-secret"?approachCurrentTarget():approachSecret());
 $("dialogue-close").addEventListener("click",()=>{clearTimeout(dialogueTimer);$("world-dialogue").hidden=true;});
 $("interior-exit").addEventListener("click",exitLighthouse);
-$("interior-note").addEventListener("click",()=>state.step===4?openChallenge(4):showToast("Mira's note is already recorded in the journal."));
+$("interior-note").addEventListener("click",()=>{
+  if(state.step===4){openChallenge(4);return;}
+  if(state.activeTool==="lens"&&state.lens){scanEcho("workbench");return;}
+  if(state.activeTool==="atlas"&&state.lighthouse){collectKeepsake("lens-shard","Lens shard","שבר עדשה");return;}
+  showToast(depthText(["Select the Atlas Page or Echo Lens to inspect the workbench.","בחרו בדף האטלס או בעדשת ההד כדי לבדוק את שולחן העבודה."]));
+});
 $("interior-lens").addEventListener("click",()=>state.step===5?openChallenge(5):showToast("Read Mira's note before adjusting the lens."));
 $("interact-button").addEventListener("click",approachCurrentTarget);
+document.querySelectorAll("[data-tool]").forEach(button=>button.addEventListener("click",()=>selectTool(button.dataset.tool)));
 const directionVectors={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]};
 document.querySelectorAll("[data-direction]").forEach(button=>{
   const direction=button.dataset.direction,[dx,dy]=directionVectors[direction];
@@ -1494,11 +1695,15 @@ document.addEventListener("keyup",event=>{
 });
 window.addEventListener("blur",()=>{heldDirections.clear();});
 $("translate-guidance").addEventListener("click",()=>{
-  translationPanelOpen=!translationPanelOpen;renderChallengeGuidance();
+  if(isEnglishChallenge()){
+    englishTaskTranslated=!englishTaskTranslated;renderChallengeGuidance();renderChallengeVisual(activeChallenge);renderChallengeContent(activeChallenge);renderChallengeFeedbackLanguage();
+  }else{
+    translationPanelOpen=!translationPanelOpen;renderChallengeGuidance();
+  }
 });
 $("listen-guidance").addEventListener("click",()=>{
   if(!activeChallenge)return;
-  const spoken=[activeChallenge.story,activeChallenge.question].filter(Boolean).join(" ");
+  const spoken=[activeChallenge.story,activeChallenge.passage,activeChallenge.question,activeChallenge.expression].filter(Boolean).join(" ");
   if(!window.AtlasLanguage?.speakEnglish?.(spoken))showToast("English speech is not available in this browser.");
 });
 $("hint-button").addEventListener("click",()=>{state.assisted.push(activeChallenge.id);state.assisted=[...new Set(state.assisted)];$("challenge-hint").hidden=false;$("hint-button").hidden=true;saveState();tone(360,.08);});

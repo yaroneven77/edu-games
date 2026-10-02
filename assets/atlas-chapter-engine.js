@@ -99,6 +99,7 @@
   const guidanceLanguage = () => window.AtlasLanguage?.get?.() || "he";
   const useHebrew = () => guidanceLanguage() === "he";
   const isEnglishChallenge = challenge => challenge?.subject?.startsWith("English");
+  const translatedValue = (translations, english) => translations?.[english] || english;
   const localize = (english, hebrew) => useHebrew() && hebrew ? hebrew : english;
   const setGuidanceText = (element, english, hebrew, forceEnglish = false) => {
     const hebrewEnabled = !forceEnglish && useHebrew() && Boolean(hebrew);
@@ -158,6 +159,7 @@
   let active = null;
   let sequence = [];
   let balanceValue = 0;
+  let challengeTranslated = false;
   let lastFocus = null;
   let audio = null;
   let autoWalkFrame = 0;
@@ -394,17 +396,18 @@
     if (index !== state.step) return;
     active = resolvedChallenge(index);
     sequence = [];
+    challengeTranslated = false;
     balanceValue = Number(active.start ?? 0);
     lastFocus = document.activeElement;
-    $("challenge-label").textContent = `${active.label} · ${active.subject}`;
-    $("challenge-title").textContent = active.title;
-    setGuidanceText($("challenge-story"), active.story, active.storyHe);
-    setGuidanceText($("challenge-hint"), active.hint, active.hintHe);
+    renderChallengeHeader();
+    setChallengeText($("challenge-story"), active.story, active.storyHe);
+    setChallengeText($("challenge-hint"), active.hint, active.hintHe);
     $("challenge-hint").hidden = true;
     $("challenge-feedback").textContent = "";
     $("challenge-feedback").className = "feedback";
     $("hint-button").hidden = false;
     $("continue-button").hidden = true;
+    setChallengeControlLabels();
     renderChallenge();
     renderGuidanceActions();
     $("challenge-dialog").showModal();
@@ -413,21 +416,48 @@
   function renderGuidanceActions() {
     $("guidance-actions")?.remove();
     $("guidance-translation")?.remove();
-    if (useHebrew()) return;
+    const englishTask = isEnglishChallenge(active);
+    if (!englishTask && useHebrew()) return;
     const actions = document.createElement("div");
     actions.className = "guidance-actions";
     actions.id = "guidance-actions";
     const translate = document.createElement("button");
     translate.className = "secondary";
     translate.type = "button";
-    translate.textContent = "Translate to Hebrew";
-    translate.setAttribute("aria-expanded", "false");
+    translate.textContent = englishTask ? "Translate challenge to Hebrew" : "Translate to Hebrew";
+    translate.setAttribute(englishTask ? "aria-pressed" : "aria-expanded", "false");
     const listen = document.createElement("button");
     listen.className = "secondary";
     listen.type = "button";
     listen.textContent = "Listen";
     listen.setAttribute("aria-label", "Listen to the English story and instructions");
     translate.onclick = () => {
+      if (englishTask) {
+        challengeTranslated = !challengeTranslated;
+        translate.setAttribute("aria-pressed", String(challengeTranslated));
+        translate.textContent = challengeTranslated ? "Show challenge in English" : "Translate challenge to Hebrew";
+        renderChallengeHeader();
+        setChallengeText($("challenge-story"), active.story, active.storyHe);
+        setChallengeText($("challenge-hint"), active.hint, active.hintHe);
+        setChallengeControlLabels();
+        renderChallenge();
+        if (state.completed.includes(active.id)) {
+          $("challenge-content").querySelectorAll("button").forEach(button => button.disabled = true);
+        }
+
+        const feedback = $("challenge-feedback");
+        if (feedback.classList.contains("good")) {
+          feedback.textContent = challengeTranslated
+            ? `הצלחה! ${active.explanationHe || active.explanation}`
+            : `Success! ${active.explanation}`;
+        } else if (feedback.classList.contains("try")) {
+          feedback.textContent = challengeTranslated
+            ? "עדיין לא. ספארק פתח רמז — נסו תשובה אחרת."
+            : "Not yet. Spark opened a clue—try another answer.";
+        }
+        setTaskLanguage(feedback);
+        return;
+      }
       let panel = $("guidance-translation");
       if (panel) {
         panel.remove();
@@ -450,17 +480,57 @@
     $("challenge-story").after(actions);
   }
 
+  function renderChallengeHeader() {
+    const translated = isEnglishChallenge(active) && challengeTranslated;
+    const label = translated ? `אתגר ${state.step + 1} מתוך ${config.challenges.length}` : active.label;
+    const subject = translated ? active.subjectHe : active.subject;
+    $("challenge-label").textContent = `${label} · ${subject}`;
+    $("challenge-title").textContent = translated ? active.titleHe : active.title;
+    setTaskLanguage($("challenge-label"), translated);
+    setTaskLanguage($("challenge-title"), translated);
+  }
+
+  function setChallengeText(element, english, hebrew) {
+    if (!isEnglishChallenge(active)) {
+      setGuidanceText(element, english, hebrew);
+      element.classList.remove("task-hebrew");
+      return;
+    }
+    const translated = isEnglishChallenge(active) && challengeTranslated && Boolean(hebrew);
+    element.textContent = translated ? hebrew : english;
+    element.lang = translated ? "he" : "en";
+    element.dir = translated ? "rtl" : "ltr";
+    element.classList.toggle("guidance-hebrew", translated);
+    element.classList.toggle("task-hebrew", translated);
+  }
+
+  function setTaskLanguage(element, translated = challengeTranslated) {
+    element.classList.toggle("task-hebrew", translated);
+    element.lang = translated ? "he" : "en";
+    element.dir = translated ? "rtl" : "ltr";
+  }
+
+  function setChallengeControlLabels() {
+    const hint = $("hint-button");
+    const continueButton = $("continue-button");
+    hint.textContent = challengeTranslated ? "הצגת רמז" : "Show a hint";
+    continueButton.textContent = challengeTranslated ? "המשך" : "Continue";
+    setTaskLanguage(hint);
+    setTaskLanguage(continueButton);
+  }
+
   function renderChallenge() {
     const box = $("challenge-content");
     box.replaceChildren();
     if (active.passage) {
       const passage = document.createElement("div");
       passage.className = "passage";
-      passage.textContent = active.passage;
+      passage.textContent = challengeTranslated ? active.passageHe : active.passage;
+      setTaskLanguage(passage);
       box.append(passage);
     }
     const question = document.createElement("h3");
-    setGuidanceText(question, active.question, active.questionHe, isEnglishChallenge(active));
+    setChallengeText(question, active.question, active.questionHe);
     box.append(question);
     if (active.expression) {
       const expression = document.createElement("div");
@@ -475,7 +545,8 @@
         const button = document.createElement("button");
         button.className = "choice";
         button.type = "button";
-        button.textContent = value;
+        button.textContent = challengeTranslated ? translatedValue(active.choicesHe, value) : value;
+        setTaskLanguage(button);
         button.onclick = () => answerChoice(button, value);
         choices.append(button);
       });
@@ -495,12 +566,17 @@
     answer.id = "token-answer";
     const bank = document.createElement("div");
     bank.className = "token-bank";
+    setTaskLanguage(answer);
+    setTaskLanguage(bank);
     const available = active.type === "order" ? active.tokens : active.bank;
     available.forEach((value, index) => {
       const button = document.createElement("button");
       button.className = "token";
       button.type = "button";
-      button.textContent = value;
+      button.textContent = challengeTranslated
+        ? (active.type === "order" ? active.tokensHe[index] : translatedValue(active.tokensHe, value))
+        : value;
+      setTaskLanguage(button);
       button.dataset.index = index;
       button.onclick = () => {
         if (active.type === "order" && sequence.includes(index)) return;
@@ -512,7 +588,9 @@
     });
     const actions = document.createElement("div");
     actions.className = "actions";
-    actions.innerHTML = '<button class="secondary" id="clear-sequence" type="button">Clear</button><button class="secondary" id="undo-sequence" type="button">Undo</button><button class="primary" id="check-sequence" type="button">Check</button>';
+    actions.innerHTML = challengeTranslated
+      ? '<button class="secondary task-hebrew" id="clear-sequence" type="button" lang="he" dir="rtl">ניקוי</button><button class="secondary task-hebrew" id="undo-sequence" type="button" lang="he" dir="rtl">ביטול</button><button class="primary task-hebrew" id="check-sequence" type="button" lang="he" dir="rtl">בדיקה</button>'
+      : '<button class="secondary" id="clear-sequence" type="button">Clear</button><button class="secondary" id="undo-sequence" type="button">Undo</button><button class="primary" id="check-sequence" type="button">Check</button>';
     box.append(answer, bank, actions);
     $("clear-sequence").onclick = () => { sequence = []; drawSequence(bank, answer); };
     $("undo-sequence").onclick = () => { sequence.pop(); drawSequence(bank, answer); };
@@ -529,7 +607,11 @@
       const token = document.createElement("button");
       token.className = "token";
       token.type = "button";
-      token.textContent = active.type === "order" ? active.tokens[entry] : entry;
+      const value = active.type === "order" ? active.tokens[entry] : entry;
+      token.textContent = challengeTranslated
+        ? (active.type === "order" ? active.tokensHe[entry] : translatedValue(active.tokensHe, value))
+        : value;
+      setTaskLanguage(token);
       token.onclick = () => {
         const index = sequence.indexOf(entry);
         if (index >= 0) sequence.splice(index, 1);
@@ -595,8 +677,11 @@
 
   function retry(message = "Not yet. Spark opened a clue—try another answer.") {
     state.assisted = [...new Set([...state.assisted, active.id])];
-    $("challenge-feedback").textContent = message;
+    $("challenge-feedback").textContent = challengeTranslated
+      ? "עדיין לא. ספארק פתח רמז — נסו תשובה אחרת."
+      : message;
     $("challenge-feedback").className = "feedback try";
+    setTaskLanguage($("challenge-feedback"));
     $("challenge-hint").hidden = false;
     $("hint-button").hidden = true;
     tone(180, .12);
@@ -608,8 +693,11 @@
     state.completed.push(active.id);
     state.step = Math.min(config.challenges.length, state.step + 1);
     $("challenge-content").querySelectorAll("button").forEach(button => button.disabled = true);
-    $("challenge-feedback").textContent = `Success! ${active.explanation}`;
+    $("challenge-feedback").textContent = challengeTranslated
+      ? `הצלחה! ${active.explanationHe || active.explanation}`
+      : `Success! ${active.explanation}`;
     $("challenge-feedback").className = "feedback good";
+    setTaskLanguage($("challenge-feedback"));
     $("challenge-hint").hidden = true;
     $("hint-button").hidden = true;
     $("continue-button").hidden = false;

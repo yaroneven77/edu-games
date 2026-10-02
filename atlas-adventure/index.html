@@ -169,7 +169,7 @@ html body#edu-refresh .side>.panel .spark-message{color:#cdeaf0!important}
 .item img{width:25px;height:25px;object-fit:contain;vertical-align:middle;margin-inline-end:5px;filter:saturate(.55)}
 .item.unlocked{color:#fff0b6;border-color:#ad9858;background:#293848}
 .item.unlocked img{filter:none}
-.tool-button{min-height:44px;cursor:pointer;text-align:start}.tool-button:disabled{cursor:not-allowed;opacity:.5}.tool-button.active{border-color:var(--good);box-shadow:0 0 0 3px rgba(121,223,154,.2);color:#eaffef}.tool-icon{display:inline-grid;width:25px;height:25px;margin-inline-end:5px;place-items:center;font-size:21px;vertical-align:middle}.depth-status{display:grid;gap:6px;margin:11px 0;padding:10px;border:1px solid rgba(190,226,237,.22);border-radius:12px;background:#0b2039;color:#b9d4db;font-size:13px}.depth-status strong{color:#fff0b6}.depth-status .done{color:#a9f1bd}
+.tool-button{min-height:44px;cursor:pointer;text-align:start}.tool-button:disabled{cursor:not-allowed;opacity:.5}.tool-button.active{border-color:var(--good);box-shadow:0 0 0 3px rgba(121,223,154,.2);color:#eaffef}.tool-icon{display:inline-grid;width:25px;height:25px;margin-inline-end:5px;place-items:center;font-size:21px;vertical-align:middle}.depth-status{display:grid;gap:8px;margin:11px 0;color:#b9d4db;font-size:13px}.sidequest-card{display:grid;gap:7px;padding:10px;border:1px solid rgba(190,226,237,.24);border-radius:12px;background:#0b2039}.sidequest-card.available{border-color:#d5b950;box-shadow:0 0 0 2px rgba(243,199,92,.12)}.sidequest-card.done{border-color:#5aa979;background:#102e31;color:#c9f4d5}.sidequest-card.locked{opacity:.72}.sidequest-card strong{color:#fff0b6}.sidequest-card p{margin:0}.sidequest-card button{justify-self:start;min-height:42px;padding:7px 11px}.keepsake-count{padding:4px 2px}
 .save-row{display:flex;align-items:center;justify-content:space-between;gap:8px;color:#a9c7d0;font-size:13px}.reset-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}.save-dot{width:9px;height:9px;border-radius:50%;background:#7890a0}.save-dot.saved{background:var(--good)}
 .modal{border:0;padding:0;width:min(700px,calc(100% - 24px));max-height:92vh;overflow:hidden;border-radius:23px;background:#0c223d;color:#eef8fa;box-shadow:0 30px 90px rgba(0,0,0,.65)}
 html body#edu-refresh dialog.modal{background:#0c223d!important;color:#eef8fa!important;border-color:rgba(190,226,237,.35)!important}
@@ -1270,21 +1270,42 @@ function render(){
   setModelState("cloud-lighthouse",state.lighthouse?"lit":state.step===5?"lens-aligning":state.step>=4?"door-open":"dark",state.lighthouse?"lit":state.step>=4?"open":"dark");
   setModelState("hidden-cave",state.secret?"collected":state.lens?"revealed":"concealed");
   updateGeneratedInterior();
-  $("interior-note").classList.toggle("current",inside&&state.step===4);
+  const echoWorkBenchCurrent=inside&&state.step>=6&&state.activeTool==="lens"&&!state.sideQuests.echoes.scans.includes("workbench");
+  $("interior-note").classList.toggle("current",inside&&(state.step===4||echoWorkBenchCurrent));
   $("interior-note").classList.toggle("done",state.step>4);
+  setGuidanceText($("interior-note"),state.step===4?"Read Mira's note":echoWorkBenchCurrent?"Scan Mira's workbench":"Examine Mira's workbench",state.step===4?"קראו את הפתק של מירה":echoWorkBenchCurrent?"סרקו את שולחן העבודה של מירה":"בדקו את שולחן העבודה של מירה");
   $("interior-lens").classList.toggle("current",inside&&state.step===5);
   $("interior-lens").disabled=state.step<5;
   const interiorIndex=state.step===4?0:state.step===5?1:2;
-  setGuidanceText($("interior-caption"),["The chamber is silent. Mira's note rests on the workbench.","The note reveals the final lens pattern. The brass mechanism is ready.","The restored lens sends a golden beam through the clouds."][interiorIndex],GUIDANCE_HE.interior[interiorIndex]);
+  setGuidanceText($("interior-caption"),echoWorkBenchCurrent?"Side quest: use the Echo Lens on Mira's workbench.":["The chamber is silent. Mira's note rests on the workbench.","The note reveals the final lens pattern. The brass mechanism is ready.","The restored lens sends a golden beam through the clouds."][interiorIndex],echoWorkBenchCurrent?"משימה צדדית: השתמשו בעדשת ההד על שולחן העבודה של מירה.":GUIDANCE_HE.interior[interiorIndex]);
   renderQuestList();renderDepthStatus();renderHotspots();updatePlayerVisual();
 }
 function renderDepthStatus(){
   const hebrew=isHebrewGuidance(),handyman=state.sideQuests.handyman,echoes=state.sideQuests.echoes;
-  const line=(title,started,count,total,complete)=>`<div class="${complete?"done":""}"><strong>${title}</strong>: ${started?complete?(hebrew?"הושלם":"complete"):`${count}/${total}`:(hebrew?"טרם התגלתה":"not discovered")}</div>`;
-  $("depth-status").innerHTML=`${line(depthText(DEPTH_COPY.handyman),handyman.started,handyman.repairs.length,3,handyman.completed)}${line(depthText(DEPTH_COPY.echoes),echoes.started,echoes.scans.length,3,echoes.completed)}<div><strong>${hebrew?"מזכרות":"Keepsakes"}</strong>: ${state.collectibles.length}/7</div>`;
+  const handymanCard=handyman.completed
+    ?`<div class="sidequest-card done"><strong>✓ ${depthText(DEPTH_COPY.handyman)}</strong><p>${depthText(DEPTH_COPY.repaired)}</p></div>`
+    :handyman.started
+      ?`<div class="sidequest-card"><strong>◆ ${depthText(DEPTH_COPY.handyman)} — ${handyman.repairs.length}/3</strong><p>${depthText(DEPTH_COPY.repairs)}</p><button class="secondary" type="button" data-depth-action="continue-handyman">${hebrew?"בחירת הכלי והמשך":"Select tool and continue"}</button></div>`
+      :state.step>=2
+        ?`<div class="sidequest-card available"><strong>${hebrew?"משימה צדדית חדשה":"New side quest"}: ${depthText(DEPTH_COPY.handyman)}</strong><p>${hebrew?"התחילו בארגז המטען הפתוח.":"Start at the opened cargo crate."}</p><button class="primary" type="button" data-depth-action="start-handyman">${hebrew?"התחלת המשימה":"Start side quest"}</button></div>`
+        :`<div class="sidequest-card locked"><strong>🔒 ${depthText(DEPTH_COPY.handyman)}</strong><p>${hebrew?"נפתחת לאחר שחזור הגשר.":"Unlocks after restoring the bridge."}</p></div>`;
+  const echoesCard=echoes.completed
+    ?`<div class="sidequest-card done"><strong>✓ ${depthText(DEPTH_COPY.echoes)}</strong><p>${depthText(DEPTH_COPY.route)}</p></div>`
+    :echoes.started
+      ?`<div class="sidequest-card"><strong>◆ ${depthText(DEPTH_COPY.echoes)} — ${echoes.scans.length}/3</strong><p>${depthText(DEPTH_COPY.scans)}</p><button class="secondary" type="button" data-depth-action="continue-echoes">${hebrew?"בחירת העדשה והמשך":"Select lens and continue"}</button></div>`
+      :state.step>=6
+        ?`<div class="sidequest-card available"><strong>${hebrew?"משימה צדדית חדשה":"New side quest"}: ${depthText(DEPTH_COPY.echoes)}</strong><p>${hebrew?"התחילו בשולחן העבודה של מירה בתוך המגדלור.":"Start at Mira's workbench inside the lighthouse."}</p><button class="primary" type="button" data-depth-action="start-echoes">${hebrew?"התחלת המשימה":"Start side quest"}</button></div>`
+        :`<div class="sidequest-card locked"><strong>🔒 ${depthText(DEPTH_COPY.echoes)}</strong><p>${hebrew?"נפתחת לאחר שחזור עדשת המגדלור.":"Unlocks after restoring the lighthouse lens."}</p></div>`;
+  $("depth-status").innerHTML=`${handymanCard}${echoesCard}<div class="keepsake-count"><strong>${hebrew?"מזכרות":"Keepsakes"}</strong>: ${state.collectibles.length}/7</div>`;
   $("depth-status").lang=hebrew?"he":"en";$("depth-status").dir=hebrew?"rtl":"ltr";
   const toolLabels={atlas:["Atlas page","דף האטלס"],lens:["Echo Lens","עדשת ההד"],multitool:["Brass Multitool","כלי רב־שימושי מפליז"]};
   Object.entries(toolLabels).forEach(([tool,pair])=>{const button=$(`item-${tool}`);button.lastChild.nodeValue=depthText(pair);button.setAttribute("aria-label",depthText([`Select ${pair[0]}`,`בחירת ${pair[1]}`]));});
+}
+function handleDepthAction(action){
+  if(action==="start-handyman"){state.activeTool="atlas";saveState();render();showToast(depthText(["Follow the highlighted cargo crate.","עקבו אחר ארגז המטען המודגש."]));approachOptional("hotspot-crate");}
+  if(action==="continue-handyman")selectTool("multitool");
+  if(action==="start-echoes"){state.activeTool="lens";saveState();render();showToast(depthText(["Go inside the lighthouse and scan Mira's workbench.","היכנסו למגדלור וסרקו את שולחן העבודה של מירה."]));approachOptional("hotspot-lighthouse");}
+  if(action==="continue-echoes")selectTool("lens");
 }
 function renderQuestList(){
   $("quest-list").replaceChildren();
@@ -1687,6 +1708,7 @@ $("interior-note").addEventListener("click",()=>{
 $("interior-lens").addEventListener("click",()=>state.step===5?openChallenge(5):showToast("Read Mira's note before adjusting the lens."));
 $("interact-button").addEventListener("click",approachCurrentTarget);
 document.querySelectorAll("[data-tool]").forEach(button=>button.addEventListener("click",()=>selectTool(button.dataset.tool)));
+$("depth-status").addEventListener("click",event=>{const action=event.target.closest("[data-depth-action]")?.dataset.depthAction;if(action)handleDepthAction(action);});
 const directionVectors={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]};
 document.querySelectorAll("[data-direction]").forEach(button=>{
   const direction=button.dataset.direction,[dx,dy]=directionVectors[direction];

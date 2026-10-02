@@ -772,6 +772,7 @@
       <div class="setting"><span><strong>Reduce motion</strong><br><small>Stops decorative animation</small></span><button class="switch" type="button" data-action="motion" aria-label="Toggle reduced motion" aria-pressed="${state.reducedMotion}"></button></div>
       <div class="setting"><span><strong>Story and instructions</strong><br><small>Hebrew is the default guidance language</small></span><select class="language-select" data-setting-language aria-label="Story and instructions language"><option value="he"${language === "he" ? " selected" : ""}>Hebrew</option><option value="en"${language === "en" ? " selected" : ""}>English</option></select></div>
       <div class="actions"><a class="secondary" href="${artworkHref}">GPT artwork prompt</a></div>
+      <div class="actions"><button class="secondary" type="button" data-action="reset-island">Reset island</button><button class="secondary" type="button" data-action="reset-all">Reset all game progress</button></div>
       <p>Progress and settings are saved only in this browser. No microphone, account, analytics, or child information is used.</p>
     </div>`, "Game settings");
   }
@@ -795,17 +796,6 @@
   }
 
   buildWorld();
-  const resetIslandButton = $("reset");
-  const resetActions = document.createElement("div");
-  const resetAllButton = document.createElement("button");
-  resetActions.className = "reset-actions";
-  resetIslandButton.textContent = "Reset island";
-  resetAllButton.className = "secondary";
-  resetAllButton.id = "reset-all";
-  resetAllButton.type = "button";
-  resetAllButton.textContent = "Reset all";
-  resetIslandButton.replaceWith(resetActions);
-  resetActions.append(resetIslandButton, resetAllButton);
   $("journal").setAttribute("aria-label", "Open expedition journal");
   $("settings").setAttribute("aria-label", "Open settings");
   $("close-challenge").setAttribute("aria-label", "Close challenge");
@@ -833,6 +823,8 @@
     if (action === "replay") replay();
     if (action === "sound") { state.sound = !state.sound; save(); $("info-dialog").close(); openSettings(); }
     if (action === "motion") { state.reducedMotion = !state.reducedMotion; save(); render(); $("info-dialog").close(); openSettings(); }
+    if (action === "reset-island") openInfo(`Reset ${config.title}?`, `<p>This restarts only this island. Progress on the other islands remains saved.</p><div class="actions"><button class="secondary" data-action="cancel-reset">Keep progress</button><button class="primary" data-action="confirm-reset-island">Reset island</button></div>`, "Local progress");
+    if (action === "reset-all") openInfo("Reset the whole adventure?", `<p>This removes progress for all six islands and returns the Atlas adventure to the beginning.</p><div class="actions"><button class="secondary" data-action="cancel-reset">Keep progress</button><button class="primary" data-action="confirm-reset-all">Reset everything</button></div>`, "All Atlas progress");
   };
   $("info-content").addEventListener("change", event => {
     const select = event.target.closest("[data-setting-language]");
@@ -840,8 +832,6 @@
     window.AtlasLanguage?.set?.(select.value);
     render();
   });
-  resetIslandButton.onclick = () => openInfo(`Reset ${config.title}?`, `<p>This restarts only this island. Progress on the other islands remains saved.</p><div class="actions"><button class="secondary" data-action="cancel-reset">Keep progress</button><button class="primary" data-action="confirm-reset-island">Reset island</button></div>`, "Local progress");
-  resetAllButton.onclick = () => openInfo("Reset the whole adventure?", `<p>This removes progress for all six islands and returns the Atlas adventure to the beginning.</p><div class="actions"><button class="secondary" data-action="cancel-reset">Keep progress</button><button class="primary" data-action="confirm-reset-all">Reset everything</button></div>`, "All Atlas progress");
   $("info-content").addEventListener("click", event => {
     const action = event.target.closest("[data-action]")?.dataset.action;
     if (action === "cancel-reset") $("info-dialog").close();

@@ -65,6 +65,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{o
 .generated-model{position:absolute;display:block;object-fit:contain;filter:drop-shadow(0 8px 7px rgba(3,14,24,.38));transition:opacity .3s,filter .3s}
 .generated-model.asset-changing{opacity:.18;filter:drop-shadow(0 3px 3px rgba(3,14,24,.2))}
 #generated-airship{left:8%;top:24%;width:24%}
+#generated-workshop{left:4%;top:30%;width:18%}
 #generated-crate{left:11%;top:59%;width:10%}
 #generated-bridge{left:32%;top:51%;width:34%}
 #generated-console{left:56%;top:49%;width:10%}
@@ -83,7 +84,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{o
 .cave-mural-visible #generated-cave{filter:drop-shadow(0 0 15px rgba(121,223,154,.95)) hue-rotate(18deg) saturate(1.25)}
 .bridge-built #generated-bridge{animation:generatedBridgeBuild 1s cubic-bezier(.2,.85,.25,1)}
 .lighthouse-lit #generated-lighthouse-beam{opacity:.58;animation:generatedBeamSweep 6s ease-in-out infinite}
-.world.generated-cargo-crate #crate-art,.world.generated-harbor-airship #airship,.world.generated-atlas-bridge #bridge-art,
+.world.generated-harbor-workshop #workshop-art,.world.generated-cargo-crate #crate-art,.world.generated-harbor-airship #airship,.world.generated-atlas-bridge #bridge-art,
 .world.generated-harbor-console #console-art,.world.generated-cloud-lighthouse #lighthouse,.world.generated-hidden-cave #secret-art,
 .world.generated-spark-companion #spark,.world.generated-atlas-explorer #player{opacity:0}
 .sky-glow{animation:skyPulse 8s ease-in-out infinite alternate}
@@ -128,13 +129,14 @@ button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{o
 .player-moving{animation:playerStep .42s ease-in-out infinite alternate}
 .interior-scene{position:absolute;z-index:18;inset:0;overflow:hidden;background:#091a2d;color:#eef8fa}
 .interior-scene[hidden]{display:none}
-.interior-scene>svg{display:block;width:100%;height:100%}
-.interior-title{position:absolute;top:16px;left:50%;transform:translateX(-50%);margin:0;padding:7px 14px;border:1px solid #d9b75c;border-radius:99px;background:rgba(6,24,43,.88);color:#fff1b8;font-size:16px;white-space:nowrap}
-.interior-hotspot{position:absolute;z-index:2;min-height:46px;padding:8px 12px;border:1px solid #85a8b8;border-radius:13px;background:rgba(10,35,57,.9);color:#eef8fa;font-weight:800;cursor:pointer}
+.interior-scene>svg{position:absolute;z-index:0;inset:0;display:block;width:100%;height:100%;transition:opacity .25s}
+.interior-scene.generated-interior>svg{opacity:0}
+.interior-title{position:absolute;z-index:8;top:16px;left:50%;transform:translateX(-50%);margin:0;padding:7px 14px;border:1px solid #d9b75c;border-radius:99px;background:rgba(6,24,43,.88);color:#fff1b8;font-size:16px;white-space:nowrap}
+.interior-hotspot{position:absolute;z-index:8;min-height:46px;padding:8px 12px;border:1px solid #85a8b8;border-radius:13px;background:rgba(10,35,57,.9);color:#eef8fa;font-weight:800;cursor:pointer}
 .interior-hotspot.current{border-color:#ffe075;box-shadow:0 0 0 4px rgba(255,224,117,.18);animation:questPulse 2.4s ease-in-out infinite}
-#interior-note{left:18%;bottom:24%}#interior-lens{right:20%;top:31%}
+#interior-note{left:22%;top:68%;transform:translate(-50%,-50%)}#interior-lens{left:67%;top:38%;transform:translate(-50%,-50%)}
 .interior-exit{left:18px;top:16px;background:rgba(10,35,57,.94)}
-.interior-caption{position:absolute;left:18%;right:18%;bottom:12%;padding:9px 13px;border:1px solid rgba(190,226,237,.35);border-radius:13px;background:rgba(4,18,34,.86);color:#d5e8ec;text-align:center}
+.interior-caption{position:absolute;z-index:8;left:18%;right:18%;bottom:8%;padding:9px 13px;border:1px solid rgba(190,226,237,.35);border-radius:13px;background:rgba(4,18,34,.86);color:#d5e8ec;text-align:center}
 .world-dialogue{position:absolute;z-index:16;right:18px;bottom:76px;width:min(390px,calc(100% - 36px));display:grid;grid-template-columns:58px 1fr auto;gap:10px;align-items:center;
   padding:11px 12px;border:2px solid #e2bd58;border-radius:17px;background:rgba(6,23,41,.95);color:#e9f6f8;box-shadow:0 12px 32px rgba(0,0,0,.35);pointer-events:none}
 .world-dialogue[hidden]{display:none}.dialogue-portrait{width:58px;height:58px;border:2px solid #69d8c9;border-radius:50%;display:grid;place-items:center;background:#173a4e;color:#f4ce63;font-size:27px}
@@ -146,9 +148,13 @@ html body#edu-refresh .world-dialogue strong{color:#fff0b0!important}html body#e
 [data-model-id="harbor-airship"][data-model-state="log-active"]{filter:url(#shadow) drop-shadow(0 0 7px rgba(243,199,92,.55))}
 [data-model-id="hidden-cave"][data-model-state="revealed"]{filter:drop-shadow(0 0 9px rgba(87,212,192,.7))}
 .interior-scene.lens-ready #interior-lens-machine{animation:lensReady 5s linear infinite;transform-origin:500px 206px}
-.generated-interior-object{position:absolute;z-index:1;display:block;object-fit:contain;filter:drop-shadow(0 8px 8px rgba(0,0,0,.45));pointer-events:none}
-#generated-interior-lens{left:36%;top:15%;width:28%}#generated-workbench{left:10%;bottom:12%;width:28%}
-.interior-scene.generated-interior-lens #interior-lens-machine,.interior-scene.generated-workbench #interior-workbench{opacity:0}
+.generated-interior-layer{position:absolute;display:block;opacity:0;object-fit:contain;pointer-events:none;transition:opacity .25s}
+.generated-interior-layer.loaded{opacity:1}.interior-full-layer{inset:0;width:100%;height:100%;object-fit:fill}
+#generated-interior-background{z-index:0}#generated-interior-architecture{z-index:1}
+#generated-workbench{z-index:2;left:22%;top:68%;width:37.5%;transform:translate(-50%,-50%);filter:drop-shadow(0 8px 8px rgba(0,0,0,.38))}
+#generated-interior-lens{z-index:2;left:67%;top:38%;width:42.7%;transform:translate(-50%,-50%);filter:drop-shadow(0 10px 12px rgba(0,0,0,.42))}
+#generated-interior-route{z-index:3;left:16%;top:32%;width:62.5%}
+#generated-interior-lanterns{z-index:4}#generated-interior-foreground{z-index:5}
 .objective-strip{position:absolute;z-index:6;left:16px;right:16px;bottom:14px;display:flex;align-items:center;gap:12px;
   padding:10px 14px;border:1px solid var(--line);border-radius:14px;background:rgba(4,18,34,.88);backdrop-filter:blur(8px)}
 .objective-strip strong{color:var(--gold);white-space:nowrap}.objective-strip span{min-width:0;color:#d7e7ed}
@@ -215,6 +221,8 @@ html body#edu-refresh .modal h2{color:#fff0bd!important}html body#edu-refresh .m
 @keyframes beaconSweep{0%,100%{transform:rotate(-13deg)}50%{transform:rotate(13deg)}}@keyframes starBurst{to{transform:translate(var(--x),var(--y)) rotate(180deg);opacity:0}}
 @media(max-width:900px){.game-layout{grid-template-columns:1fr}.side{position:static;grid-template-columns:1fr 1fr}.world{min-height:auto}.world-hotspot{font-size:12px;padding:5px 8px}.objective-strip{position:relative;left:auto;right:auto;bottom:auto;border-radius:0;border-inline:0;border-bottom:0}.companion{grid-template-columns:62px 1fr}.spark-portrait{width:62px;height:62px}.spark-portrait svg{width:52px;height:52px}}
 @media(max-width:590px){.shell{padding:8px}.topbar{grid-template-columns:auto 1fr}.toolbar{grid-column:1/-1;justify-content:flex-end}.game-layout{gap:9px}.side{grid-template-columns:1fr}.world-card{border-radius:17px}.world{aspect-ratio:4/5}.world>svg{width:125%;max-width:none;transform:translateX(-10%)}.generated-environment,.generated-models{width:125%;left:-10%;right:auto}.environment-distant{left:34%;top:16%;width:30%}.environment-cloud-wide{left:-3%;top:18%;width:38%}.environment-cloud-small{right:-2%;top:22%;width:28%}.environment-land{top:42%;width:49%}.environment-land-right{top:39%}.environment-water{bottom:14%;width:38%}.world-hotspot{font-size:0;width:46px;height:46px;padding:0;border-radius:50%}.world-hotspot:before{content:"✦";font-size:20px}.world-hotspot.done:not(#hotspot-secret),.world-hotspot.locked{display:none}.world-hotspot.current:after{content:none}#hotspot-crate{left:20%!important;top:70%!important;transform:none!important}#hotspot-bridge{left:48%!important;top:66%!important;transform:none!important}#hotspot-boat{left:65%!important;top:24%!important;transform:none!important}#hotspot-console{left:62%!important;top:49%!important;transform:none!important}#hotspot-lighthouse{left:80%!important;top:34%!important;transform:none!important}#hotspot-secret{left:78%!important;top:72%!important;transform:none!important}.quest-beacon-label{display:none}.quest-pin{width:31px;height:31px}.quest-arrow{width:18px;height:22px}.movement-controls{left:8px;top:8px;transform:none;grid-template-columns:repeat(4,44px);grid-template-rows:44px 44px;padding:6px;background:rgba(5,22,39,.68)}.move-button{font-size:16px}.move-button img{width:30px;height:30px}.move-button[data-direction="up"]{grid-column:1;grid-row:1}.move-button[data-direction="left"]{grid-column:2;grid-row:1}.move-button[data-direction="down"]{grid-column:3;grid-row:1}.move-button[data-direction="right"]{grid-column:4;grid-row:1}.interact-button{grid-column:1/5;grid-row:2}.movement-help{display:none}.world-dialogue{right:8px;bottom:72px;width:calc(100% - 16px);grid-template-columns:40px 1fr 44px;padding:8px 9px}.dialogue-portrait{width:40px;height:40px;font-size:20px}.dialogue-portrait img{width:38px;height:38px}.world-dialogue p{font-size:13px;line-height:1.4}.interior-scene>svg{width:100%;transform:none}.interior-title{top:72px}.interior-exit{top:12px}.interior-caption{left:8%;right:8%;bottom:7%}#interior-note{left:10%;bottom:22%}#interior-lens{right:8%;top:37%}.objective-strip{font-size:14px;align-items:flex-start}.objective-strip strong{white-space:normal}.choices{grid-template-columns:1fr}.modal-inner{padding:17px}.panel{padding:14px}}
+@media(max-width:590px){#interior-note{left:22%;top:68%;bottom:auto;transform:translate(-50%,-50%)}#interior-lens{left:67%;right:auto;top:38%;transform:translate(-50%,-50%)}}
+@media(max-width:590px){#generated-workshop{left:10%;top:30%;width:18%}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 html.reduce-motion *,html.reduce-motion *:before,html.reduce-motion *:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
 </style>
@@ -306,6 +314,7 @@ html.reduce-motion *,html.reduce-motion *:before,html.reduce-motion *:after{anim
     </g>
     </g>
     <g id="harbor-buildings">
+      <g id="workshop-art">
       <path d="M70 296h116v100H70Z" fill="#c59c67" stroke="#493b35" stroke-width="5"/>
       <path d="m57 298 72-62 74 62Z" fill="#31576a" stroke="#493b35" stroke-width="5"/>
       <path d="M91 260v-43h24v26" fill="#74503c" stroke="#493b35" stroke-width="5"/>
@@ -313,6 +322,7 @@ html.reduce-motion *,html.reduce-motion *:before,html.reduce-motion *:after{anim
       <rect x="88" y="331" width="28" height="65" fill="#604534"/><rect x="140" y="323" width="28" height="31" fill="#f6d887" stroke="#493b35" stroke-width="4"/>
       <path d="M154 323v31M140 338h28" stroke="#8c6744" stroke-width="3"/>
       <path d="M78 303h99" stroke="#e3b875" stroke-width="6" opacity=".65"/>
+      </g>
       <path d="M39 403h285v32H39Z" fill="url(#wood)" stroke="#382b27" stroke-width="5"/>
       <path d="M70 435v52M130 435v52M220 435v52M290 435v52" stroke="#382b27" stroke-width="10"/>
       <path d="M40 421h284M67 405v30M126 405v30M217 405v30M287 405v30" stroke="#c2915c" stroke-width="3" opacity=".55"/>
@@ -401,6 +411,7 @@ html.reduce-motion *,html.reduce-motion *:before,html.reduce-motion *:after{anim
   </svg>
   <div class="generated-models" id="generated-models" aria-hidden="true">
     <img class="generated-model" id="generated-airship" alt="">
+    <img class="generated-model" id="generated-workshop" alt="">
     <img class="generated-model" id="generated-crate" alt="">
     <img class="generated-model" id="generated-bridge" alt="">
     <img class="generated-model" id="generated-console" alt="">
@@ -472,8 +483,13 @@ html.reduce-motion *,html.reduce-motion *:before,html.reduce-motion *:after{anim
       <g fill="#fff0a5" filter="url(#small-glow)"><circle cx="91" cy="190" r="11"/><circle cx="909" cy="189" r="11"/></g>
       <path d="M285 116q-80 45-116 126M716 115q82 45 117 127" fill="none" stroke="#d1b16e" stroke-width="6" stroke-dasharray="12 10" opacity=".55"/>
     </svg>
-    <img class="generated-interior-object" id="generated-interior-lens" alt="">
-    <img class="generated-interior-object" id="generated-workbench" alt="">
+    <img class="generated-interior-layer interior-full-layer" id="generated-interior-background" alt="">
+    <img class="generated-interior-layer interior-full-layer" id="generated-interior-architecture" alt="">
+    <img class="generated-interior-layer" id="generated-workbench" alt="">
+    <img class="generated-interior-layer" id="generated-interior-lens" alt="">
+    <img class="generated-interior-layer" id="generated-interior-route" alt="">
+    <img class="generated-interior-layer interior-full-layer" id="generated-interior-lanterns" alt="">
+    <img class="generated-interior-layer interior-full-layer" id="generated-interior-foreground" alt="">
     <h3 class="interior-title">Lighthouse Lens Chamber</h3>
     <button class="interior-hotspot interior-exit" id="interior-exit" type="button">← Return outside</button>
     <button class="interior-hotspot" id="interior-note" type="button">Read Mira's note</button>
@@ -507,7 +523,7 @@ html.reduce-motion *,html.reduce-motion *:before,html.reduce-motion *:after{anim
       <span class="item" id="item-fragment"><img src="./assets/generated/inventory/map-fragment-icon.webp" alt="">Map fragment</span>
     </div>
     <div class="depth-status" id="depth-status"></div>
-    <div class="save-row"><span><span class="save-dot" id="save-dot"></span> <span id="save-status">Progress stays on this device.</span></span><div class="reset-actions"><button class="secondary" id="reset-button" type="button">Reset island</button><button class="secondary" id="reset-all-button" type="button">Reset all</button></div></div>
+    <div class="save-row"><span><span class="save-dot" id="save-dot"></span> <span id="save-status">Progress stays on this device.</span></span></div>
   </section>
 </aside>
 </div>
@@ -901,6 +917,7 @@ const DEPTH_COPY={
 const GENERATED_ASSETS={
   "atlas-explorer":{element:"generated-player",idle:"explorer/explorer-idle.webp"},
   "spark-companion":{element:"generated-spark",sleeping:"spark/spark-sleeping.webp",idle:"spark/spark-idle.webp",guiding:"spark/spark-guiding.webp",concerned:"spark/spark-concerned.webp",celebrate:"spark/spark-celebrate.webp"},
+  "harbor-workshop":{element:"generated-workshop",idle:"workshop/workshop-building.webp"},
   "cargo-crate":{element:"generated-crate",sealed:"crate/cargo-crate-sealed.webp",active:"crate/cargo-crate-active.webp",opened:"crate/cargo-crate-opened.webp"},
   "atlas-bridge":{element:"generated-bridge",broken:"bridge/bridge-broken-preview.webp",complete:"bridge/bridge-complete.webp"},
   "harbor-console":{element:"generated-console",offline:"console/harbor-console-offline.webp",active:"console/harbor-console-active.webp",solved:"console/harbor-console-solved.webp"},
@@ -1205,13 +1222,23 @@ function setSparkPortrait(mood){
   [$("dialogue-portrait-image"),$("spark-panel-portrait")].forEach(image=>{if(image.getAttribute("src")!==path)image.src=path;});
 }
 function updateGeneratedInterior(){
-  const scene=$("interior-scene"),lens=$("generated-interior-lens"),workbench=$("generated-workbench");
+  const scene=$("interior-scene"),root=GENERATED_ROOT+"lighthouse-interior/";
   const lensState=state.lighthouse?"lit":state.step===5?"aligning":state.step>=4?"ready":"dark";
-  const lensPath=GENERATED_ROOT+`lens/lens-machine-${lensState}.webp`,workbenchPath=GENERATED_ROOT+"workbench/workbench.webp";
-  lens.onload=()=>scene.classList.add("generated-interior-lens");lens.onerror=()=>scene.classList.remove("generated-interior-lens");
-  workbench.onload=()=>scene.classList.add("generated-workbench");workbench.onerror=()=>scene.classList.remove("generated-workbench");
-  if(lens.getAttribute("src")!==lensPath)lens.src=lensPath;
-  if(workbench.getAttribute("src")!==workbenchPath)workbench.src=workbenchPath;
+  const setLayer=(id,file,visible=true)=>{
+    const image=$(id);
+    if(!visible){image.removeAttribute("src");image.classList.remove("loaded");return;}
+    const path=root+file;
+    image.onload=()=>{image.classList.add("loaded");if(id==="generated-interior-background")scene.classList.add("generated-interior");};
+    image.onerror=()=>{image.classList.remove("loaded");if(id==="generated-interior-background")scene.classList.remove("generated-interior");};
+    if(image.getAttribute("src")!==path){image.classList.remove("loaded");image.src=path;}
+  };
+  setLayer("generated-interior-background","lighthouse-interior-background.webp");
+  setLayer("generated-interior-architecture","lighthouse-interior-architecture.webp");
+  setLayer("generated-workbench",state.sideQuests.echoes.started?"lighthouse-workbench-echo.webp":"lighthouse-workbench.webp");
+  setLayer("generated-interior-lens",`lens-machine-${lensState}.webp`);
+  setLayer("generated-interior-route","lighthouse-route-projection.webp",state.sideQuests.echoes.completed);
+  setLayer("generated-interior-lanterns","lighthouse-lanterns-lit.webp",state.lighthouse);
+  setLayer("generated-interior-foreground","lighthouse-interior-foreground.webp");
 }
 function render(){
   document.documentElement.classList.toggle("reduce-motion",state.reducedMotion);
@@ -1262,6 +1289,7 @@ function render(){
   document.querySelectorAll("[data-tool]").forEach(button=>button.classList.toggle("active",button.dataset.tool===state.activeTool));
   $("item-atlas").disabled=!state.atlas;$("item-lens").disabled=!state.lens;$("item-multitool").disabled=!state.tools.multitool;
   setSparkPortrait(state.lighthouse?"celebrating":state.started?"guiding":"neutral");
+  updateGeneratedModel("harbor-workshop","idle");
   setModelState("spark-companion",state.lighthouse?"celebrate":state.started?"guiding":"sleeping",state.started?"states":"idle");
   setModelState("cargo-crate",state.step===9?"active":state.completed.includes("blue-cargo")?"opened":state.started&&state.step===0?"active":"sealed");
   setModelState("harbor-airship",state.step===2||state.step===8?"log-active":state.step>2?"launch-ready":"docked",state.step===2||state.step===8?"active":"docked");
@@ -1679,6 +1707,7 @@ function openSettings(){
   <div class="setting"><span><strong>Reduce motion</strong><br><small>Stops decorative animation</small></span><button class="switch" type="button" data-setting="motion" aria-label="Toggle reduced motion" aria-pressed="${state.reducedMotion}"></button></div>
   <div class="setting"><span><strong>Move object labels</strong><br><small>Drag labels to choose their exact positions</small></span><button class="secondary" type="button" data-action="toggle-label-edit">${labelEditMode?"Finish moving":"Start moving"}</button></div>
   <div class="actions"><button class="secondary" type="button" data-action="copy-label-layout">Copy label positions</button><button class="secondary" type="button" data-action="reset-label-layout">Reset label positions</button></div>
+  <div class="actions"><button class="secondary" type="button" data-action="reset-island">Reset island</button><button class="secondary" type="button" data-action="reset-all">Reset all game progress</button></div>
   <p>No music, microphone, account, analytics, or child information is used by this demo.</p></div>`,"Game settings");
 }
 function openInfo(title,html,label){
@@ -1744,7 +1773,7 @@ $("continue-button").addEventListener("click",closeChallenge);$("close-challenge
 $("challenge-dialog").addEventListener("cancel",event=>{event.preventDefault();closeChallenge();});
 $("close-info").addEventListener("click",()=>{$("info-dialog").close();lastFocus?.focus({preventScroll:true});});
 $("info-dialog").addEventListener("cancel",event=>{event.preventDefault();$("info-dialog").close();});
-$("journal-button").addEventListener("click",openJournal);$("settings-button").addEventListener("click",openSettings);$("reset-button").addEventListener("click",resetGame);$("reset-all-button").addEventListener("click",resetWholeAdventure);
+$("journal-button").addEventListener("click",openJournal);$("settings-button").addEventListener("click",openSettings);
 $("info-content").addEventListener("click",event=>{
   const action=event.target.closest("[data-action]")?.dataset.action;if(!action)return;
   if(action==="journal"){$("info-dialog").close();openJournal();}
@@ -1755,6 +1784,8 @@ $("info-content").addEventListener("click",event=>{
   if(action==="toggle-label-edit"){$("info-dialog").close();setLabelEditMode(!labelEditMode);}
   if(action==="copy-label-layout")copyLabelLayout();
   if(action==="reset-label-layout"){clearLabelLayout();$("info-dialog").close();}
+  if(action==="reset-island")resetGame();
+  if(action==="reset-all")resetWholeAdventure();
   if(action==="cancel-reset")$("info-dialog").close();
   if(action==="confirm-reset-island"){localStorage.removeItem(SAVE_KEY);state=freshState();$("info-dialog").close();render();showToast("Cloud Harbor progress reset.");}
   if(action==="confirm-reset-all"){window.AtlasProgress?.resetAdventure();location.reload();}

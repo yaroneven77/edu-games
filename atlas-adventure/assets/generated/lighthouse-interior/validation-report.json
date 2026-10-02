@@ -1,0 +1,112 @@
+{
+  "status": "PASS",
+  "required_files_present": true,
+  "missing": [],
+  "failures": [],
+  "checks_performed": [
+    "exact filename presence",
+    "complete WebP decode",
+    "exact dimensions",
+    "required transparency",
+    "embedded sRGB profile",
+    "ZIP CRC"
+  ],
+  "results": [
+    {
+      "filename": "lighthouse-interior-preview.webp",
+      "decodes": true,
+      "dimensions_match": true,
+      "alpha_present_when_required": true,
+      "sRGB_profile_present": true,
+      "size_kb": 325.5
+    },
+    {
+      "filename": "lighthouse-interior-background.webp",
+      "decodes": true,
+      "dimensions_match": true,
+      "alpha_present_when_required": true,
+      "sRGB_profile_present": true,
+      "size_kb": 232.5
+    },
+    {
+      "filename": "lighthouse-interior-architecture.webp",
+      "decodes": true,
+      "dimensions_match": true,
+      "alpha_present_when_required": true,
+      "sRGB_profile_present": true,
+      "size_kb": 525.1
+    },
+    {
+      "filename": "lighthouse-workbench.webp",
+      "decodes": true,
+      "dimensions_match": true,
+      "alpha_present_when_required": true,
+      "sRGB_profile_present": true,
+      "size_kb": 57.6
+    },
+    {
+      "filename": "lighthouse-workbench-echo.webp",
+      "decodes": true,
+      "dimensions_match": true,
+      "alpha_present_when_required": true,
+      "sRGB_profile_present": true,
+      "size_kb": 69.0
+    },
+    {
+      "filename": "lens-machine-dark.webp",
+      "decodes": true,
+      "dimensions_match": true,
+      "alpha_present_when_required": true,
+      "sRGB_profile_present": true,
+      "size_kb": 100.6
+    },
+    {
+      "filename": "lens-machine-ready.webp",
+      "decodes": true,
+      "dimensions_match": true,
+      "alpha_present_when_required": true,
+      "sRGB_profile_present": true,
+      "size_kb": 106.8
+    },
+    {
+      "filename": "lens-machine-aligning.webp",
+      "decodes": true,
+      "dimensions_match": true,
+      "alpha_present_when_required": true,
+      "sRGB_profile_present": true,
+      "size_kb": 119.9
+    },
+    {
+      "filename": "lens-machine-lit.webp",
+      "decodes": true,
+      "dimensions_match": true,
+      "alpha_present_when_required": true,
+      "sRGB_profile_present": true,
+      "size_kb": 115.1
+    },
+    {
+      "filename": "lighthouse-route-projection.webp",
+      "decodes": true,
+      "dimensions_match": true,
+      "alpha_present_when_required": true,
+      "sRGB_profile_present": true,
+      "size_kb": 31.2
+    },
+    {
+      "filename": "lighthouse-interior-foreground.webp",
+      "decodes": true,
+      "dimensions_match": true,
+      "alpha_present_when_required": true,
+      "sRGB_profile_present": true,
+      "size_kb": 401.9
+    },
+    {
+      "filename": "lighthouse-lanterns-lit.webp",
+      "decodes": true,
+      "dimensions_match": true,
+      "alpha_present_when_required": true,
+      "sRGB_profile_present": true,
+      "size_kb": 451.2
+    }
+  ]
+}

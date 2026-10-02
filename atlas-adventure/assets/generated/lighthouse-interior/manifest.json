@@ -1,0 +1,253 @@
+{
+  "title": "Atlas: The Lost Islands \u2014 Cloud Harbor Lighthouse Interior",
+  "canvas": [
+    1920,
+    1080
+  ],
+  "camera": "three-quarter isometric, approximately 25-degree elevation",
+  "hotspots": {
+    "workbench": {
+      "x_percent": 22,
+      "y_percent": 68
+    },
+    "lens": {
+      "x_percent": 67,
+      "y_percent": 38
+    },
+    "exit": {
+      "region": "upper-left"
+    }
+  },
+  "layer_stack": [
+    "lighthouse-interior-background.webp",
+    "lighthouse-interior-architecture.webp",
+    "lighthouse-workbench.webp",
+    "lighthouse-workbench-echo.webp",
+    "lens-machine-dark.webp",
+    "lens-machine-ready.webp",
+    "lens-machine-aligning.webp",
+    "lens-machine-lit.webp",
+    "lighthouse-route-projection.webp",
+    "lighthouse-lanterns-lit.webp",
+    "lighthouse-interior-foreground.webp",
+    "lighthouse-interior-preview.webp"
+  ],
+  "assets": [
+    {
+      "filename": "lighthouse-interior-preview.webp",
+      "width": 1920,
+      "height": 1080,
+      "transparency": false,
+      "state": "restored composite",
+      "intended_layer_order": 999,
+      "hotspot_association": "composite preview",
+      "recommended_css_position": {
+        "left": "0%",
+        "top": "0%",
+        "width": "100%",
+        "transform": "none"
+      },
+      "size_kb": 325.5,
+      "webp_quality": 84,
+      "color_space": "sRGB"
+    },
+    {
+      "filename": "lighthouse-interior-background.webp",
+      "width": 1920,
+      "height": 1080,
+      "transparency": false,
+      "state": "static",
+      "intended_layer_order": 0,
+      "hotspot_association": "room/exit",
+      "recommended_css_position": {
+        "left": "0%",
+        "top": "0%",
+        "width": "100%",
+        "transform": "none"
+      },
+      "size_kb": 232.5,
+      "webp_quality": 84,
+      "color_space": "sRGB"
+    },
+    {
+      "filename": "lighthouse-interior-architecture.webp",
+      "width": 1920,
+      "height": 1080,
+      "transparency": true,
+      "state": "static",
+      "intended_layer_order": 10,
+      "hotspot_association": "room structure",
+      "recommended_css_position": {
+        "left": "0%",
+        "top": "0%",
+        "width": "100%",
+        "transform": "none"
+      },
+      "size_kb": 525.1,
+      "webp_quality": 80,
+      "color_space": "sRGB"
+    },
+    {
+      "filename": "lighthouse-workbench.webp",
+      "width": 720,
+      "height": 500,
+      "transparency": true,
+      "state": "default",
+      "intended_layer_order": 30,
+      "hotspot_association": "workbench",
+      "recommended_css_position": {
+        "left": "22%",
+        "top": "68%",
+        "width": "37.5%",
+        "transform": "translate(-50%, -50%)"
+      },
+      "size_kb": 57.6,
+      "webp_quality": 80,
+      "color_space": "sRGB"
+    },
+    {
+      "filename": "lighthouse-workbench-echo.webp",
+      "width": 720,
+      "height": 500,
+      "transparency": true,
+      "state": "echo projection",
+      "intended_layer_order": 30,
+      "hotspot_association": "workbench",
+      "recommended_css_position": {
+        "left": "22%",
+        "top": "68%",
+        "width": "37.5%",
+        "transform": "translate(-50%, -50%)"
+      },
+      "size_kb": 69.0,
+      "webp_quality": 80,
+      "color_space": "sRGB"
+    },
+    {
+      "filename": "lens-machine-dark.webp",
+      "width": 820,
+      "height": 720,
+      "transparency": true,
+      "state": "dark/inactive",
+      "intended_layer_order": 40,
+      "hotspot_association": "lens",
+      "recommended_css_position": {
+        "left": "67%",
+        "top": "38%",
+        "width": "42.7%",
+        "transform": "translate(-50%, -50%)"
+      },
+      "size_kb": 100.6,
+      "webp_quality": 80,
+      "color_space": "sRGB"
+    },
+    {
+      "filename": "lens-machine-ready.webp",
+      "width": 820,
+      "height": 720,
+      "transparency": true,
+      "state": "ready",
+      "intended_layer_order": 40,
+      "hotspot_association": "lens",
+      "recommended_css_position": {
+        "left": "67%",
+        "top": "38%",
+        "width": "42.7%",
+        "transform": "translate(-50%, -50%)"
+      },
+      "size_kb": 106.8,
+      "webp_quality": 80,
+      "color_space": "sRGB"
+    },
+    {
+      "filename": "lens-machine-aligning.webp",
+      "width": 820,
+      "height": 720,
+      "transparency": true,
+      "state": "aligning",
+      "intended_layer_order": 40,
+      "hotspot_association": "lens",
+      "recommended_css_position": {
+        "left": "67%",
+        "top": "38%",
+        "width": "42.7%",
+        "transform": "translate(-50%, -50%)"
+      },
+      "size_kb": 119.9,
+      "webp_quality": 80,
+      "color_space": "sRGB"
+    },
+    {
+      "filename": "lens-machine-lit.webp",
+      "width": 820,
+      "height": 720,
+      "transparency": true,
+      "state": "lit/restored",
+      "intended_layer_order": 40,
+      "hotspot_association": "lens",
+      "recommended_css_position": {
+        "left": "67%",
+        "top": "38%",
+        "width": "42.7%",
+        "transform": "translate(-50%, -50%)"
+      },
+      "size_kb": 115.1,
+      "webp_quality": 80,
+      "color_space": "sRGB"
+    },
+    {
+      "filename": "lighthouse-route-projection.webp",
+      "width": 1200,
+      "height": 500,
+      "transparency": true,
+      "state": "echo route",
+      "intended_layer_order": 50,
+      "hotspot_association": "workbench \u2192 lens \u2192 window",
+      "recommended_css_position": {
+        "left": "16%",
+        "top": "32%",
+        "width": "62.5%",
+        "transform": "none"
+      },
+      "size_kb": 31.2,
+      "webp_quality": 76,
+      "color_space": "sRGB"
+    },
+    {
+      "filename": "lighthouse-interior-foreground.webp",
+      "width": 1920,
+      "height": 1080,
+      "transparency": true,
+      "state": "static",
+      "intended_layer_order": 70,
+      "hotspot_association": "foreground atmosphere",
+      "recommended_css_position": {
+        "left": "0%",
+        "top": "0%",
+        "width": "100%",
+        "transform": "none"
+      },
+      "size_kb": 401.9,
+      "webp_quality": 76,
+      "color_space": "sRGB"
+    },
+    {
+      "filename": "lighthouse-lanterns-lit.webp",
+      "width": 1920,
+      "height": 1080,
+      "transparency": true,
+      "state": "repaired lighting",
+      "intended_layer_order": 60,
+      "hotspot_association": "room lighting",
+      "recommended_css_position": {
+        "left": "0%",
+        "top": "0%",
+        "width": "100%",
+        "transform": "none"
+      },
+      "size_kb": 451.2,
+      "webp_quality": 76,
+      "color_space": "sRGB"
+    }
+  ]
+}

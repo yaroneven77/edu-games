@@ -11,7 +11,7 @@
     <header class="bonus-header">
       <div class="bonus-brand">
         <div class="bonus-emblem" aria-hidden="true">✦</div>
-        <div><h1>Atlas Bonus Arcade</h1><p id="page-subtitle">Six original games unlocked across the expedition.</p></div>
+        <div><h1 id="page-title">Atlas Bonus Arcade</h1><p id="page-subtitle">Six original games unlocked across the expedition.</p></div>
       </div>
       <div class="game-picker">
         <label for="game-select">All games</label>
@@ -30,11 +30,13 @@
           <button class="ui-button" id="restart-button" type="button">Restart</button>
         </div>
         <div class="canvas-wrap">
-          <canvas id="bonus-canvas" width="800" height="600" aria-label="Interactive arcade game"></canvas>
-          <div class="game-overlay" id="game-overlay" hidden>
+          <canvas id="bonus-canvas" width="800" height="600" tabindex="0" aria-label="Interactive arcade game" aria-describedby="game-instructions"></canvas>
+          <div class="game-overlay" id="game-overlay" role="dialog" aria-modal="false" aria-labelledby="overlay-title" hidden>
             <div class="overlay-card">
+              <p class="overlay-kicker" id="overlay-kicker"></p>
               <h2 id="overlay-title">Game complete</h2>
               <p id="overlay-message"></p>
+              <p class="overlay-score" id="overlay-score"></p>
               <div class="overlay-actions">
                 <button class="ui-button primary" id="play-again-button" type="button">Play again</button>
                 <a id="return-button" href="../index.html">Return to island</a>

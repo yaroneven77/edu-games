@@ -937,6 +937,18 @@
       };
     })
   });
+  const keepsake = (id, icon, name, nameHe) => ({ id, icon, name, nameHe });
+  const depthTool = (id, icon, name, nameHe, description, descriptionHe) => ({ id, icon, name, nameHe, description, descriptionHe });
+  const depthStep = (spot, tool, objective, objectiveHe, success, successHe, revisit, revisitHe, collectible) => ({
+    spot, tool, objective, objectiveHe, success, successHe, revisit, revisitHe, collectible
+  });
+  const makeDepth = ({ tools, quests, secret }) => {
+    const collectibles = [...quests.flatMap(quest => quest.steps.map(step => step.collectible)), secret.collectible];
+    if (collectibles.length !== 7 || new Set(collectibles.map(item => item.id)).size !== 7) {
+      throw new Error("Each Atlas depth chapter must define exactly seven unique collectibles.");
+    }
+    return { tools, quests, secret, collectibles };
+  };
   const finish = chapter => {
     chapter.challenges.forEach((item, index) => item.label = `Challenge ${index + 1} of ${chapter.challenges.length}`);
     return chapter;
@@ -958,6 +970,43 @@
     endingHe: "כבשן הזיכרון מקרין את מירה מתקנת ספינת סערה פגועה לפני שהיא מפליגה אל מצפה הגאות.",
     next: "../island-four/index.html",
     nextTitle: "Tidal Observatory",
+    depth: makeDepth({
+      tools: [
+        depthTool("rune-compass", "🧭", "Rune Compass", "מצפן רונות", "Aligns archive symbols and wakes dormant mechanisms.", "מיישר סמלי ארכיון ומעיר מנגנונים רדומים."),
+        depthTool("echo-lens", "🔎", "Echo Lens", "עדשת הד", "Reveals memories trapped in paper, brass, and stone.", "חושפת זיכרונות הכלואים בנייר, פליז ואבן.")
+      ],
+      quests: [
+        {
+          id: "quiet-runes", title: "Circuit of Quiet Runes", titleHe: "מעגל הרונות השקטות",
+          description: "Trace a forgotten service circuit from the Rune Circuit to the Master Circuit.",
+          descriptionHe: "עקבו אחר מעגל שירות נשכח ממעגל הרונות אל המעגל הראשי.",
+          unlockStep: 0, locked: "Begin the chapter to inspect the service runes.", lockedHe: "התחילו את הפרק כדי לבדוק את רונות השירות.",
+          steps: [
+            depthStep(2, "rune-compass", "Align the three loose runes in the Rune Circuit.", "יישרו את שלוש הרונות הרופפות במעגל הרונות.", "The service circuit answers with a steady amber pulse.", "מעגל השירות מגיב בפעימה ענברית יציבה.", "The aligned runes still mark the safe repair order.", "הרונות המיושרות עדיין מסמנות את סדר התיקון הבטוח.", keepsake("service-rune", "◇", "Service Rune", "רונת שירות")),
+            depthStep(3, "echo-lens", "Read the heat-memory hidden behind the Gear Shelves.", "קראו את זיכרון החום המוסתר מאחורי מדפי גלגלי השיניים.", "The lens reveals Mira cataloguing every repaired gear.", "העדשה חושפת את מירה מקטלגת כל גלגל שיניים שתוקן.", "Mira's heat-written catalogue remains visible through the lens.", "הקטלוג שמירה כתבה בחום עדיין נראה דרך העדשה.", keepsake("brass-index", "⚙", "Brass Index", "אינדקס פליז")),
+            depthStep(8, "rune-compass", "Close the service loop at the Master Circuit.", "סגרו את מעגל השירות במעגל הראשי.", "The archive wall lights in a complete ring.", "קיר הארכיון נדלק בטבעת שלמה.", "The Master Circuit confirms that the service loop is stable.", "המעגל הראשי מאשר שמעגל השירות יציב.", keepsake("master-cog", "✥", "Master Cog", "גלגל שיניים ראשי"))
+          ]
+        },
+        {
+          id: "living-catalogue", title: "Mira's Living Catalogue", titleHe: "הקטלוג החי של מירה",
+          description: "Recover the personal trail Mira left between her journal, the mosaic, and the furnace.",
+          descriptionHe: "שחזרו את המסלול האישי שמירה השאירה בין היומן, הפסיפס והכבשן.",
+          unlockStep: 2, locked: "Complete two main challenges to clear the ash from Mira's journal.", lockedHe: "השלימו שני אתגרים ראשיים כדי לפנות את האפר מהיומן של מירה.",
+          steps: [
+            depthStep(4, "echo-lens", "Reveal the erased margin in Mira's journal.", "חשפו את השוליים המחוקים ביומן של מירה.", "A tide symbol appears beside a careful list of names.", "סמל גאות מופיע לצד רשימת שמות מסודרת.", "The restored margin records everyone who protected the archive.", "השוליים המשוחזרים מתעדים את כל מי שהגן על הארכיון.", keepsake("journal-ribbon", "🎗", "Journal Ribbon", "סרט היומן")),
+            depthStep(5, "rune-compass", "Rotate the Archive Mosaic toward Mira's tide symbol.", "סובבו את פסיפס הארכיון אל סמל הגאות של מירה.", "Blue tiles form a route toward the observatory.", "אריחים כחולים יוצרים מסלול אל המצפה.", "The mosaic still points toward the sea route.", "הפסיפס עדיין מצביע אל נתיב הים.", keepsake("mosaic-tessera", "▦", "Mosaic Tessera", "אבן פסיפס")),
+            depthStep(9, "rune-compass", "Ask the Memory Furnace to preserve the recovered catalogue.", "בקשו מכבשן הזיכרון לשמר את הקטלוג ששוחזר.", "The furnace stores the catalogue without burning a page.", "הכבשן שומר את הקטלוג מבלי לשרוף דף.", "The furnace confirms that Mira's catalogue is safely archived.", "הכבשן מאשר שהקטלוג של מירה שמור בבטחה.", keepsake("ember-capsule", "🔥", "Ember Capsule", "קפסולת גחלת"))
+          ]
+        }
+      ],
+      secret: {
+        id: "furnace-whisper", title: "The Furnace Whisper", titleHe: "לחישת הכבשן", spot: 9, tool: "echo-lens",
+        objective: "Listen beneath the Memory Furnace's restored catalogue.", objectiveHe: "הקשיבו מתחת לקטלוג המשוחזר של כבשן הזיכרון.",
+        success: "A quiet message thanks future readers for remembering the names, not only the machines.", successHe: "הודעה שקטה מודה לקוראים העתידיים על זכירת השמות, ולא רק המכונות.",
+        revisit: "The whisper repeats: “An archive lives when its people are remembered.”", revisitHe: "הלחישה חוזרת: ״ארכיון חי כאשר זוכרים את אנשיו.״",
+        collectible: keepsake("hidden-marginalia", "✎", "Hidden Marginalia", "הערת שוליים נסתרת")
+      }
+    }),
     spots: [
       { label: "Ash inscription", icon: "📜", x: 10, y: 70, labelX: 11, labelY: 82 },
       { label: "Ember counter", icon: "🧮", x: 23, y: 64, labelX: 23, labelY: 77 },
@@ -1110,6 +1159,43 @@
     endingHe: "הטלסקופ ששוחזר מראה את ספינת הסערה של מירה מטפסת אל פסגת הכפור והאש, בעוד צל עוקב אחריה מתחת לעננים.",
     next: "../island-five/index.html",
     nextTitle: "Frostfire Summit",
+    depth: makeDepth({
+      tools: [
+        depthTool("tide-key", "🔱", "Tide Key", "מפתח גאות", "Sets clocks, locks, tanks, and channels to a shared water level.", "מכוון שעונים, מנעולים, מכלים ותעלות למפלס מים משותף."),
+        depthTool("echo-lens", "🔎", "Echo Lens", "עדשת הד", "Reads traces left in salt, glass, and moonlight.", "קוראת עקבות שנותרו במלח, בזכוכית ובאור הירח.")
+      ],
+      quests: [
+        {
+          id: "tidekeeper-calibration", title: "Tidekeeper Calibration", titleHe: "כיול שומר הגאות",
+          description: "Synchronize the Tide Clock and both Tide Locks.",
+          descriptionHe: "סנכרנו את שעון הגאות ואת שני מנעולי הגאות.",
+          unlockStep: 0, locked: "Begin the chapter to reach the Tide Clock.", lockedHe: "התחילו את הפרק כדי להגיע לשעון הגאות.",
+          steps: [
+            depthStep(1, "tide-key", "Set the Tide Clock to the moon's current phase.", "כוונו את שעון הגאות למופע הירח הנוכחי.", "The clock rings exactly on the falling tide.", "השעון מצלצל בדיוק עם ירידת הגאות.", "The synchronized clock continues to keep perfect tide time.", "השעון המסונכרן ממשיך למדוד את הגאות במדויק.", keepsake("clock-pearl", "◉", "Clock Pearl", "פנינת שעון")),
+            depthStep(2, "echo-lens", "Inspect the Tide Lock for a hidden salt fracture.", "בדקו את מנעול הגאות לאיתור סדק מלח נסתר.", "The lens reveals a hairline crack before it can spread.", "העדשה חושפת סדק דק לפני שהוא מתפשט.", "The repaired salt fracture remains sealed.", "סדק המלח המתוקן נשאר אטום.", keepsake("salt-seal", "◆", "Salt Seal", "חותם מלח")),
+            depthStep(8, "tide-key", "Match the Deep Tide Lock to the clock.", "התאימו את מנעול הגאות העמוק לשעון.", "Both locks rise together and the lower channel clears.", "שני המנעולים עולים יחד והתעלה התחתונה מתפנה.", "The linked Tide Locks still answer the same key.", "מנעולי הגאות המקושרים עדיין מגיבים לאותו מפתח.", keepsake("deep-lock-pin", "⚿", "Deep Lock Pin", "סיכת מנעול עמוק"))
+          ]
+        },
+        {
+          id: "glass-reef-records", title: "Glass Reef Records", titleHe: "רשומות שונית הזכוכית",
+          description: "Follow a lost diving survey from the log through the tanks to the Moon Telescope.",
+          descriptionHe: "עקבו אחר סקר צלילה אבוד מן היומן, דרך המכלים ועד טלסקופ הירח.",
+          unlockStep: 2, locked: "Complete two main challenges so the lower deck is safe to explore.", lockedHe: "השלימו שני אתגרים ראשיים כדי שהסיפון התחתון יהיה בטוח לחקירה.",
+          steps: [
+            depthStep(4, "echo-lens", "Recover the washed-out coordinates in the Diving Log.", "שחזרו את הקואורדינטות שנשטפו ביומן הצלילה.", "A reef nursery appears beneath the eastern platform.", "משתלת שונית מופיעה מתחת לרציף המזרחי.", "The recovered coordinates still mark the nursery.", "הקואורדינטות המשוחזרות עדיין מסמנות את המשתלה.", keepsake("diver-token", "🤿", "Diver Token", "אסימון צולל")),
+            depthStep(7, "tide-key", "Balance the Glass Tanks without disturbing the nursery.", "אזנו את מכלי הזכוכית מבלי להפריע למשתלה.", "The young reef opens and filters the channel.", "השונית הצעירה נפתחת ומסננת את התעלה.", "The balanced tanks continue feeding the reef nursery.", "המכלים המאוזנים ממשיכים להזין את משתלת השונית.", keepsake("glass-coral", "♒", "Glass Coral", "אלמוג זכוכית")),
+            depthStep(9, "echo-lens", "Project the nursery coordinates through the Moon Telescope.", "הקרינו את קואורדינטות המשתלה דרך טלסקופ הירח.", "Moonlight maps a safe migration lane across the sea.", "אור הירח ממפה נתיב נדידה בטוח מעל הים.", "The telescope still shows the protected migration lane.", "הטלסקופ עדיין מציג את נתיב הנדידה המוגן.", keepsake("moon-chart", "☾", "Moon Chart", "מפת ירח"))
+          ]
+        }
+      ],
+      secret: {
+        id: "whale-bell", title: "The Distant Whale Bell", titleHe: "פעמון הלווייתן הרחוק", spot: 9, tool: "echo-lens",
+        objective: "Turn the restored Moon Telescope below the horizon.", objectiveHe: "כוונו את טלסקופ הירח המשוחזר מתחת לאופק.",
+        success: "A deep bell answers from the migration lane, confirming that the reef route is in use.", successHe: "פעמון עמוק עונה מנתיב הנדידה ומאשר שמסלול השונית נמצא בשימוש.",
+        revisit: "The distant bell sounds again, slow and calm beneath the waves.", revisitHe: "הפעמון הרחוק נשמע שוב, איטי ורגוע מתחת לגלים.",
+        collectible: keepsake("whale-bell-note", "♪", "Whale Bell Note", "צליל פעמון לווייתן")
+      }
+    }),
     spots: [
       { label: "Dock report", icon: "⚓", x: 9, y: 72, labelX: 10, labelY: 84 },
       { label: "Tide clock", icon: "🕰️", x: 20, y: 57, labelX: 19, labelY: 69 },
@@ -1250,6 +1336,43 @@
     endingHe: "הקלטה ששוחזרה מגלה שמירה לא ברחה מאויב — היא הובילה שומר אטלס אבוד אל האי האחרון.",
     next: "../island-six/index.html",
     nextTitle: "The Unwritten Isle",
+    depth: makeDepth({
+      tools: [
+        depthTool("thermal-tuner", "♨", "Thermal Tuner", "מכוון תרמי", "Moves measured heat between summit mechanisms.", "מעביר חום מדוד בין מנגנוני הפסגה."),
+        depthTool("echo-lens", "🔎", "Echo Lens", "עדשת הד", "Reveals recordings and tracks hidden by frost or ash.", "חושפת הקלטות ועקבות שהוסתרו בכפור או באפר.")
+      ],
+      quests: [
+        {
+          id: "balance-line", title: "The Summit Balance Line", titleHe: "קו האיזון של הפסגה",
+          description: "Carry a stable thermal reading from the Core to the warning network.",
+          descriptionHe: "העבירו מדידה תרמית יציבה מן הליבה אל רשת האזהרה.",
+          unlockStep: 0, locked: "Begin the chapter to access the Thermal Core.", lockedHe: "התחילו את הפרק כדי לגשת לליבה התרמית.",
+          steps: [
+            depthStep(2, "thermal-tuner", "Draw one balanced charge from the Thermal Core.", "משכו מטען מאוזן אחד מן הליבה התרמית.", "The tuner holds equal measures of frost and flame.", "המכוון מחזיק כמויות שוות של כפור ולהבה.", "The Core remains balanced around the saved reading.", "הליבה נשארת מאוזנת סביב המדידה השמורה.", keepsake("balanced-coil", "◎", "Balanced Coil", "סליל מאוזן")),
+            depthStep(6, "echo-lens", "Find the weather pattern buried in the Warning Beacon.", "מצאו את דפוס מזג האוויר החבוי במשואת האזהרה.", "A calm interval appears between two storm fronts.", "חלון רגיעה מופיע בין שתי חזיתות סערה.", "The beacon continues marking the safe calm interval.", "המשואה ממשיכה לסמן את חלון הרגיעה הבטוח.", keepsake("beacon-flake", "❄", "Beacon Flake", "פתית משואה")),
+            depthStep(8, "thermal-tuner", "Transfer the balanced charge into the Twin Thermal Core.", "העבירו את המטען המאוזן אל הליבה התרמית התאומה.", "Blue and orange light meet without melting the station.", "אור כחול וכתום נפגשים מבלי להמיס את התחנה.", "The twin cores continue sharing heat evenly.", "הליבות התאומות ממשיכות לחלוק חום באופן שווה.", keepsake("twin-core-ring", "◌", "Twin Core Ring", "טבעת ליבה תאומה"))
+          ]
+        },
+        {
+          id: "guardian-trail", title: "The Guardian's Trail", titleHe: "שביל השומר",
+          description: "Reconstruct the helpful guardian's route from Mira's recording to the gate.",
+          descriptionHe: "שחזרו את מסלול השומר המסייע מן ההקלטה של מירה ועד השער.",
+          unlockStep: 2, locked: "Complete two main challenges to thaw Mira's recorder.", lockedHe: "השלימו שני אתגרים ראשיים כדי להפשיר את המקליט של מירה.",
+          steps: [
+            depthStep(4, "echo-lens", "Restore the quiet section of Mira's Recording.", "שחזרו את הקטע השקט בהקלטה של מירה.", "Mira thanks the guardian for rebuilding the bridge behind her.", "מירה מודה לשומר על בניית הגשר מחדש מאחוריה.", "The recording still proves that the guardian was helping.", "ההקלטה עדיין מוכיחה שהשומר סייע.", keepsake("recording-spool", "◍", "Recording Spool", "סליל הקלטה")),
+            depthStep(7, "thermal-tuner", "Warm the Summit Map just enough to reveal stone footprints.", "חממו את מפת הפסגה בדיוק במידה הדרושה לחשיפת עקבות האבן.", "A careful route appears around every avalanche zone.", "מסלול זהיר מופיע סביב כל אזור מפולת.", "The warmed map preserves the guardian's safe route.", "המפה המחוממת משמרת את המסלול הבטוח של השומר.", keepsake("stone-route", "▱", "Stone Route Tile", "אריח נתיב אבן")),
+            depthStep(9, "echo-lens", "Read the promise carved inside the Guardian Gate.", "קראו את ההבטחה החרוטה בתוך שער השומר.", "The guardian promised to protect every unfinished island.", "השומר הבטיח להגן על כל אי שסיפורו לא הושלם.", "The promise remains clear inside the open gate.", "ההבטחה נשארת ברורה בתוך השער הפתוח.", keepsake("guardian-sigil", "🗿", "Guardian Sigil", "סמל השומר"))
+          ]
+        }
+      ],
+      secret: {
+        id: "warm-handprint", title: "The Warm Handprint", titleHe: "טביעת היד החמה", spot: 9, tool: "thermal-tuner",
+        objective: "Match the gate's last warm handprint with the balanced tuner.", objectiveHe: "התאימו את טביעת היד החמה האחרונה בשער למכוון המאוזן.",
+        success: "The gate remembers Mira and opens a small shelter the guardian built for future climbers.", successHe: "השער זוכר את מירה ופותח מחסה קטן שהשומר בנה למטפסים עתידיים.",
+        revisit: "The shelter stays warm, stocked, and ready for the next expedition.", revisitHe: "המחסה נשאר חם, מצויד ומוכן למשלחת הבאה.",
+        collectible: keepsake("shelter-emblem", "⌂", "Shelter Emblem", "סמל המחסה")
+      }
+    }),
     spots: [
       { label: "Weather warning", icon: "🌨️", x: 9, y: 63, labelX: 10, labelY: 76 },
       { label: "Temperature grid", icon: "🌡️", x: 21, y: 72, labelX: 22, labelY: 84 },
@@ -1390,6 +1513,43 @@
     endingHe: "מירה מסבירה שהשומר הגן על איים שסיפורם לא הושלם מפני מחיקה. יחד, החוקרים משחזרים את לב האטלס ומחזירים לשמיים כל מסלול שאבד.",
     next: null,
     nextTitle: null,
+    depth: makeDepth({
+      tools: [
+        depthTool("memory-compass", "🧭", "Memory Compass", "מצפן זיכרון", "Connects matching memories across the restored Atlas.", "מחבר זיכרונות תואמים ברחבי האטלס המשוחזר."),
+        depthTool("echo-lens", "🔎", "Echo Lens", "עדשת הד", "Lets unfinished voices answer without changing their words.", "מאפשרת לקולות שלא הושלמו לענות מבלי לשנות את דבריהם.")
+      ],
+      quests: [
+        {
+          id: "guardian-promise", title: "The Guardian's Promise", titleHe: "הבטחת השומר",
+          description: "Join Mira's message, the Guardian Memory, and the Heart Chamber.",
+          descriptionHe: "חברו את הודעת מירה, זיכרון השומר וחדר הלב.",
+          unlockStep: 0, locked: "Begin the final chapter to hear Mira's message.", lockedHe: "התחילו את הפרק האחרון כדי לשמוע את הודעת מירה.",
+          steps: [
+            depthStep(0, "echo-lens", "Listen for the part of Mira's Message addressed to the guardian.", "הקשיבו לחלק בהודעת מירה שמיועד לשומר.", "Mira promises that no unfinished place will be forgotten again.", "מירה מבטיחה שאף מקום שסיפורו לא הושלם לא יישכח שוב.", "Mira's promise remains clear in the restored message.", "הבטחתה של מירה נשארת ברורה בהודעה המשוחזרת.", keepsake("promise-thread", "∞", "Promise Thread", "חוט הבטחה")),
+            depthStep(4, "memory-compass", "Connect Mira's promise to the Guardian Memory.", "חברו את הבטחת מירה לזיכרון השומר.", "The guardian remembers choosing protection instead of silence.", "השומר נזכר שבחר בהגנה במקום בשתיקה.", "The compass still links the promise and the guardian's choice.", "המצפן עדיין מחבר בין ההבטחה לבחירת השומר.", keepsake("guardian-memory-stone", "◈", "Memory Stone", "אבן זיכרון")),
+            depthStep(7, "echo-lens", "Let the Heart Chamber answer the guardian's oldest question.", "אפשרו לחדר הלב לענות על שאלתו העתיקה ביותר של השומר.", "The chamber answers: an unfinished story is an invitation, not a failure.", "החדר עונה: סיפור שלא הושלם הוא הזמנה, לא כישלון.", "The Heart Chamber repeats its patient answer.", "חדר הלב חוזר על תשובתו הסבלנית.", keepsake("heart-chime", "♥", "Heart Chime", "פעמון הלב"))
+          ]
+        },
+        {
+          id: "blank-route", title: "The Blank Route", titleHe: "המסלול הריק",
+          description: "Prepare one safe Atlas route for an adventure that has not been written yet.",
+          descriptionHe: "הכינו מסלול אטלס בטוח להרפתקה שעדיין לא נכתבה.",
+          unlockStep: 2, locked: "Complete two main challenges so the blank route can hold a stable line.", lockedHe: "השלימו שני אתגרים ראשיים כדי שהמסלול הריק יוכל להחזיק קו יציב.",
+          steps: [
+            depthStep(2, "memory-compass", "Anchor the Combined Route without choosing its destination.", "עיגנו את המסלול המשולב מבלי לבחור את יעדו.", "The route holds every direction open.", "המסלול משאיר כל כיוון פתוח.", "The anchored route still waits without forcing a destination.", "המסלול המעוגן עדיין ממתין מבלי לכפות יעד.", keepsake("blank-waypoint", "✦", "Blank Waypoint", "נקודת דרך ריקה")),
+            depthStep(8, "echo-lens", "Check the Atlas Convergence for memories copied by mistake.", "בדקו בהתכנסות האטלס אם זיכרונות הועתקו בטעות.", "Every old memory stays home while the new route remains clear.", "כל זיכרון ישן נשאר במקומו והמסלול החדש נשאר פנוי.", "The convergence remains clean and ready for a new story.", "ההתכנסות נשארת נקייה ומוכנה לסיפור חדש.", keepsake("clear-ring", "○", "Clear Convergence Ring", "טבעת התכנסות צלולה")),
+            depthStep(9, "memory-compass", "Give the Atlas Heart permission to keep one page blank.", "תנו ללב האטלס רשות להשאיר דף אחד ריק.", "The Heart opens a quiet path labeled “When you are ready.”", "הלב פותח שביל שקט המסומן ״כשתהיו מוכנים״.", "The blank path remains open and unhurried.", "השביל הריק נשאר פתוח וללא לחץ.", keepsake("future-page", "▧", "Future Page", "דף עתידי"))
+          ]
+        }
+      ],
+      secret: {
+        id: "seventh-light", title: "The Seventh Light", titleHe: "האור השביעי", spot: 9, tool: "echo-lens",
+        objective: "Look through the restored Atlas Heart toward the blank route.", objectiveHe: "הביטו דרך לב האטלס המשוחזר אל המסלול הריק.",
+        success: "A seventh light appears—not another lost island, but a place for the explorer's own future story.", successHe: "אור שביעי מופיע — לא אי אבוד נוסף, אלא מקום לסיפור העתידי של החוקרים.",
+        revisit: "The seventh light waits without fading: the next story begins only when you choose.", revisitHe: "האור השביעי ממתין מבלי לדעוך: הסיפור הבא מתחיל רק כאשר בוחרים.",
+        collectible: keepsake("seventh-light", "✧", "Seventh Light", "האור השביעי")
+      }
+    }),
     spots: [
       { label: "Mira's message", icon: "🧭", x: 9, y: 70, labelX: 10, labelY: 83 },
       { label: "Fragment sum", icon: "🔢", x: 21, y: 56, labelX: 21, labelY: 68 },

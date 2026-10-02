@@ -10,6 +10,10 @@
     ...legacyKeys,
     ...[3, 4, 5, 6].map(number => `edu-games-atlas-island-${number}-${mode}-v1`)
   ];
+  const bonusKeys = [
+    ...["road-rally", "sky-blocks", "spark-maze", "star-guard", "comet-swarm", "goal-runner"]
+      .map(gameId => `edu-games-atlas-bonus-${mode}-${gameId}-best-v1`)
+  ];
 
   const blank = () => ({
     version: 1,
@@ -91,7 +95,7 @@
   }
 
   function resetAdventure() {
-    [key, ...chapterKeys].forEach(storageKey => localStorage.removeItem(storageKey));
+    [key, ...chapterKeys, ...bonusKeys].forEach(storageKey => localStorage.removeItem(storageKey));
     const state = blank();
     window.dispatchEvent(new CustomEvent("atlas-progress", { detail: state }));
     return state;

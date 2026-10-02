@@ -148,9 +148,53 @@
     }));
   }
 
+  function freshDepth() {
+    return {
+      version: 1,
+      selectedTool: config.depth.tools[0].id,
+      activeQuest: null,
+      sideQuests: Object.fromEntries(config.depth.quests.map(quest => [quest.id, { started: false, step: 0, completed: false }])),
+      collectibles: [],
+      secret: { completed: false, visits: 0 }
+    };
+  }
+
+  function migrateDepth(saved) {
+    const base = freshDepth();
+    if (!saved || typeof saved !== "object") return base;
+    const sideQuests = Object.fromEntries(config.depth.quests.map(quest => {
+      const previous = saved.sideQuests?.[quest.id] || {};
+      const step = Math.min(quest.steps.length, Math.max(0, Number(previous.step) || 0));
+      return [quest.id, {
+        started: Boolean(previous.started || step),
+        step,
+        completed: Boolean(previous.completed || step >= quest.steps.length)
+      }];
+    }));
+    const validCollectibles = new Set(config.depth.collectibles.map(item => item.id));
+    const collectibles = [...new Set(Array.isArray(saved.collectibles) ? saved.collectibles : [])].filter(id => validCollectibles.has(id));
+    const selectedTool = config.depth.tools.some(tool => tool.id === saved.selectedTool) ? saved.selectedTool : base.selectedTool;
+    const activeQuest = config.depth.quests.some(quest => quest.id === saved.activeQuest && sideQuests[quest.id].started && !sideQuests[quest.id].completed)
+      ? saved.activeQuest
+      : null;
+    return {
+      ...base,
+      ...saved,
+      selectedTool,
+      activeQuest,
+      sideQuests,
+      collectibles,
+      secret: {
+        completed: Boolean(saved.secret?.completed),
+        visits: Math.max(0, Number(saved.secret?.visits) || 0)
+      }
+    };
+  }
+
   function fresh(previous = {}) {
     return {
       version: 1,
+      depthVersion: 1,
       nonce: randomUint(),
       variants: chooseVariants(previous),
       started: false,
@@ -160,6 +204,7 @@
       player: { x: 50, y: 73 },
       sound: true,
       reducedMotion: false,
+      depth: freshDepth(),
       updatedAt: null
     };
   }
@@ -173,6 +218,8 @@
         ...base,
         ...parsed,
         variants: { ...base.variants, ...(parsed.variants || {}) },
+        depthVersion: 1,
+        depth: migrateDepth(parsed.depth),
         step: Math.min(config.challenges.length, Math.max(0, Number(parsed.step) || 0))
       };
     } catch {
@@ -252,6 +299,9 @@
     $("world").innerHTML = `
       <div class="sky-orb" aria-hidden="true"></div><div class="mist one" aria-hidden="true"></div><div class="mist two" aria-hidden="true"></div>
       ${sceneMarkup()}${routeMarkup()}
+      <div class="depth-transform depth-transform-one" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div class="depth-transform depth-transform-two" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div class="depth-transform depth-transform-secret" aria-hidden="true"></div>
       <div id="landmarks"></div>
       <div class="quest-pointer" id="quest-pointer" hidden aria-hidden="true">
         <span>Next</span>
@@ -260,6 +310,9 @@
       </div>
       <img class="spark" src="${generatedRoot}spark/spark-guiding.webp" alt="">
       <img class="player" id="player" src="${generatedRoot}explorer/explorer-idle.webp" alt="Explorer">
+      <button class="depth-world-hotspot" id="depth-world-hotspot" type="button" hidden></button>
+      <button class="depth-world-hotspot secret" id="depth-secret-hotspot" type="button" hidden></button>
+      <div class="depth-pointer" id="depth-pointer" hidden aria-hidden="true"><span></span></div>
       <div class="controls" aria-label="Explorer movement controls">
         <button class="move" data-move="up" aria-label="Move up"><img src="${generatedRoot}gale-garden/move-up.webp" alt=""></button><button class="move" data-move="left" aria-label="Move left"><img src="${generatedRoot}gale-garden/move-left.webp" alt=""></button><button class="move" data-move="down" aria-label="Move down"><img src="${generatedRoot}gale-garden/move-down.webp" alt=""></button><button class="move" data-move="right" aria-label="Move right"><img src="${generatedRoot}gale-garden/move-right.webp" alt=""></button>
         <button class="move interact" id="interact" type="button">Begin expedition</button>
@@ -287,6 +340,317 @@
       });
       $("world").append(button);
     });
+  }
+
+  function buildDepthUI() {
+    const side = document.querySelector(".side");
+    const inventoryPanel = side.querySelector(".panel:last-child");
+    inventoryPanel.id = "depth-inventory-panel";
+    inventoryPanel.innerHTML = `
+      <h2 id="depth-tools-heading"></h2>
+      <div class="depth-tool-selector" id="depth-tool-selector" role="group"></div>
+      <div class="depth-collection-summary"><strong id="depth-collection-count"></strong><button class="secondary" id="depth-collection-button" type="button"></button></div>
+      <div class="save-row"><span id="save-status">${mode === "sandbox" ? "Sandbox progress stays here." : "Progress stays on this device."}</span></div>`;
+    const questPanel = document.createElement("section");
+    questPanel.className = "panel depth-panel";
+    questPanel.innerHTML = `<h2 id="depth-heading"></h2><p class="depth-intro" id="depth-intro"></p><div class="depth-quest-grid" id="depth-quest-grid"></div><div id="depth-secret-card"></div>`;
+    side.append(questPanel);
+    $("depth-world-hotspot").addEventListener("click", () => {
+      if (state.depth.activeQuest) guideDepthQuest(state.depth.activeQuest);
+    });
+    $("depth-secret-hotspot").addEventListener("click", openDepthSecret);
+    side.addEventListener("click", event => {
+      const tool = event.target.closest("[data-depth-tool]")?.dataset.depthTool;
+      if (tool) selectDepthTool(tool);
+      const quest = event.target.closest("[data-depth-quest]")?.dataset.depthQuest;
+      if (quest) beginDepthQuest(quest);
+      if (event.target.closest("#depth-collection-button")) openCollection();
+      if (event.target.closest("[data-depth-secret]")) openDepthSecret();
+      const review = event.target.closest("[data-depth-review]")?.dataset.depthReview;
+      if (review) openDepthReview(review);
+    });
+  }
+
+  function depthQuestConfig(id) {
+    return config.depth.quests.find(quest => quest.id === id);
+  }
+
+  function depthQuestStatus(quest) {
+    const progress = state.depth.sideQuests[quest.id];
+    if (progress.completed) return "completed";
+    if (progress.started) return "in-progress";
+    return state.started && state.step >= quest.unlockStep ? "available" : "locked";
+  }
+
+  function selectedDepthTool() {
+    return config.depth.tools.find(tool => tool.id === state.depth.selectedTool) || config.depth.tools[0];
+  }
+
+  function secretUnlocked() {
+    return config.depth.quests.every(quest => state.depth.sideQuests[quest.id].completed);
+  }
+
+  function renderDepthUI() {
+    const hebrew = useHebrew();
+    $("depth-inventory-panel").dir = hebrew ? "rtl" : "ltr";
+    $("depth-inventory-panel").lang = hebrew ? "he" : "en";
+    document.querySelector(".depth-panel").dir = hebrew ? "rtl" : "ltr";
+    document.querySelector(".depth-panel").lang = hebrew ? "he" : "en";
+    $("depth-tools-heading").textContent = hebrew ? "כלי חקירה" : "Exploration tools";
+    $("depth-heading").textContent = hebrew ? "משימות צדדיות" : "Optional side quests";
+    $("depth-intro").textContent = hebrew
+      ? "בחרו כלי, התחילו משימה ועקבו אחר סמן OPTIONAL. התוכן הזה אינו חוסם את אתגרי הפרק."
+      : "Select a tool, start a quest, and follow the OPTIONAL marker. This content never blocks chapter challenges.";
+    $("depth-tool-selector").innerHTML = config.depth.tools.map(tool => {
+      const selected = state.depth.selectedTool === tool.id;
+      return `<button class="depth-tool${selected ? " selected" : ""}" type="button" data-depth-tool="${tool.id}" aria-pressed="${selected}">
+        <span aria-hidden="true">${tool.icon}</span><strong>${hebrew ? tool.nameHe : tool.name}</strong><small>${hebrew ? tool.descriptionHe : tool.description}</small>
+      </button>`;
+    }).join("");
+    $("depth-collection-count").textContent = hebrew
+      ? `${state.depth.collectibles.length} מתוך 7 פריטי אוסף`
+      : `${state.depth.collectibles.length} of 7 collectibles`;
+    $("depth-collection-button").textContent = hebrew ? "צפייה באוסף" : "View collection";
+    $("depth-quest-grid").innerHTML = config.depth.quests.map(quest => {
+      const status = depthQuestStatus(quest);
+      const progress = state.depth.sideQuests[quest.id];
+      const statusText = {
+        locked: hebrew ? "נעולה" : "Locked",
+        available: hebrew ? "זמינה" : "Available",
+        "in-progress": hebrew ? "בתהליך" : "In progress",
+        completed: hebrew ? "הושלמה" : "Completed"
+      }[status];
+      const detail = status === "locked"
+        ? hebrew ? quest.lockedHe : quest.locked
+        : status === "in-progress"
+          ? hebrew ? `שלב ${progress.step + 1} מתוך ${quest.steps.length}` : `Step ${progress.step + 1} of ${quest.steps.length}`
+          : hebrew ? quest.descriptionHe : quest.description;
+      const action = status === "locked"
+        ? ""
+        : status === "completed"
+          ? `<button class="secondary" type="button" data-depth-review="${quest.id}">${hebrew ? "ביקור חוזר" : "Review"}</button>`
+          : `<button class="${status === "available" ? "primary" : "secondary"}" type="button" data-depth-quest="${quest.id}">${status === "available" ? (hebrew ? "התחלה" : "Start") : (hebrew ? "המשך" : "Continue")}</button>`;
+      return `<article class="depth-quest-card" data-status="${status}">
+        <div class="depth-card-head"><strong>${hebrew ? quest.titleHe : quest.title}</strong><span>${statusText}</span></div>
+        <p>${detail}</p>${action}
+      </article>`;
+    }).join("");
+    const secret = config.depth.secret;
+    const unlocked = secretUnlocked();
+    const secretStatus = state.depth.secret.completed ? "completed" : unlocked ? "available" : "locked";
+    $("depth-secret-card").innerHTML = `<article class="depth-quest-card depth-secret-card" data-status="${secretStatus}">
+      <div class="depth-card-head"><strong>${hebrew ? secret.titleHe : secret.title}</strong><span>${state.depth.secret.completed ? (hebrew ? "התגלה" : "Discovered") : unlocked ? (hebrew ? "סוד זמין" : "Secret available") : (hebrew ? "סוד נעול" : "Secret locked")}</span></div>
+      <p>${state.depth.secret.completed
+        ? (hebrew ? secret.revisitHe : secret.revisit)
+        : unlocked
+          ? (hebrew ? secret.objectiveHe : secret.objective)
+          : (hebrew ? "השלימו את שתי המשימות הצדדיות כדי לחשוף את הסוד." : "Complete both side quests to reveal this secret.")}</p>
+      ${unlocked ? `<button class="secondary" type="button" data-depth-secret>${state.depth.secret.completed ? (hebrew ? "ביקור חוזר" : "Revisit") : (hebrew ? "חקירת הסוד" : "Explore secret")}</button>` : ""}
+    </article>`;
+  }
+
+  function renderDepthWorld() {
+    const world = $("world");
+    const completedQuests = config.depth.quests.map(quest => state.depth.sideQuests[quest.id].completed);
+    world.classList.toggle("depth-quest-one", completedQuests[0]);
+    world.classList.toggle("depth-quest-two", completedQuests[1]);
+    world.classList.toggle("depth-secret-found", state.depth.secret.completed);
+    document.querySelectorAll(".generated-scene-object").forEach(object => delete object.dataset.depthRestored);
+    config.depth.quests.forEach(quest => {
+      const progress = state.depth.sideQuests[quest.id];
+      quest.steps.slice(0, progress.step).forEach(step => {
+        const object = $(`generated-object-${step.spot}`);
+        if (object) object.dataset.depthRestored = "true";
+      });
+    });
+    if (state.depth.secret.completed) {
+      const object = $(`generated-object-${config.depth.secret.spot}`);
+      if (object) object.dataset.depthRestored = "true";
+    }
+    const activeQuest = depthQuestConfig(state.depth.activeQuest);
+    const activeProgress = activeQuest && state.depth.sideQuests[activeQuest.id];
+    const activeStep = activeQuest && !activeProgress.completed ? activeQuest.steps[activeProgress.step] : null;
+    const hotspot = $("depth-world-hotspot");
+    const pointer = $("depth-pointer");
+    hotspot.hidden = !activeStep;
+    pointer.hidden = !activeStep;
+    if (activeStep) {
+      const spot = config.spots[activeStep.spot];
+      hotspot.style.left = `${spot.labelX ?? spot.x}%`;
+      hotspot.style.top = `${spot.labelY ?? spot.y + 13}%`;
+      hotspot.textContent = `${localize("Optional", "רשות")}: ${localize(activeQuest.title, activeQuest.titleHe)}`;
+      pointer.style.left = `${spot.x}%`;
+      pointer.style.top = `${Math.max(12, spot.y - 16)}%`;
+      pointer.querySelector("span").textContent = localize("Optional", "רשות");
+    }
+    const secretButton = $("depth-secret-hotspot");
+    const secretSpot = config.spots[config.depth.secret.spot];
+    secretButton.hidden = !secretUnlocked();
+    if (!secretButton.hidden) {
+      secretButton.style.left = `${Math.min(92, (secretSpot.labelX ?? secretSpot.x) + 5)}%`;
+      secretButton.style.top = `${Math.max(12, (secretSpot.labelY ?? secretSpot.y + 13) - 8)}%`;
+      secretButton.textContent = state.depth.secret.completed
+        ? localize("Revisit secret", "ביקור חוזר בסוד")
+        : localize("Discovered secret", "סוד שהתגלה");
+    }
+  }
+
+  function selectDepthTool(toolId) {
+    if (!config.depth.tools.some(tool => tool.id === toolId)) return;
+    state.depth.selectedTool = toolId;
+    save();
+    renderDepthUI();
+    tone(480, .05);
+  }
+
+  function beginDepthQuest(questId) {
+    const quest = depthQuestConfig(questId);
+    if (!quest || depthQuestStatus(quest) === "locked") return;
+    const progress = state.depth.sideQuests[quest.id];
+    if (progress.completed) {
+      openDepthReview(questId);
+      return;
+    }
+    progress.started = true;
+    state.depth.activeQuest = quest.id;
+    save();
+    render();
+    guideDepthQuest(quest.id);
+  }
+
+  function walkToDepthSpot(spotIndex, callback) {
+    cancelAnimationFrame(autoWalkFrame);
+    clearTimeout(arrivalTimer);
+    const target = config.spots[spotIndex];
+    const destination = { x: target.x, y: Math.min(78, target.y + 9) };
+    const distance = Math.hypot(state.player.x - destination.x, state.player.y - destination.y);
+    const start = { ...state.player };
+    const startedAt = performance.now();
+    const duration = Math.max(700, distance / .04);
+    const frame = now => {
+      const progress = Math.min(1, (now - startedAt) / duration);
+      state.player = {
+        x: start.x + (destination.x - start.x) * progress,
+        y: start.y + (destination.y - start.y) * progress
+      };
+      updatePlayer();
+      if (progress < 1) {
+        autoWalkFrame = requestAnimationFrame(frame);
+        return;
+      }
+      autoWalkFrame = 0;
+      save();
+      callback();
+    };
+    autoWalkFrame = requestAnimationFrame(frame);
+  }
+
+  function guideDepthQuest(questId) {
+    const quest = depthQuestConfig(questId);
+    const progress = quest && state.depth.sideQuests[quest.id];
+    if (!quest || !progress || progress.completed) return;
+    state.depth.activeQuest = quest.id;
+    save();
+    render();
+    walkToDepthSpot(quest.steps[progress.step].spot, () => openDepthInteraction(quest.id));
+  }
+
+  function openDepthInteraction(questId) {
+    const quest = depthQuestConfig(questId);
+    const progress = quest && state.depth.sideQuests[quest.id];
+    if (!quest || !progress || progress.completed) return;
+    const step = quest.steps[progress.step];
+    const requiredTool = config.depth.tools.find(tool => tool.id === step.tool);
+    const selected = selectedDepthTool();
+    const hebrew = useHebrew();
+    const ready = selected.id === requiredTool.id;
+    const html = `<div${hebrew ? ' class="guidance-hebrew" dir="rtl"' : ""}>
+      <p>${hebrew ? step.objectiveHe : step.objective}</p>
+      <p><strong>${hebrew ? "הכלי הדרוש" : "Required tool"}:</strong> ${hebrew ? requiredTool.nameHe : requiredTool.name}</p>
+      ${ready
+        ? `<div class="actions"><button class="primary" type="button" data-action="complete-depth-step" data-depth-quest-id="${quest.id}">${hebrew ? `השתמשו ב־${requiredTool.nameHe}` : `Use ${requiredTool.name}`}</button></div>`
+        : `<p class="depth-tool-warning">${hebrew ? `כרגע נבחר ${selected.nameHe}. החליפו כלי כדי להמשיך.` : `${selected.name} is selected. Switch tools to continue.`}</p><div class="actions"><button class="secondary" type="button" data-action="select-depth-tool" data-depth-tool-id="${requiredTool.id}" data-depth-quest-id="${quest.id}">${hebrew ? `בחירת ${requiredTool.nameHe}` : `Select ${requiredTool.name}`}</button></div>`}
+    </div>`;
+    openInfo(hebrew ? quest.titleHe : quest.title, html, hebrew ? "חקירת רשות" : "Optional exploration");
+  }
+
+  function completeDepthStep(questId) {
+    const quest = depthQuestConfig(questId);
+    const progress = quest && state.depth.sideQuests[quest.id];
+    if (!quest || !progress || progress.completed) return;
+    const step = quest.steps[progress.step];
+    if (state.depth.selectedTool !== step.tool) return;
+    if (!state.depth.collectibles.includes(step.collectible.id)) state.depth.collectibles.push(step.collectible.id);
+    progress.step++;
+    progress.completed = progress.step >= quest.steps.length;
+    if (progress.completed) state.depth.activeQuest = null;
+    save();
+    render();
+    tone(progress.completed ? 760 : 610, .12);
+    const hebrew = useHebrew();
+    openInfo(
+      hebrew ? (progress.completed ? "המשימה הצדדית הושלמה" : "השלב הושלם") : (progress.completed ? "Side quest complete" : "Exploration step complete"),
+      `<div${hebrew ? ' class="guidance-hebrew" dir="rtl"' : ""}><p>${hebrew ? step.successHe : step.success}</p><p><strong>${step.collectible.icon} ${hebrew ? step.collectible.nameHe : step.collectible.name}</strong> ${hebrew ? "נוסף לאוסף." : "added to the collection."}</p><div class="actions">${progress.completed ? "" : `<button class="primary" type="button" data-action="continue-depth-quest" data-depth-quest-id="${quest.id}">${hebrew ? "המשך למשימה הבאה" : "Continue quest"}</button>`}<button class="secondary" type="button" data-action="close-info">${hebrew ? "סגירה" : "Close"}</button></div></div>`,
+      hebrew ? "תגלית חדשה" : "New discovery"
+    );
+  }
+
+  function openDepthReview(questId) {
+    const quest = depthQuestConfig(questId);
+    const progress = quest && state.depth.sideQuests[quest.id];
+    if (!quest || !progress?.started) return;
+    const hebrew = useHebrew();
+    const rows = quest.steps.slice(0, progress.step).map((step, index) =>
+      `<button class="secondary depth-review-row" type="button" data-action="review-depth-step" data-depth-quest-id="${quest.id}" data-depth-step-index="${index}">${step.collectible.icon} ${hebrew ? step.collectible.nameHe : step.collectible.name}</button>`
+    ).join("");
+    openInfo(hebrew ? quest.titleHe : quest.title, `<p>${hebrew ? "בחרו תגלית כדי לבקר בה שוב." : "Choose a discovery to revisit it."}</p><div class="depth-review-list">${rows}</div>`, hebrew ? "יומן משימה צדדית" : "Side quest journal");
+  }
+
+  function reviewDepthStep(questId, stepIndex) {
+    const quest = depthQuestConfig(questId);
+    const step = quest?.steps[stepIndex];
+    if (!step || stepIndex >= state.depth.sideQuests[questId].step) return;
+    const hebrew = useHebrew();
+    openInfo(hebrew ? step.collectible.nameHe : step.collectible.name, `<p${hebrew ? ' class="guidance-hebrew" dir="rtl"' : ""}>${hebrew ? step.revisitHe : step.revisit}</p>`, hebrew ? "ביקור חוזר" : "Revisited discovery");
+  }
+
+  function openCollection() {
+    const hebrew = useHebrew();
+    const collected = new Set(state.depth.collectibles);
+    const rows = config.depth.collectibles.map(item =>
+      `<li class="${collected.has(item.id) ? "collected" : "missing"}"><span>${collected.has(item.id) ? item.icon : "?"}</span><span>${collected.has(item.id) ? (hebrew ? item.nameHe : item.name) : (hebrew ? "טרם התגלה" : "Undiscovered")}</span></li>`
+    ).join("");
+    openInfo(hebrew ? "אוסף האי" : "Island collection", `<p>${hebrew ? `${collected.size} מתוך 7 פריטים נמצאו.` : `${collected.size} of 7 collectibles found.`}</p><ol class="depth-collection-list">${rows}</ol>`, hebrew ? "תגליות רשות" : "Optional discoveries");
+  }
+
+  function openDepthSecret() {
+    if (!secretUnlocked()) return;
+    const secret = config.depth.secret;
+    const hebrew = useHebrew();
+    if (state.depth.secret.completed) {
+      state.depth.secret.visits++;
+      save();
+      openInfo(hebrew ? secret.titleHe : secret.title, `<p${hebrew ? ' class="guidance-hebrew" dir="rtl"' : ""}>${hebrew ? secret.revisitHe : secret.revisit}</p><p>${hebrew ? `מספר ביקורים: ${state.depth.secret.visits}` : `Visits: ${state.depth.secret.visits}`}</p>`, hebrew ? "סוד שנחשף" : "Discovered secret");
+      return;
+    }
+    const requiredTool = config.depth.tools.find(tool => tool.id === secret.tool);
+    const ready = state.depth.selectedTool === secret.tool;
+    openInfo(hebrew ? secret.titleHe : secret.title, `<div${hebrew ? ' class="guidance-hebrew" dir="rtl"' : ""}><p>${hebrew ? secret.objectiveHe : secret.objective}</p><p><strong>${hebrew ? "הכלי הדרוש" : "Required tool"}:</strong> ${hebrew ? requiredTool.nameHe : requiredTool.name}</p><div class="actions">${ready
+      ? `<button class="primary" type="button" data-action="complete-depth-secret">${hebrew ? "חשיפת הסוד" : "Reveal secret"}</button>`
+      : `<button class="secondary" type="button" data-action="select-secret-tool" data-depth-tool-id="${requiredTool.id}">${hebrew ? `בחירת ${requiredTool.nameHe}` : `Select ${requiredTool.name}`}</button>`}</div></div>`, hebrew ? "סוד זמין" : "Secret available");
+  }
+
+  function completeDepthSecret() {
+    const secret = config.depth.secret;
+    if (!secretUnlocked() || state.depth.selectedTool !== secret.tool || state.depth.secret.completed) return;
+    state.depth.secret.completed = true;
+    state.depth.secret.visits = 1;
+    if (!state.depth.collectibles.includes(secret.collectible.id)) state.depth.collectibles.push(secret.collectible.id);
+    save();
+    render();
+    tone(880, .18);
+    const hebrew = useHebrew();
+    openInfo(hebrew ? secret.titleHe : secret.title, `<div${hebrew ? ' class="guidance-hebrew" dir="rtl"' : ""}><p>${hebrew ? secret.successHe : secret.success}</p><p><strong>${secret.collectible.icon} ${hebrew ? secret.collectible.nameHe : secret.collectible.name}</strong> ${hebrew ? "משלים את אוסף שבעת הפריטים." : "completes the seven-item collection."}</p></div>`, hebrew ? "הסוד נחשף" : "Secret discovered");
   }
 
   function render() {
@@ -347,6 +711,8 @@
       pointer.style.left = `${pointerTarget.x}%`;
       pointer.style.top = `${Math.max(10, pointerTarget.y - 20)}%`;
     }
+    renderDepthUI();
+    renderDepthWorld();
     updatePlayer();
   }
 
@@ -756,13 +1122,15 @@
     const support = state.assisted.length
       ? hebrew ? ` עם עזרה ב־${state.assisted.length}` : ` with support on ${state.assisted.length}`
       : hebrew ? " ללא פתיחת עזרה" : " without opening support";
-    const content = `<div class="completion"${hebrew ? ' lang="he" dir="rtl"' : ""}><div class="fragment">${config.fragment}</div><p>${hebrew ? config.endingHe : config.ending}</p><p><strong>${hebrew ? `נאסף שבר אטלס ${islandNumber} מתוך 6.` : `Atlas fragment ${islandNumber} of 6 collected.`}</strong></p><p>${hebrew ? `השלמתם את כל ${config.challenges.length} האתגרים${support}.` : `You completed all ${config.challenges.length} challenges${support}.`}</p><div class="actions">${next}<a class="secondary" href="../map/index.html">${hebrew ? "מפת המסע" : "Expedition map"}</a><button class="secondary" data-action="replay" type="button">${hebrew ? "משחק חוזר עם שאלות חדשות" : "Replay with new questions"}</button></div></div>`;
+    const content = `<div class="completion"${hebrew ? ' lang="he" dir="rtl"' : ""}><div class="fragment">${config.fragment}</div><p>${hebrew ? config.endingHe : config.ending}</p><p><strong>${hebrew ? `נאסף שבר אטלס ${islandNumber} מתוך 6.` : `Atlas fragment ${islandNumber} of 6 collected.`}</strong></p><p>${hebrew ? `השלמתם את כל ${config.challenges.length} האתגרים${support}.` : `You completed all ${config.challenges.length} challenges${support}.`}</p><div class="actions">${next}<a class="secondary" href="../bonus-games/index.html?island=${islandNumber}">${hebrew ? "משחק הבונוס של האי" : "Play the island bonus game"}</a><a class="secondary" href="../map/index.html">${hebrew ? "מפת המסע" : "Expedition map"}</a><button class="secondary" data-action="replay" type="button">${hebrew ? "משחק חוזר עם שאלות חדשות" : "Replay with new questions"}</button></div></div>`;
     openInfo(hebrew ? `${config.title} הושלם` : `${config.title} complete`, content, hebrew ? "הפרק הושלם" : "Chapter complete");
   }
 
   function openJournal() {
     const rows = config.challenges.map(challenge => `<li>${state.completed.includes(challenge.id) ? "✓" : "○"} ${challenge.title}</li>`).join("");
-    openInfo("Expedition journal", `<p><strong>${config.title}:</strong> ${state.completed.length}/${config.challenges.length} challenges complete.</p><ol>${rows}</ol><div class="actions"><a class="secondary" href="../map/index.html">Expedition map</a>${state.step >= config.challenges.length ? '<button class="primary" data-action="replay">Replay chapter</button>' : ""}</div>`, "Journal");
+    const hebrew = useHebrew();
+    const sideComplete = config.depth.quests.filter(quest => state.depth.sideQuests[quest.id].completed).length;
+    openInfo(hebrew ? "יומן המסע" : "Expedition journal", `<div${hebrew ? ' class="guidance-hebrew" dir="rtl"' : ""}><p><strong>${config.title}:</strong> ${state.completed.length}/${config.challenges.length} ${hebrew ? "אתגרים הושלמו" : "challenges complete"}.</p><ol>${rows}</ol><p><strong>${hebrew ? "עומק הרפתקה" : "Adventure Depth"}:</strong> ${sideComplete}/2 ${hebrew ? "משימות צדדיות" : "side quests"} · ${state.depth.collectibles.length}/7 ${hebrew ? "פריטי אוסף" : "collectibles"} · ${state.depth.secret.completed ? (hebrew ? "הסוד התגלה" : "secret discovered") : (hebrew ? "הסוד ממתין" : "secret waiting")}.</p><div class="actions"><a class="secondary" href="../map/index.html">${hebrew ? "מפת המסע" : "Expedition map"}</a>${state.step >= config.challenges.length ? `<a class="secondary" href="../bonus-games/index.html?island=${islandNumber}">${hebrew ? "משחק הבונוס של האי" : "Play the island bonus game"}</a><button class="primary" data-action="replay">${hebrew ? "משחק חוזר בפרק" : "Replay chapter"}</button>` : ""}</div></div>`, hebrew ? "יומן" : "Journal");
   }
 
   function openSettings() {
@@ -782,20 +1150,22 @@
     $("info-title").textContent = title;
     $("info-label").textContent = label;
     $("info-content").innerHTML = html;
-    $("info-dialog").showModal();
+    if (!$("info-dialog").open) $("info-dialog").showModal();
   }
 
   function replay() {
     const previous = state.variants;
     const sound = state.sound;
     const reducedMotion = state.reducedMotion;
-    state = { ...fresh(previous), started: true, sound, reducedMotion };
+    const depth = migrateDepth(state.depth);
+    state = { ...fresh(previous), started: true, sound, reducedMotion, depth };
     $("info-dialog").close();
     save();
     render();
   }
 
   buildWorld();
+  buildDepthUI();
   $("journal").setAttribute("aria-label", "Open expedition journal");
   $("settings").setAttribute("aria-label", "Open settings");
   $("close-challenge").setAttribute("aria-label", "Close challenge");
@@ -823,8 +1193,28 @@
     if (action === "replay") replay();
     if (action === "sound") { state.sound = !state.sound; save(); $("info-dialog").close(); openSettings(); }
     if (action === "motion") { state.reducedMotion = !state.reducedMotion; save(); render(); $("info-dialog").close(); openSettings(); }
-    if (action === "reset-island") openInfo(`Reset ${config.title}?`, `<p>This restarts only this island. Progress on the other islands remains saved.</p><div class="actions"><button class="secondary" data-action="cancel-reset">Keep progress</button><button class="primary" data-action="confirm-reset-island">Reset island</button></div>`, "Local progress");
-    if (action === "reset-all") openInfo("Reset the whole adventure?", `<p>This removes progress for all six islands and returns the Atlas adventure to the beginning.</p><div class="actions"><button class="secondary" data-action="cancel-reset">Keep progress</button><button class="primary" data-action="confirm-reset-all">Reset everything</button></div>`, "All Atlas progress");
+    if (action === "complete-depth-step") completeDepthStep(event.target.closest("[data-depth-quest-id]")?.dataset.depthQuestId);
+    if (action === "continue-depth-quest") {
+      const questId = event.target.closest("[data-depth-quest-id]")?.dataset.depthQuestId;
+      $("info-dialog").close();
+      beginDepthQuest(questId);
+    }
+    if (action === "select-depth-tool") {
+      const button = event.target.closest("[data-depth-tool-id]");
+      selectDepthTool(button?.dataset.depthToolId);
+      openDepthInteraction(button?.dataset.depthQuestId);
+    }
+    if (action === "review-depth-step") {
+      const button = event.target.closest("[data-depth-step-index]");
+      reviewDepthStep(button?.dataset.depthQuestId, Number(button?.dataset.depthStepIndex));
+    }
+    if (action === "select-secret-tool") {
+      selectDepthTool(event.target.closest("[data-depth-tool-id]")?.dataset.depthToolId);
+      openDepthSecret();
+    }
+    if (action === "complete-depth-secret") completeDepthSecret();
+    if (action === "reset-island") openInfo(`Reset ${config.title}?`, `<p>This restarts the ten challenges and all optional depth discoveries on this island. Progress on the other islands remains saved.</p><div class="actions"><button class="secondary" data-action="cancel-reset">Keep progress</button><button class="primary" data-action="confirm-reset-island">Reset island</button></div>`, "Local progress");
+    if (action === "reset-all") openInfo("Reset the whole adventure?", `<p>This removes main and optional progress for all six islands and returns the Atlas adventure to the beginning.</p><div class="actions"><button class="secondary" data-action="cancel-reset">Keep progress</button><button class="primary" data-action="confirm-reset-all">Reset everything</button></div>`, "All Atlas progress");
   };
   $("info-content").addEventListener("change", event => {
     const select = event.target.closest("[data-setting-language]");
@@ -863,6 +1253,13 @@
       resolvedChallenge,
       openChallenge,
       finishChallenge,
+      depth: {
+        beginQuest: beginDepthQuest,
+        selectTool: selectDepthTool,
+        completeStep: completeDepthStep,
+        completeSecret: completeDepthSecret,
+        openSecret: openDepthSecret
+      },
       setVariant: (challengeId, variantIndex, nonce) => {
         state.variants[challengeId] = variantIndex;
         state.nonce = nonce >>> 0;

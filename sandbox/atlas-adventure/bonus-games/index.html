@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Atlas Bonus Arcade — Sandbox</title>
+  <link rel="stylesheet" href="../../../assets/atlas-bonus-games.css">
+</head>
+<body class="atlas-bonus-page" data-atlas-mode="sandbox">
+  <main class="bonus-shell">
+    <header class="bonus-header">
+      <div class="bonus-brand">
+        <div class="bonus-emblem" aria-hidden="true">✦</div>
+        <div><h1>Atlas Bonus Arcade</h1><p id="page-subtitle">Six original games unlocked across the expedition.</p></div>
+      </div>
+      <div class="game-picker">
+        <label for="game-select">All games</label>
+        <select id="game-select" aria-label="Choose a bonus game"></select>
+      </div>
+    </header>
+    <div class="game-layout">
+      <section class="game-stage-card" aria-label="Bonus game">
+        <div class="game-toolbar">
+          <div class="stat"><span id="score-label">Score</span><strong id="score-value">0</strong></div>
+          <div class="stat"><span id="best-label">Best</span><strong id="best-value">0</strong></div>
+          <div class="stat"><span id="lives-label">Lives</span><strong id="lives-value">3</strong></div>
+          <div class="stat"><span id="status-label">Status</span><strong id="status-value">Ready</strong></div>
+          <span class="toolbar-spacer"></span>
+          <button class="ui-button" id="pause-button" type="button">Pause</button>
+          <button class="ui-button" id="restart-button" type="button">Restart</button>
+        </div>
+        <div class="canvas-wrap">
+          <canvas id="bonus-canvas" width="800" height="600" aria-label="Interactive arcade game"></canvas>
+          <div class="game-overlay" id="game-overlay" hidden>
+            <div class="overlay-card">
+              <h2 id="overlay-title">Game complete</h2>
+              <p id="overlay-message"></p>
+              <div class="overlay-actions">
+                <button class="ui-button primary" id="play-again-button" type="button">Play again</button>
+                <a id="return-button" href="../index.html">Return to island</a>
+                <a id="map-button" href="../map/index.html">Sandbox map</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="touch-controls" aria-label="Touch game controls">
+          <div class="touch-dpad">
+            <button class="touch-button" type="button" data-control="up" aria-label="Move up">▲</button>
+            <button class="touch-button" type="button" data-control="left" aria-label="Move left">◀</button>
+            <button class="touch-button" type="button" data-control="down" aria-label="Move down">▼</button>
+            <button class="touch-button" type="button" data-control="right" aria-label="Move right">▶</button>
+          </div>
+          <div class="touch-actions">
+            <button class="touch-button action" type="button" data-control="action">Action</button>
+            <button class="touch-button alt" type="button" data-control="alt">Rotate / Aim</button>
+          </div>
+        </div>
+      </section>
+      <aside class="game-sidebar">
+        <h2 id="game-title">Road Rally</h2>
+        <p class="game-subtitle" id="game-goal"></p>
+        <div class="instructions" id="game-instructions"></div>
+        <div class="language-row">
+          <button class="ui-button" id="english-button" type="button" lang="en">English</button>
+          <button class="ui-button" id="hebrew-button" type="button" lang="he">עברית</button>
+        </div>
+        <p class="island-note" id="island-note"></p>
+      </aside>
+    </div>
+    <div class="screen-reader-status" id="announcer" role="status" aria-live="polite"></div>
+  </main>
+  <script src="../../../assets/atlas-progress.js"></script>
+  <script src="../../../assets/atlas-bonus-games.js"></script>
+</body>
+</html>

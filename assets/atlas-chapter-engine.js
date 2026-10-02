@@ -601,6 +601,17 @@
   }
 
   buildWorld();
+  const resetIslandButton = $("reset");
+  const resetActions = document.createElement("div");
+  const resetAllButton = document.createElement("button");
+  resetActions.className = "reset-actions";
+  resetIslandButton.textContent = "Reset island";
+  resetAllButton.className = "secondary";
+  resetAllButton.id = "reset-all";
+  resetAllButton.type = "button";
+  resetAllButton.textContent = "Reset all";
+  resetIslandButton.replaceWith(resetActions);
+  resetActions.append(resetIslandButton, resetAllButton);
   $("journal").setAttribute("aria-label", "Open expedition journal");
   $("settings").setAttribute("aria-label", "Open settings");
   $("close-challenge").setAttribute("aria-label", "Close challenge");
@@ -629,15 +640,20 @@
     if (action === "sound") { state.sound = !state.sound; save(); $("info-dialog").close(); openSettings(); }
     if (action === "motion") { state.reducedMotion = !state.reducedMotion; save(); render(); $("info-dialog").close(); openSettings(); }
   };
-  $("reset").onclick = () => openInfo("Reset this chapter?", `<p>This removes only ${config.title} progress from this browser.</p><div class="actions"><button class="secondary" data-action="cancel-reset">Keep progress</button><button class="primary" data-action="confirm-reset">Reset chapter</button></div>`, "Local progress");
+  resetIslandButton.onclick = () => openInfo(`Reset ${config.title}?`, `<p>This restarts only this island. Progress on the other islands remains saved.</p><div class="actions"><button class="secondary" data-action="cancel-reset">Keep progress</button><button class="primary" data-action="confirm-reset-island">Reset island</button></div>`, "Local progress");
+  resetAllButton.onclick = () => openInfo("Reset the whole adventure?", `<p>This removes progress for all six islands and returns the Atlas adventure to the beginning.</p><div class="actions"><button class="secondary" data-action="cancel-reset">Keep progress</button><button class="primary" data-action="confirm-reset-all">Reset everything</button></div>`, "All Atlas progress");
   $("info-content").addEventListener("click", event => {
     const action = event.target.closest("[data-action]")?.dataset.action;
     if (action === "cancel-reset") $("info-dialog").close();
-    if (action === "confirm-reset") {
+    if (action === "confirm-reset-island") {
       localStorage.removeItem(saveKey);
       state = fresh();
       $("info-dialog").close();
       render();
+    }
+    if (action === "confirm-reset-all") {
+      window.AtlasProgress?.resetAdventure();
+      location.href = "../index.html";
     }
   });
   document.addEventListener("keydown", event => {

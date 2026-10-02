@@ -6,6 +6,10 @@
   const legacyKeys = mode === "sandbox"
     ? ["edu-games-atlas-cloud-harbor-sandbox-v1", "edu-games-atlas-gale-garden-sandbox-v1"]
     : ["edu-games-atlas-cloud-harbor-v1", "edu-games-atlas-gale-garden-v1"];
+  const chapterKeys = [
+    ...legacyKeys,
+    ...[3, 4, 5, 6].map(number => `edu-games-atlas-island-${number}-${mode}-v1`)
+  ];
 
   const blank = () => ({
     version: 1,
@@ -86,5 +90,12 @@
     return blank();
   }
 
-  window.AtlasProgress = { mode, key, load, save, completeIsland, recordVisit, isUnlocked, reset };
+  function resetAdventure() {
+    [key, ...chapterKeys].forEach(storageKey => localStorage.removeItem(storageKey));
+    const state = blank();
+    window.dispatchEvent(new CustomEvent("atlas-progress", { detail: state }));
+    return state;
+  }
+
+  window.AtlasProgress = { mode, key, load, save, completeIsland, recordVisit, isUnlocked, reset, resetAdventure };
 })();

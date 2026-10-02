@@ -163,7 +163,7 @@ html body#edu-refresh .side>.panel .spark-message{color:#cdeaf0!important}
 .item img{width:25px;height:25px;object-fit:contain;vertical-align:middle;margin-inline-end:5px;filter:saturate(.55)}
 .item.unlocked{color:#fff0b6;border-color:#ad9858;background:#293848}
 .item.unlocked img{filter:none}
-.save-row{display:flex;align-items:center;justify-content:space-between;gap:8px;color:#a9c7d0;font-size:13px}.save-dot{width:9px;height:9px;border-radius:50%;background:#7890a0}.save-dot.saved{background:var(--good)}
+.save-row{display:flex;align-items:center;justify-content:space-between;gap:8px;color:#a9c7d0;font-size:13px}.reset-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}.save-dot{width:9px;height:9px;border-radius:50%;background:#7890a0}.save-dot.saved{background:var(--good)}
 .modal{border:0;padding:0;width:min(700px,calc(100% - 24px));max-height:92vh;overflow:hidden;border-radius:23px;background:#0c223d;color:#eef8fa;box-shadow:0 30px 90px rgba(0,0,0,.65)}
 html body#edu-refresh dialog.modal{background:#0c223d!important;color:#eef8fa!important;border-color:rgba(190,226,237,.35)!important}
 .modal::backdrop{background:rgba(2,9,19,.75);backdrop-filter:blur(5px)}
@@ -496,7 +496,7 @@ html.reduce-motion *,html.reduce-motion *:before,html.reduce-motion *:after{anim
       <span class="item" id="item-lens"><img src="./assets/generated/inventory/echo-lens-icon.webp" alt="">Echo Lens</span>
       <span class="item" id="item-fragment"><img src="./assets/generated/inventory/map-fragment-icon.webp" alt="">Map fragment</span>
     </div>
-    <div class="save-row"><span><span class="save-dot" id="save-dot"></span> <span id="save-status">Progress stays on this device.</span></span><button class="secondary" id="reset-button" type="button">Reset</button></div>
+    <div class="save-row"><span><span class="save-dot" id="save-dot"></span> <span id="save-status">Progress stays on this device.</span></span><div class="reset-actions"><button class="secondary" id="reset-button" type="button">Reset island</button><button class="secondary" id="reset-all-button" type="button">Reset all</button></div></div>
   </section>
 </aside>
 </div>
@@ -1349,7 +1349,10 @@ function openInfo(title,html,label){
   lastFocus=document.activeElement;$("info-label").textContent=label;$("info-title").textContent=title;$("info-content").innerHTML=html;$("info-dialog").showModal();
 }
 function resetGame(){
-  openInfo("Reset this expedition?",`<p>This removes the locally saved Cloud Harbor progress from this browser. It does not affect any other Edu Games page.</p><div class="actions"><button class="secondary" type="button" data-action="cancel-reset">Keep progress</button><button class="primary" type="button" data-action="confirm-reset">Reset Cloud Harbor</button></div>`,"Local progress");
+  openInfo("Reset Cloud Harbor?",`<p>This restarts only this island. Progress on the other islands remains saved.</p><div class="actions"><button class="secondary" type="button" data-action="cancel-reset">Keep progress</button><button class="primary" type="button" data-action="confirm-reset-island">Reset island</button></div>`,"Local progress");
+}
+function resetWholeAdventure(){
+  openInfo("Reset the whole adventure?",`<p>This removes progress for all six islands and returns the Atlas adventure to the beginning.</p><div class="actions"><button class="secondary" type="button" data-action="cancel-reset">Keep progress</button><button class="primary" type="button" data-action="confirm-reset-all">Reset everything</button></div>`,"All Atlas progress");
 }
 
 document.querySelectorAll("[data-step]").forEach(button=>button.addEventListener("click",()=>{
@@ -1387,7 +1390,7 @@ $("continue-button").addEventListener("click",closeChallenge);$("close-challenge
 $("challenge-dialog").addEventListener("cancel",event=>{event.preventDefault();closeChallenge();});
 $("close-info").addEventListener("click",()=>{$("info-dialog").close();lastFocus?.focus({preventScroll:true});});
 $("info-dialog").addEventListener("cancel",event=>{event.preventDefault();$("info-dialog").close();});
-$("journal-button").addEventListener("click",openJournal);$("settings-button").addEventListener("click",openSettings);$("reset-button").addEventListener("click",resetGame);
+$("journal-button").addEventListener("click",openJournal);$("settings-button").addEventListener("click",openSettings);$("reset-button").addEventListener("click",resetGame);$("reset-all-button").addEventListener("click",resetWholeAdventure);
 $("info-content").addEventListener("click",event=>{
   const action=event.target.closest("[data-action]")?.dataset.action;if(!action)return;
   if(action==="journal"){$("info-dialog").close();openJournal();}
@@ -1399,7 +1402,8 @@ $("info-content").addEventListener("click",event=>{
   if(action==="copy-label-layout")copyLabelLayout();
   if(action==="reset-label-layout"){clearLabelLayout();$("info-dialog").close();}
   if(action==="cancel-reset")$("info-dialog").close();
-  if(action==="confirm-reset"){localStorage.removeItem(SAVE_KEY);state=freshState();$("info-dialog").close();render();showToast("Cloud Harbor progress reset.");}
+  if(action==="confirm-reset-island"){localStorage.removeItem(SAVE_KEY);state=freshState();$("info-dialog").close();render();showToast("Cloud Harbor progress reset.");}
+  if(action==="confirm-reset-all"){window.AtlasProgress?.resetAdventure();location.reload();}
 });
 $("info-content").addEventListener("click",event=>{
   const setting=event.target.closest("[data-setting]")?.dataset.setting;if(!setting)return;

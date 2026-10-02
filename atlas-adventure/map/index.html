@@ -9,7 +9,7 @@
 </style>
 </head>
 <body data-atlas-mode="production">
-<main class="shell"><div class="top"><a class="back" href="../index.html">← Cloud Harbor</a><button class="reset" id="reset-map">Reset expedition map</button></div><h1>Atlas Expedition Map</h1><p class="intro">Choose any unlocked chapter, revisit completed islands, and collect all six Atlas fragments.</p><div class="summary"><span class="pill" id="completion-count"></span><span class="pill" id="fragment-count"></span></div><section class="map" id="map"></section><section class="ending" id="ending"><div class="fragments">✦ ✦ ✦ ✦ ✦ ✦</div><h2>The Atlas is complete</h2><p>Mira, Spark, the explorer, and the guardian restored every Lost Island. One blank page remains for the next adventure.</p><a class="back" href="../island-six/index.html">Replay the finale</a></section></main>
+<main class="shell"><div class="top"><a class="back" href="../index.html">← Cloud Harbor</a><button class="reset" id="reset-map">Reset whole adventure</button></div><h1>Atlas Expedition Map</h1><p class="intro">Choose any unlocked chapter, revisit completed islands, and collect all six Atlas fragments.</p><div class="summary"><span class="pill" id="completion-count"></span><span class="pill" id="fragment-count"></span></div><section class="map" id="map"></section><section class="ending" id="ending"><div class="fragments">✦ ✦ ✦ ✦ ✦ ✦</div><h2>The Atlas is complete</h2><p>Mira, Spark, the explorer, and the guardian restored every Lost Island. One blank page remains for the next adventure.</p><a class="back" href="../island-six/index.html">Replay the finale</a></section></main>
 <script>
 window.addEventListener("DOMContentLoaded",()=>{
  const islands=[
@@ -25,7 +25,7 @@ window.addEventListener("DOMContentLoaded",()=>{
  document.getElementById("completion-count").textContent=`${completeCount} of 6 islands complete`;
  document.getElementById("fragment-count").textContent=`${state.fragments.length} Atlas fragments collected`;
  document.getElementById("ending").classList.toggle("show",completeCount===6);
- document.getElementById("reset-map").onclick=()=>{if(confirm("Reset the unified expedition map? Individual chapter saves will remain.")){AtlasProgress.reset();location.reload()}};
+ document.getElementById("reset-map").onclick=()=>{if(confirm("Reset all six islands and return the Atlas adventure to the beginning?")){AtlasProgress.resetAdventure();location.href="../index.html"}};
 });
 </script>
 </body></html>

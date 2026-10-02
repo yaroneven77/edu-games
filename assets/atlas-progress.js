@@ -99,3 +99,46 @@
 
   window.AtlasProgress = { mode, key, load, save, completeIsland, recordVisit, isUnlocked, reset, resetAdventure };
 })();
+
+(() => {
+  "use strict";
+
+  const key = "edu-games-atlas-guidance-language-v1";
+
+  function get() {
+    try {
+      return localStorage.getItem(key) === "en" ? "en" : "he";
+    } catch {
+      return "he";
+    }
+  }
+
+  function set(language) {
+    const value = language === "en" ? "en" : "he";
+    try {
+      localStorage.setItem(key, value);
+    } catch {
+      // The current page can still use the selected language when storage is unavailable.
+    }
+    window.dispatchEvent(new CustomEvent("atlas-language", { detail: value }));
+    return value;
+  }
+
+  function choose(english, hebrew) {
+    return get() === "he" && hebrew ? hebrew : english;
+  }
+
+  function speakEnglish(text) {
+    if (!("speechSynthesis" in window) || !text) return false;
+    speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "en-US";
+    utterance.rate = 0.9;
+    const voice = speechSynthesis.getVoices().find(item => item.lang?.toLowerCase().startsWith("en"));
+    if (voice) utterance.voice = voice;
+    speechSynthesis.speak(utterance);
+    return true;
+  }
+
+  window.AtlasLanguage = { key, get, set, choose, speakEnglish };
+})();

@@ -96,6 +96,17 @@
   };
   const generatedScene = generatedScenes[islandNumber];
   const saveKey = `edu-games-atlas-island-${islandNumber}-${mode}-v1`;
+  const guidanceLanguage = () => window.AtlasLanguage?.get?.() || "he";
+  const useHebrew = () => guidanceLanguage() === "he";
+  const isEnglishChallenge = challenge => challenge?.subject?.startsWith("English");
+  const localize = (english, hebrew) => useHebrew() && hebrew ? hebrew : english;
+  const setGuidanceText = (element, english, hebrew, forceEnglish = false) => {
+    const hebrewEnabled = !forceEnglish && useHebrew() && Boolean(hebrew);
+    element.textContent = hebrewEnabled ? hebrew : english;
+    element.classList.toggle("guidance-hebrew", hebrewEnabled);
+    element.lang = hebrewEnabled ? "he" : "en";
+    element.dir = hebrewEnabled ? "rtl" : "ltr";
+  };
   const randomUint = () => globalThis.crypto?.getRandomValues
     ? crypto.getRandomValues(new Uint32Array(1))[0]
     : Math.floor(Math.random() * 0x100000000);
@@ -249,16 +260,28 @@
     document.documentElement.classList.toggle("reduce-motion", state.reducedMotion);
     $("chapter-name").textContent = `Island ${islandNumber} · ${config.title}`;
     $("chapter-heading").textContent = config.title;
-    $("spark-message").textContent = !state.started
+    const sparkEnglish = !state.started
       ? config.intro
       : state.step >= config.challenges.length
         ? config.completionMessage
         : state.step ? config.challenges[state.step - 1].spark : config.startMessage;
-    $("objective").textContent = !state.started
+    const sparkHebrew = !state.started
+      ? config.introHe
+      : state.step >= config.challenges.length
+        ? config.completionMessageHe
+        : state.step ? config.challenges[state.step - 1].sparkHe : config.startMessageHe;
+    setGuidanceText($("spark-message"), sparkEnglish, sparkHebrew);
+    const objectiveEnglish = !state.started
       ? `Talk to Spark and begin ${config.title}.`
       : state.step >= config.challenges.length
         ? "The chapter is complete. Open the expedition map or replay."
         : config.challenges[state.step].objective;
+    const objectiveHebrew = !state.started
+      ? config.beginObjectiveHe || `דברו עם ספארק והתחילו את ${config.title}.`
+      : state.step >= config.challenges.length
+        ? config.completeObjectiveHe || "הפרק הושלם. פתחו את מפת המסע או שחקו שוב."
+        : config.challenges[state.step].objectiveHe;
+    setGuidanceText($("objective"), objectiveEnglish, objectiveHebrew);
     $("progress-fill").style.width = `${state.completed.length / config.challenges.length * 100}%`;
     $("progress").setAttribute("aria-valuenow", String(state.completed.length));
     $("progress-text").textContent = `${state.completed.length} of ${config.challenges.length} challenges complete`;
@@ -324,7 +347,10 @@
       window.AtlasProgress?.recordVisit(islandNumber, config.title);
       save();
       render();
-      openInfo(config.title, `<p>${config.opening}</p><p><strong>${config.startMessage}</strong></p><div class="actions"><button class="primary" data-action="close-info" type="button">OK</button></div>`, "New chapter");
+      const opening = localize(config.opening, config.openingHe);
+      const startMessage = localize(config.startMessage, config.startMessageHe);
+      const direction = useHebrew() ? ' class="guidance-hebrew" dir="rtl"' : "";
+      openInfo(config.title, `<div${direction}><p>${opening}</p><p><strong>${startMessage}</strong></p></div><div class="actions"><button class="primary" data-action="close-info" type="button">OK</button></div>`, "New chapter");
       return;
     }
     if (state.step >= config.challenges.length) return;
@@ -372,15 +398,56 @@
     lastFocus = document.activeElement;
     $("challenge-label").textContent = `${active.label} · ${active.subject}`;
     $("challenge-title").textContent = active.title;
-    $("challenge-story").textContent = active.story;
-    $("challenge-hint").textContent = active.hint;
+    setGuidanceText($("challenge-story"), active.story, active.storyHe);
+    setGuidanceText($("challenge-hint"), active.hint, active.hintHe);
     $("challenge-hint").hidden = true;
     $("challenge-feedback").textContent = "";
     $("challenge-feedback").className = "feedback";
     $("hint-button").hidden = false;
     $("continue-button").hidden = true;
     renderChallenge();
+    renderGuidanceActions();
     $("challenge-dialog").showModal();
+  }
+
+  function renderGuidanceActions() {
+    $("guidance-actions")?.remove();
+    $("guidance-translation")?.remove();
+    if (useHebrew()) return;
+    const actions = document.createElement("div");
+    actions.className = "guidance-actions";
+    actions.id = "guidance-actions";
+    const translate = document.createElement("button");
+    translate.className = "secondary";
+    translate.type = "button";
+    translate.textContent = "Translate to Hebrew";
+    translate.setAttribute("aria-expanded", "false");
+    const listen = document.createElement("button");
+    listen.className = "secondary";
+    listen.type = "button";
+    listen.textContent = "Listen";
+    listen.setAttribute("aria-label", "Listen to the English story and instructions");
+    translate.onclick = () => {
+      let panel = $("guidance-translation");
+      if (panel) {
+        panel.remove();
+        translate.setAttribute("aria-expanded", "false");
+        translate.textContent = "Translate to Hebrew";
+        return;
+      }
+      panel = document.createElement("div");
+      panel.className = "guidance-translation";
+      panel.id = "guidance-translation";
+      const parts = [active.storyHe];
+      if (!isEnglishChallenge(active) && active.questionHe) parts.push(active.questionHe);
+      panel.textContent = parts.filter(Boolean).join(" ");
+      actions.after(panel);
+      translate.setAttribute("aria-expanded", "true");
+      translate.textContent = "Hide Hebrew translation";
+    };
+    listen.onclick = () => window.AtlasLanguage?.speakEnglish?.(`${active.story} ${active.question}`);
+    actions.append(translate, listen);
+    $("challenge-story").after(actions);
   }
 
   function renderChallenge() {
@@ -393,7 +460,7 @@
       box.append(passage);
     }
     const question = document.createElement("h3");
-    question.textContent = active.question;
+    setGuidanceText(question, active.question, active.questionHe, isEnglishChallenge(active));
     box.append(question);
     if (active.expression) {
       const expression = document.createElement("div");
@@ -552,6 +619,7 @@
   }
 
   function closeChallenge() {
+    window.speechSynthesis?.cancel?.();
     $("challenge-dialog").close();
     lastFocus?.focus();
     if (state.step >= config.challenges.length) setTimeout(showCompletion, 180);
@@ -562,10 +630,15 @@
       assisted: state.assisted.length,
       challengeCount: config.challenges.length
     });
+    const hebrew = useHebrew();
     const next = config.next
-      ? `<a class="primary" href="${config.next}">Travel to ${config.nextTitle}</a>`
-      : `<a class="primary" href="../map/index.html">View the completed Atlas</a>`;
-    openInfo(`${config.title} complete`, `<div class="completion"><div class="fragment">${config.fragment}</div><p>${config.ending}</p><p><strong>Atlas fragment ${islandNumber} of 6 collected.</strong></p><p>You completed all ${config.challenges.length} challenges${state.assisted.length ? ` with support on ${state.assisted.length}` : " without opening support"}.</p><div class="actions">${next}<a class="secondary" href="../map/index.html">Expedition map</a><button class="secondary" data-action="replay" type="button">Replay with new questions</button></div></div>`, "Chapter complete");
+      ? `<a class="primary" href="${config.next}">${hebrew ? `המשך אל ${config.nextTitle}` : `Travel to ${config.nextTitle}`}</a>`
+      : `<a class="primary" href="../map/index.html">${hebrew ? "צפייה באטלס שהושלם" : "View the completed Atlas"}</a>`;
+    const support = state.assisted.length
+      ? hebrew ? ` עם עזרה ב־${state.assisted.length}` : ` with support on ${state.assisted.length}`
+      : hebrew ? " ללא פתיחת עזרה" : " without opening support";
+    const content = `<div class="completion"${hebrew ? ' lang="he" dir="rtl"' : ""}><div class="fragment">${config.fragment}</div><p>${hebrew ? config.endingHe : config.ending}</p><p><strong>${hebrew ? `נאסף שבר אטלס ${islandNumber} מתוך 6.` : `Atlas fragment ${islandNumber} of 6 collected.`}</strong></p><p>${hebrew ? `השלמתם את כל ${config.challenges.length} האתגרים${support}.` : `You completed all ${config.challenges.length} challenges${support}.`}</p><div class="actions">${next}<a class="secondary" href="../map/index.html">${hebrew ? "מפת המסע" : "Expedition map"}</a><button class="secondary" data-action="replay" type="button">${hebrew ? "משחק חוזר עם שאלות חדשות" : "Replay with new questions"}</button></div></div>`;
+    openInfo(hebrew ? `${config.title} הושלם` : `${config.title} complete`, content, hebrew ? "הפרק הושלם" : "Chapter complete");
   }
 
   function openJournal() {
@@ -574,9 +647,11 @@
   }
 
   function openSettings() {
+    const language = guidanceLanguage();
     openInfo("Settings", `<div class="settings-grid">
       <div class="setting"><span><strong>Sound effects</strong><br><small>Short generated tones only</small></span><button class="switch" type="button" data-action="sound" aria-label="Toggle sound effects" aria-pressed="${state.sound}"></button></div>
       <div class="setting"><span><strong>Reduce motion</strong><br><small>Stops decorative animation</small></span><button class="switch" type="button" data-action="motion" aria-label="Toggle reduced motion" aria-pressed="${state.reducedMotion}"></button></div>
+      <div class="setting"><span><strong>Story and instructions</strong><br><small>Hebrew is the default guidance language</small></span><select class="language-select" data-setting-language aria-label="Story and instructions language"><option value="he"${language === "he" ? " selected" : ""}>Hebrew</option><option value="en"${language === "en" ? " selected" : ""}>English</option></select></div>
       <div class="actions"><a class="secondary" href="${artworkHref}">GPT artwork prompt</a></div>
       <p>Progress and settings are saved only in this browser. No microphone, account, analytics, or child information is used.</p>
     </div>`, "Game settings");
@@ -640,6 +715,12 @@
     if (action === "sound") { state.sound = !state.sound; save(); $("info-dialog").close(); openSettings(); }
     if (action === "motion") { state.reducedMotion = !state.reducedMotion; save(); render(); $("info-dialog").close(); openSettings(); }
   };
+  $("info-content").addEventListener("change", event => {
+    const select = event.target.closest("[data-setting-language]");
+    if (!select) return;
+    window.AtlasLanguage?.set?.(select.value);
+    render();
+  });
   resetIslandButton.onclick = () => openInfo(`Reset ${config.title}?`, `<p>This restarts only this island. Progress on the other islands remains saved.</p><div class="actions"><button class="secondary" data-action="cancel-reset">Keep progress</button><button class="primary" data-action="confirm-reset-island">Reset island</button></div>`, "Local progress");
   resetAllButton.onclick = () => openInfo("Reset the whole adventure?", `<p>This removes progress for all six islands and returns the Atlas adventure to the beginning.</p><div class="actions"><button class="secondary" data-action="cancel-reset">Keep progress</button><button class="primary" data-action="confirm-reset-all">Reset everything</button></div>`, "All Atlas progress");
   $("info-content").addEventListener("click", event => {
@@ -663,6 +744,7 @@
     if (event.key.toLowerCase() === "e") { event.preventDefault(); approachCurrent(); }
   });
   window.AtlasProgress?.recordVisit(islandNumber, config.title);
+  window.addEventListener("atlas-language", render);
   render();
   if (new URLSearchParams(location.search).get("selftest") === "1") {
     window.__atlasChapterSelfTest = { config, state: () => structuredClone(state), saveKey, resolvedChallenge, openChallenge, finishChallenge };

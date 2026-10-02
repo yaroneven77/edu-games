@@ -185,7 +185,9 @@ html body#edu-refresh .modal h2{color:#fff0bd!important}html body#edu-refresh .m
 .actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}.primary,.secondary{padding:10px 16px}
 .primary{background:linear-gradient(#3c8a73,#276451);border-color:#78d6b8}.secondary{background:linear-gradient(#294f70,#1b3c5c)}
 .hint{border-inline-start:4px solid var(--gold);background:#142f4a;border-radius:10px;padding:10px 12px;margin:12px 0;color:#d5e9ed}
-.hint[hidden],.completion[hidden],.settings[hidden]{display:none}
+.hint[hidden],.completion[hidden],.settings[hidden],.guidance-tools[hidden],.translation-panel[hidden]{display:none}
+.guidance-tools{display:flex;flex-wrap:wrap;gap:9px;margin:10px 0}.translation-panel{margin:8px 0 14px;padding:11px 13px;border:1px solid rgba(87,212,192,.55);border-radius:12px;background:#102d4e;color:#d9ebee}.translation-panel p{margin:5px 0}
+[lang="he"][dir="rtl"]{direction:rtl;text-align:right}.language-select{min-height:42px;padding:7px 10px;border:1px solid var(--line);border-radius:10px;background:#173653;color:#fff}
 .word-area{display:grid;gap:12px}.word-bank,.answer-line{display:flex;flex-wrap:wrap;gap:8px;min-height:58px;padding:10px;border:1px dashed #66869c;border-radius:13px;background:#0a1d34}
 .word{padding:8px 12px;min-height:42px}.answer-line .word{background:#315a76}.reading{direction:ltr;text-align:left;background:#f7f2df;color:#20334b;border-radius:13px;padding:15px;font-weight:650}
 .completion{text-align:center}.completion h2{font-size:clamp(29px,6vw,43px)}.completion .map-fragment{font-size:65px;filter:drop-shadow(0 0 18px #f2c95e)}
@@ -473,7 +475,7 @@ html.reduce-motion *,html.reduce-motion *:before,html.reduce-motion *:after{anim
   </section>
   <div class="celebrate" id="celebrate" aria-hidden="true"></div>
   </div>
-  <div class="objective-strip" aria-live="polite"><strong>Current objective</strong><span id="objective">Talk to Spark near the dock.</span></div>
+  <div class="objective-strip" aria-live="polite"><strong id="objective-label">Current objective</strong><span id="objective">Talk to Spark near the dock.</span></div>
 </section>
 
 <aside class="side" aria-label="Expedition information">
@@ -506,6 +508,11 @@ html.reduce-motion *,html.reduce-motion *:before,html.reduce-motion *:after{anim
 <div class="modal-inner">
   <div class="modal-head"><div><p class="eyebrow" id="challenge-label"></p><h2 id="challenge-title"></h2></div><button class="close" id="close-challenge" type="button" aria-label="Close challenge">×</button></div>
   <p class="story" id="challenge-story"></p>
+  <div class="guidance-tools" id="challenge-guidance-tools" hidden>
+    <button class="secondary" id="translate-guidance" type="button" aria-label="Show Hebrew translation of the story and mathematics task" aria-expanded="false">Translate to Hebrew</button>
+    <button class="secondary" id="listen-guidance" type="button" aria-label="Listen to the English story and question">Listen</button>
+  </div>
+  <div class="translation-panel" id="challenge-translation" lang="he" dir="rtl" hidden></div>
   <div class="challenge-visual" id="challenge-visual"></div>
   <p class="question" id="challenge-question"></p>
   <p class="expression" id="challenge-expression"></p>
@@ -646,163 +653,193 @@ html.reduce-motion *,html.reduce-motion *:before,html.reduce-motion *:after{anim
   {
     "id":"blue-cargo","subject":"English · vocabulary and location","type":"choice","title":"The engineer's message","label":"Challenge 1 of 10",
     "story":"Spark projects a short instruction. Use the colour and location words to identify the correct object.",
+    "storyHe":"ספארק מקרין הוראה קצרה. השתמשו במילות הצבע והמיקום כדי לזהות את החפץ הנכון.",
     "variants":[
-      {"question":"Which object matches this instruction?","expression":"Find the blue box near the boat.","choices":["The blue crate beside the airship","The brown house behind the dock","The gold lighthouse across the bridge"],"answer":"The blue crate beside the airship","hint":"Look for three clues: blue, box, and near the boat.","explanation":"The blue cargo crate is beside the airship. The other objects do not match all three clues."},
-      {"question":"Which place matches this instruction?","expression":"Go to the tall tower across the bridge.","choices":["The lighthouse on the far island","The airship above the dock","The console beside the bridge"],"answer":"The lighthouse on the far island","hint":"A lighthouse is a tall tower. Across tells you it is on the other side.","explanation":"The lighthouse is the tall tower on the island across the bridge."},
-      {"question":"Which object matches this instruction?","expression":"Find the machine beside the bridge.","choices":["The harbor console","The blue cargo crate","The airship balloon"],"answer":"The harbor console","hint":"Beside means next to. Look for a machine next to the bridge.","explanation":"The harbor console is the machine positioned beside the bridge."},
-      {"question":"Which object matches this instruction?","expression":"Find the golden vehicle above the dock.","choices":["The airship","The lighthouse","The wooden bridge"],"answer":"The airship","hint":"A vehicle can carry people. Above means higher than the dock.","explanation":"The golden airship is floating above the dock."},
-      {"question":"Which object matches this instruction?","expression":"Find the small robot between the player and the bridge.","choices":["Spark","The harbor console","The lighthouse"],"answer":"Spark","hint":"Between means in the middle of two things.","explanation":"Spark is the small robot hovering between the explorer and the bridge."},
-      {"question":"Which place matches this instruction?","expression":"Go to the wooden dock below the airship.","choices":["The dock beneath the airship","The lighthouse beyond the bridge","The cave behind the island"],"answer":"The dock beneath the airship","hint":"Below and beneath both mean lower than something.","explanation":"The wooden dock is directly beneath the floating airship."},
-      {"question":"Which place matches this instruction?","expression":"Find the cave behind the eastern cliff.","choices":["The hidden opening at the back of the cliff","The bridge in front of the lighthouse","The airship above the harbor"],"answer":"The hidden opening at the back of the cliff","hint":"Behind means at the back of something.","explanation":"The hidden cave is an opening behind the eastern cliff."}
+      {"question":"Which object matches this instruction?","expression":"Find the blue box near the boat.","choices":["The blue crate beside the airship","The brown house behind the dock","The gold lighthouse across the bridge"],"answer":"The blue crate beside the airship","hint":"Look for three clues: blue, box, and near the boat.","explanation":"The blue cargo crate is beside the airship. The other objects do not match all three clues.","hintHe":"חפשו שלושה רמזים: blue, box ו־near the boat."},
+      {"question":"Which place matches this instruction?","expression":"Go to the tall tower across the bridge.","choices":["The lighthouse on the far island","The airship above the dock","The console beside the bridge"],"answer":"The lighthouse on the far island","hint":"A lighthouse is a tall tower. Across tells you it is on the other side.","explanation":"The lighthouse is the tall tower on the island across the bridge.","hintHe":"מגדלור הוא מגדל גבוה. המילה Across אומרת שהוא נמצא בצד האחר."},
+      {"question":"Which object matches this instruction?","expression":"Find the machine beside the bridge.","choices":["The harbor console","The blue cargo crate","The airship balloon"],"answer":"The harbor console","hint":"Beside means next to. Look for a machine next to the bridge.","explanation":"The harbor console is the machine positioned beside the bridge.","hintHe":"Beside פירושו ליד. חפשו מכונה שנמצאת ליד הגשר."},
+      {"question":"Which object matches this instruction?","expression":"Find the golden vehicle above the dock.","choices":["The airship","The lighthouse","The wooden bridge"],"answer":"The airship","hint":"A vehicle can carry people. Above means higher than the dock.","explanation":"The golden airship is floating above the dock.","hintHe":"כלי רכב יכול לשאת אנשים. Above פירושו גבוה יותר מן הרציף."},
+      {"question":"Which object matches this instruction?","expression":"Find the small robot between the player and the bridge.","choices":["Spark","The harbor console","The lighthouse"],"answer":"Spark","hint":"Between means in the middle of two things.","explanation":"Spark is the small robot hovering between the explorer and the bridge.","hintHe":"Between פירושו באמצע, בין שני דברים."},
+      {"question":"Which place matches this instruction?","expression":"Go to the wooden dock below the airship.","choices":["The dock beneath the airship","The lighthouse beyond the bridge","The cave behind the island"],"answer":"The dock beneath the airship","hint":"Below and beneath both mean lower than something.","explanation":"The wooden dock is directly beneath the floating airship.","hintHe":"Below ו־beneath פירושן נמוך יותר ממשהו."},
+      {"question":"Which place matches this instruction?","expression":"Find the cave behind the eastern cliff.","choices":["The hidden opening at the back of the cliff","The bridge in front of the lighthouse","The airship above the harbor"],"answer":"The hidden opening at the back of the cliff","hint":"Behind means at the back of something.","explanation":"The hidden cave is an opening behind the eastern cliff.","hintHe":"Behind פירושו מאחורי משהו."}
     ],
     "objective":"Use the bridge mechanism to calculate the required energy.",
+    "objectiveHe":"השתמשו במנגנון הגשר כדי לחשב את כמות האנרגיה הדרושה.",
     "spark":"The crate holds a bridge cell. Four bridge sections each need six energy units.",
+    "sparkHe":"בארגז יש תא אנרגיה לגשר. כל אחד מארבעת חלקי הגשר זקוק לשש יחידות אנרגיה.",
     "reward":"cell"
   },
   {
     "id":"bridge-energy","subject":"Mathematics · equal groups","type":"choice","title":"Power the bridge","label":"Challenge 2 of 10",
     "story":"The bridge mechanism divides its power equally across four sections.",
+    "storyHe":"מנגנון הגשר מחלק את האנרגיה שלו באופן שווה בין חלקי הגשר.",
     "variants":[
-      {"question":"Four bridge sections need 6 energy units each. How many units are needed altogether?","expression":"4 × 6 = ?","choices":["18","24","30","10"],"answer":"24","hint":"Think of four equal groups: 6 + 6 + 6 + 6.","explanation":"Four groups of six make twenty-four: 4 × 6 = 24."},
-      {"question":"Five stabilizers need 7 energy units each. How many units are needed altogether?","expression":"5 × 7 = ?","choices":["30","35","42","12"],"answer":"35","hint":"Count five equal groups of seven, or use 10 × 7 and take half.","explanation":"Five groups of seven make thirty-five: 5 × 7 = 35."},
-      {"question":"Eight bridge lamps need 4 crystals each. How many crystals are needed?","expression":"8 × 4 = ?","choices":["24","28","32","36"],"answer":"32","hint":"Double 8 to get 16, then double again.","explanation":"Eight groups of four make thirty-two: 8 × 4 = 32."},
-      {"question":"Six support gears each have 9 teeth. How many teeth are there in all?","expression":"6 × 9 = ?","choices":["45","54","63","15"],"answer":"54","hint":"Use 6 × 10, then subtract one group of 6.","explanation":"Six tens are 60; subtract 6 to get 54, so 6 × 9 = 54."},
-      {"question":"Seven power cells hold 3 charges each. How many charges are stored?","expression":"7 × 3 = ?","choices":["18","21","24","10"],"answer":"21","hint":"Add seven three times: 7 + 7 + 7.","explanation":"Seven groups of three make twenty-one: 7 × 3 = 21."},
-      {"question":"Nine signal posts need 5 crystals each. How many crystals are needed altogether?","expression":"9 × 5 = ?","choices":["40","45","50","14"],"answer":"45","hint":"Count nine groups of five, or count by fives nine times.","explanation":"Nine groups of five make forty-five: 9 × 5 = 45."},
-      {"question":"Six bridge anchors use 8 bolts each. How many bolts are needed?","expression":"6 × 8 = ?","choices":["42","46","48","56"],"answer":"48","hint":"Use 5 × 8 = 40, then add one more group of 8.","explanation":"Six groups of eight make forty-eight: 6 × 8 = 48."}
+      {"question":"Four bridge sections need 6 energy units each. How many units are needed altogether?","expression":"4 × 6 = ?","choices":["18","24","30","10"],"answer":"24","hint":"Think of four equal groups: 6 + 6 + 6 + 6.","explanation":"Four groups of six make twenty-four: 4 × 6 = 24.","hintHe":"חשבו על ארבע קבוצות שוות: 6 + 6 + 6 + 6.","questionHe":"ארבעה חלקי גשר זקוקים ל־6 יחידות אנרגיה כל אחד. כמה יחידות דרושות בסך הכול?"},
+      {"question":"Five stabilizers need 7 energy units each. How many units are needed altogether?","expression":"5 × 7 = ?","choices":["30","35","42","12"],"answer":"35","hint":"Count five equal groups of seven, or use 10 × 7 and take half.","explanation":"Five groups of seven make thirty-five: 5 × 7 = 35.","hintHe":"סִפרו חמש קבוצות של שבע, או חשבו 10 × 7 וחלקו לשניים.","questionHe":"חמישה מייצבים זקוקים ל־7 יחידות אנרגיה כל אחד. כמה יחידות דרושות בסך הכול?"},
+      {"question":"Eight bridge lamps need 4 crystals each. How many crystals are needed?","expression":"8 × 4 = ?","choices":["24","28","32","36"],"answer":"32","hint":"Double 8 to get 16, then double again.","explanation":"Eight groups of four make thirty-two: 8 × 4 = 32.","hintHe":"הכפילו את 8 כדי לקבל 16, ואז הכפילו שוב.","questionHe":"שמונה מנורות גשר זקוקות ל־4 גבישים כל אחת. כמה גבישים דרושים?"},
+      {"question":"Six support gears each have 9 teeth. How many teeth are there in all?","expression":"6 × 9 = ?","choices":["45","54","63","15"],"answer":"54","hint":"Use 6 × 10, then subtract one group of 6.","explanation":"Six tens are 60; subtract 6 to get 54, so 6 × 9 = 54.","hintHe":"השתמשו ב־6 × 10 ואז החסירו קבוצה אחת של 6.","questionHe":"לכל אחד מששת גלגלי התמיכה יש 9 שיניים. כמה שיניים יש בסך הכול?"},
+      {"question":"Seven power cells hold 3 charges each. How many charges are stored?","expression":"7 × 3 = ?","choices":["18","21","24","10"],"answer":"21","hint":"Add seven three times: 7 + 7 + 7.","explanation":"Seven groups of three make twenty-one: 7 × 3 = 21.","hintHe":"חברו את 7 שלוש פעמים: 7 + 7 + 7.","questionHe":"שבעה תאי כוח מכילים 3 מטענים כל אחד. כמה מטענים מאוחסנים?"},
+      {"question":"Nine signal posts need 5 crystals each. How many crystals are needed altogether?","expression":"9 × 5 = ?","choices":["40","45","50","14"],"answer":"45","hint":"Count nine groups of five, or count by fives nine times.","explanation":"Nine groups of five make forty-five: 9 × 5 = 45.","hintHe":"סִפרו תשע קבוצות של חמש, או דלגו בחמישיות תשע פעמים.","questionHe":"תשעה עמודי איתות זקוקים ל־5 גבישים כל אחד. כמה גבישים דרושים בסך הכול?"},
+      {"question":"Six bridge anchors use 8 bolts each. How many bolts are needed?","expression":"6 × 8 = ?","choices":["42","46","48","56"],"answer":"48","hint":"Use 5 × 8 = 40, then add one more group of 8.","explanation":"Six groups of eight make forty-eight: 6 × 8 = 48.","hintHe":"השתמשו ב־5 × 8 = 40 ואז הוסיפו עוד קבוצה של 8.","questionHe":"שישה עוגני גשר משתמשים ב־8 ברגים כל אחד. כמה ברגים דרושים?"}
     ],
     "objective":"Read the airship log and rebuild its sentence.",
+    "objectiveHe":"קראו את יומן ספינת האוויר והרכיבו מחדש את המשפט.",
     "spark":"The bridge is stable. The airship log is scrambled, and one word is missing from its display.",
+    "sparkHe":"הגשר יציב. יומן ספינת האוויר מבולבל, ומילה אחת חסרה בתצוגה.",
     "reward":"bridge"
   },
   {
     "id":"airship-sentence","subject":"English · sentence building","type":"order","title":"Restore the airship log","label":"Challenge 3 of 10",
     "story":"The wind scattered the words in the engineer's log. Put them back into a complete English sentence.",
+    "storyHe":"הרוח פיזרה את המילים ביומן המהנדסת. סדרו אותן מחדש למשפט שלם באנגלית.",
     "question":"Build the sentence that describes the harbor.",
     "variants":[
-      {"words":["beside","The","dock.","small","is","the","boat"],"answer":["The","small","boat","is","beside","the","dock."],"hint":"Start with the subject, then use is, and finish with the location phrase.","explanation":"The sentence follows subject + verb + location: The small boat / is / beside the dock."},
-      {"words":["bridge.","Spark","the","is","above"],"answer":["Spark","is","above","the","bridge."],"hint":"Begin with Spark, then use is, followed by the location word.","explanation":"The complete sentence is: Spark is above the bridge."},
-      {"words":["lighthouse.","leads","The","to","path","the"],"answer":["The","path","leads","to","the","lighthouse."],"hint":"Begin with The path. What does the path do?","explanation":"The complete sentence is: The path leads to the lighthouse."},
-      {"words":["behind","clouds.","The","sun","the","is"],"answer":["The","sun","is","behind","the","clouds."],"hint":"Use subject + is + location phrase.","explanation":"The complete sentence is: The sun is behind the clouds."},
-      {"words":["waits","blue","near","crate","The","airship.","the"],"answer":["The","blue","crate","waits","near","the","airship."],"hint":"Begin with The blue crate. Then say what it does and where it is.","explanation":"The complete sentence is: The blue crate waits near the airship."},
-      {"words":["harbor.","floats","The","above","airship","the"],"answer":["The","airship","floats","above","the","harbor."],"hint":"Begin with The airship, then say what it does and where.","explanation":"The complete sentence is: The airship floats above the harbor."},
-      {"words":["door.","bright","beside","A","shines","lantern","the"],"answer":["A","bright","lantern","shines","beside","the","door."],"hint":"Start with A bright lantern, then add the action and location.","explanation":"The complete sentence is: A bright lantern shines beside the door."}
+      {"words":["beside","The","dock.","small","is","the","boat"],"answer":["The","small","boat","is","beside","the","dock."],"hint":"Start with the subject, then use is, and finish with the location phrase.","explanation":"The sentence follows subject + verb + location: The small boat / is / beside the dock.","hintHe":"התחילו בנושא המשפט, המשיכו ב־is וסיימו בצירוף המקום."},
+      {"words":["bridge.","Spark","the","is","above"],"answer":["Spark","is","above","the","bridge."],"hint":"Begin with Spark, then use is, followed by the location word.","explanation":"The complete sentence is: Spark is above the bridge.","hintHe":"התחילו ב־Spark, המשיכו ב־is ואז הוסיפו את מילת המקום."},
+      {"words":["lighthouse.","leads","The","to","path","the"],"answer":["The","path","leads","to","the","lighthouse."],"hint":"Begin with The path. What does the path do?","explanation":"The complete sentence is: The path leads to the lighthouse.","hintHe":"התחילו ב־The path. אחר כך אמרו מה השביל עושה."},
+      {"words":["behind","clouds.","The","sun","the","is"],"answer":["The","sun","is","behind","the","clouds."],"hint":"Use subject + is + location phrase.","explanation":"The complete sentence is: The sun is behind the clouds.","hintHe":"השתמשו במבנה: נושא + is + צירוף מקום."},
+      {"words":["waits","blue","near","crate","The","airship.","the"],"answer":["The","blue","crate","waits","near","the","airship."],"hint":"Begin with The blue crate. Then say what it does and where it is.","explanation":"The complete sentence is: The blue crate waits near the airship.","hintHe":"התחילו ב־The blue crate. אחר כך אמרו מה הוא עושה והיכן הוא נמצא."},
+      {"words":["harbor.","floats","The","above","airship","the"],"answer":["The","airship","floats","above","the","harbor."],"hint":"Begin with The airship, then say what it does and where.","explanation":"The complete sentence is: The airship floats above the harbor.","hintHe":"התחילו ב־The airship, ואז אמרו מה היא עושה והיכן."},
+      {"words":["door.","bright","beside","A","shines","lantern","the"],"answer":["A","bright","lantern","shines","beside","the","door."],"hint":"Start with A bright lantern, then add the action and location.","explanation":"The complete sentence is: A bright lantern shines beside the door.","hintHe":"התחילו ב־A bright lantern, ואז הוסיפו את הפעולה ואת המקום."}
     ],
     "objective":"Use the harbor console to divide the rescue cargo.",
+    "objectiveHe":"השתמשו במסוף הנמל כדי לחלק את ציוד החילוץ.",
     "spark":"Excellent. The restored log unlocked my Echo Lens. A faint signal is now visible near the lighthouse island.",
+    "sparkHe":"מצוין. היומן ששוחזר פתח את עדשת ההד שלי. אות חלש נראה עכשיו ליד אי המגדלור.",
     "reward":"lens"
   },
   {
     "id":"cargo-division","subject":"Mathematics · division","type":"choice","title":"Balance the rescue cargo","label":"Challenge 4 of 10",
     "story":"Four airships must carry the same number of emergency lanterns.",
+    "storyHe":"ארבע ספינות אוויר צריכות לשאת מספר שווה של פנסי חירום.",
     "variants":[
-      {"question":"There are 36 lanterns and 4 airships. How many should each airship carry?","expression":"36 ÷ 4 = ?","choices":["8","9","10","32"],"answer":"9","hint":"Find the number that gives 36 when multiplied by 4.","explanation":"Nine lanterns on each of four airships make 36: 9 × 4 = 36."},
-      {"question":"There are 48 supply packs shared equally among 6 crews. How many packs does each crew receive?","expression":"48 ÷ 6 = ?","choices":["6","7","8","9"],"answer":"8","hint":"Which number multiplied by 6 gives 48?","explanation":"Eight packs for each of six crews make 48: 8 × 6 = 48."},
-      {"question":"There are 56 rope coils shared equally among 7 docks. How many coils go to each dock?","expression":"56 ÷ 7 = ?","choices":["6","7","8","9"],"answer":"8","hint":"Use the related multiplication fact 7 × ? = 56.","explanation":"Seven groups of eight make 56, so 56 ÷ 7 = 8."},
-      {"question":"There are 63 fuel cells shared equally among 9 machines. How many cells does each machine receive?","expression":"63 ÷ 9 = ?","choices":["6","7","8","9"],"answer":"7","hint":"Think of the 9-times table.","explanation":"Nine machines with seven cells each use 63 cells: 9 × 7 = 63."},
-      {"question":"There are 72 signal flags packed equally into 8 cases. How many flags go in each case?","expression":"72 ÷ 8 = ?","choices":["8","9","10","64"],"answer":"9","hint":"Find the missing factor in 8 × ? = 72.","explanation":"Eight cases with nine flags each hold 72 flags: 8 × 9 = 72."},
-      {"question":"There are 45 compass cards shared equally among 5 crews. How many cards does each crew receive?","expression":"45 ÷ 5 = ?","choices":["8","9","10","40"],"answer":"9","hint":"Find the number that gives 45 when multiplied by 5.","explanation":"Five crews with nine cards each receive 45 cards: 5 × 9 = 45."},
-      {"question":"There are 64 anchor bolts packed equally into 8 boxes. How many bolts go in each box?","expression":"64 ÷ 8 = ?","choices":["6","7","8","9"],"answer":"8","hint":"Use the related multiplication fact 8 × ? = 64.","explanation":"Eight boxes with eight bolts each hold 64 bolts: 8 × 8 = 64."}
+      {"question":"There are 36 lanterns and 4 airships. How many should each airship carry?","expression":"36 ÷ 4 = ?","choices":["8","9","10","32"],"answer":"9","hint":"Find the number that gives 36 when multiplied by 4.","explanation":"Nine lanterns on each of four airships make 36: 9 × 4 = 36.","hintHe":"מצאו את המספר שכאשר כופלים אותו ב־4 מתקבל 36.","questionHe":"יש 36 פנסים ו־4 ספינות אוויר. כמה פנסים צריכה כל ספינה לשאת?"},
+      {"question":"There are 48 supply packs shared equally among 6 crews. How many packs does each crew receive?","expression":"48 ÷ 6 = ?","choices":["6","7","8","9"],"answer":"8","hint":"Which number multiplied by 6 gives 48?","explanation":"Eight packs for each of six crews make 48: 8 × 6 = 48.","hintHe":"איזה מספר כפול 6 שווה 48?","questionHe":"48 חבילות ציוד מתחלקות שווה בשווה בין 6 צוותים. כמה חבילות יקבל כל צוות?"},
+      {"question":"There are 56 rope coils shared equally among 7 docks. How many coils go to each dock?","expression":"56 ÷ 7 = ?","choices":["6","7","8","9"],"answer":"8","hint":"Use the related multiplication fact 7 × ? = 56.","explanation":"Seven groups of eight make 56, so 56 ÷ 7 = 8.","hintHe":"השתמשו בתרגיל הכפל המתאים: 7 × ? = 56.","questionHe":"56 סלילי חבל מתחלקים שווה בשווה בין 7 רציפים. כמה סלילים יקבל כל רציף?"},
+      {"question":"There are 63 fuel cells shared equally among 9 machines. How many cells does each machine receive?","expression":"63 ÷ 9 = ?","choices":["6","7","8","9"],"answer":"7","hint":"Think of the 9-times table.","explanation":"Nine machines with seven cells each use 63 cells: 9 × 7 = 63.","hintHe":"חשבו על לוח הכפל של 9.","questionHe":"63 תאי דלק מתחלקים שווה בשווה בין 9 מכונות. כמה תאים תקבל כל מכונה?"},
+      {"question":"There are 72 signal flags packed equally into 8 cases. How many flags go in each case?","expression":"72 ÷ 8 = ?","choices":["8","9","10","64"],"answer":"9","hint":"Find the missing factor in 8 × ? = 72.","explanation":"Eight cases with nine flags each hold 72 flags: 8 × 9 = 72.","hintHe":"מצאו את הגורם החסר בתרגיל 8 × ? = 72.","questionHe":"72 דגלי איתות נארזים שווה בשווה ב־8 ארגזים. כמה דגלים יהיו בכל ארגז?"},
+      {"question":"There are 45 compass cards shared equally among 5 crews. How many cards does each crew receive?","expression":"45 ÷ 5 = ?","choices":["8","9","10","40"],"answer":"9","hint":"Find the number that gives 45 when multiplied by 5.","explanation":"Five crews with nine cards each receive 45 cards: 5 × 9 = 45.","hintHe":"מצאו את המספר שכאשר כופלים אותו ב־5 מתקבל 45.","questionHe":"45 כרטיסי מצפן מתחלקים שווה בשווה בין 5 צוותים. כמה כרטיסים יקבל כל צוות?"},
+      {"question":"There are 64 anchor bolts packed equally into 8 boxes. How many bolts go in each box?","expression":"64 ÷ 8 = ?","choices":["6","7","8","9"],"answer":"8","hint":"Use the related multiplication fact 8 × ? = 64.","explanation":"Eight boxes with eight bolts each hold 64 bolts: 8 × 8 = 64.","hintHe":"השתמשו בתרגיל הכפל המתאים: 8 × ? = 64.","questionHe":"64 ברגי עוגן נארזים שווה בשווה ב־8 קופסאות. כמה ברגים יהיו בכל קופסה?"}
     ],
     "objective":"Cross the bridge and read the engineer's lighthouse note.",
+    "objectiveHe":"חצו את הגשר וקראו את הפתק של המהנדסת במגדלור.",
     "spark":"Cargo balanced. The lighthouse door is responding, but its keeper left a final reading clue.",
+    "sparkHe":"המטען מאוזן. דלת המגדלור מגיבה, אבל השומרת השאירה רמז קריאה אחרון.",
     "reward":"cargo"
   },
   {
     "id":"engineer-note","subject":"English · reading comprehension","type":"choice","title":"The engineer's note","label":"Challenge 5 of 10",
     "story":"A weathered page is pinned inside the lighthouse entrance.",
+    "storyHe":"דף בלוי מוצמד לקיר בתוך הכניסה למגדלור.",
     "variants":[
-      {"passage":"Mira reached Cloud Harbor before sunset. She placed the brass key under the third lantern because the lighthouse door would not open. Then she sailed east to warn the next island.","question":"Where did Mira place the brass key?","choices":["Under the third lantern","Inside the blue cargo crate","On the eastern airship","Behind the lighthouse door"],"answer":"Under the third lantern","hint":"Return to the second sentence and look for the words placed and under.","explanation":"The note says directly that Mira placed the brass key under the third lantern."},
-      {"passage":"The storm damaged the western bridge first. Mira repaired two ropes, but the final wooden section was too heavy to lift alone. She left a power cell in the blue crate for the next explorer.","question":"Why did Mira leave the final bridge section unfinished?","choices":["It was too heavy to lift alone","She could not find the blue crate","The lighthouse was already repaired","She sailed away before the storm"],"answer":"It was too heavy to lift alone","hint":"Look for the sentence containing the word because or a reason.","explanation":"The note explains that the final wooden section was too heavy for Mira to lift alone."},
-      {"passage":"Spark's old map shows three safe routes. The northern route is short but blocked by ice. The southern route is longer and calm. Mira circled the southern route before leaving.","question":"Which route did Mira choose?","choices":["The southern route","The northern route","The blocked ice route","No route was selected"],"answer":"The southern route","hint":"The final sentence tells which route Mira circled.","explanation":"Mira circled the southern route, so that is the route she chose."},
-      {"passage":"At dawn, the lighthouse lens flashed twice and then went dark. Mira checked the lamp and found it full. She wrote that the lens gears, not the lamp, needed repair.","question":"What needed repair?","choices":["The lens gears","The lamp fuel","The harbor bridge","The airship balloon"],"answer":"The lens gears","hint":"The last sentence contrasts the gears with the lamp.","explanation":"The lamp was full; Mira wrote that the lens gears needed repair."},
-      {"passage":"A map fragment fell behind the stone arch when the wind shook the lighthouse. Mira could see its golden edge, but the narrow gap was too dark. She marked the place for someone carrying an Echo Lens.","question":"What tool is needed to find the map fragment?","choices":["An Echo Lens","A bridge power cell","A cargo rope","An airship propeller"],"answer":"An Echo Lens","hint":"Read the final words of the passage.","explanation":"Mira marked the secret for someone carrying an Echo Lens."},
-      {"passage":"Mira tested two levers beside the lighthouse door. The lever with a blue ribbon was stuck. She tied a red ribbon to the safe lever so the next explorer would know which one to pull.","question":"Which lever is safe to pull?","choices":["The lever with the red ribbon","The lever with the blue ribbon","Both levers together","Neither lever"],"answer":"The lever with the red ribbon","hint":"Look for the sentence that says which ribbon marks the safe lever.","explanation":"Mira tied the red ribbon to the safe lever."},
-      {"passage":"The rain stopped just before dawn. Mira opened the lighthouse shutters so the morning sunlight could reach the lens. Soon the glass began to glow.","question":"Why did Mira open the shutters?","choices":["To let sunlight reach the lens","To bring rain into the lighthouse","To hide the glowing glass","To close the lighthouse door"],"answer":"To let sunlight reach the lens","hint":"The second sentence gives the reason.","explanation":"Mira opened the shutters so the morning sunlight could reach the lens."}
+      {"passage":"Mira reached Cloud Harbor before sunset. She placed the brass key under the third lantern because the lighthouse door would not open. Then she sailed east to warn the next island.","question":"Where did Mira place the brass key?","choices":["Under the third lantern","Inside the blue cargo crate","On the eastern airship","Behind the lighthouse door"],"answer":"Under the third lantern","hint":"Return to the second sentence and look for the words placed and under.","explanation":"The note says directly that Mira placed the brass key under the third lantern.","hintHe":"חזרו למשפט השני וחפשו את המילים placed ו־under."},
+      {"passage":"The storm damaged the western bridge first. Mira repaired two ropes, but the final wooden section was too heavy to lift alone. She left a power cell in the blue crate for the next explorer.","question":"Why did Mira leave the final bridge section unfinished?","choices":["It was too heavy to lift alone","She could not find the blue crate","The lighthouse was already repaired","She sailed away before the storm"],"answer":"It was too heavy to lift alone","hint":"Look for the sentence containing the word because or a reason.","explanation":"The note explains that the final wooden section was too heavy for Mira to lift alone.","hintHe":"חפשו את המשפט שמסביר את הסיבה לכך שהחלק לא הושלם."},
+      {"passage":"Spark's old map shows three safe routes. The northern route is short but blocked by ice. The southern route is longer and calm. Mira circled the southern route before leaving.","question":"Which route did Mira choose?","choices":["The southern route","The northern route","The blocked ice route","No route was selected"],"answer":"The southern route","hint":"The final sentence tells which route Mira circled.","explanation":"Mira circled the southern route, so that is the route she chose.","hintHe":"המשפט האחרון מספר איזה מסלול מירה הקיפה בעיגול."},
+      {"passage":"At dawn, the lighthouse lens flashed twice and then went dark. Mira checked the lamp and found it full. She wrote that the lens gears, not the lamp, needed repair.","question":"What needed repair?","choices":["The lens gears","The lamp fuel","The harbor bridge","The airship balloon"],"answer":"The lens gears","hint":"The last sentence contrasts the gears with the lamp.","explanation":"The lamp was full; Mira wrote that the lens gears needed repair.","hintHe":"המשפט האחרון משווה בין גלגלי השיניים לבין המנורה."},
+      {"passage":"A map fragment fell behind the stone arch when the wind shook the lighthouse. Mira could see its golden edge, but the narrow gap was too dark. She marked the place for someone carrying an Echo Lens.","question":"What tool is needed to find the map fragment?","choices":["An Echo Lens","A bridge power cell","A cargo rope","An airship propeller"],"answer":"An Echo Lens","hint":"Read the final words of the passage.","explanation":"Mira marked the secret for someone carrying an Echo Lens.","hintHe":"קראו את המילים האחרונות בקטע."},
+      {"passage":"Mira tested two levers beside the lighthouse door. The lever with a blue ribbon was stuck. She tied a red ribbon to the safe lever so the next explorer would know which one to pull.","question":"Which lever is safe to pull?","choices":["The lever with the red ribbon","The lever with the blue ribbon","Both levers together","Neither lever"],"answer":"The lever with the red ribbon","hint":"Look for the sentence that says which ribbon marks the safe lever.","explanation":"Mira tied the red ribbon to the safe lever.","hintHe":"חפשו את המשפט שמספר איזה סרט מסמן את הידית הבטוחה."},
+      {"passage":"The rain stopped just before dawn. Mira opened the lighthouse shutters so the morning sunlight could reach the lens. Soon the glass began to glow.","question":"Why did Mira open the shutters?","choices":["To let sunlight reach the lens","To bring rain into the lighthouse","To hide the glowing glass","To close the lighthouse door"],"answer":"To let sunlight reach the lens","hint":"The second sentence gives the reason.","explanation":"Mira opened the shutters so the morning sunlight could reach the lens.","hintHe":"המשפט השני מסביר את הסיבה."}
     ],
     "objective":"Align the lighthouse lens with an equivalent fraction.",
+    "objectiveHe":"כוונו את עדשת המגדלור בעזרת שבר שווה־ערך.",
     "spark":"We found the key. One last pattern will align the lighthouse lens and reveal why Mira sailed east.",
+    "sparkHe":"מצאנו את המפתח. תבנית אחרונה תכוון את עדשת המגדלור ותגלה מדוע מירה הפליגה מזרחה.",
     "reward":"key"
   },
   {
     "id":"lens-fraction","subject":"Mathematics · equivalent fractions","type":"choice","title":"Align the lighthouse lens","label":"Challenge 6 of 10",
     "story":"Three of four lens panels are glowing. The control asks for an equivalent fraction before it will focus the beam.",
+    "storyHe":"שלושה מתוך ארבעת לוחות העדשה זוהרים. הבקר מבקש שבר שווה־ערך כדי למקד את האלומה.",
     "variants":[
-      {"question":"Which fraction is equivalent to 3/4?","expression":"3/4 = ?","choices":["6/8","4/7","3/8","7/4"],"answer":"6/8","hint":"Multiply the numerator and denominator by the same number.","explanation":"Multiplying both 3 and 4 by 2 gives 6/8."},
-      {"question":"Which fraction is equivalent to 2/3?","expression":"2/3 = ?","choices":["4/6","3/5","2/6","5/3"],"answer":"4/6","hint":"Multiply both parts of 2/3 by 2.","explanation":"Multiplying both 2 and 3 by 2 gives 4/6."},
-      {"question":"Which fraction is equivalent to 4/5?","expression":"4/5 = ?","choices":["8/10","5/9","4/10","9/5"],"answer":"8/10","hint":"Double the numerator and denominator.","explanation":"Doubling both parts gives 8/10, which names the same amount as 4/5."},
-      {"question":"Which fraction is equivalent to 5/6?","expression":"5/6 = ?","choices":["10/12","6/11","5/12","11/6"],"answer":"10/12","hint":"Multiply both the numerator and denominator by 2.","explanation":"Five times two is 10 and six times two is 12, so 5/6 = 10/12."},
-      {"question":"Which fraction is equivalent to 3/5?","expression":"3/5 = ?","choices":["9/15","6/15","3/10","8/5"],"answer":"9/15","hint":"Multiply both parts by 3.","explanation":"Multiplying both 3 and 5 by 3 gives 9/15."},
-      {"question":"Which fraction is equivalent to 7/8?","expression":"7/8 = ?","choices":["14/16","8/15","7/16","15/8"],"answer":"14/16","hint":"Multiply the numerator and denominator by 2.","explanation":"Multiplying both 7 and 8 by 2 gives 14/16."},
-      {"question":"Which fraction is equivalent to 1/4?","expression":"1/4 = ?","choices":["3/12","2/12","1/8","5/4"],"answer":"3/12","hint":"Multiply both parts of 1/4 by 3.","explanation":"Multiplying both 1 and 4 by 3 gives 3/12."}
+      {"question":"Which fraction is equivalent to 3/4?","expression":"3/4 = ?","choices":["6/8","4/7","3/8","7/4"],"answer":"6/8","hint":"Multiply the numerator and denominator by the same number.","explanation":"Multiplying both 3 and 4 by 2 gives 6/8.","hintHe":"הכפילו את המונה ואת המכנה באותו מספר.","questionHe":"איזה שבר שווה ל־3/4?"},
+      {"question":"Which fraction is equivalent to 2/3?","expression":"2/3 = ?","choices":["4/6","3/5","2/6","5/3"],"answer":"4/6","hint":"Multiply both parts of 2/3 by 2.","explanation":"Multiplying both 2 and 3 by 2 gives 4/6.","hintHe":"הכפילו את שני חלקי 2/3 ב־2.","questionHe":"איזה שבר שווה ל־2/3?"},
+      {"question":"Which fraction is equivalent to 4/5?","expression":"4/5 = ?","choices":["8/10","5/9","4/10","9/5"],"answer":"8/10","hint":"Double the numerator and denominator.","explanation":"Doubling both parts gives 8/10, which names the same amount as 4/5.","hintHe":"הכפילו פי שניים את המונה ואת המכנה.","questionHe":"איזה שבר שווה ל־4/5?"},
+      {"question":"Which fraction is equivalent to 5/6?","expression":"5/6 = ?","choices":["10/12","6/11","5/12","11/6"],"answer":"10/12","hint":"Multiply both the numerator and denominator by 2.","explanation":"Five times two is 10 and six times two is 12, so 5/6 = 10/12.","hintHe":"הכפילו גם את המונה וגם את המכנה ב־2.","questionHe":"איזה שבר שווה ל־5/6?"},
+      {"question":"Which fraction is equivalent to 3/5?","expression":"3/5 = ?","choices":["9/15","6/15","3/10","8/5"],"answer":"9/15","hint":"Multiply both parts by 3.","explanation":"Multiplying both 3 and 5 by 3 gives 9/15.","hintHe":"הכפילו את שני החלקים ב־3.","questionHe":"איזה שבר שווה ל־3/5?"},
+      {"question":"Which fraction is equivalent to 7/8?","expression":"7/8 = ?","choices":["14/16","8/15","7/16","15/8"],"answer":"14/16","hint":"Multiply the numerator and denominator by 2.","explanation":"Multiplying both 7 and 8 by 2 gives 14/16.","hintHe":"הכפילו את המונה ואת המכנה ב־2.","questionHe":"איזה שבר שווה ל־7/8?"},
+      {"question":"Which fraction is equivalent to 1/4?","expression":"1/4 = ?","choices":["3/12","2/12","1/8","5/4"],"answer":"3/12","hint":"Multiply both parts of 1/4 by 3.","explanation":"Multiplying both 1 and 4 by 3 gives 3/12.","hintHe":"הכפילו את שני חלקי 1/4 ב־3.","questionHe":"איזה שבר שווה ל־1/4?"}
     ],
     "objective":"Follow the Echo Lens signal into the hidden cave.",
+    "objectiveHe":"עקבו אחר האות של עדשת ההד אל תוך המערה הנסתרת.",
     "spark":"The lighthouse is awake, but its beam exposed a coded chamber behind the eastern cliff.",
+    "sparkHe":"המגדלור התעורר, אך האלומה שלו חשפה חדר מוצפן מאחורי המצוק המזרחי.",
     "reward":"lighthouse"
   },
   {
     "id":"cave-echo","subject":"English · inference and vocabulary","type":"choice","title":"Decode the cave echo","label":"Challenge 7 of 10",
     "story":"The Echo Lens reveals a message that changes one word each time the lighthouse beam passes.",
+    "storyHe":"עדשת ההד חושפת הודעה שבה מילה אחת משתנה בכל פעם שאלומת המגדלור חולפת.",
     "variants":[
-      {"passage":"The message says, “Mira departed in haste when the silver clouds gathered.” Her tools are packed, but one cup still sits beside the map.","question":"What does in haste mean?","choices":["Very quickly","Very quietly","Without a map","Before sunrise"],"answer":"Very quickly","hint":"Use the clue that Mira left as the storm gathered.","explanation":"In haste means quickly or urgently."},
-      {"passage":"The cave wall reads, “The route is concealed until the golden beam touches the crystal.” When the lighthouse turns away, the marks disappear.","question":"What does concealed mean?","choices":["Hidden","Broken","Dangerous","Nearby"],"answer":"Hidden","hint":"The marks cannot be seen when the beam moves away.","explanation":"Concealed means hidden from view."},
-      {"passage":"Spark reads, “Do not take the direct route. The calm passage curves beneath the storm.” The straight path flashes with lightning.","question":"Why should the explorer avoid the direct route?","choices":["It crosses the lightning","It returns to Cloud Harbor","It is too calm","It passes beneath the storm"],"answer":"It crosses the lightning","hint":"Contrast the straight path with the calm curved passage.","explanation":"The direct route is dangerous because lightning crosses it."},
-      {"passage":"The inscription says, “Collect the fragment only after the harbor signal is stable.” The lighthouse beam is now bright and steady.","question":"What shows that the signal is stable?","choices":["The beam is bright and steady","The bridge is made of wood","The airship is still docked","The cave is behind the island"],"answer":"The beam is bright and steady","hint":"Stable means not changing or shaking.","explanation":"A steady beam shows that the harbor signal is stable."},
-      {"passage":"Mira wrote, “The next island is not deserted. Its machines are silent, yet fresh footprints cross the garden.”","question":"What can we infer from the footprints?","choices":["Someone was there recently","The island has no visitors","The machines made the footprints","The garden is underwater"],"answer":"Someone was there recently","hint":"Fresh footprints have not been there for long.","explanation":"Fresh footprints suggest that someone crossed the garden recently."},
-      {"passage":"The cave warning says, “Carry the crystal carefully because it is fragile.” A tiny crack appears when Spark taps it against the wall.","question":"What does fragile mean?","choices":["Easy to break","Brightly coloured","Very heavy","Safe to drop"],"answer":"Easy to break","hint":"The tiny crack shows what can happen to the crystal.","explanation":"Fragile means easily broken or damaged."},
-      {"passage":"Mira tied blue ribbons along the calm route. Each ribbon points toward the next safe landing place.","question":"Why did Mira leave the ribbons?","choices":["To help others follow the safe route","To decorate the storm clouds","To repair the airship engine","To hide the landing places"],"answer":"To help others follow the safe route","hint":"Think about what the pointing ribbons show.","explanation":"The ribbons guide other explorers from one safe landing place to the next."}
+      {"passage":"The message says, “Mira departed in haste when the silver clouds gathered.” Her tools are packed, but one cup still sits beside the map.","question":"What does in haste mean?","choices":["Very quickly","Very quietly","Without a map","Before sunrise"],"answer":"Very quickly","hint":"Use the clue that Mira left as the storm gathered.","explanation":"In haste means quickly or urgently.","hintHe":"היעזרו ברמז שמירה עזבה בזמן שהסערה התקרבה."},
+      {"passage":"The cave wall reads, “The route is concealed until the golden beam touches the crystal.” When the lighthouse turns away, the marks disappear.","question":"What does concealed mean?","choices":["Hidden","Broken","Dangerous","Nearby"],"answer":"Hidden","hint":"The marks cannot be seen when the beam moves away.","explanation":"Concealed means hidden from view.","hintHe":"אי אפשר לראות את הסימנים כשהאלומה מתרחקת."},
+      {"passage":"Spark reads, “Do not take the direct route. The calm passage curves beneath the storm.” The straight path flashes with lightning.","question":"Why should the explorer avoid the direct route?","choices":["It crosses the lightning","It returns to Cloud Harbor","It is too calm","It passes beneath the storm"],"answer":"It crosses the lightning","hint":"Contrast the straight path with the calm curved passage.","explanation":"The direct route is dangerous because lightning crosses it.","hintHe":"השוו בין המסלול הישר לבין המעבר המעוקל והרגוע."},
+      {"passage":"The inscription says, “Collect the fragment only after the harbor signal is stable.” The lighthouse beam is now bright and steady.","question":"What shows that the signal is stable?","choices":["The beam is bright and steady","The bridge is made of wood","The airship is still docked","The cave is behind the island"],"answer":"The beam is bright and steady","hint":"Stable means not changing or shaking.","explanation":"A steady beam shows that the harbor signal is stable.","hintHe":"Stable פירושו יציב — לא משתנה ולא רועד."},
+      {"passage":"Mira wrote, “The next island is not deserted. Its machines are silent, yet fresh footprints cross the garden.”","question":"What can we infer from the footprints?","choices":["Someone was there recently","The island has no visitors","The machines made the footprints","The garden is underwater"],"answer":"Someone was there recently","hint":"Fresh footprints have not been there for long.","explanation":"Fresh footprints suggest that someone crossed the garden recently.","hintHe":"טביעות רגליים טריות לא נמצאות שם זמן רב."},
+      {"passage":"The cave warning says, “Carry the crystal carefully because it is fragile.” A tiny crack appears when Spark taps it against the wall.","question":"What does fragile mean?","choices":["Easy to break","Brightly coloured","Very heavy","Safe to drop"],"answer":"Easy to break","hint":"The tiny crack shows what can happen to the crystal.","explanation":"Fragile means easily broken or damaged.","hintHe":"הסדק הקטן מראה מה עלול לקרות לגביש."},
+      {"passage":"Mira tied blue ribbons along the calm route. Each ribbon points toward the next safe landing place.","question":"Why did Mira leave the ribbons?","choices":["To help others follow the safe route","To decorate the storm clouds","To repair the airship engine","To hide the landing places"],"answer":"To help others follow the safe route","hint":"Think about what the pointing ribbons show.","explanation":"The ribbons guide other explorers from one safe landing place to the next.","hintHe":"חשבו מה מראים הסרטים שמצביעים על הדרך."}
     ],
     "objective":"Calculate the distance shown by the restored harbor console.",
+    "objectiveHe":"חשבו את המרחק שמציג מסוף הנמל ששוחזר.",
     "spark":"The cave message names two safe flight segments. The console must combine them before the airship can depart.",
+    "sparkHe":"הודעת המערה מציינת שני קטעי טיסה בטוחים. המסוף צריך לחבר אותם לפני ההמראה.",
     "reward":"echo"
   },
   {
     "id":"signal-distance","subject":"Mathematics · two-step calculations","type":"choice","title":"Chart the safe flight path","label":"Challenge 8 of 10",
     "story":"Use the harbor console to calculate the complete safe route around the storm.",
+    "storyHe":"השתמשו במסוף הנמל כדי לחשב את מלוא המסלול הבטוח סביב הסערה.",
     "variants":[
-      {"question":"The first flight segment is 1,275 metres and the second is 2,450 metres. A 325-metre detour is closed. How far is the usable route?","expression":"1,275 + 2,450 − 325 = ?","choices":["3,400 metres","3,700 metres","4,050 metres","2,400 metres"],"answer":"3,400 metres","hint":"Add the two segments first, then subtract the closed detour.","explanation":"1,275 + 2,450 = 3,725, and 3,725 − 325 = 3,400."},
-      {"question":"The southern route is 4,800 metres. Mira already travelled 1,650 metres, then another 925 metres. How far remains?","expression":"4,800 − 1,650 − 925 = ?","choices":["2,225 metres","3,150 metres","1,325 metres","2,325 metres"],"answer":"2,225 metres","hint":"Subtract both completed sections from the total route.","explanation":"4,800 − 1,650 = 3,150, and 3,150 − 925 = 2,225."},
-      {"question":"Three calm passages measure 860, 1,240, and 975 metres. What is their total length?","expression":"860 + 1,240 + 975 = ?","choices":["3,075 metres","2,975 metres","3,175 metres","2,075 metres"],"answer":"3,075 metres","hint":"Combine 860 and 1,240 first.","explanation":"860 + 1,240 = 2,100, and 2,100 + 975 = 3,075."},
-      {"question":"The console stored 6,500 energy units. Launch checks used 1,875 units and navigation used 2,225. How many remain?","expression":"6,500 − 1,875 − 2,225 = ?","choices":["2,400","2,500","4,100","1,400"],"answer":"2,400","hint":"Add the energy used, then subtract it from 6,500.","explanation":"1,875 + 2,225 = 4,100, leaving 2,400."},
-      {"question":"The route was 5,250 metres, but a 750-metre loop was removed and a 425-metre safe turn was added. What is the new distance?","expression":"5,250 − 750 + 425 = ?","choices":["4,925 metres","5,425 metres","4,075 metres","5,000 metres"],"answer":"4,925 metres","hint":"Remove the loop before adding the safe turn.","explanation":"5,250 − 750 = 4,500, and 4,500 + 425 = 4,925."},
-      {"question":"Two safe flight segments measure 2,350 and 1,475 metres. A closed 225-metre section must be removed. How far is the usable route?","expression":"2,350 + 1,475 − 225 = ?","choices":["3,600 metres","3,825 metres","3,375 metres","4,050 metres"],"answer":"3,600 metres","hint":"Add both safe segments, then subtract the closed section.","explanation":"2,350 + 1,475 = 3,825, and 3,825 − 225 = 3,600."},
-      {"question":"The airship stored 7,200 energy units. Climbing used 2,350 units and steering used 1,450. How many units remain?","expression":"7,200 − 2,350 − 1,450 = ?","choices":["3,400","3,500","4,850","2,400"],"answer":"3,400","hint":"Subtract the energy used for climbing, then subtract the steering energy.","explanation":"7,200 − 2,350 = 4,850, and 4,850 − 1,450 = 3,400."}
+      {"question":"The first flight segment is 1,275 metres and the second is 2,450 metres. A 325-metre detour is closed. How far is the usable route?","expression":"1,275 + 2,450 − 325 = ?","choices":["3,400 metres","3,700 metres","4,050 metres","2,400 metres"],"answer":"3,400 metres","hint":"Add the two segments first, then subtract the closed detour.","explanation":"1,275 + 2,450 = 3,725, and 3,725 − 325 = 3,400.","hintHe":"חברו תחילה את שני הקטעים, ואז החסירו את המעקף הסגור.","questionHe":"הקטע הראשון הוא 1,275 מטרים והשני 2,450 מטרים. מעקף של 325 מטרים סגור. מה אורך המסלול הזמין?"},
+      {"question":"The southern route is 4,800 metres. Mira already travelled 1,650 metres, then another 925 metres. How far remains?","expression":"4,800 − 1,650 − 925 = ?","choices":["2,225 metres","3,150 metres","1,325 metres","2,325 metres"],"answer":"2,225 metres","hint":"Subtract both completed sections from the total route.","explanation":"4,800 − 1,650 = 3,150, and 3,150 − 925 = 2,225.","hintHe":"החסירו מן המסלול הכולל את שני הקטעים שכבר הושלמו.","questionHe":"המסלול הדרומי אורכו 4,800 מטרים. מירה כבר עברה 1,650 מטרים ועוד 925 מטרים. כמה נותר?"},
+      {"question":"Three calm passages measure 860, 1,240, and 975 metres. What is their total length?","expression":"860 + 1,240 + 975 = ?","choices":["3,075 metres","2,975 metres","3,175 metres","2,075 metres"],"answer":"3,075 metres","hint":"Combine 860 and 1,240 first.","explanation":"860 + 1,240 = 2,100, and 2,100 + 975 = 3,075.","hintHe":"חברו תחילה 860 ו־1,240.","questionHe":"שלושה מעברים רגועים אורכם 860, 1,240 ו־975 מטרים. מה אורכם הכולל?"},
+      {"question":"The console stored 6,500 energy units. Launch checks used 1,875 units and navigation used 2,225. How many remain?","expression":"6,500 − 1,875 − 2,225 = ?","choices":["2,400","2,500","4,100","1,400"],"answer":"2,400","hint":"Add the energy used, then subtract it from 6,500.","explanation":"1,875 + 2,225 = 4,100, leaving 2,400.","hintHe":"חברו את כמות האנרגיה שנוצלה ואז החסירו אותה מ־6,500.","questionHe":"במסוף אוחסנו 6,500 יחידות אנרגיה. בדיקות ההמראה השתמשו ב־1,875 יחידות והניווט ב־2,225. כמה נותרו?"},
+      {"question":"The route was 5,250 metres, but a 750-metre loop was removed and a 425-metre safe turn was added. What is the new distance?","expression":"5,250 − 750 + 425 = ?","choices":["4,925 metres","5,425 metres","4,075 metres","5,000 metres"],"answer":"4,925 metres","hint":"Remove the loop before adding the safe turn.","explanation":"5,250 − 750 = 4,500, and 4,500 + 425 = 4,925.","hintHe":"הסירו תחילה את הלולאה ואז הוסיפו את הפנייה הבטוחה.","questionHe":"אורך המסלול היה 5,250 מטרים, אך לולאה של 750 מטרים הוסרה ופנייה בטוחה של 425 מטרים נוספה. מה המרחק החדש?"},
+      {"question":"Two safe flight segments measure 2,350 and 1,475 metres. A closed 225-metre section must be removed. How far is the usable route?","expression":"2,350 + 1,475 − 225 = ?","choices":["3,600 metres","3,825 metres","3,375 metres","4,050 metres"],"answer":"3,600 metres","hint":"Add both safe segments, then subtract the closed section.","explanation":"2,350 + 1,475 = 3,825, and 3,825 − 225 = 3,600.","hintHe":"חברו את שני הקטעים הבטוחים ואז החסירו את הקטע הסגור.","questionHe":"שני קטעי טיסה בטוחים אורכם 2,350 ו־1,475 מטרים. יש להסיר קטע סגור של 225 מטרים. מה אורך המסלול הזמין?"},
+      {"question":"The airship stored 7,200 energy units. Climbing used 2,350 units and steering used 1,450. How many units remain?","expression":"7,200 − 2,350 − 1,450 = ?","choices":["3,400","3,500","4,850","2,400"],"answer":"3,400","hint":"Subtract the energy used for climbing, then subtract the steering energy.","explanation":"7,200 − 2,350 = 4,850, and 4,850 − 1,450 = 3,400.","hintHe":"החסירו את אנרגיית הטיפוס ואז את אנרגיית ההיגוי.","questionHe":"בספינת האוויר אוחסנו 7,200 יחידות אנרגיה. הטיפוס השתמש ב־2,350 יחידות וההיגוי ב־1,450. כמה יחידות נותרו?"}
     ],
     "objective":"Rebuild Mira's launch instruction in the airship log.",
+    "objectiveHe":"הרכיבו מחדש את הוראת ההמראה של מירה ביומן ספינת האוויר.",
     "spark":"The safe distance is stored. Mira also left a scrambled launch instruction aboard the airship.",
+    "sparkHe":"המרחק הבטוח נשמר. מירה השאירה גם הוראת המראה מבולבלת בספינת האוויר.",
     "reward":"route"
   },
   {
     "id":"launch-instructions","subject":"English · sentence building","type":"order","title":"Prepare the airship launch","label":"Challenge 9 of 10",
     "story":"Arrange the log words into a clear instruction for the next stage of the journey.",
+    "storyHe":"סדרו את מילות היומן להוראה ברורה לקראת השלב הבא במסע.",
     "question":"Build Mira's launch instruction.",
     "variants":[
-      {"words":["storm.","Fly","the","beneath","silver"],"answer":["Fly","beneath","the","silver","storm."],"hint":"Begin with the action word Fly, then add the location phrase.","explanation":"The instruction is: Fly beneath the silver storm."},
-      {"words":["before","Check","launch.","compass","the"],"answer":["Check","the","compass","before","launch."],"hint":"Start with Check and name what must be checked.","explanation":"The instruction is: Check the compass before launch."},
-      {"words":["green","Follow","eastern","the","signal."],"answer":["Follow","the","green","eastern","signal."],"hint":"Begin with Follow, then describe the signal.","explanation":"The instruction is: Follow the green eastern signal."},
-      {"words":["clouds.","Keep","below","airship","the","the"],"answer":["Keep","the","airship","below","the","clouds."],"hint":"Use Keep + object + location.","explanation":"The instruction is: Keep the airship below the clouds."},
-      {"words":["garden","at","Land","the","observatory."],"answer":["Land","at","the","garden","observatory."],"hint":"Start with the action Land and finish with the destination.","explanation":"The instruction is: Land at the garden observatory."},
-      {"words":["golden","after","Turn","beacon.","the","east"],"answer":["Turn","east","after","the","golden","beacon."],"hint":"Begin with Turn, then add the direction and time phrase.","explanation":"The instruction is: Turn east after the golden beacon."},
-      {"words":["takeoff.","cargo","before","the","Secure"],"answer":["Secure","the","cargo","before","takeoff."],"hint":"Start with the action Secure and name what must be secured.","explanation":"The instruction is: Secure the cargo before takeoff."}
+      {"words":["storm.","Fly","the","beneath","silver"],"answer":["Fly","beneath","the","silver","storm."],"hint":"Begin with the action word Fly, then add the location phrase.","explanation":"The instruction is: Fly beneath the silver storm.","hintHe":"התחילו בפועל Fly ואז הוסיפו את צירוף המקום."},
+      {"words":["before","Check","launch.","compass","the"],"answer":["Check","the","compass","before","launch."],"hint":"Start with Check and name what must be checked.","explanation":"The instruction is: Check the compass before launch.","hintHe":"התחילו ב־Check וציינו מה צריך לבדוק."},
+      {"words":["green","Follow","eastern","the","signal."],"answer":["Follow","the","green","eastern","signal."],"hint":"Begin with Follow, then describe the signal.","explanation":"The instruction is: Follow the green eastern signal.","hintHe":"התחילו ב־Follow ואז תארו את האות."},
+      {"words":["clouds.","Keep","below","airship","the","the"],"answer":["Keep","the","airship","below","the","clouds."],"hint":"Use Keep + object + location.","explanation":"The instruction is: Keep the airship below the clouds.","hintHe":"השתמשו במבנה Keep + object + location."},
+      {"words":["garden","at","Land","the","observatory."],"answer":["Land","at","the","garden","observatory."],"hint":"Start with the action Land and finish with the destination.","explanation":"The instruction is: Land at the garden observatory.","hintHe":"התחילו בפעולה Land וסיימו ביעד."},
+      {"words":["golden","after","Turn","beacon.","the","east"],"answer":["Turn","east","after","the","golden","beacon."],"hint":"Begin with Turn, then add the direction and time phrase.","explanation":"The instruction is: Turn east after the golden beacon.","hintHe":"התחילו ב־Turn ואז הוסיפו את הכיוון ואת צירוף הזמן."},
+      {"words":["takeoff.","cargo","before","the","Secure"],"answer":["Secure","the","cargo","before","takeoff."],"hint":"Start with the action Secure and name what must be secured.","explanation":"The instruction is: Secure the cargo before takeoff.","hintHe":"התחילו בפעולה Secure וציינו מה צריך לאבטח."}
     ],
     "objective":"Load the correct number of rescue supplies into the blue cargo crate.",
+    "objectiveHe":"העמיסו את הכמות הנכונה של ציוד חילוץ בארגז המטען הכחול.",
     "spark":"The launch sentence is restored. One final supply calculation will keep the crew prepared for Gale Garden.",
+    "sparkHe":"משפט ההמראה שוחזר. חישוב ציוד אחרון יכין את הצוות לגן הסערה.",
     "reward":"launch"
   },
   {
     "id":"rescue-supplies","subject":"Mathematics · multiplication and addition","type":"choice","title":"Load the rescue supplies","label":"Challenge 10 of 10",
     "story":"Pack equal emergency kits and add the shared equipment without overloading the airship.",
+    "storyHe":"ארזו ערכות חירום שוות והוסיפו את הציוד המשותף בלי להעמיס יותר מדי על ספינת האוויר.",
     "variants":[
-      {"question":"Four explorers need 6 food packs each, and the crew shares 5 lanterns. How many items are loaded altogether?","expression":"4 × 6 + 5 = ?","choices":["29","24","35","15"],"answer":"29","hint":"Find the food packs first, then add the lanterns.","explanation":"Four groups of six make 24; 24 + 5 = 29."},
-      {"question":"Five rescue kits contain 7 bandages each, plus 8 shared ropes. How many supplies are there?","expression":"5 × 7 + 8 = ?","choices":["43","35","48","20"],"answer":"43","hint":"Multiply before adding the shared ropes.","explanation":"5 × 7 = 35, and 35 + 8 = 43."},
-      {"question":"Six tool bags hold 4 tools each. Spark adds 9 signal crystals. How many objects are packed?","expression":"6 × 4 + 9 = ?","choices":["33","24","39","19"],"answer":"33","hint":"Calculate the tools in all bags, then add nine.","explanation":"6 × 4 = 24, and 24 + 9 = 33."},
-      {"question":"Three water cases hold 12 bottles each, plus 7 spare bottles. What is the total?","expression":"3 × 12 + 7 = ?","choices":["43","36","55","29"],"answer":"43","hint":"Three groups of twelve make 36.","explanation":"3 × 12 = 36, and 36 + 7 = 43."},
-      {"question":"Eight map tubes hold 3 pages each, and Mira left 6 loose pages. How many pages are there?","expression":"8 × 3 + 6 = ?","choices":["30","24","32","18"],"answer":"30","hint":"Multiply the tubes and pages first.","explanation":"8 × 3 = 24, and 24 + 6 = 30."},
-      {"question":"Seven explorers pack 5 meal bars each, plus 4 shared water flasks. How many items are loaded?","expression":"7 × 5 + 4 = ?","choices":["39","35","44","16"],"answer":"39","hint":"Find the meal bars first, then add the shared flasks.","explanation":"7 × 5 = 35, and 35 + 4 = 39."},
-      {"question":"Five repair boxes hold 8 parts each, and Spark adds 6 spare parts. How many parts are packed?","expression":"5 × 8 + 6 = ?","choices":["46","40","54","19"],"answer":"46","hint":"Multiply the boxes and parts first, then add six.","explanation":"5 × 8 = 40, and 40 + 6 = 46."}
+      {"question":"Four explorers need 6 food packs each, and the crew shares 5 lanterns. How many items are loaded altogether?","expression":"4 × 6 + 5 = ?","choices":["29","24","35","15"],"answer":"29","hint":"Find the food packs first, then add the lanterns.","explanation":"Four groups of six make 24; 24 + 5 = 29.","hintHe":"חשבו תחילה את מספר חבילות המזון ואז הוסיפו את הפנסים.","questionHe":"ארבעה חוקרים זקוקים ל־6 חבילות מזון כל אחד, והצוות חולק 5 פנסים. כמה פריטים נטענים בסך הכול?"},
+      {"question":"Five rescue kits contain 7 bandages each, plus 8 shared ropes. How many supplies are there?","expression":"5 × 7 + 8 = ?","choices":["43","35","48","20"],"answer":"43","hint":"Multiply before adding the shared ropes.","explanation":"5 × 7 = 35, and 35 + 8 = 43.","hintHe":"בצעו את הכפל לפני שתוסיפו את החבלים המשותפים.","questionHe":"חמש ערכות חילוץ מכילות 7 תחבושות כל אחת, ועוד 8 חבלים משותפים. כמה פריטי ציוד יש?"},
+      {"question":"Six tool bags hold 4 tools each. Spark adds 9 signal crystals. How many objects are packed?","expression":"6 × 4 + 9 = ?","choices":["33","24","39","19"],"answer":"33","hint":"Calculate the tools in all bags, then add nine.","explanation":"6 × 4 = 24, and 24 + 9 = 33.","hintHe":"חשבו כמה כלים יש בכל התיקים יחד ואז הוסיפו תשעה.","questionHe":"שישה תיקי כלים מכילים 4 כלים כל אחד. ספארק מוסיף 9 גבישי איתות. כמה חפצים נארזו?"},
+      {"question":"Three water cases hold 12 bottles each, plus 7 spare bottles. What is the total?","expression":"3 × 12 + 7 = ?","choices":["43","36","55","29"],"answer":"43","hint":"Three groups of twelve make 36.","explanation":"3 × 12 = 36, and 36 + 7 = 43.","hintHe":"שלוש קבוצות של שתים־עשרה הן 36.","questionHe":"שלושה ארגזי מים מכילים 12 בקבוקים כל אחד, ועוד 7 בקבוקים רזרביים. מה הסכום הכולל?"},
+      {"question":"Eight map tubes hold 3 pages each, and Mira left 6 loose pages. How many pages are there?","expression":"8 × 3 + 6 = ?","choices":["30","24","32","18"],"answer":"30","hint":"Multiply the tubes and pages first.","explanation":"8 × 3 = 24, and 24 + 6 = 30.","hintHe":"הכפילו תחילה את מספר הגלילים במספר הדפים.","questionHe":"שמונה גלילי מפות מכילים 3 דפים כל אחד, ומירה השאירה 6 דפים חופשיים. כמה דפים יש?"},
+      {"question":"Seven explorers pack 5 meal bars each, plus 4 shared water flasks. How many items are loaded?","expression":"7 × 5 + 4 = ?","choices":["39","35","44","16"],"answer":"39","hint":"Find the meal bars first, then add the shared flasks.","explanation":"7 × 5 = 35, and 35 + 4 = 39.","hintHe":"חשבו תחילה את חטיפי הארוחה ואז הוסיפו את הבקבוקים המשותפים.","questionHe":"שבעה חוקרים אורזים 5 חטיפי ארוחה כל אחד, ועוד 4 בקבוקי מים משותפים. כמה פריטים נטענים?"},
+      {"question":"Five repair boxes hold 8 parts each, and Spark adds 6 spare parts. How many parts are packed?","expression":"5 × 8 + 6 = ?","choices":["46","40","54","19"],"answer":"46","hint":"Multiply the boxes and parts first, then add six.","explanation":"5 × 8 = 40, and 40 + 6 = 46.","hintHe":"הכפילו תחילה את מספר הקופסאות במספר החלקים ואז הוסיפו שישה.","questionHe":"חמש קופסאות תיקון מכילות 8 חלקים כל אחת, וספארק מוסיף 6 חלקי חילוף. כמה חלקים נארזו?"}
     ],
     "objective":"Use the Echo Lens to collect the hidden Atlas fragment.",
+    "objectiveHe":"השתמשו בעדשת ההד כדי לאסוף את קטע האטלס הנסתר.",
     "spark":"Supplies loaded. The harbor is fully prepared, and the hidden Atlas fragment is ready to be collected.",
+    "sparkHe":"הציוד הועמס. הנמל מוכן לגמרי, וקטע האטלס הנסתר מוכן לאיסוף.",
     "reward":"supplies"
   }
 ]
@@ -814,6 +851,14 @@ const worldModelRegistry=JSON.parse($("atlas-world-models").textContent);
 const worldModels=Object.freeze(Object.fromEntries(worldModelRegistry.models.map(model=>[model.id,Object.freeze(model)])));
 const challenges=JSON.parse($("atlas-challenges").textContent);
 const SAVE_KEY="edu-games-atlas-cloud-harbor-v1",LABEL_LAYOUT_KEY="edu-games-atlas-cloud-harbor-label-layout-v1";
+const GUIDANCE_HE={
+  initialObjective:"דברו עם ספארק ליד הרציף.",
+  firstObjective:"בדקו את ארגז המטען הכחול ליד ספינת האוויר.",
+  restoredObjective:"המגדלור שוחזר. אפשר להמשיך במסע או לעיין ביומן.",
+  initialSpark:"הנמל שקט. העירו אותי ונחקור יחד.",
+  firstSpark:"אני ספארק! המהנדסת השאירה הודעה: Find the blue box near the boat.",
+  interior:["החדר שקט. הפתק של מירה מונח על שולחן העבודה.","הפתק חושף את תבנית העדשה האחרונה. מנגנון הפליז מוכן.","העדשה ששוחזרה שולחת אלומת זהב דרך העננים."]
+};
 const MOVABLE_LABEL_IDS=["hotspot-spark","hotspot-crate","hotspot-bridge","hotspot-boat","hotspot-console","hotspot-lighthouse","hotspot-secret"];
 const modelTarget=id=>{const interaction=worldModels[id].interaction;return{x:interaction.x,y:interaction.y,name:interaction.label,radius:interaction.radius};};
 const WORLD_TARGETS={
@@ -862,8 +907,21 @@ function seededShuffle(values,seed){
 function freshState(previousVariants={}){
   return{version:1,runNonce:randomUint(),questionVariants:createQuestionVariants(previousVariants),started:false,interior:false,step:0,completed:[],assisted:[],lens:false,bridge:false,lighthouse:false,secret:false,atlas:false,sound:true,reducedMotion:false,facing:"east",player:{x:334,y:316},updatedAt:null};
 }
-let state=loadState(),activeChallenge=null,orderedWords=[],lastFocus=null,audioContext=null,toastTimer=0,dialogueTimer=0,pendingDialogue=null,movementSaveTimer=0,autoWalkFrame=0,arrivalTimer=0,movementFrame=0,labelEditMode=false,labelLayout=loadLabelLayout();
+let state=loadState(),activeChallenge=null,orderedWords=[],lastFocus=null,audioContext=null,toastTimer=0,dialogueTimer=0,pendingDialogue=null,movementSaveTimer=0,autoWalkFrame=0,arrivalTimer=0,movementFrame=0,labelEditMode=false,labelLayout=loadLabelLayout(),guidanceLanguage=window.AtlasLanguage?.get?.()||"he",translationPanelOpen=false;
 const heldDirections=new Set();
+
+function isHebrewGuidance(){return guidanceLanguage!=="en";}
+function setGuidanceText(element,english,hebrew,useHebrew=isHebrewGuidance()){
+  const showHebrew=Boolean(useHebrew&&hebrew);
+  element.textContent=showHebrew?hebrew:english;
+  element.lang=showHebrew?"he":"en";element.dir=showHebrew?"rtl":"ltr";
+}
+function applyGuidanceLanguage(language){
+  guidanceLanguage=language==="en"?"en":"he";
+  if(isHebrewGuidance())window.speechSynthesis?.cancel();
+  render();
+  if($("challenge-dialog").open&&activeChallenge)renderChallengeGuidance();
+}
 
 function loadState(){
   try{
@@ -947,9 +1005,9 @@ function playCue(name){
   };
   (cues[name]||cues.success).forEach(([frequency,duration,delay])=>setTimeout(()=>tone(frequency,duration),delay));
 }
-function showWorldDialogue(speaker,text,duration=6500){
+function showWorldDialogue(speaker,text,textHe=null,duration=6500){
   clearTimeout(dialogueTimer);
-  $("dialogue-speaker").textContent=speaker;$("dialogue-text").textContent=text;$("world-dialogue").hidden=false;
+  $("dialogue-speaker").textContent=speaker;setGuidanceText($("dialogue-text"),text,textHe);$("world-dialogue").hidden=false;
   if(speaker==="Spark")setSparkPortrait(state.lighthouse?"celebrating":/not yet|careful|missing|broken|dark/i.test(text)?"concerned":"guiding");
   dialogueTimer=setTimeout(()=>$("world-dialogue").hidden=true,duration);
 }
@@ -1014,9 +1072,25 @@ function render(){
   $("interior-scene").classList.toggle("lens-ready",inside&&state.step===5);
   document.querySelector(".movement-controls").hidden=inside;
   $("movement-help").hidden=inside;
-  const targets=["Inspect the blue cargo crate near the airship.","Use the broken bridge mechanism.","Restore the scrambled airship log.","Balance the rescue cargo at the harbor console.","Read the engineer's note inside the lighthouse.","Align the lighthouse lens.","Follow the Echo Lens signal into the hidden cave.","Chart the safe route at the harbor console.","Prepare the airship launch instruction.","Load the rescue supplies into the blue cargo crate."];
-  $("objective").textContent=!state.started?"Talk to Spark near the dock.":state.step>=challenges.length&&!state.secret?"Use the Echo Lens to investigate the hidden cave.":state.step>=challenges.length?"The lighthouse is restored. Travel onward or review the journal.":targets[state.step];
-  $("spark-message").textContent=!state.started?"The harbor is quiet. Wake me and we will investigate together.":state.step===0?"I am Spark! The engineer left a message: Find the blue box near the boat.":state.step>=challenges.length?challenges.at(-1).spark:challenges[state.step-1].spark;
+  const objectiveSource=!state.started
+    ?["Talk to Spark near the dock.",GUIDANCE_HE.initialObjective]
+    :state.step===0
+      ?["Inspect the blue cargo crate near the airship.",GUIDANCE_HE.firstObjective]
+      :state.step>=challenges.length&&!state.secret
+        ?[challenges.at(-1).objective,challenges.at(-1).objectiveHe]
+        :state.step>=challenges.length
+          ?["The lighthouse is restored. Travel onward or review the journal.",GUIDANCE_HE.restoredObjective]
+          :[challenges[state.step-1].objective,challenges[state.step-1].objectiveHe];
+  setGuidanceText($("objective"),...objectiveSource);
+  setGuidanceText($("objective-label"),"Current objective","המטרה הנוכחית");
+  const sparkSource=!state.started
+    ?["The harbor is quiet. Wake me and we will investigate together.",GUIDANCE_HE.initialSpark]
+    :state.step===0
+      ?["I am Spark! The engineer left a message: Find the blue box near the boat.",GUIDANCE_HE.firstSpark]
+      :state.step>=challenges.length
+        ?[challenges.at(-1).spark,challenges.at(-1).sparkHe]
+        :[challenges[state.step-1].spark,challenges[state.step-1].sparkHe];
+  setGuidanceText($("spark-message"),...sparkSource);
   $("progress-fill").style.width=(state.completed.length/challenges.length*100)+"%";
   document.querySelector(".progress-track").setAttribute("aria-valuenow",String(state.completed.length));
   $("progress-text").textContent=`${state.completed.length} of ${challenges.length} challenges complete`;
@@ -1036,7 +1110,8 @@ function render(){
   $("interior-note").classList.toggle("done",state.step>4);
   $("interior-lens").classList.toggle("current",inside&&state.step===5);
   $("interior-lens").disabled=state.step<5;
-  $("interior-caption").textContent=state.step===4?"The chamber is silent. Mira's note rests on the workbench.":state.step===5?"The note reveals the final lens pattern. The brass mechanism is ready.":"The restored lens sends a golden beam through the clouds.";
+  const interiorIndex=state.step===4?0:state.step===5?1:2;
+  setGuidanceText($("interior-caption"),["The chamber is silent. Mira's note rests on the workbench.","The note reveals the final lens pattern. The brass mechanism is ready.","The restored lens sends a golden beam through the clouds."][interiorIndex],GUIDANCE_HE.interior[interiorIndex]);
   renderQuestList();renderHotspots();updatePlayerVisual();
 }
 function renderQuestList(){
@@ -1180,7 +1255,8 @@ function approachSecret(){
 }
 function enterLighthouse(){
   if(state.step<4){showToast("The lighthouse door is still sealed.");return;}
-  state.interior=true;saveState();render();playCue("door");showWorldDialogue("Spark",state.step===4?"The lock accepted Mira's key. Her note is on the workbench.":"The lens mechanism is waiting for the fraction pattern.");
+  state.interior=true;saveState();render();playCue("door");
+  showWorldDialogue("Spark",state.step===4?"The lock accepted Mira's key. Her note is on the workbench.":"The lens mechanism is waiting for the fraction pattern.",state.step===4?"המנעול קיבל את המפתח של מירה. הפתק שלה מונח על שולחן העבודה.":"מנגנון העדשה ממתין לתבנית השבר.");
 }
 function exitLighthouse(){
   state.interior=false;saveState();render();$("hotspot-lighthouse").focus({preventScroll:true});
@@ -1189,16 +1265,34 @@ function openChallenge(index){
   if(!state.started){showToast("Talk to Spark before exploring the harbor.");return;}
   if(index<state.step){showToast("That part of the harbor is already restored.");return;}
   if(index>state.step){tone(180,.12,"square");showToast("Spark: We need to finish the current objective first.");return;}
-  activeChallenge=resolvedChallenge(index);orderedWords=[];lastFocus=document.activeElement;
+  activeChallenge=resolvedChallenge(index);orderedWords=[];lastFocus=document.activeElement;translationPanelOpen=false;
   $("challenge-label").textContent=activeChallenge.label;$("challenge-title").textContent=activeChallenge.title;
-  $("challenge-story").textContent=activeChallenge.story;$("challenge-question").textContent=activeChallenge.question;
   $("challenge-expression").textContent=activeChallenge.expression||"";
   $("challenge-expression").hidden=!activeChallenge.expression;
   $("challenge-feedback").textContent="";$("challenge-feedback").className="feedback";
-  $("challenge-hint").hidden=true;$("challenge-hint").textContent=activeChallenge.hint;
+  $("challenge-hint").hidden=true;
   $("hint-button").hidden=false;$("continue-button").hidden=true;
+  renderChallengeGuidance();
   renderChallengeVisual(activeChallenge);renderChallengeContent(activeChallenge);
   $("challenge-dialog").showModal();setTimeout(()=>$("challenge-dialog").querySelector("button:not(.close)")?.focus(),30);
+}
+function renderChallengeGuidance(){
+  if(!activeChallenge)return;
+  const hebrew=isHebrewGuidance(),isMath=activeChallenge.subject.startsWith("Mathematics");
+  setGuidanceText($("challenge-story"),activeChallenge.story,activeChallenge.storyHe,hebrew);
+  setGuidanceText($("challenge-question"),activeChallenge.question,activeChallenge.questionHe,hebrew&&isMath);
+  setGuidanceText($("challenge-hint"),activeChallenge.hint,activeChallenge.hintHe,hebrew);
+  $("hint-button").textContent=hebrew?"הצגת רמז":"Show a hint";
+  $("hint-button").setAttribute("aria-label",hebrew?"הצגת רמז לאתגר":"Show a hint for this challenge");
+  $("continue-button").textContent=hebrew?"חזרה לנמל":"Return to the harbor";
+  const tools=$("challenge-guidance-tools"),panel=$("challenge-translation");
+  tools.hidden=hebrew;panel.hidden=hebrew||!translationPanelOpen;
+  $("translate-guidance").setAttribute("aria-expanded",String(!panel.hidden));
+  if(!hebrew){
+    panel.replaceChildren();
+    const story=document.createElement("p");story.textContent=activeChallenge.storyHe;panel.append(story);
+    if(isMath&&activeChallenge.questionHe){const question=document.createElement("p");question.className="question";question.textContent=activeChallenge.questionHe;panel.append(question);}
+  }
 }
 function renderChallengeVisual(challenge){
   const visual=$("challenge-visual");visual.innerHTML="";
@@ -1248,9 +1342,9 @@ function renderChallengeContent(challenge){
     button.addEventListener("click",()=>selectWord(index));bank.append(button);
   });
   const actions=document.createElement("div");actions.className="actions";
-  const clear=document.createElement("button");clear.type="button";clear.className="secondary";clear.textContent="Clear";clear.onclick=clearWords;
-  const undo=document.createElement("button");undo.type="button";undo.className="secondary";undo.textContent="Undo last word";undo.onclick=undoWord;
-  const check=document.createElement("button");check.type="button";check.className="primary";check.textContent="Check sentence";check.onclick=checkOrder;
+  const clear=document.createElement("button");clear.type="button";clear.className="secondary";clear.textContent=isHebrewGuidance()?"ניקוי":"Clear";clear.onclick=clearWords;
+  const undo=document.createElement("button");undo.type="button";undo.className="secondary";undo.textContent=isHebrewGuidance()?"ביטול המילה האחרונה":"Undo last word";undo.onclick=undoWord;
+  const check=document.createElement("button");check.type="button";check.className="primary";check.textContent=isHebrewGuidance()?"בדיקת המשפט":"Check sentence";check.onclick=checkOrder;
   actions.append(clear,undo,check);area.append(answer,bank,actions);content.append(area);renderWords();
 }
 function answerChoice(button,value){
@@ -1259,7 +1353,7 @@ function answerChoice(button,value){
     button.classList.add("correct");finishChallenge();
   }else{
     button.disabled=true;button.classList.add("wrong");state.assisted.push(activeChallenge.id);state.assisted=[...new Set(state.assisted)];
-    $("challenge-feedback").textContent="Not yet. Spark opened a clue—try another answer.";$("challenge-feedback").className="feedback try";
+    $("challenge-feedback").textContent=isHebrewGuidance()?"עדיין לא. ספארק פתח רמז — נסו תשובה אחרת.":"Not yet. Spark opened a clue—try another answer.";$("challenge-feedback").className="feedback try";
     $("challenge-hint").hidden=false;$("hint-button").hidden=true;tone(180,.12,"square");saveState();
   }
 }
@@ -1279,7 +1373,7 @@ function checkOrder(){
   const built=orderedWords.map(i=>activeChallenge.words[i]);
   if(JSON.stringify(built)===JSON.stringify(activeChallenge.answer)){finishChallenge();return;}
   state.assisted.push(activeChallenge.id);state.assisted=[...new Set(state.assisted)];
-  $("challenge-feedback").textContent="The sentence is not complete yet. Use the clue, adjust the word order, and try again.";
+  $("challenge-feedback").textContent=isHebrewGuidance()?"המשפט עדיין אינו שלם. היעזרו ברמז, שנו את סדר המילים ונסו שוב.":"The sentence is not complete yet. Use the clue, adjust the word order, and try again.";
   $("challenge-feedback").className="feedback try";$("challenge-hint").hidden=false;$("hint-button").hidden=true;tone(180,.12,"square");saveState();
 }
 function finishChallenge(){
@@ -1289,9 +1383,9 @@ function finishChallenge(){
   if(challenge.reward==="lens")state.lens=true;
   if(challenge.reward==="lighthouse")state.lighthouse=true;
   $("challenge-content").querySelectorAll("button").forEach(button=>button.disabled=true);
-  $("challenge-feedback").textContent="Success! "+challenge.explanation;$("challenge-feedback").className="feedback good";
+  $("challenge-feedback").textContent=(isHebrewGuidance()?"הצלחה! ":"Success! ")+challenge.explanation;$("challenge-feedback").className="feedback good";
   $("challenge-hint").hidden=true;$("hint-button").hidden=true;$("continue-button").hidden=false;
-  pendingDialogue={speaker:"Spark",text:challenge.spark};
+  pendingDialogue={speaker:"Spark",text:challenge.spark,textHe:challenge.sparkHe};
   playCue(challenge.reward==="bridge"?"bridge":challenge.reward==="lighthouse"?"lens":"success");burst();saveState();render();
   if(challenge.reward==="bridge")showToast("The bridge has been rebuilt.");
   if(challenge.reward==="lens")showToast("Echo Lens unlocked. A secret signal is visible.");
@@ -1303,13 +1397,21 @@ function burst(){
   setTimeout(()=>field.replaceChildren(),1500);
 }
 function closeChallenge(){
+  window.speechSynthesis?.cancel();
   $("challenge-dialog").close();
   if(state.interior&&state.step>=6){state.interior=false;saveState();render();}
   lastFocus?.focus({preventScroll:true});
   if(state.step>=challenges.length){pendingDialogue=null;setTimeout(showCompletion,250);}
-  else if(pendingDialogue){const dialogue=pendingDialogue;pendingDialogue=null;setTimeout(()=>showWorldDialogue(dialogue.speaker,dialogue.text),220);}
+  else if(pendingDialogue){const dialogue=pendingDialogue;pendingDialogue=null;setTimeout(()=>showWorldDialogue(dialogue.speaker,dialogue.text,dialogue.textHe),220);}
 }
 function showCompletion(){
+  if(isHebrewGuidance()){
+    const nextAction=state.secret
+      ?`<button class="primary" type="button" data-action="island-two">המשך אל האי השני</button>`
+      :`<button class="primary" type="button" data-action="secret-epilogue">עקבו אחר עדשת ההד אל המערה הנסתרת</button>`;
+    openInfo("הנמל שוחזר",`<div class="completion" lang="he" dir="rtl"><div class="map-fragment">✦</div><h2>המגדלור התעורר</h2><p>האלומה שלו מצביעה מזרחה אל גן הרוחות, שבו סערה כסופה השתיקה את משואות הרוח.</p>${state.secret?"<p>שבר המפה הנסתר מאשר את המסלול של מירה.</p>":"<p>לפני היציאה, ספארק מזהה אות אחרון של עדשת ההד מאחורי אי המגדלור.</p>"}<p>השלמתם ${challenges.length} אתגרי למידה. ${state.assisted.length?`השתמשתם בעזרה ב־${state.assisted.length} אתגרים; הם יוכלו לחזור בהמשך עם שאלות חדשות.`:"כל האתגרים הושלמו ללא פתיחת עזרה."}</p><div class="actions">${nextAction}<a class="secondary" href="./map/index.html">מפת המסע</a><button class="secondary" type="button" data-action="journal">פתיחת יומן המסע</button><button class="secondary" type="button" data-action="replay">משחק חוזר עם שאלות חדשות</button></div></div>`,"המסע הושלם");
+    return;
+  }
   const nextAction=state.secret
     ?`<button class="primary" type="button" data-action="island-two">Travel to Island Two</button>`
     :`<button class="primary" type="button" data-action="secret-epilogue">Follow the Echo Lens to the hidden cave</button>`;
@@ -1321,10 +1423,15 @@ function findSecret(){
   if(state.secret){showToast("The hidden map fragment is already in your journal.");return;}
   state.secret=true;saveState();render();playCue("secret");burst();
   window.AtlasProgress?.completeIsland(1,"Cloud Harbor",{assisted:state.assisted.length,challengeCount:challenges.length});
+  if(isHebrewGuidance()){openInfo("שבר מפה נסתר",`<div lang="he" dir="rtl"><p>עדשת ההד חושפת מערה מאחורי אי המגדלור. בתוכה נמצא שבר המסומן באי שישי — אי שאינו מופיע באטלס הרגיל.</p><p><strong>הסוד התגלה:</strong> האי הבלתי כתוב.</p><p>קו ירוק חדש מצביע כעת אל גן הרוחות, שאליו אזהרת הסערה של מירה מעולם לא הגיעה.</p><div class="actions"><button class="primary" type="button" data-action="island-two">המשך אל האי השני</button><button class="secondary" type="button" data-action="journal">רישום התגלית</button></div></div>`,"הסוד התגלה");return}
   openInfo("A hidden map fragment",`<p>The Echo Lens reveals a cave behind the lighthouse island. Inside is a fragment marked with a sixth island—one that does not appear in the ordinary atlas.</p><p><strong>Secret discovered:</strong> The Unwritten Isle.</p><p>A fresh green line now points toward Gale Garden, where Mira's storm warning was never received.</p><div class="actions"><button class="primary" type="button" data-action="island-two">Travel to Island Two</button><button class="secondary" type="button" data-action="journal">Record the discovery</button></div>`,"Secret found");
 }
 function talkToSpark(){
   if(state.started){openJournal();return;}
+  if(isHebrewGuidance()){
+    openInfo("שותפה מתעוררת",`<div lang="he" dir="rtl"><p>מכונה קטנה מכורבלת ליד הרציף. אתם בודקים אותה בזהירות בלי לפגוע בה. העין הטורקיזית שלה נפתחת.</p><p><strong>״אני ספארק. המהנדסת נעלמה, הגשר שבור והמגדלור כבה. אם נפתור את מנגנוני הנמל, האטלס עשוי להראות לנו לאן היא הלכה.״</strong></p><p>בהודעה הראשונה כתוב: <span lang="en" dir="ltr"><strong>Find the blue box near the boat.</strong></span></p><div class="actions"><button class="primary" type="button" data-action="start-expedition">התחלת המסע</button></div></div>`,"נמל העננים");
+    return;
+  }
   openInfo("A companion wakes",`<p>A small machine is curled beside the dock. You inspect it carefully without damaging it. Its turquoise eye opens.</p><p><strong>“I am Spark. The engineer is missing, the bridge is broken, and the lighthouse has gone dark. If we solve the harbor mechanisms, the Atlas may show us where she went.”</strong></p><p>The first message reads: <span lang="en" dir="ltr"><strong>Find the blue box near the boat.</strong></span></p><div class="actions"><button class="primary" type="button" data-action="start-expedition">Begin the expedition</button></div>`,"Cloud Harbor");
 }
 function openJournal(){
@@ -1339,6 +1446,7 @@ function startNewRun(){
 }
 function openSettings(){
   openInfo("Settings",`<div class="settings-grid">
+  <label class="setting" for="guidance-language"><span><strong>Story and instructions</strong><br><small>Choose Hebrew or English guidance</small></span><select class="language-select" id="guidance-language" aria-label="Story and instructions language"><option value="he"${isHebrewGuidance()?" selected":""}>עברית</option><option value="en"${isHebrewGuidance()?"":" selected"}>English</option></select></label>
   <div class="setting"><span><strong>Sound effects</strong><br><small>Short generated tones only</small></span><button class="switch" type="button" data-setting="sound" aria-label="Toggle sound effects" aria-pressed="${state.sound}"></button></div>
   <div class="setting"><span><strong>Reduce motion</strong><br><small>Stops decorative animation</small></span><button class="switch" type="button" data-setting="motion" aria-label="Toggle reduced motion" aria-pressed="${state.reducedMotion}"></button></div>
   <div class="setting"><span><strong>Move object labels</strong><br><small>Drag labels to choose their exact positions</small></span><button class="secondary" type="button" data-action="toggle-label-edit">${labelEditMode?"Finish moving":"Start moving"}</button></div>
@@ -1385,6 +1493,14 @@ document.addEventListener("keyup",event=>{
   if(direction)endDirection(direction);
 });
 window.addEventListener("blur",()=>{heldDirections.clear();});
+$("translate-guidance").addEventListener("click",()=>{
+  translationPanelOpen=!translationPanelOpen;renderChallengeGuidance();
+});
+$("listen-guidance").addEventListener("click",()=>{
+  if(!activeChallenge)return;
+  const spoken=[activeChallenge.story,activeChallenge.question].filter(Boolean).join(" ");
+  if(!window.AtlasLanguage?.speakEnglish?.(spoken))showToast("English speech is not available in this browser.");
+});
 $("hint-button").addEventListener("click",()=>{state.assisted.push(activeChallenge.id);state.assisted=[...new Set(state.assisted)];$("challenge-hint").hidden=false;$("hint-button").hidden=true;saveState();tone(360,.08);});
 $("continue-button").addEventListener("click",closeChallenge);$("close-challenge").addEventListener("click",closeChallenge);
 $("challenge-dialog").addEventListener("cancel",event=>{event.preventDefault();closeChallenge();});
@@ -1394,10 +1510,10 @@ $("journal-button").addEventListener("click",openJournal);$("settings-button").a
 $("info-content").addEventListener("click",event=>{
   const action=event.target.closest("[data-action]")?.dataset.action;if(!action)return;
   if(action==="journal"){$("info-dialog").close();openJournal();}
-  if(action==="secret-epilogue"){state.interior=false;state.player={x:810,y:315};$("info-dialog").close();saveState();render();showWorldDialogue("Spark","The Echo Lens signal is behind the lighthouse. Follow the NEXT marker and press Interact near the hidden cave.",8500);}
+  if(action==="secret-epilogue"){state.interior=false;state.player={x:810,y:315};$("info-dialog").close();saveState();render();showWorldDialogue("Spark","The Echo Lens signal is behind the lighthouse. Follow the NEXT marker and press Interact near the hidden cave.","האות של עדשת ההד נמצא מאחורי המגדלור. עקבו אחר סימון NEXT ולחצו על אינטראקציה ליד המערה הנסתרת.",8500);}
   if(action==="island-two")location.href="./island-two/index.html";
   if(action==="replay")startNewRun();
-  if(action==="start-expedition"){state.started=true;state.atlas=true;saveState();$("info-dialog").close();render();showToast("Atlas page unlocked. The expedition has begun.");playCue("start");showWorldDialogue("Spark","The engineer left a message: Find the blue box near the boat.");}
+  if(action==="start-expedition"){state.started=true;state.atlas=true;saveState();$("info-dialog").close();render();showToast(isHebrewGuidance()?"דף האטלס נפתח. המסע התחיל.":"Atlas page unlocked. The expedition has begun.");playCue("start");showWorldDialogue("Spark","The engineer left a message: Find the blue box near the boat.","המהנדסת השאירה הודעה: Find the blue box near the boat.");}
   if(action==="toggle-label-edit"){$("info-dialog").close();setLabelEditMode(!labelEditMode);}
   if(action==="copy-label-layout")copyLabelLayout();
   if(action==="reset-label-layout"){clearLabelLayout();$("info-dialog").close();}
@@ -1410,6 +1526,15 @@ $("info-content").addEventListener("click",event=>{
   if(setting==="sound")state.sound=!state.sound;if(setting==="motion")state.reducedMotion=!state.reducedMotion;
   event.target.setAttribute("aria-pressed",String(setting==="sound"?state.sound:state.reducedMotion));saveState();render();if(setting==="sound")tone(520,.08);
 });
+$("info-content").addEventListener("change",event=>{
+  if(event.target.id!=="guidance-language")return;
+  try{
+    if(window.AtlasLanguage?.set)window.AtlasLanguage.set(event.target.value);
+    else applyGuidanceLanguage(event.target.value);
+  }catch(error){applyGuidanceLanguage(event.target.value);}
+});
+window.addEventListener("atlas-language",event=>applyGuidanceLanguage(event.detail));
+window.addEventListener("DOMContentLoaded",()=>applyGuidanceLanguage(window.AtlasLanguage?.get?.()||guidanceLanguage),{once:true});
 window.addEventListener("storage",event=>{if(event.key===SAVE_KEY){state=loadState();render();}});
 window.addEventListener("resize",()=>renderHotspots());
 function prepareGeneratedEnvironment(){

@@ -109,7 +109,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{o
 #hotspot-console{left:61.32%;top:43.56%;transform:translate(-50%,-50%)}#hotspot-lighthouse{left:89.86%;top:19.97%;transform:translate(-50%,-50%)}#hotspot-spark{left:39%;top:31%}
 #hotspot-secret{left:76.72%;top:74.61%;transform:translate(-50%,-50%);opacity:0;pointer-events:none}
 .lens-unlocked #hotspot-secret{opacity:1;pointer-events:auto}
-.world-hotspot.locked,.world-hotspot.done{display:none}.world-hotspot.done.explorable{display:block;opacity:.86;border-style:dashed}.world.label-edit-mode .world-hotspot{display:block!important;cursor:grab!important;outline:3px dashed #fff1a8;outline-offset:3px;opacity:1!important;pointer-events:auto!important}.world.label-edit-mode .world-hotspot:active{cursor:grabbing!important}.world.label-edit-mode .quest-beacon{display:none}
+.world-hotspot.locked,.world-hotspot.done{display:none}.world-hotspot.done.explorable{display:block;opacity:.86;border-style:dashed}.world.label-edit-mode .world-hotspot,.world.label-edit-mode #interior-note,.world.label-edit-mode #interior-lens{display:block!important;cursor:grab!important;outline:3px dashed #fff1a8;outline-offset:3px;opacity:1!important;pointer-events:auto!important}.world.label-edit-mode :is(.world-hotspot,#interior-note,#interior-lens):active{cursor:grabbing!important}.world.label-edit-mode .quest-beacon{display:none}
 .quest-beacon{position:absolute;z-index:10;left:50%;top:20%;display:grid;justify-items:center;gap:3px;pointer-events:none;
   transform:translate(-50%,-100%);filter:drop-shadow(0 5px 6px rgba(0,0,0,.5));transition:left .45s ease,top .45s ease}
 .quest-beacon[hidden]{display:none}
@@ -120,6 +120,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{o
 .quest-arrow{width:22px;height:27px;background:url("./assets/generated/marker/quest-marker-arrow.webp") center/contain no-repeat;animation:arrowNudge 2.2s ease-in-out infinite}
 .movement-controls{position:absolute;z-index:12;left:50%;top:15px;transform:translateX(-50%);display:grid;grid-template-columns:repeat(4,48px);grid-template-rows:44px 44px;gap:4px;
   padding:8px;border:1px solid rgba(190,226,237,.38);border-radius:18px;background:rgba(5,22,39,.78);backdrop-filter:blur(7px)}
+.world.interior-open .movement-controls{z-index:20;left:auto;right:14px;top:14px;transform:none}
 .move-button{display:grid;place-items:center;min-width:44px;min-height:44px;padding:4px;border:1px solid #7594a7;border-radius:12px;background:#173653;color:#eef8fa;font-weight:900;cursor:pointer}.move-button img{width:34px;height:34px;object-fit:contain;pointer-events:none}
 .move-button[data-direction="up"]{grid-column:1;grid-row:1}.move-button[data-direction="left"]{grid-column:2;grid-row:1}.move-button[data-direction="down"]{grid-column:3;grid-row:1}.move-button[data-direction="right"]{grid-column:4;grid-row:1}
 .interact-button{grid-column:1/5;grid-row:2;border-color:#e8c65f;background:linear-gradient(180deg,#876a2c,#5a471f);color:#fff5c8}
@@ -156,6 +157,7 @@ html body#edu-refresh .world-dialogue strong{color:#fff0b0!important}html body#e
 #generated-interior-lens{z-index:2;left:67%;top:38%;width:42.7%;transform:translate(-50%,-50%);filter:drop-shadow(0 10px 12px rgba(0,0,0,.42))}
 #generated-interior-route{z-index:3;left:16%;top:32%;width:62.5%}
 #generated-interior-lanterns{z-index:4}#generated-interior-foreground{z-index:5}
+.interior-player{position:absolute;z-index:7;width:7.5%;min-width:48px;max-width:78px;transform:translate(-50%,-100%);transform-origin:50% 100%;filter:drop-shadow(0 8px 6px rgba(0,0,0,.48));pointer-events:none}
 .objective-strip{position:absolute;z-index:6;left:16px;right:16px;bottom:14px;display:flex;align-items:center;gap:12px;
   padding:10px 14px;border:1px solid var(--line);border-radius:14px;background:rgba(4,18,34,.88);backdrop-filter:blur(8px)}
 .objective-strip strong{color:var(--gold);white-space:nowrap}.objective-strip span{min-width:0;color:#d7e7ed}
@@ -492,6 +494,7 @@ html.reduce-motion *,html.reduce-motion *:before,html.reduce-motion *:after{anim
     <img class="generated-interior-layer" id="generated-interior-route" alt="">
     <img class="generated-interior-layer interior-full-layer" id="generated-interior-lanterns" alt="">
     <img class="generated-interior-layer interior-full-layer" id="generated-interior-foreground" alt="">
+    <img class="interior-player" id="interior-player" src="./assets/generated/explorer/explorer-idle.webp" alt="Explorer inside the lighthouse">
     <h3 class="interior-title">Lighthouse Lens Chamber</h3>
     <button class="interior-hotspot interior-exit" id="interior-exit" type="button">← Return outside</button>
     <button class="interior-hotspot" id="interior-note" type="button">Read Mira's note</button>
@@ -893,7 +896,7 @@ const GUIDANCE_HE={
   firstSpark:"אני ספארק! המהנדסת השאירה הודעה: Find the blue box near the boat.",
   interior:["החדר שקט. הפתק של מירה מונח על שולחן העבודה.","הפתק חושף את תבנית העדשה האחרונה. מנגנון הפליז מוכן.","העדשה ששוחזרה שולחת אלומת זהב דרך העננים."]
 };
-const MOVABLE_LABEL_IDS=["hotspot-spark","hotspot-crate","hotspot-bridge","hotspot-boat","hotspot-console","hotspot-lighthouse","hotspot-secret"];
+const MOVABLE_LABEL_IDS=["hotspot-spark","hotspot-crate","hotspot-bridge","hotspot-boat","hotspot-console","hotspot-lighthouse","hotspot-secret","interior-note","interior-lens"];
 const modelTarget=id=>{const interaction=worldModels[id].interaction;return{x:interaction.x,y:interaction.y,name:interaction.label,radius:interaction.radius};};
 const WORLD_TARGETS={
   spark:modelTarget("spark-companion"),crate:modelTarget("cargo-crate"),bridge:modelTarget("atlas-bridge"),
@@ -966,7 +969,7 @@ function randomizedWordOrder(values,answer,seed){
   return order;
 }
 function freshState(previousVariants={}){
-  return{version:1,depthVersion:1,runNonce:randomUint(),questionVariants:createQuestionVariants(previousVariants),started:false,interior:false,step:0,completed:[],assisted:[],lens:false,bridge:false,lighthouse:false,secret:false,atlas:false,sound:true,reducedMotion:false,facing:"east",player:{x:334,y:316},activeTool:"atlas",tools:{multitool:false},sideQuests:{handyman:{started:false,repairs:[],completed:false},echoes:{started:false,scans:[],completed:false}},collectibles:[],discoveries:[],updatedAt:null};
+  return{version:1,depthVersion:1,runNonce:randomUint(),questionVariants:createQuestionVariants(previousVariants),started:false,interior:false,interiorPlayer:{x:48,y:78},step:0,completed:[],assisted:[],lens:false,bridge:false,lighthouse:false,secret:false,atlas:false,sound:true,reducedMotion:false,facing:"east",player:{x:334,y:316},activeTool:"atlas",tools:{multitool:false},sideQuests:{handyman:{started:false,repairs:[],completed:false},echoes:{started:false,scans:[],completed:false}},collectibles:[],discoveries:[],updatedAt:null};
 }
 let state=loadState(),activeChallenge=null,orderedWords=[],lastFocus=null,audioContext=null,toastTimer=0,dialogueTimer=0,pendingDialogue=null,movementSaveTimer=0,autoWalkFrame=0,arrivalTimer=0,movementFrame=0,labelEditMode=false,labelLayout=loadLabelLayout(),guidanceLanguage=window.AtlasLanguage?.get?.()||"he",translationPanelOpen=false,englishTaskTranslated=false;
 const heldDirections=new Set();
@@ -1084,13 +1087,14 @@ function loadState(){
     const parsed=JSON.parse(localStorage.getItem(SAVE_KEY));
     if(!parsed||parsed.version!==1||!Array.isArray(parsed.completed))return freshState();
     const base=freshState(),player=parsed.player&&Number.isFinite(parsed.player.x)&&Number.isFinite(parsed.player.y)?parsed.player:base.player;
+    const interiorPlayer=parsed.interiorPlayer&&Number.isFinite(parsed.interiorPlayer.x)&&Number.isFinite(parsed.interiorPlayer.y)?{x:Math.max(12,Math.min(88,parsed.interiorPlayer.x)),y:Math.max(52,Math.min(83,parsed.interiorPlayer.y))}:base.interiorPlayer;
     const repairs=[...new Set(parsed.sideQuests?.handyman?.repairs||[])].filter(id=>DEPTH_IDS.repairs.includes(id));
     const scans=[...new Set(parsed.sideQuests?.echoes?.scans||[])].filter(id=>DEPTH_IDS.scans.includes(id));
     const collectibles=[...new Set(parsed.collectibles||[])].filter(id=>DEPTH_IDS.collectibles.includes(id));
     const handymanComplete=repairs.length===DEPTH_IDS.repairs.length,echoesComplete=scans.length===DEPTH_IDS.scans.length;
     if(handymanComplete&&!collectibles.includes("harbor-mechanic-seal"))collectibles.push("harbor-mechanic-seal");
     if(echoesComplete&&!collectibles.includes("mira-compass-rubbing"))collectibles.push("mira-compass-rubbing");
-    return{...base,...parsed,depthVersion:1,questionVariants:{...base.questionVariants,...parsed.questionVariants},player,step:Math.min(challenges.length,Math.max(0,Number(parsed.step)||0)),activeTool:["atlas","lens","multitool"].includes(parsed.activeTool)?parsed.activeTool:"atlas",tools:{multitool:Boolean(parsed.tools?.multitool||parsed.sideQuests?.handyman?.started)},sideQuests:{handyman:{started:Boolean(parsed.sideQuests?.handyman?.started),repairs,completed:handymanComplete},echoes:{started:Boolean(parsed.sideQuests?.echoes?.started),scans,completed:echoesComplete}},collectibles,discoveries:[...new Set(parsed.discoveries||[])]};
+    return{...base,...parsed,depthVersion:1,questionVariants:{...base.questionVariants,...parsed.questionVariants},player,interiorPlayer,step:Math.min(challenges.length,Math.max(0,Number(parsed.step)||0)),activeTool:["atlas","lens","multitool"].includes(parsed.activeTool)?parsed.activeTool:"atlas",tools:{multitool:Boolean(parsed.tools?.multitool||parsed.sideQuests?.handyman?.started)},sideQuests:{handyman:{started:Boolean(parsed.sideQuests?.handyman?.started),repairs,completed:handymanComplete},echoes:{started:Boolean(parsed.sideQuests?.echoes?.started),scans,completed:echoesComplete}},collectibles,discoveries:[...new Set(parsed.discoveries||[])]};
   }catch(error){return freshState();}
 }
 function saveState(){
@@ -1137,7 +1141,7 @@ function prepareMovableLabels(){
       const worldRect=$("world").getBoundingClientRect();
       const left=Math.max(4,Math.min(96,(event.clientX-worldRect.left)/worldRect.width*100));
       const top=Math.max(6,Math.min(94,(event.clientY-worldRect.top)/worldRect.height*100));
-      labelLayout[id]={left,top};applyLabelLayout();positionQuestBeacon(id);
+      labelLayout[id]={left,top};applyLabelLayout();if(id.startsWith("hotspot-"))positionQuestBeacon(id);
     };
     button.addEventListener("pointerdown",event=>{if(!labelEditMode)return;event.preventDefault();event.stopPropagation();dragging=true;button.setPointerCapture?.(event.pointerId);move(event);},{capture:true});
     button.addEventListener("pointermove",move);
@@ -1258,7 +1262,7 @@ function render(){
   $("world").classList.toggle("interior-open",inside);
   $("interior-scene").hidden=!inside;
   $("interior-scene").classList.toggle("lens-ready",inside&&state.step===5);
-  document.querySelector(".movement-controls").hidden=inside;
+  document.querySelector(".movement-controls").hidden=false;
   $("movement-help").hidden=inside;
   const objectiveSource=!state.started
     ?["Talk to Spark near the dock.",GUIDANCE_HE.initialObjective]
@@ -1421,6 +1425,11 @@ function updatePlayerVisual(moving=false){
   generatedPlayer.style.transform=`translate(-50%,-100%) scaleX(${state.facing==="west"?-1:1})`;
   generatedPlayer.classList.toggle("player-moving",moving&&!state.reducedMotion);
   const target=currentWorldTarget(),near=distanceTo(target)<=82,button=$("interact-button");
+  updateInteriorPlayerVisual(moving&&state.interior);
+  if(state.interior){
+    button.classList.remove("ready");button.textContent="Inspect nearby";button.setAttribute("aria-label","Inspect a nearby lighthouse object");button.disabled=false;
+    return;
+  }
   button.classList.toggle("ready",near);
   button.textContent=target?(near?"Interact":"Auto-walk"):"Complete";
   button.setAttribute("aria-label",target?(near?`Interact with ${target.name}`:`Automatically walk to ${target.name}`):"Expedition complete");
@@ -1429,8 +1438,20 @@ function updatePlayerVisual(moving=false){
     ?near?`<strong>Ready:</strong> Press E or Interact`:`<strong>Explore:</strong> Arrow keys or WASD · follow the NEXT marker`
     :`<strong>Harbor restored:</strong> Keep exploring for secrets`;
 }
+function updateInteriorPlayerVisual(moving=false){
+  const player=$("interior-player"),position=state.interiorPlayer||{x:48,y:78};
+  player.style.left=`${position.x}%`;player.style.top=`${position.y}%`;
+  player.style.transform=`translate(-50%,-100%) scaleX(${state.facing==="west"?-1:1})`;
+  player.classList.toggle("player-moving",moving&&!state.reducedMotion);
+}
 function movePlayer(dx,dy){
   cancelAnimationFrame(autoWalkFrame);autoWalkFrame=0;clearTimeout(arrivalTimer);arrivalTimer=0;
+  if(state.interior){
+    const position=state.interiorPlayer||{x:48,y:78},length=Math.hypot(dx,dy)||1;
+    const nextX=Math.max(12,Math.min(88,position.x+dx/length*1.25)),nextY=Math.max(52,Math.min(83,position.y+dy/length*1.25));
+    if(Math.abs(dx)>Math.abs(dy))state.facing=dx<0?"west":"east";else if(dy)state.facing=dy<0?"north":"south";
+    state.interiorPlayer={x:nextX,y:nextY};updatePlayerVisual(true);queueMovementSave();return;
+  }
   const length=Math.hypot(dx,dy)||1,nextX=state.player.x+dx/length*11,nextY=state.player.y+dy/length*11;
   if(Math.abs(dx)>Math.abs(dy))state.facing=dx<0?"west":"east";else if(dy)state.facing=dy<0?"north":"south";
   if(canOccupy(nextX,nextY)){state.player={x:nextX,y:nextY};updatePlayerVisual(true);queueMovementSave();}
@@ -1488,6 +1509,7 @@ function approachSecret(){
 }
 function enterLighthouse(){
   if(state.step<4){showToast("The lighthouse door is still sealed.");return;}
+  state.interiorPlayer ||= {x:48,y:78};
   state.interior=true;saveState();render();playCue("door");
   const message=state.step===4?["The lock accepted Mira's key. Her note is on the workbench.","המנעול קיבל את המפתח של מירה. הפתק שלה מונח על שולחן העבודה."]:state.step===5?["The lens mechanism is waiting for the fraction pattern.","מנגנון העדשה ממתין לתבנית השבר."]:["The chamber remains open. Try the Atlas Page or Echo Lens on Mira's workbench.","החדר נשאר פתוח. נסו את דף האטלס או את עדשת ההד על שולחן העבודה של מירה."];
   showWorldDialogue("Spark",message[0],message[1]);
@@ -1738,7 +1760,15 @@ $("interior-note").addEventListener("click",()=>{
   showToast(depthText(["Select the Atlas Page or Echo Lens to inspect the workbench.","בחרו בדף האטלס או בעדשת ההד כדי לבדוק את שולחן העבודה."]));
 });
 $("interior-lens").addEventListener("click",()=>state.step===5?openChallenge(5):showToast("Read Mira's note before adjusting the lens."));
-$("interact-button").addEventListener("click",approachCurrentTarget);
+$("interact-button").addEventListener("click",()=>{
+  if(!state.interior){approachCurrentTarget();return;}
+  const position=state.interiorPlayer||{x:48,y:78},targets=[
+    {id:"interior-note",x:22,y:68},
+    {id:"interior-lens",x:67,y:55}
+  ],nearest=targets.sort((a,b)=>Math.hypot(position.x-a.x,position.y-a.y)-Math.hypot(position.x-b.x,position.y-b.y))[0];
+  if(Math.hypot(position.x-nearest.x,position.y-nearest.y)<=18)$(nearest.id).click();
+  else showToast(depthText(["Move closer to the workbench or lens.","התקרבו לשולחן העבודה או לעדשה."]));
+});
 document.querySelectorAll("[data-tool]").forEach(button=>button.addEventListener("click",()=>selectTool(button.dataset.tool)));
 $("depth-status").addEventListener("click",event=>{const action=event.target.closest("[data-depth-action]")?.dataset.depthAction;if(action)handleDepthAction(action);});
 const directionVectors={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]};
@@ -1752,7 +1782,7 @@ document.addEventListener("keydown",event=>{
   if($("challenge-dialog").open||$("info-dialog").open)return;
   const key=event.key.toLowerCase(),direction=key==="arrowup"||key==="w"?"up":key==="arrowdown"||key==="s"?"down":key==="arrowleft"||key==="a"?"left":key==="arrowright"||key==="d"?"right":null;
   if(direction){event.preventDefault();beginDirection(direction);return;}
-  if(key==="e"){event.preventDefault();approachCurrentTarget();}
+  if(key==="e"){event.preventDefault();state.interior?$("interact-button").click():approachCurrentTarget();}
 });
 document.addEventListener("keyup",event=>{
   const key=event.key.toLowerCase(),direction=key==="arrowup"||key==="w"?"up":key==="arrowdown"||key==="s"?"down":key==="arrowleft"||key==="a"?"left":key==="arrowright"||key==="d"?"right":null;

@@ -13,4 +13,4 @@ npx serve .
 
 Then visit <http://localhost:8080>.
 
-Use the arrow keys or WASD to move and Space to pause. Touch controls appear on mobile devices.
+Use the arrow keys or WASD to move and Space to pause. On touch devices, place your left thumb anywhere on the left half and drag to move; release to stop.

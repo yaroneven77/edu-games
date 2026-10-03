@@ -8,5 +8,6 @@ An original, dependency-free top-down arcade football game.
 - Hold Space for up to three seconds, then release to shoot
 - Shift: sprint
 - P or Escape: pause
+- On touch devices, drag from anywhere on the left half to move and hold/release KICK on the right to shoot
 
 Longer charges produce faster shots. Contact with a defender resets the charge.

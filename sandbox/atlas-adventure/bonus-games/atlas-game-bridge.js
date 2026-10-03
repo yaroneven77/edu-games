@@ -47,7 +47,7 @@
   const nav = document.createElement("nav");
   nav.className = "atlas-game-nav";
   nav.setAttribute("aria-label", "Atlas navigation");
-  nav.innerHTML = `<a href="${islandFolder[island]}">← Return to Island ${island}</a><a href="../arcade-launcher/index.html?v=4${allAccess ? "&all=1" : ""}">All games</a><a href="../../map/index.html">Expedition map</a>`;
+  nav.innerHTML = `<a href="${islandFolder[island]}">← Return to Island ${island}</a><a href="../arcade-launcher/index.html?v=5${allAccess ? "&all=1" : ""}">All games</a><a href="../../map/index.html">Expedition map</a>`;
   document.body.prepend(nav);
 
   const controls = document.querySelector(".touch-controls, .controls");
@@ -60,15 +60,11 @@
       boost: "up",
       brake: "down"
     };
-    const stick = document.createElement("div");
     const actions = document.createElement("div");
-    const stickCore = document.createElement("span");
-    stick.className = "gamepad-stick";
-    stick.setAttribute("aria-label", "Movement controls");
+    const directionBank = document.createElement("div");
+    directionBank.className = "gamepad-direction-bank";
     actions.className = "gamepad-actions";
     actions.setAttribute("aria-label", "Action controls");
-    stickCore.className = "gamepad-stick-core";
-    stick.setAttribute("role", "group");
     actions.setAttribute("role", "group");
 
     [...controls.querySelectorAll("button")].forEach(button => {
@@ -76,16 +72,15 @@
       const direction = directionByCommand[command];
       if (direction) {
         button.classList.add("gamepad-direction", `gamepad-${direction}`);
-        stick.append(button);
+        directionBank.append(button);
       } else {
         button.classList.add("gamepad-action");
         actions.append(button);
       }
     });
 
-    stick.append(stickCore);
     controls.classList.add("mobile-gamepad");
-    controls.replaceChildren(stick, actions);
+    controls.replaceChildren(directionBank, actions);
   }
 
   const touchDevice = navigator.maxTouchPoints > 0
@@ -102,27 +97,24 @@
     ${touchDevice ? "" : "@media (max-width:1024px),(pointer:coarse){"}
       body{padding-bottom:max(150px,env(safe-area-inset-bottom))}
       .mobile-gamepad{position:fixed!important;z-index:100!important;left:0!important;right:0!important;bottom:0!important;width:100%!important;height:clamp(145px,25vh,205px)!important;display:block!important;margin:0!important;padding:0!important;background:linear-gradient(180deg,transparent,rgba(2,5,15,.28) 32%,rgba(2,5,15,.72));pointer-events:none}
-      .mobile-gamepad .gamepad-stick,.mobile-gamepad .gamepad-actions{position:absolute;bottom:max(12px,env(safe-area-inset-bottom));width:clamp(126px,30vw,184px);height:clamp(126px,30vw,184px);pointer-events:auto}
-      .mobile-gamepad .gamepad-stick{left:max(14px,env(safe-area-inset-left));border:2px solid rgba(121,235,255,.62);border-radius:50%;background:radial-gradient(circle,rgba(76,176,214,.3) 0 28%,rgba(15,46,70,.72) 30% 58%,rgba(5,17,31,.88) 60%);box-shadow:inset 0 0 22px rgba(105,227,255,.32),0 8px 24px rgba(0,0,0,.42),0 0 18px rgba(54,209,255,.2)}
-      .mobile-gamepad .gamepad-stick-core{position:absolute;inset:34%;border:2px solid rgba(178,246,255,.76);border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(205,251,255,.8),rgba(29,149,199,.6) 28%,rgba(7,45,71,.92) 70%);box-shadow:0 0 14px rgba(60,218,255,.75);pointer-events:none}
+      .mobile-gamepad .gamepad-direction-bank{display:none!important}
+      .mobile-gamepad .gamepad-actions{position:absolute;right:max(14px,env(safe-area-inset-right));bottom:max(12px,env(safe-area-inset-bottom));width:clamp(126px,30vw,184px);height:clamp(126px,30vw,184px);pointer-events:auto}
       .mobile-gamepad button{position:absolute!important;display:flex!important;align-items:center!important;justify-content:center!important;margin:0!important;padding:0!important;min-width:0!important;min-height:0!important;width:38%!important;height:38%!important;border:2px solid rgba(191,248,255,.72)!important;border-radius:50%!important;color:#effdff!important;background:linear-gradient(145deg,rgba(104,215,246,.5),rgba(7,52,81,.88))!important;box-shadow:inset 0 0 13px rgba(189,246,255,.28),0 5px 12px rgba(0,0,0,.42),0 0 11px rgba(63,218,255,.25)!important;font:900 clamp(13px,2.8vw,18px)/1 system-ui,sans-serif!important;text-shadow:0 1px 4px #001722!important;grid-area:auto!important}
       .mobile-gamepad button:active,.mobile-gamepad button.is-pressed{transform:scale(.9)!important;color:#07121b!important;background:linear-gradient(145deg,#fff9aa,#4ce9ff)!important;box-shadow:inset 0 3px 10px rgba(0,0,0,.35),0 0 20px rgba(86,235,255,.9)!important}
-      .mobile-gamepad .gamepad-up{top:2%;left:31%}
-      .mobile-gamepad .gamepad-down{bottom:2%;left:31%}
-      .mobile-gamepad .gamepad-left{top:31%;left:2%}
-      .mobile-gamepad .gamepad-right{top:31%;right:2%}
-      .mobile-gamepad .gamepad-actions{right:max(14px,env(safe-area-inset-right))}
       .mobile-gamepad .gamepad-actions:empty{display:none}
       .mobile-gamepad .gamepad-action{width:48%!important;height:48%!important;color:#fff!important;background:linear-gradient(145deg,rgba(255,91,206,.72),rgba(102,12,116,.92))!important;border-color:rgba(255,213,248,.82)!important}
       .mobile-gamepad .gamepad-action:nth-child(1){right:0;bottom:8%}
       .mobile-gamepad .gamepad-action:nth-child(2){left:4%;top:8%}
       .mobile-gamepad .gamepad-action:nth-child(3){right:6%;top:0}
       .mobile-gamepad .gamepad-action:only-child{right:4%;bottom:8%;width:62%!important;height:62%!important}
+      .dynamic-joystick{position:fixed;z-index:110;width:160px;height:160px;margin:-80px 0 0 -80px;border:2px solid rgba(121,235,255,.66);border-radius:50%;background:radial-gradient(circle,rgba(76,176,214,.2) 0 12%,rgba(15,46,70,.54) 14% 52%,rgba(5,17,31,.72) 54%);box-shadow:inset 0 0 24px rgba(105,227,255,.3),0 8px 24px rgba(0,0,0,.38),0 0 18px rgba(54,209,255,.24);pointer-events:none;opacity:0;transform:scale(.82);transition:opacity .08s ease,transform .08s ease}
+      .dynamic-joystick.is-active{opacity:1;transform:scale(1)}
+      .dynamic-joystick-knob{position:absolute;left:55px;top:55px;width:46px;height:46px;border:2px solid rgba(205,251,255,.84);border-radius:50%;background:radial-gradient(circle at 35% 30%,#e5fdff,rgba(39,181,225,.9) 30%,rgba(7,45,71,.96) 72%);box-shadow:0 0 18px rgba(60,218,255,.86);transform:translate(0,0)}
     ${touchDevice ? "" : "}"}
     @media (orientation:landscape) and (max-height:560px){
       body{padding-bottom:0}
       .mobile-gamepad{height:148px!important;background:linear-gradient(180deg,transparent,rgba(2,5,15,.38))}
-      .mobile-gamepad .gamepad-stick,.mobile-gamepad .gamepad-actions{width:132px;height:132px;bottom:max(8px,env(safe-area-inset-bottom))}
+      .mobile-gamepad .gamepad-actions{width:132px;height:132px;bottom:max(8px,env(safe-area-inset-bottom))}
     }
   `;
   document.head.append(style);
@@ -138,4 +130,145 @@
     button.addEventListener("pointercancel", release);
     button.addEventListener("pointerleave", release);
   });
+
+  const directionButtons = [...document.querySelectorAll(".gamepad-direction")];
+  if (touchDevice && directionButtons.length) {
+    const allowedDirections = new Set(directionButtons.map(button => {
+      if (button.classList.contains("gamepad-left")) return "left";
+      if (button.classList.contains("gamepad-right")) return "right";
+      if (button.classList.contains("gamepad-up")) return "up";
+      if (button.classList.contains("gamepad-down")) return "down";
+      return "";
+    }).filter(Boolean));
+    const joystick = document.createElement("div");
+    const knob = document.createElement("span");
+    const keyByDirection = {
+      left: ["ArrowLeft", "ArrowLeft", 37],
+      right: ["ArrowRight", "ArrowRight", 39],
+      up: ["ArrowUp", "ArrowUp", 38],
+      down: ["ArrowDown", "ArrowDown", 40]
+    };
+    const deadzone = 10;
+    const maxRadius = 80;
+    let pointerId = null;
+    let anchorX = 0;
+    let anchorY = 0;
+    let activeDirections = new Set();
+    let repeatTimer = 0;
+
+    joystick.className = "dynamic-joystick";
+    joystick.setAttribute("aria-hidden", "true");
+    knob.className = "dynamic-joystick-knob";
+    joystick.append(knob);
+    document.body.append(joystick);
+
+    const dispatchKey = (type, direction, repeat = false) => {
+      const [key, code, keyCode] = keyByDirection[direction];
+      document.dispatchEvent(new KeyboardEvent(type, {
+        key,
+        code,
+        keyCode,
+        which: keyCode,
+        repeat,
+        bubbles: true,
+        cancelable: true
+      }));
+    };
+
+    const publishVector = (x, y, magnitude) => {
+      document.dispatchEvent(new CustomEvent("atlas-joystick", {
+        detail: { x, y, magnitude, active: magnitude > 0 }
+      }));
+    };
+
+    const setDirections = nextDirections => {
+      activeDirections.forEach(direction => {
+        if (!nextDirections.has(direction)) dispatchKey("keyup", direction);
+      });
+      nextDirections.forEach(direction => {
+        if (!activeDirections.has(direction)) dispatchKey("keydown", direction);
+      });
+      activeDirections = nextDirections;
+      window.clearInterval(repeatTimer);
+      if (activeDirections.size) {
+        repeatTimer = window.setInterval(() => {
+          activeDirections.forEach(direction => dispatchKey("keydown", direction, true));
+        }, 110);
+      }
+    };
+
+    const resetJoystick = () => {
+      setDirections(new Set());
+      publishVector(0, 0, 0);
+      pointerId = null;
+      joystick.classList.remove("is-active");
+      knob.style.transform = "translate(0px,0px)";
+    };
+
+    const updateJoystick = (clientX, clientY) => {
+      const dx = clientX - anchorX;
+      const dy = clientY - anchorY;
+      const distance = Math.hypot(dx, dy);
+      const clampedDistance = Math.min(distance, maxRadius);
+      const unitX = distance ? dx / distance : 0;
+      const unitY = distance ? dy / distance : 0;
+      const visualX = unitX * clampedDistance;
+      const visualY = unitY * clampedDistance;
+      knob.style.transform = `translate(${visualX}px,${visualY}px)`;
+
+      if (distance <= deadzone) {
+        setDirections(new Set());
+        publishVector(0, 0, 0);
+        return;
+      }
+
+      const magnitude = Math.min(1, (distance - deadzone) / (maxRadius - deadzone));
+      const x = unitX * magnitude;
+      const y = unitY * magnitude;
+      const nextDirections = new Set();
+      const threshold = 0.22;
+      if (allowedDirections.has("left") && x < -threshold) nextDirections.add("left");
+      if (allowedDirections.has("right") && x > threshold) nextDirections.add("right");
+      if (allowedDirections.has("up") && y < -threshold) nextDirections.add("up");
+      if (allowedDirections.has("down") && y > threshold) nextDirections.add("down");
+      if (folder === "pacman-game" && nextDirections.size > 1) {
+        const dominant = Math.abs(x) >= Math.abs(y)
+          ? (x < 0 ? "left" : "right")
+          : (y < 0 ? "up" : "down");
+        nextDirections.clear();
+        if (allowedDirections.has(dominant)) nextDirections.add(dominant);
+      }
+      setDirections(nextDirections);
+      publishVector(x, y, magnitude);
+    };
+
+    document.addEventListener("pointerdown", event => {
+      if (pointerId !== null || event.pointerType === "mouse" || event.clientX >= innerWidth / 2) return;
+      if (event.target.closest("a,button,input,select,textarea,label,.overlay")) return;
+      event.preventDefault();
+      pointerId = event.pointerId;
+      anchorX = event.clientX;
+      anchorY = event.clientY;
+      joystick.style.left = `${anchorX}px`;
+      joystick.style.top = `${anchorY}px`;
+      joystick.classList.add("is-active");
+      updateJoystick(anchorX, anchorY);
+    }, { capture: true, passive: false });
+
+    document.addEventListener("pointermove", event => {
+      if (event.pointerId !== pointerId) return;
+      event.preventDefault();
+      updateJoystick(event.clientX, event.clientY);
+    }, { capture: true, passive: false });
+
+    ["pointerup", "pointercancel"].forEach(type => {
+      document.addEventListener(type, event => {
+        if (event.pointerId !== pointerId) return;
+        event.preventDefault();
+        resetJoystick();
+      }, { capture: true, passive: false });
+    });
+
+    window.addEventListener("blur", resetJoystick);
+  }
 })();

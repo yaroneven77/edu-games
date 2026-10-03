@@ -534,6 +534,12 @@ document.querySelectorAll("[data-direction]").forEach((button) => {
   button.addEventListener("pointerdown", () => setDirection(button.dataset.direction));
 });
 
+document.addEventListener("atlas-joystick", (event) => {
+  if (event.detail.active) return;
+  player.direction = "none";
+  player.nextDirection = "none";
+});
+
 startButton.addEventListener("click", () => {
   if (gameState === "paused") {
     togglePause();

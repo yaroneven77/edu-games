@@ -47,7 +47,7 @@
   const nav = document.createElement("nav");
   nav.className = "atlas-game-nav";
   nav.setAttribute("aria-label", "Atlas navigation");
-  nav.innerHTML = `<a href="${islandFolder[island]}">← Return to Island ${island}</a><a href="../arcade-launcher/index.html?v=5${allAccess ? "&all=1" : ""}">All games</a><a href="../../map/index.html">Expedition map</a>`;
+  nav.innerHTML = `<a href="${islandFolder[island]}">← Return to Island ${island}</a><a href="../arcade-launcher/index.html?v=6${allAccess ? "&all=1" : ""}">All games</a><a href="../../map/index.html">Expedition map</a>`;
   document.body.prepend(nav);
 
   const controls = document.querySelector(".touch-controls, .controls");
@@ -95,6 +95,7 @@
     .atlas-game-nav a{min-height:40px;display:inline-flex;align-items:center;padding:8px 12px;border:1px solid #25f4ff;border-radius:10px;color:#fff;background:rgba(4,10,24,.88);text-decoration:none}
     .atlas-game-nav a:focus-visible{outline:3px solid #ffe600;outline-offset:2px}
     ${touchDevice ? "" : "@media (max-width:1024px),(pointer:coarse){"}
+      html,body{touch-action:none}
       body{padding-bottom:max(150px,env(safe-area-inset-bottom))}
       .mobile-gamepad{position:fixed!important;z-index:100!important;left:0!important;right:0!important;bottom:0!important;width:100%!important;height:clamp(145px,25vh,205px)!important;display:block!important;margin:0!important;padding:0!important;background:linear-gradient(180deg,transparent,rgba(2,5,15,.28) 32%,rgba(2,5,15,.72));pointer-events:none}
       .mobile-gamepad .gamepad-direction-bank{display:none!important}
@@ -107,8 +108,8 @@
       .mobile-gamepad .gamepad-action:nth-child(2){left:4%;top:8%}
       .mobile-gamepad .gamepad-action:nth-child(3){right:6%;top:0}
       .mobile-gamepad .gamepad-action:only-child{right:4%;bottom:8%;width:62%!important;height:62%!important}
-      .dynamic-joystick{position:fixed;z-index:110;width:160px;height:160px;margin:-80px 0 0 -80px;border:2px solid rgba(121,235,255,.66);border-radius:50%;background:radial-gradient(circle,rgba(76,176,214,.2) 0 12%,rgba(15,46,70,.54) 14% 52%,rgba(5,17,31,.72) 54%);box-shadow:inset 0 0 24px rgba(105,227,255,.3),0 8px 24px rgba(0,0,0,.38),0 0 18px rgba(54,209,255,.24);pointer-events:none;opacity:0;transform:scale(.82);transition:opacity .08s ease,transform .08s ease}
-      .dynamic-joystick.is-active{opacity:1;transform:scale(1)}
+      .dynamic-joystick{position:fixed;z-index:110;left:max(96px,calc(env(safe-area-inset-left) + 88px));bottom:max(12px,env(safe-area-inset-bottom));width:160px;height:160px;margin:0 0 0 -80px;border:2px solid rgba(121,235,255,.66);border-radius:50%;background:radial-gradient(circle,rgba(76,176,214,.2) 0 12%,rgba(15,46,70,.54) 14% 52%,rgba(5,17,31,.72) 54%);box-shadow:inset 0 0 24px rgba(105,227,255,.3),0 8px 24px rgba(0,0,0,.38),0 0 18px rgba(54,209,255,.24);pointer-events:none;opacity:.72;transform:scale(.9);transition:opacity .08s ease,transform .08s ease}
+      .dynamic-joystick.is-active{margin-top:-80px;opacity:1;transform:scale(1)}
       .dynamic-joystick-knob{position:absolute;left:55px;top:55px;width:46px;height:46px;border:2px solid rgba(205,251,255,.84);border-radius:50%;background:radial-gradient(circle at 35% 30%,#e5fdff,rgba(39,181,225,.9) 30%,rgba(7,45,71,.96) 72%);box-shadow:0 0 18px rgba(60,218,255,.86);transform:translate(0,0)}
     ${touchDevice ? "" : "}"}
     @media (orientation:landscape) and (max-height:560px){
@@ -142,12 +143,6 @@
     }).filter(Boolean));
     const joystick = document.createElement("div");
     const knob = document.createElement("span");
-    const keyByDirection = {
-      left: ["ArrowLeft", "ArrowLeft", 37],
-      right: ["ArrowRight", "ArrowRight", 39],
-      up: ["ArrowUp", "ArrowUp", 38],
-      down: ["ArrowDown", "ArrowDown", 40]
-    };
     const deadzone = 10;
     const maxRadius = 80;
     let pointerId = null;
@@ -162,38 +157,27 @@
     joystick.append(knob);
     document.body.append(joystick);
 
-    const dispatchKey = (type, direction, repeat = false) => {
-      const [key, code, keyCode] = keyByDirection[direction];
-      document.dispatchEvent(new KeyboardEvent(type, {
-        key,
-        code,
-        keyCode,
-        which: keyCode,
-        repeat,
-        bubbles: true,
-        cancelable: true
-      }));
-    };
-
     const publishVector = (x, y, magnitude) => {
       document.dispatchEvent(new CustomEvent("atlas-joystick", {
         detail: { x, y, magnitude, active: magnitude > 0 }
       }));
     };
 
+    const publishDirections = (directions, repeat = false) => {
+      document.dispatchEvent(new CustomEvent("atlas-joystick-direction", {
+        detail: { directions: [...directions], repeat }
+      }));
+    };
+
     const setDirections = nextDirections => {
-      activeDirections.forEach(direction => {
-        if (!nextDirections.has(direction)) dispatchKey("keyup", direction);
-      });
-      nextDirections.forEach(direction => {
-        if (!activeDirections.has(direction)) dispatchKey("keydown", direction);
-      });
+      const changed = activeDirections.size !== nextDirections.size
+        || [...activeDirections].some(direction => !nextDirections.has(direction));
+      if (!changed) return;
       activeDirections = nextDirections;
+      publishDirections(activeDirections);
       window.clearInterval(repeatTimer);
       if (activeDirections.size) {
-        repeatTimer = window.setInterval(() => {
-          activeDirections.forEach(direction => dispatchKey("keydown", direction, true));
-        }, 110);
+        repeatTimer = window.setInterval(() => publishDirections(activeDirections, true), 110);
       }
     };
 
@@ -202,6 +186,8 @@
       publishVector(0, 0, 0);
       pointerId = null;
       joystick.classList.remove("is-active");
+      joystick.style.left = "";
+      joystick.style.top = "";
       knob.style.transform = "translate(0px,0px)";
     };
 
@@ -244,7 +230,7 @@
 
     document.addEventListener("pointerdown", event => {
       if (pointerId !== null || event.pointerType === "mouse" || event.clientX >= innerWidth / 2) return;
-      if (event.target.closest("a,button,input,select,textarea,label,.overlay")) return;
+      if (event.target.closest("a,button,input,select,textarea,label")) return;
       event.preventDefault();
       pointerId = event.pointerId;
       anchorX = event.clientX;

@@ -436,6 +436,17 @@ document.addEventListener("keyup", (event) => {
   if (controlKeys[event.key]) setControl(controlKeys[event.key], false);
 });
 
+let joystickControls = new Set();
+document.addEventListener("atlas-joystick-direction", (event) => {
+  const controlByDirection = { left: "left", right: "right", up: "boost", down: "brake" };
+  const nextControls = new Set(event.detail.directions.map(direction => controlByDirection[direction]).filter(Boolean));
+  joystickControls.forEach(control => {
+    if (!nextControls.has(control)) setControl(control, false);
+  });
+  nextControls.forEach(control => setControl(control, true));
+  joystickControls = nextControls;
+});
+
 document.querySelectorAll("[data-control]").forEach((button) => {
   const control = button.dataset.control;
   button.addEventListener("pointerdown", (event) => {

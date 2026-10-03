@@ -540,6 +540,11 @@ document.addEventListener("atlas-joystick", (event) => {
   player.nextDirection = "none";
 });
 
+document.addEventListener("atlas-joystick-direction", (event) => {
+  const [direction] = event.detail.directions;
+  if (direction) setDirection(direction);
+});
+
 startButton.addEventListener("click", () => {
   if (gameState === "paused") {
     togglePause();

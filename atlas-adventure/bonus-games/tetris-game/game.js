@@ -402,6 +402,10 @@ document.addEventListener("keydown", (event) => {
   if (!event.repeat || ["left", "right", "down"].includes(action)) runAction(action);
 });
 
+document.addEventListener("atlas-joystick-direction", (event) => {
+  event.detail.directions.forEach(direction => runAction(direction));
+});
+
 document.querySelectorAll("[data-action]").forEach((button) => {
   button.addEventListener("pointerdown", (event) => {
     event.preventDefault();

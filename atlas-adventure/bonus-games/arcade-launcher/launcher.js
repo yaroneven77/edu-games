@@ -42,7 +42,7 @@
     card.dataset.highlighted = String(island === requestedIsland);
     const link = card.querySelector("a");
     const gamePath = link.getAttribute("href").split("?")[0];
-    link.href = `${gamePath}?v=5${allAccess ? "&all=1" : ""}`;
+    link.href = `${gamePath}?v=6${allAccess ? "&all=1" : ""}`;
   });
 
   const availableCount = cards.filter(card => card.dataset.locked === "false").length;
@@ -51,6 +51,6 @@
     : `${availableCount} of 6 island games unlocked`;
 
   if (requestedIsland && unlocked(requestedIsland)) {
-    location.replace(`${gameByIsland[requestedIsland]}?v=5${allAccess ? "&all=1" : ""}`);
+    location.replace(`${gameByIsland[requestedIsland]}?v=6${allAccess ? "&all=1" : ""}`);
   }
 })();

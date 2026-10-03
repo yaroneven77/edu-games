@@ -1,0 +1,270 @@
+:root {
+  color-scheme: dark;
+  font-family: "Courier New", monospace;
+  --yellow: #ffe600;
+  --blue: #255cff;
+  --cyan: #66ffff;
+  --pink: #ff4da6;
+  --surface: #0c0c20;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  display: grid;
+  place-items: center;
+  overflow-x: hidden;
+  color: #fff;
+  background:
+    radial-gradient(circle at 50% 15%, #161642 0, transparent 35%),
+    linear-gradient(#050510, #080817);
+}
+
+body::before {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  opacity: 0.18;
+  background: repeating-linear-gradient(0deg, transparent 0 3px, #fff 4px);
+}
+
+button {
+  font: inherit;
+}
+
+.game-shell {
+  width: min(94vw, 590px);
+  padding: 24px 20px 18px;
+}
+
+.game-header,
+.scoreboard,
+footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.eyebrow {
+  margin: 0 0 2px;
+  color: var(--pink);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+}
+
+h1 {
+  margin: 0;
+  color: var(--yellow);
+  font-size: clamp(26px, 7vw, 42px);
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-shadow: 3px 3px 0 #e65400;
+}
+
+.icon-button {
+  padding: 8px 10px;
+  border: 1px solid #45456a;
+  color: #b8b8dd;
+  background: #101026;
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.scoreboard {
+  margin: 18px 0 10px;
+  padding: 12px 16px;
+  border: 1px solid #272755;
+  background: #09091b;
+  box-shadow: 0 0 24px #1c258055;
+}
+
+.scoreboard div {
+  min-width: 90px;
+}
+
+.scoreboard div:nth-child(2) {
+  text-align: center;
+}
+
+.scoreboard div:last-child {
+  text-align: right;
+}
+
+.scoreboard span {
+  display: block;
+  margin-bottom: 5px;
+  color: #74749c;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+}
+
+.scoreboard strong {
+  color: #fff;
+  font-size: 17px;
+  letter-spacing: 0.08em;
+}
+
+.lives {
+  color: var(--yellow) !important;
+  letter-spacing: 0.15em !important;
+}
+
+.game-frame {
+  position: relative;
+  overflow: hidden;
+  border: 2px solid #3434a3;
+  border-radius: 4px;
+  background: #000;
+  box-shadow: 0 0 18px #2448ff66, inset 0 0 28px #1c24a344;
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  image-rendering: pixelated;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
+  background: #02020ed9;
+  backdrop-filter: blur(3px);
+  transition: opacity 180ms ease;
+}
+
+.overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.overlay-label {
+  margin: 0 0 10px;
+  color: var(--pink);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.35em;
+}
+
+.overlay h2 {
+  margin: 0;
+  color: var(--yellow);
+  font-size: clamp(35px, 11vw, 62px);
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-shadow: 4px 4px 0 #c74300;
+}
+
+.overlay > p:nth-of-type(2) {
+  color: #aaaad0;
+  font-size: 12px;
+}
+
+.primary-button {
+  margin-top: 18px;
+  padding: 14px 25px;
+  border: 0;
+  color: #050510;
+  background: var(--yellow);
+  cursor: pointer;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  box-shadow: 5px 5px 0 #d85100;
+  transition: transform 100ms ease, box-shadow 100ms ease;
+}
+
+.primary-button:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 3px 3px 0 #d85100;
+}
+
+.key-hint {
+  margin: 26px 0 0;
+  color: #555579;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+}
+
+.controls {
+  display: none;
+  grid-template: repeat(2, 42px) / repeat(3, 42px);
+  justify-content: center;
+  gap: 5px;
+  margin: 15px auto 0;
+}
+
+.control {
+  border: 1px solid #41416b;
+  color: var(--cyan);
+  background: #101028;
+  touch-action: manipulation;
+}
+
+.control:active {
+  color: #050510;
+  background: var(--cyan);
+}
+
+.up { grid-area: 1 / 2; }
+.left { grid-area: 2 / 1; }
+.down { grid-area: 2 / 2; }
+.right { grid-area: 2 / 3; }
+
+footer {
+  margin-top: 13px;
+  color: #5e5e83;
+  font-size: 9px;
+  letter-spacing: 0.07em;
+}
+
+footer b {
+  color: #aaaacd;
+}
+
+@media (max-width: 700px), (pointer: coarse) {
+  body {
+    place-items: start center;
+  }
+
+  .game-shell {
+    padding-top: 16px;
+  }
+
+  .controls {
+    display: grid;
+  }
+
+  footer {
+    display: none;
+  }
+}
+
+@media (max-height: 760px) {
+  .game-shell {
+    width: min(82vh, 520px);
+    padding-top: 10px;
+  }
+
+  .game-header {
+    display: none;
+  }
+
+  .scoreboard {
+    margin-top: 0;
+  }
+}

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#030806" />
+    <title>Pixel Invasion</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="game-shell">
+      <header>
+        <div>
+          <p>EARTH DEFENSE NETWORK</p>
+          <h1>PIXEL <span>INVASION</span></h1>
+        </div>
+        <button id="soundButton">SOUND ON</button>
+      </header>
+
+      <section class="hud">
+        <div><small>SCORE</small><strong id="score">000000</strong></div>
+        <div><small>HIGH SCORE</small><strong id="highScore">000000</strong></div>
+        <div><small>WAVE</small><strong id="wave">01</strong></div>
+        <div><small>LIVES</small><strong id="lives">▲▲▲</strong></div>
+      </section>
+
+      <div class="game-frame">
+        <canvas id="gameCanvas" width="480" height="640" aria-label="Pixel Invasion defense game"></canvas>
+        <div id="overlay" class="overlay">
+          <p id="overlayTag">INCOMING SIGNAL</p>
+          <h2 id="overlayTitle">PIXEL INVASION</h2>
+          <p id="overlayText">Defend the bunkers. Stop the descending fleet.</p>
+          <button id="startButton">DEFEND EARTH</button>
+          <span>ARROWS / A D · SPACE TO FIRE</span>
+        </div>
+      </div>
+
+      <nav class="touch-controls" aria-label="Touch controls">
+        <button data-control="left">◀</button>
+        <button data-control="fire">FIRE</button>
+        <button data-control="right">▶</button>
+      </nav>
+
+      <footer>
+        <span><b>MOVE</b> ← → / A D</span>
+        <span><b>FIRE</b> SPACE / ↑</span>
+        <span><b>PAUSE</b> P</span>
+      </footer>
+    </main>
+    <script src="../atlas-game-bridge.js"></script>
+    <script src="game.js"></script>
+  </body>
+</html>

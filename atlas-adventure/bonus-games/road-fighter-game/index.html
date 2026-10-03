@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#080611" />
+    <title>Road Fighter: Neon Rush</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="arcade">
+      <header>
+        <div>
+          <p>HIGHWAY COMBAT UNIT</p>
+          <h1>ROAD <span>FIGHTER</span></h1>
+        </div>
+        <button id="soundButton" class="sound-button">SOUND ON</button>
+      </header>
+
+      <section class="dashboard" aria-label="Game status">
+        <div><small>SCORE</small><strong id="score">000000</strong></div>
+        <div><small>HI-SCORE</small><strong id="highScore">000000</strong></div>
+        <div><small>DISTANCE</small><strong id="distance">0.0 KM</strong></div>
+        <div class="fuel-stat">
+          <small>FUEL</small>
+          <span class="fuel-track"><i id="fuelBar"></i></span>
+        </div>
+      </section>
+
+      <div class="game-frame">
+        <canvas id="gameCanvas" width="480" height="720" aria-label="Road racing game"></canvas>
+        <div id="overlay" class="overlay">
+          <p id="overlayTag">ARCADE RACING</p>
+          <h2 id="overlayTitle">NEON RUSH</h2>
+          <p id="overlayText">Weave through traffic. Collect fuel. Own the night.</p>
+          <button id="startButton">START ENGINE</button>
+          <span>ARROWS / WASD TO DRIVE</span>
+        </div>
+      </div>
+
+      <nav class="touch-controls" aria-label="Touch controls">
+        <button data-control="left" aria-label="Steer left">◀</button>
+        <button data-control="brake" aria-label="Brake">▼</button>
+        <button data-control="boost" aria-label="Accelerate">▲</button>
+        <button data-control="right" aria-label="Steer right">▶</button>
+      </nav>
+
+      <footer>
+        <span><b>STEER</b> ← → / A D</span>
+        <span><b>BOOST</b> ↑ / W</span>
+        <span><b>BRAKE</b> ↓ / S</span>
+        <span><b>PAUSE</b> SPACE</span>
+      </footer>
+    </main>
+    <script src="../atlas-game-bridge.js"></script>
+    <script src="game.js"></script>
+  </body>
+</html>

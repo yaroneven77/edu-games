@@ -1,0 +1,269 @@
+:root {
+  color-scheme: dark;
+  font-family: "Courier New", monospace;
+  --yellow: #ffe600;
+  --cyan: #24f4ff;
+  --magenta: #ff2b8c;
+  --panel: #0d0a1d;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  display: grid;
+  place-items: center;
+  color: white;
+  background:
+    radial-gradient(circle at 50% 10%, #25134d 0, transparent 30%),
+    linear-gradient(160deg, #05040d, #0b0718 65%, #160721);
+}
+
+body::after {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  opacity: 0.12;
+  background: repeating-linear-gradient(0deg, transparent 0 3px, #fff 4px);
+}
+
+button {
+  font: inherit;
+}
+
+.arcade {
+  width: min(95vw, 560px);
+  padding: 18px 20px;
+}
+
+header,
+.dashboard,
+footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header p {
+  margin: 0 0 3px;
+  color: #a75be7;
+  font-size: 9px;
+  font-weight: bold;
+  letter-spacing: 0.25em;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(25px, 6vw, 38px);
+  font-style: italic;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  text-shadow: 3px 3px 0 #4c1470;
+}
+
+h1 span {
+  color: var(--yellow);
+}
+
+.sound-button {
+  padding: 8px 10px;
+  border: 1px solid #4c3767;
+  color: #bca9d2;
+  background: #130d23;
+  cursor: pointer;
+  font-size: 9px;
+  font-weight: bold;
+}
+
+.dashboard {
+  gap: 12px;
+  margin: 15px 0 9px;
+  padding: 10px 12px;
+  border: 1px solid #3b245a;
+  background: #0a0716;
+  box-shadow: 0 0 24px #7225b533;
+}
+
+.dashboard > div {
+  flex: 1;
+}
+
+.dashboard small {
+  display: block;
+  margin-bottom: 4px;
+  color: #735e89;
+  font-size: 8px;
+  font-weight: bold;
+  letter-spacing: 0.12em;
+}
+
+.dashboard strong {
+  font-size: 14px;
+  letter-spacing: 0.06em;
+}
+
+.fuel-stat {
+  max-width: 95px;
+}
+
+.fuel-track {
+  display: block;
+  width: 100%;
+  height: 9px;
+  padding: 2px;
+  border: 1px solid #533e63;
+  background: #160c1b;
+}
+
+.fuel-track i {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #ff3055, var(--yellow), #35f58b);
+  transition: width 120ms linear;
+}
+
+.game-frame {
+  position: relative;
+  overflow: hidden;
+  border: 2px solid #742fc2;
+  border-radius: 5px;
+  background: #09070e;
+  box-shadow: 0 0 25px #a22cff44;
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  image-rendering: pixelated;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  text-align: center;
+  background: #070410dc;
+  backdrop-filter: blur(3px);
+  transition: opacity 180ms ease;
+}
+
+.overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.overlay > p:first-child {
+  margin: 0 0 10px;
+  color: var(--cyan);
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 0.3em;
+}
+
+.overlay h2 {
+  margin: 0;
+  color: var(--yellow);
+  font-size: clamp(36px, 11vw, 64px);
+  font-style: italic;
+  line-height: 0.95;
+  text-shadow: 5px 5px 0 #b71968;
+}
+
+.overlay > p:nth-of-type(2) {
+  max-width: 330px;
+  color: #b3a7c5;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.overlay button {
+  margin: 16px 0 24px;
+  padding: 14px 24px;
+  border: 0;
+  color: #09050f;
+  background: var(--yellow);
+  cursor: pointer;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  box-shadow: 5px 5px 0 #c7196a;
+}
+
+.overlay > span {
+  color: #625672;
+  font-size: 8px;
+  letter-spacing: 0.15em;
+}
+
+.touch-controls {
+  display: none;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 7px;
+  margin-top: 12px;
+}
+
+.touch-controls button {
+  height: 45px;
+  border: 1px solid #54336e;
+  color: var(--cyan);
+  background: #130d24;
+  touch-action: none;
+}
+
+.touch-controls button:active {
+  color: #080611;
+  background: var(--cyan);
+}
+
+footer {
+  margin-top: 11px;
+  color: #635671;
+  font-size: 8px;
+  letter-spacing: 0.04em;
+}
+
+footer b {
+  color: #a999b9;
+}
+
+@media (max-width: 700px), (pointer: coarse) {
+  body {
+    place-items: start center;
+  }
+
+  .arcade {
+    padding-top: 10px;
+  }
+
+  .touch-controls {
+    display: grid;
+  }
+
+  footer {
+    display: none;
+  }
+}
+
+@media (max-height: 820px) {
+  .arcade {
+    width: min(65vh, 480px);
+    padding-top: 8px;
+  }
+
+  header {
+    display: none;
+  }
+
+  .dashboard {
+    margin-top: 0;
+  }
+}

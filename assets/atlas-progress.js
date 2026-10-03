@@ -12,7 +12,9 @@
   ];
   const bonusKeys = [
     ...["road-rally", "sky-blocks", "spark-maze", "star-guard", "comet-swarm", "goal-runner"]
-      .map(gameId => `edu-games-atlas-bonus-${mode}-${gameId}-best-v1`)
+      .map(gameId => `edu-games-atlas-bonus-${mode}-${gameId}-best-v1`),
+    ...["pac", "rush", "blocks", "squadron", "invasion"]
+      .map(gameId => `edu-games-atlas-neon-${mode}-${gameId}-high-score-v1`)
   ];
 
   const blank = () => ({

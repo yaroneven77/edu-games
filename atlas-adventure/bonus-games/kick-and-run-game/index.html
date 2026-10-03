@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#071108" />
+    <title>Kick & Run: Retro Football</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="game-shell">
+      <header>
+        <div>
+          <p>WORLD ARCADE CUP</p>
+          <h1>KICK <span>&amp; RUN</span></h1>
+        </div>
+        <button id="soundButton">SOUND ON</button>
+      </header>
+
+      <section class="scoreboard">
+        <div><small>SCORE</small><strong id="score">000000</strong></div>
+        <div><small>GOALS</small><strong id="goals">00</strong></div>
+        <div class="clock"><small>TIME</small><strong id="time">90</strong></div>
+        <div><small>ROUND</small><strong id="round">01</strong></div>
+        <div class="power-stat">
+          <small>POWER</small>
+          <span class="power-track"><i id="powerBar"></i></span>
+        </div>
+      </section>
+
+      <div class="game-frame">
+        <canvas id="gameCanvas" width="520" height="700" aria-label="Retro football game"></canvas>
+        <div id="overlay" class="overlay">
+          <p id="overlayTag">WORLD ARCADE CUP</p>
+          <h2 id="overlayTitle">KICK &amp; RUN</h2>
+          <p id="overlayText">Dribble past defenders and beat the keeper.</p>
+          <button id="startButton">KICK OFF</button>
+          <span>ARROWS / WASD · SPACE TO SHOOT</span>
+        </div>
+      </div>
+
+      <nav class="touch-controls" aria-label="Touch controls">
+        <button class="up" data-control="up">▲</button>
+        <button class="left" data-control="left">◀</button>
+        <button class="kick" data-control="kick">KICK</button>
+        <button class="right" data-control="right">▶</button>
+        <button class="down" data-control="down">▼</button>
+      </nav>
+
+      <footer>
+        <span><b>MOVE</b> ARROWS / WASD</span>
+        <span><b>SHOOT</b> SPACE</span>
+        <span><b>SPRINT</b> SHIFT</span>
+        <span><b>PAUSE</b> P</span>
+      </footer>
+    </main>
+    <script src="../atlas-game-bridge.js"></script>
+    <script src="game.js"></script>
+  </body>
+</html>

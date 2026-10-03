@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#070510" />
+    <title>Neon Arcade</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="grid"></div>
+    <main>
+      <nav class="atlas-nav" aria-label="Atlas navigation">
+        <a href="../../map/index.html">← Expedition map</a>
+        <span id="unlockStatus">Loading island games…</span>
+      </nav>
+      <header>
+        <p class="eyebrow">INSERT COIN · SELECT MISSION</p>
+        <h1>NEON <span>ARCADE</span></h1>
+        <p class="intro">Six original missions. Pick your challenge.</p>
+      </header>
+
+      <section class="games" aria-label="Available games">
+        <article class="game-card pacman-card" data-island="3">
+          <div class="art pacman-art" aria-hidden="true">
+            <div class="maze-lines"></div>
+            <div class="pacman"></div>
+            <i class="dot dot-one"></i>
+            <i class="dot dot-two"></i>
+            <i class="dot dot-three"></i>
+            <div class="ghost"><span></span><span></span></div>
+            <b>01</b>
+          </div>
+          <div class="card-body">
+            <p class="genre">MAZE · SURVIVAL</p>
+            <h2>NEON PAC</h2>
+            <p>Clear the maze, chase high scores, and turn the tables with power pellets.</p>
+            <div class="details">
+              <span><small>MOVE</small>ARROWS / WASD</span>
+              <span><small>PAUSE</small>SPACE</span>
+            </div>
+            <a href="../pacman-game/index.html">PLAY NEON PAC <strong>▶</strong></a>
+          </div>
+        </article>
+
+        <article class="game-card racing-card" data-island="1">
+          <div class="art racing-art" aria-hidden="true">
+            <div class="sun"></div>
+            <div class="road">
+              <i></i><i></i><i></i>
+            </div>
+            <div class="car">
+              <span></span>
+            </div>
+            <b>02</b>
+          </div>
+          <div class="card-body">
+            <p class="genre">RACING · ACTION</p>
+            <h2>NEON RUSH</h2>
+            <p>Burn through the night, weave past traffic, and collect fuel to stay alive.</p>
+            <div class="details">
+              <span><small>DRIVE</small>ARROWS / WASD</span>
+              <span><small>PAUSE</small>SPACE</span>
+            </div>
+            <a href="../road-fighter-game/index.html">PLAY NEON RUSH <strong>▶</strong></a>
+          </div>
+        </article>
+
+        <article class="game-card blocks-card" data-island="2">
+          <div class="art blocks-art" aria-hidden="true">
+            <div class="block-grid">
+              <i class="block b1"></i><i class="block b2"></i><i class="block b3"></i>
+              <i class="block b4"></i><i class="block b5"></i><i class="block b6"></i>
+              <i class="block b7"></i><i class="block b8"></i><i class="block b9"></i>
+              <i class="block b10"></i><i class="block b11"></i><i class="block b12"></i>
+            </div>
+            <div class="falling-piece"><i></i><i></i><i></i><i></i></div>
+            <b>03</b>
+          </div>
+          <div class="card-body">
+            <p class="genre">PUZZLE · STRATEGY</p>
+            <h2>NEON BLOCKS</h2>
+            <p>Stack falling pieces, clear lines, and survive as the speed keeps climbing.</p>
+            <div class="details">
+              <span><small>MOVE</small>ARROWS / WASD</span>
+              <span><small>DROP</small>SPACE</span>
+            </div>
+            <a href="../tetris-game/index.html">PLAY NEON BLOCKS <strong>▶</strong></a>
+          </div>
+        </article>
+
+        <article class="game-card squadron-card" data-island="5">
+          <div class="art squadron-art" aria-hidden="true">
+            <div class="starfield"></div>
+            <div class="enemy-row">
+              <i></i><i></i><i></i><i></i><i></i>
+            </div>
+            <div class="laser"></div>
+            <div class="fighter"></div>
+            <b>04</b>
+          </div>
+          <div class="card-body">
+            <p class="genre">SHOOTER · ACTION</p>
+            <h2>NEON SQUADRON</h2>
+            <p>Break alien formations, repel dive attacks, and defend the galaxy wave by wave.</p>
+            <div class="details">
+              <span><small>MOVE</small>ARROWS / A D</span>
+              <span><small>FIRE</small>SPACE</span>
+            </div>
+            <a href="../galaga-game/index.html">PLAY NEON SQUADRON <strong>▶</strong></a>
+          </div>
+        </article>
+
+        <article class="game-card invasion-card" data-island="4">
+          <div class="art invasion-art" aria-hidden="true">
+            <div class="invader-fleet">
+              <i></i><i></i><i></i><i></i><i></i>
+              <i></i><i></i><i></i><i></i><i></i>
+              <i></i><i></i><i></i><i></i><i></i>
+            </div>
+            <div class="bunker-art"></div>
+            <div class="cannon-art"></div>
+            <b>05</b>
+          </div>
+          <div class="card-body">
+            <p class="genre">SHOOTER · DEFENSE</p>
+            <h2>PIXEL INVASION</h2>
+            <p>Hold the line behind destructible bunkers and stop the descending alien fleet.</p>
+            <div class="details">
+              <span><small>MOVE</small>ARROWS / A D</span>
+              <span><small>FIRE</small>SPACE</span>
+            </div>
+            <a href="../space-invaders-game/index.html">PLAY PIXEL INVASION <strong>▶</strong></a>
+          </div>
+        </article>
+
+        <article class="game-card football-card" data-island="6">
+          <div class="art football-art" aria-hidden="true">
+            <div class="pitch-lines"></div>
+            <div class="football-player blue-player"></div>
+            <div class="football-player orange-player"></div>
+            <div class="football-ball"></div>
+            <div class="goal-art"></div>
+            <b>06</b>
+          </div>
+          <div class="card-body">
+            <p class="genre">SPORTS · ACTION</p>
+            <h2>KICK &amp; RUN</h2>
+            <p>Dribble through defenders, sprint into space, and beat the goalkeeper.</p>
+            <div class="details">
+              <span><small>MOVE</small>ARROWS / WASD</span>
+              <span><small>SHOOT</small>SPACE</span>
+            </div>
+            <a href="../kick-and-run-game/index.html">PLAY KICK &amp; RUN <strong>▶</strong></a>
+          </div>
+        </article>
+      </section>
+
+      <footer>
+        <span>YARON'S ARCADE SYSTEM</span>
+        <span class="status"><i></i> 6 GAMES ONLINE</span>
+      </footer>
+    </main>
+    <script src="launcher.js"></script>
+  </body>
+</html>

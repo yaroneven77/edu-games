@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#050510" />
+    <title>Neon Pac</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="game-shell">
+      <header class="game-header">
+        <div>
+          <p class="eyebrow">ARCADE CLASSIC</p>
+          <h1>NEON PAC</h1>
+        </div>
+        <button id="soundButton" class="icon-button" aria-label="Toggle sound">SOUND ON</button>
+      </header>
+
+      <section class="scoreboard" aria-label="Game status">
+        <div><span>SCORE</span><strong id="score">000000</strong></div>
+        <div><span>HIGH SCORE</span><strong id="highScore">000000</strong></div>
+        <div><span>LIVES</span><strong id="lives" class="lives"></strong></div>
+      </section>
+
+      <div id="gameFrame" class="game-frame">
+        <canvas id="gameCanvas" width="504" height="552" aria-label="Neon Pac maze game"></canvas>
+        <div id="overlay" class="overlay">
+          <p id="overlayLabel" class="overlay-label">READY?</p>
+          <h2 id="overlayTitle">NEON PAC</h2>
+          <p id="overlayText">Clear the maze. Dodge the ghosts.</p>
+          <button id="startButton" class="primary-button">START GAME</button>
+          <p class="key-hint">ARROW KEYS / WASD</p>
+        </div>
+      </div>
+
+      <div class="controls" aria-label="Touch controls">
+        <button class="control up" data-direction="up" aria-label="Move up">▲</button>
+        <button class="control left" data-direction="left" aria-label="Move left">◀</button>
+        <button class="control down" data-direction="down" aria-label="Move down">▼</button>
+        <button class="control right" data-direction="right" aria-label="Move right">▶</button>
+      </div>
+
+      <footer>
+        <span>MOVE <b>ARROWS / WASD</b></span>
+        <span>PAUSE <b>SPACE</b></span>
+      </footer>
+    </main>
+    <script src="../atlas-game-bridge.js"></script>
+    <script src="game.js"></script>
+  </body>
+</html>

@@ -1,0 +1,258 @@
+:root {
+  color-scheme: dark;
+  font-family: "Courier New", monospace;
+  --green: #49ff76;
+  --cyan: #35f3ff;
+  --pink: #ff3d91;
+  --yellow: #ffe600;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  display: grid;
+  place-items: center;
+  color: white;
+  background:
+    radial-gradient(circle at 50% 4%, #093c2c 0, transparent 32%),
+    linear-gradient(#020705, #050b09);
+}
+
+body::after {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  opacity: 0.11;
+  background: repeating-linear-gradient(0deg, transparent 0 3px, #fff 4px);
+}
+
+button {
+  font: inherit;
+}
+
+.game-shell {
+  width: min(94vw, 550px);
+  padding: 18px;
+}
+
+header,
+.hud,
+footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header p {
+  margin: 0 0 3px;
+  color: var(--green);
+  font-size: 9px;
+  font-weight: bold;
+  letter-spacing: 0.27em;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(25px, 6vw, 39px);
+  line-height: 1;
+  letter-spacing: -0.05em;
+  text-shadow: 3px 3px 0 #176332;
+}
+
+h1 span {
+  color: var(--green);
+}
+
+header button {
+  padding: 8px 10px;
+  border: 1px solid #28543a;
+  color: #91b99d;
+  background: #07120d;
+  cursor: pointer;
+  font-size: 9px;
+  font-weight: bold;
+}
+
+.hud {
+  gap: 10px;
+  margin: 14px 0 9px;
+  padding: 10px 13px;
+  border: 1px solid #1e4a32;
+  background: #030c08;
+  box-shadow: 0 0 20px #1eff7330;
+}
+
+.hud > div {
+  flex: 1;
+}
+
+.hud > div:nth-child(2),
+.hud > div:nth-child(3) {
+  text-align: center;
+}
+
+.hud > div:last-child {
+  text-align: right;
+}
+
+.hud small {
+  display: block;
+  margin-bottom: 4px;
+  color: #52715d;
+  font-size: 8px;
+  font-weight: bold;
+  letter-spacing: 0.12em;
+}
+
+.hud strong {
+  font-size: 14px;
+  letter-spacing: 0.07em;
+}
+
+#lives {
+  color: var(--green);
+}
+
+.game-frame {
+  position: relative;
+  overflow: hidden;
+  border: 2px solid #27a954;
+  border-radius: 3px;
+  background: #010403;
+  box-shadow: 0 0 25px #26ff6c44;
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  image-rendering: pixelated;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  text-align: center;
+  background: #020805df;
+  backdrop-filter: blur(3px);
+  transition: opacity 160ms ease;
+}
+
+.overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.overlay > p:first-child {
+  margin: 0 0 10px;
+  color: var(--pink);
+  font-size: 9px;
+  font-weight: bold;
+  letter-spacing: 0.3em;
+}
+
+.overlay h2 {
+  margin: 0;
+  color: var(--green);
+  font-size: clamp(36px, 9vw, 60px);
+  line-height: 0.94;
+  text-shadow: 5px 5px 0 #155d30;
+}
+
+.overlay > p:nth-of-type(2) {
+  color: #91a999;
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.overlay button {
+  margin: 15px 0 24px;
+  padding: 14px 23px;
+  border: 0;
+  color: #020805;
+  background: var(--green);
+  cursor: pointer;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  box-shadow: 5px 5px 0 #167a3b;
+}
+
+.overlay > span {
+  color: #4e6756;
+  font-size: 8px;
+  letter-spacing: 0.12em;
+}
+
+.touch-controls {
+  display: none;
+  grid-template-columns: 1fr 1.4fr 1fr;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.touch-controls button {
+  height: 48px;
+  border: 1px solid #2a6943;
+  color: var(--green);
+  background: #07140d;
+  touch-action: none;
+  font-weight: bold;
+}
+
+.touch-controls button[data-control="fire"] {
+  color: #031007;
+  background: var(--green);
+}
+
+footer {
+  margin-top: 10px;
+  color: #4e6856;
+  font-size: 8px;
+}
+
+footer b {
+  color: #90aa98;
+}
+
+@media (max-width: 700px), (pointer: coarse) {
+  body {
+    place-items: start center;
+  }
+
+  .game-shell {
+    padding-top: 10px;
+  }
+
+  .touch-controls {
+    display: grid;
+  }
+
+  footer {
+    display: none;
+  }
+}
+
+@media (max-height: 760px) {
+  .game-shell {
+    width: min(72vh, 480px);
+    padding-top: 8px;
+  }
+
+  header {
+    display: none;
+  }
+
+  .hud {
+    margin-top: 0;
+  }
+}

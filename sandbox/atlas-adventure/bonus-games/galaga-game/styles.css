@@ -1,0 +1,294 @@
+:root {
+  color-scheme: dark;
+  font-family: "Courier New", monospace;
+  --cyan: #28f6ff;
+  --pink: #ff2c8c;
+  --yellow: #ffe600;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  display: grid;
+  place-items: center;
+  color: white;
+  background:
+    radial-gradient(circle at 50% 5%, #20145a 0, transparent 35%),
+    linear-gradient(#04030b, #080413);
+}
+
+body::after {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  opacity: 0.1;
+  background: repeating-linear-gradient(0deg, transparent 0 3px, #fff 4px);
+}
+
+button {
+  font: inherit;
+}
+
+.game-shell {
+  width: min(94vw, 550px);
+  padding: 18px;
+}
+
+header,
+.hud,
+footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header p {
+  margin: 0 0 3px;
+  color: var(--pink);
+  font-size: 9px;
+  font-weight: bold;
+  letter-spacing: 0.27em;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(25px, 6vw, 38px);
+  font-style: italic;
+  line-height: 1;
+  letter-spacing: -0.06em;
+  text-shadow: 3px 3px 0 #512591;
+}
+
+h1 span {
+  color: var(--cyan);
+}
+
+header button {
+  padding: 8px 10px;
+  border: 1px solid #44336b;
+  color: #a99abc;
+  background: #0f0b20;
+  cursor: pointer;
+  font-size: 9px;
+  font-weight: bold;
+}
+
+.hud {
+  gap: 10px;
+  margin: 14px 0 9px;
+  padding: 10px 13px;
+  border: 1px solid #322454;
+  background: #080615;
+}
+
+.hud > div {
+  flex: 1;
+}
+
+.hud > div:nth-child(2),
+.hud > div:nth-child(3) {
+  text-align: center;
+}
+
+.hud > div:last-child {
+  text-align: right;
+}
+
+.hud small {
+  display: block;
+  margin-bottom: 4px;
+  color: #695b80;
+  font-size: 8px;
+  font-weight: bold;
+  letter-spacing: 0.12em;
+}
+
+.weapon-select {
+  flex: 1.25;
+  text-align: right;
+}
+
+.weapon-select select {
+  width: 100%;
+  padding: 5px 4px;
+  border: 1px solid #493573;
+  color: var(--yellow);
+  background: #100a22;
+  outline: none;
+  cursor: pointer;
+  font: bold 9px "Courier New", monospace;
+}
+
+.weapon-select select:focus {
+  border-color: var(--cyan);
+}
+
+.hud strong {
+  font-size: 14px;
+  letter-spacing: 0.07em;
+}
+
+#lives {
+  color: var(--cyan);
+}
+
+.game-frame {
+  position: relative;
+  overflow: hidden;
+  border: 2px solid #6140c7;
+  border-radius: 4px;
+  background: #020207;
+  box-shadow: 0 0 25px #653cff55;
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  image-rendering: pixelated;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  text-align: center;
+  background: #05030ddd;
+  backdrop-filter: blur(3px);
+  transition: opacity 170ms ease;
+}
+
+.overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.overlay > p:first-child {
+  margin: 0 0 10px;
+  color: var(--pink);
+  font-size: 9px;
+  font-weight: bold;
+  letter-spacing: 0.3em;
+}
+
+.overlay h2 {
+  margin: 0;
+  color: var(--cyan);
+  font-size: clamp(36px, 9vw, 61px);
+  font-style: italic;
+  line-height: 0.94;
+  text-shadow: 5px 5px 0 #53238f;
+}
+
+.overlay > p:nth-of-type(2) {
+  color: #a99db9;
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.overlay button {
+  margin: 15px 0 24px;
+  padding: 14px 27px;
+  border: 0;
+  color: #05030d;
+  background: var(--yellow);
+  cursor: pointer;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  box-shadow: 5px 5px 0 var(--pink);
+}
+
+.overlay > span {
+  color: #5d506c;
+  font-size: 8px;
+  letter-spacing: 0.12em;
+}
+
+.touch-controls {
+  display: none;
+  grid-template-columns: 1fr 1.4fr 1fr;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.touch-controls button {
+  height: 48px;
+  border: 1px solid #49356e;
+  color: var(--cyan);
+  background: #100b22;
+  touch-action: none;
+  font-weight: bold;
+}
+
+.touch-controls button[data-control="fire"] {
+  color: #080411;
+  background: var(--yellow);
+}
+
+footer {
+  margin-top: 10px;
+  color: #615471;
+  font-size: 8px;
+}
+
+footer b {
+  color: #a99ab8;
+}
+
+@media (max-width: 700px), (pointer: coarse) {
+  body {
+    place-items: start center;
+  }
+
+  .game-shell {
+    padding-top: 10px;
+  }
+
+  .touch-controls {
+    display: grid;
+  }
+
+  footer {
+    display: none;
+  }
+
+  .hud {
+    flex-wrap: wrap;
+  }
+
+  .weapon-select {
+    flex-basis: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-align: left;
+  }
+
+  .weapon-select small {
+    margin: 0;
+  }
+}
+
+@media (max-height: 790px) {
+  .game-shell {
+    width: min(70vh, 470px);
+    padding-top: 8px;
+  }
+
+  header {
+    display: none;
+  }
+
+  .hud {
+    margin-top: 0;
+  }
+}

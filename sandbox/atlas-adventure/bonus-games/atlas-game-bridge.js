@@ -88,6 +88,10 @@
     controls.replaceChildren(stick, actions);
   }
 
+  const touchDevice = navigator.maxTouchPoints > 0
+    || "ontouchstart" in window
+    || matchMedia("(pointer:coarse)").matches
+    || /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
   const style = document.createElement("style");
   style.textContent = `
     html,body{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
@@ -95,7 +99,7 @@
     .atlas-game-nav{position:relative;z-index:50;width:min(920px,94vw);display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:10px auto 0;font:700 13px/1.2 system-ui,sans-serif}
     .atlas-game-nav a{min-height:40px;display:inline-flex;align-items:center;padding:8px 12px;border:1px solid #25f4ff;border-radius:10px;color:#fff;background:rgba(4,10,24,.88);text-decoration:none}
     .atlas-game-nav a:focus-visible{outline:3px solid #ffe600;outline-offset:2px}
-    @media (max-width:1024px),(pointer:coarse){
+    ${touchDevice ? "" : "@media (max-width:1024px),(pointer:coarse){"}
       body{padding-bottom:max(150px,env(safe-area-inset-bottom))}
       .mobile-gamepad{position:fixed!important;z-index:100!important;left:0!important;right:0!important;bottom:0!important;width:100%!important;height:clamp(145px,25vh,205px)!important;display:block!important;margin:0!important;padding:0!important;background:linear-gradient(180deg,transparent,rgba(2,5,15,.28) 32%,rgba(2,5,15,.72));pointer-events:none}
       .mobile-gamepad .gamepad-stick,.mobile-gamepad .gamepad-actions{position:absolute;bottom:max(12px,env(safe-area-inset-bottom));width:clamp(126px,30vw,184px);height:clamp(126px,30vw,184px);pointer-events:auto}
@@ -114,7 +118,7 @@
       .mobile-gamepad .gamepad-action:nth-child(2){left:4%;top:8%}
       .mobile-gamepad .gamepad-action:nth-child(3){right:6%;top:0}
       .mobile-gamepad .gamepad-action:only-child{right:4%;bottom:8%;width:62%!important;height:62%!important}
-    }
+    ${touchDevice ? "" : "}"}
     @media (orientation:landscape) and (max-height:560px){
       body{padding-bottom:0}
       .mobile-gamepad{height:148px!important;background:linear-gradient(180deg,transparent,rgba(2,5,15,.38))}

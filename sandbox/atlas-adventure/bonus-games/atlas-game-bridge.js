@@ -51,6 +51,10 @@
   document.body.prepend(nav);
 
   const style = document.createElement("style");
-  style.textContent = `.atlas-game-nav{position:relative;z-index:50;width:min(920px,94vw);display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:10px auto 0;font:700 13px/1.2 system-ui,sans-serif}.atlas-game-nav a{min-height:40px;display:inline-flex;align-items:center;padding:8px 12px;border:1px solid #25f4ff;border-radius:10px;color:#fff;background:rgba(4,10,24,.88);text-decoration:none}.atlas-game-nav a:focus-visible{outline:3px solid #ffe600;outline-offset:2px}`;
+  style.textContent = `html,body{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}.touch-controls,.controls,.touch-controls button,.controls button,canvas{touch-action:none;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;-webkit-user-drag:none}.atlas-game-nav{position:relative;z-index:50;width:min(920px,94vw);display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:10px auto 0;font:700 13px/1.2 system-ui,sans-serif}.atlas-game-nav a{min-height:40px;display:inline-flex;align-items:center;padding:8px 12px;border:1px solid #25f4ff;border-radius:10px;color:#fff;background:rgba(4,10,24,.88);text-decoration:none}.atlas-game-nav a:focus-visible{outline:3px solid #ffe600;outline-offset:2px}`;
   document.head.append(style);
+
+  ["contextmenu", "selectstart", "dragstart"].forEach(type => {
+    document.addEventListener(type, event => event.preventDefault());
+  });
 })();

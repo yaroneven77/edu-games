@@ -47,7 +47,7 @@
   const nav = document.createElement("nav");
   nav.className = "atlas-game-nav";
   nav.setAttribute("aria-label", "Atlas navigation");
-  nav.innerHTML = `<a href="${islandFolder[island]}">← Return to Island ${island}</a><a href="../arcade-launcher/index.html${allAccess ? "?all=1" : ""}">All games</a><a href="../../map/index.html">Expedition map</a>`;
+  nav.innerHTML = `<a href="${islandFolder[island]}">← Return to Island ${island}</a><a href="../arcade-launcher/index.html?v=4${allAccess ? "&all=1" : ""}">All games</a><a href="../../map/index.html">Expedition map</a>`;
   document.body.prepend(nav);
 
   const controls = document.querySelector(".touch-controls, .controls");
